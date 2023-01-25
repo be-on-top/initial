@@ -3,6 +3,9 @@ import { Evaluators } from './evaluators';
 
 // à vérifier
 import { Auth,createUserWithEmailAndPassword } from '@angular/fire/auth';
+import { Firestore, collectionData, collection, documentId } from '@angular/fire/firestore';
+import { addDoc } from 'firebase/firestore';
+
 
 
 @Injectable({
@@ -10,9 +13,11 @@ import { Auth,createUserWithEmailAndPassword } from '@angular/fire/auth';
 })
 export class EvaluatorsService {
 
+  // évaluateurs ne serait pas un tableau de type any mais un observable
   evaluators: any[] = [];
 
-  constructor(private auth: Auth) { }
+
+  constructor(private auth: Auth, private firestore:Firestore) { }
 
   createEvaluator(evaluator: any) {
     const newEvaluator = { id: Date.now(), ...evaluator };
@@ -22,12 +27,14 @@ export class EvaluatorsService {
     let password= Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
     
     // enregistrement en base dans fireAuth d'une part : 
-    return createUserWithEmailAndPassword(this.auth, evaluator.evalEmail, password);  
+    createUserWithEmailAndPassword(this.auth, evaluator.evalEmail, password);  
     
     
     // enregistre dans Firestore d'autre part avec un collection evaluators qui elle aura de multiples propriétés
 
-
+    let $evaluatorsRef = collection(this.firestore, "evaluators");
+    addDoc($evaluatorsRef, newEvaluator)
+    
   }
 
   getEvaluators(): Evaluators[] {

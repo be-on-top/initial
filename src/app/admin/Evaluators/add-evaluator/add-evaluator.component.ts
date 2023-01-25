@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { EvaluatorsService } from '../../evaluators.service';
 
 
-
 @Component({
   selector: 'app-add-evaluator',
   templateUrl: './add-evaluator.component.html',

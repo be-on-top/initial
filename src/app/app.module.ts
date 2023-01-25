@@ -3,6 +3,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from "@angular/forms";
 
 // Firebase
+// Trouver l'équivalent des 2 lignes ci-dessous pour l'ajout d'éléments à une collection
+// import { AngularFireModule } from '@angular/fire/compat';
+// import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 
 import { environment } from '../environments/environment';
 
