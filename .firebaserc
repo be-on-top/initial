@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "pwa-be-on-top": {
+      "hosting": {
+        "my-first-project": [
+          "pwa-be-on-top"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "pwa-be-on-top"
+  }
+}
