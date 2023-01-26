@@ -31,14 +31,20 @@ export class EvaluatorsListComponent implements OnInit {
       console.log(data)
       this.allEvaluators=data
       return this.allEvaluators
-
     })
 
   }
 
-  deleteEvaluator(evaluator:any){
-    this.allEvaluators=this.service.deleteEvaluator(evaluator);
-    // this.allEvaluators=this.service.getEvaluators();
+  deleteEvaluator(evaluatorid:string){
+    console.log(evaluatorid);
+    
+    this.service.deleteEvaluator(evaluatorid)
+    .then(()=>{
+
+    })
+    .catch(()=>{
+      
+    })
   }
 
   
