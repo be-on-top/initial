@@ -16,7 +16,8 @@ const routesAdmin: Routes = [
 
 @NgModule({
   declarations: [
-    EvaluatorsListComponent
+    // EvaluatorsListComponent,
+    // AddEvaluatorComponent
   ],
   imports: [
     BrowserModule,

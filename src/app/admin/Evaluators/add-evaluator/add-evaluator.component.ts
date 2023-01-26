@@ -14,8 +14,14 @@ export class AddEvaluatorComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  addEvaluator(form:any){
-    console.log(form.value);
+  async addEvaluator(form:any){
+    // on vérifie la validité du formulaire
+    if (!form.valid) {
+      console.log('form valid');
+      return          
+    }
+
+    console.log("form registration", form.value);
     this.service.createEvaluator(form.value); 
     form.reset();   
   }

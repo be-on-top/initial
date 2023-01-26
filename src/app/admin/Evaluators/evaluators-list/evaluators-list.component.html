@@ -1,1 +1,27 @@
-<p>evaluators-list works!</p>
+<div class="container">
+    <h2>Gestion des Evaluateurs</h2>
+    <div *ngIf="(!allEvaluators)">
+        ...loading
+    </div>
+
+    <div *ngIf="allEvaluators">
+        <div class="row mt-5">
+            <div class="col-sm-3 h4">Nom</div>
+            <div class="col-sm-3 h4">Prénom</div>
+            <div class="col-sm-3 h4">Suppression</div>
+            <div class="col-sm-3 h4">Détails</div>
+        </div>
+
+        <div *ngFor="let evaluator of allEvaluators">
+            <div class="row mt-5">
+                <div class="col-sm-3">{{evaluator.evalLastName}}</div>
+                <div class="col-sm-3">{{evaluator.evalFirstName}}</div>
+                <div class="col-sm-3"><button class="btn btn-danger">Suppression</button></div>
+                <div class="col-sm-3"><button class="btn btn-warning">Détails</button></div>
+            </div>
+        </div>
+        <div class="row my-5 justify-content-end">
+            <div class="col-sm-3"><button class="btn btn-primary">Ajouter</button></div>
+        </div>
+    </div>
+</div>

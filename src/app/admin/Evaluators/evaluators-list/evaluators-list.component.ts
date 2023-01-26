@@ -10,8 +10,10 @@ import { EvaluatorsService } from '../../evaluators.service';
 })
 
 export class EvaluatorsListComponent implements OnInit {
-  // Will be an object of type Evaluators
-  allEvaluators?:Evaluators[]
+  // Will be an object of type Evaluators ++++++ 
+  // allEvaluators?:Evaluators[]
+  // juste pour tests sur affichage (simplifier ultérieurement l'interface Evaluators...)
+  allEvaluators?:any
 
 
   constructor(private router:Router, private service:EvaluatorsService){
@@ -23,15 +25,21 @@ export class EvaluatorsListComponent implements OnInit {
   }
 
   getEvaluators(){
-    this.allEvaluators=this.service.getEvaluators();
+    // attention, puisque on récupère un observable depuis le service, on doit y souscrire
+    // this.allEvaluators=this.service.getEvaluators(); devient donc nécessairement
+    this.service.getEvaluators().subscribe(data=>{
+      console.log(data)
+      this.allEvaluators=data
+      return this.allEvaluators
+
+    })
+
   }
 
   deleteEvaluator(evaluator:any){
     this.allEvaluators=this.service.deleteEvaluator(evaluator);
-    this.allEvaluators=this.service.getEvaluators();
+    // this.allEvaluators=this.service.getEvaluators();
   }
-
-  
 
   
 
