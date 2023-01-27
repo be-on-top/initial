@@ -17,7 +17,7 @@
                 <div class="col-sm-3">{{evaluator.evalLastName}}</div>
                 <div class="col-sm-3">{{evaluator.evalFirstName}}</div>
                 <div class="col-sm-3"><button class="btn btn-danger" (mouseleave)="deleteEvaluator(evaluator.id)">Suppression</button></div>
-                <div class="col-sm-3"><button class="btn btn-warning">Détails</button></div>
+                <div class="col-sm-3"><button class="btn btn-warning"><a [routerLink]="['/evaluator', evaluator.id]">Détails</a></button></div>
             </div>
         </div>
         <div class="row my-5 justify-content-end">

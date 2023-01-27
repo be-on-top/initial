@@ -22,6 +22,9 @@ import { AdminModule } from './admin/admin.module';
 import { AddEvaluatorComponent } from './admin/Evaluators/add-evaluator/add-evaluator.component';
 import { EvaluatorsListComponent } from './admin/Evaluators/evaluators-list/evaluators-list.component';
 import { HomeComponent } from './home/home.component';
+import { EvaluatorDetailsComponent } from './admin/Evaluators/evaluator-details/evaluator-details.component';
+
+EvaluatorDetailsComponent
 
 
 @NgModule({
@@ -30,6 +33,7 @@ import { HomeComponent } from './home/home.component';
     HookComponent,
     AddEvaluatorComponent,
     EvaluatorsListComponent,
+    EvaluatorDetailsComponent,
     HomeComponent
   ],
   imports: [

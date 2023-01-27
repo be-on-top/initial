@@ -3,7 +3,7 @@ import { Evaluators } from './evaluators';
 
 // à vérifier
 import { Auth,createUserWithEmailAndPassword, user } from '@angular/fire/auth';
-import { Firestore, collectionData, collection, documentId, getDoc } from '@angular/fire/firestore';
+import { Firestore, collectionData, collection, documentId, getDoc, docData, updateDoc, setDoc } from '@angular/fire/firestore';
 import { addDoc, deleteDoc, doc, getDocs } from 'firebase/firestore';
 import { Observable } from 'rxjs';
 
@@ -55,5 +55,18 @@ export class EvaluatorsService {
     let $evaluatorRef = doc(this.firestore, "evaluators/"+id)
     return deleteDoc($evaluatorRef);
   }
+
+  getEvaluator(id: string) {
+    // on utilisera la méthode deleteDoc() de Firestore
+    let $evaluatorRef = doc(this.firestore, "evaluators/"+id)
+    return docData($evaluatorRef, {idField:'id'}) as Observable<Evaluators>;
+  }
+
+
+  updateEvaluator(id: string, evaluator:Evaluators) {    
+    let $evaluatorRef = doc(this.firestore, "evaluators/"+id);
+    setDoc($evaluatorRef,evaluator)  
+  }
+
 
 }

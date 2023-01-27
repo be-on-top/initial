@@ -1,0 +1,19 @@
+<div class="container py-5">
+
+    <h3>Mise à jour d'un évaluateur de la liste évaluateurs</h3>
+
+    <form class="form" #f="ngForm" (submit)="updateEvaluator(f)">
+
+        <label for="evalFirstName" class="form-label mt-3">Prénom</label>
+        <input type="text" id="evalFirstName" [(ngModel)]="evaluator.evalFirstName" name="evalFirstName" class="form-control">
+        <label for="evalLastName" class="form-label mt-3" required>Nom</label>
+        <input type="text" id="evalLastName" [(ngModel)]="evaluator.evalLastName" name="evalLastName" class="form-control">
+        <label for="evalEmail" class="form-label mt-3" required>Email</label>
+        <input type="text" id="evalEmail" [(ngModel)]="evaluator.evalEmail" name="evalEmail" class="form-control">
+
+        <textarea name="details" id="details" [(ngModel)]="evaluator.details" name="details" cols="100" rows="10"
+            class="form-control mt-3">Détails / Remarques & Objectifs...</textarea>
+        <button type="submit" id="submit" class="btn btn-primary mt-3">Ajouter</button>
+    </form>
+    
+</div>
