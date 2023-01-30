@@ -1,25 +1,24 @@
 <div class="container">
 
-   <h2>Détails de l'Evaluateur</h2>   
-  
-    
+    <h2>Détails de l'Evaluateur</h2>
+
+
     <div *ngIf="evaluator">
-    
-    
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">{{evaluator.id}}</h4>
-                    <p class="card-text">Prénom : {{evaluator.evalLastName}}</p>
-                    <p class="card-text">Prénom : {{evaluator.evalFirstName}}</p>
-                    <a href="#" class="card-link">{{evaluator.evalEmail}}</a>
-                    <!-- <a href="#" class="card-link">{{evaluator.evalFirstName}}</a> -->
-                  </div>
 
-             </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">id : {{evaluator.id}}</h4>
+                <p class="card-text">Nom : {{evaluator.lastName}}<br>
+                    Prénom : {{evaluator.firstName}}</p>
+                <a href="#" class="card-link">{{evaluator.email}}</a>
+            </div>
         </div>
+
         <div class="row my-5 justify-content-end">
-            <div class="col-sm-3"><button class="btn btn-primary">Ajouter</button></div>
+            <div class="col-sm-3"><button class="btn btn-primary"><a class="text-white"
+                        [routerLink]="['/updateEvaluator', evaluator.id]">Modifier</a></button></div>
         </div>
+
+    </div>
+
 </div>
-
-

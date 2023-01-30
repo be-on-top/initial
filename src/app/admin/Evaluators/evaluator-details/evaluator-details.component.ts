@@ -15,8 +15,8 @@ export class EvaluatorDetailsComponent {
     this.evaluatorId=this.ac.snapshot.params["id"];
     this.service.getEvaluator(this.evaluatorId).subscribe(data=>{
       console.log("data de getEvaluator", data);
-      // this.evaluator=data
-      // return this.evaluator      
+      this.evaluator=data
+      return this.evaluator      
     })
 
   }

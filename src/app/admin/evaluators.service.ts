@@ -30,7 +30,7 @@ export class EvaluatorsService {
     let password= Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
     
     // enregistrement en base dans fireAuth d'une part : 
-   this.result= await createUserWithEmailAndPassword(this.auth, evaluator.evalEmail, password);  
+   this.result= await createUserWithEmailAndPassword(this.auth, evaluator.email, password);  
 
    if (this.result && this.result.user) {
     const {uid, emailVerified}=this.result.user;
@@ -45,7 +45,6 @@ export class EvaluatorsService {
   // getEvaluators(): Observable<Evaluators[]> {
   getEvaluators(){
     let $evaluatorsRef = collection(this.firestore, "evaluators");
-    // return collectionData($evaluatorsRef, {idField:"id"}) as Observable<Evaluators[]>
     return collectionData($evaluatorsRef,{idField:"id"}) as Observable<Evaluators[]>
 
   }
