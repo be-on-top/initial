@@ -23,7 +23,8 @@ export class EvaluatorsService {
 
   async createEvaluator(evaluator: any) {
 
-    let newEvaluator = { id: Date.now(), ...evaluator };
+    // let newEvaluator = { id: Date.now(), ...evaluator };
+    let newEvaluator = { created: Date.now(), roles:'admin-', ...evaluator };
     this.evaluators = [newEvaluator, ...this.evaluators];
     console.log(this.evaluators);
     // on va lui affecter un password aléatoire en fonction de la date

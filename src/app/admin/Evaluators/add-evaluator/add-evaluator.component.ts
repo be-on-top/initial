@@ -8,6 +8,9 @@ import { EvaluatorsService } from '../../evaluators.service';
   styleUrls: ['./add-evaluator.component.css']
 })
 export class AddEvaluatorComponent implements OnInit {
+  lastName:string="active";
+  firstName:string="";
+  email: string="";
 
   constructor(private service:EvaluatorsService) { }
 

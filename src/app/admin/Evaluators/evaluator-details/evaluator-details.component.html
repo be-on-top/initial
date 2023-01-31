@@ -6,19 +6,27 @@
     <div *ngIf="evaluator">
 
         <div class="card">
+            <div class="card-header">id : {{evaluator.id}}</div>
             <div class="card-body">
-                <h4 class="card-title">id : {{evaluator.id}}</h4>
+                <!-- <h4 class="card-title">id : {{evaluator.id}}</h4> -->
                 <p class="card-text">Nom : {{evaluator.lastName}}<br>
-                    Prénom : {{evaluator.firstName}}</p>
-                <a href="#" class="card-link">{{evaluator.email}}</a>
+                    Prénom : {{evaluator.firstName}}<br>
+                    Email : <a href="#" class="card-link">{{evaluator.email}}</a>
+                </p>
+                <!-- <p class="fs-6" *ngIf="evaluator.roles">Rôle : {{evaluator.roles}}
+                </p> -->
+            </div>
+            <div class="card-footer">
+                <span *ngIf="evaluator.created">Date de création : {{evaluator.created | date:'dd/MM/yyyy' }}</span>
             </div>
         </div>
-
         <div class="row my-5 justify-content-end">
-            <div class="col-sm-3"><button class="btn btn-primary"><a class="text-white"
-                        [routerLink]="['/updateEvaluator', evaluator.id]">Modifier</a></button></div>
+            <div class="col-sm-3">
+                <button class="btn btn-primary">
+                    <a class="text-white" [routerLink]="['/updateEvaluator', evaluator.id]">Modifier</a>
+                </button>
+            </div>
         </div>
-
     </div>
 
 </div>
