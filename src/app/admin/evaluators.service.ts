@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Evaluators } from './evaluators';
 
 // à vérifier
-import { Auth, createUserWithEmailAndPassword} from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, sendPasswordResetEmail } from '@angular/fire/auth';
 import { Firestore, collectionData, collection, documentId, getDoc, docData, setDoc } from '@angular/fire/firestore';
 import { addDoc, deleteDoc, doc, getDocs } from 'firebase/firestore';
 import { Observable } from 'rxjs';
@@ -41,6 +41,22 @@ export class EvaluatorsService {
     // enregistre dans Firestore d'autre part avec un collection evaluators qui elle aura de multiples propriétés
     let $evaluatorsRef = collection(this.firestore, "evaluators");
     addDoc($evaluatorsRef, newEvaluator)
+
+    // envoie un mail de réinitialisation du mot de passe
+
+
+    sendPasswordResetEmail(this.auth, newEvaluator.email)
+      .then(() => {
+        // Password reset email sent!
+        // ..
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ..
+      });
+
+
   }
 
   // getEvaluators(): Observable<Evaluators[]> {
