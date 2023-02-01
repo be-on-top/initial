@@ -18,23 +18,18 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HookComponent } from './hook/hook.component';
 import { AdminModule } from './admin/admin.module';
-// les 2 lignes ci-dessous, ne sont que pour tests préalables avant d'avoir implémenter un menu de navigation
-import { AddEvaluatorComponent } from './admin/Evaluators/add-evaluator/add-evaluator.component';
-import { EvaluatorsListComponent } from './admin/Evaluators/evaluators-list/evaluators-list.component';
 import { HomeComponent } from './home/home.component';
-import { EvaluatorDetailsComponent } from './admin/Evaluators/evaluator-details/evaluator-details.component';
-
-EvaluatorDetailsComponent
-
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HookComponent,
-    AddEvaluatorComponent,
-    EvaluatorsListComponent,
-    EvaluatorDetailsComponent,
-    HomeComponent
+    // AddEvaluatorComponent,
+    // EvaluatorsListComponent,
+    // EvaluatorDetailsComponent,
+    HomeComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

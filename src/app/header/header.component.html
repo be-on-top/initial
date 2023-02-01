@@ -1,0 +1,24 @@
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark mb-md-2">
+    <div class="container mx-auto">
+        <a class="navbar-brand" [routerLink]="['']">BE-ON-TOP</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">liens à venir...</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Admin</a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" [routerLink]="['evaluators']">Gestion des évaluateurs</a></li>
+                      <li><a class="dropdown-item" href="#">Gestion des apprenants</a></li>
+                      <li><a class="dropdown-item" href="#">Gestion des formateurs</a></li>
+                    </ul>
+                  </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>

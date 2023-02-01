@@ -23,11 +23,9 @@ const routesAdmin: Routes = [
 
 @NgModule({
   declarations: [
-    // EvaluatorsListComponent,
-    // AddEvaluatorComponent,
-    // EvaluatorDetailsComponent
-
-  
+    EvaluatorsListComponent,
+    AddEvaluatorComponent,
+    EvaluatorDetailsComponent,  
     UpdateEvaluatorComponent
   ],
   imports: [
