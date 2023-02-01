@@ -2,7 +2,7 @@
 
     <h3>Mise à jour d'un évaluateur de la liste évaluateurs</h3>
 
-    <form class="form" #f="ngForm" (submit)="updateEvaluator(f)">
+    <!-- <form class="form" #f="ngForm" (submit)="updateEvaluator(f)">
 
         <label for="firstName" class="form-label mt-3">Prénom</label>
         <input type="text" id="evalFirstName" [(ngModel)]="evaluator.firstName" name="evalFirstName" class="form-control">
@@ -14,6 +14,38 @@
         <textarea name="details" id="details" [(ngModel)]="evaluator.details" name="details" cols="100" rows="10"
             class="form-control mt-3">Détails / Remarques & Objectifs...</textarea>
         <button type="submit" id="submit" class="btn btn-primary mt-3">Valider</button>
+    </form> -->
+
+    <form class="form" #f="ngForm" (submit)="updateEvaluator(f)" class="was-validated">
+
+        <input type="text" id="created" [(ngModel)]="evaluator.created" name="created" class="form-control invisible" placeholder="Date de création : non modifiable">
+
+        <label for="firstName" class="form-label mt-3">Prénom</label>
+        <input type="text" id="firstName" [(ngModel)]="evaluator.firstName" name="firstName" class="form-control" placeholder="Prénom">
+
+        <label for="lastName" class="form-label mt-3">Nom *</label>
+        <input type="text" id="lastName" [(ngModel)]="evaluator.lastName" name="lastName" class="form-control" #lastName="ngModel" placeholder="Nom" required>
+        <div class="valid-feedback" *ngIf="lastName.valid">Champ correctement renseigné</div>
+        <div class="invalid-feedback" *ngIf="lastName.invalid">Merci de renseigner le champ nom.</div>
+
+        <label for="email" class="form-label mt-3">Email *</label>
+        <div class="input-group">
+            <span class="input-group-text" id="inputGroupPrepend2">@</span>
+            <input type="email" id="email" [(ngModel)]="evaluator.email" name="email" class="form-control" #email="ngModel" placeholder="Email" required>
+        </div>
+        <div class="valid-feedback" *ngIf="email.valid">Email Valide </div>
+        <div class="invalid-feedback" *ngIf="email.invalid">Merci de renseigner le champ email.</div>
+
+        <label for="cp" class="form-label mt-3">CP</label>
+        <input type="text" id="cp" [(ngModel)]="evaluator.cp" name="cp" class="form-control" placeholder="Code Postal Optionnel...">
+
+        <!-- <label for="email" class="form-label mt-3">Commentaires optionnels</label> -->
+        <textarea name="details" id="details" [(ngModel)]="evaluator.details" name="details" cols="100" rows="10" class="form-control mt-3"
+            #details="ngModel" [ngClass]="{'.is-valid':details.value && details.touched}"
+            placeholder="Commentaires optionnels...">Détails / Remarques & Objectifs...</textarea>
+        <button type="submit" id="submit" class="btn btn-primary mt-3"
+            [ngClass]="{'disabled':f.invalid}">Valider</button>
     </form>
+
     
 </div>

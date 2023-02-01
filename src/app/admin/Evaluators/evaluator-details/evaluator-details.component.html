@@ -1,12 +1,12 @@
 <div class="container py-5">
 
-    <h3>Détails de l'Evaluateur</h3>
+    <h3 class="mb-3">Détails de l'Evaluateur</h3>
 
 
     <div *ngIf="evaluator">
 
         <div class="card">
-            <div class="card-header">id : {{evaluator.id}}</div>
+            <div class="card-header text-muted">id : {{evaluator.id}}</div>
             <div class="card-body">
                 <!-- <h4 class="card-title">id : {{evaluator.id}}</h4> -->
                 <p class="card-text">Nom : {{evaluator.lastName}}<br>
@@ -17,7 +17,7 @@
                 <!-- <p class="fs-6" *ngIf="evaluator.roles">Rôle : {{evaluator.roles}}
                 </p> -->
             </div>
-            <div class="card-footer">
+            <div class="card-footer text-muted">
                 <span *ngIf="evaluator.created">Date de création : {{evaluator.created | date:'dd/MM/yyyy' }}</span>
             </div>
         </div>

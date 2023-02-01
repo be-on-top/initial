@@ -6,6 +6,7 @@ import { Auth, createUserWithEmailAndPassword, sendPasswordResetEmail } from '@a
 import { Firestore, collectionData, collection, documentId, getDoc, docData, setDoc } from '@angular/fire/firestore';
 import { addDoc, deleteDoc, doc, getDocs } from 'firebase/firestore';
 import { Observable } from 'rxjs';
+// import { Router } from '@angular/router';
 
 
 
@@ -55,7 +56,6 @@ export class EvaluatorsService {
         const errorMessage = error.message;
         // ..
       });
-
 
   }
 
