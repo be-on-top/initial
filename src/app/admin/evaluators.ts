@@ -6,6 +6,7 @@ export interface Evaluators {
     cp: number;
     email: string;
     created: Date;
+    status:boolean;
     roles:[]
 }
 
