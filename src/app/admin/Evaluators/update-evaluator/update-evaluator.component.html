@@ -49,8 +49,8 @@
             <input class="form-check-input" type="checkbox" id="status" name="status" value="true"
                 [(checked)]="evaluator.status" [(ngModel)]="evaluator.status">
             <label class="form-check-label" for="status">Status de l'utilisateur :
-                <span *ngIf="evaluator.status; else elseBlock">Actif</span>
-                <ng-template #elseBlock>Inactif</ng-template>
+                <span *ngIf="evaluator.status; else elseBlock" class="fw-bold">Actif</span>
+                <ng-template #elseBlock> <span class="fw-bold">Inactif</span></ng-template>
             </label>
         </div>
 

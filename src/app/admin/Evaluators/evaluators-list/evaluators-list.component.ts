@@ -39,15 +39,13 @@ export class EvaluatorsListComponent implements OnInit {
     console.log(evaluatorid);
     
     this.service.deleteEvaluator(evaluatorid)
-    .then(()=>{
+    // .then(()=>{
 
-    })
-    .catch(()=>{
+    // })
+    // .catch(()=>{
       
-    })
-  }
-
-  
+    // })
+  }  
 
 
 }

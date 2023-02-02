@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EvaluatorsService } from '../../evaluators.service';
 
 @Component({
@@ -11,7 +11,7 @@ export class EvaluatorDetailsComponent {
   evaluatorId:any;
   evaluator:any
 
-  constructor(private service:EvaluatorsService, private ac:ActivatedRoute){
+  constructor(private service:EvaluatorsService, private ac:ActivatedRoute, private router:Router){
     this.evaluatorId=this.ac.snapshot.params["id"];
     this.service.getEvaluator(this.evaluatorId).subscribe(data=>{
       console.log("data de getEvaluator", data);
@@ -20,5 +20,12 @@ export class EvaluatorDetailsComponent {
     })
 
   }
+
+  deleteEvaluator(evaluatorid:string){
+    console.log(evaluatorid);
+    
+    this.service.deleteEvaluator(evaluatorid)
+    this.router.navigate(['/evaluators'])
+  } 
 
 }
