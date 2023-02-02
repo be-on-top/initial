@@ -1,6 +1,7 @@
 <div class="container py-5">
 
     <h3>Gestion des Evaluateurs</h3>
+    <hr>
     <div *ngIf="(!allEvaluators)">
         ...loading
     </div>
@@ -17,12 +18,12 @@
             <div class="row mt-5">
                 <div class="col-sm-3">{{evaluator.lastName}}</div>
                 <div class="col-sm-3">{{evaluator.firstName}}</div>
-                <div class="col-sm-3"><button class="btn btn-danger" (click)="deleteEvaluator(evaluator.id)">Suppression</button></div>
-                <div class="col-sm-3"><button class="btn btn-warning"><a [routerLink]="['/evaluator', evaluator.id]">Détails</a></button></div>
+                <div class="col-sm-3"><button class="btn btn-danger text-white" (click)="deleteEvaluator(evaluator.id)"><i class="bi bi-person-dash-fill"></i>Suppression</button></div>
+                <div class="col-sm-3"><button class="btn btn-primary"><a [routerLink]="['/evaluator', evaluator.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a></button></div>
             </div>
         </div>
         <div class="row my-5 justify-content-end">
-            <div class="col-sm-3"><button class="btn btn-primary"><a [routerLink]="['/addEvaluator']" class="text-white">Ajouter</a></button></div>
+            <div class="col-sm-3"><button class="btn btn-primary"><a [routerLink]="['/addEvaluator']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a></button></div>
         </div>
     </div>
 </div>
