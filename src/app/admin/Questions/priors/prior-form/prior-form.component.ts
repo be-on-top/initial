@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { QuestionsService } from '../../questions.service';
 // import { getStorage, ref } from "firebase/storage";
 // import { expand } from 'rxjs';
 
@@ -27,7 +28,7 @@ export class PriorFormComponent implements OnInit {
   comment4: string = "";
   // Create a root reference
 
-  constructor() { }
+  constructor(private service:QuestionsService) { }
 
   ngOnInit(): void {
   }
@@ -44,9 +45,16 @@ export class PriorFormComponent implements OnInit {
 
 
 submitForm(form:NgForm){
-  console.log(form.value);
+  console.log(form.value.mediaQuestion);
+  this.service.uploadFiles(form.value.mediaQuestion)
+
+
+
+
   
 }
+
+
 
 }
 
