@@ -1,0 +1,7 @@
+<p>question-details works!</p>
+
+    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor nulla, hic ab ea debitis repudiandae consectetur impedit laborum fugiat iste itaque deserunt quas facere ex quae rerum repellendus voluptas? Optio.</p>
+    <div *ngIf="questions">{{questions}}</div>
+    <!-- https://stackoverflow.com/questions/46719974/promise-is-returning-object-promise -->
+    <div class="w-75 h-100 bg-info p-5" *ngFor="let item of questions | async" > Lorem ipsum dolor sit amet consectetur, adipisicing elit. Labore sunt magnam sequi cum vitae doloremque corrupti excepturi iusto. Est eveniet, praesentium possimus corrupti distinctio neque velit totam molestiae earum similique.{{item.fichiers}}</div>
+    <img class="img-fluid" *ngIf="questions" src="">

@@ -10,6 +10,7 @@ import { AddEvaluatorComponent } from './Evaluators/add-evaluator/add-evaluator.
 import { EvaluatorDetailsComponent } from './Evaluators/evaluator-details/evaluator-details.component';
 import { UpdateEvaluatorComponent } from './Evaluators/update-evaluator/update-evaluator.component';
 import { PriorFormComponent } from './Questions/priors/prior-form/prior-form.component';
+import { QuestionDetailsComponent } from './Questions/priors/question-details/question-details.component';
 // import { EvaluatorDetailsComponent } from './Evaluators/evaluator-details/evaluator-details.component';
 EvaluatorDetailsComponent
 
@@ -19,7 +20,8 @@ const routesAdmin: Routes = [
   { path: 'addEvaluator', component: AddEvaluatorComponent },
   { path: 'evaluator/:id', component: EvaluatorDetailsComponent},
   { path: 'updateEvaluator/:id', component: UpdateEvaluatorComponent },
-  { path: 'priorform', component: PriorFormComponent }
+  { path: 'priorform', component: PriorFormComponent },
+  { path: 'details', component: QuestionDetailsComponent },
 
 ];
 
@@ -28,7 +30,7 @@ const routesAdmin: Routes = [
     EvaluatorsListComponent,
     AddEvaluatorComponent,
     EvaluatorDetailsComponent,  
-    UpdateEvaluatorComponent, PriorFormComponent,
+    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent,
   ],
   imports: [
     BrowserModule,
