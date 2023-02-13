@@ -1,25 +1,30 @@
-<p>questions-list works!</p>
+<div class="container py-5">
 
-<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor nulla, hic ab ea debitis repudiandae consectetur
-    impedit laborum fugiat iste itaque deserunt quas facere ex quae rerum repellendus voluptas? Optio.</p>
-<div *ngIf="questions">
-    <!-- header priors -->
-    <div class="p-5 bg-light rounded" *ngFor="let item of questions">
-
-
-        <div>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores asperiores quasi atque illo possimus
-                neque
-                mollitia aut nostrum, ullam voluptas cupiditate eos consequuntur rem suscipit corporis voluptate at
-                harum
-                aperiam?</p>
+    
+    <h3>questions-list works!</h3>
+    <hr>
+    
+    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor nulla, hic ab ea debitis repudiandae consectetur
+        impedit laborum fugiat iste itaque deserunt quas facere ex quae rerum repellendus voluptas? Optio.</p>
+    <div *ngIf="questions">
+        <!-- header priors -->
+        <div class="p-3 p-md-5 bg-light rounded d-flex flex-column justify-content-between gap-5 align-items-center rounded mb-3" *ngFor="let item of questions">
+    
+    
+            <div>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores asperiores quasi atque illo possimus
+                    neque
+                    mollitia aut nostrum, ullam voluptas cupiditate eos consequuntur rem suscipit corporis voluptate at
+                    harum
+                    aperiam?</p>
+            </div>
+            <div class="w-100 bg-info p-2 rounded">
+                <img class="img-fluid" [src]="item">
+            </div>
+    
+    
         </div>
-        <div class="w-75 h-100 bg-info p-5">
-            <img class="img-fluid" [src]="item">
-        </div>
-
-
+        <!-- end header priors -->
+    
     </div>
-    <!-- end header priors -->
-
 </div>
