@@ -7,21 +7,14 @@ import { QuestionsService } from '../../questions.service';
   styleUrls: ['./question-details.component.css']
 })
 export class QuestionDetailsComponent implements OnInit {
-  questions: any;
 
+questions:any[]=[]
   constructor(public service:QuestionsService){
+
   }
 
   ngOnInit() {
-    this.questions = this.service.getImages()
-
     
   }
-
-
-
-
-
-
 
 }

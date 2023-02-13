@@ -20,8 +20,10 @@ export class QuestionsService {
 
 
   image: any;
+  questions:string[]
 
   constructor(private storage: Storage) {
+    this.questions = []
 
 
 
@@ -42,92 +44,59 @@ export class QuestionsService {
 
     // Upload file and metadata to the object 'images/mountains.jpg'
     let storageRef = ref(this.storage, 'images/' + file.name);
-    let uploadTask = uploadBytesResumable(storageRef, file, this.metadata);
+    uploadBytes(storageRef, file)
+    .then((response)=>console.log(response))
+    .catch((error)=>console.log(error))
 
-    // Listen for state changes, errors, and completion of the upload.
-    uploadTask.on('state_changed',
-      (snapshot) => {
-        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log('Upload is ' + progress + '% done');
-        switch (snapshot.state) {
-          case 'paused':
-            console.log('Upload is paused');
-            break;
-          case 'running':
-            console.log('Upload is running');
-            break;
-        }
-      },
-      (error) => {
-        // A full list of error codes is available at
-        // https://firebase.google.com/docs/storage/web/handle-errors
-        switch (error.code) {
-          case 'storage/unauthorized':
-            // User doesn't have permission to access the object
-            break;
-          case 'storage/canceled':
-            // User canceled the upload
-            break;
-
-          // ...
-
-          case 'storage/unknown':
-            // Unknown error occurred, inspect error.serverResponse
-            break;
-        }
-      },
-      () => {
-        // Upload completed successfully, now we can get the download URL
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log('File available at', downloadURL);
-        });
-      }
-    );
 
 
   }
 
 
-
-  getImages() {
+  getImages():any {
     // Create a reference under which you want to list 
     // Créée une référencce pour le dossier qu'on soubaite scanner
 
-    let listRef = ref(this.storage, 'images');
+    let imagesRef = ref(this.storage, 'images');
     // let questions: any = []
 
     // Find all the prefixes and items.
-    let questions=listAll(listRef)
-      .then((res) => {
-        res.prefixes.forEach((folderRef) => {
-          // All the prefixes under listRef.
-          // You may call listAll() recursively on them.
-          console.log(folderRef);
+    listAll(imagesRef)
+      .then(async response => {
+        console.log("listAll response", response);
+        // this.questions = [];
+        for (let item of response.items){
+          let url = await getDownloadURL(item);
+          console.log("url renvoyée en boucle", url);          
+          this.questions.push(url)
+          console.log("questions en fin de boucle", this.questions);
+          
 
-        });
-        res.items.forEach((itemRef) => {
-          // All the items under listRef.
-          console.log("image", itemRef);
-          // questions.push(itemRef.fullPath)
-          // console.log(questions);
+          
+        }
+        // response.prefixes.forEach((folderRef) => {
+        //   // All the prefixes under listRef.
+        //   // You may call listAll() recursively on them.
+        //   console.log("le dossier images", folderRef);
+
+        // });
+        // res.items.forEach((itemRef) => {
+        //   // All the items under listRef.
+        //   console.log("une image de la liste", itemRef);
+        //   const url = await getDownloadURL(itemRef); console.log("url associée", url)
+        //   this.questions.push(url)
+        console.log(this.questions);
+        // return this.questions
 
 
-        });
+        // });
 
       }).catch((error) => {
         // Uh-oh, an error occurred!
       });
 
-      return questions
-
-
-
-
+      return this.questions
   }
-
-
-
 
 
 }

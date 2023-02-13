@@ -1,0 +1,25 @@
+<p>questions-list works!</p>
+
+<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor nulla, hic ab ea debitis repudiandae consectetur
+    impedit laborum fugiat iste itaque deserunt quas facere ex quae rerum repellendus voluptas? Optio.</p>
+<div *ngIf="questions">
+    <!-- header priors -->
+    <div class="p-5 bg-light rounded" *ngFor="let item of questions">
+
+
+        <div>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores asperiores quasi atque illo possimus
+                neque
+                mollitia aut nostrum, ullam voluptas cupiditate eos consequuntur rem suscipit corporis voluptate at
+                harum
+                aperiam?</p>
+        </div>
+        <div class="w-75 h-100 bg-info p-5">
+            <img class="img-fluid" [src]="item">
+        </div>
+
+
+    </div>
+    <!-- end header priors -->
+
+</div>
