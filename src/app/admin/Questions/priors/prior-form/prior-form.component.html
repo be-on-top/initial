@@ -21,7 +21,7 @@
             <div class="valid-feedback" *ngIf="question.valid">Champ correctement renseigné</div>
             <div class="invalid-feedback" *ngIf="question.invalid">Merci de renseigner le libellé obligatoire de la question</div>
         <input type="file" accept="image,png,image/jpg" id="mediaQuestion" ngModel name="mediaQuestion" class="form-control" #mediaQuestion="ngModel"
-            placeholder="Fichier média de votre choix" onchange="console.log(event.target.files)" (change)="detectFiles($event)">
+            placeholder="Fichier média de votre choix" onchange="console.log(event.target.files)" (change)="detectFiles($event, mediaQuestion )">
         <!-- <label for="comment1" class="form-label mt-3">Commentaire </label>
         <textarea id="comment1" ngModel name="comment1" class="form-control" #comment1="ngModel"
             placeholder="Commentaire si besoin" cols="30" rows="5"></textarea> -->
@@ -36,7 +36,7 @@
         <div class="invalid-feedback" *ngIf="option1.invalid">Merci de renseigner le champ réponse 1.</div>
         <label for="mediaOption1" class="form-label mt-3">Pièce jointe si besoin</label>
         <input type="file" id="mediaOption1" ngModel name="mediaOption1" class="form-control" #mediaOption1="ngModel"
-            placeholder="Fichier média de votre choix">
+            placeholder="Fichier média de votre choix"  onchange="console.log(event.target.files)" (change)="detectFiles($event, mediaOption1)">
         <label for="comment1" class="form-label mt-3">Commentaire</label>
         <textarea id="comment1" ngModel name="comment1" class="form-control" #comment1="ngModel"
             placeholder="Commentaire si besoin" cols="30" rows="5"></textarea>
@@ -49,7 +49,7 @@
         <div class="invalid-feedback" *ngIf="option2.invalid">Merci de renseigner le champ réponse 2.</div>
         <label for="mediaOption2" class="form-label mt-3">Pièce jointe si besoin</label>
         <input type="file" id="mediaOption2" ngModel name="mediaOption2" class="form-control" #mediaOption2="ngModel"
-            placeholder="Fichier média de votre choix">
+            placeholder="Fichier média de votre choix"  onchange="console.log(event.target.files)" (change)="detectFiles($event, mediaOption2)">
         <label for="comment2" class="form-label mt-3">Commentaire</label>
         <textarea id="comment2" ngModel name="comment2" class="form-control" #comment2="ngModel"
             placeholder="Commentaire si besoin" cols="30" rows="5"></textarea>

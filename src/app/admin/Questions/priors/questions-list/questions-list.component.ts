@@ -8,15 +8,33 @@ import { QuestionsService } from '../../questions.service';
 })
 export class QuestionsListComponent implements OnInit {
 
-  
-questions:any[]=[]
-constructor(public service:QuestionsService){
 
-}
+  questionsMedias: any = []
+  responsesMedias: any = []
+  isMediaQuestion: boolean = true;
 
-ngOnInit() {
- this.questions = this.service.getImages()
-  
-}
+  constructor(public service: QuestionsService) {
 
+  }
+
+  ngOnInit() {
+    this.questionsMedias = this.service.getMediasQuestions()
+    this.responsesMedias = this.service.getMediasResponses()
+    // this.detectMediaLink()
+  }
+
+
+  detectMediaLink() {
+    // console.log(Object.getPrototypeOf(this.questions))
+    console.log(typeof (this.questionsMedias))
+
+    // let result = this.questions.filter((item) => {
+    //   return item.includes('Question')
+    // })
+
+    // console.log(result);
+
+
+
+  }
 }

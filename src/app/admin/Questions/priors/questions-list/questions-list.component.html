@@ -1,16 +1,17 @@
 <div class="container py-5">
 
-    
+
     <h3>questions-list works!</h3>
     <hr>
-    
+
     <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor nulla, hic ab ea debitis repudiandae consectetur
         impedit laborum fugiat iste itaque deserunt quas facere ex quae rerum repellendus voluptas? Optio.</p>
-    <div *ngIf="questions">
-        <!-- header priors -->
-        <div class="p-3 p-md-5 bg-light rounded d-flex flex-column justify-content-between gap-5 align-items-center rounded mb-3" *ngFor="let item of questions">
-    
-    
+    <!-- header priors -->
+    <div *ngIf="questionsMedias">
+
+        <div class="p-3 p-md-5 bg-light rounded d-flex flex-column justify-content-between gap-5 align-items-center rounded mb-3"
+            *ngFor="let item of questionsMedias">
+
             <div>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores asperiores quasi atque illo possimus
                     neque
@@ -21,10 +22,31 @@
             <div class="w-100 bg-info p-2 rounded">
                 <img class="img-fluid" [src]="item">
             </div>
-    
-    
         </div>
-        <!-- end header priors -->
-    
     </div>
+    <!-- end header priors -->
+
+    <!-- body options priors -->
+
+<!-- 
+    <div *ngIf="responsesMedias"> -->
+
+        <div  class="p-3 p-md-5 row justify-content-between align-items-center mb-3 bg-info rounded">
+
+            <div class="col-sm-5" *ngFor="let item of responsesMedias">
+
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores asperiores quasi atque illo
+                        possimus
+                    </p>
+
+                    <img class="img-fluid" [src]="item">
+
+            </div>
+
+        </div>
+
+    <!-- </div> -->
+
+
+    <!-- end body options priors -->
 </div>

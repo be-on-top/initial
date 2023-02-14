@@ -11,6 +11,7 @@ import { QuestionsService } from '../../questions.service';
   templateUrl: './prior-form.component.html',
   styleUrls: ['./prior-form.component.css']
 })
+
 export class PriorFormComponent implements OnInit {
   question: string = "";
   mediaQuestion: any;
@@ -27,6 +28,8 @@ export class PriorFormComponent implements OnInit {
   option4: string = "";
   comment4: string = "";
   // Create a root reference
+
+  isMediaQuestion: boolean = true;
 
   constructor(private service: QuestionsService) { }
 
@@ -53,11 +56,11 @@ export class PriorFormComponent implements OnInit {
     // let varPath='${form.value.mediaQuestion.name}'
     // this.service.uploadFiles(form.value.mediaQuestion)
 
-if (form.value.mediaQuestion) {
-  let varPath=`images/${form.value.mediaQuestion}_${form.value.sigle}_question`
-  this.service.uploadFiles(varPath)
-  
-}
+    if (form.value.mediaQuestion) {
+      let varPath = `images/${form.value.mediaQuestion}_${form.value.sigle}_question`
+      // this.service.uploadFiles(varPath)
+
+    }
 
     // form.value.mediaQuestion ? this.service.uploadFiles(form.value.mediaQuestion) : console.log("pas de fichier joint");
 
@@ -72,16 +75,20 @@ if (form.value.mediaQuestion) {
 
   // méthode qui permettra de lier le  <input type="file">  (que vous créerez par la suite) à la méthode  onUploadFile()  :
 
-  detectFiles(event:any) {
-    this.onUploadFile(event.target.files[0]);
-}
+  detectFiles(event: any, fieldName: any) {
+    this.onUploadFile(event.target.files[0], fieldName.name);
+  }
 
   // méthode qui déclenchera  uploadFile()  et qui en récupérera l'URL retourné :
-  onUploadFile(file: File) {
+  onUploadFile(file: File, fieldName: string) {
+    // pour différencier le traitement des images selon qu'elles sont rattachées à une question ou une image on pourrait avoir :
+    // fieldName!=="mediaQuestion"?  this.isMediaQuestion = false : this.isMediaQuestion=true;
+    // ou se contenter de vérifier une fois le fichier image récupéré si oui ou non il comporte la string mediaQuestion
     this.fileIsUploading = true;
-    this.service.uploadFiles(file);
-    
-}
+
+    this.service.uploadFiles(file, fieldName);
+
+  }
 
 
 }
