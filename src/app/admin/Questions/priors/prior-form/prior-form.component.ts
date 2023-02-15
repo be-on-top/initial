@@ -14,6 +14,7 @@ import { QuestionsService } from '../../questions.service';
 
 export class PriorFormComponent implements OnInit {
   question: string = "";
+  number: number = 0;
   mediaQuestion: any;
   mediaOption1: any;
   option1: string = "";
@@ -27,9 +28,10 @@ export class PriorFormComponent implements OnInit {
   mediaOption4: any;
   option4: string = "";
   comment4: string = "";
+  mediaOption5: any;
+  option5: string = "";
+  comment5: string = "";
   // Create a root reference
-
-  isMediaQuestion: boolean = true;
 
   constructor(private service: QuestionsService) { }
 
@@ -40,34 +42,32 @@ export class PriorFormComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  // Create a reference to 'mountains.jpg'
-  // this.mediaOption1 = ref(storage, 'mountains.jpg');
-
-  // Create a reference to 'images/mountains.jpg'
-  // const mountainImagesRef = ref(storage, 'images/mountains.jpg');
-
-  // While the file names are the same, the references point to different files
-  // mountainsRef.name === mountainImagesRef.name;           // true
-  // mountainsRef.fullPath === mountainImagesRef.fullPath;   // false 
-
 
   submitForm(form: NgForm) {
-    console.log(form.value.mediaQuestion);
+    console.log(form.value);
     // let varPath='${form.value.mediaQuestion.name}'
     // this.service.uploadFiles(form.value.mediaQuestion)
 
     if (form.value.mediaQuestion) {
-      let varPath = `images/${form.value.mediaQuestion}_${form.value.sigle}_question`
-      // this.service.uploadFiles(varPath)
-
+      let idMediaQuestion = `mediaQuestion${form.value.number}_${form.value.sigle}` 
+      console.log("ddddddddddddddd", idMediaQuestion);    
     }
-
-    // form.value.mediaQuestion ? this.service.uploadFiles(form.value.mediaQuestion) : console.log("pas de fichier joint");
-
-    // form.value.mediaOption1 ? this.service.uploadFiles(form.value.mediaOption1) : console.log("pas de fichier joint");
-    // form.value.mediaOption2 ? this.service.uploadFiles(form.value.mediaOption2) : console.log("pas de fichier joint");
-    // form.value.mediaOption3 ? this.service.uploadFiles(form.value.mediaOption3) : console.log("pas de fichier joint");
-    // form.value.mediaOption4 ? this.service.uploadFiles(form.value.mediaOption4) : console.log("pas de fichier joint");
+    if (form.value.mediaOption1) {
+      let idMediaOption1 = `mediaOption1${form.value.number}_${form.value.sigle}` 
+      console.log("ddddddddddddddd", idMediaOption1);    
+    }
+    if (form.value.mediaOption2) {
+      let idMediaOption2 = `mediaOption2${form.value.number}_${form.value.sigle}` 
+      console.log("ddddddddddddddd", idMediaOption2);    
+    }
+    if (form.value.mediaOption3) {
+      let idMediaOption3 = `mediaOption3${form.value.number}_${form.value.sigle}` 
+      console.log("ddddddddddddddd", idMediaOption3);    
+    }
+    if (form.value.mediaOption4) {
+      let idMediaOption4 = `mediaOption4${form.value.number}_${form.value.sigle}` 
+      console.log("ddddddddddddddd", idMediaOption4);    
+    }
 
   }
 

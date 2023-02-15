@@ -7,27 +7,52 @@
 
     <!-- pour les messages de retour/validation des champs du formulaire ou form validation, on utilisera BOOTSTRAP plutôt que des directives structurelles -->
     <form class="form" #f="ngForm" class="was-validated" (submit)="submitForm(f)">
-        <select class="form-select" name="sigle" id="sigle" ngModel>
-            <option value>Selectionner le métier</option>
-            <option value="prepa_cdes" >PREPA CDES</option>
-            <option value="poser_ite" >POSEUR ITE</option>
-            <option value="macon_vrd" >MACON VRD</option>
-            <option value="cl_vul" >CLVUL</option>
-        </select>
+        <div class="form-group row justify-content-between">
+            <div class="col-sm-6">
+                <select class="form-select" name="sigle" id="sigle" ngModel required #sigle="ngModel" >
+                    <option value>Selectionner le métier</option>
+                    <option value="prepa_cdes">PREPA CDES</option>
+                    <option value="poser_ite">POSEUR ITE</option>
+                    <option value="macon_vrd">MACON VRD</option>
+                    <option value="cl_vul">CLVUL</option>
+                </select>
+                 <!-- <div class="valid-feedback" *ngIf="comment1.valid">Champ correctement renseigné</div> -->
+            </div>
+            <!-- ajout du nombre des questions -->
+            <div class="col-sm-6">
+                <select class="form-select" name="number" id="number" ngModel required #number="ngModel" >
+                    <option value>Numéro de question</option>
+                    <option value="1">Question N°1</option>
+                    <option value="2">Question N°2</option>
+                    <option value="3">Question N°3</option>
+                    <option value="4">Question N°4</option>
+                    <option value="5">Question N°5</option>
+                    <option value="6">Question N°6</option>
+                    <option value="7">Question N°7</option>
+                    <option value="8">Question N°8</option>
+                    <option value="9">Question N°9</option>
+                    <option value="10">Question N°10</option>
+                </select>
+                 <!-- <div class="valid-feedback" *ngIf="comment1.valid">Champ correctement renseigné</div> -->
+            </div>
+        </div>
 
         <label for="question" class="form-label mt-3">Question *</label>
         <input type="text" id="question" ngModel name="question" class="form-control"
-            placeholder="Saisir la question..." required  #question="ngModel">
-            <div class="valid-feedback" *ngIf="question.valid">Champ correctement renseigné</div>
-            <div class="invalid-feedback" *ngIf="question.invalid">Merci de renseigner le libellé obligatoire de la question</div>
-        <input type="file" accept="image,png,image/jpg" id="mediaQuestion" ngModel name="mediaQuestion" class="form-control" #mediaQuestion="ngModel"
-            placeholder="Fichier média de votre choix" onchange="console.log(event.target.files)" (change)="detectFiles($event, mediaQuestion )">
+            placeholder="Saisir la question..." required #question="ngModel">
+        <div class="valid-feedback" *ngIf="question.valid">Champ correctement renseigné</div>
+        <div class="invalid-feedback" *ngIf="question.invalid">Merci de renseigner le libellé obligatoire de la question
+        </div>
+        <input type="file" accept="image,png,image/jpg" id="mediaQuestion" ngModel name="mediaQuestion"
+            class="form-control" #mediaQuestion="ngModel" placeholder="Fichier média de votre choix"
+            onchange="console.log(event.target.files)" (change)="detectFiles($event, mediaQuestion )">
         <!-- <label for="comment1" class="form-label mt-3">Commentaire </label>
         <textarea id="comment1" ngModel name="comment1" class="form-control" #comment1="ngModel"
             placeholder="Commentaire si besoin" cols="30" rows="5"></textarea> -->
         <hr>
         <p class="bg-light rounded p-3 fst-italic">Un minimum de 2 options de réponse* est nécessaire à la validation du
-            formulaire. Vous pouvez, si vous le souhaitez, ajouter des fichiers média (image, vidéo...) ou commentaires spécifiques
+            formulaire. Vous pouvez, si vous le souhaitez, ajouter des fichiers média (image, vidéo...) ou commentaires
+            spécifiques
             pour chaque élémenet de réponse </p>
         <label for="option1" class="form-label mt-3">Réponse 1 * </label>
         <input type="text" id="option1" ngModel name="option1" class="form-control" #option1="ngModel"
@@ -36,7 +61,8 @@
         <div class="invalid-feedback" *ngIf="option1.invalid">Merci de renseigner le champ réponse 1.</div>
         <label for="mediaOption1" class="form-label mt-3">Pièce jointe si besoin</label>
         <input type="file" id="mediaOption1" ngModel name="mediaOption1" class="form-control" #mediaOption1="ngModel"
-            placeholder="Fichier média de votre choix"  onchange="console.log(event.target.files)" (change)="detectFiles($event, mediaOption1)">
+            placeholder="Fichier média de votre choix" onchange="console.log(event.target.files)"
+            (change)="detectFiles($event, mediaOption1)">
         <label for="comment1" class="form-label mt-3">Commentaire</label>
         <textarea id="comment1" ngModel name="comment1" class="form-control" #comment1="ngModel"
             placeholder="Commentaire si besoin" cols="30" rows="5"></textarea>
@@ -49,13 +75,14 @@
         <div class="invalid-feedback" *ngIf="option2.invalid">Merci de renseigner le champ réponse 2.</div>
         <label for="mediaOption2" class="form-label mt-3">Pièce jointe si besoin</label>
         <input type="file" id="mediaOption2" ngModel name="mediaOption2" class="form-control" #mediaOption2="ngModel"
-            placeholder="Fichier média de votre choix"  onchange="console.log(event.target.files)" (change)="detectFiles($event, mediaOption2)">
+            placeholder="Fichier média de votre choix" onchange="console.log(event.target.files)"
+            (change)="detectFiles($event, mediaOption2)">
         <label for="comment2" class="form-label mt-3">Commentaire</label>
         <textarea id="comment2" ngModel name="comment2" class="form-control" #comment2="ngModel"
             placeholder="Commentaire si besoin" cols="30" rows="5"></textarea>
         <!-- <div class="valid-feedback" *ngIf="comment1.valid">Champ correctement renseigné</div> -->
         <hr>
-        <label for="option2" class="form-label mt-3">Réponse 3 </label>
+        <label for="option2" class="form-label mt-3">Réponse 3</label>
         <input type="text" id="option1" ngModel name="option3" class="form-control" #option3="ngModel"
             placeholder="Option de réponse 3">
         <div class="valid-feedback" *ngIf="option3.valid">Champ correctement renseigné</div>
