@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Storage, ref, uploadBytes, getDownloadURL, getStorage, uploadBytesResumable, getMetadata, listAll } from '@angular/fire/storage';
+import { Storage, ref, uploadBytes, getDownloadURL, listAll } from '@angular/fire/storage';
+import { Firestore, collection } from '@angular/fire/firestore';
+import { addDoc } from 'firebase/firestore';
+import { Observable } from 'rxjs';
 
 
 
@@ -12,10 +15,41 @@ export class QuestionsService {
   mediaQuestions: string[]
   mediaResponses: string[]
 
-  constructor(private storage: Storage) {
+  // pour l'enregistrement des champs textuels
+    // évaluateurs ne serait pas un tableau de type any mais un observable
+    questions: any[] = [];
+    result: any;
+
+  constructor(private storage: Storage, private firestore:Firestore) {
     this.mediaQuestions = []
     this.mediaResponses = []
   }
+
+
+  // let $questionsRef = collection(this.firestore, "questions");  addDoc($questionsRef , newQuestion)
+  createQuestion(question: any) {
+
+    // let newEvaluator = { id: Date.now(), ...evaluator };
+    let newQuestion = { created: Date.now(), ...question };
+    this.questions = [newQuestion, ...this.questions];
+    console.log(this.questions);
+
+
+    // enregistre dans Firestore pour premier test avec un collection questions qui elle aura de multiples propriétés
+    let $questionsRef = collection(this.firestore, "questions");
+    addDoc($questionsRef, newQuestion)
+
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ..
+      });
+
+  }
+
+
+
+
 
 
   uploadFiles(file: any, fieldName: string) {

@@ -45,8 +45,10 @@ export class PriorFormComponent implements OnInit {
 
   submitForm(form: NgForm) {
     console.log(form.value);
-    // let varPath='${form.value.mediaQuestion.name}'
-    // this.service.uploadFiles(form.value.mediaQuestion)
+
+    // pour premier test d'enregistrement des données textuelles (champs de type text)
+    // attention : c'est form.value qu'on passe !!!
+    this.service.createQuestion(form.value);
 
     if (form.value.mediaQuestion) {
       let idMediaQuestion = `mediaQuestion${form.value.number}_${form.value.sigle}` 
