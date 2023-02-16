@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { QuestionsService } from '../../questions.service';
-// import { getStorage, ref } from "firebase/storage";
-// import { expand } from 'rxjs';
-
 
 
 @Component({
@@ -39,57 +36,25 @@ export class PriorFormComponent implements OnInit {
   fileUrl!: string;
   fileUploaded = false;
 
+  totalMediasFiles: number = 0
+  arrayFilesToUpload: any = []
+
   ngOnInit(): void {
   }
 
 
-  submitForm(form: NgForm) {
+  async submitForm(form: NgForm) {
     console.log(form.value);
-
-    // pour premier test d'enregistrement des données textuelles (champs de type text)
-    // attention : c'est form.value qu'on passe !!!
-    this.service.createQuestion(form.value);
-
-    if (form.value.mediaQuestion) {
-      let idMediaQuestion = `mediaQuestion${form.value.number}_${form.value.sigle}` 
-      console.log("ddddddddddddddd", idMediaQuestion);    
-    }
-    if (form.value.mediaOption1) {
-      let idMediaOption1 = `mediaOption1${form.value.number}_${form.value.sigle}` 
-      console.log("ddddddddddddddd", idMediaOption1);    
-    }
-    if (form.value.mediaOption2) {
-      let idMediaOption2 = `mediaOption2${form.value.number}_${form.value.sigle}` 
-      console.log("ddddddddddddddd", idMediaOption2);    
-    }
-    if (form.value.mediaOption3) {
-      let idMediaOption3 = `mediaOption3${form.value.number}_${form.value.sigle}` 
-      console.log("ddddddddddddddd", idMediaOption3);    
-    }
-    if (form.value.mediaOption4) {
-      let idMediaOption4 = `mediaOption4${form.value.number}_${form.value.sigle}` 
-      console.log("ddddddddddddddd", idMediaOption4);    
-    }
+    this.service.createQuestion(form.value, this.arrayFilesToUpload);
 
   }
-
-
-
-  // méthode qui permettra de lier le  <input type="file">  (que vous créerez par la suite) à la méthode  onUploadFile()  :
 
   detectFiles(event: any, fieldName: any) {
-    this.onUploadFile(event.target.files[0], fieldName.name);
-  }
+    this.totalMediasFiles++;
+    this.arrayFilesToUpload.push([event.target.files[0], fieldName.name])
+    console.log("this.arrayFilesToUpload", this.arrayFilesToUpload);
 
-  // méthode qui déclenchera  uploadFile()  et qui en récupérera l'URL retourné :
-  onUploadFile(file: File, fieldName: string) {
-    // pour différencier le traitement des images selon qu'elles sont rattachées à une question ou une image on pourrait avoir :
-    // fieldName!=="mediaQuestion"?  this.isMediaQuestion = false : this.isMediaQuestion=true;
-    // ou se contenter de vérifier une fois le fichier image récupéré si oui ou non il comporte la string mediaQuestion
-    this.fileIsUploading = true;
-
-    this.service.uploadFiles(file, fieldName);
-
+    // this.onUploadFile(event.target.files[0], fieldName.name);
   }
 
 
