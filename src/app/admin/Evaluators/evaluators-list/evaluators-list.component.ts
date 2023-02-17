@@ -28,7 +28,7 @@ export class EvaluatorsListComponent implements OnInit {
     // attention, puisque on récupère un observable depuis le service, on doit y souscrire
     // this.allEvaluators=this.service.getEvaluators(); devient donc nécessairement
     this.service.getEvaluators().subscribe(data=>{
-      console.log(data)
+      console.log("data de getEvaluators()", data)
       this.allEvaluators=data
       return this.allEvaluators
     })

@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Storage, ref, uploadBytes, getDownloadURL, listAll } from '@angular/fire/storage';
-import { Firestore, collection } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 import { addDoc } from 'firebase/firestore';
 import { Observable } from 'rxjs';
-
 
 
 @Injectable({
@@ -146,6 +145,17 @@ export class QuestionsService {
     return this.mediaResponses
 
   }
+
+
+
+
+
+    // getEvaluators(): Observable<Evaluators[]> {
+      getQuestions() {
+        let $evaluatorsRef = collection(this.firestore, "questions");
+        return collectionData($evaluatorsRef, { idField: "id" }) as Observable<any[]>
+    
+      }
 
 
 }

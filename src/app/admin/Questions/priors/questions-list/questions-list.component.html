@@ -1,52 +1,71 @@
 <div class="container py-5">
 
 
-    <h3>questions-list works!</h3>
+    <h3>Liste des questions</h3>
     <hr>
 
-    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor nulla, hic ab ea debitis repudiandae consectetur
-        impedit laborum fugiat iste itaque deserunt quas facere ex quae rerum repellendus voluptas? Optio.</p>
-    <!-- header priors -->
-    <div *ngIf="questionsMedias">
+    <div *ngIf="allQuestions">
+        <div *ngFor="let q of allQuestions">
+            <!-- <p>en voilà une {{q | json}}</p> -->
+            <!-- début de la question -->
+            <div class="p-3 p-md-5 d-flex flex-column justify-content-between align-items-center rounded mb-3">
+                <p class="rounded bg-primary px-3 py-2 h3 fw-normal shadow-sm" >Question n°{{q.number}} : {{q.question}}</p>
+                <p class="fs-6"><span class="fw-bold">Métier :</span>  {{q.sigle}} - <span class="fw-bold">Id :</span> {{q.id}} </p>
 
-        <div class="p-3 p-md-5 bg-light rounded d-flex flex-column justify-content-between gap-5 align-items-center rounded mb-3"
-            *ngFor="let item of questionsMedias">
+                <!-- essai insertion boucle image -->
+                <div *ngIf="questionsMedias">
+                    <div class="bg-light rounded rounded mb-3"
+                        *ngFor="let item of questionsMedias">
+                        <div class="w-100 bg-primary p-2 rounded" *ngIf="item.includes(q.id)">
+                            <img class="img-fluid" [src]="item">
+                        </div>
+                    </div>
 
-            <div>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores asperiores quasi atque illo possimus
-                    neque
-                    mollitia aut nostrum, ullam voluptas cupiditate eos consequuntur rem suscipit corporis voluptate at
-                    harum
-                    aperiam?</p>
+                </div>
+                <!-- fin de la question -->
+
+                 <!-- début des réponses -->
+                <div class="p-3 p-md-5 row justify-content-between align-items-center mb-3 rounded bg-light">
+
+                    <div class="col-sm-5 rounded">
+                        <p class="text-center fs-5">Réponse1 : {{q.option1}}</p>
+                        <div *ngIf="responsesMedias">
+                            <div *ngFor="let item of responsesMedias">
+                                <img *ngIf="item.includes(q.id) && item.includes('Option1')" class="img-fluid rounded" [src]="item">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-5 rounded">
+                        <p class="text-center fs-5">Réponse2 : {{q.option2}}</p>
+                        <div *ngIf="responsesMedias">
+                            <div *ngFor="let item of responsesMedias">
+                                <img *ngIf="item.includes(q.id) && item.includes('Option2')" class="img-fluid rounded" [src]="item">
+                            </div>
+                        </div>
+                    </div> 
+                    <!-- à partir d'ici, les options Réponse 3 et Réponse 4 n'étant pas obligatoires, faut qu'on s'assure qu'elles existent -->
+                    <div class="col-sm-5 rounded" *ngIf="q.option3">
+                        <p class="text-center fs-5">Réponse3 : {{q.option3}}</p>
+                        <div *ngIf="responsesMedias">
+                            <div *ngFor="let item of responsesMedias">
+                                <img *ngIf="item.includes(q.id) && item.includes('Option3')" class="img-fluid rounded" [src]="item">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-5 rounded" *ngIf="q.option4">
+                        <p class="text-center fs-5">Réponse4 : {{q.option4}}</p>
+                        <div *ngIf="responsesMedias">
+                            <div *ngFor="let item of responsesMedias">
+                                <img *ngIf="item.includes(q.id) && item.includes('Option4')" class="img-fluid rounded" [src]="item">
+                            </div>
+                        </div>
+                    </div> 
+
+                </div>
+                 <!-- fin des réponses -->
+
             </div>
-            <div class="w-100 bg-info p-2 rounded">
-                <img class="img-fluid" [src]="item">
-            </div>
+
         </div>
     </div>
-    <!-- end header priors -->
-
-    <!-- body options priors -->
-
-<!-- 
-    <div *ngIf="responsesMedias"> -->
-
-        <div  class="p-3 p-md-5 row justify-content-between align-items-center mb-3 bg-info rounded">
-
-            <div class="col-sm-5" *ngFor="let item of responsesMedias">
-
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores asperiores quasi atque illo
-                        possimus
-                    </p>
-
-                    <img class="img-fluid" [src]="item">
-
-            </div>
-
-        </div>
-
-    <!-- </div> -->
-
-
-    <!-- end body options priors -->
 </div>
