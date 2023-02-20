@@ -9,13 +9,14 @@
             <!-- <p>en voilà une {{q | json}}</p> -->
             <!-- début de la question -->
             <div class="p-3 p-md-5 d-flex flex-column justify-content-between align-items-center rounded mb-3">
-                <p class="rounded bg-primary px-3 py-2 h3 fw-normal shadow-sm" >Question n°{{q.number}} : {{q.question}}</p>
-                <p class="fs-6"><span class="fw-bold">Métier :</span>  {{q.sigle}} - <span class="fw-bold">Id :</span> {{q.id}} </p>
+                <p class="rounded bg-primary px-3 py-2 h3 fw-normal shadow-sm">Question n°{{q.number}} : {{q.question}}
+                </p>
+                <p class="fs-6"><span class="fw-bold">Métier :</span> {{q.sigle}} - <span class="fw-bold">Id :</span>
+                    {{q.id}} </p>
 
                 <!-- essai insertion boucle image -->
                 <div *ngIf="questionsMedias">
-                    <div class="bg-light rounded rounded mb-3"
-                        *ngFor="let item of questionsMedias">
+                    <div class="bg-light rounded rounded mb-3" *ngFor="let item of questionsMedias">
                         <div class="w-100 bg-primary p-2 rounded" *ngIf="item.includes(q.id)">
                             <img class="img-fluid" [src]="item">
                         </div>
@@ -24,45 +25,54 @@
                 </div>
                 <!-- fin de la question -->
 
-                 <!-- début des réponses -->
+                <!-- début des réponses -->
                 <div class="p-3 p-md-5 row justify-content-between align-items-center mb-3 rounded bg-light">
 
-                    <div class="col-sm-5 rounded">
-                        <p class="text-center fs-5">Réponse1 : {{q.option1}}</p>
+                    <div class="col-sm-6 rounded" [ngClass]="{'text-success':q.optScoring1=='true'}">
+                        <p class="text-center fs-5">Réponse1 : {{q.option1}} <i
+                            *ngIf="q.optScoring1=='true'" class="text-success fs-6 bi bi-check-lg"></i></p>
                         <div *ngIf="responsesMedias">
                             <div *ngFor="let item of responsesMedias">
-                                <img *ngIf="item.includes(q.id) && item.includes('Option1')" class="img-fluid rounded" [src]="item">
+                                <img *ngIf="item.includes(q.id) && item.includes('Option1')" class="img-fluid rounded"
+                                    [src]="item">
+                            </div>
+                        </div>
+                        <!-- si pas d'images -->
+                    </div>
+                    <div class="col-sm-6 rounded" [ngClass]="{'text-success':q.optScoring2=='true'}">
+                        <p class="text-center fs-5">Réponse2 : {{q.option2}} <i
+                                *ngIf="q.optScoring2=='true'" class="text-success fs-6 bi bi-check-lg"></i></p>
+                        <div *ngIf="responsesMedias">
+                            <div *ngFor="let item of responsesMedias">
+                                <img *ngIf="item.includes(q.id) && item.includes('Option2')" class="img-fluid rounded"
+                                    [src]="item">
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-5 rounded">
-                        <p class="text-center fs-5">Réponse2 : {{q.option2}}</p>
-                        <div *ngIf="responsesMedias">
-                            <div *ngFor="let item of responsesMedias">
-                                <img *ngIf="item.includes(q.id) && item.includes('Option2')" class="img-fluid rounded" [src]="item">
-                            </div>
-                        </div>
-                    </div> 
                     <!-- à partir d'ici, les options Réponse 3 et Réponse 4 n'étant pas obligatoires, faut qu'on s'assure qu'elles existent -->
-                    <div class="col-sm-5 rounded" *ngIf="q.option3">
-                        <p class="text-center fs-5">Réponse3 : {{q.option3}}</p>
+                    <div class="col-sm-6 rounded" *ngIf="q.option3" [ngClass]="{'text-success':q.optScoring3=='true'}">
+                        <p class="text-center fs-5">Réponse3 : {{q.option3}} <i
+                            *ngIf="q.optScoring3=='true'" class="text-success fs-6 bi bi-check-lg"></i></p>
                         <div *ngIf="responsesMedias">
                             <div *ngFor="let item of responsesMedias">
-                                <img *ngIf="item.includes(q.id) && item.includes('Option3')" class="img-fluid rounded" [src]="item">
+                                <img *ngIf="item.includes(q.id) && item.includes('Option3')" class="img-fluid rounded"
+                                    [src]="item">
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-5 rounded" *ngIf="q.option4">
-                        <p class="text-center fs-5">Réponse4 : {{q.option4}}</p>
+                    <div class="col-sm-6 rounded" *ngIf="q.option4" [ngClass]="{'text-success':q.optScoring4=='true'}">
+                        <p class="text-center fs-5">Réponse4 : {{q.option4}} <i
+                                *ngIf="q.optScoring4=='true'" class="text-success fs-6 bi bi-check-lg"></i></p>
                         <div *ngIf="responsesMedias">
                             <div *ngFor="let item of responsesMedias">
-                                <img *ngIf="item.includes(q.id) && item.includes('Option4')" class="img-fluid rounded" [src]="item">
+                                <img *ngIf="item.includes(q.id) && item.includes('Option4')" class="img-fluid rounded"
+                                    [src]="item">
                             </div>
                         </div>
-                    </div> 
+                    </div>
 
                 </div>
-                 <!-- fin des réponses -->
+                <!-- fin des réponses -->
 
             </div>
 

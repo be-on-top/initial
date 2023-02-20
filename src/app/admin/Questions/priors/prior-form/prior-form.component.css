@@ -2,3 +2,11 @@
     background-image: none;
     /* background-position:center center; */
   }
+
+  .form-check-input .danger:checked{
+    background-color: red;
+  }
+
+  .form-check-input .danger input[type="checkbox"]:checked {
+    background-color: red!important;
+  }
