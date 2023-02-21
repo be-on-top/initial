@@ -15,24 +15,27 @@ export class PriorFormComponent implements OnInit {
   mediaQuestion: any;
   mediaOption1: any;
   option1: string = "";
-  optScoring1:boolean = false;
+  optScoring1: boolean = false;
   comment1: string = "";
   mediaOption2: any;
   option2: string = "";
-  optScoring2:boolean = false;
+  optScoring2: boolean = false;
   comment2: string = "";
   mediaOption3: any;
-  optScoring3:boolean = false;
+  optScoring3: boolean = false;
   option3: string = "";
   comment3: string = "";
   mediaOption4: any;
-  optScoring4:boolean = false;
+  optScoring4: boolean = false;
   option4: string = "";
   comment4: string = "";
   mediaOption5: any;
   option5: string = "";
   comment5: string = "";
   // Create a root reference
+
+  numbers: any[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  registryNumbers: any[] = []
 
   constructor(private service: QuestionsService) { }
 
@@ -44,8 +47,16 @@ export class PriorFormComponent implements OnInit {
   arrayFilesToUpload: any = []
 
   ngOnInit(): void {
-  }
+    this.service.getQuestions().subscribe(data => {
+      console.log(data);
+      for (let n of data){
+        this.registryNumbers=[...this.registryNumbers, n.number]
+        console.log(this.registryNumbers);        
+      }
 
+
+    })
+  }
 
   async submitForm(form: NgForm) {
     console.log(form.value);
@@ -59,6 +70,13 @@ export class PriorFormComponent implements OnInit {
     console.log("this.arrayFilesToUpload", this.arrayFilesToUpload);
 
     // this.onUploadFile(event.target.files[0], fieldName.name);
+  }
+
+  decrementNumbers(number: any) {
+    if (number <= 10) { this.numbers.filter(element => { element != number }) }
+    console.log(this.numbers);
+
+
   }
 
 

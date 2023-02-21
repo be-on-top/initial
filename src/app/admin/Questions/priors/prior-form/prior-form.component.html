@@ -1,9 +1,7 @@
 <div class="container py-5">
 
-
-    <app-question-details></app-question-details>
-
     <h3>Formulaire de saisie des questions préalables</h3>
+    <p class="border-dark bg-light rounded p-2" role="alert">Numéros de questions déjà enregistrées : {{registryNumbers}}</p>
 
     <!-- pour les messages de retour/validation des champs du formulaire ou form validation, on utilisera BOOTSTRAP plutôt que des directives structurelles -->
     <form class="form" #f="ngForm" class="was-validated" (submit)="submitForm(f)">
