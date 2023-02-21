@@ -49,12 +49,14 @@ export class PriorFormComponent implements OnInit {
   ngOnInit(): void {
     this.service.getQuestions().subscribe(data => {
       console.log(data);
-      for (let n of data){
-        this.registryNumbers=[...this.registryNumbers, n.number]
-        console.log(this.registryNumbers);        
+      for (let n of data) {
+        this.registryNumbers = [...this.registryNumbers, Number(n.number)]
+        // console.log(this.registryNumbers);
+        this.numbers=this.numbers.filter(element=>{
+          return element!=n.number});          
+        // console.log("result", this.numbers);
       }
-
-
+      return this.numbers
     })
   }
 
@@ -70,13 +72,6 @@ export class PriorFormComponent implements OnInit {
     console.log("this.arrayFilesToUpload", this.arrayFilesToUpload);
 
     // this.onUploadFile(event.target.files[0], fieldName.name);
-  }
-
-  decrementNumbers(number: any) {
-    if (number <= 10) { this.numbers.filter(element => { element != number }) }
-    console.log(this.numbers);
-
-
   }
 
 
