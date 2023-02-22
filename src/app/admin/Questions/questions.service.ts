@@ -67,7 +67,7 @@ export class QuestionsService {
 
 
     // let newQuestion if no mediasAttached;
-    let newQuestion = { created: Date.now(), idMediaQuestion: this.idMediaQuestion, idMediaOption1: this.idMediaOption1, idMediaOption2: this.idMediaOption2, idMediaOption3: this.idMediaOption3, idMediaOption4: this.idMediaOption4, ...question };
+    let newQuestion = { created: Date.now(), idMediaQuestion: this.idMediaQuestion, idMediaOption1: this.idMediaOption1, idMediaOption2: this.idMediaOption2, idMediaOption3: this.idMediaOption3, idMediaOption4: this.idMediaOption4, isVideo: this.isVideo, ...question };
     this.questions = [newQuestion, ...this.questions];
     console.log(this.questions);
 
