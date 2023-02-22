@@ -18,6 +18,7 @@ export class QuestionsService {
   // évaluateurs ne serait pas un tableau de type any mais un observable
   questions: any[] = [];
   result: any;
+  isVideo:boolean=false;
 
   idMediaQuestion: string = ""
   idMediaOption1: string = ""
@@ -37,6 +38,15 @@ export class QuestionsService {
     if (question.mediaQuestion) {
       this.idMediaQuestion = `mediaQuestion${question.number}_${question.sigle}`
       this.questions = [this.idMediaQuestion, ...this.questions];
+      // c'est là qu'on peut intégrer une différence selon le type de fichier détecté
+      console.log(Object.values(allFilesToUplad)[0][2] );
+      if(Object.values(allFilesToUplad)[0][2]=="video/mp4"){
+        this.isVideo=true;
+        console.log(this.isVideo);
+        
+
+      }
+      
     }
     if (question.mediaOption1) {
       this.idMediaOption1 = `mediaOption1${question.number}_${question.sigle}`

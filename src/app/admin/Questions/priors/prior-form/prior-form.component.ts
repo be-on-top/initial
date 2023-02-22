@@ -36,6 +36,7 @@ export class PriorFormComponent implements OnInit {
 
   numbers: any[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
   registryNumbers: any[] = []
+  // isRegistered:boolean = false
 
   constructor(private service: QuestionsService) { }
 
@@ -47,8 +48,9 @@ export class PriorFormComponent implements OnInit {
   arrayFilesToUpload: any = []
 
   ngOnInit(): void {
+    
     this.service.getQuestions().subscribe(data => {
-      console.log(data);
+      // console.log(data);
       for (let n of data) {
         this.registryNumbers = [...this.registryNumbers, Number(n.number)]
         // console.log(this.registryNumbers);
@@ -58,20 +60,28 @@ export class PriorFormComponent implements OnInit {
       }
       return this.numbers
     })
+
   }
 
   async submitForm(form: NgForm) {
     console.log(form.value);
     this.service.createQuestion(form.value, this.arrayFilesToUpload);
+    form.reset()
 
   }
 
   detectFiles(event: any, fieldName: any) {
     this.totalMediasFiles++;
-    this.arrayFilesToUpload.push([event.target.files[0], fieldName.name])
+    this.arrayFilesToUpload.push([event.target.files[0], fieldName.name, event.target.files[0].type])
     console.log("this.arrayFilesToUpload", this.arrayFilesToUpload);
 
     // this.onUploadFile(event.target.files[0], fieldName.name);
+  }
+
+    // ne servira plus si on parvient à mettre à jour this.registryNumbers à chaque nouvel enregistrement. *
+  checkIfRegistered(n:any){
+    console.log(n)
+    // this.registryNumbers.includes(n)?this.isRegistered==true:this.isRegistered==false) 
   }
 
 
