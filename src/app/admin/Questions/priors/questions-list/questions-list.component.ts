@@ -1,3 +1,4 @@
+import { Time } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { QuestionsService } from '../../questions.service';
@@ -10,13 +11,16 @@ import { QuestionsService } from '../../questions.service';
 export class QuestionsListComponent implements OnInit {
 
   // évaluateurs ne serait pas un tableau de type any mais un observable
-  questions: any;
+  questions: any
   allQuestions?:any
 
 
   questionsMedias: any = []
   responsesMedias: any = []
-  isMediaQuestion: boolean = true;
+  isMediaQuestion: boolean = true
+
+  videoDuration:any = 0
+  videoEnded:boolean = false
 
   // pour les lister par qid (id d'un document enregistré sur firestore)
   allMediaByQid: any = []
@@ -91,5 +95,16 @@ export class QuestionsListComponent implements OnInit {
 
 
 
+  }
+
+  // premier essai à supposer qu'on ajuste un setTimeout () à la durée de la vidéo 
+  // detectDuration(event:any){
+  //   this.videoDuration= event.target.duration
+  //   console.log("duration", this.videoDuration);    
+  // }
+
+  // deuxième essai pour retirer la classe d-none une fois la vidéo terminée
+  displayResponseIfVideoEnded(){
+    this.videoEnded = true
   }
 }
