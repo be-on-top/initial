@@ -83,20 +83,20 @@
         <!-- valeur de la réponse -->
         <div class="form-group d-flex gap-5 mt-3">
             <div class="form-check">
-                <input type="radio" class="form-check-input" id="radio1" name="optScoring1" value="true" ngModel
-                    [checked]="optScoring1" required="">Vraie
+                <input type="radio" class="form-check-input" name="optScoring1" value="true" ngModel
+                    [checked]="optScoring1" required>Vraie
                 <label class="form-check-label" for="radio1"></label>
             </div>
             <div class="form-check">
-                <input type="radio" class="form-check-input" id="radio2" name="optScoring1" value="false" ngModel
-                    [checked]="optScoring1" required="">Fausse
-                <label class="form-check-label" for="radio2"></label>
+                <input type="radio" class="form-check-input" name="optScoring1" value="false" ngModel
+                    [checked]="optScoring1" required>Fausse
+                <!-- <label class="form-check-label" for="radio2"></label> -->
             </div>
         </div>
         <!-- fin valeur de la réponse -->
         <hr>
         <label for="option2" class="form-label mt-3">Réponse 2 * </label>
-        <input type="text" id="option2" ngModel name="option2" class="form-control" #option2="ngModel"
+        <input type="text" ngModel name="option2" class="form-control" #option2="ngModel"
             placeholder="Option de réponse 2" required>
         <div class="valid-feedback" *ngIf="option2.valid">Champ correctement renseigné</div>
         <div class="invalid-feedback" *ngIf="option2.invalid">Merci de renseigner le champ réponse 2.</div>
@@ -111,20 +111,20 @@
         <!-- valeur de la réponse -->
         <div class="form-group d-flex gap-5 mt-3">
             <div class="form-check">
-                <input type="radio" class="form-check-input" id="radio1" name="optScoring2" value="true" ngModel
-                    [checked]="optScoring1" required="">Vraie
+                <input type="radio" class="form-check-input" name="optScoring2" value="true" ngModel
+                    [checked]="optScoring2" required>Vraie
                 <label class="form-check-label" for="radio1"></label>
             </div>
             <div class="form-check">
-                <input type="radio" class="form-check-input" id="radio2" name="optScoring2" value="false" ngModel
-                    [checked]="optScoring1" required="">Fausse
-                <label class="form-check-label" for="radio2"></label>
+                <input type="radio" class="form-check-input" name="optScoring2" value="false" ngModel
+                    [checked]="optScoring1" required>Fausse
+                <!-- <label class="form-check-label" for="radio2"></label> -->
             </div>
         </div>
         <!-- fin valeur de la réponse -->
         <hr>
         <label for="option2" class="form-label mt-3">Réponse 3</label>
-        <input type="text" id="option1" ngModel name="option3" class="form-control" #option3="ngModel"
+        <input type="text" ngModel name="option3" class="form-control" #option3="ngModel"
             placeholder="Option de réponse 3">
         <div class="valid-feedback" *ngIf="option3.valid">Champ correctement renseigné</div>
         <!-- <div class="invalid-feedback" *ngIf="option3.invalid">Merci de renseigner le champ nom.</div> -->
@@ -138,20 +138,20 @@
         <!-- valeur de la réponse -->
         <div class="form-group d-flex gap-5 mt-3">
             <div class="form-check">
-                <input type="radio" class="form-check-input" id="radio1" name="optScoring3" value="true" ngModel
-                    [checked]="optScoring1" required="">Vraie
-                <label class="form-check-label" for="radio1"></label>
+                <input type="radio" class="form-check-input" name="optScoring3" value="true" ngModel
+                    [checked]="optScoring3">Vraie
+                <!-- <label class="form-check-label" for="radio1"></label> -->
             </div>
             <div class="form-check">
-                <input type="radio" class="form-check-input" id="radio2" name="optScoring3" value="false" ngModel
-                    [checked]="optScoring1" required="">Fausse
-                <label class="form-check-label" for="radio2"></label>
+                <input type="radio" class="form-check-input" name="optScoring3" value="false" ngModel
+                    [checked]="optScoring3">Fausse
+                <!-- <label class="form-check-label" for="radio2"></label> -->
             </div>
         </div>
         <!-- fin valeur de la réponse -->
         <hr>
-        <label for="option1" class="form-label mt-3">Réponse 4 </label>
-        <input type="text" id="option4" ngModel name="option1" class="form-control" #option4="ngModel"
+        <label for="option4" class="form-label mt-3">Réponse 4 </label>
+        <input type="text" ngModel name="option4" class="form-control" #option4="ngModel"
             placeholder="Option de réponse 4">
         <div class="valid-feedback" *ngIf="option4.valid">Champ correctement renseigné</div>
         <!-- <div class="invalid-feedback" *ngIf="option4.invalid">Merci de renseigner le champ nom.</div> -->
@@ -165,17 +165,18 @@
         <!-- valeur de la réponse -->
         <div class="form-group d-flex gap-5 mt-3">
             <div class="form-check">
-                <input type="radio" class="form-check-input" id="radio1" name="optScoring4" value="true" ngModel
-                    [checked]="optScoring1" required="">Vraie
-                <label class="form-check-label" for="radio1"></label>
+                <input type="radio" class="form-check-input" name="optScoring4" value="true" ngModel
+                    [checked]="optScoring4">Vraie
+                <!-- <label class="form-check-label" for="radio1"></label> -->
             </div>
             <div class="form-check">
-                <input type="radio" class="form-check-input" id="radio2" name="optScoring4" value="false" ngModel
-                    [checked]="optScoring1" required="">Fausse
-                <label class="form-check-label" for="radio2"></label>
+                <input type="radio" class="form-check-input" name="optScoring4" value="false" ngModel
+                    [checked]="optScoring4">Fausse
+                <!-- <label class="form-check-label" for="radio2"></label> -->
             </div>
         </div>
         <!-- fin valeur de la réponse -->
+
         <hr>
 
         <!-- <textarea name="details" id="details" ngModel name="details" cols="100" rows="10" class="form-control mt-3"
