@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ActivatedRoute, RouterModule } from '@angular/router';
-import { reload } from 'firebase/auth';
 import { QuestionsService } from '../../questions.service';
 
 
@@ -38,7 +36,7 @@ export class PriorFormComponent implements OnInit {
   // Create a root reference
 
   numbers: any[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-  registryNumbers: any[]  = []
+  registryNumbers: any[] = []
   // isRegistered:boolean = false
 
   constructor(private service: QuestionsService) { }
@@ -51,15 +49,15 @@ export class PriorFormComponent implements OnInit {
   arrayFilesToUpload: any = []
 
   ngOnInit(): void {
-    
+
     this.service.getQuestions().subscribe(data => {
       // console.log(data);
       for (let n of data) {
         this.registryNumbers = [...this.registryNumbers, Number(n.number)]
         // console.log(this.registryNumbers);
-        this.numbers=this.numbers.filter(element=>{
-          return element!=n.number});    
-                
+        this.numbers = this.numbers.filter(element => {
+          return element != n.number
+        });
         // console.log("result", this.numbers);
       }
       // return this.registryNumbers
@@ -69,17 +67,18 @@ export class PriorFormComponent implements OnInit {
 
   async submitForm(form: NgForm) {
     console.log(form.value);
-    this.service.createQuestion(form.value, this.arrayFilesToUpload);    
+    this.service.createQuestion(form.value, this.arrayFilesToUpload);
     form.reset()
   }
 
   detectFiles(event: any, fieldName: any) {
-    console.log(event.target.files[0].size);    
+    console.log(event.target.files[0].size);
     this.totalMediasFiles++;
     this.arrayFilesToUpload.push([event.target.files[0], fieldName.name, event.target.files[0].type])
     console.log("this.arrayFilesToUpload", this.arrayFilesToUpload);
-    if(event.target.files[0].size > 13000000){
-      alert("File is too big!")}
+    if (event.target.files[0].size > 13000000) {
+      alert("File is too big!")
+    }
     // this.onUploadFile(event.target.files[0], fieldName.name);
   }
 
@@ -89,8 +88,8 @@ export class PriorFormComponent implements OnInit {
   //   console.log("duration", this.videoDuration);    
   // }
 
-    // ne servira plus si on parvient à mettre à jour this.registryNumbers à chaque nouvel enregistrement. *
-  checkIfRegistered(n:any){
+  // ne servira plus si on parvient à mettre à jour this.registryNumbers à chaque nouvel enregistrement. *
+  checkIfRegistered(n: any) {
     console.log(n)
     // this.registryNumbers.includes(n)?this.isRegistered==true:this.isRegistered==false) 
   }

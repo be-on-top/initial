@@ -1,4 +1,5 @@
 import { Component, OnInit} from '@angular/core';
+import { Router } from '@angular/router';
 import { QuestionsService } from '../../questions.service';
 
 @Component({
@@ -9,7 +10,7 @@ import { QuestionsService } from '../../questions.service';
 export class QuestionDetailsComponent implements OnInit {
 
 questions:any[]=[]
-  constructor(public service:QuestionsService){
+  constructor(public service:QuestionsService, private router:Router){
 
   }
 
