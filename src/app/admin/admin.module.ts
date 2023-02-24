@@ -12,8 +12,8 @@ import { UpdateEvaluatorComponent } from './Evaluators/update-evaluator/update-e
 import { PriorFormComponent } from './Questions/priors/prior-form/prior-form.component';
 import { QuestionDetailsComponent } from './Questions/priors/question-details/question-details.component';
 import { QuestionsListComponent } from './Questions/priors/questions-list/questions-list.component';
+import { UpdateQuestionComponents } from './Questions/update-question/update-question.component';
 // import { EvaluatorDetailsComponent } from './Evaluators/evaluator-details/evaluator-details.component';
-EvaluatorDetailsComponent
 
 
 const routesAdmin: Routes = [
@@ -24,6 +24,7 @@ const routesAdmin: Routes = [
   { path: 'priorform', component: PriorFormComponent },
   { path: 'questions', component: QuestionsListComponent},
   { path: 'questionDetails', component: QuestionDetailsComponent },
+  { path: 'updateQuestion/:id', component: UpdateQuestionComponents },
 
 ];
 
