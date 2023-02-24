@@ -6,8 +6,9 @@
 
     <div *ngIf="allQuestions">
         <div *ngFor="let q of allQuestions">
-            {{q | json}}
-            <!-- <p>en voilà une {{q | json}}</p> -->
+             <!-- pour vérification en base si besoin de l'intégralité des questions -->
+            <!-- {{q | json}} -->
+
             <!-- début de la question -->
             <div class="p-3 p-md-5 d-flex flex-column justify-content-between align-items-center rounded mb-3">
                 <p class="rounded bg-primary px-3 py-2 h3 fw-normal shadow-sm">Question n°{{q.number}} : {{q.question}}
@@ -17,7 +18,8 @@
 
                 <!-- essai insertion boucle image / video différenciation du traitement -->
                 <div *ngIf="questionsMedias">
-                    {{questionsMedias}}
+                    <!-- pour vérification en base si besoin de la source du media lié à une question -->
+                    <!-- {{questionsMedias}} -->
 
                     <div class="bg-light rounded rounded mb-3" *ngFor="let item of questionsMedias">
                         <div class="w-100 bg-primary p-2 rounded" *ngIf="item.includes(q.id)">

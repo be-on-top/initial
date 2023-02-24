@@ -13,6 +13,7 @@ export class PriorFormComponent implements OnInit {
   question: string = "";
   number: number = 0;
   mediaQuestion: any;
+  // videoDuration:any = 0;
   mediaOption1: any;
   option1: string = "";
   optScoring1: boolean = false;
@@ -71,12 +72,21 @@ export class PriorFormComponent implements OnInit {
   }
 
   detectFiles(event: any, fieldName: any) {
+    console.log(event.target.files[0].size);    
     this.totalMediasFiles++;
     this.arrayFilesToUpload.push([event.target.files[0], fieldName.name, event.target.files[0].type])
     console.log("this.arrayFilesToUpload", this.arrayFilesToUpload);
+    if(event.target.files[0].size > 13000000){
+      alert("File is too big!")}
 
     // this.onUploadFile(event.target.files[0], fieldName.name);
   }
+
+  // a priori pas nécessaire pour le moment... 
+  // detectDuration(event:any){
+  //   this.videoDuration= event.target.duration
+  //   console.log("duration", this.videoDuration);    
+  // }
 
     // ne servira plus si on parvient à mettre à jour this.registryNumbers à chaque nouvel enregistrement. *
   checkIfRegistered(n:any){
