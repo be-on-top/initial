@@ -26,6 +26,8 @@ export class QuestionsService {
   idMediaOption3: string = ""
   idMediaOption4: string = ""
 
+  registryNumbers :any= []
+
   constructor(private storage: Storage, private firestore: Firestore) {
     this.mediaQuestions = []
     this.mediaResponses = []
@@ -155,8 +157,6 @@ export class QuestionsService {
     return this.mediaResponses
 
   }
-
-
 
 
 

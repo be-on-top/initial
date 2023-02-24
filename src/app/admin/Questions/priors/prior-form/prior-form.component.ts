@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { reload } from 'firebase/auth';
 import { QuestionsService } from '../../questions.service';
 
 
@@ -36,7 +38,7 @@ export class PriorFormComponent implements OnInit {
   // Create a root reference
 
   numbers: any[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-  registryNumbers: any[] = []
+  registryNumbers: any[]  = []
   // isRegistered:boolean = false
 
   constructor(private service: QuestionsService) { }
@@ -56,19 +58,19 @@ export class PriorFormComponent implements OnInit {
         this.registryNumbers = [...this.registryNumbers, Number(n.number)]
         // console.log(this.registryNumbers);
         this.numbers=this.numbers.filter(element=>{
-          return element!=n.number});          
+          return element!=n.number});    
+                
         // console.log("result", this.numbers);
       }
-      return this.numbers
+      // return this.registryNumbers
     })
 
   }
 
   async submitForm(form: NgForm) {
     console.log(form.value);
-    this.service.createQuestion(form.value, this.arrayFilesToUpload);
+    this.service.createQuestion(form.value, this.arrayFilesToUpload);    
     form.reset()
-
   }
 
   detectFiles(event: any, fieldName: any) {
@@ -78,7 +80,6 @@ export class PriorFormComponent implements OnInit {
     console.log("this.arrayFilesToUpload", this.arrayFilesToUpload);
     if(event.target.files[0].size > 13000000){
       alert("File is too big!")}
-
     // this.onUploadFile(event.target.files[0], fieldName.name);
   }
 
