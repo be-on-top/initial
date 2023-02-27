@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Storage, ref, uploadBytes, getDownloadURL, listAll } from '@angular/fire/storage';
-import { Firestore, collection, collectionData } from '@angular/fire/firestore';
-import { addDoc } from 'firebase/firestore';
+import { Firestore, collection, collectionData, docData, setDoc } from '@angular/fire/firestore';
+import { addDoc, doc} from 'firebase/firestore';
 import { Observable } from 'rxjs';
 
 
@@ -165,6 +165,18 @@ export class QuestionsService {
         return collectionData($evaluatorsRef, { idField: "id" }) as Observable<any[]>
     
       }
+
+      getQuestion(id: string) {
+        let $questionRef = doc(this.firestore, "questions/" + id)
+        return docData($questionRef, { idField: 'id' }) as Observable<any>;
+      }
+    
+    
+      // anticipation sur fonctionnalités à venir...
+      // updateQuestion(id: string, question: any) {
+      //   let $questionRef  = doc(this.firestore, "questions/" + id);
+      //   setDoc($questionRef, question)
+      // }
 
 
 }

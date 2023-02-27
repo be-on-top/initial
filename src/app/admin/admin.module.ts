@@ -17,12 +17,12 @@ import { UpdateQuestionComponents } from './Questions/update-question/update-que
 
 
 const routesAdmin: Routes = [
-  { path: 'evaluators', component: EvaluatorsListComponent},
+  { path: 'evaluators', component: EvaluatorsListComponent },
   { path: 'addEvaluator', component: AddEvaluatorComponent },
-  { path: 'evaluator/:id', component: EvaluatorDetailsComponent},
+  { path: 'evaluator/:id', component: EvaluatorDetailsComponent },
   { path: 'updateEvaluator/:id', component: UpdateEvaluatorComponent },
   { path: 'priorform', component: PriorFormComponent },
-  { path: 'questions', component: QuestionsListComponent},
+  { path: 'questions', component: QuestionsListComponent },
   { path: 'questionDetails', component: QuestionDetailsComponent },
   { path: 'updateQuestion/:id', component: UpdateQuestionComponents },
 
@@ -32,8 +32,8 @@ const routesAdmin: Routes = [
   declarations: [
     EvaluatorsListComponent,
     AddEvaluatorComponent,
-    EvaluatorDetailsComponent,  
-    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent,
+    EvaluatorDetailsComponent,
+    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents
   ],
   imports: [
     BrowserModule,

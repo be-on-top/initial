@@ -14,7 +14,7 @@
                 <p class="rounded bg-primary px-3 py-2 h3 fw-normal shadow-sm">Question n°{{q.number}} : {{q.question}}
                 </p>
                 <p class="fs-6"><span class="fw-bold">Métier :</span> {{q.sigle}} - <span class="fw-bold">Id :</span>
-                    {{q.id}} - <a class="fw-bold" [routerLink]="['/updateQuestion',q.id]">Modifier</a></p>
+                    {{q.id}} - <a class="fw-bold text-decoration-none" [routerLink]="['/updateQuestion',q.id]">Modifier</a></p>
 
                 <!-- essai insertion boucle image / video différenciation du traitement -->
                 <div *ngIf="questionsMedias">

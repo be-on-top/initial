@@ -3,4 +3,19 @@
     <h3>Mise à jour de la question id : {{questionId}}</h3>
     <hr>
 
+    <form class="form" #f="ngForm" (submit)="updateQuestion(f)" class="was-validated">
+
+
+        <label for="question" class="form-label mt-3">Question</label>
+        <input type="text" id="question" [(ngModel)]="result.question" name="question" class="form-control"
+            placeholder="Question" value="question" required #question="ngModel">
+            <div class="valid-feedback" *ngIf="question.valid">Champ correctement renseigné</div>
+     
+
+        <button type="submit" id="submit" class="btn btn-primary mt-3"
+            [ngClass]="{'disabled':f.invalid}">Valider</button>
+    </form>
+
+   
+
 </div>
