@@ -39,8 +39,6 @@ export class UpdateQuestionComponents implements OnInit {
 
 
   constructor(private service: QuestionsService, private ac: ActivatedRoute) {
-
-
   }
 
   ngOnInit(): void {
@@ -63,7 +61,7 @@ export class UpdateQuestionComponents implements OnInit {
 
     console.log("form update values", form.value);
     // à venir pour update : 
-    // this.service.updateQuestion(this.questionId, form.value)
+    this.service.updateQuestion(this.questionId, form.value)
     // il faudra prévoir une redirection... 
   }
 

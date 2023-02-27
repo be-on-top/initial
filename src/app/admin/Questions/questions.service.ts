@@ -173,10 +173,10 @@ export class QuestionsService {
     
     
       // anticipation sur fonctionnalités à venir...
-      // updateQuestion(id: string, question: any) {
-      //   let $questionRef  = doc(this.firestore, "questions/" + id);
-      //   setDoc($questionRef, question)
-      // }
+      updateQuestion(id: string, question: any) {
+        let $questionRef  = doc(this.firestore, "questions/" + id);
+        setDoc($questionRef, question)
+      }
 
 
 }
