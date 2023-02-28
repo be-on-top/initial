@@ -4,44 +4,63 @@
     <hr>
 
     <form class="form" #f="ngForm" (submit)="updateQuestion(f)" class="was-validated">
+        <!-- rappel du sigle métier -->
+        <div class="form-group row justify-content-between">
+            <div class="col-sm-6">
+                <select class="form-select disabled" name="sigle" id="sigle" [(ngModel)]="result.sigle" #sigle="ngModel">
+                    <option selected="selected" value="{{result.sigle}}" disabled>{{result.sigle}}</option>
+                </select>
+            </div>
+            <!-- rappel du numéro de question -->
+            <div class="col-sm-6">
+                <select class="form-select disabled" id="number" name="number" [(ngModel)]="result.number" #number="ngModel">
+                    <option selected="selected" value="{{result.number}}" disabled>{{result.number}}</option>
+                </select>
+            </div>
+        </div>
+
+
 
 
         <label for="question" class="form-label mt-3">Question</label>
         <input type="text" id="question" [(ngModel)]="result.question" name="question" class="form-control"
             placeholder="Question" value="question" required #question="ngModel">
-            <div class="valid-feedback" *ngIf="question.valid">Champ correctement renseigné</div>
+        <div class="valid-feedback" *ngIf="question.valid">Champ correctement renseigné</div>
 
-             <!-- <input type="file" accept="image/*, video/*" id="mediaQuestion" ngModel name="mediaQuestion"
-            class="form-control" #mediaQuestion="ngModel" placeholder="Fichier média de votre choix"
+        <input type="file" accept="image/*, video/*" id="mediaQuestion" ngModel name="mediaQuestion"
+            class="form-control" #mediaQuestion="ngModel" placeholder="Fichier média actuel"
             onchange="console.log(event.target.files)" (change)="detectFiles($event, mediaQuestion )">
+        <div class="bg-light rounded p-3 fst-italic">Dernier fichier chargé : {{result.mediaQuestion}}</div>
+
         <hr>
-        <p class="bg-light rounded p-3 fst-italic">Un minimum de 2 options de réponse* est nécessaire à la validation du
-            formulaire. Vous pouvez, pour rappel, ajouter des fichiers média (image, vidéo...) ou commentaires
-            spécifiques
-            pour chaque élémenet de réponse </p> -->
+        <p class="bg-light rounded p-3 fst-italic">Pour rappel, un minimum de 2 options de réponse* est nécessaire à la
+            validation du
+            formulaire. Vous pouvez, ajouter des fichiers média (image, vidéo...) ou commentaires
+            spécifiques pour chacun </p>
 
         <label for="option1" class="form-label mt-3">Réponse 1 * </label>
-        <input type="text" id="option1" name="option1" [(ngModel)]="result.option1" class="form-control" #option1="ngModel"
-            placeholder="Option de réponse 1" required>
+        <input type="text" id="option1" name="option1" [(ngModel)]="result.option1" class="form-control"
+            #option1="ngModel" placeholder="Option de réponse 1" required>
         <div class="valid-feedback" *ngIf="option1.valid">Champ correctement renseigné</div>
         <!-- <div class="invalid-feedback" *ngIf="option1.invalid">Merci de renseigner le champ réponse 1.</div> -->
-        <!-- <label for="mediaOption1" class="form-label mt-3">Pièce jointe si besoin</label>
-        <input type="file" id="mediaOption1" ngModel name="mediaOption1" class="form-control" #mediaOption1="ngModel"
-            placeholder="Fichier média de votre choix" onchange="console.log(event.target.files)"
-            (change)="detectFiles($event, mediaOption1)"> -->
+        <label for="mediaOption1" class="form-label mt-3">Pièce jointe si besoin</label>
+        <input type="file" id="mediaOption1" ngModel name="mediaOption1" class="form-control"
+            #mediaOption1="ngModel" placeholder="Fichier média de votre choix"
+            onchange="console.log(event.target.files)" (change)="detectFiles($event, mediaOption1)">
+        <div class="bg-light rounded p-3 fst-italic">Dernier fichier chargé : {{result.mediaOption2}}</div>
+
         <label for="comment1" class="form-label mt-3">Commentaire</label>
         <textarea id="comment1" [(ngModel)]="result.comment1" name="comment1" class="form-control" #comment1="ngModel"
             placeholder="Commentaire si besoin" cols="30" rows="5"></textarea>
         <div class="form-group d-flex gap-5 mt-3">
             <div class="form-check">
-                <input type="radio" class="form-check-input" name="optScoring1" value="true" [(ngModel)]="result.optScoring1"
-                    [checked]="optScoring1" required>Vraie
+                <input type="radio" class="form-check-input" name="optScoring1" value="true"
+                    [(ngModel)]="result.optScoring1" [checked]="optScoring1" required>Vraie
                 <label class="form-check-label" for="radio1"></label>
             </div>
             <div class="form-check">
-                <input type="radio" class="form-check-input" name="optScoring1" value="false" [(ngModel)]="result.optScoring1"
-                    [checked]="optScoring1" required>Fausse
-
+                <input type="radio" class="form-check-input" name="optScoring1" value="false"
+                    [(ngModel)]="result.optScoring1" [checked]="optScoring1" required>Fausse
             </div>
         </div>
         <hr>
@@ -50,22 +69,23 @@
             placeholder="Option de réponse 2" required>
         <div class="valid-feedback" *ngIf="option2.valid">Champ correctement renseigné</div>
         <!-- <div class="invalid-feedback" *ngIf="option2.invalid">Merci de renseigner le champ réponse 2.</div> -->
-        <!-- <label for="mediaOption2" class="form-label mt-3">Pièce jointe si besoin</label>
+        <label for="mediaOption2" class="form-label mt-3">Pièce jointe si besoin</label>
         <input type="file" id="mediaOption2" ngModel name="mediaOption2" class="form-control" #mediaOption2="ngModel"
             placeholder="Fichier média de votre choix" onchange="console.log(event.target.files)"
-            (change)="detectFiles($event, mediaOption2)"> -->
+            (change)="detectFiles($event, mediaOption2)">
+        <div class="bg-light rounded p-3 fst-italic">Dernier fichier chargé : {{result.mediaOption2}}</div>
         <label for="comment2" class="form-label mt-3">Commentaire</label>
         <textarea id="comment2" [(ngModel)]="result.comment2" name="comment2" class="form-control" #comment2="ngModel"
             placeholder="Commentaire si besoin" cols="30" rows="5"></textarea>
         <div class="form-group d-flex gap-5 mt-3">
             <div class="form-check">
-                <input type="radio" class="form-check-input" name="optScoring2" value="true" [(ngModel)]="result.optScoring2"
-                    [checked]="optScoring2" required>Vraie
+                <input type="radio" class="form-check-input" name="optScoring2" value="true"
+                    [(ngModel)]="result.optScoring2" [checked]="optScoring2" required>Vraie
                 <label class="form-check-label" for="radio1"></label>
             </div>
             <div class="form-check">
-                <input type="radio" class="form-check-input" name="optScoring2" value="false" [(ngModel)]="result.optScoring2"
-                    [checked]="optScoring1" required>Fausse
+                <input type="radio" class="form-check-input" name="optScoring2" value="false"
+                    [(ngModel)]="result.optScoring2" [checked]="optScoring1" required>Fausse
 
             </div>
         </div>
@@ -83,12 +103,12 @@
             placeholder="Commentaire si besoin" cols="30" rows="5"></textarea>
         <div class="form-group d-flex gap-5 mt-3">
             <div class="form-check">
-                <input type="radio" class="form-check-input" name="optScoring3" value="true" [(ngModel)]="result.optScoring3"
-                    [checked]="optScoring3" [required]="f.value.option3!=''">Vraie
+                <input type="radio" class="form-check-input" name="optScoring3" value="true"
+                    [(ngModel)]="result.optScoring3" [checked]="optScoring3" [required]="f.value.option3!=''">Vraie
             </div>
             <div class="form-check">
-                <input type="radio" class="form-check-input" name="optScoring3" value="false" [(ngModel)]="result.optScoring3"
-                    [checked]="optScoring3" [required]="f.value.option3!=''">Fausse
+                <input type="radio" class="form-check-input" name="optScoring3" value="false"
+                    [(ngModel)]="result.optScoring3" [checked]="optScoring3" [required]="f.value.option3!=''">Fausse
             </div>
         </div>
         <hr>
@@ -106,24 +126,24 @@
 
         <div class="form-group d-flex gap-5 mt-3">
             <div class="form-check">
-                <input type="radio" class="form-check-input" name="optScoring4" value="true" [(ngModel)]="result.optScoring4"
-                    [checked]="optScoring4" [required]="f.value.option4!=''">Vraie
+                <input type="radio" class="form-check-input" name="optScoring4" value="true"
+                    [(ngModel)]="result.optScoring4" [checked]="optScoring4" [required]="f.value.option4!=''">Vraie
 
             </div>
             <div class="form-check">
-                <input type="radio" class="form-check-input" name="optScoring4" value="false" [(ngModel)]="result.optScoring4"
-                    [checked]="optScoring4" [required]="f.value.option4!=''">Fausse
+                <input type="radio" class="form-check-input" name="optScoring4" value="false"
+                    [(ngModel)]="result.optScoring4" [checked]="optScoring4" [required]="f.value.option4!=''">Fausse
 
             </div>
         </div>
 
         <hr>
-     
+
 
         <button type="submit" id="submit" class="btn btn-primary mt-3"
             [ngClass]="{'disabled':f.invalid}">Valider</button>
     </form>
 
-   
+
 
 </div>

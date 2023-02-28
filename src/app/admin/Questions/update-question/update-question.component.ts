@@ -74,4 +74,12 @@ export class UpdateQuestionComponents implements OnInit {
     }
   }
 
+
+  readFile(fieldName: any){
+    alert("dddddd")
+    console.log("ce que je récupère", fieldName);
+    
+
+  }
+
 }
