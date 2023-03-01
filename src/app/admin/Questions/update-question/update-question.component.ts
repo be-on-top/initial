@@ -41,6 +41,8 @@ export class UpdateQuestionComponents implements OnInit {
   allMediasQuestions: any[] = []
   allMediasResponses: any[] = []
 
+  arrayFilesToUpdate: any = []
+
   constructor(private service: QuestionsService, private ac: ActivatedRoute) {
   }
 
@@ -76,6 +78,13 @@ export class UpdateQuestionComponents implements OnInit {
 
   //  fonction basique pour le moment. on fait d'abord un focus sur les données textuelles
   detectFiles(event: any, fieldName: any, item:any="") {
+    console.log(item);
+    
+    if (this.allMediasQuestions.includes(item) || this.allMediasResponses.includes(item)) {
+      alert("êtes-vous certains de vouloir remplacer le fichier")      
+    }
+
+    this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name, event.target.files[0].type])
     console.log(event.target.files[0].size);
     if (event.target.files[0].size > 13000000) {
       alert("File is too big!")
