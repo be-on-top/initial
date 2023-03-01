@@ -15,7 +15,7 @@ export class UpdateQuestionComponents implements OnInit {
   questionId: any;
   result: any = {}
 
-  
+
   mediaQuestion: any;
   mediaOption1: any;
   option1: string = "";
@@ -38,6 +38,9 @@ export class UpdateQuestionComponents implements OnInit {
   comment5: string = "";
 
 
+  allMediasQuestions: any[] = []
+  allMediasResponses: any[] = []
+
   constructor(private service: QuestionsService, private ac: ActivatedRoute) {
   }
 
@@ -49,6 +52,16 @@ export class UpdateQuestionComponents implements OnInit {
       console.log("data depuis update-question component !!!!!!!!!!!!!", data.question);
       this.result = data
     })
+
+    this.allMediasQuestions=this.service.getMediasQuestions()
+    this.allMediasResponses=this.service.getMediasResponses()
+    console.log(this.allMediasQuestions);
+    console.log(this.allMediasResponses);
+    
+
+
+
+
 
   }
 
@@ -75,10 +88,10 @@ export class UpdateQuestionComponents implements OnInit {
   }
 
 
-  readFile(fieldName: any){
+  readFile(fieldName: any) {
     alert("dddddd")
     console.log("ce que je récupère", fieldName);
-    
+
 
   }
 
