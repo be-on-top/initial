@@ -57,11 +57,6 @@ export class UpdateQuestionComponents implements OnInit {
     this.allMediasResponses=this.service.getMediasResponses()
     console.log(this.allMediasQuestions);
     console.log(this.allMediasResponses);
-    
-
-
-
-
 
   }
 
@@ -80,7 +75,7 @@ export class UpdateQuestionComponents implements OnInit {
 
 
   //  fonction basique pour le moment. on fait d'abord un focus sur les données textuelles
-  detectFiles(event: any, fieldName: any) {
+  detectFiles(event: any, fieldName: any, item:any="") {
     console.log(event.target.files[0].size);
     if (event.target.files[0].size > 13000000) {
       alert("File is too big!")
