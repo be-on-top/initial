@@ -3,7 +3,7 @@
     <h3>Mise à jour de la question id : {{questionId}}</h3>
     <hr>
 
-    <form class="form" #f="ngForm" (submit)="updateQuestion(f)" class="was-validated">
+    <form class="form" #f="ngForm" (submit)="updateForm(f)" class="was-validated">
         <!-- rappel du sigle métier -->
         <div class="form-group row justify-content-between">
             <div class="col-sm-6">
@@ -43,7 +43,7 @@
                     <!-- input inclut dans la boucle -->
                     <input type="file" accept="image/*, video/*" id="mediaQuestion" ngModel name="mediaQuestion"
                         class="form-control" #mediaQuestion="ngModel" placeholder="Fichier média actuel"
-                        (change)="detectFiles($event, mediaQuestion, item )">
+                        (change)="detectFiles($event, mediaQuestion, item)">
                     <div class="bg-light rounded p-3 fst-italic">Dernier fichier local chargé : {{result.mediaQuestion}}
                     </div>
                     <div class="bg-light rounded p-3 fst-italic">Nom du fichier en base storage : {{item}}</div>
@@ -71,13 +71,15 @@
         <!-- essai insertion boucle image pour aperçu -->
         <label for="mediaOption1" class="form-label mt-3">Pièce jointe si besoin</label>
         <div *ngIf="allMediasResponses">
+            <!-- allMediaResponses : {{allMediasResponses | json}} -->
             <div *ngFor="let item of allMediasResponses">
                 <span *ngIf="item.includes(result.id) && item.includes('Option1')">
                     <img class="img-fluid rounded" [src]="item">
                     <!-- insertion input dans la boucle -->
                     <input type="file" id="mediaOption1" ngModel name="mediaOption1" class="form-control"
                         #mediaOption1="ngModel" placeholder="Fichier média de votre choix"
-                        onchange="console.log(event.target.files)" (change)="detectFiles($event, mediaOption1, item)">
+                        onchange="console.log(event.target.files)"
+                        (change)="detectFiles($event, mediaOption1, item)">
                     <!-- <div class="bg-light rounded p-3 fst-italic">Dernier fichier local chargé : {{result.mediaOption1}}</div> -->
                     <div class="bg-light rounded p-3 fst-italic">Nom du fichier en base storage : {{item}}</div>
                 </span>
@@ -117,7 +119,8 @@
                     <!-- insertion input dans la boucle -->
                     <input type="file" id="mediaOption2" ngModel name="mediaOption2" class="form-control"
                         #mediaOption2="ngModel" placeholder="Fichier média de votre choix"
-                        onchange="console.log(event.target.files)" (change)="detectFiles($event, mediaOption2, item)">
+                        onchange="console.log(event.target.files)"
+                        (change)="detectFiles($event, mediaOption2, item )">
                     <!-- <div class="bg-light rounded p-3 fst-italic">Dernier fichier local chargé : {{result.mediaOption2}}</div> -->
                     <div class="bg-light rounded p-3 fst-italic">Nom du fichier en base storage : {{item}}</div>
                 </span>

@@ -55,14 +55,14 @@ export class UpdateQuestionComponents implements OnInit {
       this.result = data
     })
 
-    this.allMediasQuestions=this.service.getMediasQuestions()
-    this.allMediasResponses=this.service.getMediasResponses()
+    this.allMediasQuestions = this.service.getMediasQuestions()
+    this.allMediasResponses = this.service.getMediasResponses()
     console.log(this.allMediasQuestions);
     console.log(this.allMediasResponses);
 
   }
 
-  updateQuestion(form: NgForm) {
+  async updateForm(form: NgForm) {
     // on vérifie la validité du formulaire
     if (!form.valid) {
       console.log('form valid');
@@ -70,18 +70,22 @@ export class UpdateQuestionComponents implements OnInit {
     }
 
     console.log("form update values", form.value);
-    // à venir pour update : 
-    this.service.updateQuestion(this.questionId, form.value)
+    // pour update de la nouvelle image si nouvelle : 
+    this.service.updateQuestion(this.questionId, form.value, this.arrayFilesToUpdate)
     // il faudra prévoir une redirection... 
   }
 
 
   //  fonction basique pour le moment. on fait d'abord un focus sur les données textuelles
-  detectFiles(event: any, fieldName: any, item:any="") {
+  detectFiles(event: any, fieldName: any, item: any = "") {
     console.log(item);
-    
+
     if (this.allMediasQuestions.includes(item) || this.allMediasResponses.includes(item)) {
-      alert("êtes-vous certains de vouloir remplacer le fichier")      
+      alert("êtes-vous certain de vouloir remplacer le fichier")
+      console.log(item);
+
+      // si confirmation (à faire)
+      this.service.deleteMedia(fieldName.name)
     }
 
     this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name, event.target.files[0].type])
@@ -95,7 +99,6 @@ export class UpdateQuestionComponents implements OnInit {
   readFile(fieldName: any) {
     alert("dddddd")
     console.log("ce que je récupère", fieldName);
-
 
   }
 

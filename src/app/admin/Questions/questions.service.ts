@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Storage, ref, uploadBytes, getDownloadURL, listAll } from '@angular/fire/storage';
+import { Storage, ref, uploadBytes, getDownloadURL, listAll, deleteObject } from '@angular/fire/storage';
 import { Firestore, collection, collectionData, docData, setDoc } from '@angular/fire/firestore';
-import { addDoc, doc} from 'firebase/firestore';
+import { addDoc, doc } from 'firebase/firestore';
+import { FirebaseStorage } from 'firebase/storage';
 import { Observable } from 'rxjs';
+
+
 
 
 @Injectable({
@@ -18,7 +21,7 @@ export class QuestionsService {
   // évaluateurs ne serait pas un tableau de type any mais un observable
   questions: any[] = [];
   result: any;
-  isVideo:boolean=false;
+  isVideo: boolean = false;
 
   idMediaQuestion: string = ""
   idMediaOption1: string = ""
@@ -26,7 +29,7 @@ export class QuestionsService {
   idMediaOption3: string = ""
   idMediaOption4: string = ""
 
-  registryNumbers :any= []
+  registryNumbers: any = []
 
   constructor(private storage: Storage, private firestore: Firestore) {
     this.mediaQuestions = []
@@ -41,13 +44,13 @@ export class QuestionsService {
       this.idMediaQuestion = `mediaQuestion${question.number}_${question.sigle}`
       this.questions = [this.idMediaQuestion, ...this.questions];
       // c'est là qu'on peut intégrer une différence selon le type de fichier détecté
-      console.log(Object.values(allFilesToUplad)[0][2] );
-      if(Object.values(allFilesToUplad)[0][2]=="video/mp4"){
-        this.isVideo=true;
-        console.log(this.isVideo);       
+      console.log(Object.values(allFilesToUplad)[0][2]);
+      if (Object.values(allFilesToUplad)[0][2] == "video/mp4") {
+        this.isVideo = true;
+        console.log(this.isVideo);
 
       }
-      
+
     }
     if (question.mediaOption1) {
       this.idMediaOption1 = `mediaOption1${question.number}_${question.sigle}`
@@ -99,7 +102,7 @@ export class QuestionsService {
   uploadFiles(file: any, fieldName: string, idq: string) {
     console.log("fieldName", fieldName);
 
-    // selon le nom du champ de formulaire lié à l'imput de type file, on n'enregistrera dans des dossiers différents
+    // selon le nom du champ de formulaire lié à l'imput de type file, on enregistrera dans des dossiers différents
     if (fieldName == "mediaQuestion") {
       let storageRef = ref(this.storage, 'images/questions/' + idq + '_' + fieldName + '_' + file.name);
       uploadBytes(storageRef, file)
@@ -159,24 +162,49 @@ export class QuestionsService {
 
 
 
-    // getEvaluators(): Observable<Evaluators[]> {
-      getQuestions() {
-        let $evaluatorsRef = collection(this.firestore, "questions");
-        return collectionData($evaluatorsRef, { idField: "id" }) as Observable<any[]>
-    
-      }
+  // getEvaluators(): Observable<Evaluators[]> {
+  getQuestions() {
+    let $evaluatorsRef = collection(this.firestore, "questions");
+    return collectionData($evaluatorsRef, { idField: "id" }) as Observable<any[]>
 
-      getQuestion(id: string) {
-        let $questionRef = doc(this.firestore, "questions/" + id)
-        return docData($questionRef, { idField: 'id' }) as Observable<any>;
-      }
-    
-    
-      // anticipation sur fonctionnalités à venir...
-      updateQuestion(id: string, question: any) {
-        let $questionRef  = doc(this.firestore, "questions/" + id);
-        setDoc($questionRef, question)
-      }
+  }
+
+  getQuestion(id: string) {
+    let $questionRef = doc(this.firestore, "questions/" + id)
+    return docData($questionRef, { idField: 'id' }) as Observable<any>;
+  }
+
+
+  // à la différence de createQuestion qui répond au submit form initial, updateQuestion qui répond à updateForm n'a pas besoin (?) d'être async car on a déjà id ...
+  updateQuestion(id: string, question: any, allFilesToUpdate: any) {
+
+    // un peu comme pour la création
+    console.log(Object.values(allFilesToUpdate)[0]);
+
+    let $questionRef = doc(this.firestore, "questions/" + id);
+    setDoc($questionRef, question)
+    for (let myFile of allFilesToUpdate) {
+      this.uploadFiles(myFile[0], myFile[1], id)
+    }
+
+  }
+
+
+  deleteMedia(fieldName: any) {
+    console.log("fichier à supprimerdfdfdfdsfdsfdsfdsfdsffdsffd", fieldName);
+    // https://www.bezkoder.com/angular-14-firebase-storage/
+
+    // Create a reference to the file to delete
+    // const desertRef = ref(this.storage, 'images/desert.jpg');
+
+    // // Delete the file
+    // deleteObject(desertRef).then(() => {
+    // }).catch((error) => {
+    // });
+
+
+
+  }
 
 
 }
