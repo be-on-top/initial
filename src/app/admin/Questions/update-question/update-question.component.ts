@@ -40,6 +40,7 @@ export class UpdateQuestionComponents implements OnInit {
 
   allMediasQuestions: any[] = []
   allMediasResponses: any[] = []
+  allPathsResponses: any[] = []
 
   arrayFilesToUpdate: any = []
 
@@ -57,6 +58,7 @@ export class UpdateQuestionComponents implements OnInit {
 
     this.allMediasQuestions = this.service.getMediasQuestions()
     this.allMediasResponses = this.service.getMediasResponses()
+    this.allPathsResponses = this.service.getMediasResponsesPath()
     console.log(this.allMediasQuestions);
     console.log(this.allMediasResponses);
 
@@ -78,14 +80,12 @@ export class UpdateQuestionComponents implements OnInit {
 
   //  fonction basique pour le moment. on fait d'abord un focus sur les données textuelles
   detectFiles(event: any, fieldName: any, item: any = "") {
-    console.log(item);
+    console.log("sssssssssss", item);
 
-    if (this.allMediasQuestions.includes(item) || this.allMediasResponses.includes(item)) {
-      alert("êtes-vous certain de vouloir remplacer le fichier")
-      console.log(item);
-
+    if (this.allMediasQuestions.includes(item) || this.allMediasResponses.includes(item) || this.allPathsResponses.includes(item)) {
+      alert(`êtes-vous certain de vouloir remplacer le fichier ${item} ?`)
       // si confirmation (à faire)
-      this.service.deleteMedia(fieldName.name)
+      this.service.deleteMedia(item)
     }
 
     this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name, event.target.files[0].type])

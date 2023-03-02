@@ -16,6 +16,7 @@ export class QuestionsService {
   image: any;
   mediaQuestions: string[]
   mediaResponses: string[]
+  pathResponses: string[]
 
   // pour l'enregistrement des champs textuels
   // évaluateurs ne serait pas un tableau de type any mais un observable
@@ -34,6 +35,7 @@ export class QuestionsService {
   constructor(private storage: Storage, private firestore: Firestore) {
     this.mediaQuestions = []
     this.mediaResponses = []
+    this.pathResponses= []
   }
 
 
@@ -147,26 +149,48 @@ export class QuestionsService {
       .then(async response => {
         console.log("listAll response for mediasQuestions", response);
         for (let item of response.items) {
+          console.log("voila la réponse avec getDownloaURL !!!!!!!!!!!!!!!!!!!!!!!!!!!", item);          
+
+          // est-ce que c'était pertinent d'avoir l'url plutôt que le chemin ?
           let url = await getDownloadURL(item);
           console.log("url renvoyée en boucle", url);
           this.mediaResponses.push(url)
+          // this.pathResponses.push(item.fullPath)
         }
 
       }).catch((error) => {
         // Uh-oh, an error occurred!
       });
 
-    return this.mediaResponses
+    return (this.mediaResponses)
 
   }
 
+  getMediasResponsesPath(): any {
+    // Create a reference under which you want to list 
+    let mediasResponsesRef = ref(this.storage, 'images/questions/responses');
+    // Find all the prefixes and items.
+    listAll(mediasResponsesRef)
+      .then(async response => {
+        console.log("listAll path response for mediasQuestions", response);
+        for (let item of response.items) {
+          console.log("voila la réponse avec paths!!!!!!!!!!!!!!!!!!!!!!!!!!!", item.fullPath); 
+          console.log("path renvoyée en boucle", item.fullPath);
+          this.pathResponses.push(item.fullPath)
+        }
+
+      }).catch((error) => {
+        // Uh-oh, an error occurred!
+      });
+
+    return (this.pathResponses)
+  }
 
 
   // getEvaluators(): Observable<Evaluators[]> {
   getQuestions() {
     let $evaluatorsRef = collection(this.firestore, "questions");
     return collectionData($evaluatorsRef, { idField: "id" }) as Observable<any[]>
-
   }
 
   getQuestion(id: string) {
@@ -195,14 +219,16 @@ export class QuestionsService {
     // https://www.bezkoder.com/angular-14-firebase-storage/
 
     // Create a reference to the file to delete
-    // const desertRef = ref(this.storage, 'images/desert.jpg');
+    const desertRef = ref(this.storage, fieldName);
 
     // // Delete the file
-    // deleteObject(desertRef).then(() => {
-    // }).catch((error) => {
-    // });
-
-
+    deleteObject(desertRef).then(() => {
+      console.log("fichier supprimé");
+      
+    }).catch((error) => {
+      console.log(error);
+      
+    });
 
   }
 
