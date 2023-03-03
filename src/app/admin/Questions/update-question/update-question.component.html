@@ -76,6 +76,7 @@
                 {{item | json}}
                 <!-- cas où on est en modification -->
                 <div *ngIf="item.includes(result.id) && item.includes('Option1'); else creaOption1">
+                    <img class="img-fluid" [src]="item">
                     <label class="form-label mt-3" for="mediaOption1">Fichier à modifier</label>
                     <input type="file" id="mediaOption1" ngModel name="mediaOption1" class="form-control bg-primary"
                         #mediaOption1="ngModel" placeholder="Fichier média de votre choix"
@@ -87,7 +88,7 @@
                     <input *ngIf="item.includes(result.id)" type="file" id="mediaOption1" ngModel name="mediaOption1"
                         class="form-control bg-primary" #mediaOption1="ngModel"
                         placeholder="Fichier média de votre choix" onchange="console.log(event.target.files)"
-                        (change)="detectFiles($event, mediaOption1, item)">
+                        (change)="detectFiles($event, mediaOption1)">
                 </ng-template>
 
             </div>
@@ -127,6 +128,7 @@
                  {{item | json}}
                  <!-- cas où on est en modification -->
                  <div *ngIf="item.includes(result.id) && item.includes('Option2'); else creaOption2">
+                    <img class="img-fluid" [src]="item">
                      <label class="form-label mt-3" for="mediaOption2">Fichier à modifier</label>
                      <input type="file" id="mediaOption2" ngModel name="mediaOption2" class="form-control bg-primary"
                          #mediaOption2="ngModel" placeholder="Fichier média de votre choix"
@@ -138,7 +140,7 @@
                      <input *ngIf="item.includes(result.id) && !item.includes('Option2')" type="file" id="mediaOption2" ngModel name="mediaOption2"
                          class="form-control bg-primary" #mediaOption2="ngModel"
                          placeholder="Fichier média de votre choix" onchange="console.log(event.target.files)"
-                         (change)="detectFiles($event, mediaOption2, item)">
+                         (change)="detectFiles($event, mediaOption2)">
                  </ng-template>
  
              </div>
@@ -178,6 +180,7 @@
                 {{item | json}}
                 <!-- cas où on est en modification -->
                 <div *ngIf="item.includes(result.id) && item.includes('Option3'); else creaOption3">
+                    <img class="img-fluid" [src]="item">
                     <label class="form-label mt-3" for="mediaOption3">Fichier à modifier</label>
                     <input type="file" id="mediaOption3" ngModel name="mediaOption3" class="form-control bg-primary"
                         #mediaOption3="ngModel" placeholder="Fichier média de votre choix"
@@ -189,7 +192,7 @@
                     <input *ngIf="item.includes(result.id) && !item.includes('Option3')" type="file" id="mediaOption3" ngModel name="mediaOption3"
                         class="form-control bg-primary" #mediaOption3="ngModel"
                         placeholder="Fichier média de votre choix" onchange="console.log(event.target.files)"
-                        (change)="detectFiles($event, mediaOption3, item)">
+                        (change)="detectFiles($event, mediaOption3)">
                 </ng-template>
 
             </div>
@@ -229,6 +232,7 @@
                 {{item | json}}
                 <!-- cas où on est en modification -->
                 <div *ngIf="item.includes(result.id) && item.includes('Option4'); else creaOption4">
+                    <img class="img-fluid" [src]="item">
                     <label class="form-label mt-3" for="mediaOption4">Fichier à modifier</label>
                     <input type="file" id="mediaOption4" ngModel name="mediaOption4" class="form-control bg-primary"
                         #mediaOption4="ngModel" placeholder="Fichier média de votre choix"
@@ -240,7 +244,7 @@
                     <input *ngIf="item.includes(result.id) && !item.includes('Option4')" type="file" id="mediaOption4" ngModel name="mediaOption4"
                         class="form-control bg-primary" #mediaOption4="ngModel"
                         placeholder="Fichier média de votre choix" onchange="console.log(event.target.files)"
-                        (change)="detectFiles($event, mediaOption4, item)">
+                        (change)="detectFiles($event, mediaOption4)">
                 </ng-template>
 
             </div>
