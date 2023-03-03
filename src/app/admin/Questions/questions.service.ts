@@ -205,6 +205,37 @@ export class QuestionsService {
     // un peu comme pour la création
     console.log(Object.values(allFilesToUpdate)[0]);
 
+
+    if (question.mediaQuestion) {
+      this.idMediaQuestion = `mediaQuestion${question.number}_${question.sigle}`
+        // c'est là qu'on peut intégrer une différence selon le type de fichier détecté
+      console.log(Object.values(allFilesToUpdate)[0]);
+      if (Object.values(allFilesToUpdate)[0] == "video/mp4") {
+        this.isVideo = true;
+        console.log(this.isVideo);
+      }
+
+    }
+    if (question.mediaOption1) {
+      this.idMediaOption1 = `mediaOption1${question.number}_${question.sigle}`
+      this.questions = [this.idMediaOption1, ...this.questions];
+    }
+    if (question.mediaOption2) {
+      this.idMediaOption2 = `mediaOption2${question.number}_${question.sigle}`
+      this.questions = [this.idMediaOption2, ...this.questions];
+    }
+    if (question.mediaOption3) {
+      this.idMediaOption3 = `mediaOption3${question.number}_${question.sigle}`
+      this.questions = [this.idMediaOption3, ...this.questions];
+    }
+    if (question.mediaOption4) {
+      this.idMediaOption4 = `mediaOption4${question.number}_${question.sigle}`
+      this.questions = [this.idMediaOption4, ...this.questions];
+    }
+
+
+
+
     let $questionRef = doc(this.firestore, "questions/" + id);
     setDoc($questionRef, question)
     for (let myFile of allFilesToUpdate) {

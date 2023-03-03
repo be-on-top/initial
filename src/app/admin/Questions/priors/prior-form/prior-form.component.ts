@@ -63,17 +63,15 @@ export class PriorFormComponent implements OnInit {
       // return this.registryNumbers
     })
 
-    
+
 
   }
 
   async submitForm(form: NgForm) {
     console.log(form.value);
     this.service.createQuestion(form.value, this.arrayFilesToUpload);
-    form.reset();
-
-      window.location.reload();
-
+    // form.reset();
+    // window.location.reload();
   }
 
   detectFiles(event: any, fieldName: any) {

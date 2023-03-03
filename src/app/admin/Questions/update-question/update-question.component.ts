@@ -59,8 +59,8 @@ export class UpdateQuestionComponents implements OnInit {
     this.allMediasQuestions = this.service.getMediasQuestions()
     this.allMediasResponses = this.service.getMediasResponses()
     this.allPathsResponses = this.service.getMediasResponsesPath()
-    console.log(this.allMediasQuestions);
-    console.log(this.allMediasResponses);
+    console.log("allMediasQuestions",this.allMediasQuestions);
+    console.log("allMediasResponses", this.allMediasResponses);
 
   }
 
@@ -86,6 +86,8 @@ export class UpdateQuestionComponents implements OnInit {
       alert(`êtes-vous certain de vouloir remplacer le fichier ${item} ?`)
       // si confirmation (à faire)
       this.service.deleteMedia(item)
+      //et on enregistre le nouveau
+  //  this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name, event.target.files[0].type])   
     }
 
     this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name, event.target.files[0].type])
