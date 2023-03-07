@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import { QuestionsService } from '../../questions.service';
 
 
@@ -39,7 +40,7 @@ export class PriorFormComponent implements OnInit {
   registryNumbers: any[] = []
   // isRegistered:boolean = false
 
-  constructor(private service: QuestionsService) { }
+  constructor(private service: QuestionsService, private router : Router) { }
 
   fileIsUploading = false;
   fileUrl!: string;
@@ -71,6 +72,7 @@ export class PriorFormComponent implements OnInit {
     console.log(form.value);
     this.service.createQuestion(form.value, this.arrayFilesToUpload);
     // form.reset();
+    this.router.navigate(['/questions'])
     // window.location.reload();
   }
 

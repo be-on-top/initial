@@ -4,6 +4,7 @@ import { Firestore, collection, collectionData, docData, setDoc } from '@angular
 import { addDoc, doc } from 'firebase/firestore';
 import { FirebaseStorage } from 'firebase/storage';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 
 
@@ -189,8 +190,8 @@ export class QuestionsService {
 
   // getEvaluators(): Observable<Evaluators[]> {
   getQuestions() {
-    let $evaluatorsRef = collection(this.firestore, "questions");
-    return collectionData($evaluatorsRef, { idField: "id" }) as Observable<any[]>
+    let $questionsRef = collection(this.firestore, "questions");
+    return collectionData($questionsRef, { idField: "id" }) as Observable<any[]>
   }
 
   getQuestion(id: string) {
@@ -200,44 +201,54 @@ export class QuestionsService {
 
 
   // à la différence de createQuestion qui répond au submit form initial, updateQuestion qui répond à updateForm n'a pas besoin (?) d'être async car on a déjà id ...
-  updateQuestion(id: string, question: any, allFilesToUpdate: any) {
+  async updateQuestion(id: string, question: any, allFilesToUpdate: any) {
 
     // un peu comme pour la création
-    console.log(Object.values(allFilesToUpdate)[0]);
+    console.log("question ou les valeurs du formulaire", question);
+    
+    console.log(Object.values(allFilesToUpdate));
 
 
     if (question.mediaQuestion) {
-      this.idMediaQuestion = `mediaQuestion${question.number}_${question.sigle}`
+      this.idMediaQuestion = `mediaQuestionN${question.number}_${question.sigle}`
         // c'est là qu'on peut intégrer une différence selon le type de fichier détecté
-      console.log(Object.values(allFilesToUpdate)[0]);
+      console.log("dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", Object.values(allFilesToUpdate)[0]);
       if (Object.values(allFilesToUpdate)[0] == "video/mp4") {
         this.isVideo = true;
+        question.isVideo= true
         console.log(this.isVideo);
       }
-
+      question.isVideo=false
+      console.log("question ou les valeurs du formulaire", question);
     }
-    if (question.mediaOption1) {
-      this.idMediaOption1 = `mediaOption1${question.number}_${question.sigle}`
-      this.questions = [this.idMediaOption1, ...this.questions];
-    }
-    if (question.mediaOption2) {
-      this.idMediaOption2 = `mediaOption2${question.number}_${question.sigle}`
-      this.questions = [this.idMediaOption2, ...this.questions];
-    }
-    if (question.mediaOption3) {
-      this.idMediaOption3 = `mediaOption3${question.number}_${question.sigle}`
-      this.questions = [this.idMediaOption3, ...this.questions];
-    }
-    if (question.mediaOption4) {
-      this.idMediaOption4 = `mediaOption4${question.number}_${question.sigle}`
-      this.questions = [this.idMediaOption4, ...this.questions];
-    }
+    
+    
+    // if (question.mediaOption1) {
+    //   this.idMediaOption1 = `mediaOption1N${question.number}_${question.sigle}`
+    //   this.questions = [this.idMediaOption1, ...this.questions];
+    // }
+    // if (question.mediaOption2) {
+    //   this.idMediaOption2 = `mediaOption2N${question.number}_${question.sigle}`
+    //   this.questions = [this.idMediaOption2, ...this.questions];
+    // }
+    // if (question.mediaOption3) {
+    //   this.idMediaOption3 = `mediaOption3N${question.number}_${question.sigle}`
+    //   this.questions = [this.idMediaOption3, ...this.questions];
+    // }
+    // if (question.mediaOption4) {
+    //   this.idMediaOption4 = `mediaOption4N${question.number}_${question.sigle}`
+    //   this.questions = [this.idMediaOption4, ...this.questions];
+    // }
 
 
 
 
     let $questionRef = doc(this.firestore, "questions/" + id);
-    setDoc($questionRef, question)
+    console.log(question);
+    
+    await setDoc($questionRef, question).then(response=>console.log(response))
+
+    
     for (let myFile of allFilesToUpdate) {
       this.uploadFiles(myFile[0], myFile[1], id)
     }

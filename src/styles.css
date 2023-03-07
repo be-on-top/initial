@@ -24,3 +24,21 @@ h4,
 .btn i{
     margin-right: 1rem;
 }
+
+.bg-success, .success{
+    background-color: #B2BC00!important;
+}
+.text-success{
+   color: #B2BC00!important;
+}
+/* .bg-primary{
+    background-color: #8B00BD!important;
+} */
+
+.bg-primary{
+    background-color: #0074C8!important;
+}
+
+.bg-dark, .navbar-dark{
+    background-color: #272A61!important;
+}

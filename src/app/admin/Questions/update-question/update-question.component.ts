@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Observable } from 'rxjs';
 import { QuestionsService } from '../questions.service';
@@ -44,7 +44,7 @@ export class UpdateQuestionComponents implements OnInit {
 
   arrayFilesToUpdate: any = []
 
-  constructor(private service: QuestionsService, private ac: ActivatedRoute) {
+  constructor(private service: QuestionsService, private ac: ActivatedRoute,  private router:Router) {
   }
 
   ngOnInit(): void {
@@ -64,7 +64,7 @@ export class UpdateQuestionComponents implements OnInit {
 
   }
 
-  async updateForm(form: NgForm) {
+  updateForm(form: NgForm) {
     // on vérifie la validité du formulaire
     if (!form.valid) {
       console.log('form valid');
@@ -75,8 +75,8 @@ export class UpdateQuestionComponents implements OnInit {
     // pour update de la nouvelle image si nouvelle : 
     this.service.updateQuestion(this.questionId, form.value, this.arrayFilesToUpdate)
     // il faudra prévoir une redirection... 
+    // this.router.navigate(['/questions'])
   }
-
 
   //  fonction basique pour le moment. on fait d'abord un focus sur les données textuelles
   detectFiles(event: any, fieldName: any, item: any = "") {
@@ -85,14 +85,18 @@ export class UpdateQuestionComponents implements OnInit {
     if (this.allMediasQuestions.includes(item) || this.allMediasResponses.includes(item) || this.allPathsResponses.includes(item)) {
       alert(`êtes-vous certain de vouloir remplacer le fichier ${item} ?`)
       // si confirmation (à faire)
-      // this.service.deleteMedia(item)
+      this.service.deleteMedia(item)
       //et on enregistre le nouveau
   //  this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name, event.target.files[0].type])   
     }
 
+    console.log("jujlie", event.target.files[0].type);
+    
+
     this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name, event.target.files[0].type])
+    console.log("this.arrayFilesToUpdate", this.arrayFilesToUpdate);
     console.log(event.target.files[0].size);
-    if (event.target.files[0].size > 13000000) {
+    if (event.target.files[0].size > 14000000) {
       alert("File is too big!")
     }
   }
