@@ -7,8 +7,8 @@
     <!-- pour les messages de retour/validation des champs du formulaire ou form validation, on utilisera BOOTSTRAP plutôt que des directives structurelles -->
     <form class="form" #f="ngForm" class="was-validated" (submit)="submitForm(f)">
         <div class="form-group row justify-content-between">
-            <div class="col-sm-6">
-                <select class="form-select" name="sigle" id="sigle" ngModel required #sigle="ngModel">
+            <div class="col-sm-4">
+                <select class="form-select" name="sigle" id="sigle" ngModel required #sigle="ngModel" (change)="checkIfSelected(sigle.value)">
                     <option value>Selectionner le métier</option>
                     <option value="prepa_cdes">PREPA CDES</option>
                     <option value="poser_ite">POSEUR ITE</option>
@@ -17,23 +17,49 @@
                 </select>
                 <!-- <div class="valid-feedback" *ngIf="comment1.valid">Champ correctement renseigné</div> -->
             </div>
+            <div class="col-sm-4">
+                <select class="form-select" name="competence" id="competence" ngModel required #competence="ngModel">
+                    <option value>Competence ciblée</option>
+                    <option [value]=competences_ite.CP1 [disabled]="selectedSigle != 'poser_ite'">CP1 {{competences_ite.CP1}}</option>
+                    <option [value]=competences_ite.CP2 [disabled]="selectedSigle != 'poser_ite'">CP2 {{competences_ite.CP2}}</option>
+                    <option [value]=competences_ite.CP3 [disabled]="selectedSigle != 'poser_ite'">CP3 {{competences_ite.CP3}}</option>
+                    <option [value]=competences_ite.CP4 [disabled]="selectedSigle != 'poser_ite'">CP4 {{competences_ite.CP4}}</option>
+                    <option [value]=competences_ite.CP5 [disabled]="selectedSigle != 'poser_ite'">CP5 {{competences_ite.CP5}}</option>
+                    <option [value]=competences_ite.CP6 [disabled]="selectedSigle != 'poser_ite'">CP6 {{competences_ite.CP6}}</option>
+                    <option [value]=competences_ite.CP7 [disabled]="selectedSigle != 'poser_ite'">CP7 {{competences_ite.CP7}}</option>
+                    <option [value]=competences_ite.CP8 [disabled]="selectedSigle != 'poser_ite'">CP8 {{competences_ite.CP8}}</option>
+                    <option [value]=competences_ite.CP9 [disabled]="selectedSigle != 'poser_ite'">CP9 {{competences_ite.CP9}}</option>
+                    <option [value]=competences_ite.CP10 [disabled]="selectedSigle != 'poser_ite'">CP10 {{competences_ite.CP10}}</option>
+
+                    <option [value]=competences_cdes.CP1 [disabled]="selectedSigle != 'prepa_cdes'">CP1 {{competences_cdes.CP1}}</option>
+                    <option [value]=competences_cdes.CP2 [disabled]="selectedSigle != 'prepa_cdes'">CP2 {{competences_cdes.CP2}}</option>
+                    <option [value]=competences_cdes.CP3 [disabled]="selectedSigle != 'prepa_cdes'">CP3 {{competences_cdes.CP3}}</option>
+                    <option [value]=competences_cdes.CP4 [disabled]="selectedSigle != 'prepa_cdes'">CP4 {{competences_cdes.CP4}}</option>
+
+                    <option [value]=competences_vrd.CP1 [disabled]="selectedSigle != 'macon_vrd'">CP1 {{competences_vrd.CP1}}</option>
+                    <option [value]=competences_vrd.CP2 [disabled]="selectedSigle != 'macon_vrd'">CP2 {{competences_vrd.CP2}}</option>
+                    <option [value]=competences_vrd.CP3 [disabled]="selectedSigle != 'macon_vrd'">CP3 {{competences_vrd.CP3}}</option>
+                    <option [value]=competences_vrd.CP4 [disabled]="selectedSigle != 'macon_vrd'">CP4 {{competences_vrd.CP4}}</option>
+                    <option [value]=competences_vrd.CP5 [disabled]="selectedSigle != 'macon_vrd'">CP5 {{competences_vrd.CP5}}</option>
+                    <option [value]=competences_vrd.CP6 [disabled]="selectedSigle != 'macon_vrd'">CP6 {{competences_vrd.CP6}}</option>
+                    <option [value]=competences_vrd.CP7 [disabled]="selectedSigle != 'macon_vrd'">CP7 {{competences_vrd.CP7}}</option>
+                    <option [value]=competences_vrd.CP8 [disabled]="selectedSigle != 'macon_vrd'">CP8 {{competences_vrd.CP8}}</option>
+                    <option [value]=competences_vrd.CP9 [disabled]="selectedSigle != 'macon_vrd'">CP9 {{competences_vrd.CP9}}</option>
+                    <option [value]=competences_vrd.CP10 [disabled]="selectedSigle != 'macon_vrd'">CP10 {{competences_vrd.CP10}}</option>
+
+
+
+
+                    
+
+                </select>
+                <!-- <div class="valid-feedback" *ngIf="comment1.valid">Champ correctement renseigné</div> -->
+            </div>
             <!-- ajout du nombre des questions -->
-            <div class="col-sm-6">
+            <div class="col-sm-4">
                 <select class="form-select" id="number" name="number" ngModel required #number="ngModel">
-                    <!-- <option value>Numéro de question</option>
-                    <option value="1" [disabled]="checkIfRegistered(number)">Question N°1</option>
-                    <option value="2" [disabled]="checkIfRegistered(number.value)">Question N°2</option>
-                    <option value="3" [disabled]="checkIfRegistered(number.value)">Question N°3</option>
-                    <option value="4" [disabled]="checkIfRegistered(number.value)">Question N°4</option>
-                    <option value="5" [disabled]="checkIfRegistered(number.value)">Question N°5</option>
-                    <option value="6" [disabled]="checkIfRegistered(number.value)">Question N°6</option>
-                    <option value="7" [disabled]="checkIfRegistered(number.value)">Question N°7</option>
-                    <option value="8" [disabled]="checkIfRegistered(number.value)">Question N°8</option>
-                    <option value="9" [disabled]="checkIfRegistered(number.value)">Question N°9</option>
-                    <option value="10" [disabled]="checkIfRegistered(number.value)">Question N°10</option> -->
                     <option value>Numéro de question</option>
                     <option *ngFor="let element of numbers" value="{{element}}">{{element}}</option>
-
                 </select>
 
                 <!-- 

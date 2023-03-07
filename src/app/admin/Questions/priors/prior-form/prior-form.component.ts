@@ -39,6 +39,41 @@ export class PriorFormComponent implements OnInit {
   numbers: any[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
   registryNumbers: any[] = []
   // isRegistered:boolean = false
+  competences_ite: any = {
+    CP1: "Monter et démonter des échafaudages, fixes de pieds et roulants, et savoir les utiliser",
+    CP2: "Réaliser des travaux de peinture film mince de classe D2 sur des ouvrages neufs ou à rénover, en qualité definition C",
+    CP3: "Mettre en œuvre des revêtements de peinture épais et semi-épais de classe D3 sur des ouvrages neufs ou à rénover, en qualité de finition C",
+    CP4: "Réaliser des travaux extérieurs de peinture sur des supports bois, thermoplastiques et métalliques, neufs ou à rénover, en qualité de finition B",
+    CP5: "Mettre en œuvre des systèmes d'imperméabilité de classes I1 à I4",
+    CP6: "Réaliser l'étanchéité de supports horizontaux de type balcon ou similaire",
+    CP7: "Réaliser une isolation thermique extérieure par collage de panneaux isolants avec une finition enduit mince organique",
+    CP8: "Réaliser une isolation thermique extérieure par calage/chevillage de panneaux isolants avec une finition enduit mince minéral",
+    CP9: "Réaliser une isolation thermique extérieure par calage/chevillage de panneaux isolants avec en finition un enduit hydraulique projeté",
+    CP10: "Entretenir et rénover d'anciens systèmes d'isolation thermique extérieure avec une finition enduit mince"
+  }
+
+  competences_cdes : any = {
+    CP1: "Conduire en sécurité les chariots de manutention à conducteur porté de la catégorie 1A",
+    CP2: "Préparer et emballer les commandes",
+    CP3: "Charger, décharger les véhicules routiers à partir d'un quai et expédier les marchandises",
+    CP4: "Identifier, signaler et corriger les anomalies dans l'entrepôt",
+  }
+
+  competences_vrd: any = {
+    CP1: "Installer les dispositifs de sécurité pour chantier de voirie et réseaux",
+    CP2: "Réaliser les implantations secondaires des ouvrages de voirie et de réseaux",
+    CP3: "Construire des petits ouvrages d'aménagement urbain",
+    CP4: "Poser des pavés et des dalles manufacturées",
+    CP5: "Réaliser un dallage béton pour un ouvrage de voirie en aménagement urbain",
+    CP6: "Travailler à proximité des réseaux",
+    CP7: "Mettre en oeuvre des produits manufacturés de type bordures et caniveaux",
+    CP8: "Poser les gaines, fourreaux et les chambres de tirage pour les réseaux courant faible.",
+    CP9: "Poser les gaines et les chambres de tirage pour les réseaux courant fort.",
+    CP10: "Réaliser les branchements particuliers eaux pluviales et leurs raccordements"
+  }
+
+  
+  selectedSigle:string=""
 
   constructor(private service: QuestionsService, private router : Router) { }
 
@@ -98,6 +133,14 @@ export class PriorFormComponent implements OnInit {
     console.log(n)
     // this.registryNumbers.includes(n)?this.isRegistered==true:this.isRegistered==false) 
   }
+
+  checkIfSelected(sigle:any){
+    console.log(sigle);
+    this.selectedSigle=sigle
+    
+
+  }
+  
 
 
 }

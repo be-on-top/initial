@@ -2,10 +2,7 @@ import { Injectable } from '@angular/core';
 import { Storage, ref, uploadBytes, getDownloadURL, listAll, deleteObject } from '@angular/fire/storage';
 import { Firestore, collection, collectionData, docData, setDoc } from '@angular/fire/firestore';
 import { addDoc, doc } from 'firebase/firestore';
-import { FirebaseStorage } from 'firebase/storage';
 import { Observable } from 'rxjs';
-import { Router } from '@angular/router';
-
 
 
 
@@ -19,8 +16,6 @@ export class QuestionsService {
   mediaResponses: string[]
   pathResponses: string[]
 
-  // pour l'enregistrement des champs textuels
-  // évaluateurs ne serait pas un tableau de type any mais un observable
   questions: any[] = [];
   result: any;
   isVideo: boolean = false;
@@ -36,7 +31,7 @@ export class QuestionsService {
   constructor(private storage: Storage, private firestore: Firestore) {
     this.mediaQuestions = []
     this.mediaResponses = []
-    this.pathResponses= []
+    this.pathResponses = []
   }
 
 
@@ -150,7 +145,7 @@ export class QuestionsService {
       .then(async response => {
         console.log("listAll response for mediasQuestions", response);
         for (let item of response.items) {
-          console.log("voila la réponse avec getDownloaURL !!!!!!!!!!!!!!!!!!!!!!!!!!!", item);          
+          console.log("voila la réponse avec getDownloaURL !!!!!!!!!!!!!!!!!!!!!!!!!!!", item);
 
           // est-ce que c'était pertinent d'avoir l'url plutôt que le chemin ?
           let url = await getDownloadURL(item);
@@ -175,7 +170,7 @@ export class QuestionsService {
       .then(async response => {
         console.log("listAll path response for mediasQuestions", response);
         for (let item of response.items) {
-          console.log("voila la réponse avec paths!!!!!!!!!!!!!!!!!!!!!!!!!!!", item.fullPath); 
+          console.log("voila la réponse avec paths!!!!!!!!!!!!!!!!!!!!!!!!!!!", item.fullPath);
           console.log("path renvoyée en boucle", item.fullPath);
           this.pathResponses.push(item.fullPath)
         }
@@ -205,24 +200,24 @@ export class QuestionsService {
 
     // un peu comme pour la création
     console.log("question ou les valeurs du formulaire", question);
-    
+
     console.log(Object.values(allFilesToUpdate));
 
 
     if (question.mediaQuestion) {
       this.idMediaQuestion = `mediaQuestionN${question.number}_${question.sigle}`
-        // c'est là qu'on peut intégrer une différence selon le type de fichier détecté
+      // c'est là qu'on peut intégrer une différence selon le type de fichier détecté
       console.log("dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", Object.values(allFilesToUpdate)[0]);
       if (Object.values(allFilesToUpdate)[0] == "video/mp4") {
         this.isVideo = true;
-        question.isVideo= true
+        question.isVideo = true
         console.log(this.isVideo);
       }
-      question.isVideo=false
+      question.isVideo = false
       console.log("question ou les valeurs du formulaire", question);
     }
-    
-    
+
+
     // if (question.mediaOption1) {
     //   this.idMediaOption1 = `mediaOption1N${question.number}_${question.sigle}`
     //   this.questions = [this.idMediaOption1, ...this.questions];
@@ -245,10 +240,10 @@ export class QuestionsService {
 
     let $questionRef = doc(this.firestore, "questions/" + id);
     console.log(question);
-    
-    await setDoc($questionRef, question).then(response=>console.log(response))
 
-    
+    await setDoc($questionRef, question).then(response => console.log(response))
+
+
     for (let myFile of allFilesToUpdate) {
       this.uploadFiles(myFile[0], myFile[1], id)
     }
@@ -266,10 +261,10 @@ export class QuestionsService {
     // // Delete the file
     deleteObject(desertRef).then(() => {
       console.log("fichier supprimé");
-      
+
     }).catch((error) => {
       console.log(error);
-      
+
     });
 
   }
