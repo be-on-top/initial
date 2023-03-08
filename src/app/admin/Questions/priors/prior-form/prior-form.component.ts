@@ -72,6 +72,19 @@ export class PriorFormComponent implements OnInit {
     CP10: "Réaliser les branchements particuliers eaux pluviales et leurs raccordements"
   }
 
+  competences_vul: any = {
+    CP1: "Veiller au maintien du bon fonctionnement du véhicule de livraison et à son état général",
+    CP2: "Identifier l'envoi ou les envois et adapter l'organisation de la course et de la tournée en fonction des impératifs",
+    CP3: "Manutentionner la marchandise, charger, décharger le véhicule",
+    CP4: "Conduire et manœuvrer un véhicule utilitaire léger dans le respect des règles de sécurité routière de façon écologique et économique",
+    CP5: "Prendre en compte les spécificités de la course ou de la tournée dans un contexte urbain",
+    CP6: "Assurer la livraison, le dépôt ou l'enlèvement de marchandises dans un contexte commercial",
+    CP7: "Identifier, contrôler et renseigner les supports numériques ou les documents relatifs à l'exercice de l'emploi de conducteur livreur",
+    CP8: "Prévenir les risques liés à l'activité professionnelle et appliquer les procédures."
+  }
+
+  
+
   
   selectedSigle:string=""
 
