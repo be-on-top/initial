@@ -19,42 +19,43 @@
             </div>
             <div class="col-sm-4">
                 <select class="form-select" name="competence" id="competence" ngModel required #competence="ngModel">
-                    <option value>Competence ciblée</option>
-                    <option [value]=competences_ite.CP1 [disabled]="selectedSigle != 'poser_ite'">CP1 {{competences_ite.CP1}}</option>
-                    <option [value]=competences_ite.CP2 [disabled]="selectedSigle != 'poser_ite'">CP2 {{competences_ite.CP2}}</option>
-                    <option [value]=competences_ite.CP3 [disabled]="selectedSigle != 'poser_ite'">CP3 {{competences_ite.CP3}}</option>
-                    <option [value]=competences_ite.CP4 [disabled]="selectedSigle != 'poser_ite'">CP4 {{competences_ite.CP4}}</option>
-                    <option [value]=competences_ite.CP5 [disabled]="selectedSigle != 'poser_ite'">CP5 {{competences_ite.CP5}}</option>
-                    <option [value]=competences_ite.CP6 [disabled]="selectedSigle != 'poser_ite'">CP6 {{competences_ite.CP6}}</option>
-                    <option [value]=competences_ite.CP7 [disabled]="selectedSigle != 'poser_ite'">CP7 {{competences_ite.CP7}}</option>
-                    <option [value]=competences_ite.CP8 [disabled]="selectedSigle != 'poser_ite'">CP8 {{competences_ite.CP8}}</option>
-                    <option [value]=competences_ite.CP9 [disabled]="selectedSigle != 'poser_ite'">CP9 {{competences_ite.CP9}}</option>
-                    <option [value]=competences_ite.CP10 [disabled]="selectedSigle != 'poser_ite'">CP10 {{competences_ite.CP10}}</option>
+                    <option value>Competence ciblée en fonction du métier</option>
+                    <!-- <option value=competences_ite.CP1 [disabled]="selectedSigle != 'poser_ite'">CP1 {{competences_ite.CP1}}</option> -->
+                    <option value="p_ite_CP1" [ngClass]="{'d-none': selectedSigle != 'poser_ite'}">CP1 {{competences_ite.CP1}}</option>
+                    <option value="p_ite_CP2" [ngClass]="{'d-none': selectedSigle != 'poser_ite'}">CP2 {{competences_ite.CP2}}</option>
+                    <option value="p_ite_CP3" [ngClass]="{'d-none': selectedSigle != 'poser_ite'}">CP3 {{competences_ite.CP3}}</option>
+                    <option value="p_ite_CP4" [ngClass]="{'d-none': selectedSigle != 'poser_ite'}">CP4 {{competences_ite.CP4}}</option>
+                    <option value="p_ite_CP5" [ngClass]="{'d-none': selectedSigle != 'poser_ite'}">CP5 {{competences_ite.CP5}}</option>
+                    <option value="p_ite_CP6" [ngClass]="{'d-none': selectedSigle != 'poser_ite'}">CP6 {{competences_ite.CP6}}</option>
+                    <option value="p_ite_CP7" [ngClass]="{'d-none': selectedSigle != 'poser_ite'}">CP7 {{competences_ite.CP7}}</option>
+                    <option value="p_ite_CP8" [ngClass]="{'d-none': selectedSigle != 'poser_ite'}">CP8 {{competences_ite.CP8}}</option>
+                    <option value="p_ite_CP9" [ngClass]="{'d-none': selectedSigle != 'poser_ite'}">CP9 {{competences_ite.CP9}}</option>
+                    <option value="p_ite_CP10" [ngClass]="{'d-none': selectedSigle != 'poser_ite'}">CP10 {{competences_ite.CP10}}</option>
 
-                    <option [value]=competences_cdes.CP1 [disabled]="selectedSigle != 'prepa_cdes'">CP1 {{competences_cdes.CP1}}</option>
-                    <option [value]=competences_cdes.CP2 [disabled]="selectedSigle != 'prepa_cdes'">CP2 {{competences_cdes.CP2}}</option>
-                    <option [value]=competences_cdes.CP3 [disabled]="selectedSigle != 'prepa_cdes'">CP3 {{competences_cdes.CP3}}</option>
-                    <option [value]=competences_cdes.CP4 [disabled]="selectedSigle != 'prepa_cdes'">CP4 {{competences_cdes.CP4}}</option>
+                    <option value="p_cdes_CP1" [ngClass]="{'d-none': selectedSigle != 'prepa_cdes'}">CP1 {{competences_cdes.CP1}}</option>
+                    <option value="p_cdes_CP2" [ngClass]="{'d-none': selectedSigle != 'prepa_cdes'}">CP2 {{competences_cdes.CP2}}</option>
+                    <option value="p_cdes_CP3" [ngClass]="{'d-none': selectedSigle != 'prepa_cdes'}">CP3 {{competences_cdes.CP3}}</option>
+                    <option value="p_cdes_CP4" [ngClass]="{'d-none': selectedSigle != 'prepa_cdes'}">CP4 {{competences_cdes.CP4}}</option>
 
-                    <option [value]=competences_vrd.CP1 [disabled]="selectedSigle != 'macon_vrd'">CP1 {{competences_vrd.CP1}}</option>
-                    <option [value]=competences_vrd.CP2 [disabled]="selectedSigle != 'macon_vrd'">CP2 {{competences_vrd.CP2}}</option>
-                    <option [value]=competences_vrd.CP3 [disabled]="selectedSigle != 'macon_vrd'">CP3 {{competences_vrd.CP3}}</option>
-                    <option [value]=competences_vrd.CP4 [disabled]="selectedSigle != 'macon_vrd'">CP4 {{competences_vrd.CP4}}</option>
-                    <option [value]=competences_vrd.CP5 [disabled]="selectedSigle != 'macon_vrd'">CP5 {{competences_vrd.CP5}}</option>
-                    <option [value]=competences_vrd.CP6 [disabled]="selectedSigle != 'macon_vrd'">CP6 {{competences_vrd.CP6}}</option>
-                    <option [value]=competences_vrd.CP7 [disabled]="selectedSigle != 'macon_vrd'">CP7 {{competences_vrd.CP7}}</option>
-                    <option [value]=competences_vrd.CP8 [disabled]="selectedSigle != 'macon_vrd'">CP8 {{competences_vrd.CP8}}</option>
-                    <option [value]=competences_vrd.CP9 [disabled]="selectedSigle != 'macon_vrd'">CP9 {{competences_vrd.CP9}}</option>
-                    <option [value]=competences_vrd.CP10 [disabled]="selectedSigle != 'macon_vrd'">CP10 {{competences_vrd.CP10}}</option>
+                    <option value="m_vrd_CP1" [ngClass]="{'d-none': selectedSigle != 'macon_vrd'}">CP1 {{competences_vrd.CP1}}</option>
+                    <option value="m_vrd_CP2" [ngClass]="{'d-none': selectedSigle != 'macon_vrd'}">CP2 {{competences_vrd.CP2}}</option>
+                    <option value="m_vrd_CP3" [ngClass]="{'d-none': selectedSigle != 'macon_vrd'}">CP3 {{competences_vrd.CP3}}</option>
+                    <option value="m_vrd_CP4" [ngClass]="{'d-none': selectedSigle != 'macon_vrd'}">CP4 {{competences_vrd.CP4}}</option>
+                    <option value="m_vrd_CP5" [ngClass]="{'d-none': selectedSigle != 'macon_vrd'}">CP5 {{competences_vrd.CP5}}</option>
+                    <option value="m_vrd_CP6" [ngClass]="{'d-none': selectedSigle != 'macon_vrd'}">CP6 {{competences_vrd.CP6}}</option>
+                    <option value="m_vrd_CP7" [ngClass]="{'d-none': selectedSigle != 'macon_vrd'}">CP7 {{competences_vrd.CP7}}</option>
+                    <option value="m_vrd_P8" [ngClass]="{'d-none': selectedSigle != 'macon_vrd'}">CP8 {{competences_vrd.CP8}}</option>
+                    <option value="m_vrd_CP9" [ngClass]="{'d-none': selectedSigle != 'macon_vrd'}">CP9 {{competences_vrd.CP9}}</option>
+                    <option value="m_vrd_CP10" [ngClass]="{'d-none': selectedSigle != 'macon_vrd'}">CP10 {{competences_vrd.CP10}}</option>
 
-                    <option [value]=competences_vul.CP1 [disabled]="selectedSigle != 'cl_vul'">CP1 {{competences_vul.CP1}}</option>
-                    <option [value]=competences_vul.CP2 [disabled]="selectedSigle != 'cl_vul'">CP2 {{competences_vul.CP2}}</option>
-                    <option [value]=competences_vul.CP3 [disabled]="selectedSigle != 'cl_vul'">CP3 {{competences_vul.CP3}}</option>
-                    <option [value]=competences_vul.CP4 [disabled]="selectedSigle != 'cl_vul'">CP4 {{competences_vul.CP4}}</option>
-                    <option [value]=competences_vul.CP5 [disabled]="selectedSigle != 'cl_vul'">CP5 {{competences_vul.CP5}}</option>
-                    <option [value]=competences_vul.CP6 [disabled]="selectedSigle != 'cl_vul'">CP6 {{competences_vul.CP6}}</option>
-                    <option [value]=competences_vul.CP7 [disabled]="selectedSigle != 'cl_vul'">CP7 {{competences_vul.CP7}}</option>
-                    <option [value]=competences_vul.CP8 [disabled]="selectedSigle != 'cl_vul'">CP8 {{competences_vul.CP8}}</option>
+                    <option value="cl_vul_CP1" [ngClass]="{'d-none': selectedSigle != 'cl_vul'}">CP1 {{competences_vul.CP1}}</option>
+                    <option value="cl_vul_CP2" [ngClass]="{'d-none': selectedSigle != 'cl_vul'}">CP2 {{competences_vul.CP2}}</option>
+                    <option value="cl_vul_CP3" [ngClass]="{'d-none': selectedSigle != 'cl_vul'}">CP3 {{competences_vul.CP3}}</option>
+                    <option value="cl_vul_CP4" [ngClass]="{'d-none': selectedSigle != 'cl_vul'}">CP4 {{competences_vul.CP4}}</option>
+                    <option value="cl_vul_CP5" [ngClass]="{'d-none': selectedSigle != 'cl_vul'}">CP5 {{competences_vul.CP5}}</option>
+                    <option value="cl_vul_CP6" [ngClass]="{'d-none': selectedSigle != 'cl_vul'}">CP6 {{competences_vul.CP6}}</option>
+                    <option value="cl_vul_CP7" [ngClass]="{'d-none': selectedSigle != 'cl_vul'}">CP7 {{competences_vul.CP7}}</option>
+                    <option value="cl_vul_CP8" [ngClass]="{'d-none': selectedSigle != 'cl_vul'}">CP8 {{competences_vul.CP8}}</option>
                    
 
                 </select>
