@@ -115,7 +115,6 @@ export class QuestionsService {
     }
   }
 
-
   getMediasQuestions(): any {
     // Create a reference under which you want to list 
     let mediasQuestionsRef = ref(this.storage, 'images/questions');
@@ -162,6 +161,7 @@ export class QuestionsService {
 
   }
 
+  
   getMediasResponsesPath(): any {
     // Create a reference under which you want to list 
     let mediasResponsesRef = ref(this.storage, 'images/questions/responses');
@@ -183,7 +183,7 @@ export class QuestionsService {
   }
 
 
-  // getEvaluators(): Observable<Evaluators[]> {
+ // getEvaluators(): Observable<Evaluators[]> {
   getQuestions() {
     let $questionsRef = collection(this.firestore, "questions");
     return collectionData($questionsRef, { idField: "id" }) as Observable<any[]>
@@ -196,7 +196,7 @@ export class QuestionsService {
 
 
   // à la différence de createQuestion qui répond au submit form initial, updateQuestion qui répond à updateForm n'a pas besoin (?) d'être async car on a déjà id ...
-  async updateQuestion(id: string, question: any, allFilesToUpdate: any) {
+  updateQuestion(id: string, question: any, allFilesToUpdate: any) {
 
     // un peu comme pour la création
     console.log("question ou les valeurs du formulaire", question);
@@ -204,18 +204,18 @@ export class QuestionsService {
     console.log(Object.values(allFilesToUpdate));
 
 
-    if (question.mediaQuestion) {
-      this.idMediaQuestion = `mediaQuestionN${question.number}_${question.sigle}`
-      // c'est là qu'on peut intégrer une différence selon le type de fichier détecté
-      console.log("dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", Object.values(allFilesToUpdate)[0]);
-      if (Object.values(allFilesToUpdate)[0] == "video/mp4") {
-        this.isVideo = true;
-        question.isVideo = true
-        console.log(this.isVideo);
-      }
-      question.isVideo = false
-      console.log("question ou les valeurs du formulaire", question);
-    }
+    // if (question.mediaQuestion) {
+    //   this.idMediaQuestion = `mediaQuestionN${question.number}_${question.sigle}`
+    //   // c'est là qu'on peut intégrer une différence selon le type de fichier détecté
+    //   console.log("dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", Object.values(allFilesToUpdate)[0]);
+    //   if (Object.values(allFilesToUpdate)[0] == "video/mp4") {
+    //     this.isVideo = true;
+    //     question.isVideo = true
+    //     console.log(this.isVideo);
+    //   }
+    //   question.isVideo = false
+    //   console.log("question ou les valeurs du formulaire", question);
+    // }
 
 
     // if (question.mediaOption1) {
@@ -241,7 +241,8 @@ export class QuestionsService {
     let $questionRef = doc(this.firestore, "questions/" + id);
     console.log(question);
 
-    await setDoc($questionRef, question).then(response => console.log(response))
+
+    setDoc($questionRef, question).then(response => console.log(response))
 
 
     for (let myFile of allFilesToUpdate) {

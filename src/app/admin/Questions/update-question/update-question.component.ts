@@ -54,6 +54,7 @@ export class UpdateQuestionComponents implements OnInit {
     this.service.getQuestion(this.questionId).subscribe((data) => {
       console.log("data depuis update-question component !!!!!!!!!!!!!", data.question);
       this.result = data
+
     })
 
     this.allMediasQuestions = this.service.getMediasQuestions()
