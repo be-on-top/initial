@@ -50,7 +50,7 @@
         <!-- essai insertion boucle image / video pour aperçu -->
         <div *ngIf="allMediasQuestions">
             <div class="bg-light rounded rounded mb-3" *ngFor="let item of allMediasQuestions">
-                {{mediaQuestion | json}}
+                <!-- {{mediaQuestion | json}} -->
                 <div class="w-100 bg-primary p-2 rounded" *ngIf="item.includes(result.id)">
                     <!-- si fichier de type video / sinon utiliser le template pour l'image  -->
                     <video *ngIf="result.isVideo==true; else image" class="video">
@@ -58,17 +58,19 @@
                         Your browser does not support HTML video.
                     </video>
                     <ng-template #image><img class="img-fluid" [src]="item"></ng-template>
-                     <!-- input inclut dans la boucle -->
-                     <input type="file" accept="image/*, video/*" id="mediaQuestion" ngModel name="mediaQuestion"
-                     class="form-control" #mediaQuestion="ngModel" placeholder="Fichier média actuel"
-                     (change)="detectFiles($event, mediaQuestion, item)">
+                    <!-- input inclut dans la boucle -->
+                    <input type="file" accept="image/*, video/*" id="mediaQuestion" ngModel name="mediaQuestion"
+                        class="form-control" #mediaQuestion="ngModel" placeholder="Fichier média actuel"
+                        (change)="detectFiles($event, mediaQuestion, item)">
                 </div>
             </div>
         </div>
-        <!-- fin de essai -->      
-
-
-
+        <!-- fin de essai -->
+        <div *ngIf="mediaQuestionById.length==0">
+            <input type="file" accept="image/*, video/*" id="mediaQuestion" ngModel name="mediaQuestion"
+                class="form-control" #mediaQuestion="ngModel" placeholder="Fichier média actuel"
+                onchange="console.log(event.target.files)" (change)="detectFiles($event, mediaQuestion)">
+        </div>
         <!-- fin allMediasQuestions -->
 
 

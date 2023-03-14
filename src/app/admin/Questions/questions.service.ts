@@ -305,7 +305,7 @@ export class QuestionsService {
         // console.log("listAll medias for mediasQuestions", response);
         for (let item of response.items) {
           // console.log("esssai recuperation media question by id", item.fullPath.includes(id));
-          item.fullPath.includes(id) == true ? this.mediaQuestionById.push(item.fullPath) : ""
+          item.fullPath.includes(id) == true ? this.mediaQuestionById.push(item) : ""
           console.log("mon media Question pour l'id", this.mediaQuestionById);
         }
 
@@ -313,7 +313,7 @@ export class QuestionsService {
         // Uh-oh, an error occurred!
       });
 
-    return (this.mediasResponsesById)
+    return (this.mediaQuestionById)
 
   }  
 
