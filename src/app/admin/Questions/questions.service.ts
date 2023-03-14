@@ -27,6 +27,9 @@ export class QuestionsService {
   idMediaOption4: string = ""
 
   registryNumbers: any = []
+  mediasResponsesById: any = []
+  // on part ici de l'hypothèse où on en a plusieurs
+  mediaQuestionById: any = []
 
   constructor(private storage: Storage, private firestore: Firestore) {
     this.mediaQuestions = []
@@ -161,7 +164,7 @@ export class QuestionsService {
 
   }
 
-  
+
   getMediasResponsesPath(): any {
     // Create a reference under which you want to list 
     let mediasResponsesRef = ref(this.storage, 'images/questions/responses');
@@ -183,7 +186,7 @@ export class QuestionsService {
   }
 
 
- // getEvaluators(): Observable<Evaluators[]> {
+  // getEvaluators(): Observable<Evaluators[]> {
   getQuestions() {
     let $questionsRef = collection(this.firestore, "questions");
     return collectionData($questionsRef, { idField: "id" }) as Observable<any[]>
@@ -204,18 +207,18 @@ export class QuestionsService {
     console.log(Object.values(allFilesToUpdate));
 
 
-    // if (question.mediaQuestion) {
-    //   this.idMediaQuestion = `mediaQuestionN${question.number}_${question.sigle}`
-    //   // c'est là qu'on peut intégrer une différence selon le type de fichier détecté
-    //   console.log("dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", Object.values(allFilesToUpdate)[0]);
-    //   if (Object.values(allFilesToUpdate)[0] == "video/mp4") {
-    //     this.isVideo = true;
-    //     question.isVideo = true
-    //     console.log(this.isVideo);
-    //   }
-    //   question.isVideo = false
-    //   console.log("question ou les valeurs du formulaire", question);
-    // }
+    if (question.mediaQuestion) {
+      this.idMediaQuestion = `mediaQuestionN${question.number}_${question.sigle}`
+      // c'est là qu'on peut intégrer une différence selon le type de fichier détecté
+      console.log("dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", Object.values(allFilesToUpdate)[0]);
+      if (Object.values(allFilesToUpdate)[0] == "video/mp4") {
+        this.isVideo = true;
+        question.isVideo = true
+        console.log(this.isVideo);
+      }
+      question.isVideo = false
+      console.log("question ou les valeurs du formulaire", question);
+    }
 
 
     // if (question.mediaOption1) {
@@ -269,6 +272,50 @@ export class QuestionsService {
     });
 
   }
+
+
+  getMediasResponsesById(id: string) {
+    // Create a reference under which you want to list 
+    let mediasResponsesRef = ref(this.storage, 'images/questions/responses');
+    // Find all the prefixes and items.
+    listAll(mediasResponsesRef)
+      .then(async response => {
+        // console.log("listAll path response for mediasResponses", response);
+        for (let item of response.items) {
+
+          console.log("esssai recuperation media by id", item.fullPath.includes(id));
+          item.fullPath.includes(id) == true ? this.mediasResponsesById.push(item.fullPath.includes(id)) : ""
+          console.log("mediaREspnsesById", this.mediasResponsesById);
+        }
+
+      }).catch((error) => {
+        // Uh-oh, an error occurred!
+      });
+
+    return (this.mediasResponsesById)
+
+  }
+
+  getMediaQuestionById(id: string) {
+    // Create a reference under which you want to list 
+    let mediasQuestionsRef = ref(this.storage, 'images/questions');
+    // Find all the prefixes and items.
+    listAll(mediasQuestionsRef)
+      .then(async response => {
+        // console.log("listAll medias for mediasQuestions", response);
+        for (let item of response.items) {
+          // console.log("esssai recuperation media question by id", item.fullPath.includes(id));
+          item.fullPath.includes(id) == true ? this.mediaQuestionById.push(item.fullPath) : ""
+          console.log("mon media Question pour l'id", this.mediaQuestionById);
+        }
+
+      }).catch((error) => {
+        // Uh-oh, an error occurred!
+      });
+
+    return (this.mediasResponsesById)
+
+  }  
 
 
 }

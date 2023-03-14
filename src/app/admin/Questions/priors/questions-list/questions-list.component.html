@@ -11,20 +11,25 @@
 
             <!-- début de la question -->
             <div class="p-3 p-md-5 d-flex flex-column justify-content-between align-items-center rounded mb-3">
-                <p class="rounded bg-dark px-3 py-2 h3 fw-normal text-light">Question n°{{q.number}} : {{q.question}}
+                <p class="rounded bg-primary px-3 py-2 h3 fw-normal shadow-sm">Question n°{{q.number}} : {{q.question}}
                 </p>
                 <p class="fs-6"><span class="fw-bold">Métier :</span> {{q.sigle}} - <span class="fw-bold">Id :</span>
                     {{q.id}} - <a class="fw-bold text-decoration-none" [routerLink]="['/updateQuestion',q.id]">Modifier</a></p>
+
+                <!-- essai insertion boucle image / video différenciation du traitement -->
                 <div *ngIf="questionsMedias">
                     <!-- pour vérification en base si besoin de la source du media lié à une question -->
+                    <!-- {{questionsMedias}} -->
+
                     <div class="bg-light rounded rounded mb-3" *ngFor="let item of questionsMedias">
                         <div class="w-100 bg-primary p-2 rounded" *ngIf="item.includes(q.id)">
+
                             <!-- si fichier de type video / sinon utiliser le template pour l'image  -->
                             <video *ngIf="q.isVideo==true; else image" class="video" controls (ended)="displayResponseIfVideoEnded()">
                                 <source [src]="item" type="video/mp4">
                                 Your browser does not support HTML video.
                             </video>
-                            <ng-template #image><img class="img-fluid" [src]="item"></ng-template>
+                            <ng-template #image><img class="img-fluid bg-light" [src]="item"></ng-template>
                         </div>
 
                     </div>

@@ -41,15 +41,24 @@ export class UpdateQuestionComponents implements OnInit {
   allMediasQuestions: any[] = []
   allMediasResponses: any[] = []
   allPathsResponses: any[] = []
+  mediasResponsesById: any = []
+  mediaQuestionById: any = []
 
   arrayFilesToUpdate: any = []
+  notations: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 
-  constructor(private service: QuestionsService, private ac: ActivatedRoute,  private router:Router) {
+  constructor(private service: QuestionsService, private ac: ActivatedRoute, private router: Router) {
   }
 
   ngOnInit(): void {
 
     this.questionId = this.ac.snapshot.params["id"];
+    // récupération des seuls média Responses correspondant à la question en cours d'update
+    this.service.getMediasResponsesById(this.questionId)
+    // récupération du seul média Question correspondant à la question en cours d'update
+    this.mediasResponsesById=this.service.getMediasResponsesById(this.questionId)
+    this.mediaQuestionById=this.service.getMediaQuestionById(this.questionId)
+
     // on fait appel à getEvaluator pour récupérer les entrées de l'existant. méthode qui pour memo renvoie un observable
     this.service.getQuestion(this.questionId).subscribe((data) => {
       console.log("data depuis update-question component !!!!!!!!!!!!!", data.question);
@@ -57,10 +66,11 @@ export class UpdateQuestionComponents implements OnInit {
 
     })
 
+
     this.allMediasQuestions = this.service.getMediasQuestions()
     this.allMediasResponses = this.service.getMediasResponses()
     this.allPathsResponses = this.service.getMediasResponsesPath()
-    console.log("allMediasQuestions",this.allMediasQuestions);
+    console.log("allMediasQuestions", this.allMediasQuestions);
     console.log("allMediasResponses", this.allMediasResponses);
 
   }
@@ -76,7 +86,7 @@ export class UpdateQuestionComponents implements OnInit {
     // pour update de la nouvelle image si nouvelle : 
     this.service.updateQuestion(this.questionId, form.value, this.arrayFilesToUpdate)
     // il faudra prévoir une redirection... 
-    // this.router.navigate(['/questions'])
+    this.router.navigate(['/questions'])
   }
 
   //  fonction basique pour le moment. on fait d'abord un focus sur les données textuelles
@@ -88,11 +98,10 @@ export class UpdateQuestionComponents implements OnInit {
       // si confirmation (à faire)
       this.service.deleteMedia(item)
       //et on enregistre le nouveau
-  //  this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name, event.target.files[0].type])   
+      //  this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name, event.target.files[0].type])   
     }
 
     console.log("jujlie", event.target.files[0].type);
-    
 
     this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name, event.target.files[0].type])
     console.log("this.arrayFilesToUpdate", this.arrayFilesToUpdate);

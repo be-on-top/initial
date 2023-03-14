@@ -33,8 +33,6 @@ export class QuestionsListComponent implements OnInit {
     this.questionsMedias = this.service.getMediasQuestions()
     this.responsesMedias = this.service.getMediasResponses()
     this.getQuestions()
-
-
     // this.allQid = this.service.getQuestions()
     // this.allMediaByQid = this.spliteDataByQid(this.questionsMedias, this.responsesMedias, this.allQid )
     // this.detectMediaLink()

@@ -36,7 +36,7 @@ export class PriorFormComponent implements OnInit {
   comment5: string = "";
   // Create a root reference
 
-  numbers: any[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  numbers: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
   registryNumbers: any[] = []
   // isRegistered:boolean = false
   competences_ite: any = {
@@ -97,6 +97,8 @@ export class PriorFormComponent implements OnInit {
   totalMediasFiles: number = 0
   arrayFilesToUpload: any = []
 
+  notations: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+
   ngOnInit(): void {
 
     this.service.getQuestions().subscribe(data => {
@@ -135,11 +137,7 @@ export class PriorFormComponent implements OnInit {
     // this.onUploadFile(event.target.files[0], fieldName.name);
   }
 
-  // a priori pas nécessaire pour le moment... 
-  // detectDuration(event:any){
-  //   this.videoDuration= event.target.duration
-  //   console.log("duration", this.videoDuration);    
-  // }
+
 
   // ne servira plus si on parvient à mettre à jour this.registryNumbers à chaque nouvel enregistrement. *
   checkIfRegistered(n: any) {
