@@ -65,7 +65,7 @@
                 </div>
             </div>
         </div>
-        <!-- fin de essai -->
+
         <div *ngIf="mediaQuestionById.length==0">
             <input type="file" accept="image/*, video/*" id="mediaQuestion" ngModel name="mediaQuestion"
                 class="form-control" #mediaQuestion="ngModel" placeholder="Fichier média actuel"
@@ -80,21 +80,9 @@
         <input type="text" id="option1" name="option1" [(ngModel)]="result.option1" class="form-control"
             #option1="ngModel" placeholder="Option de réponse 1" required>
         <div class="valid-feedback" *ngIf="option1.valid">Champ correctement renseigné</div>
-        <!-- <div class="invalid-feedback" *ngIf="option1.invalid">Merci de renseigner le champ réponse 1.</div> -->
-
-
         <div *ngIf="allMediasResponses">
-            <!-- {{result.id}} -->
-            <!-- {{allMediasResponses | json}}
-            {{allMediasResponses.includes(result.id)}}
-            {{allMediasResponses.length}} -->
-
-            <!-- <div *ngIf="!allMediasResponses.includes(result.id), else update1"> -->
             <div *ngFor="let item of allMediasResponses">
-                <!-- item : {{ item}}
-                test d'inclusion: {{item.includes(result.id)}} -->
                 <div *ngIf="item.includes(result.id) && item.includes('Option1')">
-                    <!-- item considéré comme incluant 'lid' !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! {{item}} -->
                     <img class="img-fluid" [src]="item">
                     <label class="form-label mt-3" for="mediaOption1">Fichier à modifier</label>
                     <input type="file" id="mediaOption1" ngModel name="mediaOption1" class="form-control bg-primary"
@@ -103,9 +91,11 @@
                     <div class="bg-light rounded p-3 fst-italic">Nom du fichier en base à modifier: {{item}}</div>
                 </div>
             </div>
-            <!-- <label class="form-label mt-3" for="mediaOption1">Pour ajouter une image si besoin</label>
-            <input type="file" id="mediaOption1" name="mediaOption1" class="form-control bg-primary" #mediaOption1
-                placeholder="Fichier média de votre choix" (change)="detectFiles($event, mediaOption1)"> -->
+        </div>
+        <div *ngIf="mediasResponsesById.length==0">
+            <input type="file" accept="image/*, video/*" id="mediaQuestion" ngModel name="mediaQuestion"
+                class="form-control" #mediaQuestion="ngModel" placeholder="Fichier média actuel"
+                onchange="console.log(event.target.files)" (change)="detectFiles($event, mediaQuestion)">
         </div>
 
         <label for="comment1" class="form-label mt-3">Commentaire</label>
@@ -130,21 +120,10 @@
         <input type="text" id="option2" name="option2" [(ngModel)]="result.option2" class="form-control"
             #option2="ngModel" placeholder="Option de réponse 2" required>
         <div class="valid-feedback" *ngIf="option2.valid">Champ correctement renseigné</div>
-        <!-- <div class="invalid-feedback" *ngIf="option2.invalid">Merci de renseigner le champ réponse 2.</div> -->
-
 
         <div *ngIf="allMediasResponses">
-            <!-- {{result.id}} -->
-            <!-- {{allMediasResponses | json}}
-            {{allMediasResponses.includes(result.id)}}
-            {{allMediasResponses.length}} -->
-
-            <!-- <div *ngIf="!allMediasResponses.includes(result.id), else update2"> -->
             <div *ngFor="let item of allMediasResponses">
-                <!-- item : {{ item}}
-                test d'inclusion: {{item.includes(result.id)}} -->
                 <div *ngIf="item.includes(result.id) && item.includes('Option2')">
-                    <!-- item considéré comme incluant 'lid' !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! {{item}} -->
                     <img class="img-fluid" [src]="item">
                     <label class="form-label mt-3" for="mediaOption2">Fichier à modifier</label>
                     <input type="file" id="mediaOption2" ngModel name="mediaOption2" class="form-control bg-primary"
@@ -153,9 +132,11 @@
                     <div class="bg-light rounded p-3 fst-italic">Nom du fichier en base à modifier: {{item}}</div>
                 </div>
             </div>
-            <!-- <label class="form-label mt-3" for="mediaOption2">Pour ajouter une image si besoin</label>
-            <input type="file" id="mediaOption2" name="mediaOption2" class="form-control bg-primary" #mediaOption2
-                placeholder="Fichier média de votre choix" (change)="detectFiles($event, mediaOption2)"> -->
+            <div *ngIf="mediasResponsesById.length==0">
+                <input type="file" accept="image/*, video/*" id="mediaQuestion" ngModel name="mediaQuestion"
+                    class="form-control" #mediaQuestion="ngModel" placeholder="Fichier média actuel"
+                    onchange="console.log(event.target.files)" (change)="detectFiles($event, mediaQuestion)">
+            </div>
         </div>
 
         <label for="comment2" class="form-label mt-3">Commentaire</label>
@@ -180,21 +161,11 @@
         <input type="text" id="option3" name="option3" [(ngModel)]="result.option3" class="form-control"
             #option3="ngModel" placeholder="Option de réponse 3" required>
         <div class="valid-feedback" *ngIf="option3.valid">Champ correctement renseigné</div>
-        <!-- <div class="invalid-feedback" *ngIf="option3.invalid">Merci de renseigner le champ réponse 3.</div> -->
-
 
         <div *ngIf="allMediasResponses">
-            <!-- {{result.id}} -->
-            <!-- {{allMediasResponses | json}}
-            {{allMediasResponses.includes(result.id)}}
-            {{allMediasResponses.length}} -->
-
-            <!-- <div *ngIf="!allMediasResponses.includes(result.id), else update3"> -->
             <div *ngFor="let item of allMediasResponses">
-                <!-- item : {{ item}}
-                test d'inclusion: {{item.includes(result.id)}} -->
+
                 <div *ngIf="item.includes(result.id) && item.includes('Option3')">
-                    <!-- item considéré comme incluant 'lid' !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! {{item}} -->
                     <img class="img-fluid" [src]="item">
                     <label class="form-label mt-3" for="mediaOption3">Fichier à modifier</label>
                     <input type="file" id="mediaOption3" ngModel name="mediaOption3" class="form-control bg-primary"
@@ -203,9 +174,11 @@
                     <div class="bg-light rounded p-3 fst-italic">Nom du fichier en base à modifier: {{item}}</div>
                 </div>
             </div>
-            <!-- <label class="form-label mt-3" for="mediaOption3">Pour ajouter une image si besoin</label>
-            <input type="file" id="mediaOption3" name="mediaOption3" class="form-control bg-primary" #mediaOption3
-                placeholder="Fichier média de votre choix" (change)="detectFiles($event, mediaOption3)"> -->
+            <div *ngIf="mediasResponsesById.length==0">
+                <input type="file" accept="image/*, video/*" id="mediaQuestion" ngModel name="mediaQuestion"
+                    class="form-control" #mediaQuestion="ngModel" placeholder="Fichier média actuel"
+                    onchange="console.log(event.target.files)" (change)="detectFiles($event, mediaQuestion)">
+            </div>
         </div>
 
         <label for="comment3" class="form-label mt-3">Commentaire</label>
@@ -224,29 +197,15 @@
         </div>
 
 
-
-
         <hr>
         <!-- réponse 4 -->
         <label for="option4" class="form-label mt-3">Réponse 4 * </label>
         <input type="text" id="option4" name="option4" [(ngModel)]="result.option4" class="form-control"
             #option4="ngModel" placeholder="Option de réponse 4" required>
         <div class="valid-feedback" *ngIf="option4.valid">Champ correctement renseigné</div>
-        <!-- <div class="invalid-feedback" *ngIf="option4.invalid">Merci de renseigner le champ réponse 4.</div> -->
-
-
         <div *ngIf="allMediasResponses">
-            <!-- {{result.id}} -->
-            <!-- {{allMediasResponses | json}}
-            {{allMediasResponses.includes(result.id)}}
-            {{allMediasResponses.length}} -->
-
-            <!-- <div *ngIf="!allMediasResponses.includes(result.id), else update4"> -->
             <div *ngFor="let item of allMediasResponses">
-                <!-- item : {{ item}}
-                test d'inclusion: {{item.includes(result.id)}} -->
                 <div *ngIf="item.includes(result.id) && item.includes('Option4')">
-                    <!-- item considéré comme incluant 'lid' !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! {{item}} -->
                     <img class="img-fluid" [src]="item">
                     <label class="form-label mt-3" for="mediaOption4">Fichier à modifier</label>
                     <input type="file" id="mediaOption4" ngModel name="mediaOption4" class="form-control bg-primary"
@@ -255,9 +214,11 @@
                     <div class="bg-light rounded p-3 fst-italic">Nom du fichier en base à modifier: {{item}}</div>
                 </div>
             </div>
-            <!-- <label class="form-label mt-3" for="mediaOption4">Pour ajouter une image si besoin</label>
-            <input type="file" id="mediaOption4" name="mediaOption4" class="form-control bg-primary" #mediaOption4
-                placeholder="Fichier média de votre choix" (change)="detectFiles($event, mediaOption4)"> -->
+            <div *ngIf="mediasResponsesById.length==0">
+                <input type="file" accept="image/*, video/*" id="mediaQuestion" ngModel name="mediaQuestion"
+                    class="form-control" #mediaQuestion="ngModel" placeholder="Fichier média actuel"
+                    onchange="console.log(event.target.files)" (change)="detectFiles($event, mediaQuestion)">
+            </div>
         </div>
 
         <label for="comment4" class="form-label mt-3">Commentaire</label>
