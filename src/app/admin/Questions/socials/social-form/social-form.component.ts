@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SocialsService } from 'src/app/admin/socials.service';
-import { QuestionsService } from '../../questions.service';
 
 @Component({
   selector: 'app-social-form',
@@ -37,7 +36,8 @@ export class SocialFormComponent {
   // Create a root reference
 
   numbers: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-  registryNumbers: any[] = []
+  // inactif pour le moment
+  // registryNumbers: any[] = []
   
   selectedSigle:string=""
 
@@ -61,9 +61,8 @@ export class SocialFormComponent {
   async submitForm(form: NgForm) {
     console.log(form.value);
     this.service.createSocialQuestion(form.value, this.arrayFilesToUpload);
-    // form.reset();
-    this.router.navigate(['/questions'])
-    // window.location.reload();
+    form.reset();
+    alert(`question ${this.number} enregistrée`)
   }
 
 
