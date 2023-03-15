@@ -13,6 +13,8 @@ import { PriorFormComponent } from './Questions/priors/prior-form/prior-form.com
 import { QuestionDetailsComponent } from './Questions/priors/question-details/question-details.component';
 import { QuestionsListComponent } from './Questions/priors/questions-list/questions-list.component';
 import { UpdateQuestionComponents } from './Questions/update-question/update-question.component';
+import { SocialFormComponent } from './Questions/socials/social-form/social-form.component';
+
 // import { EvaluatorDetailsComponent } from './Evaluators/evaluator-details/evaluator-details.component';
 
 
@@ -21,10 +23,10 @@ const routesAdmin: Routes = [
   { path: 'addEvaluator', component: AddEvaluatorComponent },
   { path: 'evaluator/:id', component: EvaluatorDetailsComponent },
   { path: 'updateEvaluator/:id', component: UpdateEvaluatorComponent },
-  { path: 'priorform', component: PriorFormComponent },
+  { path: 'priorForm', component: PriorFormComponent },
   { path: 'questions', component: QuestionsListComponent },
   { path: 'questionDetails', component: QuestionDetailsComponent },
-  { path: 'updateQuestion/:id', component: UpdateQuestionComponents },
+  { path: 'socialForm', component: SocialFormComponent },
 
 ];
 
@@ -33,7 +35,7 @@ const routesAdmin: Routes = [
     EvaluatorsListComponent,
     AddEvaluatorComponent,
     EvaluatorDetailsComponent,
-    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents
+    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { QuestionsService } from '../../questions.service';
 
@@ -9,13 +9,17 @@ import { QuestionsService } from '../../questions.service';
 })
 export class QuestionDetailsComponent implements OnInit {
 
-questions:any[]=[]
-  constructor(public service:QuestionsService, private router:Router){
+  @Input() responsesMedias: any;
+
+
+  questions: any[] = []
+
+  constructor(private service: QuestionsService, private router: Router) {
 
   }
 
   ngOnInit() {
-    
+
   }
 
 }

@@ -3,6 +3,13 @@
     <h3>Mise à jour de la question id : {{questionId}}</h3>
     <hr>
 
+    <div class="input-group">
+        <span class="input-group-text">Custom Add-on Text</span>
+        <label class="form-control" tabindex="0">Custom Input Text
+          <input type="file" class="invisible">
+        </label>
+      </div>
+
     <form class="form" #f="ngForm" (submit)="updateForm(f)" class="was-validated">
         <!-- rappel du sigle métier -->
         <div class="form-group row justify-content-between">
@@ -49,7 +56,7 @@
 
         <!-- essai insertion boucle image / video pour aperçu -->
         <div *ngIf="allMediasQuestions">
-            <div class="bg-light rounded rounded mb-3" *ngFor="let item of allMediasQuestions">
+            <div class="bg-light rounded rounded mb-3" *ngFor="let item of allMediasQuestions"> 
                 <!-- {{mediaQuestion | json}} -->
                 <div class="w-100 bg-primary p-2 rounded" *ngIf="item.includes(result.id)">
                     <!-- si fichier de type video / sinon utiliser le template pour l'image  -->

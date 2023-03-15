@@ -17,6 +17,7 @@ export class QuestionsService {
   pathResponses: string[]
 
   questions: any[] = [];
+  // socialQuestions: any[] = []
   result: any;
   isVideo: boolean = false;
 
@@ -316,6 +317,10 @@ export class QuestionsService {
     return (this.mediaQuestionById)
 
   }  
+
+
+
+
 
 
 }
