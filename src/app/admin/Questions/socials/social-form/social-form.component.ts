@@ -33,7 +33,8 @@ export class SocialFormComponent {
   mediaOption5: any;
   option5: string = "";
   comment5: string = "";
-  // Create a root reference
+  // Essai décompte réponses
+  maxNumberResponses:any[]=[1,2,3,4]
 
   numbers: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
   // inactif pour le moment
