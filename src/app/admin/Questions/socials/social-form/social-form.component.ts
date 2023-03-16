@@ -74,8 +74,7 @@ export class SocialFormComponent {
 
   checkIfSelected(sigle:any){
     console.log(sigle);
-    this.selectedSigle=sigle    
-
+    this.selectedSigle=sigle
   }
 
 
