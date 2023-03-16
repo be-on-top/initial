@@ -94,7 +94,7 @@ export class PriorFormComponent implements OnInit {
   fileUrl!: string;
   fileUploaded = false;
 
-  totalMediasFiles: number = 0
+  // totalMediasFiles: number = 0
   arrayFilesToUpload: any = []
 
   notations: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
@@ -128,7 +128,7 @@ export class PriorFormComponent implements OnInit {
 
   detectFiles(event: any, fieldName: any) {
     console.log(event.target.files[0].size);
-    this.totalMediasFiles++;
+    // this.totalMediasFiles++;
     this.arrayFilesToUpload.push([event.target.files[0], fieldName.name, event.target.files[0].type])
     console.log("this.arrayFilesToUpload", this.arrayFilesToUpload);
     if (event.target.files[0].size > 13000000) {

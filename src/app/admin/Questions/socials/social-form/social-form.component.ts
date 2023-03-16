@@ -63,7 +63,7 @@ export class SocialFormComponent {
     console.log(form.value);
     this.service.createSocialQuestion(form.value, this.arrayFilesToUpload);
     form.reset();
-    alert(`question ${this.number} enregistrée`)
+    alert(`question enregistrée`)
   }
 
 

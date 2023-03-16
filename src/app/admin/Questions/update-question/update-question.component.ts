@@ -40,7 +40,7 @@ export class UpdateQuestionComponents implements OnInit {
 
   allMediasQuestions: any[] = []
   allMediasResponses: any[] = []
-  allPathsResponses: any[] = []
+  // allPathsResponses: any[] = []
   mediasResponsesById: any = []
   mediaQuestionById: any = []
 
@@ -58,7 +58,7 @@ export class UpdateQuestionComponents implements OnInit {
     // récupération du seul média Question correspondant à la question en cours d'update
     this.mediasResponsesById=this.service.getMediasResponsesById(this.questionId)
     this.mediaQuestionById=this.service.getMediaQuestionById(this.questionId)
-    console.log("jjjjjjjjjjjjjjjjjjjjjjjjjjj",this.mediaQuestionById);
+    // console.log("jjjjjjjjjjjjjjjjjjjjjjjjjjj",this.mediaQuestionById);
     
 
     // on fait appel à getEvaluator pour récupérer les entrées de l'existant. méthode qui pour memo renvoie un observable
@@ -71,7 +71,7 @@ export class UpdateQuestionComponents implements OnInit {
 
     this.allMediasQuestions = this.service.getMediasQuestions()
     this.allMediasResponses = this.service.getMediasResponses()
-    this.allPathsResponses = this.service.getMediasResponsesPath()
+    // this.allPathsResponses = this.service.getMediasResponsesPath()
     console.log("allMediasQuestions", this.allMediasQuestions);
     console.log("allMediasResponses", this.allMediasResponses);
 
@@ -84,7 +84,7 @@ export class UpdateQuestionComponents implements OnInit {
       return
     }
 
-    console.log("form update values", form.value);
+    // console.log("form update values", form.value);
     // pour update de la nouvelle image si nouvelle : 
     this.service.updateQuestion(this.questionId, form.value, this.arrayFilesToUpdate)
     // il faudra prévoir une redirection... 
@@ -95,7 +95,8 @@ export class UpdateQuestionComponents implements OnInit {
   detectFiles(event: any, fieldName: any, item: any = "") {
     console.log("sssssssssss", fieldName.name);
 
-    if (this.allMediasQuestions.includes(item) || this.allMediasResponses.includes(item) || this.allPathsResponses.includes(item)) {
+    // if (this.allMediasQuestions.includes(item) || this.allMediasResponses.includes(item) || this.allPathsResponses.includes(item)) {
+    if (this.allMediasQuestions.includes(item) || this.allMediasResponses.includes(item)) {
       alert(`êtes-vous certain de vouloir remplacer le fichier ${item} ?`)
       // si confirmation (à faire)
       this.service.deleteMedia(item)
@@ -103,12 +104,12 @@ export class UpdateQuestionComponents implements OnInit {
       //  this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name, event.target.files[0].type])   
     }
 
-    console.log("jujlie", event.target.files[0].type);
+    console.log("Type de fichier", event.target.files[0].type);
 
     this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name, event.target.files[0].type])
-    console.log("this.arrayFilesToUpdate", this.arrayFilesToUpdate);
+    // console.log("this.arrayFilesToUpdate", this.arrayFilesToUpdate);
     console.log(event.target.files[0].size);
-    if (event.target.files[0].size > 14000000) {
+    if (event.target.files[0].size > 18000000) {
       alert("File is too big!")
     }
   }
@@ -117,7 +118,6 @@ export class UpdateQuestionComponents implements OnInit {
   readFile(fieldName: any) {
     alert("dddddd")
     console.log("ce que je récupère", fieldName);
-
   }
 
 }

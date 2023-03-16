@@ -10,36 +10,37 @@
             
             <div class="col-sm-4">
                 <select class="form-select" id="number" name="number" ngModel required #number="ngModel">
-                    <option value>Numéro de question</option>
+                    <option value="">Numéro de question</option>
                     <option *ngFor="let element of numbers" value="{{element}}">Q{{element}}</option>
                 </select>
+                <div class="valid-feedback mb-3" *ngIf="number.valid">Champ correctement renseigné</div>
             </div>
             <div class="col-sm-4">
                 <select class="form-select" name="notation" id="notation" ngModel required #notation="ngModel">
-                    <option value>Points attribués à la question</option>
+                    <option value="">Points attribués à la question</option>
                     <option *ngFor="let notation of notations" value="{{notation}}">+{{notation}}PNTS</option>
                 </select>
-                <!-- <div class="valid-feedback" *ngIf="comment1.valid">Champ correctement renseigné</div> -->
+                <div class="valid-feedback mb-3" *ngIf="notation.valid">Champ correctement renseigné</div>
             </div>
             <div class="col-sm-4">
                 <select class="form-select" name="category" id="category" ngModel required #category="ngModel"
                     (change)="checkIfSelected(category.value)">
-                    <option value>Catégorie</option>
+                    <option value="">Catégorie</option>
                     <option value="prepa_cdes">PREPA CDES</option>
                     <option value="poser_ite">POSEUR ITE</option>
                     <option value="macon_vrd">MACON VRD</option>
                     <option value="cl_vul">CLVUL</option>
                     <option value="general">TRANSVERSALE (Générale)</option>
                 </select>
-                <!-- <div class="valid-feedback" *ngIf="comment1.valid">Champ correctement renseigné</div> -->
+                <div class="valid-feedback mb-3" *ngIf="category.valid">Champ correctement renseigné</div>
             </div>
         </div>
 
         <label for="question" class="form-label mt-3">Question *</label>
         <input type="text" id="question" ngModel name="question" class="form-control"
             placeholder="Saisir la question..." required #question="ngModel">
-        <div class="valid-feedback" *ngIf="question.valid">Champ correctement renseigné</div>
-        <div class="invalid-feedback" *ngIf="question.invalid">Merci de renseigner le libellé obligatoire de la question
+        <div class="valid-feedback mb-3" *ngIf="question.valid">Champ correctement renseigné</div>
+        <div class="invalid-feedback mb-3" *ngIf="question.invalid">Merci de renseigner le libellé obligatoire de la question
         </div>
         <input type="file" accept="image/*, video/*" id="mediaQuestion" ngModel name="mediaQuestion"
             class="form-control" #mediaQuestion="ngModel" placeholder="Fichier média de votre choix"
@@ -87,7 +88,7 @@
         <label for="comment2" class="form-label mt-3">Commentaire</label>
         <textarea id="comment2" ngModel name="comment2" class="form-control" #comment2="ngModel"
             placeholder="Commentaire si besoin" cols="30" rows="5"></textarea>
-        <!-- <div class="valid-feedback" *ngIf="comment1.valid">Champ correctement renseigné</div> -->
+        <!-- <div class="valid-feedback" *ngIf="comment2.valid">Champ correctement renseigné</div> -->
         <!-- valeur de la réponse -->
         <div class="form-group d-flex gap-5 mt-3">
             <div class="form-check">
@@ -106,7 +107,7 @@
         <label for="option2" class="form-label mt-3">Réponse 3</label>
         <input type="text" ngModel name="option3" class="form-control" #option3="ngModel"
             placeholder="Option de réponse 3">
-        <div class="valid-feedback" *ngIf="option3.valid">Champ correctement renseigné</div>
+        <!-- <div class="valid-feedback" *ngIf="option3.valid">Champ correctement renseigné</div> -->
         <!-- <div class="invalid-feedback" *ngIf="option3.invalid">Merci de renseigner le champ nom.</div> -->
         <label for="mediaOption3" class="form-label mt-3">Pièce jointe si besoin</label>
         <input type="file" id="mediaOption3" name="mediaOption3" class="form-control" #mediaOption3
@@ -114,7 +115,7 @@
         <label for="comment3" class="form-label mt-3">Commentaire</label>
         <textarea id="comment3" ngModel name="comment3" class="form-control" #comment3="ngModel"
             placeholder="Commentaire si besoin" cols="30" rows="5"></textarea>
-        <!-- <div class="valid-feedback" *ngIf="comment1.valid">Champ correctement renseigné</div> -->
+        <!-- <div class="valid-feedback" *ngIf="comment3.valid">Champ correctement renseigné</div> -->
         <!-- valeur de la réponse -->
         <div class="form-group d-flex gap-5 mt-3">
             <div class="form-check">
@@ -133,7 +134,7 @@
         <label for="option4" class="form-label mt-3">Réponse 4 </label>
         <input type="text" ngModel name="option4" class="form-control" #option4="ngModel"
             placeholder="Option de réponse 4">
-        <div class="valid-feedback" *ngIf="option4.valid">Champ correctement renseigné</div>
+        <!-- <div class="valid-feedback" *ngIf="option4.valid">Champ correctement renseigné</div> -->
         <!-- <div class="invalid-feedback" *ngIf="option4.invalid">Merci de renseigner le champ nom.</div> -->
         <label for="mediaOption4" class="form-label mt-3">Pièce jointe si besoin</label>
         <input type="file" id="mediaOption4" name="mediaOption4" class="form-control" #mediaOption4
@@ -156,6 +157,7 @@
             </div>
         </div>
         <!-- fin valeur de la réponse -->
+
 
         <hr>
 

@@ -46,7 +46,7 @@ export class QuestionsService {
       this.idMediaQuestion = `mediaQuestion${question.number}_${question.sigle}`
       this.questions = [this.idMediaQuestion, ...this.questions];
       // c'est là qu'on peut intégrer une différence selon le type de fichier détecté
-      console.log(Object.values(allFilesToUplad)[0][2]);
+      // console.log(Object.values(allFilesToUplad)[0][2]);
       if (Object.values(allFilesToUplad)[0][2] == "video/mp4") {
         this.isVideo = true;
         console.log(this.isVideo);

@@ -43,12 +43,12 @@ export class SocialsService {
     // let newQuestion if no mediasAttached;
     let newSocialQuestion = { created: Date.now(), isVideo: this.isVideo, ...socialQuestion };
     this.socialQuestions = [newSocialQuestion, ...this.socialQuestions];
-    console.log(this.socialQuestions);
+    // console.log(this.socialQuestions);
 
     let $questionsRef = collection(this.firestore, "squestions");
     await addDoc($questionsRef, newSocialQuestion).then((response) => {
       this.result = response.id;
-      console.log(response.id);
+      // console.log(response.id);
       if (this.result) {
         for (let myFile of allFilesToUplad) {
           this.uploadFiles(myFile[0], myFile[1], this.result)
@@ -77,7 +77,7 @@ export class SocialsService {
         .catch((error) => console.log(error))
     }
     else {
-      let storageRef = ref(this.storage, 'images/questions/responses/' + idq + '_' + fieldName + '_' + file.name);
+      let storageRef = ref(this.storage, 'images/squestions/responses/' + idq + '_' + fieldName + '_' + file.name);
       uploadBytes(storageRef, file)
         .then((response) => console.log(response))
         .catch((error) => console.log(error))
