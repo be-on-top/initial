@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { collection, Firestore } from '@angular/fire/firestore';
-import { ref, Storage, uploadBytes } from '@angular/fire/storage';
+import { collection, collectionData, doc, docData, Firestore } from '@angular/fire/firestore';
+import { getDownloadURL, listAll, ref, Storage, uploadBytes } from '@angular/fire/storage';
 import { addDoc } from 'firebase/firestore';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +36,6 @@ export class SocialsService {
       if (Object.values(allFilesToUplad)[0][2] == "video/mp4") {
         this.isVideo = true;
         console.log(this.isVideo);
-
       }
 
     }
@@ -83,6 +83,103 @@ export class SocialsService {
         .catch((error) => console.log(error))
     }
   }
+
+
+  getMediasQuestions(): any {
+    // Create a reference under which you want to list 
+    let mediasQuestionsRef = ref(this.storage, 'images/questions');
+    // Find all the prefixes and items.
+    listAll(mediasQuestionsRef)
+      .then(async response => {
+        console.log("listAll response for mediasQuestions", response);
+        for (let item of response.items) {
+          let url = await getDownloadURL(item);
+          console.log("url renvoyée en boucle", url);
+          this.mediaQuestions.push(url)
+        }
+
+      }).catch((error) => {
+        // Uh-oh, an error occurred!
+      });
+
+    return this.mediaQuestions
+
+  }
+
+  getMediasResponses(): any {
+    // Create a reference under which you want to list 
+    let mediasResponsesRef = ref(this.storage, 'images/questions/responses');
+    // Find all the prefixes and items.
+    listAll(mediasResponsesRef)
+      .then(async response => {
+        console.log("listAll response for mediasQuestions", response);
+        for (let item of response.items) {
+          console.log("voila la réponse avec getDownloaURL !!!!!!!!!!!!!!!!!!!!!!!!!!!", item);
+          // est-ce que c'était pertinent d'avoir l'url plutôt que le chemin ?
+          let url = await getDownloadURL(item);
+          console.log("url renvoyée en boucle", url);
+          this.mediaResponses.push(url)
+          // this.pathResponses.push(item.fullPath)
+        }
+
+      }).catch((error) => {
+        // Uh-oh, an error occurred!
+      });
+
+    return (this.mediaResponses)
+  }
+
+  getMediasResponsesById(id: string) {
+    // Create a reference under which you want to list 
+    let mediasResponsesRef = ref(this.storage, 'images/squestions/responses');
+    // Find all the prefixes and items.
+    listAll(mediasResponsesRef)
+      .then(async response => {
+        // console.log("listAll path response for mediasResponses", response);
+        for (let item of response.items) {
+          console.log("esssai recuperation media by id", item.fullPath.includes(id));
+          item.fullPath.includes(id) == true ? this.mediasResponsesById.push(item.fullPath.includes(id)) : ""
+          console.log("mediaREspnsesById", this.mediasResponsesById);
+        }
+
+      }).catch((error) => {
+        // Uh-oh, an error occurred!
+      });
+
+    return (this.mediasResponsesById)
+
+  }
+
+  getMediaQuestionById(id: string) {
+    // Create a reference under which you want to list 
+    let mediasQuestionsRef = ref(this.storage, 'images/squestions');
+    listAll(mediasQuestionsRef)
+      .then(async response => {
+        // console.log("listAll medias for social questions", response);
+        for (let item of response.items) {
+          // console.log("esssai recuperation media question sociale by id", item.fullPath.includes(id));
+          item.fullPath.includes(id) == true ? this.mediaQuestionById.push(item) : ""
+          console.log("mon media Question pour l'id", this.mediaQuestionById);
+        }
+
+      }).catch((error) => {
+        // Uh-oh, an error occurred!
+      });
+
+    return (this.mediaQuestionById)
+
+  }
+
+  getSocialQuestions() {
+    let $questionsRef = collection(this.firestore, "squestions");
+    return collectionData($questionsRef, { idField: "id" }) as Observable<any[]>
+  }
+
+  getSocialQuestion(id: string) {
+    let $questionRef = doc(this.firestore, "questions/" + id)
+    return docData($questionRef, { idField: 'id' }) as Observable<any>;
+  }
+
 
 
 }

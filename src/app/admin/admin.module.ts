@@ -27,6 +27,7 @@ const routesAdmin: Routes = [
   { path: 'priorForm', component: PriorFormComponent },
   { path: 'questions', component: QuestionsListComponent },
   { path: 'questionDetails', component: QuestionDetailsComponent },
+  { path: 'updateQuestion/:id', component: UpdateQuestionComponents },
   { path: 'socialForm', component: SocialFormComponent },
   { path: 'socials', component: SocialsListComponent }
 

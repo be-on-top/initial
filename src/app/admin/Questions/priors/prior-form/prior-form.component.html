@@ -121,8 +121,8 @@
         <label for="question" class="form-label mt-3">Question *</label>
         <input type="text" id="question" ngModel name="question" class="form-control"
             placeholder="Saisir la question..." required #question="ngModel">
-        <div class="valid-feedback" *ngIf="question.valid">Champ correctement renseigné</div>
-        <div class="invalid-feedback" *ngIf="question.invalid">Merci de renseigner le libellé obligatoire de la question
+        <div class="valid-feedback mb-3" *ngIf="question.valid">Champ correctement renseigné</div>
+        <div class="invalid-feedback mb-3" *ngIf="question.invalid">Merci de renseigner le libellé obligatoire de la question
         </div>
         <input type="file" accept="image/*, video/*" id="mediaQuestion" ngModel name="mediaQuestion"
             class="form-control" #mediaQuestion="ngModel" placeholder="Fichier média de votre choix"
@@ -135,8 +135,8 @@
         <label for="option1" class="form-label mt-3">Réponse 1 * </label>
         <input type="text" id="option1" ngModel name="option1" class="form-control" #option1="ngModel"
             placeholder="Option de réponse 1" required>
-        <div class="valid-feedback" *ngIf="option1.valid">Champ correctement renseigné</div>
-        <div class="invalid-feedback" *ngIf="option1.invalid">Merci de renseigner le champ réponse 1.</div>
+        <div class="valid-feedback mb-3" *ngIf="option1.valid">Champ correctement renseigné</div>
+        <div class="invalid-feedback mb-3" *ngIf="option1.invalid">Merci de renseigner le champ réponse 1.</div>
         <label for="mediaOption1" class="form-label mt-3">Pièce jointe si besoin</label>
         <input type="file" id="mediaOption1" name="mediaOption1" class="form-control" #mediaOption1
             placeholder="Fichier média de votre choix" (change)="detectFiles($event, mediaOption1)">
@@ -162,8 +162,8 @@
         <label for="option2" class="form-label mt-3">Réponse 2 * </label>
         <input type="text" ngModel name="option2" class="form-control" #option2="ngModel"
             placeholder="Option de réponse 2" required>
-        <div class="valid-feedback" *ngIf="option2.valid">Champ correctement renseigné</div>
-        <div class="invalid-feedback" *ngIf="option2.invalid">Merci de renseigner le champ réponse 2.</div>
+        <div class="valid-feedback mb-3" *ngIf="option2.valid">Champ correctement renseigné</div>
+        <div class="invalid-feedback mb-3" *ngIf="option2.invalid">Merci de renseigner le champ réponse 2.</div>
         <label for="mediaOption2" class="form-label mt-3">Pièce jointe si besoin</label>
         <input type="file" id="mediaOption2" name="mediaOption2" class="form-control" #mediaOption2
             placeholder="Fichier média de votre choix" (change)="detectFiles($event, mediaOption2)">

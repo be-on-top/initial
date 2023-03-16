@@ -11,7 +11,7 @@
 
             <!-- début de la question -->
             <div class="p-3 p-md-5 d-flex flex-column justify-content-between align-items-center rounded mb-3">
-                <p class="rounded bg-primary px-3 py-2 h3 fw-normal shadow-sm">Question n°{{q.number}} : {{q.question}}
+                <p class="rounded bg-primary px-3 py-2 h3 fw-normal shadow-sm">Q{{q.number}} : {{q.question}}
                 </p>
                 <p class="fs-6"><span class="fw-bold">Métier :</span> {{q.sigle}} - <span class="fw-bold">Id :</span>
                     {{q.id}} - <a class="fw-bold text-decoration-none" [routerLink]="['/updateQuestion',q.id]">Modifier</a></p>
@@ -25,7 +25,8 @@
                         <div class="w-100 bg-primary p-2 rounded" *ngIf="item.includes(q.id)">
 
                             <!-- si fichier de type video / sinon utiliser le template pour l'image  -->
-                            <video *ngIf="q.isVideo==true; else image" class="video" controls (ended)="displayResponseIfVideoEnded()">
+                            <!-- <video *ngIf="q.isVideo==true; else image" class="video" controls (ended)="displayResponseIfVideoEnded()"> -->
+                            <video *ngIf="q.isVideo==true; else image" class="video" controls>
                                 <source [src]="item" type="video/mp4">
                                 Your browser does not support HTML video.
                             </video>
@@ -37,10 +38,11 @@
                 <!-- fin de la question -->
 
                 <!-- début des réponses -->
-                <div class="p-3 p-md-5 row justify-content-between align-items-end mb-3 rounded bg-light w-100" [ngClass]="{'opacity-0': questionsMedias && q.isVideo==true && !videoEnded, 'opacity-100': questionsMedias && q.isVideo && videoEnded}">
+                <!-- <div class="p-3 p-md-5 row justify-content-between align-items-end mb-3 rounded bg-light w-100" [ngClass]="{'opacity-0': questionsMedias && q.isVideo==true && !videoEnded, 'opacity-100': questionsMedias && q.isVideo && videoEnded}"> -->
+                <div class="p-3 p-md-5 row justify-content-between align-items-end mb-3 rounded bg-light w-100">
 
                     <div class="col-sm-6 rounded" [ngClass]="{'text-success':q.optScoring1=='true'}">
-                        <p class="text-center fs-5">Réponse1 : {{q.option1}} <i *ngIf="q.optScoring1=='true'"
+                        <p class="text-center fs-5">R1 : {{q.option1}} <i *ngIf="q.optScoring1=='true'"
                                 class="text-success fs-6 bi bi-check-lg"></i></p>
                         <div *ngIf="responsesMedias">
                             <div *ngFor="let item of responsesMedias">
@@ -51,7 +53,7 @@
                         <!-- si pas d'images -->
                     </div>
                     <div class="col-sm-6 rounded" [ngClass]="{'text-success':q.optScoring2=='true'}">
-                        <p class="text-center fs-5">Réponse2 : {{q.option2}} <i *ngIf="q.optScoring2=='true'"
+                        <p class="text-center fs-5">R2 : {{q.option2}} <i *ngIf="q.optScoring2=='true'"
                                 class="text-success fs-6 bi bi-check-lg"></i></p>
                         <div *ngIf="responsesMedias">
                             <div *ngFor="let item of responsesMedias">
@@ -62,7 +64,7 @@
                     </div>
                     <!-- à partir d'ici, les options Réponse 3 et Réponse 4 n'étant pas obligatoires, faut qu'on s'assure qu'elles existent -->
                     <div class="col-sm-6 rounded" *ngIf="q.option3" [ngClass]="{'text-success':q.optScoring3=='true'}">
-                        <p class="text-center fs-5">Réponse3 : {{q.option3}} <i *ngIf="q.optScoring3=='true'"
+                        <p class="text-center fs-5">R3 : {{q.option3}} <i *ngIf="q.optScoring3=='true'"
                                 class="text-success fs-6 bi bi-check-lg"></i></p>
                         <div *ngIf="responsesMedias">
                             <div *ngFor="let item of responsesMedias">
@@ -72,7 +74,7 @@
                         </div>
                     </div>
                     <div class="col-sm-6 rounded" *ngIf="q.option4" [ngClass]="{'text-success':q.optScoring4=='true'}">
-                        <p class="text-center fs-5">Réponse4 : {{q.option4}} <i *ngIf="q.optScoring4=='true'"
+                        <p class="text-center fs-5">R4 : {{q.option4}} <i *ngIf="q.optScoring4=='true'"
                                 class="text-success fs-6 bi bi-check-lg"></i></p>
                         <div *ngIf="responsesMedias">
                             <div *ngFor="let item of responsesMedias">

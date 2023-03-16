@@ -10,13 +10,13 @@ export class QuestionsListComponent implements OnInit {
 
   // évaluateurs ne serait pas un tableau de type any mais un observable
   questions: any
-  allQuestions?:any
+  allQuestions?: any
 
   questionsMedias: any = []
   responsesMedias: any = []
   isMediaQuestion: boolean = true
 
-  videoEnded:boolean = false
+  videoEnded: boolean = false
 
   // pour les lister par qid (id d'un document enregistré sur firestore)
   allMediaByQid: any = []
@@ -29,36 +29,31 @@ export class QuestionsListComponent implements OnInit {
   ngOnInit() {
     this.questionsMedias = this.service.getMediasQuestions()
     this.responsesMedias = this.service.getMediasResponses()
-    this.getQuestions()   
+    this.getQuestions()
   }
 
   getQuestions() {
     this.service.getQuestions().subscribe(data => {
       console.log("data de getQuestions()", data)
       this.allQuestions = data;
+      // this.allQuestions.sort(this.compare)
       this.allQuestions.sort(this.compare)
       return this.allQuestions
     })
 
   }
 
-        compare( a:any, b:any )
-        {
-        if ( a.number < b.number){
-          return -1;
-        }
-        if ( a.number > b.number){
-          return 1;
-        }
-        return 0;
-       }
+  compare(a: any, b: any) {
+
+      return a.number - b.number;
+  }
 
   detectMediaLink() {
     console.log(typeof (this.questionsMedias))
   }
 
 
-  displayResponseIfVideoEnded(){
+  displayResponseIfVideoEnded() {
     this.videoEnded = true
   }
 }
