@@ -64,6 +64,8 @@ export class SocialFormComponent {
     this.service.createSocialQuestion(form.value, this.arrayFilesToUpload);
     form.reset();
     alert(`question enregistrée`)
+    this.router.navigate(['/socials'])
+    
   }
 
 

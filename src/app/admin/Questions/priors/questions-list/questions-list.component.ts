@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { QuestionsService } from '../../questions.service';
 
 @Component({
@@ -6,6 +6,7 @@ import { QuestionsService } from '../../questions.service';
   templateUrl: './questions-list.component.html',
   styleUrls: ['./questions-list.component.css']
 })
+
 export class QuestionsListComponent implements OnInit {
 
   // évaluateurs ne serait pas un tableau de type any mais un observable
@@ -29,19 +30,12 @@ export class QuestionsListComponent implements OnInit {
   ngOnInit() {
     this.questionsMedias = this.service.getMediasQuestions()
     this.responsesMedias = this.service.getMediasResponses()
-    this.getQuestions()
-  }
-
-  getQuestions() {
-    this.service.getQuestions().subscribe(data => {
-      console.log("data de getQuestions()", data)
-      this.allQuestions = data;
-      // this.allQuestions.sort(this.compare)
+    this.service.getQuestions().subscribe(data =>{
+      this.allQuestions = data
       this.allQuestions.sort(this.compare)
-      return this.allQuestions
-    })
-
+      })
   }
+
 
   compare(a: any, b: any) {
 
@@ -56,4 +50,6 @@ export class QuestionsListComponent implements OnInit {
   displayResponseIfVideoEnded() {
     this.videoEnded = true
   }
+
+
 }
