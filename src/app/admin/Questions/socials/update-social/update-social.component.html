@@ -1,0 +1,231 @@
+<div class="container py-5">
+
+    <h3>Mise à jour de la question id : {{questionId}}</h3>
+    <hr>
+
+    <form class="form" #f="ngForm" (submit)="updateForm(f)" class="was-validated">
+        <div class="form-group row justify-content-between">
+            <!-- rappel du numéro de question -->
+            <div class="col-sm-2">
+                <select class="form-select disabled" id="number" name="number" [(ngModel)]="result.number"
+                    #number="ngModel">
+                    <option selected="selected" value="{{result.number}}" disabled>N°: {{result.number}}</option>
+                </select>
+            </div>
+
+            <!-- rappel du nombre de point attribué ou score associé -->
+            <div class="col-sm-3  d-flex" *ngIf="result.notation">
+                <select class="form-select" name="notation" id="notation" [(ngModel)]="result.notation" required
+                    #notation="ngModel">
+                    <option *ngFor="let notation of notations" value="{{notation}}">Points: {{notation}}
+                    </option>
+                </select>
+            </div>
+            <!-- rappel du numéro de question -->
+            {{result.competencce}}
+            <div class="col-sm-6">
+                <select class="form-select disabled" id="category" name="category" [(ngModel)]="result.category"
+                    #category="ngModel">
+                    <option selected="selected" value="{{result.category}}" disabled>Categorie: {{result.category}}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+
+        <label for="question" class="form-label mt-3">Question</label>
+        <input type="text" id="question" [(ngModel)]="result.question" name="question" class="form-control"
+            placeholder="Question" value="question" required #question="ngModel">
+        <div class="valid-feedback" *ngIf="question.valid">Champ correctement renseigné</div>
+
+        <div *ngIf="allMediasQuestions">
+            {{allMediasQuestions | json}}
+            <div class="bg-light rounded rounded mb-3" *ngFor="let item of allMediasQuestions">
+                {{mediaQuestion | json}}
+                <div class="w-100 bg-primary p-2 rounded" *ngIf="item.includes(result.id)">
+                    <!-- si fichier de type video / sinon utiliser le template pour l'image  -->
+                    <video *ngIf="result.isVideo==true; else image" class="video">
+                        <source [src]="item" type="video/mp4">
+                        Your browser does not support HTML video.
+                    </video>
+                    <ng-template #image><img class="img-fluid" [src]="item"></ng-template>
+                    <input type="file" accept="image/*, video/*" id="mediaQuestion" name="mediaQuestion"
+                        class="form-control" #mediaQuestion (change)="detectFiles($event, mediaQuestion, item)">
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="mediaQuestionById.length==0">
+            <input type="file" accept="image/*, video/*" id="mediaQuestion" ngModel name="mediaQuestion"
+                class="form-control" #mediaQuestion="ngModel" placeholder="Fichier média actuel" (change)="detectFiles($event, mediaQuestion)">
+        </div>
+
+        <!-- fin allMediasQuestions -->
+
+
+        <hr>
+        <!-- réponse 1 -->
+        <label for="option1" class="form-label mt-3">Réponse 1 * </label>
+        <input type="text" id="option1" name="option1" [(ngModel)]="result.option1" class="form-control"
+            #option1="ngModel" placeholder="Option de réponse 1" required>
+        <div class="valid-feedback" *ngIf="option1.valid">Champ correctement renseigné</div>
+        <div *ngIf="allMediasResponses">
+            <div *ngFor="let item of allMediasResponses">
+                <div *ngIf="item.includes(result.id) && item.includes('Option1')">
+                    <img class="img-fluid" [src]="item">
+                    <label class="form-label mt-3" for="mediaOption1">Fichier à modifier</label>
+                    <input type="file" id="mediaOption1" ngModel name="mediaOption1" class="form-control bg-primary"
+                        #mediaOption1="ngModel" placeholder="Fichier média de votre choix"
+                        (change)="detectFiles($event, mediaOption1, item)">
+                    <div class="bg-light rounded p-3 fst-italic">Nom du fichier en base à modifier: {{item}}</div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="mediasResponsesById.length==0">
+            <input type="file" accept="image/*, video/*" id="mediaOption1" ngModel name="mediaOption1"
+                class="form-control" #mediaOption1="ngModel" (change)="detectFiles($event, mediaOption1)">
+        </div>
+
+        <label for="comment1" class="form-label mt-3">Commentaire</label>
+        <textarea id="comment1" [(ngModel)]="result.comment1" name="comment1" class="form-control" #comment1="ngModel"
+            placeholder="Commentaire si besoin" cols="30" rows="5"></textarea>
+        <div class="form-group d-flex gap-5 mt-3">
+            <div class="form-check">
+                <input type="radio" class="form-check-input" name="optScoring1" value="true"
+                    [(ngModel)]="result.optScoring1" [checked]="optScoring1" required>Vraie
+                <label class="form-check-label" for="radio1"></label>
+            </div>
+            <div class="form-check">
+                <input type="radio" class="form-check-input" name="optScoring1" value="false"
+                    [(ngModel)]="result.optScoring1" [checked]="optScoring1" required>Fausse
+            </div>
+        </div>
+
+        <hr>
+        <!-- réponse 2 -->
+        <label for="option2" class="form-label mt-3">Réponse 2 * </label>
+        <input type="text" id="option2" name="option2" [(ngModel)]="result.option2" class="form-control"
+            #option2="ngModel" placeholder="Option de réponse 2" required>
+        <div class="valid-feedback" *ngIf="option2.valid">Champ correctement renseigné</div>
+
+        <div *ngIf="allMediasResponses">
+            <div *ngFor="let item of allMediasResponses">
+                <div *ngIf="item.includes(result.id) && item.includes('Option2')">
+                    <img class="img-fluid" [src]="item">
+                    <label class="form-label mt-3" for="mediaOption2">Fichier à modifier</label>
+                    <input type="file" id="mediaOption2" ngModel name="mediaOption2" class="form-control bg-primary"
+                        #mediaOption2="ngModel" placeholder="Fichier média de votre choix"
+                        (change)="detectFiles($event, mediaOption2, item)">
+                    <div class="bg-light rounded p-3 fst-italic">Nom du fichier en base à modifier: {{item}}</div>
+                </div>
+            </div>
+            <div *ngIf="mediasResponsesById.length==0">
+                <input type="file" accept="image/*, video/*" id="mediaOption2" ngModel name="mediaOption2"
+                    class="form-control" #mediaOption2="ngModel" (change)="detectFiles($event, mediaOption2)">
+            </div>
+        </div>
+
+        <label for="comment2" class="form-label mt-3">Commentaire</label>
+        <textarea id="comment2" [(ngModel)]="result.comment2" name="comment2" class="form-control" #comment2="ngModel"
+            placeholder="Commentaire si besoin" cols="30" rows="5"></textarea>
+        <div class="form-group d-flex gap-5 mt-3">
+            <div class="form-check">
+                <input type="radio" class="form-check-input" name="optScoring2" value="true"
+                    [(ngModel)]="result.optScoring2" [checked]="optScoring2" required>Vraie
+                <label class="form-check-label" for="radio2"></label>
+            </div>
+            <div class="form-check">
+                <input type="radio" class="form-check-input" name="optScoring2" value="false"
+                    [(ngModel)]="result.optScoring2" [checked]="optScoring2" required>Fausse
+            </div>
+        </div>
+
+
+        <hr>
+        <!-- réponse 3 -->
+        <label for="option3" class="form-label mt-3">Réponse 3 * </label>
+        <input type="text" id="option3" name="option3" [(ngModel)]="result.option3" class="form-control"
+            #option3="ngModel" placeholder="Option de réponse 3" required>
+        <div class="valid-feedback" *ngIf="option3.valid">Champ correctement renseigné</div>
+
+        <div *ngIf="allMediasResponses">
+            <div *ngFor="let item of allMediasResponses">
+
+                <div *ngIf="item.includes(result.id) && item.includes('Option3')">
+                    <img class="img-fluid" [src]="item">
+                    <label class="form-label mt-3" for="mediaOption3">Fichier à modifier</label>
+                    <input type="file" id="mediaOption3" ngModel name="mediaOption3" class="form-control bg-primary"
+                        #mediaOption3="ngModel" placeholder="Fichier média de votre choix"
+                        (change)="detectFiles($event, mediaOption3, item)">
+                    <div class="bg-light rounded p-3 fst-italic">Nom du fichier en base à modifier: {{item}}</div>
+                </div>
+            </div>
+            <div *ngIf="mediasResponsesById.length==0">
+                <input type="file" accept="image/*, video/*" id="mediaOption3" ngModel name="mediaOption3"
+                    class="form-control" #mediaOption3="ngModel" (change)="detectFiles($event, mediaOption3)">
+            </div>
+        </div>
+
+        <label for="comment3" class="form-label mt-3">Commentaire</label>
+        <textarea id="comment3" [(ngModel)]="result.comment3" name="comment3" class="form-control" #comment3="ngModel"
+            placeholder="Commentaire si besoin" cols="30" rows="5"></textarea>
+        <div class="form-group d-flex gap-5 mt-3">
+            <div class="form-check">
+                <input type="radio" class="form-check-input" name="optScoring3" value="true"
+                    [(ngModel)]="result.optScoring3" [checked]="optScoring3" required>Vraie
+                <label class="form-check-label" for="radio3"></label>
+            </div>
+            <div class="form-check">
+                <input type="radio" class="form-check-input" name="optScoring3" value="false"
+                    [(ngModel)]="result.optScoring3" [checked]="optScoring3" required>Fausse
+            </div>
+        </div>
+
+
+        <hr>
+        <!-- réponse 4 -->
+        <label for="option4" class="form-label mt-3">Réponse 4 * </label>
+        <input type="text" id="option4" name="option4" [(ngModel)]="result.option4" class="form-control"
+            #option4="ngModel" placeholder="Option de réponse 4" required>
+        <div class="valid-feedback" *ngIf="option4.valid">Champ correctement renseigné</div>
+        <div *ngIf="allMediasResponses">
+            <div *ngFor="let item of allMediasResponses">
+                <div *ngIf="item.includes(result.id) && item.includes('Option4')">
+                    <img class="img-fluid" [src]="item">
+                    <label class="form-label mt-3" for="mediaOption4">Fichier à modifier</label>
+                    <input type="file" id="mediaOption4" ngModel name="mediaOption4" class="form-control bg-primary"
+                        #mediaOption4="ngModel" placeholder="Fichier média de votre choix"
+                        (change)="detectFiles($event, mediaOption4, item)">
+                    <div class="bg-light rounded p-3 fst-italic">Nom du fichier en base à modifier: {{item}}</div>
+                </div>
+            </div>
+            <div *ngIf="mediasResponsesById.length==0">
+                <input type="file" accept="image/*, video/*" id="mediaOption4" ngModel name="mediaOption4"
+                    class="form-control" #mediaOption4="ngModel" (change)="detectFiles($event, mediaOption4)">
+            </div>
+        </div>
+
+        <label for="comment4" class="form-label mt-3">Commentaire</label>
+        <textarea id="comment4" [(ngModel)]="result.comment4" name="comment4" class="form-control" #comment4="ngModel"
+            placeholder="Commentaire si besoin" cols="30" rows="5"></textarea>
+        <div class="form-group d-flex gap-5 mt-3">
+            <div class="form-check">
+                <input type="radio" class="form-check-input" name="optScoring4" value="true"
+                    [(ngModel)]="result.optScoring4" [checked]="optScoring4" required>Vraie
+                <label class="form-check-label" for="radio4"></label>
+            </div>
+            <div class="form-check">
+                <input type="radio" class="form-check-input" name="optScoring4" value="false"
+                    [(ngModel)]="result.optScoring4" [checked]="optScoring4" required>Fausse
+            </div>
+        </div>
+
+        <hr>
+
+        <button type="submit" id="submit" class="btn btn-primary mt-3"
+            [ngClass]="{'disabled':f.invalid}">Valider</button>
+    </form>
+
+
+
+</div>

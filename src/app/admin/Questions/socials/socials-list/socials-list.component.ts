@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { of } from 'rxjs';
 import { SocialsService } from 'src/app/admin/socials.service';
 
@@ -7,7 +7,7 @@ import { SocialsService } from 'src/app/admin/socials.service';
   templateUrl: './socials-list.component.html',
   styleUrls: ['./socials-list.component.css']
 })
-export class SocialsListComponent {
+export class SocialsListComponent implements OnInit, OnDestroy {
 
   // évaluateurs ne serait pas un tableau de type any mais un observable
   squestions: any
@@ -37,7 +37,6 @@ export class SocialsListComponent {
   }
 
 
-
   compare(a: any, b: any) {
     if (a.number < b.number) {
       return -1;
@@ -48,6 +47,10 @@ export class SocialsListComponent {
     return 0;
   }
 
+  ngOnDestroy(): void {
+    // this.allSocialQuestions.unsubscribe
+    
+  }
 
 
 
