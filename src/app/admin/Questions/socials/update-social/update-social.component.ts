@@ -56,14 +56,13 @@ export class UpdateSocialComponent {
     // récupération du seul média Question correspondant à la question en cours d'update
     this.mediasResponsesById=this.service.getMediasResponsesById(this.questionId)
     this.mediaQuestionById=this.service.getMediaQuestionById(this.questionId)
-    // console.log("jjjjjjjjjjjjjjjjjjjjjjjjjjj",this.mediaQuestionById);
+    // console.log("jjjjjjjjjjjjjjjjjjjjjjjj",this.mediaQuestionById);
     
 
     // on fait appel à getEvaluator pour récupérer les entrées de l'existant. méthode qui pour memo renvoie un observable
     this.service.getSocialQuestion(this.questionId).subscribe((data) => {
-      console.log("data depuis update-question component !!!!!!!!!!!!!", data.question);
+      console.log("data depuis update-question component !!!!!!!!!!!!!", data.question); 
       this.result = data
-
     })
 
 

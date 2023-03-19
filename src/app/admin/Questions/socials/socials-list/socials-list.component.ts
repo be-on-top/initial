@@ -1,5 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { of } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
 import { SocialsService } from 'src/app/admin/socials.service';
 
 @Component({
@@ -7,33 +6,36 @@ import { SocialsService } from 'src/app/admin/socials.service';
   templateUrl: './socials-list.component.html',
   styleUrls: ['./socials-list.component.css']
 })
-export class SocialsListComponent implements OnInit, OnDestroy {
+export class SocialsListComponent implements OnInit {
 
   // évaluateurs ne serait pas un tableau de type any mais un observable
-  squestions: any
-  allSocialQuestions: any
+  squestions: any[] = []
+  allSocialQuestions: any[] = []
+  
 
-  questionsMedias: any = []
-  responsesMedias: any = []
+  // questionsMedias: any = []
+  // responsesMedias: any = []
   //  isMediaQuestion: boolean = true
 
-  videoEnded: boolean = false
-
   // pour les lister par qid (id d'un document enregistré sur firestore)
-  allSocialMediaByQid: any = []
-  allSocialQid: any = []
+  // dans la mesure où on teste ici le chargement de components enfants (social-details.component), soit on laisse aux enfants le soin de s'alimenter, soit on les alimente (?)
+  // je vais déjà tester la première hypothèse
+  // allSocialMediaByQid: any = []
+  // allSocialQid: any = []
 
   constructor(private service: SocialsService) {
+    this.squestions = []
+    this.allSocialQuestions = []
 
   }
 
   ngOnInit() {
-    this.questionsMedias = this.service.getMediasQuestions()
-    this.responsesMedias = this.service.getMediasResponses()
-    this.service.getSocialQuestions().subscribe(data =>{
+    // this.questionsMedias = this.service.getMediasQuestions()
+    // this.responsesMedias = this.service.getMediasResponses()
+    this.service.getSocialQuestions().subscribe(data => {
       this.allSocialQuestions = data
       this.allSocialQuestions.sort(this.compare)
-      })
+    })
   }
 
 
@@ -45,11 +47,6 @@ export class SocialsListComponent implements OnInit, OnDestroy {
       return 1;
     }
     return 0;
-  }
-
-  ngOnDestroy(): void {
-    // this.allSocialQuestions.unsubscribe
-    
   }
 
 
