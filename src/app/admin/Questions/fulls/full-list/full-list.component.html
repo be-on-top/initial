@@ -1,0 +1,15 @@
+<div class="container py-5">
+
+    <h3>Liste des questions de positionnement pour aperçu</h3>
+
+    <div *ngIf="questions">
+
+        <!-- pour recracher autant de vues de détails qu'il y a de questions -->
+        <div *ngFor="let q of questions">
+            <!-- {{q | json}} -->
+            <app-full-details [q]="q"></app-full-details>
+            <!-- début de la question -->
+        </div>
+    </div>
+
+</div>

@@ -17,6 +17,9 @@ import { SocialFormComponent } from './Questions/socials/social-form/social-form
 import { SocialsListComponent } from './Questions/socials/socials-list/socials-list.component';
 import { UpdateSocialComponent } from './Questions/socials/update-social/update-social.component';
 import { SocialDetailsComponent } from './Questions/socials/social-details/social-details.component';
+import { FullFormComponent } from './Questions/fulls/full-form/full-form.component';
+import { FullListComponent } from './Questions/fulls/full-list/full-list.component';
+import { FullDetailsComponent } from './Questions/fulls/full-details/full-details.component';
 
 // import { EvaluatorDetailsComponent } from './Evaluators/evaluator-details/evaluator-details.component';
 
@@ -33,7 +36,9 @@ const routesAdmin: Routes = [
   { path: 'socialForm', component: SocialFormComponent },
   { path: 'socials', component: SocialsListComponent },
   { path: 'updateSocial/:id', component: UpdateSocialComponent },
-
+  { path: 'fullForm', component: FullFormComponent },
+  { path: 'fullList', component: FullListComponent },
+  { path: 'fullDetails', component: FullDetailsComponent }
 
 ];
 
@@ -42,7 +47,7 @@ const routesAdmin: Routes = [
     EvaluatorsListComponent,
     AddEvaluatorComponent,
     EvaluatorDetailsComponent,
-    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent, UpdateSocialComponent, SocialDetailsComponent
+    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent, UpdateSocialComponent, SocialDetailsComponent, FullFormComponent, FullListComponent, FullDetailsComponent
   ],
   imports: [
     BrowserModule,

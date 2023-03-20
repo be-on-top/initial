@@ -1,16 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { QuestionsService } from 'src/app/admin/questions.service';
 
-
 @Component({
-  selector: 'app-prior-form',
-  templateUrl: './prior-form.component.html',
-  styleUrls: ['./prior-form.component.css']
+  selector: 'app-full-form',
+  templateUrl: './full-form.component.html',
+  styleUrls: ['./full-form.component.css']
 })
-
-export class PriorFormComponent implements OnInit {
+export class FullFormComponent {
   question: string = "";
   number: number = 0;
   mediaQuestion: any;
@@ -31,12 +29,9 @@ export class PriorFormComponent implements OnInit {
   optScoring4: boolean = false;
   option4: string = "";
   comment4: string = "";
-  mediaOption5: any;
-  option5: string = "";
-  comment5: string = "";
   // Create a root reference
 
-  numbers: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+  numbers: number[] = []
   registryNumbers: any[] = []
   // isRegistered:boolean = false
   competences_ite: any = {
@@ -52,7 +47,7 @@ export class PriorFormComponent implements OnInit {
     CP10: "Entretenir et rénover d'anciens systèmes d'isolation thermique extérieure avec une finition enduit mince"
   }
 
-  competences_cdes : any = {
+  competences_cdes: any = {
     CP1: "Conduire en sécurité les chariots de manutention à conducteur porté de la catégorie 1A",
     CP2: "Préparer et emballer les commandes",
     CP3: "Charger, décharger les véhicules routiers à partir d'un quai et expédier les marchandises",
@@ -83,18 +78,12 @@ export class PriorFormComponent implements OnInit {
     CP8: "Prévenir les risques liés à l'activité professionnelle et appliquer les procédures."
   }
 
-  
+  selectedSigle: string = ""
 
-  
-  selectedSigle:string=""
+  constructor(private service: QuestionsService, private router: Router) {
 
-  constructor(private service: QuestionsService, private router : Router) { }
+  }
 
-  fileIsUploading = false;
-  fileUrl!: string;
-  fileUploaded = false;
-
-  // totalMediasFiles: number = 0
   arrayFilesToUpload: any = []
 
   notations: number[] = [1, 2, 3]
@@ -103,8 +92,9 @@ export class PriorFormComponent implements OnInit {
 
     this.service.getQuestions().subscribe(data => {
       // console.log(data);
+      // attention : c'est la différence avec prior-form, on ne veut pas afficher les 20 premières questions dans le dénombre
       for (let n of data) {
-        this.registryNumbers = [...this.registryNumbers, Number(n.number)]
+       n.number>20? this.registryNumbers = [...this.registryNumbers, Number(n.number)]:""
         // console.log(this.registryNumbers);
         this.numbers = this.numbers.filter(element => {
           return element != n.number
@@ -114,7 +104,11 @@ export class PriorFormComponent implements OnInit {
       // return this.registryNumbers
     })
 
+    for (let i = 20; i < 101; i++) {
+      this.numbers.push(i)
+      console.log(this.numbers);      
 
+    }
 
   }
 
@@ -137,28 +131,10 @@ export class PriorFormComponent implements OnInit {
     // this.onUploadFile(event.target.files[0], fieldName.name);
   }
 
-
-
-  // ne servira plus si on parvient à mettre à jour this.registryNumbers à chaque nouvel enregistrement. *
-  checkIfRegistered(n: any) {
-    console.log(n)
-    // this.registryNumbers.includes(n)?this.isRegistered==true:this.isRegistered==false) 
-  }
-
-  checkIfSelected(sigle:any){
+  checkIfSelected(sigle: any) {
     console.log(sigle);
-    this.selectedSigle=sigle   
-
+    this.selectedSigle = sigle
   }
-  
 
 
 }
-
-
-
-
-
-
-
-

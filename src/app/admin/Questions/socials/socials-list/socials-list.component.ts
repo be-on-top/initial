@@ -8,7 +8,6 @@ import { SocialsService } from 'src/app/admin/socials.service';
 })
 export class SocialsListComponent implements OnInit {
 
-  // évaluateurs ne serait pas un tableau de type any mais un observable
   squestions: any[] = []
   allSocialQuestions: any[] = []
   
