@@ -12,12 +12,8 @@ import { Observable } from 'rxjs';
 export class QuestionsService {
 
   image: any;
-  // mediaQuestions: string[]
-  // mediaResponses: string[]
-  pathResponses: string[]
 
   questions: any[] = [];
-  // socialQuestions: any[] = []
   result: any;
   isVideo: boolean = false;
 
@@ -28,13 +24,9 @@ export class QuestionsService {
   idMediaOption4: string = ""
 
   registryNumbers: any = []
-  // mediasResponsesById: any = []
-  // mediaQuestionById: any = []
 
   constructor(private storage: Storage, private firestore: Firestore) {
-    // this.mediaQuestions = []
-    // this.mediaResponses = []
-    this.pathResponses = []
+    // this.pathResponses = []
   }
 
 
@@ -118,28 +110,7 @@ export class QuestionsService {
     }
   }
 
-  
-  // getMediasQuestions(): any {
-  //   // Create a reference under which you want to list 
-  //   let mediasQuestionsRef = ref(this.storage, 'images/questions');
-  //   // Find all the prefixes and items.
-  //   listAll(mediasQuestionsRef)
-  //     .then(async response => {
-  //       console.log("listAll response for mediasQuestions", response);
-  //       for (let item of response.items) {
-  //         let url = await getDownloadURL(item);
-  //         console.log("url renvoyée en boucle", url);
-  //         this.mediaQuestions.push(url)
-  //       }
 
-  //     }).catch((error) => {
-  //       // Uh-oh, an error occurred!
-  //     });
-
-  //   return this.mediaQuestions
-
-  // }
-  // refacto avec const pour éviter les doublons !!!!! 
   getMediasQuestions(): any {
     const mediaQuestions: string[] = []
     // Create a reference under which you want to list 
@@ -162,34 +133,9 @@ export class QuestionsService {
 
   }
 
-  // getMediasResponses(): any {
-  //   // Create a reference under which you want to list 
-  //   let mediasResponsesRef = ref(this.storage, 'images/questions/responses');
-  //   // Find all the prefixes and items.
-  //   listAll(mediasResponsesRef)
-  //     .then(async response => {
-  //       console.log("listAll response for mediasQuestions", response);
-  //       for (let item of response.items) {
-  //         console.log("voila la réponse avec getDownloaURL !!!!!!!!!!!!!!!!!!!!!!!!!!!", item);
-
-  //         // est-ce que c'était pertinent d'avoir l'url plutôt que le chemin ?
-  //         let url = await getDownloadURL(item);
-  //         console.log("url renvoyée en boucle", url);
-  //         this.mediaResponses.push(url)
-  //         // this.pathResponses.push(item.fullPath)
-  //       }
-
-  //     }).catch((error) => {
-  //       // Uh-oh, an error occurred!
-  //     });
-
-  //   return (this.mediaResponses)
-
-  // }
-
-  // refacto avec const pour éviter les doublons
   getMediasResponses(): any {
-    const mediaResponses:string[] = []
+    const mediaResponses: string[] = []
+    // const pathResponses: string[] = []
     // Create a reference under which you want to list 
     let mediasResponsesRef = ref(this.storage, 'images/questions/responses');
     // Find all the prefixes and items.
@@ -203,7 +149,7 @@ export class QuestionsService {
           let url = await getDownloadURL(item);
           console.log("url renvoyée en boucle", url);
           mediaResponses.push(url)
-          // this.pathResponses.push(item.fullPath)
+          // pathResponses.push(item.fullPath)
         }
 
       }).catch((error) => {
@@ -215,28 +161,6 @@ export class QuestionsService {
   }
 
 
-  getMediasResponsesPath(): any {
-    // Create a reference under which you want to list 
-    let mediasResponsesRef = ref(this.storage, 'images/questions/responses');
-    // Find all the prefixes and items.
-    listAll(mediasResponsesRef)
-      .then(async response => {
-        console.log("listAll path response for mediasQuestions", response);
-        for (let item of response.items) {
-          console.log("voila la réponse avec paths!!!!!!!!!!!!!!!!!!!!!!!!!!!", item.fullPath);
-          console.log("path renvoyée en boucle", item.fullPath);
-          this.pathResponses.push(item.fullPath)
-        }
-
-      }).catch((error) => {
-        // Uh-oh, an error occurred!
-      });
-
-    return (this.pathResponses)
-  }
-
-
-  // getEvaluators(): Observable<Evaluators[]> {
   getQuestions() {
     let $questionsRef = collection(this.firestore, "questions");
     return collectionData($questionsRef, { idField: "id" }) as Observable<any[]>
@@ -271,26 +195,6 @@ export class QuestionsService {
     }
 
 
-    // if (question.mediaOption1) {
-    //   this.idMediaOption1 = `mediaOption1N${question.number}_${question.sigle}`
-    //   this.questions = [this.idMediaOption1, ...this.questions];
-    // }
-    // if (question.mediaOption2) {
-    //   this.idMediaOption2 = `mediaOption2N${question.number}_${question.sigle}`
-    //   this.questions = [this.idMediaOption2, ...this.questions];
-    // }
-    // if (question.mediaOption3) {
-    //   this.idMediaOption3 = `mediaOption3N${question.number}_${question.sigle}`
-    //   this.questions = [this.idMediaOption3, ...this.questions];
-    // }
-    // if (question.mediaOption4) {
-    //   this.idMediaOption4 = `mediaOption4N${question.number}_${question.sigle}`
-    //   this.questions = [this.idMediaOption4, ...this.questions];
-    // }
-
-
-
-
     let $questionRef = doc(this.firestore, "questions/" + id);
     console.log(question);
 
@@ -323,28 +227,8 @@ export class QuestionsService {
 
   }
 
-
-  // pour éviter affichage en doublon, attention à déclarer mediaResponsesById comme constante !!!! 
-  // getMediasResponsesById(id: string) {
-  //   let mediasResponsesRef = ref(this.storage, 'images/questions/responses');
-  //   listAll(mediasResponsesRef)
-  //     .then(async response => {
-  //       for (let item of response.items) {
-  //         console.log("esssai recuperation media by id", item.fullPath.includes(id));
-  //         item.fullPath.includes(id) == true ? this.mediasResponsesById.push(item.fullPath.includes(id)) : ""
-  //         console.log("mediaREspnsesById", this.mediasResponsesById);
-  //       }
-
-  //     }).catch((error) => {
-  //       // Uh-oh, an error occurred!
-  //     });
-
-  //   return (this.mediasResponsesById)
-
-  // }
-
   getMediasResponsesById(id: string) {
-    const mediasResponsesById:any=[]
+    const mediasResponsesById: any = []
     let mediasResponsesRef = ref(this.storage, 'images/questions/responses');
     listAll(mediasResponsesRef)
       .then(async response => {
@@ -362,24 +246,6 @@ export class QuestionsService {
 
   }
 
-  // getMediaQuestionById(id: string) {
-  //   let mediasQuestionsRef = ref(this.storage, 'images/questions');
-  //   listAll(mediasQuestionsRef)
-  //     .then(async response => {
-  //       // console.log("listAll medias for mediasQuestions", response);
-  //       for (let item of response.items) {
-  //         // console.log("esssai recuperation media question by id", item.fullPath.includes(id));
-  //         item.fullPath.includes(id) == true ? this.mediaQuestionById.push(item) : ""
-  //         console.log("mon media Question pour l'id", this.mediaQuestionById);
-  //       }
-
-  //     }).catch((error) => {
-  //       // Uh-oh, an error occurred!
-  //     });
-
-  //   return (this.mediaQuestionById)
-
-  // }  
 
   getMediaQuestionById(id: string) {
     const mediaQuestionById: any = []
@@ -399,11 +265,7 @@ export class QuestionsService {
 
     return (mediaQuestionById)
 
-  }  
-
-
-
-
+  }
 
 
 }
