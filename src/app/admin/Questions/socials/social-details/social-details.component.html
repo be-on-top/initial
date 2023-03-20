@@ -7,16 +7,13 @@
     <p class="fs-6"><span class="fw-bold">Métier :</span> {{q.sigle}} - <span class="fw-bold">Id :</span>
         {{q.id}} - <a class="fw-bold text-decoration-none" [routerLink]="['/updateSocial', q.id]">Modifier</a></p>
 
-    <!-- essai insertion boucle image / video différenciation du traitement -->
-    questionMedia {{questionsMedias |json}}
+    <!-- questionMedia {{questionsMedias |json}} -->
     <div *ngIf="questionsMedias">
-        <!-- pour vérification en base si besoin de la source du media lié à une question -->
-    
 
         <div class="bg-light rounded rounded mb-3" *ngFor="let item of questionsMedias">
             <!-- item : {{item}} -->
             <div class="w-100 bg-primary p-2 rounded">
-                {{q.isVideo==true}}
+                <!-- {{q.isVideo==true}} -->
 
                 <!-- si fichier de type video / sinon utiliser le template pour l'image  -->
                 <video *ngIf="q.isVideo==true; else image" class="video img-fluid" controls>

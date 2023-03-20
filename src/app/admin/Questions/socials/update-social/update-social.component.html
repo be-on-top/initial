@@ -38,9 +38,9 @@
             placeholder="Question" value="question" required #question="ngModel">
         <div class="valid-feedback" *ngIf="question.valid">Champ correctement renseigné</div>
 
-        <div *ngIf="allMediasQuestions | async">
+        <div *ngIf="allMediasQuestions">
             <!-- {{allMediasQuestions | json}} -->
-            <div class="bg-light rounded rounded mb-3" *ngFor="let item of allMediasQuestions | async">
+            <div class="bg-light rounded rounded mb-3" *ngFor="let item of allMediasQuestions">
                 <!-- {{mediaQuestion | json}} -->
                 <div class="w-100 bg-primary p-2 rounded">
                     <!-- si fichier de type video / sinon utiliser le template pour l'image  -->
