@@ -21,9 +21,8 @@ export class SocialDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // this.allSocialMediaByQid = this.service.getMediaQuestionById(this.q.id)
-    this.questionsMedias= this.service.getMediaQuestionById(this.q.id)
-    console.log("jjj",this.questionsMedias);
-    
+    this.questionsMedias = this.service.getMediaQuestionById(this.q.id)
+    console.log("questionsMedias depuis social-details", this.questionsMedias);
     this.responsesMedias = this.service.getMediasResponsesById(this.q.id)
   }
 
@@ -31,5 +30,7 @@ export class SocialDetailsComponent implements OnInit, OnDestroy {
     this.responsesMedias = []
 
   }
+
+
 
 }
