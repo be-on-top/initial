@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { QuestionsService } from '../../questions.service';
+import { QuestionsService } from 'src/app/admin/questions.service';
+
 
 @Component({
   selector: 'app-questions-list',

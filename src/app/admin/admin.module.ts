@@ -12,9 +12,11 @@ import { UpdateEvaluatorComponent } from './Evaluators/update-evaluator/update-e
 import { PriorFormComponent } from './Questions/priors/prior-form/prior-form.component';
 import { QuestionDetailsComponent } from './Questions/priors/question-details/question-details.component';
 import { QuestionsListComponent } from './Questions/priors/questions-list/questions-list.component';
-import { UpdateQuestionComponents } from './Questions/update-question/update-question.component';
+import { UpdateQuestionComponents } from './Questions/priors/update-question/update-question.component';
 import { SocialFormComponent } from './Questions/socials/social-form/social-form.component';
 import { SocialsListComponent } from './Questions/socials/socials-list/socials-list.component';
+import { UpdateSocialComponent } from './Questions/socials/update-social/update-social.component';
+import { SocialDetailsComponent } from './Questions/socials/social-details/social-details.component';
 
 // import { EvaluatorDetailsComponent } from './Evaluators/evaluator-details/evaluator-details.component';
 
@@ -29,7 +31,9 @@ const routesAdmin: Routes = [
   { path: 'questionDetails', component: QuestionDetailsComponent },
   { path: 'updateQuestion/:id', component: UpdateQuestionComponents },
   { path: 'socialForm', component: SocialFormComponent },
-  { path: 'socials', component: SocialsListComponent }
+  { path: 'socials', component: SocialsListComponent },
+  { path: 'updateSocial/:id', component: UpdateSocialComponent },
+
 
 ];
 
@@ -38,7 +42,7 @@ const routesAdmin: Routes = [
     EvaluatorsListComponent,
     AddEvaluatorComponent,
     EvaluatorDetailsComponent,
-    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent
+    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent, UpdateSocialComponent, SocialDetailsComponent
   ],
   imports: [
     BrowserModule,

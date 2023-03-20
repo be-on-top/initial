@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { QuestionsService } from '../../questions.service';
+import { QuestionsService } from 'src/app/admin/questions.service';
 
 
 @Component({

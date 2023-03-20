@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { QuestionsService } from '../../questions.service';
+import { QuestionsService } from 'src/app/admin/questions.service';
 
 @Component({
   selector: 'app-question-details',

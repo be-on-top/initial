@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { collection, collectionData, doc, docData, Firestore } from '@angular/fire/firestore';
-import { getDownloadURL, listAll, ref, Storage, uploadBytes } from '@angular/fire/storage';
+import { collection, collectionData, doc, docData, Firestore, setDoc } from '@angular/fire/firestore';
+import { deleteObject, getDownloadURL, listAll, ref, Storage, uploadBytes } from '@angular/fire/storage';
 import { addDoc } from 'firebase/firestore';
 import { Observable } from 'rxjs';
 
@@ -129,28 +129,42 @@ export class SocialsService {
     return (this.mediaResponses)
   }
 
+  // async getMediasResponsesById(id: string) {
+  //   const mediasResponsesById: any[]=[]
+  //   let mediasResponsesRef = ref(this.storage, 'images/squestions/responses');
+  //   listAll(mediasResponsesRef)
+  //     .then(async response => {
+  //       for (let item of response.items) {
+  //         console.log("esssai recuperation media by id", item.fullPath.includes(id));
+  //         item.fullPath.includes(id) === true ? mediasResponsesById.push( await getDownloadURL(item)) : undefined
+  //         console.log("mediaREspnsesById depuis service !!!!!!!!!!!", mediasResponsesById);
+  //       }
+
+  //     }).catch((error) => {
+  //       // Uh-oh, an error occurred!
+  //     });
+
+  //   return (mediasResponsesById)
+  // }
   getMediasResponsesById(id: string) {
-    // Create a reference under which you want to list 
+    const mediasResponsesById: any[]=[]
     let mediasResponsesRef = ref(this.storage, 'images/squestions/responses');
-    // Find all the prefixes and items.
     listAll(mediasResponsesRef)
       .then(async response => {
-        // console.log("listAll path response for mediasResponses", response);
         for (let item of response.items) {
           console.log("esssai recuperation media by id", item.fullPath.includes(id));
-          item.fullPath.includes(id) == true ? this.mediasResponsesById.push(item.fullPath.includes(id)) : ""
-          console.log("mediaREspnsesById", this.mediasResponsesById);
+          item.fullPath.includes(id) === true ? mediasResponsesById.push( await getDownloadURL(item)) : undefined
+          console.log("mediaREspnsesById depuis service !!!!!!!!!!!", mediasResponsesById);
         }
 
       }).catch((error) => {
         // Uh-oh, an error occurred!
       });
 
-    return (this.mediasResponsesById)
-
+    return (mediasResponsesById)
   }
 
-  getMediaQuestionById(id: string) {
+  async getMediaQuestionById(id: string) {
     // Create a reference under which you want to list 
     let mediasQuestionsRef = ref(this.storage, 'images/squestions');
     listAll(mediasQuestionsRef)
@@ -158,7 +172,7 @@ export class SocialsService {
         // console.log("listAll medias for social questions", response);
         for (let item of response.items) {
           // console.log("esssai recuperation media question sociale by id", item.fullPath.includes(id));
-          item.fullPath.includes(id) == true ? this.mediaQuestionById.push(item) : ""
+          item.fullPath.includes(id) == true ? this.mediaQuestionById.push(await getDownloadURL(item)) : ""
           console.log("mon media Question pour l'id", this.mediaQuestionById);
         }
 
@@ -176,9 +190,87 @@ export class SocialsService {
   }
 
   getSocialQuestion(id: string) {
-    let $questionRef = doc(this.firestore, "questions/" + id)
+    let $questionRef = doc(this.firestore, "squestions/" + id)
     return docData($questionRef, { idField: 'id' }) as Observable<any>;
   }
+
+
+  deleteMedia(fieldName: any) {
+    console.log("fichier à supprimer", fieldName);
+    // https://www.bezkoder.com/angular-14-firebase-storage/
+
+    // Create a reference to the file to delete
+    const desertRef = ref(this.storage, fieldName);
+
+    // // Delete the file
+    deleteObject(desertRef).then(() => {
+      console.log("fichier supprimé");
+
+    }).catch((error) => {
+      console.log(error);
+
+    });
+
+  }
+
+
+   // à la différence de createQuestion qui répond au submit form initial, updateQuestion qui répond à updateForm n'a pas besoin (?) d'être async car on a déjà id ...
+   updateSocialQuestion(id: string, question: any, allFilesToUpdate: any) {
+
+    // un peu comme pour la création
+    console.log("question ou les valeurs du formulaire", question);
+
+    console.log('object.values allFilesToUpdate', Object.values(allFilesToUpdate));
+
+
+    if (question.mediaQuestion) {
+      // this.idMediaQuestion = `mediaQuestionN${question.number}_${question.sigle}`
+      // c'est là qu'on peut intégrer une différence selon le type de fichier détecté
+      console.log("dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", Object.values(allFilesToUpdate)[0]);
+
+      if (Object.values(allFilesToUpdate)[0] == "video/mp4") {
+        this.isVideo = true;
+        question.isVideo = true
+        console.log(this.isVideo);
+      }
+      question.isVideo = false
+      console.log("question ou les valeurs du formulaire", question);
+    }
+
+
+    // if (question.mediaOption1) {
+    //   this.idMediaOption1 = `mediaOption1N${question.number}_${question.sigle}`
+    //   this.questions = [this.idMediaOption1, ...this.questions];
+    // }
+    // if (question.mediaOption2) {
+    //   this.idMediaOption2 = `mediaOption2N${question.number}_${question.sigle}`
+    //   this.questions = [this.idMediaOption2, ...this.questions];
+    // }
+    // if (question.mediaOption3) {
+    //   this.idMediaOption3 = `mediaOption3N${question.number}_${question.sigle}`
+    //   this.questions = [this.idMediaOption3, ...this.questions];
+    // }
+    // if (question.mediaOption4) {
+    //   this.idMediaOption4 = `mediaOption4N${question.number}_${question.sigle}`
+    //   this.questions = [this.idMediaOption4, ...this.questions];
+    // }
+
+
+
+
+    let $questionRef = doc(this.firestore, "squestions/" + id);
+    console.log(question);
+
+
+    setDoc($questionRef, question).then(response => console.log(response))
+
+
+    for (let myFile of allFilesToUpdate) {
+      this.uploadFiles(myFile[0], myFile[1], id)
+    }
+
+  }
+
 
 
 

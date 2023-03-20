@@ -205,13 +205,14 @@ export class QuestionsService {
     // un peu comme pour la création
     console.log("question ou les valeurs du formulaire", question);
 
-    console.log(Object.values(allFilesToUpdate));
+    console.log('object.values allFilesToUpdate', Object.values(allFilesToUpdate));
 
 
     if (question.mediaQuestion) {
       this.idMediaQuestion = `mediaQuestionN${question.number}_${question.sigle}`
       // c'est là qu'on peut intégrer une différence selon le type de fichier détecté
       console.log("dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", Object.values(allFilesToUpdate)[0]);
+
       if (Object.values(allFilesToUpdate)[0] == "video/mp4") {
         this.isVideo = true;
         question.isVideo = true
@@ -257,7 +258,7 @@ export class QuestionsService {
 
 
   deleteMedia(fieldName: any) {
-    console.log("fichier à supprimerdfdfdfdsfdsfdsfdsfdsffdsffd", fieldName);
+    console.log("fichier à supprimer", fieldName);
     // https://www.bezkoder.com/angular-14-firebase-storage/
 
     // Create a reference to the file to delete

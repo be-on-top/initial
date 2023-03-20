@@ -3,7 +3,7 @@ import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Observable } from 'rxjs';
-import { QuestionsService } from '../questions.service';
+import { QuestionsService } from 'src/app/admin/questions.service';
 
 
 @Component({
@@ -11,6 +11,7 @@ import { QuestionsService } from '../questions.service';
   templateUrl: './update-question.component.html',
   styleUrls: ['./update-question.component.css']
 })
+
 export class UpdateQuestionComponents implements OnInit {
   questionId: any;
   result: any = {}
