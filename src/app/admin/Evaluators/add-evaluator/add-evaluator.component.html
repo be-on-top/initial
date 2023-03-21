@@ -8,17 +8,20 @@
         <!-- attention à virer les fonctions pour l'exercice sur (change) et (input) !!!!!! -->
 
         <label for="firstName" class="form-label mt-3">Prénom</label>
-        <input type="text" id="firstName" ngModel="firstname" name="firstName" class="form-control" placeholder="Prénom" #firstName (change)="checkLength(firstName)">
+        <input type="text" id="firstName" ngModel="firstname" name="firstName" class="form-control" placeholder="Prénom"
+            #firstName (change)="checkLength(firstName)">
 
         <label for="lastName" class="form-label mt-3">Nom *</label>
-        <input type="text" id="lastName" ngModel name="lastName" class="form-control" #lastName="ngModel" placeholder="Nom" required (input)="change($event)">
+        <input type="text" id="lastName" ngModel name="lastName" class="form-control" #lastName="ngModel"
+            placeholder="Nom" required (input)="change($event)">
         <div class="valid-feedback" *ngIf="lastName.valid">Champ correctement renseigné</div>
         <div class="invalid-feedback" *ngIf="lastName.invalid">Merci de renseigner le champ nom.</div>
 
         <label for="email" class="form-label mt-3">Email *</label>
         <div class="input-group">
             <span class="input-group-text" id="inputGroupPrepend2">@</span>
-            <input type="email" id="email" ngModel name="email" class="form-control" #email="ngModel" placeholder="Email" required>
+            <input type="email" id="email" ngModel name="email" class="form-control" #email="ngModel"
+                placeholder="Email" required>
         </div>
         <div class="valid-feedback" *ngIf="email.valid">Email Valide </div>
         <div class="invalid-feedback" *ngIf="email.invalid">Merci de renseigner le champ email.</div>
@@ -26,7 +29,26 @@
         <label for="cp" class="form-label mt-3">CP</label>
         <input type="text" id="cp" ngModel name="cp" class="form-control" placeholder="Code Postal Optionnel...">
 
-        <!-- <label for="email" class="form-label mt-3">Commentaires optionnels</label> -->
+        <!-- bidon -->
+        <!-- <div>
+            <label for="pass">Password (8 characters minimum) bidon !!!!!:</label>
+            <input class="form-control" ngModel #password="ngModel" type="password" id="password" name="password"
+                minlength="8" required>
+                <i class="input-group-text bi-eye" (click)="toggleDisplayPassword($event)"></i>
+        </div> -->
+
+        <!-- affectation métier -->
+        <label for="sigle" class="form-label mt-3">Affectation métier :</label>
+        <select class="form-select" name="sigle" id="sigle" ngModel required #sigle="ngModel"
+            (change)="checkIfSelected(sigle.value)" multiple>
+            <option value>Selectionner le métier</option>
+            <option value="prepa_cdes">PREPA CDES</option>
+            <option value="poser_ite">POSEUR ITE</option>
+            <option value="macon_vrd">MACON VRD</option>
+            <option value="cl_vul">CLVUL</option>
+        </select>
+
+        <!-- <label for="details" class="form-label mt-3">Commentaires optionnels</label> -->
         <textarea name="details" id="details" ngModel name="details" cols="100" rows="10" class="form-control mt-3"
             #details="ngModel" [ngClass]="{'.is-valid':details.value && details.touched}"
             placeholder="Commentaires optionnels...">Détails / Remarques & Objectifs...</textarea>

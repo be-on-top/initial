@@ -18,6 +18,11 @@
                 <p> <span *ngIf="evaluator.status; else checkbox">Status : actif</span>
                     <ng-template #checkbox> Status : inactif</ng-template>
                 </p>
+                <ng-template #checkbox> Status : inactif</ng-template>
+                <!-- affectation métiers -->
+                <p *ngIf="evaluator.sigle">Métiers d'affectation ({{evaluator.sigle.length}}) : 
+                    <span *ngFor="let s of evaluator.sigle">{{s}} </span>
+                </p>
             </div>
             <div class="card-footer text-muted">
                 <span *ngIf="evaluator.created">Date de création : {{evaluator.created | date:'dd/MM/yyyy' }}</span><br>
