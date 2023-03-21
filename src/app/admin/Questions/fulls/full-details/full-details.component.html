@@ -30,11 +30,9 @@
         <div class="col-sm-6 rounded" [ngClass]="{'text-success':q.optScoring1=='true'}">
             <p class="text-center fs-5">R1 : {{q.option1}} <i *ngIf="q.optScoring1=='true'"
                     class="text-success fs-6 bi bi-check-lg"></i></p>
-                    {{responsesMedias.length}}
-                    {{responsesMedias}}
-
+                    <!-- {{responsesMedias.length}}
+                    {{responsesMedias}} -->
             <div *ngIf="responsesMedias && responsesMedias.length!==0">
-              dfdsfdsfds {{responsesMedias | async}}
                 <div *ngFor="let item of responsesMedias">
                     <img *ngIf="item.includes(q.id) && item.includes('Option1')" class="img-fluid rounded mb-3"
                         [src]="item">
