@@ -104,7 +104,7 @@ export class FullFormComponent {
       // return this.registryNumbers
     })
 
-    for (let i = 20; i < 101; i++) {
+    for (let i = 20; i < 201; i++) {
       this.numbers.push(i)
       console.log(this.numbers);      
 
@@ -115,8 +115,9 @@ export class FullFormComponent {
   async submitForm(form: NgForm) {
     console.log(form.value);
     this.service.createQuestion(form.value, this.arrayFilesToUpload);
-    // form.reset();
-    this.router.navigate(['/questions'])
+    // form.reset ne sert que si on continue la saisie.
+    form.reset();
+    this.router.navigate(['/fullList'])
     // window.location.reload();
   }
 

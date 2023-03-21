@@ -5,11 +5,13 @@
     <!-- pour les messages de retour/validation des champs du formulaire ou form validation, on utilisera BOOTSTRAP plutôt que des directives structurelles -->
     <form class="form" #f="ngForm" (submit)="addEvaluator(f)" class="was-validated">
 
+        <!-- attention à virer les fonctions pour l'exercice sur (change) et (input) !!!!!! -->
+
         <label for="firstName" class="form-label mt-3">Prénom</label>
-        <input type="text" id="firstName" ngModel name="firstName" class="form-control" placeholder="Prénom">
+        <input type="text" id="firstName" ngModel="firstname" name="firstName" class="form-control" placeholder="Prénom" #firstName (change)="checkLength(firstName)">
 
         <label for="lastName" class="form-label mt-3">Nom *</label>
-        <input type="text" id="lastName" ngModel name="lastName" class="form-control" #lastName="ngModel" placeholder="Nom" required>
+        <input type="text" id="lastName" ngModel name="lastName" class="form-control" #lastName="ngModel" placeholder="Nom" required (input)="change($event)">
         <div class="valid-feedback" *ngIf="lastName.valid">Champ correctement renseigné</div>
         <div class="invalid-feedback" *ngIf="lastName.invalid">Merci de renseigner le champ nom.</div>
 

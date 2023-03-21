@@ -234,7 +234,10 @@ export class QuestionsService {
       .then(async response => {
         for (let item of response.items) {
           console.log("esssai recuperation media by id", item.fullPath.includes(id));
-          item.fullPath.includes(id) == true ? mediasResponsesById.push(item.fullPath.includes(id)) : ""
+          // anciennement : 
+          // item.fullPath.includes(id) == true ? mediasResponsesById.push(item.fullPath.includes(id)) : ""
+          // depuis les mises à jour effectuées sur les questions sociales !!!! 
+          item.fullPath.includes(id) == true ? mediasResponsesById.push(await getDownloadURL(item)) : ""
           // console.log("mediaREspnsesById", mediasResponsesById);
         }
 
@@ -255,7 +258,9 @@ export class QuestionsService {
         // console.log("listAll medias for mediasQuestions", response);
         for (let item of response.items) {
           // console.log("esssai recuperation media question by id", item.fullPath.includes(id));
-          item.fullPath.includes(id) == true ? mediaQuestionById.push(item) : ""
+          // item.fullPath.includes(id) == true ? mediaQuestionById.push(item) : ""
+          // depuis les mises à jour effectuées sur les questions sociales !!!!
+          item.fullPath.includes(id) == true ? mediaQuestionById.push(await getDownloadURL(item)) : ""
           // console.log("mon media Question pour l'id", mediaQuestionById);
         }
 

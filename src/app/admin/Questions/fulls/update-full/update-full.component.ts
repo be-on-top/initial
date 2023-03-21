@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SocialsService } from 'src/app/admin/socials.service';
+import { QuestionsService } from 'src/app/admin/questions.service';
 
 @Component({
-  selector: 'app-update-social',
-  templateUrl: './update-social.component.html',
-  styleUrls: ['./update-social.component.css']
+  selector: 'app-update-full',
+  templateUrl: './update-full.component.html',
+  styleUrls: ['./update-full.component.css']
 })
-export class UpdateSocialComponent {
+export class UpdateFullComponent {
 
   questionId: any;
   result: any = {}
@@ -43,9 +43,9 @@ export class UpdateSocialComponent {
   mediaQuestionById: any = []
 
   arrayFilesToUpdate: any = []
-  notations: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+  notations: number[] = [1, 2, 3]
 
-  constructor(private service: SocialsService, private ac: ActivatedRoute, private router: Router) {
+  constructor(private service: QuestionsService, private ac: ActivatedRoute, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -60,7 +60,7 @@ export class UpdateSocialComponent {
     
 
     // on fait appel à getSocialQuestion pour récupérer les entrées de l'existant. méthode qui pour memo renvoie un observable
-    this.service.getSocialQuestion(this.questionId).subscribe((data) => {
+    this.service.getQuestion(this.questionId).subscribe((data) => {
       console.log("data depuis update-question component !!!!!!!!!!!!!", data);
       this.result = data
 
@@ -77,17 +77,15 @@ export class UpdateSocialComponent {
 
     // console.log("form update values", form.value);
     // pour update de la nouvelle image si nouvelle : 
-    this.service.updateSocialQuestion(this.questionId, form.value, this.arrayFilesToUpdate)
-    // il faudra prévoir une redirection... 
-    this.router.navigate(['/socials'])
+    this.service.updateQuestion(this.questionId, form.value, this.arrayFilesToUpdate)
+    // il faudra prévoir une redirection vers la question qui a été mise à jour... 
+    this.router.navigate(['/fullList'])
   }
 
   //  fonction basique pour le moment. on fait d'abord un focus sur les données textuelles
   detectFiles(event: any, fieldName: any, item: any = "") {
-    console.log("sssssssssss", fieldName.name);
-
+    // console.log("fieldName.name", fieldName.name);
       alert(`êtes-vous certain de vouloir remplacer le fichier ${item} ?`)
-
       this.service.deleteMedia(item)
 
 
@@ -106,6 +104,5 @@ export class UpdateSocialComponent {
     alert("dddddd")
     console.log("ce que je récupère", fieldName);
   }
-
 
 }
