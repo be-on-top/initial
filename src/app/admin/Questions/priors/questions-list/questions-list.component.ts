@@ -32,7 +32,8 @@ export class QuestionsListComponent implements OnInit {
     this.questionsMedias = this.service.getMediasQuestions()
     this.responsesMedias = this.service.getMediasResponses()
     this.service.getQuestions().subscribe(data =>{
-      this.allQuestions = data
+      // faut opérer un filtre pour n'avoir que les 20 premières questions
+      this.allQuestions = data.filter(res=>res.number<21)
       this.allQuestions.sort(this.compare)
       })
   }
