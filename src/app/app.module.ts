@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from "@angular/forms";
+// on test ReactiveFormsModule pour login et logout
+import { ReactiveFormsModule } from '@angular/forms';
 
 // Firebase
 // Trouver l'équivalent des 2 lignes ci-dessous pour l'ajout d'éléments à une collection
@@ -36,6 +38,7 @@ import { HeaderComponent } from './header/header.component';
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     AdminModule,
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),

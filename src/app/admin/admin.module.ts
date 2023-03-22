@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { EvaluatorsListComponent } from './Evaluators/evaluators-list/evaluators-list.component';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { AddEvaluatorComponent } from './Evaluators/add-evaluator/add-evaluator.component';
 import { EvaluatorDetailsComponent } from './Evaluators/evaluator-details/evaluator-details.component';
 import { UpdateEvaluatorComponent } from './Evaluators/update-evaluator/update-evaluator.component';
@@ -21,6 +22,9 @@ import { FullFormComponent } from './Questions/fulls/full-form/full-form.compone
 import { FullListComponent } from './Questions/fulls/full-list/full-list.component';
 import { FullDetailsComponent } from './Questions/fulls/full-details/full-details.component';
 import { UpdateFullComponent } from './Questions/fulls/update-full/update-full.component';
+import { LoginComponent } from './login/login.component';
+
+
 
 // import { EvaluatorDetailsComponent } from './Evaluators/evaluator-details/evaluator-details.component';
 
@@ -41,6 +45,7 @@ const routesAdmin: Routes = [
   { path: 'fullList', component: FullListComponent },
   { path: 'fullDetails', component: FullDetailsComponent },
   { path: 'updateFull/:id', component: UpdateFullComponent},
+  { path: 'login', component: LoginComponent},
 
 ];
 
@@ -49,12 +54,13 @@ const routesAdmin: Routes = [
     EvaluatorsListComponent,
     AddEvaluatorComponent,
     EvaluatorDetailsComponent,
-    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent, UpdateSocialComponent, SocialDetailsComponent, FullFormComponent, FullListComponent, FullDetailsComponent, UpdateFullComponent
+    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent, UpdateSocialComponent, SocialDetailsComponent, FullFormComponent, FullListComponent, FullDetailsComponent, UpdateFullComponent, LoginComponent
   ],
   imports: [
     BrowserModule,
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     RouterModule.forChild(routesAdmin)
   ]
 })
