@@ -13,4 +13,5 @@ const routes: Routes = [
     onSameUrlNavigation: 'reload'})],
   exports: [RouterModule]
 })
+
 export class AppRoutingModule { }

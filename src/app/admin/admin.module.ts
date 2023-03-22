@@ -23,6 +23,7 @@ import { FullListComponent } from './Questions/fulls/full-list/full-list.compone
 import { FullDetailsComponent } from './Questions/fulls/full-details/full-details.component';
 import { UpdateFullComponent } from './Questions/fulls/update-full/update-full.component';
 import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from '../register/register.component';
 
 
 
@@ -46,6 +47,7 @@ const routesAdmin: Routes = [
   { path: 'fullDetails', component: FullDetailsComponent },
   { path: 'updateFull/:id', component: UpdateFullComponent},
   { path: 'login', component: LoginComponent},
+  { path: 'register', component: RegisterComponent},
 
 ];
 

@@ -32,7 +32,6 @@ export class LoginComponent {
         alert("Login Success ! ");
         this.isAuthentificated = true;
         console.log("isAuthenticated", this.isAuthentificated);
-        
         this.router.navigate(['']);
       })
       .catch(error => console.log(error));

@@ -22,6 +22,7 @@ import { HookComponent } from './hook/hook.component';
 import { AdminModule } from './admin/admin.module';
 import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './header/header.component';
+import { RegisterComponent } from './register/register.component';
 // import { SocialComponentComponent } from './admin/Questions/social-component/social-component.component';
 
 
@@ -33,7 +34,8 @@ import { HeaderComponent } from './header/header.component';
     // EvaluatorsListComponent,
     // EvaluatorDetailsComponent,
     HomeComponent,
-    HeaderComponent
+    HeaderComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
