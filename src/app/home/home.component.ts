@@ -14,26 +14,21 @@ import { EvaluatorsService } from '../admin/evaluators.service';
 export class HomeComponent implements OnInit {
   user?: any;
   ui: string | undefined = ''
+  authStatus?: any;
 
   constructor(private auth: Auth, private authService: AuthService, private evaluatorService: EvaluatorsService, private activatedRoute: ActivatedRoute, private router: Router) {
-    const userKey = this.auth.currentUser?.uid;
-    console.log("userKey", userKey);
-    this.ui = userKey
-
   }
 
   ngOnInit(): void {
     // getUserId ne sert à priori à rien si on peut récupérer l'id grâce à this.auth.currentUser !!!
-    // this.authService.getUserId();
-    this.getData()
-  }
-
-  getData() {
-    // const dbInstance = collection(this.firestore, 'evaluators');
-    const userKey = this.auth.currentUser?.uid;
-    console.log("userKey", userKey);
-    this.ui = userKey
-
+    this.authService.getUserId();
+    this.authService.getData()
+    // retourne this.ui tout de suite après la connexion. undefined plus tard...
+    // console.log("log de ui", this.ui);
+    // tests ok pour information, mais ne semble pas être très utile 
+    this.authService.getToken()?.then(res => console.log(res.token))
+    // fonctionne parfaitement ! 
+    this.authService.authStatusListener()
   }
 
 

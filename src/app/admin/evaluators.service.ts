@@ -66,7 +66,7 @@ export class EvaluatorsService {
 
   }
 
-  deleteEvaluator(id: string) {
+  deleteEvaluator(id: string | undefined) {
     // on utilisera la méthode deleteDoc() de Firestore et delete de currentUser
     let $evaluatorRef = doc(this.firestore, "evaluators/" + id)
     console.log("this.auth.currentUser", this.auth.currentUser);

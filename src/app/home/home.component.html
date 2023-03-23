@@ -8,6 +8,11 @@
         Votre Id Utilsiateur : {{ui | json}}
     </div>
 
+    {{authStatus!==0}}
+    {{authStatus | async}}
+
+    <div *ngIf="authStatus">{{authStatus}}</div>
+
 
 
 </div>

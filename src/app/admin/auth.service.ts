@@ -1,18 +1,59 @@
 import { Injectable } from '@angular/core';
 import { Auth, signInWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from '@angular/fire/auth';
+// import { collection, Firestore } from '@angular/fire/firestore';
+
+import { BehaviorSubject, Observable } from 'rxjs';
 // import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  user?: any;
+  currentUser?: any;
+  private authStatusSub = new BehaviorSubject(this.currentUser);
+
+  // rappel : on utilise par convention le suffixxe $ pour préciser que c'est un observable
+  // user$ :Observable<any>;
 
   constructor(private auth: Auth) {
+
+
   }
 
   // register({ email, password }: any) {
   //   createUserWithEmailAndPassword(this.auth, email, password);
   // }
+
+  // fonctionne bien pour test mais n'est d'aucune utilité ici - archive à supprimer
+  getToken() {
+    const token = this.auth.currentUser?.getIdTokenResult()
+    console.log(token);
+    return token
+  }
+
+  // quel est le status de l'utilisateur pour test - fait selon moi double emploi avec getUserId ?!!
+  authStatusListener() {
+
+    this.auth.onAuthStateChanged((credential) => {
+      let status: any;
+      if (credential) {
+        console.log(credential);
+        this.authStatusSub.next(credential);
+        console.log('User is logged in with credential', credential.uid);
+        status = credential.uid
+        return status
+      }
+      else {
+        this.authStatusSub.next(null);
+        console.log('User is logged out');
+        status = ""
+      }
+    })
+
+  }
+
+
 
   login({ email, password }: any) {
     return signInWithEmailAndPassword(this.auth, email, password);
@@ -26,8 +67,8 @@ export class AuthService {
     return signOut(this.auth);
   }
 
-  getUserId():any {
-    let isAuthenticated:boolean = false;
+  getUserId(): any {
+    let isAuthenticated: boolean = false;
     let uid;
     onAuthStateChanged(this.auth, (user): any => {
       if (user) {
@@ -36,7 +77,7 @@ export class AuthService {
         uid = user.uid;
         console.log("uid!!!!!!!!!!!!!!!!!!!", uid);
         isAuthenticated = true;
-        return !!uid
+        return uid
 
       } else {
         console.log("no user");
@@ -51,7 +92,7 @@ export class AuthService {
   // isAutenticated() {
   //   this.isAuth = true;
   //   console.log(this.isAuth);
-    
+
   // }
 
   // login() {
@@ -65,6 +106,14 @@ export class AuthService {
   // protected isAuthenticated(): boolean {
   //   return !!this.isAuthenticated;
   // }
+
+  getData() {
+    // const dbInstance = collection(this.firestore, 'evaluators');   
+    const userKey = this.auth.currentUser?.uid;
+    console.log("userKey", userKey);
+    return userKey
+
+  }
 
 
 }

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
+import { Auth } from '@angular/fire/auth';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { EvaluatorsService } from 'src/app/admin/evaluators.service';
 import { QuestionsService } from 'src/app/admin/questions.service';
 
 @Component({
@@ -9,7 +11,10 @@ import { QuestionsService } from 'src/app/admin/questions.service';
   styleUrls: ['./full-form.component.css']
 })
 export class FullFormComponent {
-  question: string = "";
+  // obligée de récupérer l'uid de l'évaluateur pour connaitre ses affectations métier
+  ui: any = ''
+  user?: any;
+  question: string | undefined = "";
   number: number = 0;
   mediaQuestion: any;
   // videoDuration:any = 0;
@@ -80,8 +85,9 @@ export class FullFormComponent {
 
   selectedSigle: string = ""
 
-  constructor(private service: QuestionsService, private router: Router) {
-
+  // import de auth pour tester les spécificités de l'évaluateur connecté si il est reconnu
+  // import du service EvaluatorsService pour tester la récupération des affectations métiers spécifiques à l'évaluateur
+  constructor(private service: QuestionsService, private router: Router, private auth:Auth, private evaluatorService:EvaluatorsService) {
   }
 
   arrayFilesToUpload: any = []
@@ -110,6 +116,8 @@ export class FullFormComponent {
 
     }
 
+    // et comme il nous faut des données concernant l'évaluateur authentifié
+    this.getData()
   }
 
   async submitForm(form: NgForm) {
@@ -135,6 +143,17 @@ export class FullFormComponent {
   checkIfSelected(sigle: any) {
     console.log(sigle);
     this.selectedSigle = sigle
+  }
+
+  getData() {
+    // const dbInstance = collection(this.firestore, 'evaluators');
+    let userKey = this.auth.currentUser?.uid;
+    console.log("userKey", userKey);
+    this.ui = userKey
+    // on a déjà des méthodes héritées de EvaluatorsService permettant de récupérer un document lié à la collection Evaluators d'après son id
+    this.evaluatorService.getEvaluator(this.ui)
+    console.log(this.user);    
+
   }
 
 
