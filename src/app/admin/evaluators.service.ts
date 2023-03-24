@@ -3,7 +3,7 @@ import { Evaluators } from './evaluators';
 
 // à vérifier
 import { Auth, createUserWithEmailAndPassword, sendPasswordResetEmail } from '@angular/fire/auth';
-import { Firestore, collectionData, collection, documentId, getDoc, docData, setDoc } from '@angular/fire/firestore';
+import { Firestore, collectionData, collection, documentId, getDoc, docData, setDoc, query, where } from '@angular/fire/firestore';
 import { addDoc, deleteDoc, doc, getDocs } from 'firebase/firestore';
 import { Observable } from 'rxjs';
 // import { Router } from '@angular/router';
@@ -20,7 +20,9 @@ export class EvaluatorsService {
   result: any;
 
 
-  constructor(private auth: Auth, private firestore: Firestore) { }
+  constructor(private auth: Auth, private firestore: Firestore) {
+
+  }
 
   async createEvaluator(evaluator: any) {
 
@@ -76,10 +78,38 @@ export class EvaluatorsService {
 
 
   getEvaluator(id: string) {
-    // on utilisera la méthode deleteDoc() de Firestore
     let $evaluatorRef = doc(this.firestore, "evaluators/" + id)
     return docData($evaluatorRef, { idField: 'id' }) as Observable<Evaluators>;
   }
+
+  //   getDocsByParam( collection:any, id:any, uid:string ) {
+  //     let $evaluatorsRef = collection(this.firestore, "evaluators");
+  //     return $evaluatorsRef.where(getParam, '==', paramValue).get();
+  // }
+
+  // ça marche !!!! 
+  async getDocsByParam(uid: string) {
+    // let $evaluatorsRef = collection(this.firestore, "evaluators");
+    // const q = query($evaluatorsRef, where('id', "==", uid));
+    // console.log('q', q);
+    const myData = query(collection(this.firestore, 'evaluators'), where('id', '==', uid));
+    const querySnapshot = await getDocs(myData);
+    querySnapshot.forEach((doc) => {
+      console.log(doc.id, ' => ', doc.data());
+      return doc.data
+    });
+  }
+
+
+
+
+
+
+  // Create a query against the collection.
+
+
+
+
 
 
   updateEvaluator(id: string, evaluator: Evaluators) {

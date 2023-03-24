@@ -1,24 +1,26 @@
 import { Injectable } from '@angular/core';
 import { Auth, signInWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from '@angular/fire/auth';
+import { collection, Firestore } from '@angular/fire/firestore';
+import { ActivatedRoute } from '@angular/router';
+import { stringify } from '@firebase/util';
 // import { collection, Firestore } from '@angular/fire/firestore';
 
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, switchMap } from 'rxjs';
+import { EvaluatorsService } from './evaluators.service';
 // import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  user?: any;
   currentUser?: any;
   private authStatusSub = new BehaviorSubject(this.currentUser);
 
   // rappel : on utilise par convention le suffixxe $ pour préciser que c'est un observable
   // user$ :Observable<any>;
 
-  constructor(private auth: Auth) {
-
-
+  constructor(private auth: Auth, private evaluatorService:EvaluatorsService, private firestore:Firestore) {
+   
   }
 
   // register({ email, password }: any) {
@@ -107,13 +109,23 @@ export class AuthService {
   //   return !!this.isAuthenticated;
   // }
 
-  getData() {
-    // const dbInstance = collection(this.firestore, 'evaluators');   
+  getData(id:any) {
+    const dbInstance = collection(this.firestore, 'evaluators');   
     const userKey = this.auth.currentUser?.uid;
+    let userActif;
     console.log("userKey", userKey);
-    return userKey
+    this.evaluatorService.getEvaluator(id).subscribe(data=>{
+      console.log("data de getEvaluator", data);
+      userActif=data
+      return userActif      
+    })
+
+    // return userKey
 
   }
+
+
+  
 
 
 }

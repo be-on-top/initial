@@ -1,10 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { loggedIn } from '@angular/fire/auth-guard';
+// je ne vois pas l'utilité de cette méthode pour le moment, donc on désactive !!!!
+// import { loggedIn } from '@angular/fire/auth-guard';
 import { Auth } from '@angular/fire/auth';
 // import { of } from 'rxjs';
 import { AuthService } from '../admin/auth.service';
 import { EvaluatorsService } from '../admin/evaluators.service';
+// on a pu se passer de rxjs, donc on désactive tout pour le moment
+// import { Observable, Subscription, switchMap } from 'rxjs';
+import { query, Firestore, where, collection, getDocs } from '@angular/fire/firestore';
+import { onAuthStateChanged } from '@angular/fire/auth';
+
+
 
 @Component({
   selector: 'app-home',
@@ -13,23 +20,86 @@ import { EvaluatorsService } from '../admin/evaluators.service';
 })
 export class HomeComponent implements OnInit {
   user?: any;
+  // sub: Subscription;
+  uid = '';
+
   ui: string | undefined = ''
   authStatus?: any;
+  myData?: any;
+  evaluatorId: any;
+  evaluator: any
+  userData?: any;
 
-  constructor(private auth: Auth, private authService: AuthService, private evaluatorService: EvaluatorsService, private activatedRoute: ActivatedRoute, private router: Router) {
+
+  constructor(private auth: Auth, private firestore: Firestore, private authService: AuthService, private evaluatorService: EvaluatorsService, private activatedRoute: ActivatedRoute, private router: Router) {
+    // this.user = this.auth.currentUser
+    this.evaluatorId = this.auth.currentUser
+    console.log("evaluatorId", this.evaluatorId);
+
+    this.evaluatorService.getEvaluator(this.evaluatorId).subscribe(data => {
+      console.log("data de getEvaluator depuis la page", data);
+      this.evaluator = data
+      return this.evaluator
+    })
+
   }
 
+
   ngOnInit(): void {
+
+
+
+    onAuthStateChanged(this.auth, (user: any) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        this.user = user.uid
+        this.myData = this.evaluatorService.getEvaluator(user.uid).subscribe();
+        console.log("dddd", user.uid);
+        console.log("www", user.email);
+        console.log("data", this.myData);
+        // ne fonctionne pas : à creuser éventuellement, mais comme la méthode qui suit est impeccable, ce ne sera qu'un cas d'école
+        this.evaluatorService.getEvaluator(this.evaluatorId).subscribe(data => {
+          console.log("data de getEvaluator depuis la page", data);
+          this.evaluator = data
+        })
+
+        // méthode au top pour faire des requests
+        this.getDocsByParam(this.user)
+        // y a juste que je n'arrive pas à me la faire livrer pa le service !!!
+        // this.evaluatorService.getDocsByParam(this.user)
+        // console.log("myData", this.myData);
+
+
+        // User is signed out
+        // ...
+      }
+    })
+
     // getUserId ne sert à priori à rien si on peut récupérer l'id grâce à this.auth.currentUser !!!
     this.authService.getUserId();
-    this.authService.getData()
-    // retourne this.ui tout de suite après la connexion. undefined plus tard...
+    // retourne this.ui tout de suite après la connexion. undefined plus tard, donc ne convient pas...
     // console.log("log de ui", this.ui);
     // tests ok pour information, mais ne semble pas être très utile 
     this.authService.getToken()?.then(res => console.log(res.token))
-    // fonctionne parfaitement ! 
+    // fonctionne parfaitement !!!!!!!!!!!!!!!!!!
     this.authService.authStatusListener()
+
+
+
   }
+
+  // top !!!
+  async getDocsByParam(uid: string) {
+    const myData = query(collection(this.firestore, 'evaluators'), where('id', '==', uid));
+    const querySnapshot = await getDocs(myData);
+    querySnapshot.forEach((doc) => {
+      console.log(doc.id, ' => ', doc.data());
+      this.userData = doc.data()
+      console.log("this.userData", this.userData);
+    });
+  }
+
 
 
   onClick() {
