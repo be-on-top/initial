@@ -27,6 +27,7 @@
             <li class="list-group-item">Son prénom sur firestore : {{userData.firstName}}</li>
             <li class="list-group-item">Son nom sur firestore : {{userData.lastName}}</li>
             <li class="list-group-item">Date d'enregistrement sur firestore : {{userData.created | date:'dd/MM/yyyy' }}</li>
+            <li *ngIf="userData.sigle" class="list-group-item">Sigle métier si existant: {{userData.sigle}}</li>
         </ul>
     </div>
 

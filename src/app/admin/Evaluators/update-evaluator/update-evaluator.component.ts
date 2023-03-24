@@ -12,22 +12,23 @@ import { EvaluatorsService } from '../../evaluators.service';
 export class UpdateEvaluatorComponent implements OnInit {
 
   evaluatorId: any
-  evaluator: any={}
+  evaluator: any = {}
+  selectedSigles: string[] = []
 
-  constructor(private service: EvaluatorsService, private ac:ActivatedRoute, private router:Router) {
-    this.evaluatorId=this.ac.snapshot.params["id"];
+  constructor(private service: EvaluatorsService, private ac: ActivatedRoute, private router: Router) {
+    this.evaluatorId = this.ac.snapshot.params["id"];
     // on fait appel à getEvaluator pour récupérer les entrées de l'existant. méthode qui pour memo renvoie un observable
-    this.service.getEvaluator(this.evaluatorId).subscribe((data)=>{
-      console.log("data depuis update-evaluator component", data);      
-      this.evaluator=data
+    this.service.getEvaluator(this.evaluatorId).subscribe((data) => {
+      console.log("data depuis update-evaluator component", data);
+      this.evaluator = data
     })
 
-   }
+  }
 
   ngOnInit(): void {
   }
 
- updateEvaluator(form: NgForm) {
+  updateEvaluator(form: NgForm) {
     // on vérifie la validité du formulaire
     if (!form.valid) {
       console.log('form valid');
@@ -38,6 +39,12 @@ export class UpdateEvaluatorComponent implements OnInit {
     this.service.updateEvaluator(this.evaluatorId, form.value)
     // il faudra prévoir une redirection... 
     this.router.navigate(['/evaluator', this.evaluatorId])
+  }
+
+  // pour affecation métier de l'évaluateur
+  checkIfSelected(sigle: any) {
+    console.log(sigle);
+    this.selectedSigles = [...this.selectedSigles, sigle]
   }
 
 

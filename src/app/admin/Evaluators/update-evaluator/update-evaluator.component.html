@@ -2,24 +2,12 @@
 
     <h3>Mise à jour d'un évaluateur de la liste évaluateurs</h3>
 
-    <!-- <form class="form" #f="ngForm" (submit)="updateEvaluator(f)">
-
-        <label for="firstName" class="form-label mt-3">Prénom</label>
-        <input type="text" id="evalFirstName" [(ngModel)]="evaluator.firstName" name="evalFirstName" class="form-control">
-        <label for="lastName" class="form-label mt-3" required>Nom</label>
-        <input type="text" id="evalLastName" [(ngModel)]="evaluator.lastName" name="evalLastName" class="form-control">
-        <label for="email" class="form-label mt-3" required>Email</label>
-        <input type="text" id="evalEmail" [(ngModel)]="evaluator.email" name="evalEmail" class="form-control">
-
-        <textarea name="details" id="details" [(ngModel)]="evaluator.details" name="details" cols="100" rows="10"
-            class="form-control mt-3">Détails / Remarques & Objectifs...</textarea>
-        <button type="submit" id="submit" class="btn btn-primary mt-3">Valider</button>
-    </form> -->
-
     <form class="form" #f="ngForm" (submit)="updateEvaluator(f)" class="was-validated">
 
         <input type="text" id="created" [(ngModel)]="evaluator.created" name="created" class="form-control invisible"
             placeholder="Date de création : non modifiable">
+        <input type="text" id="id" [(ngModel)]="evaluator.id" name="id" class="form-control"
+            placeholder="id d'authentification : non modifiable" class="form-control text-white" disabled>
 
         <label for="firstName" class="form-label mt-3">Prénom</label>
         <input type="text" id="firstName" [(ngModel)]="evaluator.firstName" name="firstName" class="form-control"
@@ -45,7 +33,7 @@
             placeholder="Code Postal Optionnel...">
 
         <!-- Tooggle Swith for Evaluator status -->
-            <div class="form-check form-switch my-3">
+        <div class="form-check form-switch my-3">
             <input class="form-check-input" type="checkbox" id="status" name="status" value="true"
                 [(checked)]="evaluator.status" [(ngModel)]="evaluator.status">
             <label class="form-check-label" for="status">Status de l'utilisateur :
@@ -53,6 +41,20 @@
                 <ng-template #elseBlock> <span class="fw-bold">Inactif</span></ng-template>
             </label>
         </div>
+
+        <!-- modification des sigles métiers -->
+
+        <label for="sigle" class="form-label mt-3">Affectation métier :</label>
+        <select class="form-select" name="sigle" id="sigle" [ngModel]="evaluator.sigle" required #sigle="ngModel"
+            (change)="checkIfSelected(sigle.value)" multiple>
+            <option value>Selectionner le métier</option>
+            <option value="prepa_cdes">PREPA CDES</option>
+            <option value="poser_ite">POSEUR ITE</option>
+            <option value="macon_vrd">MACON VRD</option>
+            <option value="cl_vul">CLVUL</option>
+        </select>
+
+
 
         <!-- <label for="email" class="form-label mt-3">Commentaires optionnels</label> -->
         <textarea name="details" id="details" [(ngModel)]="evaluator.details" name="details" cols="100" rows="10"

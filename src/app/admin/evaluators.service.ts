@@ -83,7 +83,7 @@ export class EvaluatorsService {
     const querySnapshot = await getDocs(myData);
     querySnapshot.forEach((doc) => {
       console.log(doc.id, ' => ', doc.data());
-      return doc.data
+      // return doc.data
     });
   }
 
