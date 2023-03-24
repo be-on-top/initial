@@ -6,8 +6,6 @@ import { Auth, createUserWithEmailAndPassword, sendPasswordResetEmail } from '@a
 import { Firestore, collectionData, collection, documentId, getDoc, docData, setDoc, query, where } from '@angular/fire/firestore';
 import { addDoc, deleteDoc, doc, getDocs } from 'firebase/firestore';
 import { Observable } from 'rxjs';
-// import { Router } from '@angular/router';
-
 
 
 @Injectable({
@@ -18,7 +16,6 @@ export class EvaluatorsService {
   // évaluateurs ne serait pas un tableau de type any mais un observable
   evaluators: any[] = [];
   result: any;
-
 
   constructor(private auth: Auth, private firestore: Firestore) {
 
@@ -37,7 +34,7 @@ export class EvaluatorsService {
     this.result = await createUserWithEmailAndPassword(this.auth, evaluator.email, password);
 
     if (this.result && this.result.user) {
-      const { uid, emailVerified } = this.result.user;
+      // const { uid, emailVerified } = this.result.user;
       newEvaluator.id = this.result.user.uid
     }
 
@@ -46,8 +43,6 @@ export class EvaluatorsService {
     addDoc($evaluatorsRef, newEvaluator)
 
     // envoie un mail de réinitialisation du mot de passe
-
-
     sendPasswordResetEmail(this.auth, newEvaluator.email)
       .then(() => {
         // Password reset email sent!
@@ -82,16 +77,8 @@ export class EvaluatorsService {
     return docData($evaluatorRef, { idField: 'id' }) as Observable<Evaluators>;
   }
 
-  //   getDocsByParam( collection:any, id:any, uid:string ) {
-  //     let $evaluatorsRef = collection(this.firestore, "evaluators");
-  //     return $evaluatorsRef.where(getParam, '==', paramValue).get();
-  // }
-
   // ça marche !!!! 
   async getDocsByParam(uid: string) {
-    // let $evaluatorsRef = collection(this.firestore, "evaluators");
-    // const q = query($evaluatorsRef, where('id', "==", uid));
-    // console.log('q', q);
     const myData = query(collection(this.firestore, 'evaluators'), where('id', '==', uid));
     const querySnapshot = await getDocs(myData);
     querySnapshot.forEach((doc) => {
@@ -99,17 +86,6 @@ export class EvaluatorsService {
       return doc.data
     });
   }
-
-
-
-
-
-
-  // Create a query against the collection.
-
-
-
-
 
 
   updateEvaluator(id: string, evaluator: Evaluators) {

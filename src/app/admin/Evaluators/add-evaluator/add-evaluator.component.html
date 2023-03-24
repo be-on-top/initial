@@ -8,12 +8,11 @@
         <!-- attention à virer les fonctions pour l'exercice sur (change) et (input) !!!!!! -->
 
         <label for="firstName" class="form-label mt-3">Prénom</label>
-        <input type="text" id="firstName" ngModel="firstname" name="firstName" class="form-control" placeholder="Prénom"
-            #firstName (change)="checkLength(firstName)">
+        <input type="text" id="firstName" ngModel name="firstName" class="form-control" placeholder="Prénom">
 
         <label for="lastName" class="form-label mt-3">Nom *</label>
         <input type="text" id="lastName" ngModel name="lastName" class="form-control" #lastName="ngModel"
-            placeholder="Nom" required (input)="change($event)">
+            placeholder="Nom" required>
         <div class="valid-feedback" *ngIf="lastName.valid">Champ correctement renseigné</div>
         <div class="invalid-feedback" *ngIf="lastName.invalid">Merci de renseigner le champ nom.</div>
 
@@ -28,14 +27,6 @@
 
         <label for="cp" class="form-label mt-3">CP</label>
         <input type="text" id="cp" ngModel name="cp" class="form-control" placeholder="Code Postal Optionnel...">
-
-        <!-- bidon -->
-        <!-- <div>
-            <label for="pass">Password (8 characters minimum) bidon !!!!!:</label>
-            <input class="form-control" ngModel #password="ngModel" type="password" id="password" name="password"
-                minlength="8" required>
-                <i class="input-group-text bi-eye" (click)="toggleDisplayPassword($event)"></i>
-        </div> -->
 
         <!-- affectation métier -->
         <label for="sigle" class="form-label mt-3">Affectation métier :</label>
