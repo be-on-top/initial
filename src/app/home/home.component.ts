@@ -101,7 +101,6 @@ export class HomeComponent implements OnInit {
   }
 
 
-
   onClick() {
     this.authService.logout()
       .then(() => {

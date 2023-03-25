@@ -3,19 +3,42 @@
     <h3>Formulaire de saisie des questions de positionnement</h3>
     <p class="border-dark bg-light rounded p-2" role="alert">Numéros de questions déjà enregistrées :
         {{registryNumbers}}</p>
+    <!-- {{userData.sigle.includes('prepa_cdes')}}
+    {{userData.sigle}} -->
 
     <!-- pour les messages de retour/validation des champs du formulaire ou form validation, on utilisera BOOTSTRAP plutôt que des directives structurelles -->
     <form class="form" #f="ngForm" class="was-validated" (submit)="submitForm(f)">
         <div class="form-group row justify-content-between">
             <div class="col-sm-3">
-                <select class="form-select" name="sigle" id="sigle" ngModel required #sigle="ngModel"
-                    (change)="checkIfSelected(sigle.value)">
-                    <option value>Selectionner le métier</option>
-                    <option value="prepa_cdes">PREPA CDES</option>
-                    <option value="poser_ite">POSEUR ITE</option>
-                    <option value="macon_vrd">MACON VRD</option>
-                    <option value="cl_vul">CLVUL</option>
-                </select>
+
+                <!-- 
+                <div *ngIf="userData">
+                    <div *ngFor="let s of userData.sigle">
+                        {{s}}
+                        <option *ngIf="s.includes('prepa')" value="prepa_cdes">PREPA CDES</option>
+                        <option *ngIf="s.includes('poser')" value="poser_ite">POSEUR ITE</option>
+                        <option *ngIf="s.includes('macon')" value="macon_vrd">MACON VRD</option>
+                        <option *ngIf="s.includes('cl')" value="cl_vul">CLVUL</option>
+                    </div>
+                </div> -->
+
+
+
+                <!-- à partir du moment, où on affecte des métiers aux évuateurs (donc aux doc de la collection evaluators), l'affichage des options devient conditionnelle -->
+                <!-- se rappeler que sigle fait partie d'un tableau côté evaluateur, puisqu'il peut en avoir plusieures. faut donc itérer dans le tableau -->
+                <!-- <div *ngIf="userData"> -->
+                    <select class="form-select" name="sigle" id="sigle" ngModel required #sigle="ngModel"
+                        (change)="checkIfSelected(sigle.value)">
+                        <option value>Selectionner le métier</option>
+                        {{userData}}
+                        <option *ngFor="let element of userData.sigle" value="{{element}}">
+                            <span *ngIf="element==='poser_ite'">POSEUR ITE</span>
+                            <span *ngIf="element==='prepa_cdes'">PREPA CDES</span>
+                            <span *ngIf="element==='macon_vrd'">MACON VRD</span>
+                            <span *ngIf="element==='cl_vul'">CL VUL</span>
+                        </option>
+                    </select>
+                <!-- </div> -->
                 <!-- <div class="valid-feedback" *ngIf="comment1.valid">Champ correctement renseigné</div> -->
             </div>
             <div class="col-sm-3">
@@ -122,7 +145,8 @@
         <input type="text" id="question" ngModel name="question" class="form-control"
             placeholder="Saisir la question..." required #question="ngModel">
         <div class="valid-feedback mb-3" *ngIf="question.valid">Champ correctement renseigné</div>
-        <div class="invalid-feedback mb-3" *ngIf="question.invalid">Merci de renseigner le libellé obligatoire de la question
+        <div class="invalid-feedback mb-3" *ngIf="question.invalid">Merci de renseigner le libellé obligatoire de la
+            question
         </div>
         <input type="file" accept="image/*, video/*" id="mediaQuestion" ngModel name="mediaQuestion"
             class="form-control" #mediaQuestion="ngModel" placeholder="Fichier média de votre choix"

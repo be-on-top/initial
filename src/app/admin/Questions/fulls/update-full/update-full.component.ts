@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuestionsService } from 'src/app/admin/questions.service';
+import { EvaluatorsService } from 'src/app/admin/evaluators.service';
+
 
 @Component({
   selector: 'app-update-full',
@@ -10,6 +12,7 @@ import { QuestionsService } from 'src/app/admin/questions.service';
 })
 export class UpdateFullComponent {
 
+  // pour les données liées à la collection questions
   questionId: any;
   result: any = {}
 
@@ -45,7 +48,7 @@ export class UpdateFullComponent {
   arrayFilesToUpdate: any = []
   notations: number[] = [1, 2, 3]
 
-  constructor(private service: QuestionsService, private ac: ActivatedRoute, private router: Router) {
+  constructor(private service: QuestionsService, private ac: ActivatedRoute, private router: Router, private evaluatorService: EvaluatorsService) {
   }
 
   ngOnInit(): void {
@@ -54,19 +57,19 @@ export class UpdateFullComponent {
     // récupération des seuls média Responses correspondant à la question en cours d'update
     this.service.getMediasResponsesById(this.questionId)
     // récupération du seul média Question correspondant à la question en cours d'update
-    this.allMediasResponses=this.service.getMediasResponsesById(this.questionId)
-    this.allMediasQuestions=this.service.getMediaQuestionById(this.questionId)
+    this.allMediasResponses = this.service.getMediasResponsesById(this.questionId)
+    this.allMediasQuestions = this.service.getMediaQuestionById(this.questionId)
     // console.log("mediaQuestionById",this.mediaQuestionById);
-    
 
-    // on fait appel à getSocialQuestion pour récupérer les entrées de l'existant. méthode qui pour memo renvoie un observable
+
+    // on fait appel à getQuestion pour récupérer les entrées de l'existant. méthode qui pour memo renvoie un observable
     this.service.getQuestion(this.questionId).subscribe((data) => {
       console.log("data depuis update-question component !!!!!!!!!!!!!", data);
       this.result = data
-
     })
 
   }
+
 
   updateForm(form: NgForm) {
     // on vérifie la validité du formulaire
@@ -85,8 +88,8 @@ export class UpdateFullComponent {
   //  fonction basique pour le moment. on fait d'abord un focus sur les données textuelles
   detectFiles(event: any, fieldName: any, item: any = "") {
     // console.log("fieldName.name", fieldName.name);
-      alert(`êtes-vous certain de vouloir remplacer le fichier ${item} ?`)
-      this.service.deleteMedia(item)
+    alert(`êtes-vous certain de vouloir remplacer le fichier ${item} ?`)
+    this.service.deleteMedia(item)
 
 
     console.log("Type de fichier", event.target.files[0].type);
@@ -104,5 +107,9 @@ export class UpdateFullComponent {
     alert("dddddd")
     console.log("ce que je récupère", fieldName);
   }
+
+
+
+
 
 }

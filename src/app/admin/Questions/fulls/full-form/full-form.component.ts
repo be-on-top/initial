@@ -1,23 +1,28 @@
 import { Component } from '@angular/core';
-import { Auth } from '@angular/fire/auth';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { EvaluatorsService } from 'src/app/admin/evaluators.service';
 import { QuestionsService } from 'src/app/admin/questions.service';
+// à externaliser dans la mesure du possible à l'avenir :
+import { Auth, onAuthStateChanged } from '@angular/fire/auth';
+import { query, Firestore, where, collection, getDocs } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-full-form',
   templateUrl: './full-form.component.html',
   styleUrls: ['./full-form.component.css']
 })
+
 export class FullFormComponent {
+  //  pour les données liées à l'évaluateur authentifié
+  authId?: any;
+  userData?: any;
   // obligée de récupérer l'uid de l'évaluateur pour connaitre ses affectations métier
   ui: any = ''
   user?: any;
   question: string | undefined = "";
   number: number = 0;
   mediaQuestion: any;
-  // videoDuration:any = 0;
   mediaOption1: any;
   option1: string = "";
   optScoring1: boolean = false;
@@ -34,7 +39,6 @@ export class FullFormComponent {
   optScoring4: boolean = false;
   option4: string = "";
   comment4: string = "";
-  // Create a root reference
 
   numbers: number[] = []
   registryNumbers: any[] = []
@@ -87,7 +91,7 @@ export class FullFormComponent {
 
   // import de auth pour tester les spécificités de l'évaluateur connecté si il est reconnu
   // import du service EvaluatorsService pour tester la récupération des affectations métiers spécifiques à l'évaluateur
-  constructor(private service: QuestionsService, private router: Router, private auth:Auth, private evaluatorService:EvaluatorsService) {
+  constructor(private service: QuestionsService, private router: Router, private auth: Auth, private evaluatorService: EvaluatorsService, private firestore:Firestore) {
   }
 
   arrayFilesToUpload: any = []
@@ -100,7 +104,7 @@ export class FullFormComponent {
       // console.log(data);
       // attention : c'est la différence avec prior-form, on ne veut pas afficher les 20 premières questions dans le dénombre
       for (let n of data) {
-       n.number>20? this.registryNumbers = [...this.registryNumbers, Number(n.number)]:""
+        n.number > 20 ? this.registryNumbers = [...this.registryNumbers, Number(n.number)] : ""
         // console.log(this.registryNumbers);
         this.numbers = this.numbers.filter(element => {
           return element != n.number
@@ -112,12 +116,27 @@ export class FullFormComponent {
 
     for (let i = 20; i < 201; i++) {
       this.numbers.push(i)
-      console.log(this.numbers);      
+      console.log(this.numbers);
 
     }
 
-    // et comme il nous faut des données concernant l'évaluateur authentifié
-    this.getData()
+    onAuthStateChanged(this.auth, (user: any) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        this.authId = user.uid
+        this.evaluatorService.getEvaluator(user.uid).subscribe();
+        console.log("dddd", user.uid);
+        console.log("www", user.email);
+        // méthode au top : 
+        this.getDocsByParam(this.authId)
+      }
+
+      else {
+        // User is signed out
+        // ...
+      }
+    })
   }
 
   async submitForm(form: NgForm) {
@@ -145,15 +164,24 @@ export class FullFormComponent {
     this.selectedSigle = sigle
   }
 
-  getData() {
-    // const dbInstance = collection(this.firestore, 'evaluators');
-    let userKey = this.auth.currentUser?.uid;
-    console.log("userKey", userKey);
-    this.ui = userKey
-    // on a déjà des méthodes héritées de EvaluatorsService permettant de récupérer un document lié à la collection Evaluators d'après son id
-    this.evaluatorService.getEvaluator(this.ui)
-    console.log(this.user);    
+  // getData() {
+  //   let userKey = this.auth.currentUser?.uid;
+  //   console.log("userKey", userKey);
+  //   this.ui = userKey
+  //   // on a déjà des méthodes héritées de EvaluatorsService permettant de récupérer un document lié à la collection Evaluators d'après son id
+  //   this.evaluatorService.getEvaluator(this.ui)
+  //   console.log(this.user);
+  // }
 
+  // top !!!
+  async getDocsByParam(uid: string) {
+    const myData = query(collection(this.firestore, 'evaluators'), where('id', '==', uid));
+    const querySnapshot = await getDocs(myData);
+    querySnapshot.forEach((doc) => {
+      console.log(doc.id, ' => ', doc.data());
+      this.userData = doc.data()
+      console.log("this.userData", this.userData);
+    });
   }
 
 
