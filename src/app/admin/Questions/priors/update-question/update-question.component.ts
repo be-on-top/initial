@@ -59,7 +59,7 @@ export class UpdateQuestionComponents implements OnInit {
     // récupération du seul média Question correspondant à la question en cours d'update
     this.mediasResponsesById=this.service.getMediasResponsesById(this.questionId)
     this.mediaQuestionById=this.service.getMediaQuestionById(this.questionId)
-    // console.log("jjjjjjjjjjjjjjjjjjjjjjjjjjj",this.mediaQuestionById);
+    // console.log("this.mediaQuestionById",this.mediaQuestionById);
     
 
     // on fait appel à getEvaluator pour récupérer les entrées de l'existant. méthode qui pour memo renvoie un observable

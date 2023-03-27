@@ -15,14 +15,14 @@
                 </select>
                 <div class="valid-feedback mb-3" *ngIf="number.valid">Champ correctement renseigné</div>
             </div>
-            <div class="col-sm-4">
+            <!-- <div class="col-sm-4">
                 <select class="form-select" name="notation" id="notation" ngModel required #notation="ngModel">
                     <option value="">Points attribués à la question</option>
                     <option *ngFor="let notation of notations" value="{{notation}}">+{{notation}}PNTS</option>
                 </select>
                 <div class="valid-feedback mb-3" *ngIf="notation.valid">Champ correctement renseigné</div>
-            </div>
-            <div class="col-sm-4">
+            </div> -->
+            <div class="col-sm-8">
                 <select class="form-select" name="category" id="category" ngModel required #category="ngModel"
                     (change)="checkIfSelected(category.value)">
                     <option value="">Catégorie</option>

@@ -39,6 +39,7 @@ export class EvaluatorsListComponent implements OnInit {
     console.log(evaluatorid);
     
     this.service.deleteEvaluator(evaluatorid)
+    this.router.navigate(['/evaluators'])
     // .then(()=>{
 
     // })

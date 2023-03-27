@@ -6,7 +6,7 @@
     <form class="form" #f="ngForm" (submit)="updateForm(f)" class="was-validated">
         <div class="form-group row justify-content-between">
             <!-- rappel du numéro de question -->
-            <div class="col-sm-2">
+            <div class="col-sm-4">
                 <select class="form-select disabled" id="number" name="number" [(ngModel)]="result.number"
                     #number="ngModel">
                     <option selected="selected" value="{{result.number}}" disabled>N°: {{result.number}}</option>
@@ -14,16 +14,16 @@
             </div>
 
             <!-- rappel du nombre de point attribué ou score associé -->
-            <div class="col-sm-3  d-flex" *ngIf="result.notation">
+            <!-- <div class="col-sm-3  d-flex" *ngIf="result.notation">
                 <select class="form-select" name="notation" id="notation" [(ngModel)]="result.notation" required
                     #notation="ngModel">
                     <option *ngFor="let notation of notations" value="{{notation}}">Points: {{notation}}
                     </option>
                 </select>
-            </div>
+            </div> -->
             <!-- rappel du numéro de question -->
             {{result.competencce}}
-            <div class="col-sm-6">
+            <div class="col-sm-8">
                 <select class="form-select disabled" id="category" name="category" [(ngModel)]="result.category"
                     #category="ngModel">
                     <option selected="selected" value="{{result.category}}" disabled>Categorie: {{result.category}}

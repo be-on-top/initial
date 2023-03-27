@@ -48,10 +48,12 @@ export class UpdateFullComponent {
   arrayFilesToUpdate: any = []
   notations: number[] = [1, 2, 3]
 
-  constructor(private service: QuestionsService, private ac: ActivatedRoute, private router: Router, private evaluatorService: EvaluatorsService) {
+  constructor(private service: QuestionsService, private ac: ActivatedRoute, private router: Router, private evaluatorService: EvaluatorsService
+    ) {
   }
 
   ngOnInit(): void {
+
 
     this.questionId = this.ac.snapshot.params["id"];
     // récupération des seuls média Responses correspondant à la question en cours d'update
@@ -107,9 +109,5 @@ export class UpdateFullComponent {
     alert("dddddd")
     console.log("ce que je récupère", fieldName);
   }
-
-
-
-
 
 }
