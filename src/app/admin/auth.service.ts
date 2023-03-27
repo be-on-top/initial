@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Auth, signInWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from '@angular/fire/auth';
 import { collection, Firestore } from '@angular/fire/firestore';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { stringify } from '@firebase/util';
 // import { collection, Firestore } from '@angular/fire/firestore';
 
@@ -19,7 +19,7 @@ export class AuthService {
   // rappel : on utilise par convention le suffixxe $ pour préciser que c'est un observable
   // user$ :Observable<any>;
 
-  constructor(private auth: Auth, private evaluatorService:EvaluatorsService, private firestore:Firestore) {
+  constructor(private auth: Auth, private evaluatorService:EvaluatorsService, private firestore:Firestore, private router:Router) {
    
   }
 
@@ -49,6 +49,7 @@ export class AuthService {
       else {
         this.authStatusSub.next(null);
         console.log('User is logged out');
+        this.router.navigate(['/login'])
         status = ""
       }
     })
@@ -83,8 +84,8 @@ export class AuthService {
 
       } else {
         console.log("no user");
-
         // User is signed out
+        this.router.navigate(['/login'])
         // ...
       }
 

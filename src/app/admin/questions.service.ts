@@ -41,7 +41,6 @@ export class QuestionsService {
       if (Object.values(allFilesToUplad)[0][2] == "video/mp4") {
         this.isVideo = true;
         console.log(this.isVideo);
-
       }
 
     }

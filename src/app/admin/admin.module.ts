@@ -66,5 +66,6 @@ const routesAdmin: Routes = [
     RouterModule.forChild(routesAdmin)
   ]
 })
+
 export class AdminModule { }
 

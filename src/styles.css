@@ -43,3 +43,25 @@ h4,
 .bg-dark, .navbar-dark{
     background-color: #272A61!important;
 }
+
+p.question{
+    text-align: center;
+}
+
+@media only screen and (max-width: 420px) {
+
+    
+    .fs-6, .fs-6 span{
+        font-size: 0.8rem!important;
+    
+    }
+    p{
+        font-size: 1.2rem!important;
+
+    }
+    
+    .fs-5{
+        font-size: 1.1rem!important;
+
+    }
+}

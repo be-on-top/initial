@@ -9,7 +9,7 @@
     <!-- pour les messages de retour/validation des champs du formulaire ou form validation, on utilisera BOOTSTRAP plutôt que des directives structurelles -->
     <form class="form" #f="ngForm" class="was-validated" (submit)="submitForm(f)">
         <div class="form-group row justify-content-between">
-            <div class="col-sm-3">
+            <div class="col-sm-3 col-md-6">
 
                 <!-- 
                 <div *ngIf="userData">
@@ -22,15 +22,12 @@
                     </div>
                 </div> -->
 
-
-
                 <!-- à partir du moment, où on affecte des métiers aux évuateurs (donc aux doc de la collection evaluators), l'affichage des options devient conditionnelle -->
                 <!-- se rappeler que sigle fait partie d'un tableau côté evaluateur, puisqu'il peut en avoir plusieures. faut donc itérer dans le tableau -->
                 <!-- <div *ngIf="userData"> -->
                     <select class="form-select" name="sigle" id="sigle" ngModel required #sigle="ngModel"
                         (change)="checkIfSelected(sigle.value)">
                         <option value>Selectionner le métier</option>
-                        {{userData}}
                         <option *ngFor="let element of userData.sigle" value="{{element}}">
                             <span *ngIf="element==='poser_ite'">POSEUR ITE</span>
                             <span *ngIf="element==='prepa_cdes'">PREPA CDES</span>
@@ -41,7 +38,7 @@
                 <!-- </div> -->
                 <!-- <div class="valid-feedback" *ngIf="comment1.valid">Champ correctement renseigné</div> -->
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-3 col-md-6">
                 <select class="form-select" name="competence" id="competence" ngModel required #competence="ngModel">
                     <option value>Competence ciblée en fonction du métier</option>
                     <!-- <option value=competences_ite.CP1 [disabled]="selectedSigle != 'poser_ite'">CP1 {{competences_ite.CP1}}</option> -->
@@ -115,7 +112,7 @@
 
                 </select>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-3 col-md-6">
                 <select class="form-select" name="notation" id="notation" ngModel required #notation="ngModel">
                     <option value>Points attribués à la question</option>
                     <option *ngFor="let notation of notations" value="{{notation}}">+{{notation}}PNTS</option>
@@ -123,21 +120,19 @@
                 <!-- <div class="valid-feedback" *ngIf="comment1.valid">Champ correctement renseigné</div> -->
             </div>
             <!-- ajout du nombre des questions -->
-            <div class="col-sm-3">
+            <div class="col-sm-3 col-md-6">
                 <select class="form-select" id="number" name="number" ngModel required #number="ngModel">
                     <option value>Numéro de question</option>
                     <option *ngFor="let element of numbers" value="{{element}}">{{element}}</option>
                 </select>
 
                 <!-- 
-
                 <select class="language-selector" [(ngModel)]="selectedLanguage">
                     <option *ngFor="let language of outputLanguageList" 
                     value="{{language.shortName}}" >{{language.languageName}}</option>
                   </select> -->
-
-
                 <!-- <div class="valid-feedback" *ngIf="comment1.valid">Champ correctement renseigné</div> -->
+
             </div>
         </div>
 

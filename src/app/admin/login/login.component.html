@@ -1,18 +1,29 @@
 <div class="container py-5">
+    <!-- {{user}} -->
 
     <h3>Login Utilisateur</h3>
-    <form class="form mx-auto" [formGroup]="formLogin" (ngSubmit)="onSubmit()">
-        <div class="mb-3">
-            <label class="form-label text-light">Email</label>
-            <input type="text" class="form-control" formControlName="email">
-        </div>
-        <div class="mb-3">
-            <label class="form-label text-light">Password</label>
-            <input type="password" class="form-control" formControlName="password">
-        </div>
-        <input type="submit" class="btn btn-primary" value="Submit">
-    </form>
+    <ng-template #login>
+        <form class="form mx-auto" [formGroup]="formLogin" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+                <label class="form-label text-light">Email</label>
+                <input type="text" class="form-control" formControlName="email">
+            </div>
+            <div class="mb-3">
+                <label class="form-label text-light">Password</label>
+                <input type="password" class="form-control" formControlName="password">
+            </div>
+            <input type="submit" class="btn btn-primary" value="Submit">
+        </form>
 
-    <button class="btn btn-primary mt-5" (click)="onClick()">Login With Google</button>
+        <button class="btn btn-primary mt-5" (click)="onClick()">Login With Google</button>
+    </ng-template>
+
+    <hr>
+    <div *ngIf="user, else login">
+        <p class="alert bg-success my-3 p-3">Vous êtes déjà authentifié</p>
+
+        <button class="btn btn-primary mt-3" (click)="onClick()"><a class="dropdown-item"
+                (click)="logOut()">Logout</a></button>
+    </div>
 
 </div>
