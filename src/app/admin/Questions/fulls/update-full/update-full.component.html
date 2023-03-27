@@ -77,6 +77,7 @@
             #option1="ngModel" placeholder="Option de réponse 1" required>
         <div class="valid-feedback" *ngIf="option1.valid">Champ correctement renseigné</div>
         <div *ngIf="allMediasResponses && allMediasResponses.length!==0, else createOption1">
+            coucou modif
             <div *ngFor="let item of allMediasResponses">
                 <div *ngIf="item.includes('Option1')">
                     <img class="img-fluid" [src]="item">
@@ -90,7 +91,7 @@
         </div>
         <ng-template #createOption1>
             <input type="file" accept="image/*, video/*" id="mediaOption1" ngModel name="mediaOption1"
-                class="form-control" #mediaOption1="ngModel" (change)="detectFiles($event, mediaOption1)">
+                class="form-control" #mediaOption1="ngModel" (change)="detectNewFiles($event, mediaOption1)">
         </ng-template>
 
         <label for="comment1" class="form-label mt-3">Commentaire</label>
@@ -130,7 +131,7 @@
         </div>
         <ng-template #createOption2>
             <input type="file" accept="image/*, video/*" id="mediaOption2" ngModel name="mediaOption2"
-                class="form-control" #mediaOption2="ngModel" (change)="detectFiles($event, mediaOption2)">
+                class="form-control" #mediaOption2="ngModel" (change)="detectNewFiles($event, mediaOption2)">
         </ng-template>
 
         <label for="comment2" class="form-label mt-3">Commentaire</label>
@@ -172,7 +173,7 @@
         </div>
         <ng-template #createOption3>
             <input type="file" accept="image/*, video/*" id="mediaOption3" ngModel name="mediaOption3"
-                class="form-control" #mediaOption3="ngModel" (change)="detectFiles($event, mediaOption3)">
+                class="form-control" #mediaOption3="ngModel" (change)="detectNewFiles($event, mediaOption3)">
         </ng-template>
 
         <label for="comment3" class="form-label mt-3">Commentaire</label>
@@ -212,7 +213,7 @@
         </div>
         <ng-template #createOption4>
             <input type="file" accept="image/*, video/*" id="mediaOption4" ngModel name="mediaOption4"
-                class="form-control" #mediaOption4="ngModel" (change)="detectFiles($event, mediaOption4)">
+                class="form-control" #mediaOption4="ngModel" (change)="detectNewFiles($event, mediaOption4)">
         </ng-template>
 
         <label for="comment4" class="form-label mt-3">Commentaire</label>

@@ -1,11 +1,11 @@
 <div class="container py-5">
 
     <h3>Formulaire de saisie des questions d'accroche</h3>
-    <p class="border-dark bg-light rounded p-2" role="alert">Numéros de questions déjà enregistrées :
-        {{registryNumbers}}</p>
+    <!-- <p class="border-dark bg-light rounded p-2" role="alert">Numéros de questions déjà enregistrées :
+        {{registryNumbers}}</p> -->
 
     <!-- pour les messages de retour/validation des champs du formulaire ou form validation, on utilisera BOOTSTRAP plutôt que des directives structurelles -->
-    <form class="form" #f="ngForm" class="was-validated" (submit)="submitForm(f)">
+    <form class="form" #f="ngForm" class="was-validated mt-5" (submit)="submitForm(f)">
         <div class="form-group row justify-content-between">
             <div class="col-sm-3">
                 <select class="form-select" name="sigle" id="sigle" ngModel required #sigle="ngModel"

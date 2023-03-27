@@ -87,7 +87,7 @@ export class UpdateFullComponent {
     this.router.navigate(['/fullList'])
   }
 
-  //  fonction basique pour le moment. on fait d'abord un focus sur les données textuelles
+  //  fonction en cas de modification d'un média existant
   detectFiles(event: any, fieldName: any, item: any = "") {
     // console.log("fieldName.name", fieldName.name);
     alert(`êtes-vous certain de vouloir remplacer le fichier ${item} ?`)
@@ -95,6 +95,19 @@ export class UpdateFullComponent {
 
 
     console.log("Type de fichier", event.target.files[0].type);
+
+    this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name, event.target.files[0].type])
+    // console.log("this.arrayFilesToUpdate", this.arrayFilesToUpdate);
+    console.log(event.target.files[0].size);
+    if (event.target.files[0].size > 18000000) {
+      alert("File is too big!")
+    }
+  }
+
+  // fonction en cas d'ajout d'un média sur une réponse initialement sans média
+  detectNewFiles(event: any, fieldName: any, item: any = "") {
+    // console.log("fieldName.name", fieldName.name);
+    // console.log("Type de fichier", event.target.files[0].type);
 
     this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name, event.target.files[0].type])
     // console.log("this.arrayFilesToUpdate", this.arrayFilesToUpdate);

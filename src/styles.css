@@ -13,55 +13,67 @@ h2,
 h3,
 h4,
 .h4 {
-    font-weight: 400;  
+    font-weight: 400;
     text-align: center;
 }
 
-.btn a{
+.btn a {
     /* font-size: smaller; */
     text-decoration: none;
 }
 
-.btn i{
+.btn i {
     margin-right: 1rem;
 }
 
-.bg-success, .success{
-    background-color: #B2BC00!important;
+.bg-success,
+.success {
+    background-color: #B2BC00 !important;
 }
-.text-success{
-   color: #B2BC00!important;
+
+.text-success {
+    color: #B2BC00 !important;
 }
+
 /* .bg-primary{
     background-color: #8B00BD!important;
 } */
 
-.bg-primary{
-    background-color: #272A61!important;
+.bg-primary {
+    background-color: #272A61 !important;
 }
 
-.bg-dark, .navbar-dark{
-    background-color: #272A61!important;
+.bg-dark,
+.navbar-dark {
+    background-color: #272A61 !important;
 }
 
-p.question{
+p.question {
     text-align: center;
 }
 
+
+/* .object-fit-cover {
+    width: 100vw;
+    height: 25vw;
+} */
+
 @media only screen and (max-width: 420px) {
 
-    
-    .fs-6, .fs-6 span{
-        font-size: 0.8rem!important;
-    
-    }
-    p{
-        font-size: 1.2rem!important;
+
+    .fs-6,
+    .fs-6 span {
+        font-size: 0.8rem !important;
 
     }
-    
-    .fs-5{
-        font-size: 1.1rem!important;
+
+    p {
+        font-size: 1.2rem !important;
+
+    }
+
+    .fs-5 {
+        font-size: 1.1rem !important;
 
     }
 }
