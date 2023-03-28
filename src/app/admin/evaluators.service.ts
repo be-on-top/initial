@@ -71,7 +71,6 @@ export class EvaluatorsService {
     deleteDoc($evaluatorRef);
   }
 
-
   getEvaluator(id: string) {
     let $evaluatorRef = doc(this.firestore, "evaluators/" + id)
     return docData($evaluatorRef, { idField: 'id' }) as Observable<Evaluators>;

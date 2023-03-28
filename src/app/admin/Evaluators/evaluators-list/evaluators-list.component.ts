@@ -10,10 +10,9 @@ import { EvaluatorsService } from '../../evaluators.service';
 })
 
 export class EvaluatorsListComponent implements OnInit {
-  // Will be an object of type Evaluators ++++++ 
-  // allEvaluators?:Evaluators[]
-  // juste pour tests sur affichage (simplifier ultérieurement l'interface Evaluators...)
   allEvaluators?:any
+  // on le prépare à recevoir un terme de recherche
+  searchText:string=''
 
 
   constructor(private router:Router, private service:EvaluatorsService){
@@ -48,5 +47,10 @@ export class EvaluatorsListComponent implements OnInit {
     // })
   }  
 
+  // pour utiliser le composant de recherche
+  onSearchTextEntered(searchValue:string){
+    this.searchText=searchValue
+    console.log(this.searchText);
+  }
 
 }

@@ -7,15 +7,18 @@
     </div>
 
     <div *ngIf="allEvaluators">
-        <div class="row mt-5">
-            <div class="col-sm-3 h4">Nom</div>
-            <div class="col-sm-3 h4">Prénom</div>
+        <!-- on introduit un champ de recherche -->
+        <app-search (searchTextChanged)="onSearchTextEntered($event)"></app-search>
+        <!-- <div class="row mt-5"> -->
+        <div class="row mt-4">
+            <div class="col-sm-3 h5">Nom</div>
+            <div class="col-sm-3 h5">Prénom</div>
             <div class="col-sm-3 h4">Suppression</div>
             <div class="col-sm-3 h4">Détails</div>
         </div>
 
         <div *ngFor="let evaluator of allEvaluators">
-            <div class="row mt-5">
+            <div class="row mt-4" *ngIf="searchText==='' || evaluator.lastName.toLowerCase().includes(searchText) || evaluator.firstName.toLowerCase().includes(searchText) ">
                 <div class="col-sm-3">{{evaluator.lastName}}</div>
                 <div class="col-sm-3">{{evaluator.firstName}}</div>
                 <div class="col-sm-3"><button class="btn btn-danger text-white" (click)="deleteEvaluator(evaluator.id)"><i class="bi bi-person-dash-fill"></i>Suppression</button></div>

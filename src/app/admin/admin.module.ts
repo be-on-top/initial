@@ -25,30 +25,35 @@ import { UpdateFullComponent } from './Questions/fulls/update-full/update-full.c
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from '../register/register.component';
 import { AuthGuardService } from '../auth-guard.service';
-
-
+import { SearchComponent } from '../search/search.component';
 
 // import { EvaluatorDetailsComponent } from './Evaluators/evaluator-details/evaluator-details.component';
 
 
 const routesAdmin: Routes = [
-  { path: 'evaluators', component: EvaluatorsListComponent },
-  { path: 'addEvaluator', component: AddEvaluatorComponent },
-  { path: 'evaluator/:id', component: EvaluatorDetailsComponent },
-  { path: 'updateEvaluator/:id', component: UpdateEvaluatorComponent },
-  { path: 'priorForm', component: PriorFormComponent, canActivate:[AuthGuardService] },
-  { path: 'questions', component: QuestionsListComponent },
-  { path: 'questionDetails', component: QuestionDetailsComponent },
-  { path: 'updateQuestion/:id', component: UpdateQuestionComponents },
-  { path: 'socialForm', component: SocialFormComponent },
-  { path: 'socials', component: SocialsListComponent },
-  { path: 'updateSocial/:id', component: UpdateSocialComponent },
-  { path: 'fullForm', component: FullFormComponent },
-  { path: 'fullList', component: FullListComponent },
-  { path: 'fullDetails', component: FullDetailsComponent },
-  { path: 'updateFull/:id', component: UpdateFullComponent},
+  
+  {path: 'admin', children:[
+
+    { path: 'evaluators', component: EvaluatorsListComponent },
+    { path: 'addEvaluator', component: AddEvaluatorComponent },
+    { path: 'evaluator/:id', component: EvaluatorDetailsComponent },
+    { path: 'updateEvaluator/:id', component: UpdateEvaluatorComponent },
+    { path: 'priorForm', component: PriorFormComponent},
+    { path: 'questions', component: QuestionsListComponent },
+    { path: 'questionDetails', component: QuestionDetailsComponent },
+    { path: 'updateQuestion/:id', component: UpdateQuestionComponents },
+    { path: 'socialForm', component: SocialFormComponent },
+    { path: 'socials', component: SocialsListComponent },
+    { path: 'updateSocial/:id', component: UpdateSocialComponent },
+    { path: 'fullForm', component: FullFormComponent },
+    { path: 'fullList', component: FullListComponent },
+    { path: 'fullDetails', component: FullDetailsComponent },
+    { path: 'updateFull/:id', component: UpdateFullComponent}
+  ], 
+  // canActivate:[AuthGuardService] 
+},
   { path: 'login', component: LoginComponent},
-  { path: 'register', component: RegisterComponent},
+  { path: 'register', component: RegisterComponent}
 
 ];
 
@@ -57,7 +62,7 @@ const routesAdmin: Routes = [
     EvaluatorsListComponent,
     AddEvaluatorComponent,
     EvaluatorDetailsComponent,
-    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent, UpdateSocialComponent, SocialDetailsComponent, FullFormComponent, FullListComponent, FullDetailsComponent, UpdateFullComponent, LoginComponent
+    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent, UpdateSocialComponent, SocialDetailsComponent, FullFormComponent, FullListComponent, FullDetailsComponent, UpdateFullComponent, LoginComponent, SearchComponent 
   ],
   imports: [
     BrowserModule,
