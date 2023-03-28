@@ -13,14 +13,15 @@ import { EvaluatorsService } from './evaluators.service';
   providedIn: 'root'
 })
 export class AuthService {
+  loggedIn: boolean = false;
   currentUser?: any;
   private authStatusSub = new BehaviorSubject(this.currentUser);
 
   // rappel : on utilise par convention le suffixxe $ pour préciser que c'est un observable
   // user$ :Observable<any>;
 
-  constructor(private auth: Auth, private evaluatorService:EvaluatorsService, private firestore:Firestore, private router:Router) {
-   
+  constructor(private auth: Auth, private evaluatorService: EvaluatorsService, private firestore: Firestore, private router: Router) {
+
   }
 
   // register({ email, password }: any) {
@@ -59,6 +60,7 @@ export class AuthService {
 
 
   login({ email, password }: any) {
+    this.loggedIn = true;
     return signInWithEmailAndPassword(this.auth, email, password);
   }
 
@@ -67,6 +69,7 @@ export class AuthService {
   }
 
   logout() {
+    this.loggedIn = false;
     return signOut(this.auth);
   }
 
@@ -92,11 +95,10 @@ export class AuthService {
     });
   }
 
-  // isAutenticated() {
-  //   this.isAuth = true;
-  //   console.log(this.isAuth);
+  isAuthenticated() {
+    return this.loggedIn;
 
-  // }
+  }
 
   // login() {
   //   this.isAuthenticated = true;
@@ -110,15 +112,15 @@ export class AuthService {
   //   return !!this.isAuthenticated;
   // }
 
-  getData(id:any) {
-    const dbInstance = collection(this.firestore, 'evaluators');   
+  getData(id: any) {
+    const dbInstance = collection(this.firestore, 'evaluators');
     const userKey = this.auth.currentUser?.uid;
     let userActif;
     console.log("userKey", userKey);
-    this.evaluatorService.getEvaluator(id).subscribe(data=>{
+    this.evaluatorService.getEvaluator(id).subscribe(data => {
       console.log("data de getEvaluator", data);
-      userActif=data
-      return userActif      
+      userActif = data
+      return userActif
     })
 
     // return userKey
@@ -126,7 +128,7 @@ export class AuthService {
   }
 
 
-  
+
 
 
 }

@@ -24,6 +24,7 @@ import { FullDetailsComponent } from './Questions/fulls/full-details/full-detail
 import { UpdateFullComponent } from './Questions/fulls/update-full/update-full.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from '../register/register.component';
+import { AuthGuardService } from '../auth-guard.service';
 
 
 
@@ -35,7 +36,7 @@ const routesAdmin: Routes = [
   { path: 'addEvaluator', component: AddEvaluatorComponent },
   { path: 'evaluator/:id', component: EvaluatorDetailsComponent },
   { path: 'updateEvaluator/:id', component: UpdateEvaluatorComponent },
-  { path: 'priorForm', component: PriorFormComponent },
+  { path: 'priorForm', component: PriorFormComponent, canActivate:[AuthGuardService] },
   { path: 'questions', component: QuestionsListComponent },
   { path: 'questionDetails', component: QuestionDetailsComponent },
   { path: 'updateQuestion/:id', component: UpdateQuestionComponents },

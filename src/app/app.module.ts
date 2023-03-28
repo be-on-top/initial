@@ -26,6 +26,8 @@ import { RegisterComponent } from './register/register.component';
 // import { SocialComponentComponent } from './admin/Questions/social-component/social-component.component';
 
 
+
+
 @NgModule({
   declarations: [
     AppComponent,
