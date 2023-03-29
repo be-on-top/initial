@@ -22,11 +22,11 @@
                 <div class="col-sm-3 col-6">{{evaluator.lastName}}</div>
                 <div class="col-sm-3 col-6 order-perso2">{{evaluator.firstName}}</div>
                 <div class="col-sm-3 col-6"><button class="btn btn-danger" (click)="deleteEvaluator(evaluator.id)"><i class="bi bi-person-dash-fill"></i>Suppression</button></div>
-                <div class="col-sm-3 col-6 order-perso4"><button class="btn btn-primary"><a [routerLink]="['/evaluator', evaluator.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a></button></div>
+                <div class="col-sm-3 col-6 order-perso4"><button class="btn btn-primary"><a [routerLink]="['/admin/evaluator', evaluator.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a></button></div>
             </div>
         </div>
         <div class="row my-5 justify-content-end ps-5 ps-sm-0">
-            <div class="col-sm-3"><button class="btn btn-primary"><a [routerLink]="['/addEvaluator']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a></button></div>
+            <div class="col-sm-3"><button class="btn btn-primary"><a [routerLink]="['/admin/addEvaluator']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a></button></div>
         </div>
     </div>
 </div>
