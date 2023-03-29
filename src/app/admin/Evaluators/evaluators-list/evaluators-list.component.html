@@ -10,22 +10,22 @@
         <!-- on introduit un champ de recherche -->
         <app-search (searchTextChanged)="onSearchTextEntered($event)"></app-search>
         <!-- <div class="row mt-5"> -->
-        <div class="row mt-4">
+        <div class="row mt-4 d-xs-none">
             <div class="col-sm-3 h5">Nom</div>
             <div class="col-sm-3 h5">Prénom</div>
-            <div class="col-sm-3 h4">Suppression</div>
-            <div class="col-sm-3 h4">Détails</div>
+            <div class="col-sm-3 h5">Suppression</div>
+            <div class="col-sm-3 h5">Détails</div>
         </div>
 
         <div *ngFor="let evaluator of allEvaluators">
-            <div class="row mt-4" *ngIf="searchText==='' || evaluator.lastName.toLowerCase().includes(searchText) || evaluator.firstName.toLowerCase().includes(searchText) ">
-                <div class="col-sm-3">{{evaluator.lastName}}</div>
-                <div class="col-sm-3">{{evaluator.firstName}}</div>
-                <div class="col-sm-3"><button class="btn btn-danger text-white" (click)="deleteEvaluator(evaluator.id)"><i class="bi bi-person-dash-fill"></i>Suppression</button></div>
-                <div class="col-sm-3"><button class="btn btn-primary"><a [routerLink]="['/evaluator', evaluator.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a></button></div>
+            <div class="row mt-4 ps-5 ps-sm-0" *ngIf="searchText==='' || evaluator.lastName.toLowerCase().includes(searchText) || evaluator.firstName.toLowerCase().includes(searchText) ">
+                <div class="col-sm-3 col-6">{{evaluator.lastName}}</div>
+                <div class="col-sm-3 col-6 order-perso2">{{evaluator.firstName}}</div>
+                <div class="col-sm-3 col-6"><button class="btn btn-danger" (click)="deleteEvaluator(evaluator.id)"><i class="bi bi-person-dash-fill"></i>Suppression</button></div>
+                <div class="col-sm-3 col-6 order-perso4"><button class="btn btn-primary"><a [routerLink]="['/evaluator', evaluator.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a></button></div>
             </div>
         </div>
-        <div class="row my-5 justify-content-end">
+        <div class="row my-5 justify-content-end ps-5 ps-sm-0">
             <div class="col-sm-3"><button class="btn btn-primary"><a [routerLink]="['/addEvaluator']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a></button></div>
         </div>
     </div>

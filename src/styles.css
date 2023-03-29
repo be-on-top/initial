@@ -53,13 +53,9 @@ p.question {
 }
 
 
-/* .object-fit-cover {
-    width: 100vw;
-    height: 25vw;
-} */
+/* @media only screen and (max-width: 768px) { */
 
-@media only screen and (max-width: 420px) {
-
+@media only screen and (max-width: 430px) {
 
     .fs-6,
     .fs-6 span {
@@ -69,11 +65,43 @@ p.question {
 
     p {
         font-size: 1.2rem !important;
-
     }
 
     .fs-5 {
         font-size: 1.1rem !important;
-
     }
+
+    button.btn,
+    button a {
+        font-size: 0.8rem ! important;
+    }
+
+    .order-perso2{
+        order: 2;
+    }
+
+    .order-perso4{
+        order: 4;
+    }
+
+    button{
+        margin-bottom: 0.5rem;
+    }
+
+
+
+}
+
+@media only screen and (max-width: 992px) {
+
+
+    button.btn,
+    button a {
+        font-size: 0.8rem ! important;
+    }
+
+    .d-xs-none {
+        display: none ! important;
+    }
+
 }
