@@ -46,7 +46,11 @@ export class UpdateQuestionComponents implements OnInit {
   mediaQuestionById: any = []
 
   arrayFilesToUpdate: any = []
-  notations: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+  notations: number[] = [1, 2, 3]
+
+  // pour faire le décompte des questions enregistrées puisqu'il faut pouvoir permutter
+  numbers: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+  registryNumbers: any[] = []
 
   constructor(private service: QuestionsService, private ac: ActivatedRoute, private router: Router) {
   }
@@ -57,16 +61,31 @@ export class UpdateQuestionComponents implements OnInit {
     // récupération des seuls média Responses correspondant à la question en cours d'update
     this.service.getMediasResponsesById(this.questionId)
     // récupération du seul média Question correspondant à la question en cours d'update
-    this.mediasResponsesById=this.service.getMediasResponsesById(this.questionId)
-    this.mediaQuestionById=this.service.getMediaQuestionById(this.questionId)
+    this.mediasResponsesById = this.service.getMediasResponsesById(this.questionId)
+    this.mediaQuestionById = this.service.getMediaQuestionById(this.questionId)
     // console.log("this.mediaQuestionById",this.mediaQuestionById);
-    
+
 
     // on fait appel à getEvaluator pour récupérer les entrées de l'existant. méthode qui pour memo renvoie un observable
     this.service.getQuestion(this.questionId).subscribe((data) => {
       console.log("data depuis update-question component !!!!!!!!!!!!!", data.question);
       this.result = data
 
+    })
+
+    // pour permettre de permutter le numéro de la question
+    this.service.getQuestions().subscribe(data => {
+      // console.log(data);
+      // attention : c'est la différence avec prior-form, on ne veut pas afficher les 20 premières questions dans le dénombre
+      for (let n of data) {
+        n.number < 20 ? this.registryNumbers = [...this.registryNumbers, Number(n.number)] : ""
+        // console.log(this.registryNumbers);
+        this.numbers = this.numbers.filter(element => {
+          return element != n.number
+        });
+        // console.log("result", this.numbers);
+      }
+      // return this.registryNumbers
     })
 
 
@@ -89,7 +108,7 @@ export class UpdateQuestionComponents implements OnInit {
     // pour update de la nouvelle image si nouvelle : 
     this.service.updateQuestion(this.questionId, form.value, this.arrayFilesToUpdate)
     // il faudra prévoir une redirection... 
-    this.router.navigate(['/questions'])
+    this.router.navigate(['/admin/questions'])
   }
 
   //  fonction basique pour le moment. on fait d'abord un focus sur les données textuelles
@@ -117,7 +136,7 @@ export class UpdateQuestionComponents implements OnInit {
 
 
   readFile(fieldName: any) {
-    alert("dddddd")
+    // alert("dddddd")
     console.log("ce que je récupère", fieldName);
   }
 

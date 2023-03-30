@@ -109,7 +109,6 @@
                         {{competences_vul.CP7}}</option>
                     <option value="cl_vul_CP8" [ngClass]="{'d-none': selectedSigle != 'cl_vul'}">CP8
                         {{competences_vul.CP8}}</option>
-
                 </select>
             </div>
             <div class="col-sm-6 col-md-3 mb-1">
@@ -122,7 +121,7 @@
             <!-- ajout du nombre des questions -->
             <div class="col-sm-6 col-md-3 mb-1">
                 <select class="form-select" id="number" name="number" ngModel required #number="ngModel">
-                    <option value>Numéro de question</option>
+                    <option>Numéro de question</option>
                     <option *ngFor="let element of numbers" value="{{element}}">{{element}}</option>
                 </select>
 

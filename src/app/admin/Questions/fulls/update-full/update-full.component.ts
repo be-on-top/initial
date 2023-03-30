@@ -48,8 +48,12 @@ export class UpdateFullComponent {
   arrayFilesToUpdate: any = []
   notations: number[] = [1, 2, 3]
 
+  // pour faire le décompte des questions enregistrées puisqu'il faut pouvoir permutter
+  numbers: number[] = []
+  registryNumbers: any[] = []
+
   constructor(private service: QuestionsService, private ac: ActivatedRoute, private router: Router, private evaluatorService: EvaluatorsService
-    ) {
+  ) {
   }
 
   ngOnInit(): void {
@@ -63,12 +67,38 @@ export class UpdateFullComponent {
     this.allMediasQuestions = this.service.getMediaQuestionById(this.questionId)
     // console.log("mediaQuestionById",this.mediaQuestionById);
 
+    // et pour mettre à jour le numéro des questions si besoin
+    // for (let i = 20; i < 201; i++) {
+    //   this.numbers.push(i)
+    //   console.log(this.numbers);
 
+    // }
     // on fait appel à getQuestion pour récupérer les entrées de l'existant. méthode qui pour memo renvoie un observable
     this.service.getQuestion(this.questionId).subscribe((data) => {
       console.log("data depuis update-question component !!!!!!!!!!!!!", data);
       this.result = data
     })
+
+    this.service.getQuestions().subscribe(data => {
+      // console.log(data);
+      // attention : c'est la différence avec prior-form, on ne veut pas afficher les 20 premières questions dans le dénombre
+      for (let n of data) {
+        n.number > 20 ? this.registryNumbers = [...this.registryNumbers, Number(n.number)] : ""
+        // console.log(this.registryNumbers);
+        this.numbers = this.numbers.filter(element => {
+          return element != n.number
+        });
+        // console.log("result", this.numbers);
+      }
+      // return this.registryNumbers
+    })
+
+    for (let i = 20; i < 201; i++) {
+      this.numbers.push(i)
+      console.log(this.numbers);
+
+    }
+
 
   }
 
@@ -84,7 +114,7 @@ export class UpdateFullComponent {
     // pour update de la nouvelle image si nouvelle : 
     this.service.updateQuestion(this.questionId, form.value, this.arrayFilesToUpdate)
     // il faudra prévoir une redirection vers la question qui a été mise à jour... 
-    this.router.navigate(['/fullList'])
+    this.router.navigate(['/admin/fullList'])
   }
 
   //  fonction en cas de modification d'un média existant

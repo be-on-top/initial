@@ -1,20 +1,28 @@
 <div class="container py-5">
 
-    <h3>Mise à jour de la question id : {{questionId}}</h3>
+    <h3>Mise à jour de la question {{result.number}} <span class="d-block fs-6 mt-1">id : {{questionId}}</span> </h3>
     <hr>
 
     <form class="form" #f="ngForm" (submit)="updateForm(f)" class="was-validated">
         <div class="form-group row justify-content-between">
             <!-- rappel du numéro de question -->
-            <div class="col-sm-2">
+            <!-- version initiale disabled pour éviter les problèmes en base  -->
+            <!-- <div class="col-sm-2 mb-1">
                 <select class="form-select disabled" id="number" name="number" [(ngModel)]="result.number"
                     #number="ngModel">
                     <option selected="selected" value="{{result.number}}" disabled>N°: {{result.number}}</option>
                 </select>
+            </div> -->
+            <div class="col-md-2 mb-1">
+                <select class="form-select" id="number" name="number" [(ngModel)]="result.number" required
+                    #number="ngModel">
+                    <option selected="selected"  value="{{result.number}}">{{result.number}}</option>
+                    <option *ngFor="let element of numbers" value="{{element}}">N°: {{element}}</option>
+                </select>
             </div>
 
             <!-- rappel du nombre de point attribué ou score associé -->
-            <div class="col-sm-3  d-flex" *ngIf="result.notation">
+            <div class="col-md-3 d-flex mb-1" *ngIf="result.notation">
                 <select class="form-select" name="notation" id="notation" [(ngModel)]="result.notation" required
                     #notation="ngModel">
                     <option *ngFor="let notation of notations" value="{{notation}}">Points attribués: {{notation}}PNTS
@@ -22,7 +30,7 @@
                 </select>
             </div>
             <!-- rappel du sigle métier -->
-            <div class="col-sm-3">
+            <div class="col-md-3 mb-1">
                 <select class="form-select disabled" id="sigle" name="sigle" [(ngModel)]="result.sigle"
                     #category="ngModel">
                     <option selected="selected" value="{{result.sigle}}" disabled>Métier: {{result.sigle}}
@@ -30,7 +38,7 @@
                 </select>
             </div>
             <!-- rappel de la compétence associée -->
-            <div class="col-sm-4">
+            <div class="col-md-4 mb-1">
                 <select class="form-select disabled" id="competence" name="competence" [(ngModel)]="result.competence"
                     #competence="ngModel">
                     <option selected="selected" value="{{result.competence}}" disabled>CP {{result.competence}}

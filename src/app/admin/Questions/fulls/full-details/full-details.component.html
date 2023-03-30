@@ -8,7 +8,7 @@
         {{q.competence}} - <span class="fw-bold">PNTS :</span>
         + {{q.notation}} </p>
     <p class="fs-6"><span class="fw-bold">Id :</span>
-        {{q.id}} - <a class="fw-bold text-decoration-none" [routerLink]="['/updateFull', q.id]">Modifier</a></p>
+        {{q.id}} - <a class="fw-bold text-decoration-none" [routerLink]="['/admin/updateFull', q.id]">Modifier</a></p>
 
     <!-- questionMedia {{questionsMedias |json}} -->
     <div *ngIf="questionsMedias">
