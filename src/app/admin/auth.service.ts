@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Auth, signInWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from '@angular/fire/auth';
+import { Auth, signInWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, sendPasswordResetEmail } from '@angular/fire/auth';
 import { collection, Firestore } from '@angular/fire/firestore';
 import { ActivatedRoute, Router } from '@angular/router';
 import { stringify } from '@firebase/util';
@@ -72,6 +72,25 @@ export class AuthService {
     this.loggedIn = false;
     return signOut(this.auth);
   }
+
+
+  passwordReset(email: string) {
+
+    sendPasswordResetEmail(this.auth, email)
+      .then(() => {
+        // Password reset email sent!
+        // ..
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ..
+      });
+
+
+  }
+
+
 
   getUserId(): any {
     let isAuthenticated: boolean = false;

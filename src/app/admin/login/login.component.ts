@@ -61,6 +61,20 @@ export class LoginComponent {
       .catch(error => console.log(error))
   }
   
+  reset(email: string): any {
+    this.service.passwordReset(email)
+
+    
+    // return this.fireAgent.firebase.auth().sendPasswordResetEmail(email, {
+    //   url: 'http://localhost:4200/',
+    //   handleCodeInApp: true
+  }
+
+
+
+
+  
+  
 
   logOut(){
     this.service.logout()

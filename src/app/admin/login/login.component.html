@@ -12,10 +12,12 @@
                 <label class="form-label text-light">Password</label>
                 <input type="password" class="form-control" formControlName="password">
             </div>
-            <input type="submit" class="btn btn-primary" value="Submit">
+            <input type="submit" class="btn btn-primary mt-4" value="Valider">
         </form>
+        <button class="btn btn-primary mt-4" (click)="onClick()">S'identifier avec Google</button>
+        <hr>
+        <button class="btn btn-warning mt-4" (click)="reset(formLogin.value.email)">Réinitialiser son mot de passe</button>
 
-        <button class="btn btn-primary mt-5" (click)="onClick()">Login With Google</button>
     </ng-template>
 
     <hr>
