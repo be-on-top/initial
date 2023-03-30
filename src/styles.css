@@ -72,7 +72,10 @@ p.question {
     }
 
     button.btn,
-    button a {
+    button a,
+    .card-body p, 
+    .card-body span,
+    .card-body a, form p {
         font-size: 0.8rem ! important;
     }
 

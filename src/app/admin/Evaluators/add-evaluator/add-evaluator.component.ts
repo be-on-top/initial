@@ -33,7 +33,7 @@ export class AddEvaluatorComponent implements OnInit {
     this.service.createEvaluator(form.value);
     form.reset();
     // redirige vers la vue de détail 
-    this.router.navigate(['/evaluators']);
+    this.router.navigate(['/admin/evaluators']);
 
   }
 
