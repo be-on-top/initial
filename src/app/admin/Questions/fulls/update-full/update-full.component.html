@@ -16,7 +16,7 @@
             <div class="col-md-2 mb-1">
                 <select class="form-select" id="number" name="number" [(ngModel)]="result.number" required
                     #number="ngModel">
-                    <option selected="selected"  value="{{result.number}}">{{result.number}}</option>
+                    <option selected="selected" value="{{result.number}}">{{result.number}}</option>
                     <option *ngFor="let element of numbers" value="{{element}}">N°: {{element}}</option>
                 </select>
             </div>
@@ -47,7 +47,6 @@
             </div>
         </div>
 
-
         <label for="question" class="form-label mt-3">Question</label>
         <input type="text" id="question" [(ngModel)]="result.question" name="question" class="form-control"
             placeholder="Question" value="question" required #question="ngModel">
@@ -72,11 +71,11 @@
 
         <div *ngIf="!allMediasQuestions">
             <input type="file" accept="image/*, video/*" id="mediaQuestion" ngModel name="mediaQuestion"
-                class="form-control" #mediaQuestion="ngModel" placeholder="Fichier média actuel" (change)="detectFiles($event, mediaQuestion)">
+                class="form-control" #mediaQuestion="ngModel" placeholder="Fichier média actuel"
+                (change)="detectFiles($event, mediaQuestion)">
         </div>
 
         <!-- fin allMediasQuestions -->
-
 
         <hr>
         <!-- réponse 1 -->
@@ -156,8 +155,6 @@
                     [(ngModel)]="result.optScoring2" [checked]="optScoring2" required>Fausse
             </div>
         </div>
-
-
         <hr>
         <!-- réponse 3 -->
         <label for="option3" class="form-label mt-3">Réponse 3 * </label>
@@ -177,7 +174,6 @@
                     <div class="bg-light rounded p-3 fst-italic">Nom du fichier en base à modifier: {{item}}</div>
                 </div>
             </div>
-
         </div>
         <ng-template #createOption3>
             <input type="file" accept="image/*, video/*" id="mediaOption3" ngModel name="mediaOption3"
@@ -198,7 +194,6 @@
                     [(ngModel)]="result.optScoring3" [checked]="optScoring3">Fausse
             </div>
         </div>
-
 
         <hr>
         <!-- réponse 4 -->
