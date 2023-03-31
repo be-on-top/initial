@@ -17,23 +17,23 @@ export class UpdateQuestionComponents implements OnInit {
   result: any = {}
 
 
-  mediaQuestion: any;
-  mediaOption1: any;
-  option1: string = "";
-  optScoring1: boolean = false;
-  comment1: string = "";
-  mediaOption2: any;
-  option2: string = "";
-  optScoring2: boolean = false;
-  comment2: string = "";
-  mediaOption3: any;
-  optScoring3: boolean = false;
-  option3: string = "";
-  comment3: string = "";
-  mediaOption4: any;
-  optScoring4: boolean = false;
-  option4: string = "";
-  comment4: string = "";
+  // mediaQuestion: any;
+  // mediaOption1: any;
+  // option1: string = "";
+  // optScoring1: boolean = false;
+  // comment1: string = "";
+  // mediaOption2: any;
+  // option2: string = "";
+  // optScoring2: boolean = false;
+  // comment2: string = "";
+  // mediaOption3: any;
+  // optScoring3: boolean = false;
+  // option3: string = "";
+  // comment3: string = "";
+  // mediaOption4: any;
+  // optScoring4: boolean = false;
+  // option4: string = "";
+  // comment4: string = "";
   isVideo?: any;
 
 
@@ -55,19 +55,15 @@ export class UpdateQuestionComponents implements OnInit {
 
   ngOnInit(): void {
 
+
     this.questionId = this.ac.snapshot.params["id"];
-    // récupération des seuls média Responses correspondant à la question en cours d'update
     this.service.getMediasResponsesById(this.questionId)
-    // récupération du seul média Question correspondant à la question en cours d'update
     this.allMediasResponses = this.service.getMediasResponsesById(this.questionId)
     this.allMediasQuestions = this.service.getMediaQuestionById(this.questionId)
-    // console.log("this.mediaQuestionById",this.mediaQuestionById);
-
-    // on fait appel à getQuestion pour récupérer les entrées de l'existant. méthode qui pour memo renvoie un observable
     this.service.getQuestion(this.questionId).subscribe((data) => {
       console.log("data depuis update-question component !!!!!!!!!!!!!", data.question);
       this.result = data
-      // this.isVideo = data.isVideo
+      this.isVideo = data.isVideo
 
     })
 
@@ -98,7 +94,7 @@ export class UpdateQuestionComponents implements OnInit {
 
     // console.log("form update values", form.value);
     // pour update de la nouvelle image si nouvelle : 
-    this.service.updateQuestion(this.questionId, form.value, this.arrayFilesToUpdate)
+    this.service.updateQuestion(this.questionId, form.value, this.arrayFilesToUpdate, this.isVideo)
     // il faudra prévoir une redirection... 
     this.router.navigate(['/admin/questions'])
   }

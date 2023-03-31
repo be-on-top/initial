@@ -17,24 +17,24 @@ export class UpdateFullComponent {
   result: any = {}
 
 
-  mediaQuestion: any;
-  mediaOption1: any;
-  option1: string = "";
-  optScoring1: boolean = false;
-  comment1: string = "";
-  mediaOption2: any;
-  option2: string = "";
-  optScoring2: boolean = false;
-  comment2: string = "";
-  mediaOption3: any;
-  optScoring3: boolean = false;
-  option3: string = "";
-  comment3: string = "";
-  mediaOption4: any;
-  optScoring4: boolean = false;
-  option4: string = "";
-  comment4: string = "";
-  isVideo?:boolean;
+  // mediaQuestion: any;
+  // mediaOption1: any;
+  // option1: string = "";
+  // optScoring1: boolean = false;
+  // comment1: string = "";
+  // mediaOption2: any;
+  // option2: string = "";
+  // optScoring2: boolean = false;
+  // comment2: string = "";
+  // mediaOption3: any;
+  // optScoring3: boolean = false;
+  // option3: string = "";
+  // comment3: string = "";
+  // mediaOption4: any;
+  // optScoring4: boolean = false;
+  // option4: string = "";
+  // comment4: string = "";
+  isVideo?: any;
 
   allMediasQuestions: any = []
   allMediasResponses: any = []
@@ -103,7 +103,7 @@ export class UpdateFullComponent {
 
     // console.log("form update values", form.value);
     // pour update de la nouvelle image si nouvelle : 
-    this.service.updateQuestion(this.questionId, form.value, this.arrayFilesToUpdate)
+    this.service.updateQuestion(this.questionId, form.value, this.arrayFilesToUpdate, this.isVideo)
     // il faudra prévoir une redirection vers la question qui a été mise à jour... 
     this.router.navigate(['/admin/fullList'])
   }
