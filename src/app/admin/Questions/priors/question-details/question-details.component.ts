@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Router } from '@angular/router';
+// import { Router } from '@angular/router';
 import { QuestionsService } from 'src/app/admin/questions.service';
 
 @Component({
@@ -9,16 +9,23 @@ import { QuestionsService } from 'src/app/admin/questions.service';
 })
 export class QuestionDetailsComponent implements OnInit {
 
-  @Input() responsesMedias: any;
+  @Input() q: any;
 
+  questionsMedias: any = []
+  responsesMedias: any = []
 
-  questions: any[] = []
-
-  constructor(private service: QuestionsService, private router: Router) {
-
+  constructor(private service: QuestionsService) {
   }
 
   ngOnInit() {
+    // this.allSocialMediaByQid = this.service.getMediaQuestionById(this.q.id)
+    this.questionsMedias = this.service.getMediaQuestionById(this.q.id)
+    console.log("questionsMedias depuis questions-details", this.questionsMedias);
+    this.responsesMedias = this.service.getMediasResponsesById(this.q.id)
+  }
+
+  ngOnDestroy(): void {
+    this.responsesMedias = []
 
   }
 

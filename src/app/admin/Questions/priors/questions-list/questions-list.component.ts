@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { QuestionsService } from 'src/app/admin/questions.service';
 
 
@@ -10,48 +10,35 @@ import { QuestionsService } from 'src/app/admin/questions.service';
 
 export class QuestionsListComponent implements OnInit {
 
-  // évaluateurs ne serait pas un tableau de type any mais un observable
-  questions: any
-  allQuestions?: any
+  questions: any[] = []
 
-  questionsMedias: any = []
-  responsesMedias: any = []
-  isMediaQuestion: boolean = true
-
-  videoEnded: boolean = false
-
-  // pour les lister par qid (id d'un document enregistré sur firestore)
-  allMediaByQid: any = []
-  allQid: any = []
-
-  constructor(private service: QuestionsService) {
-
-  }
+  constructor(private service: QuestionsService) { }
 
   ngOnInit() {
-    this.questionsMedias = this.service.getMediasQuestions()
-    this.responsesMedias = this.service.getMediasResponses()
-    this.service.getQuestions().subscribe(data =>{
-      // faut opérer un filtre pour n'avoir que les 20 premières questions
-      this.allQuestions = data.filter(res=>res.number<21)
-      this.allQuestions.sort(this.compare)
-      })
+    this.service.getQuestions().subscribe(data => {
+      let allQuestions = data;
+      console.log("allQuestions",allQuestions);
+      
+      this.questions = allQuestions.filter(q => q.number < 21)
+      this.questions.sort(this.compare)
+    })
   }
-
 
   compare(a: any, b: any) {
 
-      return a.number - b.number;
-  }
-
-  detectMediaLink() {
-    console.log(typeof (this.questionsMedias))
-  }
+    return a.number - b.number;
+}
 
 
-  displayResponseIfVideoEnded() {
-    this.videoEnded = true
-  }
+  // compare(a: any, b: any) {
+  //   if (a.number < b.number) {
+  //     return 1;
+  //   }
+  //   if (a.number > b.number) {
+  //     return -1;
+  //   }
+  //   return 0;
+  // }
 
 
 }

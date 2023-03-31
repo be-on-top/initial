@@ -34,10 +34,7 @@ export class UpdateFullComponent {
   optScoring4: boolean = false;
   option4: string = "";
   comment4: string = "";
-  mediaOption5: any;
-  option5: string = "";
-  comment5: string = "";
-
+  isVideo?:boolean;
 
   allMediasQuestions: any = []
   allMediasResponses: any = []
@@ -58,7 +55,6 @@ export class UpdateFullComponent {
 
   ngOnInit(): void {
 
-
     this.questionId = this.ac.snapshot.params["id"];
     // récupération des seuls média Responses correspondant à la question en cours d'update
     this.service.getMediasResponsesById(this.questionId)
@@ -67,16 +63,11 @@ export class UpdateFullComponent {
     this.allMediasQuestions = this.service.getMediaQuestionById(this.questionId)
     // console.log("mediaQuestionById",this.mediaQuestionById);
 
-    // et pour mettre à jour le numéro des questions si besoin
-    // for (let i = 20; i < 201; i++) {
-    //   this.numbers.push(i)
-    //   console.log(this.numbers);
-
-    // }
     // on fait appel à getQuestion pour récupérer les entrées de l'existant. méthode qui pour memo renvoie un observable
     this.service.getQuestion(this.questionId).subscribe((data) => {
-      console.log("data depuis update-question component !!!!!!!!!!!!!", data);
+      console.log("data depuis update-full component !!!!!!!!!!!!!", data);
       this.result = data
+      this.isVideo=data.isVideo
     })
 
     this.service.getQuestions().subscribe(data => {
@@ -93,7 +84,7 @@ export class UpdateFullComponent {
       // return this.registryNumbers
     })
 
-    for (let i = 20; i < 201; i++) {
+    for (let i = 21; i < 201; i++) {
       this.numbers.push(i)
       console.log(this.numbers);
 

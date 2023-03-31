@@ -10,13 +10,9 @@ export class FullListComponent {
 
     questions: any[] = []
  
-    constructor(private service: QuestionsService) {
- 
-    }
+    constructor(private service: QuestionsService) { }
   
     ngOnInit() {
-      // this.questionsMedias = this.service.getMediasQuestions()
-      // this.responsesMedias = this.service.getMediasResponses()
       this.service.getQuestions().subscribe(data => {
         const allQuestions= data;
         this.questions = allQuestions.filter(q=>q.number>20)

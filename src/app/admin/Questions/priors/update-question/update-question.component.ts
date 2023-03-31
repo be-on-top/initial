@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Observable } from 'rxjs';
+// import { Observable } from 'rxjs';
 import { QuestionsService } from 'src/app/admin/questions.service';
 
 
@@ -34,9 +34,7 @@ export class UpdateQuestionComponents implements OnInit {
   optScoring4: boolean = false;
   option4: string = "";
   comment4: string = "";
-  mediaOption5: any;
-  option5: string = "";
-  comment5: string = "";
+  isVideo?: any;
 
 
   allMediasQuestions: any[] = []
@@ -61,15 +59,15 @@ export class UpdateQuestionComponents implements OnInit {
     // récupération des seuls média Responses correspondant à la question en cours d'update
     this.service.getMediasResponsesById(this.questionId)
     // récupération du seul média Question correspondant à la question en cours d'update
-    this.mediasResponsesById = this.service.getMediasResponsesById(this.questionId)
-    this.mediaQuestionById = this.service.getMediaQuestionById(this.questionId)
+    this.allMediasResponses = this.service.getMediasResponsesById(this.questionId)
+    this.allMediasQuestions = this.service.getMediaQuestionById(this.questionId)
     // console.log("this.mediaQuestionById",this.mediaQuestionById);
 
-
-    // on fait appel à getEvaluator pour récupérer les entrées de l'existant. méthode qui pour memo renvoie un observable
+    // on fait appel à getQuestion pour récupérer les entrées de l'existant. méthode qui pour memo renvoie un observable
     this.service.getQuestion(this.questionId).subscribe((data) => {
       console.log("data depuis update-question component !!!!!!!!!!!!!", data.question);
       this.result = data
+      // this.isVideo = data.isVideo
 
     })
 
@@ -78,7 +76,7 @@ export class UpdateQuestionComponents implements OnInit {
       // console.log(data);
       // attention : c'est la différence avec prior-form, on ne veut pas afficher les 20 premières questions dans le dénombre
       for (let n of data) {
-        n.number < 20 ? this.registryNumbers = [...this.registryNumbers, Number(n.number)] : ""
+        n.number < 21 ? this.registryNumbers = [...this.registryNumbers, Number(n.number)] : ""
         // console.log(this.registryNumbers);
         this.numbers = this.numbers.filter(element => {
           return element != n.number
@@ -88,12 +86,6 @@ export class UpdateQuestionComponents implements OnInit {
       // return this.registryNumbers
     })
 
-
-    this.allMediasQuestions = this.service.getMediasQuestions()
-    this.allMediasResponses = this.service.getMediasResponses()
-    // this.allPathsResponses = this.service.getMediasResponsesPath()
-    console.log("allMediasQuestions", this.allMediasQuestions);
-    console.log("allMediasResponses", this.allMediasResponses);
 
   }
 
@@ -111,20 +103,30 @@ export class UpdateQuestionComponents implements OnInit {
     this.router.navigate(['/admin/questions'])
   }
 
-  //  fonction basique pour le moment. on fait d'abord un focus sur les données textuelles
+  //  fonction en cas de modification d'un média existant
   detectFiles(event: any, fieldName: any, item: any = "") {
-    console.log("sssssssssss", fieldName.name);
+    // console.log("fieldName.name", fieldName.name);
+    alert(`êtes-vous certain de vouloir remplacer le fichier ${item} ?`)
+    this.service.deleteMedia(item)
 
-    // if (this.allMediasQuestions.includes(item) || this.allMediasResponses.includes(item) || this.allPathsResponses.includes(item)) {
-    if (this.allMediasQuestions.includes(item) || this.allMediasResponses.includes(item)) {
-      alert(`êtes-vous certain de vouloir remplacer le fichier ${item} ?`)
-      // si confirmation (à faire)
-      this.service.deleteMedia(item)
-      //et on enregistre le nouveau
-      //  this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name, event.target.files[0].type])   
-    }
 
     console.log("Type de fichier", event.target.files[0].type);
+
+
+
+
+    this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name, event.target.files[0].type])
+    // console.log("this.arrayFilesToUpdate !!!!!!!!!", this.arrayFilesToUpdate);
+    // console.log(event.target.files[0].size);
+    if (event.target.files[0].size > 18000000) {
+      alert("File is too big!")
+    }
+  }
+
+  // fonction en cas d'ajout d'un média sur une réponse initialement sans média
+  detectNewFiles(event: any, fieldName: any, item: any = "") {
+    // console.log("fieldName.name", fieldName.name);
+    // console.log("Type de fichier", event.target.files[0].type);
 
     this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name, event.target.files[0].type])
     // console.log("this.arrayFilesToUpdate", this.arrayFilesToUpdate);
@@ -136,8 +138,7 @@ export class UpdateQuestionComponents implements OnInit {
 
 
   readFile(fieldName: any) {
-    // alert("dddddd")
+    alert("dddddd")
     console.log("ce que je récupère", fieldName);
   }
-
 }

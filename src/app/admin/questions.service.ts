@@ -182,7 +182,7 @@ export class QuestionsService {
     if (question.mediaQuestion) {
       this.idMediaQuestion = `mediaQuestionN${question.number}_${question.sigle}`
       // c'est là qu'on peut intégrer une différence selon le type de fichier détecté
-      console.log("allFilesToUpdate depuis questionsService", Object.values(allFilesToUpdate)[0]);
+      console.log("allFilesToUpdate depuis questionsService", Object.values(allFilesToUpdate));
 
       if (Object.values(allFilesToUpdate)[0] == "video/mp4") {
         this.isVideo = true;
@@ -237,7 +237,7 @@ export class QuestionsService {
           // item.fullPath.includes(id) == true ? mediasResponsesById.push(item.fullPath.includes(id)) : ""
           // depuis les mises à jour effectuées sur les questions sociales !!!! 
           item.fullPath.includes(id) == true ? mediasResponsesById.push(await getDownloadURL(item)) : ""
-          // console.log("mediaREspnsesById", mediasResponsesById);
+          // console.log("mediaResponsesById", mediasResponsesById);
         }
 
       }).catch((error) => {
