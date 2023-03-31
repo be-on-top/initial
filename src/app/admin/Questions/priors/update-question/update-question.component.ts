@@ -64,6 +64,8 @@ export class UpdateQuestionComponents implements OnInit {
       console.log("data depuis update-question component !!!!!!!!!!!!!", data.question);
       this.result = data
       this.isVideo = data.isVideo
+      console.log('status de la video', this.isVideo);
+      
 
     })
 
@@ -94,7 +96,10 @@ export class UpdateQuestionComponents implements OnInit {
 
     // console.log("form update values", form.value);
     // pour update de la nouvelle image si nouvelle : 
+    console.log("video avant passage à service", this.isVideo);
     this.service.updateQuestion(this.questionId, form.value, this.arrayFilesToUpdate, this.isVideo)
+
+    
     // il faudra prévoir une redirection... 
     this.router.navigate(['/admin/questions'])
   }
@@ -105,10 +110,7 @@ export class UpdateQuestionComponents implements OnInit {
     alert(`êtes-vous certain de vouloir remplacer le fichier ${item} ?`)
     this.service.deleteMedia(item)
 
-
     console.log("Type de fichier", event.target.files[0].type);
-
-
 
 
     this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name, event.target.files[0].type])

@@ -103,9 +103,12 @@ export class UpdateFullComponent {
 
     // console.log("form update values", form.value);
     // pour update de la nouvelle image si nouvelle : 
+    console.log("video avant passage à service", this.isVideo);
     this.service.updateQuestion(this.questionId, form.value, this.arrayFilesToUpdate, this.isVideo)
-    // il faudra prévoir une redirection vers la question qui a été mise à jour... 
-    this.router.navigate(['/admin/fullList'])
+
+    
+    // il faudra prévoir une redirection... 
+    this.router.navigate(['/admin/questions'])
   }
 
   //  fonction en cas de modification d'un média existant
@@ -114,12 +117,12 @@ export class UpdateFullComponent {
     alert(`êtes-vous certain de vouloir remplacer le fichier ${item} ?`)
     this.service.deleteMedia(item)
 
-
     console.log("Type de fichier", event.target.files[0].type);
 
+
     this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name, event.target.files[0].type])
-    // console.log("this.arrayFilesToUpdate", this.arrayFilesToUpdate);
-    console.log(event.target.files[0].size);
+    // console.log("this.arrayFilesToUpdate !!!!!!!!!", this.arrayFilesToUpdate);
+    // console.log(event.target.files[0].size);
     if (event.target.files[0].size > 18000000) {
       alert("File is too big!")
     }

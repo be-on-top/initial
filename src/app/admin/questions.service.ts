@@ -172,32 +172,28 @@ export class QuestionsService {
 
 
   // à la différence de createQuestion qui répond au submit form initial, updateQuestion qui répond à updateForm n'a pas besoin (?) d'être async car on a déjà id ...
-  updateQuestion(id: string, question: any, allFilesToUpdate: any, isVideo:boolean) {
+  updateQuestion(id: string, question: any, allFilesToUpdate: any, isVideo: boolean) {
+
+    console.log(isVideo, "isVideo récupérée par le service comme paramètre de updateQuestion");
+
 
     // un peu comme pour la création
     console.log("question ou les valeurs du formulaire", question);
     console.log('object.values allFilesToUpdate', Object.values(allFilesToUpdate));
 
+    // c'est là qu'on peut intégrer une différence selon le type de fichier détecté
+    console.log("allFilesToUpdate depuis questionsService", Object.values(allFilesToUpdate));
 
-    if (question.mediaQuestion) {
-      this.idMediaQuestion = `mediaQuestionN${question.number}_${question.sigle}`
-      // c'est là qu'on peut intégrer une différence selon le type de fichier détecté
-      console.log("allFilesToUpdate depuis questionsService", Object.values(allFilesToUpdate));
-
-      if (Object.values(allFilesToUpdate)[0] == "video/mp4" || isVideo===true) {
-        this.isVideo = true;
-        question.isVideo = true
-        console.log(this.isVideo);
-      }
+    if (Object.values(allFilesToUpdate)[0] == "video/mp4" || isVideo === true) {
+      this.isVideo = true;
+      question.isVideo = true
+      // console.log(this.isVideo);
+    } else {
       question.isVideo = false
-      console.log("question ou les valeurs du formulaire", question);
     }
 
-
+    console.log("question ou les valeurs du formulaire", question);
     let $questionRef = doc(this.firestore, "questions/" + id);
-    console.log(question);
-
-
     setDoc($questionRef, question).then(response => console.log(response))
 
 
