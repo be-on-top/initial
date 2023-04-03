@@ -3,12 +3,17 @@
     <h3>Liste des questions d'accroche pour aperçu</h3>
 
     <div *ngIf="questions">
+        <!-- pour opérer un filtre (champ de recherch) sur ce qui vient en dessous -->
+        <!-- on introduit un champ de recherche -->
+        <app-search (searchTextChanged)="onSearchTextEntered($event)" searchText='searchText'></app-search>
 
-        <!-- pour recracher autant de vues de détails qu'il y a de questions -->
-        <div *ngFor="let q of questions">
-            <!-- {{q | json}} -->
-            <app-question-details [q]="q"></app-question-details>
-            <!-- début de la question -->
+        <!-- pour recracher autant de vues de détails qu'il y a de questions... -->
+        <div *ngFor="let q of questions">  <!-- {{q | json}} -->
+            <!-- ... et les filtrer si besoin -->
+            <div
+                *ngIf="searchText==='' || q.question.toLowerCase().includes(searchText) || q.competence.toLowerCase().includes(searchText)">
+                <app-question-details [q]="q"></app-question-details>
+            </div>
         </div>
     </div>
 

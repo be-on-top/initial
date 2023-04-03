@@ -165,26 +165,7 @@ export class SocialsService {
     return (mediasResponsesById)
   }
 
-  // async getMediaQuestionById(id: string) {
-  //   const mediaQuestionById: any[]=[]
-  //   // Create a reference under which you want to list 
-  //   let mediasQuestionsRef = ref(this.storage, 'images/squestions');
-  //   listAll(mediasQuestionsRef)
-  //     .then(async response => {
-  //       // console.log("listAll medias for social questions", response);
-  //       for (let item of response.items) {
-  //         // console.log("esssai recuperation media question sociale by id", item.fullPath.includes(id));
-  //         item.fullPath.includes(id) == true ? mediaQuestionById.push(await getDownloadURL(item)) : ""
-  //         console.log("mon media Question pour l'id", mediaQuestionById);
-  //       }
 
-  //     }).catch((error) => {
-  //       // Uh-oh, an error occurred!
-  //     });
-
-  //   return (mediaQuestionById)
-
-  // }
   getMediaQuestionById(id: string) {
     const mediaQuestionById: any[] = []
     // Create a reference under which you want to list 
