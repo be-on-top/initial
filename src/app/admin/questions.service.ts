@@ -15,7 +15,7 @@ export class QuestionsService {
 
   questions: any[] = [];
   result: any;
-  isVideo: boolean = false;
+  // isVideo: boolean = false;
 
   idMediaQuestion: string = ""
   idMediaOption1: string = ""
@@ -30,7 +30,7 @@ export class QuestionsService {
   }
 
 
-  async createQuestion(question: any, allFilesToUplad: []) {
+  async createQuestion(question: any, allFilesToUplad: [], isVideo: boolean=false) {
 
     // let newQuestion if mediasAttached;
     if (question.mediaQuestion) {
@@ -39,8 +39,8 @@ export class QuestionsService {
       // c'est là qu'on peut intégrer une différence selon le type de fichier détecté
       // console.log(Object.values(allFilesToUplad)[0][2]);
       if (Object.values(allFilesToUplad)[0][2] == "video/mp4") {
-        this.isVideo = true;
-        console.log(this.isVideo);
+        // this.isVideo = true;
+        // console.log(this.isVideo);
       }
 
     }
@@ -63,7 +63,8 @@ export class QuestionsService {
 
 
     // let newQuestion if no mediasAttached;
-    let newQuestion = { created: Date.now(), idMediaQuestion: this.idMediaQuestion, idMediaOption1: this.idMediaOption1, idMediaOption2: this.idMediaOption2, idMediaOption3: this.idMediaOption3, idMediaOption4: this.idMediaOption4, isVideo: this.isVideo, ...question };
+  //  let newQuestion = { created: Date.now(), idMediaQuestion: this.idMediaQuestion, idMediaOption1: this.idMediaOption1, idMediaOption2: this.idMediaOption2, idMediaOption3: this.idMediaOption3, idMediaOption4: this.idMediaOption4, isVideo: this.isVideo, ...question };
+    let newQuestion = { created: Date.now(), isVideo: isVideo, ...question };
     this.questions = [newQuestion, ...this.questions];
     console.log(this.questions);
 
@@ -172,9 +173,9 @@ export class QuestionsService {
 
 
   // à la différence de createQuestion qui répond au submit form initial, updateQuestion qui répond à updateForm n'a pas besoin (?) d'être async car on a déjà id ...
-  updateQuestion(id: string, question: any, allFilesToUpdate: any, isVideo: boolean) {
+  updateQuestion(id: string, question: any, allFilesToUpdate: any) {
 
-    console.log(isVideo, "isVideo récupérée par le service comme paramètre de updateQuestion");
+    // console.log(isVideo, "isVideo récupérée par le service comme paramètre de updateQuestion");
 
 
     // un peu comme pour la création
@@ -184,15 +185,17 @@ export class QuestionsService {
     // c'est là qu'on peut intégrer une différence selon le type de fichier détecté
     console.log("allFilesToUpdate depuis questionsService", Object.values(allFilesToUpdate));
 
-    if (Object.values(allFilesToUpdate)[0] == "video/mp4" || isVideo === true) {
-      this.isVideo = true;
-      question.isVideo = true
-      // console.log(this.isVideo);
-    } else {
-      question.isVideo = false
-    }
+    // toute recherche du type de fichier est maintenant faite en amont et la valeur de isVideo récupérée par le service
+    // isVideo=true?question.isVideo=true:question.isVideo=false
 
-    console.log("question ou les valeurs du formulaire", question);
+    // if (isVideo=true) {
+    //   // this.isVideo = true;
+    //   question.isVideo = true
+    // } else {
+    //   question.isVideo = false
+    // }
+
+    console.log("question ou les valeurs du formulaire augmentées de isVideo avant setDoc", question);
     let $questionRef = doc(this.firestore, "questions/" + id);
     setDoc($questionRef, question).then(response => console.log(response))
 

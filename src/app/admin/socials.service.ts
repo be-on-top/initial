@@ -248,7 +248,7 @@ export class SocialsService {
     if (question.mediaQuestion) {
       // this.idMediaQuestion = `mediaQuestionN${question.number}_${question.sigle}`
       // c'est là qu'on peut intégrer une différence selon le type de fichier détecté
-      console.log("dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", Object.values(allFilesToUpdate)[0]);
+      console.log("allFilesToUpdate depuis socials service", Object.values(allFilesToUpdate)[0]);
 
       if (Object.values(allFilesToUpdate)[0] == "video/mp4") {
         this.isVideo = true;

@@ -63,6 +63,7 @@
                         Your browser does not support HTML video.
                     </video>
                     <ng-template #image><img class="img-fluid" [src]="item"></ng-template>
+                    coucou modif
                     <input type="file" accept="image/*, video/*" id="mediaQuestion" name="mediaQuestion"
                         class="form-control" ngModel #mediaQuestion="ngModel" (change)="detectFiles($event, mediaQuestion, item)">
                 </div>
@@ -70,7 +71,7 @@
         </div>
 
         <div *ngIf="!allMediasQuestions || allMediasQuestions.length===0">
-            coucou ajout
+            coucou ajout !!!!!!!!!!!!!!
             <input type="file" accept="image/*, video/*" id="mediaQuestion" ngModel name="mediaQuestion"
                 class="form-control" #mediaQuestion="ngModel" placeholder="Fichier média actuel"
                 (change)="detectNewFiles($event, mediaQuestion)">

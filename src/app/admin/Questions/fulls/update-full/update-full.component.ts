@@ -87,9 +87,7 @@ export class UpdateFullComponent {
     for (let i = 21; i < 201; i++) {
       this.numbers.push(i)
       console.log(this.numbers);
-
     }
-
 
   }
 
@@ -104,11 +102,10 @@ export class UpdateFullComponent {
     // console.log("form update values", form.value);
     // pour update de la nouvelle image si nouvelle : 
     console.log("video avant passage à service", this.isVideo);
-    this.service.updateQuestion(this.questionId, form.value, this.arrayFilesToUpdate, this.isVideo)
-
+    let updatedQuestion={isVideo:this.isVideo,...form.value}
+    this.service.updateQuestion(this.questionId, updatedQuestion, this.arrayFilesToUpdate)
     
-    // il faudra prévoir une redirection... 
-    this.router.navigate(['/admin/questions'])
+    this.router.navigate(['/admin/fullList'])
   }
 
   //  fonction en cas de modification d'un média existant
@@ -117,28 +114,36 @@ export class UpdateFullComponent {
     alert(`êtes-vous certain de vouloir remplacer le fichier ${item} ?`)
     this.service.deleteMedia(item)
 
-    console.log("Type de fichier", event.target.files[0].type);
+    console.log("Type de fichier!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", event.target.files[0].type);
 
+    event.target.files[0].type==="video/mp4"?this.isVideo=true:this.isVideo=false;
 
-    this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name, event.target.files[0].type])
-    // console.log("this.arrayFilesToUpdate !!!!!!!!!", this.arrayFilesToUpdate);
-    // console.log(event.target.files[0].size);
+    // https://www.cnetfrance.fr/produits/calculer-le-poids-de-ses-photos-1003101.htm
     if (event.target.files[0].size > 18000000) {
       alert("File is too big!")
     }
+
+    this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name])
+    // this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name, event.target.files[0].type])
+    // console.log("this.arrayFilesToUpdate !!!!!!!!!", this.arrayFilesToUpdate);
+    // console.log(event.target.files[0].size);
+    
   }
 
   // fonction en cas d'ajout d'un média sur une réponse initialement sans média
   detectNewFiles(event: any, fieldName: any, item: any = "") {
     // console.log("fieldName.name", fieldName.name);
     // console.log("Type de fichier", event.target.files[0].type);
+    alert("new file")
 
-    this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name, event.target.files[0].type])
-    // console.log("this.arrayFilesToUpdate", this.arrayFilesToUpdate);
-    console.log(event.target.files[0].size);
+    event.target.files[0].type==="video/mp4"?this.isVideo=true:this.isVideo=false;
+
     if (event.target.files[0].size > 18000000) {
       alert("File is too big!")
     }
+
+    this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name])
+    
   }
 
 

@@ -52,7 +52,7 @@
             placeholder="Question" value="question" required #question="ngModel">
         <div class="valid-feedback" *ngIf="question.valid">Champ correctement renseigné</div>
 
-        <div *ngIf="allMediasQuestions">
+        <div *ngIf="allMediasQuestions && allMediasQuestions.length!==0">
             <!-- {{allMediasQuestions | json}} -->
             <div class="bg-light rounded rounded mb-3" *ngFor="let item of allMediasQuestions">
                 <!-- {{mediaQuestion | json}} -->
@@ -69,10 +69,10 @@
             </div>
         </div>
 
-        <div *ngIf="!allMediasQuestions">
+        <div *ngIf="!allMediasQuestions || allMediasQuestions.length===0">
             <input type="file" accept="image/*, video/*" id="mediaQuestion" ngModel name="mediaQuestion"
                 class="form-control" #mediaQuestion="ngModel" placeholder="Fichier média actuel"
-                (change)="detectFiles($event, mediaQuestion)">
+                (change)="detectNewFiles($event, mediaQuestion)">
         </div>
 
         <!-- fin allMediasQuestions -->
