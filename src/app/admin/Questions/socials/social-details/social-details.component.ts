@@ -28,7 +28,6 @@ export class SocialDetailsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.responsesMedias = []
-
   }
 
 

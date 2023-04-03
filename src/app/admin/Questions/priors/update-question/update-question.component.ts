@@ -111,7 +111,7 @@ export class UpdateQuestionComponents implements OnInit {
     alert(`êtes-vous certain de vouloir remplacer le fichier ${item} ?`)
     this.service.deleteMedia(item)
 
-    console.log("Type de fichier!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", event.target.files[0].type);
+    console.log("Type de fichier depuis update question à la modification", event.target.files[0].type);
 
     event.target.files[0].type==="video/mp4"?this.isVideo=true:this.isVideo=false;
 

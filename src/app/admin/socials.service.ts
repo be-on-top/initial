@@ -87,7 +87,7 @@ export class SocialsService {
 
   getMediasQuestions(): any {
     // Create a reference under which you want to list 
-    let mediasQuestionsRef = ref(this.storage, 'images/questions');
+    let mediasQuestionsRef = ref(this.storage, 'images/squestions');
     // Find all the prefixes and items.
     listAll(mediasQuestionsRef)
       .then(async response => {
@@ -108,7 +108,7 @@ export class SocialsService {
 
   getMediasResponses(): any {
     // Create a reference under which you want to list 
-    let mediasResponsesRef = ref(this.storage, 'images/questions/responses');
+    let mediasResponsesRef = ref(this.storage, 'images/squestions/responses');
     // Find all the prefixes and items.
     listAll(mediasResponsesRef)
       .then(async response => {
@@ -148,13 +148,13 @@ export class SocialsService {
   // }
 
   getMediasResponsesById(id: string) {
-    const mediasResponsesById: any[]=[]
+    const mediasResponsesById: any[] = []
     let mediasResponsesRef = ref(this.storage, 'images/squestions/responses');
     listAll(mediasResponsesRef)
       .then(async response => {
         for (let item of response.items) {
           console.log("esssai recuperation media by id", item.fullPath.includes(id));
-          item.fullPath.includes(id) === true ? mediasResponsesById.push( await getDownloadURL(item)) : undefined
+          item.fullPath.includes(id) === true ? mediasResponsesById.push(await getDownloadURL(item)) : undefined
           console.log("mediaREspnsesById depuis service !!!!!!!!!!!", mediasResponsesById);
         }
 
@@ -186,7 +186,7 @@ export class SocialsService {
 
   // }
   getMediaQuestionById(id: string) {
-    const mediaQuestionById: any[]=[]
+    const mediaQuestionById: any[] = []
     // Create a reference under which you want to list 
     let mediasQuestionsRef = ref(this.storage, 'images/squestions');
     listAll(mediasQuestionsRef)
@@ -236,56 +236,19 @@ export class SocialsService {
   }
 
 
-   // à la différence de createQuestion qui répond au submit form initial, updateQuestion qui répond à updateForm n'a pas besoin (?) d'être async car on a déjà id ...
-   updateSocialQuestion(id: string, question: any, allFilesToUpdate: any) {
+  // à la différence de createQuestion qui répond au submit form initial, updateQuestion qui répond à updateForm n'a pas besoin (?) d'être async car on a déjà id ...
+  updateSocialQuestion(id: string, question: any, allFilesToUpdate: any) {
 
-    // un peu comme pour la création
     console.log("question ou les valeurs du formulaire", question);
-
     console.log('object.values allFilesToUpdate', Object.values(allFilesToUpdate));
 
 
-    if (question.mediaQuestion) {
-      // this.idMediaQuestion = `mediaQuestionN${question.number}_${question.sigle}`
-      // c'est là qu'on peut intégrer une différence selon le type de fichier détecté
-      console.log("allFilesToUpdate depuis socials service", Object.values(allFilesToUpdate)[0]);
+    // toute recherche du type de fichier est maintenant faite en amont et la valeur de isVideo récupérée par le service
 
-      if (Object.values(allFilesToUpdate)[0] == "video/mp4") {
-        this.isVideo = true;
-        question.isVideo = true
-        console.log(this.isVideo);
-      }
-      question.isVideo = false
-      console.log("question ou les valeurs du formulaire", question);
-    }
-
-
-    // if (question.mediaOption1) {
-    //   this.idMediaOption1 = `mediaOption1N${question.number}_${question.sigle}`
-    //   this.questions = [this.idMediaOption1, ...this.questions];
-    // }
-    // if (question.mediaOption2) {
-    //   this.idMediaOption2 = `mediaOption2N${question.number}_${question.sigle}`
-    //   this.questions = [this.idMediaOption2, ...this.questions];
-    // }
-    // if (question.mediaOption3) {
-    //   this.idMediaOption3 = `mediaOption3N${question.number}_${question.sigle}`
-    //   this.questions = [this.idMediaOption3, ...this.questions];
-    // }
-    // if (question.mediaOption4) {
-    //   this.idMediaOption4 = `mediaOption4N${question.number}_${question.sigle}`
-    //   this.questions = [this.idMediaOption4, ...this.questions];
-    // }
-
-
-
-
+    console.log("question ou les valeurs du formulaire augmentées de isVideo avant setDoc", question);
     let $questionRef = doc(this.firestore, "squestions/" + id);
-    console.log(question);
-
 
     setDoc($questionRef, question).then(response => console.log(response))
-
 
     for (let myFile of allFilesToUpdate) {
       this.uploadFiles(myFile[0], myFile[1], id)

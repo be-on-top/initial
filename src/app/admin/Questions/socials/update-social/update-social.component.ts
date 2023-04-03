@@ -73,10 +73,6 @@ export class UpdateSocialComponent {
       console.log('form valid');
       return
     }
-    else{
-      console.log("y a un truc qui ne va pas");
-      
-    }
 
     // console.log("form update values", form.value);
     // pour update de la nouvelle image si nouvelle : 
