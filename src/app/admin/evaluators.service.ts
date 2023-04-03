@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Evaluators } from './evaluators';
 
 // à vérifier
-import { Auth, createUserWithEmailAndPassword, sendPasswordResetEmail } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, sendPasswordResetEmail, deleteUser } from '@angular/fire/auth';
 import { Firestore, collectionData, collection, documentId, getDoc, docData, setDoc, query, where } from '@angular/fire/firestore';
 import { addDoc, deleteDoc, doc, getDocs } from 'firebase/firestore';
 import { Observable } from 'rxjs';
@@ -63,12 +63,21 @@ export class EvaluatorsService {
 
   }
 
-  deleteEvaluator(id: string | undefined) {
+  deleteEvaluator(id: string) {
     // on utilisera la méthode deleteDoc() de Firestore et delete de currentUser
     let $evaluatorRef = doc(this.firestore, "evaluators/" + id)
     console.log("this.auth.currentUser", this.auth.currentUser);
-    this.auth.currentUser?.delete()
+    let userToDelete:any=this.auth.currentUser
+
     deleteDoc($evaluatorRef);
+    // this.auth.currentUser?.delete()
+    deleteUser(userToDelete).then(() => {
+      alert("utilisateur supprimé")
+    }).catch((error) => {
+      console.log("problème à la suppression sur Auth");
+      
+      // ...
+    });
   }
 
   getEvaluator(id: string) {

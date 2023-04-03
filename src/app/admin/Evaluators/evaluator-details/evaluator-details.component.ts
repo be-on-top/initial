@@ -25,7 +25,7 @@ export class EvaluatorDetailsComponent {
     console.log(evaluatorid);
     
     this.service.deleteEvaluator(evaluatorid)
-    this.router.navigate(['/evaluators'])
+    this.router.navigate(['/admin/evaluators'])
   } 
 
 }
