@@ -16,7 +16,7 @@
                     <option value="macon_vrd">MACON VRD</option>
                     <option value="cl_vul">CLVUL</option>
                 </select>
-                <!-- <div class="valid-feedback" *ngIf="comment1.valid">Champ correctement renseigné</div> -->
+                <div class="valid-feedback" *ngIf="comment1.valid">Métier pris en compte</div>
             </div>
             <div class="col-sm-3 mb-1">
                 <select class="form-select" name="competence" id="competence" ngModel required #competence="ngModel">
@@ -89,32 +89,23 @@
                         {{competences_vul.CP7}}</option>
                     <option value="cl_vul_CP8" [ngClass]="{'d-none': selectedSigle != 'cl_vul'}">CP8
                         {{competences_vul.CP8}}</option>
-
                 </select>
+                <div class="valid-feedback" *ngIf="comment1.valid">Compétence prise en compte</div>
             </div>
             <div class="col-sm-3 mb-1">
                 <select class="form-select" name="notation" id="notation" ngModel required #notation="ngModel">
                     <option value>Points attribués à la question</option>
-                    <option *ngFor="let notation of notations" value="{{notation}}">{{notation}}</option>
+                    <option *ngFor="let notation of notations" value="{{notation}}">{{notation}}PNTS</option>
                 </select>
-                <!-- <div class="valid-feedback" *ngIf="comment1.valid">Champ correctement renseigné</div> -->
+                <div class="valid-feedback" *ngIf="comment1.valid">Points correctement renseignés</div>
             </div>
             <!-- ajout du nombre des questions -->
             <div class="col-sm-3 mb-1">
                 <select class="form-select" id="number" name="number" ngModel required #number="ngModel">
                     <option value>Numéro de question</option>
-                    <option *ngFor="let element of numbers" value="{{element}}">{{element}}</option>
+                    <option *ngFor="let element of numbers" value="{{element}}">N°{{element}}</option>
                 </select>
-
-                <!-- 
-
-                <select class="language-selector" [(ngModel)]="selectedLanguage">
-                    <option *ngFor="let language of outputLanguageList" 
-                    value="{{language.shortName}}" >{{language.languageName}}</option>
-                  </select> -->
-
-
-                <!-- <div class="valid-feedback" *ngIf="comment1.valid">Champ correctement renseigné</div> -->
+                <div class="valid-feedback" *ngIf="comment1.valid">Numéro correctement renseigné</div>
             </div>
         </div>
 
@@ -122,11 +113,16 @@
         <input type="text" id="question" ngModel name="question" class="form-control"
             placeholder="Saisir la question..." required #question="ngModel">
         <div class="valid-feedback mb-3" *ngIf="question.valid">Champ correctement renseigné</div>
-        <div class="invalid-feedback mb-3" *ngIf="question.invalid">Merci de renseigner le libellé obligatoire de la question
+        <div class="invalid-feedback mb-3" *ngIf="question.invalid">Merci de renseigner le libellé obligatoire de la
+            question
         </div>
-        <input type="file" accept="image/*, video/*" id="mediaQuestion" ngModel name="mediaQuestion"
-            class="form-control" #mediaQuestion="ngModel" placeholder="Fichier média de votre choix"
-            onchange="console.log(event.target.files)" (change)="detectFiles($event, mediaQuestion )">
+        <!-- pour la cosmétique ou ergonomie test sur un input -->
+        <div class="input-group custom-file-button">
+            <label class="input-group-text" for="inputGroupFile">Fichier au choix <i class="bi bi-arrow-up-square ms-2"></i></label>
+            <input type="file" accept="image/*, video/*" id="mediaQuestion" ngModel name="mediaQuestion"
+                class="form-control" #mediaQuestion="ngModel" placeholder="Fichier média de votre choix"
+                onchange="console.log(event.target.files)" (change)="detectFiles($event, mediaQuestion )">
+        </div>
         <hr>
         <p class="bg-light rounded p-3 fst-italic">Un minimum de 2 options de réponse* est nécessaire à la validation du
             formulaire. Vous pouvez, si vous le souhaitez, ajouter des fichiers média (image, vidéo...) ou commentaires
