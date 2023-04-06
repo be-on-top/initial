@@ -1,0 +1,43 @@
+<div class="container py-5">
+
+    <h3 class="mb-3">Détails du candidat</h3>
+
+    <div *ngIf="student">
+
+        <div class="card">
+            <div class="card-header text-muted">id : {{student.id}}</div>
+            <div class="card-body">
+                <!-- <h4 class="card-title">id : {{student.id}}</h4> -->
+                <p class="card-text"><span class="fw-bold">Nom</span> : {{student.lastname}}<br>
+                    <span class="fw-bold">Prénom</span> : {{student.firstname}}<br>
+                    <span class="fw-bold">Email</span> : <a href="#" class="card-link">{{student.email}}</a><br>
+                    <span *ngIf="student.cp"><span class="fw-bold">CP</span> : {{student.cp}}</span>
+                    <span *ngIf="student.details"><span class="fw-bold">Détails</span> : {{student.details}}</span>
+                    <span *ngIf="student.trainer"><span class="fw-bold">Formateur</span> : {{student.trainer}}</span>
+                </p>
+                <hr>
+                <p> <span *ngIf="student.status; else checkbox">Status : actif</span>
+                    <ng-template #checkbox> Status : inactif</ng-template>
+                </p>
+                <ng-template #checkbox> Status : inactif</ng-template>
+            </div>
+            <div class="card-footer text-muted">
+                <span *ngIf="student.created">Date de création : {{student.created | date:'dd/MM/yyyy' }}</span><br>
+            </div>
+        </div>
+        <div class="d-flex my-5 justify-content-end gap-5">
+
+            <a class="btn btn-primary text-white retourList" routerLink="/admin/students">Retour à la liste</a>
+
+            <button class="btn btn-warning">
+                <a class="text-white" routerLink="/admin/updateStudent/{{student.id}}">Modifier</a>
+            </button>
+
+            <button class="btn btn-danger">
+                <a class="text-white" (click)="delete(student)">Supprimer</a>
+            </button>
+
+        </div>
+    </div>
+
+</div>

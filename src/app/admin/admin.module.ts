@@ -26,6 +26,9 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from '../register/register.component';
 import { AuthGuardService } from '../auth-guard.service';
 import { SearchComponent } from '../search/search.component';
+import { StudentDetailsComponent } from './Students/student-details/student-details.component';
+import { StudentsListComponent } from './Students/students-list/students-list.component';
+import { UpdateStudentComponent } from './Students/update-student/update-student.component';
 
 // import { EvaluatorDetailsComponent } from './Evaluators/evaluator-details/evaluator-details.component';
 
@@ -38,6 +41,9 @@ const routesAdmin: Routes = [
     { path: 'addEvaluator', component: AddEvaluatorComponent },
     { path: 'evaluator/:id', component: EvaluatorDetailsComponent },
     { path: 'updateEvaluator/:id', component: UpdateEvaluatorComponent },
+    { path: 'students', component: StudentsListComponent },
+    { path: 'student/:id', component: StudentDetailsComponent },
+    { path: 'updateStudent/:id', component: UpdateStudentComponent},
     { path: 'priorForm', component: PriorFormComponent},
     { path: 'questions', component: QuestionsListComponent },
     { path: 'questionDetails', component: QuestionDetailsComponent },
@@ -62,7 +68,7 @@ const routesAdmin: Routes = [
     EvaluatorsListComponent,
     AddEvaluatorComponent,
     EvaluatorDetailsComponent,
-    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent, UpdateSocialComponent, SocialDetailsComponent, FullFormComponent, FullListComponent, FullDetailsComponent, UpdateFullComponent, LoginComponent, SearchComponent 
+    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent, UpdateSocialComponent, SocialDetailsComponent, FullFormComponent, FullListComponent, FullDetailsComponent, UpdateFullComponent, LoginComponent, SearchComponent, StudentDetailsComponent, StudentsListComponent, UpdateStudentComponent 
   ],
   imports: [
     BrowserModule,

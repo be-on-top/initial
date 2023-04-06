@@ -1,0 +1,31 @@
+<div class="container py-5">
+
+    <h3>Gestion des candidats (apprenants)</h3>
+    <hr>
+    <div *ngIf="(!allStudents)">
+        ...loading
+    </div>
+
+    <div *ngIf="allStudents">
+        <div class="row mt-4 d-xs-none">
+            <div class="col-sm-3 h4">Nom</div>
+            <div class="col-sm-3 h4">Prénom</div>
+            <div class="col-sm-3 h4">Suppression</div>
+            <div class="col-sm-3 h4">Détails</div>
+        </div>
+
+        <div *ngFor="let student of allStudents">
+            <div class="row mt-4 ps-5 ps-sm-0">
+                <div class="col-sm-3 col-6">{{student.lastname}}</div>
+                <div class="col-sm-3 col-6 order-perso2">{{student.firstname}}</div>
+                <div class="col-sm-3 col-6 "><button class="btn btn-danger text-white"
+                        (click)="deleteStudent(student)"><i class="bi bi-person-dash-fill"></i>Suppression</button>
+                </div>
+                <div class="col-sm-3 col-6 order-perso4"><button class="btn btn-primary"><a
+                            [routerLink]="['/admin/student', student.id]" class="text-white"><i
+                                class="bi bi-person-lines-fill"></i>Détails</a></button></div>
+            </div>
+        </div>
+
+    </div>
+</div>

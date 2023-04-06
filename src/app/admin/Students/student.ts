@@ -11,4 +11,6 @@ export interface Student {
     status:boolean;
     roles:[];
     details:string;
+    trainer: string;
+    anpe: boolean;
 }
