@@ -27,7 +27,7 @@ export class StudentsService {
       return;
     }
 
-    createUserWithEmailAndPassword(this.auth, student.email, student.studentPw)
+   createUserWithEmailAndPassword(this.auth, student.email, student.studentPw)
       .then((userCredential) => {
         const user = userCredential.user;
         newStudent.id = user.uid;

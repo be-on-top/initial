@@ -2,46 +2,44 @@
 
     <h3>Inscription Utilisateur</h3>
 
-    <form #studentForm="ngForm" class="mt-4" (submit)="addStudent(studentForm)">
+    <form #studentForm="ngForm" class="mt-4" (submit)="addStudent(studentForm)" class="was-validated">
 
         <div class="form-group">
-          <label for="studentLastname">Nom de l'étudiant</label>
-          <input type="text" id="studentLastname" name="lastname" ngModel class="form-control" #lastnameInput="ngModel"
-            (keyup)="validateField(lastnameInput)" required>
+          <label for="lastname">Nom de l'étudiant</label>
+          <input type="text" id="lastname" name="lastname" ngModel #lastname="ngModel" class="form-control" 
+            (keyup)="validateField(lastname)" required>
             <div
-            *ngIf="(lastnameInput.invalid && lastnameInput.dirty) || (lastnameInput.touched && lastnameInput.invalid)"
-            class="invalidfeedback">
+            *ngIf="lastname.dirty || (lastname.touched && lastname.invalid)"
+            class="invalid-feedback">
             Veuillez fournir un nom valide.
           </div>
-          <div *ngIf="lastnameInput.valid" class="validfeedback">
+          <div *ngIf="lastname.valid" class="validfeedback">
             Nom valide.
           </div>
         </div>
   
         <div class="form-group">
-          <label for="studentFirstname">Prénom</label>
-          <input type="text" id="studentFirstname" name="firstname" ngModel class="form-control" #firstnameInput="ngModel"
-            (keyup)="validateField(firstnameInput)" required>
+          <label for="firstname">Prénom</label>
+          <input type="text" id="firstname" name="firstname" ngModel class="form-control" #firstname="ngModel"
+            (keyup)="validateField(firstname)" required>
           <div
-            *ngIf="(firstnameInput.invalid && firstnameInput.dirty) || (firstnameInput.touched && firstnameInput.invalid)"
-            class="invalidfeedback">
+            *ngIf="(firstname.invalid && firstname.dirty) || (firstname.touched && firstname.invalid)"
+            class="invalid-feedback">
             Veuillez fournir un prénom valide.
           </div>
-          <div *ngIf="firstnameInput.valid" class="validfeedback">
+          <div *ngIf="firstname.valid" class="valid-feedback">
             Prénom valide.
           </div>
         </div>
   
         <div class="form-group">
           <label for="studentMail">Email</label>
-          <input type="text" id="studentMail" name="email" ngModel class="form-control" #mailInput="ngModel"
-            (keyup)="validateEmail(mailInput.value)" required>
-  
-            <div *ngIf="mailInput.touched && !mailInput.valid" class="invalidfeedback">
+          <input type="email" id="studentMail" name="email" ngModel class="form-control" #mail="ngModel"
+            (keyup)="validateEmail(mail.value)" required>  
+            <div *ngIf="mail.touched && mail.invalid" class="invalid-feedback">
               Veuillez fournir un E-mail valide.
-          </div>
-  
-          <div *ngIf="mailInput.dirty && validateEmail(mailInput.value)" class="validfeedback">
+          </div>  
+          <div *ngIf="mail.dirty && validateEmail(mail.value)" class="valid-feedback">
             E-mail valide.
           </div>
         </div>
@@ -49,17 +47,20 @@
         <div class="form-group">
           <label for="studentPw">Password</label>
           <div class="input-group">
-            <input type="{{ showPassword ? 'text' : 'password' }}" id="studentPw" name="studentPw" ngModel
-              class="form-control" minlength="8" #pwInput="ngModel" (keyup)="validateField(pwInput)" required>
-            <i class="input-group-text bi-eye" (click)="toggleDisplayPassword($event)">Afficher</i>
+            <!-- Must be 6 to 15 characters, include at least one lowercase letter, one uppercase letter and at least one number. It should also contain no spaces. -->
+            <!-- https://stackoverflow.com/questions/19048016/password-regex-validation-preventing-spaces -->
+
+            <input type="{{ showPassword ? 'text' : 'password' }}" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\S{6,15}$" id="studentPw" name="studentPw" ngModel
+              class="form-control" minlength="6" #studentPw="ngModel" required>
+            <i class="input-group-text bi-eye">Afficher</i>
           </div>
-          <div *ngIf="(pwInput.invalid && pwInput.dirty) || (pwInput.touched && pwInput.invalid)" class="invalidfeedback">
+          <div *ngIf="studentPw.invalid && (studentPw.dirty || studentPw.touched)" class="invalid-feedback">
             Veuillez fournir un password valide.
           </div>
-          <div *ngIf="pwInput.valid" class="validfeedback">
+          <div *ngIf="studentPw.valid" class="valid-feedback">
             Password valide.
           </div>
-        </div>  
+        </div>
   
         <button type="submit" class="btn btn-primary mt-4">S'inscrire</button>
       </form>

@@ -14,6 +14,8 @@ export class AddEvaluatorComponent implements OnInit {
   email: string = "";
   selectedSigles: string[] = []
 
+  errorMessage?:string
+
   constructor(private service: EvaluatorsService, private router: Router) { }
 
   ngOnInit(): void {
@@ -30,7 +32,8 @@ export class AddEvaluatorComponent implements OnInit {
     // form.value.firstName.length<8? alert(`la longueur de ${form.value.firstName} est de ${form.value.firstName.length} alors qu'un minimum de 8 est requis`):""
 
     console.log("form registration", form.value);
-    this.service.createEvaluator(form.value);
+    this.service.createEvaluator(form.value).catch(result=>{console.log("valeur retournée après enregistrement",result);
+    });
     form.reset();
     // redirige vers la vue de détail 
     this.router.navigate(['/admin/evaluators']);

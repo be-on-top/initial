@@ -9,8 +9,10 @@ import { StudentsService } from '../admin/students.service';
 })
 export class RegisterComponent {
 
+  errorMessage?:string
+
   // recuperation code sv
-  constructor(private studentAddService: StudentsService) { }
+  constructor(private service: StudentsService) { }
 
   addStudent(form: NgForm) {
     /* console.log(form.value); */
@@ -22,7 +24,7 @@ export class RegisterComponent {
     } else if (/\s/.test(form.value.studentPw)) { // vérifier si le mot de passe ne contient pas d'espace
       alert("Attention: Le mot de passe ne doit pas contenir d'espaces vides!");
     } else {
-    this.studentAddService.createStudent(form.value);
+    this.service.createStudent(form.value);
     form.reset();
     }
   }
@@ -43,7 +45,7 @@ export class RegisterComponent {
   }
 
   validateField(textInput: any) {
-    if (!textInput.valid) {
+    if (textInput.invalid) {
       this.valid = false;
     } else {
       this.valid = true;
