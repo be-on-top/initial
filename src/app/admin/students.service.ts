@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 // import { NgForm } from '@angular/forms';
 import { Auth, createUserWithEmailAndPassword } from "@angular/fire/auth";
-import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc, updateDoc} from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc, updateDoc } from '@angular/fire/firestore';
 // import { FirebaseApp } from '@angular/fire/app';
 import { Observable } from 'rxjs';
 // import { switchMap, tap } from 'rxjs/operators';
 import { Student } from './Students/student';
+import { NgForm } from '@angular/forms';
 
 
 
@@ -17,7 +18,7 @@ export class StudentsService {
   constructor(private auth: Auth, private firestore: Firestore) { }
 
   // createStudent(studentForm: NgForm) {
-  createStudent(student:any) {
+  createStudent(student: any) {
     const newStudent: any = {
       id: '', created: Date.now(), roles: 'student', status: true, cp: '', details: '', ...student
     };
@@ -27,7 +28,7 @@ export class StudentsService {
       return;
     }
 
-   createUserWithEmailAndPassword(this.auth, student.email, student.studentPw)
+    createUserWithEmailAndPassword(this.auth, student.email, student.studentPw)
       .then((userCredential) => {
         const user = userCredential.user;
         newStudent.id = user.uid;
@@ -64,7 +65,7 @@ export class StudentsService {
         await this.auth.currentUser.delete(); // Utilisation de await pour attendre la fin de la suppression de compte avant de continuer
         console.log('Compte utilisateur auth supprimé.');
       }
-  
+
       const studentRef = doc(this.firestore, 'students', student.id);
       try {
         await deleteDoc(studentRef);
@@ -80,16 +81,15 @@ export class StudentsService {
   updateStudent(id: string, student: any) {
     // let $studentRef = doc(this.firestore, "students/" + id);
     // setDoc($studentRef, student);
-      let $studentRef = doc(this.firestore, "students/" + id);
-      let studentToUpdate:any = {};
-      for (let key in student) {
-        if (student.hasOwnProperty(key)) {
-          if (student[key] !== undefined) {
-            studentToUpdate[key] = student[key];
-          }
-        }
-      }
-      updateDoc($studentRef, studentToUpdate);  
-}
+    let $studentRef = doc(this.firestore, "students/" + id);
+    // let studentToUpdate: any = {};
+    // for (let key of Object.values(student)) {
+    //   if (key !== undefined) {
+    //     studentToUpdate = student;
+    //     console.log("studentToUpdate avant soumission", studentToUpdate);        
+    //   }
+    // }
+    updateDoc($studentRef, student);
+  }
 
 }
