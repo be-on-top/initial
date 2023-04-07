@@ -6,22 +6,20 @@
 
         <div class="form-group">
           <label for="lastname">Nom de l'étudiant</label>
-          <input type="text" id="lastname" name="lastname" ngModel #lastname="ngModel" class="form-control" 
-            (keyup)="validateField(lastname)" required>
+          <input type="text" id="lastname" name="lastname" ngModel #lastname="ngModel" class="form-control" required>
             <div
             *ngIf="lastname.dirty || (lastname.touched && lastname.invalid)"
             class="invalid-feedback">
             Veuillez fournir un nom valide.
           </div>
-          <div *ngIf="lastname.valid" class="validfeedback">
+          <div *ngIf="lastname.valid" class="valid-feedback">
             Nom valide.
           </div>
         </div>
   
         <div class="form-group">
           <label for="firstname">Prénom</label>
-          <input type="text" id="firstname" name="firstname" ngModel class="form-control" #firstname="ngModel"
-            (keyup)="validateField(firstname)" required>
+          <input type="text" id="firstname" name="firstname" ngModel class="form-control" #firstname="ngModel" required>
           <div
             *ngIf="(firstname.invalid && firstname.dirty) || (firstname.touched && firstname.invalid)"
             class="invalid-feedback">
@@ -34,12 +32,13 @@
   
         <div class="form-group">
           <label for="studentMail">Email</label>
-          <input type="email" id="studentMail" name="email" ngModel class="form-control" #mail="ngModel"
-            (keyup)="validateEmail(mail.value)" required>  
-            <div *ngIf="mail.touched && mail.invalid" class="invalid-feedback">
+          <!-- puisqu'on peut balancer le regex dans l'attribut pattern="" -->
+          <!-- <input type="email" id="studentMail" name="email" ngModel class="form-control" #mail="ngModel" (keyup)="validateEmail(mail.value)" required>   -->
+          <input type="email" id="studentMail" name="email" ngModel class="form-control" #email="ngModel" required>  
+            <div *ngIf="email.invalid && (studentPw.dirty || studentPw.touched)" class="invalid-feedback">
               Veuillez fournir un E-mail valide.
           </div>  
-          <div *ngIf="mail.dirty && validateEmail(mail.value)" class="valid-feedback">
+          <div *ngIf="email.valid" class="valid-feedback">
             E-mail valide.
           </div>
         </div>
@@ -50,9 +49,10 @@
             <!-- Must be 6 to 15 characters, include at least one lowercase letter, one uppercase letter and at least one number. It should also contain no spaces. -->
             <!-- https://stackoverflow.com/questions/19048016/password-regex-validation-preventing-spaces -->
 
-            <input type="{{ showPassword ? 'text' : 'password' }}" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\S{6,15}$" id="studentPw" name="studentPw" ngModel
-              class="form-control" minlength="6" #studentPw="ngModel" required>
-            <i class="input-group-text bi-eye">Afficher</i>
+            <!-- c'est bien pensé, mais inutile parce que BOOTSTRAP 5 a prévu le cas -->
+            <input type="password" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\S{6,15}$" id="pwd" name="studentPw" ngModel
+              class="form-control" minlength="6" #studentPw="ngModel" required (change)="whatever($event)">
+            <!-- <i class="input-group-text bi-eye">Afficher</i> -->
           </div>
           <div *ngIf="studentPw.invalid && (studentPw.dirty || studentPw.touched)" class="invalid-feedback">
             Veuillez fournir un password valide.
@@ -61,8 +61,15 @@
             Password valide.
           </div>
         </div>
+
+        <div class="form-check my-3">
+          <input class="form-check-input" type="checkbox" id="myCheck" name="remember" required>
+          <label class="form-check-label" for="myCheck">Je consens à blablabla avec le lien qu'on souhaite.</label>
+          <div class="valid-feedback">Valid.</div>
+          <div class="invalid-feedback">Cocher la case pour continuer.</div>
+        </div>
   
-        <button type="submit" class="btn btn-primary mt-4">S'inscrire</button>
+        <button type="submit" class="btn btn-primary mt-4" [disabled]=studentForm.invalid>S'inscrire</button>
       </form>
 
 </div>

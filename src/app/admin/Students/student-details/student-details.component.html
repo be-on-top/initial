@@ -11,9 +11,9 @@
                 <p class="card-text"><span class="fw-bold">Nom</span> : {{student.lastname}}<br>
                     <span class="fw-bold">Prénom</span> : {{student.firstname}}<br>
                     <span class="fw-bold">Email</span> : <a href="#" class="card-link">{{student.email}}</a><br>
-                    <span *ngIf="student.cp"><span class="fw-bold">CP</span> : {{student.cp}}</span>
-                    <span *ngIf="student.details"><span class="fw-bold">Détails</span> : {{student.details}}</span>
-                    <span *ngIf="student.trainer"><span class="fw-bold">Formateur</span> : {{student.trainer}}</span>
+                    <span *ngIf="student.cp" class="d-block"><span class="fw-bold">CP</span> : {{student.cp}}</span>
+                    <span *ngIf="student.details" class="d-block"><span class="fw-bold">Détails</span> : {{student.details}}</span>
+                    <span *ngIf="student.trainer" class="d-block"><span class="fw-bold">Formateur</span> : {{student.trainer}}</span>
                 </p>
                 <hr>
                 <p> <span *ngIf="student.status; else checkbox">Status : actif</span>

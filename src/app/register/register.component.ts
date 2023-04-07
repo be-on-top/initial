@@ -40,16 +40,23 @@ export class RegisterComponent {
 
   showPassword: boolean = false;
 
-  toggleDisplayPassword(event:any) {
-    this.showPassword = !this.showPassword;
-  }
+  // toggleDisplayPassword(event:any) {
+  //   this.showPassword = !this.showPassword;
+  // }
 
-  validateField(textInput: any) {
-    if (textInput.invalid) {
-      this.valid = false;
-    } else {
-      this.valid = true;
-    }
+  // validateField(textInput: any) {
+  //   if (textInput.invalid) {
+  //     this.valid = false;
+  //   } else {
+  //     this.valid = true;
+  //   }
+
+  // }
+
+  whatever(e:any){
+    console.log(e);
+    
+    
 
   }
 

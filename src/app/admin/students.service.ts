@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 // import { NgForm } from '@angular/forms';
 import { Auth, createUserWithEmailAndPassword } from "@angular/fire/auth";
-import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc} from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc, updateDoc} from '@angular/fire/firestore';
 // import { FirebaseApp } from '@angular/fire/app';
 import { Observable } from 'rxjs';
 // import { switchMap, tap } from 'rxjs/operators';
@@ -77,9 +77,19 @@ export class StudentsService {
     }
   }
 
-  updateStudent(id: string, student: Student) {
-    let $studentRef = doc(this.firestore, "students/" + id);
-    setDoc($studentRef, student);
-  }
-  
+  updateStudent(id: string, student: any) {
+    // let $studentRef = doc(this.firestore, "students/" + id);
+    // setDoc($studentRef, student);
+      let $studentRef = doc(this.firestore, "students/" + id);
+      let studentToUpdate:any = {};
+      for (let key in student) {
+        if (student.hasOwnProperty(key)) {
+          if (student[key] !== undefined) {
+            studentToUpdate[key] = student[key];
+          }
+        }
+      }
+      updateDoc($studentRef, studentToUpdate);  
+}
+
 }
