@@ -23,7 +23,9 @@ import { AdminModule } from './admin/admin.module';
 import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './header/header.component';
 import { RegisterComponent } from './register/register.component';
-import { ServiceWorkerModule } from '@angular/service-worker';
+import { ServiceWorkerModule} from '@angular/service-worker';
+
+
 // import { SocialComponentComponent } from './admin/Questions/social-component/social-component.component';
 
 
