@@ -8,14 +8,13 @@
         d'authentification de l'utilisateur (ici, un évaluateur)</div>
 
     <div *ngIf="user" class="alert bg-light p-2">
-        Id Utilsiateur authentifié sur firebase Auth : {{user | json}}
+        Id Utilisateur authentifié sur firebase Auth : {{user | json}}
     </div>
 
     <p class="alert bg-light p-2"> authStatus!==0 : {{authStatus!==0}}</p>
     <!-- ne fonctionne pas, mais on s'en tape -->
     <div *ngIf="authStatus">{{authStatus}}</div>
     <p class="alert bg-success p-2"> user test OK : {{user | json}}</p>
-
     <p class="alert bg-success p-2"> userData test OK : {{userData | json}}</p>
 
     <br>
@@ -30,5 +29,7 @@
             <li *ngIf="userData.sigle" class="list-group-item">Sigle métier si existant: {{userData.sigle}}</li>
         </ul>
     </div>
+
+    <button type="submit" class="btn btn-primary mt-4" (click)="notifyMe()">Accepter les notifications</button>
 
 </div>

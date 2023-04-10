@@ -51,7 +51,7 @@
 
             <!-- c'est bien pensé, mais inutile parce que BOOTSTRAP 5 a prévu le cas -->
             <input type="password" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\S{6,15}$" id="pwd" name="studentPw" ngModel
-              class="form-control" minlength="6" #studentPw="ngModel" required (change)="whatever($event)">
+              class="form-control" minlength="6" #studentPw="ngModel" required>
             <!-- <i class="input-group-text bi-eye">Afficher</i> -->
           </div>
           <div *ngIf="studentPw.invalid && (studentPw.dirty || studentPw.touched)" class="invalid-feedback">

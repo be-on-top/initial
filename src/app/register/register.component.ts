@@ -53,11 +53,11 @@ export class RegisterComponent {
 
   // }
 
-  whatever(e:any){
-    console.log(e);
-    
-    
+  // whatever(e:any){
+  //   console.log(e);    
 
-  }
+  // }
+
+  
 
 }
