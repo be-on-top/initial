@@ -1,8 +1,8 @@
 export interface Student {
     id: string;
     authId: string;
-    lastname: string;
-    firstname: string;
+    lastName: string;
+    firstName: string;
     email: string;
     studentPw: string;
     evaluations:string;

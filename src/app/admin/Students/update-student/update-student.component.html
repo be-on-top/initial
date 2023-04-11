@@ -13,12 +13,12 @@
             <input type="text" id="trainer" [(ngModel)]="student.trainer" name="trainer" class="form-control"
                 placeholder="évaluateur : non modifiable" class="form-control text-white" disabled> -->
 
-            <label for="firstname" class="form-label mt-3">Prénom</label>
-            <input type="text" id="firstname" [(ngModel)]="student.firstname" name="firstname" class="form-control"
+            <label for="firstName" class="form-label mt-3">Prénom</label>
+            <input type="text" id="firstName" [(ngModel)]="student.firstName" name="firstName" class="form-control"
                 placeholder="Prénom">
 
             <label for="lastname" class="form-label mt-3">Nom *</label>
-            <input type="text" id="lastname" [(ngModel)]="student.lastname" name="lastname" class="form-control"
+            <input type="text" id="lastName" [(ngModel)]="student.lastName" name="lastName" class="form-control"
                 #lastName="ngModel" placeholder="Nom" required>
             <div class="valid-feedback" *ngIf="lastName.valid">Champ correctement renseigné</div>
             <div class="invalid-feedback" *ngIf="lastName.invalid">Merci de renseigner le champ nom.</div>

@@ -8,8 +8,8 @@
             <div class="card-header text-muted">id : {{student.id}}</div>
             <div class="card-body">
                 <!-- <h4 class="card-title">id : {{student.id}}</h4> -->
-                <p class="card-text"><span class="fw-bold">Nom</span> : {{student.lastname}}<br>
-                    <span class="fw-bold">Prénom</span> : {{student.firstname}}<br>
+                <p class="card-text"><span class="fw-bold">Nom</span> : {{student.lastName}}<br>
+                    <span class="fw-bold">Prénom</span> : {{student.firstName}}<br>
                     <span class="fw-bold">Email</span> : <a href="#" class="card-link">{{student.email}}</a><br>
                     <span *ngIf="student.cp" class="d-block"><span class="fw-bold">CP</span> : {{student.cp}}</span>
                     <span *ngIf="student.details" class="d-block"><span class="fw-bold">Détails</span> : {{student.details}}</span>

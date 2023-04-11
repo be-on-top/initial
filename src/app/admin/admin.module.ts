@@ -56,7 +56,7 @@ const routesAdmin: Routes = [
     { path: 'fullDetails', component: FullDetailsComponent },
     { path: 'updateFull/:id', component: UpdateFullComponent}
   ], 
-  // canActivate:[AuthGuardService] 
+  canActivate:[AuthGuardService] 
 },
   { path: 'login', component: LoginComponent},
   { path: 'register', component: RegisterComponent}

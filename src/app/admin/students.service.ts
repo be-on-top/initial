@@ -32,6 +32,7 @@ export class StudentsService {
       .then((userCredential) => {
         const user = userCredential.user;
         newStudent.id = user.uid;
+        newStudent.trainer = "Attribué ultérieurement"
 
         const studentsRef = collection(this.firestore, "students");
         delete newStudent.studentPw;

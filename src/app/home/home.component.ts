@@ -29,6 +29,9 @@ export class HomeComponent implements OnInit {
   evaluatorId: any;
   evaluator: any
   userData?: any;
+  evaluatorData?: any;
+  studentData?: any;
+
 
 
   constructor(private auth: Auth, private firestore: Firestore, private authService: AuthService, private evaluatorService: EvaluatorsService, private activatedRoute: ActivatedRoute, private router: Router) {
@@ -59,20 +62,19 @@ export class HomeComponent implements OnInit {
         console.log("www", user.email);
         console.log("data", this.myData);
         // ne fonctionne pas : à creuser éventuellement, mais comme la méthode qui suit est impeccable, ce ne sera qu'un cas d'école
-        this.evaluatorService.getEvaluator(this.evaluatorId).subscribe(data => {
-          console.log("data de getEvaluator depuis la page", data);
-          this.evaluator = data
-        })
+        // this.evaluatorService.getEvaluator(this.evaluatorId).subscribe(data => {
+        //   console.log("data de getEvaluator depuis la page", data);
+        //   this.evaluator = data
+        // })
 
         // méthode au top pour faire des requests
-        this.getDocsByParam(this.user)
+        this.getEvaluatorsByParam(user.uid)
+        this.getStudentsByParam(user.uid)
+        console.log("userData from students or evaluators...",  this.userData);        
+        
         // y a juste que je n'arrive pas à me la faire livrer pa le service !!!
         // this.evaluatorService.getDocsByParam(this.user)
-        // console.log("myData", this.myData);
 
-
-        // User is signed out
-        // ...
       }
     })
 
@@ -90,15 +92,28 @@ export class HomeComponent implements OnInit {
   }
 
   // top !!!
-  async getDocsByParam(uid: string) {
-    // const myData = query(collection(this.firestore, 'evaluators'), where('id', '==', uid));
+  async getStudentsByParam(uid: string) {
+    const myData = query(collection(this.firestore, 'students'), where('id', '==', uid));
+    const querySnapshot = await getDocs(myData);
+    if (querySnapshot) {      
+      querySnapshot.forEach((doc) => {
+        console.log(doc.id, ' => ', doc.data());
+        this.userData= doc.data()
+      });
+    }
+  }
+
+  async getEvaluatorsByParam(uid: string) {
     const myData = query(collection(this.firestore, 'evaluators'), where('id', '==', uid));
     const querySnapshot = await getDocs(myData);
-    querySnapshot.forEach((doc) => {
-      console.log(doc.id, ' => ', doc.data());
-      this.userData = doc.data()
-      console.log("this.userData", this.userData);
-    });
+    if (querySnapshot) {
+      querySnapshot.forEach((doc) => {
+        console.log(doc.id, ' => ', doc.data());
+        this.userData= doc.data()
+      });
+      
+    }
+
   }
 
 
