@@ -11,11 +11,11 @@
         Id Utilisateur authentifié sur firebase Auth : {{user | json}}
     </div>
 
-    <p class="alert bg-light p-2"> authStatus!==0 : {{authStatus!==0}}</p>
+    <!-- <p class="alert bg-light p-2"> authStatus!==0 : {{authStatus!==0}}</p> -->
     <!-- ne fonctionne pas, mais on s'en tape -->
     <div *ngIf="authStatus">{{authStatus}}</div>
     <p class="alert bg-success p-2"> user test OK : {{user | json}}</p>
-    <p class="alert bg-success p-2"> userData test OK : {{userData | json}}</p>
+    <!-- <p class="alert bg-success p-2"> userData test OK : {{userData | json}}</p> -->
 
     <br>
     <div *ngIf="userData | json" class="rounded bg-light p-2">

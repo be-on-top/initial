@@ -91,6 +91,7 @@ export class HomeComponent implements OnInit {
 
   // top !!!
   async getDocsByParam(uid: string) {
+    // const myData = query(collection(this.firestore, 'evaluators'), where('id', '==', uid));
     const myData = query(collection(this.firestore, 'evaluators'), where('id', '==', uid));
     const querySnapshot = await getDocs(myData);
     querySnapshot.forEach((doc) => {
@@ -117,14 +118,14 @@ export class HomeComponent implements OnInit {
     } else if (Notification.permission === "granted") {
       // Check whether notification permissions have already been granted;
       // if so, create a notification
-      const notification = new Notification("Hi there!");
+      const notification = new Notification("Coucou, vous avez demandé à être notifié !!! ");
       // …
     } else if (Notification.permission !== "denied") {
       // We need to ask the user for permission
       Notification.requestPermission().then((permission) => {
         // If the user accepts, let's create a notification
         if (permission === "granted") {
-          const notification = new Notification("Hi there!");
+          const notification = new Notification("Coucou, vous avez demandé à être notifié !!! ");
           // …
         }
       });

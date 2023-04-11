@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { StudentsService } from '../admin/students.service';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -12,7 +13,7 @@ export class RegisterComponent {
   errorMessage?:string
 
   // recuperation code sv
-  constructor(private service: StudentsService) { }
+  constructor(private service: StudentsService, private router:Router) { }
 
   addStudent(form: NgForm) {
     /* console.log(form.value); */
@@ -25,7 +26,8 @@ export class RegisterComponent {
       alert("Attention: Le mot de passe ne doit pas contenir d'espaces vides!");
     } else {
     this.service.createStudent(form.value);
-    form.reset();
+    // form.reset();
+    this.router.navigate(['']);
     }
   }
 

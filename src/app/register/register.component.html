@@ -6,7 +6,7 @@
 
         <div class="form-group">
           <label for="lastname">Nom de l'étudiant</label>
-          <input type="text" id="lastname" name="lastname" ngModel #lastname="ngModel" class="form-control" required>
+          <input type="text" id="lastname" name="lastname" ngModel #lastname="ngModel" class="form-control" required minlength="3">
             <div
             *ngIf="lastname.dirty || (lastname.touched && lastname.invalid)"
             class="invalid-feedback">
@@ -19,9 +19,9 @@
   
         <div class="form-group">
           <label for="firstname">Prénom</label>
-          <input type="text" id="firstname" name="firstname" ngModel class="form-control" #firstname="ngModel" required>
+          <input type="text" id="firstname" name="firstname" ngModel class="form-control" #firstname="ngModel" required minlength="3">
           <div
-            *ngIf="(firstname.invalid && firstname.dirty) || (firstname.touched && firstname.invalid)"
+            *ngIf="firstname.dirty || (firstname.touched && firstname.invalid)"
             class="invalid-feedback">
             Veuillez fournir un prénom valide.
           </div>
@@ -34,8 +34,8 @@
           <label for="studentMail">Email</label>
           <!-- puisqu'on peut balancer le regex dans l'attribut pattern="" -->
           <!-- <input type="email" id="studentMail" name="email" ngModel class="form-control" #mail="ngModel" (keyup)="validateEmail(mail.value)" required>   -->
-          <input type="email" id="studentMail" name="email" ngModel class="form-control" #email="ngModel" required>  
-            <div *ngIf="email.invalid && (studentPw.dirty || studentPw.touched)" class="invalid-feedback">
+          <input type="email" minlength="6" id="email" name="email" ngModel class="form-control" #email="ngModel" required>  
+            <div *ngIf="email.invalid && (email.dirty || email.touched)" class="invalid-feedback">
               Veuillez fournir un E-mail valide.
           </div>  
           <div *ngIf="email.valid" class="valid-feedback">
@@ -45,27 +45,26 @@
   
         <div class="form-group">
           <label for="studentPw">Password</label>
-          <div class="input-group">
             <!-- Must be 6 to 15 characters, include at least one lowercase letter, one uppercase letter and at least one number. It should also contain no spaces. -->
             <!-- https://stackoverflow.com/questions/19048016/password-regex-validation-preventing-spaces -->
 
             <!-- c'est bien pensé, mais inutile parce que BOOTSTRAP 5 a prévu le cas -->
-            <input type="password" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\S{6,15}$" id="pwd" name="studentPw" ngModel
+            <input type="password" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\S{6,15}$" id="studentPw" name="studentPw" ngModel
               class="form-control" minlength="6" #studentPw="ngModel" required>
             <!-- <i class="input-group-text bi-eye">Afficher</i> -->
+            <div *ngIf="studentPw.invalid && (studentPw.dirty || studentPw.touched)" class="invalid-feedback">
+              Veuillez fournir un password valide. Avec au minimum une majuscule, une minuscule, un nombre et aucun espace
+            </div>
+            <div *ngIf="studentPw.valid" class="valid-feedback">
+              Password valide.
+            </div>
           </div>
-          <div *ngIf="studentPw.invalid && (studentPw.dirty || studentPw.touched)" class="invalid-feedback">
-            Veuillez fournir un password valide.
-          </div>
-          <div *ngIf="studentPw.valid" class="valid-feedback">
-            Password valide.
-          </div>
-        </div>
+
 
         <div class="form-check my-3">
           <input class="form-check-input" type="checkbox" id="myCheck" name="remember" required>
-          <label class="form-check-label" for="myCheck">Je consens à blablabla avec le lien qu'on souhaite.</label>
-          <div class="valid-feedback">Valid.</div>
+          <label class="form-check-label" for="myCheck">Je consens à ...  avec le lien qu'on souhaite.</label>
+          <div class="valid-feedback">Validation OK.</div>
           <div class="invalid-feedback">Cocher la case pour continuer.</div>
         </div>
   
