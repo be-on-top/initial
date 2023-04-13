@@ -16,6 +16,9 @@ export class LoginComponent {
   formLogin: FormGroup;
   // isAuthentificated?:boolean;
   user?: any;
+  // variables à passer à feedbackMessages component pour retours de firebase sur la soumission
+  feedbackMessages?:any=""
+  isSuccessMessage:boolean=true
 
   // je voudrais me faire importer onAuthStateChanged qui est une méthode de auth depuis le service. A faire plus tard
   // en attendant, j'importe Auth
@@ -43,13 +46,22 @@ export class LoginComponent {
     this.service.login(this.formLogin.value)
       .then(response => {
         console.log(response);
-        alert("Login Success ! ");
+        // pour ajout confirmation feedback avant redirection
+        this.feedbackMessages="Login Success !"
+        // alert("Login Success ! ");
         // isAuthentificated ne sert plus à rien. c'est l'uid qui conditionne l'affichage du bouton de login ou logout
         // this.isAuthentificated = true;
         // console.log("isAuthenticated", this.isAuthentificated);
         this.router.navigate(['']);
       })
-      .catch(error => console.log(error));
+      .catch(error => {
+        console.log(error)
+        this.feedbackMessages=error;
+        this.isSuccessMessage=false;
+        // mise à jour variables à passer à feedbackMessags component
+
+      
+      });
   }
 
   onClick() {

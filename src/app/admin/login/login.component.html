@@ -3,6 +3,7 @@
 
     <h3>Login Utilisateur</h3>
     <ng-template #login>
+        <app-feedback-messages [feedbackMessages]="feedbackMessages" [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
         <form class="form mx-auto" [formGroup]="formLogin" (ngSubmit)="onSubmit()">
             <div class="mb-3">
                 <label class="form-label text-light">Email</label>
