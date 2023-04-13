@@ -1,1 +1,1 @@
-<div role="alert" *ngIf="feedbackMessages!==''" class="my-3 alert alert-dismissible fade show" [ngClass]="{'alert-success': isSuccessMessage==true, 'alert-danger': isSuccessMessage==false}">{{feedbackMessages}}</div>
+<div role="alert" *ngIf="feedbackMessages!==''" class="my-3 alert alert-dismissible fade show" [ngClass]="{'alert-success': isSuccessMessage==true, 'alert-danger': isSuccessMessage==false}">{{feedbackMessages}}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>
