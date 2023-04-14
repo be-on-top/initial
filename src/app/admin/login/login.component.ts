@@ -19,6 +19,14 @@ export class LoginComponent {
   // variables à passer à feedbackMessages component pour retours de firebase sur la soumission
   feedbackMessages?:any=""
   isSuccessMessage:boolean=true
+  // essai pour personnaliser les messages
+  // https://firebase.google.com/docs/auth/admin/errors?hl=fr
+  firebaseErrors:any = {
+    'auth/user-not-found': 'Aucun utilisateur ne correspond à cet email',
+    'auth/email-already-in-use': 'Cet email est déjà utilisé pour un autre compte',
+    'auth/wrong-password' : 'Le mot de passe est incorrect',
+    'auth/invalid-email' : 'Aucun enregistrement ne correspond au mail fourni'
+  }; // list of firebase error codes to alternate error messages
 
   // je voudrais me faire importer onAuthStateChanged qui est une méthode de auth depuis le service. A faire plus tard
   // en attendant, j'importe Auth
@@ -37,7 +45,6 @@ export class LoginComponent {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
         this.user = user.uid
-
       }
     })
   }
@@ -52,15 +59,18 @@ export class LoginComponent {
         // isAuthentificated ne sert plus à rien. c'est l'uid qui conditionne l'affichage du bouton de login ou logout
         // this.isAuthentificated = true;
         // console.log("isAuthenticated", this.isAuthentificated);
-        this.router.navigate(['']);
+        setTimeout(() => {
+          this.router.navigate([''])
+        }, 2000)
+        // this.router.navigate(['']);
       })
       .catch(error => {
+        // this.firebaseErrors[error.code] || error.message,
         console.log(error)
-        this.feedbackMessages=error;
+        // this.feedbackMessages=error.code;
+        this.feedbackMessages=this.firebaseErrors[error.code];
         this.isSuccessMessage=false;
-        // mise à jour variables à passer à feedbackMessags component
-
-      
+        // mise à jour variables à passer à feedbackMessags component      
       });
   }
 
@@ -75,17 +85,11 @@ export class LoginComponent {
   
   reset(email: string): any {
     this.service.passwordReset(email)
-
     
     // return this.fireAgent.firebase.auth().sendPasswordResetEmail(email, {
     //   url: 'http://localhost:4200/',
     //   handleCodeInApp: true
-  }
-
-
-
-
-  
+  }  
   
 
   logOut(){
@@ -93,9 +97,7 @@ export class LoginComponent {
     alert("Déconnection ok")
     this.router.navigate(['']);
 
-  }
-
-  
+  } 
 
 
 }

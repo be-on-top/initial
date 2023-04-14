@@ -16,20 +16,17 @@ import { AuthService } from './admin/auth.service';
 export class AuthGuardService implements CanActivate {
   user?: any;
 
-  // je ne devrais pas avoir à me faire importer onAuthStateChanged et auth ...
-
   constructor(private authService: AuthService, private router: Router, private auth: Auth) {
-
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    onAuthStateChanged(this.auth, (user: any) => {
-      if (user) {
+    // onAuthStateChanged(this.auth, (user: any) => {
+    //   if (user) {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
-        this.user = user.uid
-      }
-    })
+        this.user = this.auth.currentUser?.uid
+    //   }
+    // })
 
     if (this.user) {
       alert('salut user')
