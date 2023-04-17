@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 // import { NgForm } from '@angular/forms';
 import { Auth, createUserWithEmailAndPassword } from "@angular/fire/auth";
-import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc, updateDoc } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc, updateDoc, query, getDocs, where } from '@angular/fire/firestore';
 // import { FirebaseApp } from '@angular/fire/app';
 import { Observable } from 'rxjs';
 // import { switchMap, tap } from 'rxjs/operators';
@@ -61,11 +61,11 @@ export class StudentsService {
   }
 
   async deleteStudent(student: Student): Promise<void> {
-    try {
-      if (this.auth.currentUser) {
-        await this.auth.currentUser.delete(); // Utilisation de await pour attendre la fin de la suppression de compte avant de continuer
-        console.log('Compte utilisateur auth supprimé.');
-      }
+    // try {
+    //   if (this.auth.currentUser) {
+    //     await this.auth.currentUser.delete(); // Utilisation de await pour attendre la fin de la suppression de compte avant de continuer
+    //     console.log('Compte utilisateur auth supprimé.');
+    //   }
 
       const studentRef = doc(this.firestore, 'students', student.id);
       try {
@@ -74,9 +74,9 @@ export class StudentsService {
       } catch (error) {
         console.error(`Error deleting student from firebase with id=${student.id}: `, error);
       }
-    } catch (error) {
-      console.error('Error deleting user account:', error);
-    }
+    // } catch (error) {
+    //   console.error('Error deleting user account:', error);
+    // }
   }
 
   updateStudent(id: string, student: any) {
@@ -91,6 +91,20 @@ export class StudentsService {
     //   }
     // }
     updateDoc($studentRef, student);
+  }
+
+
+  async getStudentsByParam(uid: string) {
+    const myData = query(collection(this.firestore, 'students'), where('id', '==', uid));
+    const querySnapshot = await getDocs(myData);
+    if (querySnapshot) {      
+      querySnapshot.forEach((doc) => {
+        console.log(doc.id, ' => ', doc.data());
+       doc.data()
+
+
+      });
+    }
   }
 
 }

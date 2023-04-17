@@ -18,7 +18,7 @@
     <!-- <p class="alert bg-success p-2"> userData test OK : {{userData | json}}</p> -->
 
     <br>
-    <div *ngIf="userData | json" class="rounded bg-light p-2">
+    <div *ngIf="userData" class="rounded bg-light p-2">
         <ul class="list-group">
             <li class="list-group-item">Son id sur firestore : {{userData.id}}</li>
             <li class="list-group-item">Son email sur firestore : {{userData.email}}</li>

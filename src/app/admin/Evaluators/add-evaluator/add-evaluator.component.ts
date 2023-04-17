@@ -9,14 +9,22 @@ import { EvaluatorsService } from '../../evaluators.service';
   templateUrl: './add-evaluator.component.html',
   styleUrls: ['./add-evaluator.component.css']
 })
-export class AddEvaluatorComponent implements OnInit{
+export class AddEvaluatorComponent implements OnInit {
   lastName: string = "active";
   firstName: string = "";
   email: string = "";
   selectedSigles: string[] = []
 
-  feedbackMessages?:any=""
-  isSuccessMessage:boolean=true
+  feedbackMessages?: any = ""
+  isSuccessMessage: boolean = true
+  // essai pour personnaliser les messages
+  // https://firebase.google.com/docs/auth/admin/errors?hl=fr
+  firebaseErrors: any = {
+    'auth/user-not-found': 'Aucun utilisateur ne correspond à cet email',
+    'auth/email-already-in-use': 'Cet email est déjà utilisé pour un autre compte',
+    'auth/wrong-password': 'Le mot de passe est incorrect',
+    'auth/invalid-email': 'Aucun enregistrement ne correspond au mail fourni'
+  }; // list of firebase error codes to alternate error messages
 
   constructor(private service: EvaluatorsService, private router: Router) { }
 
@@ -38,7 +46,7 @@ export class AddEvaluatorComponent implements OnInit{
     this.service.createEvaluator(form.value).then((userCredential) => {
       // Signed in 
       const user = userCredential;
-      this.feedbackMessages=`Enregistrement OK`;
+      this.feedbackMessages = `Enregistrement OK`;
 
       // alert("registration ok")
       setTimeout(() => {
@@ -47,15 +55,14 @@ export class AddEvaluatorComponent implements OnInit{
       // this.router.navigate(['/admin/evaluators']);
       // ...
     })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      this.feedbackMessages=error.message;
-      this.isSuccessMessage=false;
-      console.log(this.feedbackMessages);
-      
-      // ..};
-    })
+      .catch((error) => {
+        this.feedbackMessages = error.message;
+        this.feedbackMessages=this.firebaseErrors[error.code];
+        this.isSuccessMessage = false;
+        console.log(this.feedbackMessages);
+
+        // ..};
+      })
     // form.reset();
     // redirige vers la vue de détail 
     // this.router.navigate(['/admin/evaluators']);

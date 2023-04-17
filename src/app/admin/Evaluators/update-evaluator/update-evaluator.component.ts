@@ -38,7 +38,7 @@ export class UpdateEvaluatorComponent implements OnInit {
     console.log("form update values", form.value);
     this.service.updateEvaluator(this.evaluatorId, form.value)
     // il faudra prévoir une redirection... 
-    this.router.navigate(['/evaluator', this.evaluatorId])
+    this.router.navigate(['/admin/evaluator', this.evaluatorId])
   }
 
   // pour affecation métier de l'évaluateur
