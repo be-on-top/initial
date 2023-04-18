@@ -7,31 +7,40 @@
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">liens à venir...</a>
+                    <a class="nav-link" href="#">liens à venir pour {{userRole}}..</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <!-- <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" *ngIf="userUid!==undefined && userUid!==''">Admin</a> -->
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Admin</a>
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        *ngIf="userUid!==undefined && userUid!==''">Admin</a>
+                    <!-- <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Admin</a> -->
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" [routerLink]="['/admin/evaluators']">Gestion des évaluateurs</a></li>
+                        <li><a class="dropdown-item" [routerLink]="['/admin/evaluators']">Gestion des évaluateurs</a>
+                        </li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/students']">Gestion des candidats</a></li>
                         <li><a class="dropdown-item" href="#">Gestion des formateurs</a></li>
-                        <li>
+                        <li [ngClass]="{'d-none':userRole!=='evaluator'}">
                             <hr>
                         </li>
-                        <li><a class="dropdown-item" [routerLink]="['/admin/priorForm']">Saisie des questions d'accroche</a>
+                        <li><a class="dropdown-item" [routerLink]="['/admin/priorForm']"
+                                [ngClass]="{'d-none':userRole!=='evaluator'}">Saisie des questions d'accroche</a>
                         </li>
-                        <li><a class="dropdown-item" [routerLink]="['/admin/socialForm']">Saisie des questions sociales</a>
+                        <li><a class="dropdown-item" [routerLink]="['/admin/socialForm']"
+                                [ngClass]="{'d-none':userRole!=='evaluator'}">Saisie des questions sociales</a>
+                            <!-- <li><a class="dropdown-item" [routerLink]="['/admin/socialForm']" *ngIf="userRole==='evaluator'">Saisie des questions sociales</a> -->
                         </li>
-                        <li><a class="dropdown-item" [routerLink]="['/admin/fullForm']">Saisie des questions de
+                        <li><a class="dropdown-item" [routerLink]="['/admin/fullForm']"
+                                [ngClass]="{'d-none':userRole!=='evaluator'}">Saisie des questions de
                                 positionnement</a></li>
-                        <li>
+                        <li [ngClass]="{'d-none':userRole!=='evaluator'}">
                             <hr>
                         </li>
-                        <li><a class="dropdown-item" [routerLink]="['/admin/questions']">Liste des questions d'accroche</a>
+                        <li><a class="dropdown-item" [routerLink]="['/admin/questions']"
+                                [ngClass]="{'d-none':userRole!=='evaluator'}">Liste des questions d'accroche</a>
                         </li>
-                        <li><a class="dropdown-item" [routerLink]="['/admin/socials']">Liste des questions sociales</a></li>
-                        <li><a class="dropdown-item" [routerLink]="['/admin/fullList']">Liste des questions de
+                        <li><a class="dropdown-item" [routerLink]="['/admin/socials']"
+                                [ngClass]="{'d-none':userRole!=='evaluator'}">Liste des questions sociales</a></li>
+                        <li><a class="dropdown-item" [routerLink]="['/admin/fullList']"
+                                [ngClass]="{'d-none':userRole!=='evaluator'}">Liste des questions de
                                 positionnement</a></li>
                     </ul>
                 </li>

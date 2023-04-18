@@ -10,6 +10,8 @@ import { NgForm } from '@angular/forms';
 
 
 
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -30,13 +32,15 @@ export class StudentsService {
 
     createUserWithEmailAndPassword(this.auth, student.email, student.studentPw)
       .then((userCredential) => {
+        console.log("userCredential depuis le service", userCredential);        
         const user = userCredential.user;
         newStudent.id = user.uid;
         newStudent.trainer = "Attribué ultérieurement"
 
         const studentsRef = collection(this.firestore, "students");
         delete newStudent.studentPw;
-        addDoc(studentsRef, newStudent).then(() => {
+        // addDoc(studentsRef, newStudent).then(() => {
+        setDoc(doc(studentsRef, newStudent.id), newStudent).then(() => {
           console.log("New student added successfully");
         }).catch((error) => {
           console.error("Error adding student document: ", error);
@@ -67,13 +71,13 @@ export class StudentsService {
     //     console.log('Compte utilisateur auth supprimé.');
     //   }
 
-      const studentRef = doc(this.firestore, 'students', student.id);
-      try {
-        await deleteDoc(studentRef);
-        console.log(`Student with id=${student.id} deleted from firebase successfully`);
-      } catch (error) {
-        console.error(`Error deleting student from firebase with id=${student.id}: `, error);
-      }
+    const studentRef = doc(this.firestore, 'students', student.id);
+    try {
+      await deleteDoc(studentRef);
+      console.log(`Student with id=${student.id} deleted from firebase successfully`);
+    } catch (error) {
+      console.error(`Error deleting student from firebase with id=${student.id}: `, error);
+    }
     // } catch (error) {
     //   console.error('Error deleting user account:', error);
     // }
@@ -97,10 +101,10 @@ export class StudentsService {
   async getStudentsByParam(uid: string) {
     const myData = query(collection(this.firestore, 'students'), where('id', '==', uid));
     const querySnapshot = await getDocs(myData);
-    if (querySnapshot) {      
+    if (querySnapshot) {
       querySnapshot.forEach((doc) => {
         console.log(doc.id, ' => ', doc.data());
-       doc.data()
+        doc.data()
 
 
       });

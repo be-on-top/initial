@@ -24,7 +24,7 @@ export class EvaluatorsService {
   async createEvaluator(evaluator: any) {
 
     // let newEvaluator = { id: Date.now(), ...evaluator };
-    let newEvaluator = { created: Date.now(), roles: 'admin-', status: true, ...evaluator };
+    let newEvaluator = { created: Date.now(), roles: 'evaluator', status: true, ...evaluator };
     this.evaluators = [newEvaluator, ...this.evaluators];
     console.log(this.evaluators);
     // on va lui affecter un password aléatoire en fonction de la date
@@ -40,7 +40,8 @@ export class EvaluatorsService {
 
     // enregistre dans Firestore d'autre part avec un collection evaluators qui elle aura de multiples propriétés
     let $evaluatorsRef = collection(this.firestore, "evaluators");
-    addDoc($evaluatorsRef, newEvaluator)
+    // addDoc($evaluatorsRef, newEvaluator)
+    setDoc(doc($evaluatorsRef, newEvaluator.id), newEvaluator)
 
     // envoie un mail de réinitialisation du mot de passe
     sendPasswordResetEmail(this.auth, newEvaluator.email)
@@ -67,17 +68,15 @@ export class EvaluatorsService {
   deleteEvaluator(id: string) {
     // on utilisera la méthode deleteDoc() de Firestore et delete de currentUser
     let $evaluatorRef = doc(this.firestore, "evaluators/" + id)
-    console.log("this.auth.currentUser", this.auth.currentUser);
+    console.log("this.auth.currentUser to delete", this.auth.currentUser);
     let userToDelete:any=this.auth.currentUser
 
     deleteDoc($evaluatorRef);
-    // this.auth.currentUser?.delete()
     deleteUser(userToDelete).then(() => {
       alert("utilisateur supprimé")
     }).catch((error) => {
       console.log("problème à la suppression sur Auth");
-      
-      // ...
+
     });
   }
 
