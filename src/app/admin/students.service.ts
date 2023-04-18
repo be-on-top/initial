@@ -105,8 +105,6 @@ export class StudentsService {
       querySnapshot.forEach((doc) => {
         console.log(doc.id, ' => ', doc.data());
         doc.data()
-
-
       });
     }
   }

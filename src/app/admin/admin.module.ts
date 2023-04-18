@@ -30,38 +30,42 @@ import { StudentDetailsComponent } from './Students/student-details/student-deta
 import { StudentsListComponent } from './Students/students-list/students-list.component';
 import { UpdateStudentComponent } from './Students/update-student/update-student.component';
 import { FeedbackMessagesComponent } from '../feedback-messages/feedback-messages.component';
+import { RoleGuardGuard } from '../role-guard.guard';
 
 
 // import { EvaluatorDetailsComponent } from './Evaluators/evaluator-details/evaluator-details.component';
 
 
 const routesAdmin: Routes = [
-  
-  {path: 'admin', children:[
 
-    { path: 'evaluators', component: EvaluatorsListComponent },
-    { path: 'addEvaluator', component: AddEvaluatorComponent },
-    { path: 'evaluator/:id', component: EvaluatorDetailsComponent },
-    { path: 'updateEvaluator/:id', component: UpdateEvaluatorComponent },
-    { path: 'students', component: StudentsListComponent },
-    { path: 'student/:id', component: StudentDetailsComponent },
-    { path: 'updateStudent/:id', component: UpdateStudentComponent},
-    { path: 'priorForm', component: PriorFormComponent},
-    { path: 'questions', component: QuestionsListComponent },
-    { path: 'questionDetails', component: QuestionDetailsComponent },
-    { path: 'updateQuestion/:id', component: UpdateQuestionComponents },
-    { path: 'socialForm', component: SocialFormComponent },
-    { path: 'socials', component: SocialsListComponent },
-    { path: 'updateSocial/:id', component: UpdateSocialComponent },
-    { path: 'fullForm', component: FullFormComponent },
-    { path: 'fullList', component: FullListComponent },
-    { path: 'fullDetails', component: FullDetailsComponent },
-    { path: 'updateFull/:id', component: UpdateFullComponent}
-  ], 
-  // canActivate:[AuthGuardService] 
-},
-  { path: 'login', component: LoginComponent},
-  { path: 'register', component: RegisterComponent}
+  {
+    path: 'admin', children: [
+
+      { path: 'evaluators', component: EvaluatorsListComponent },
+      { path: 'addEvaluator', component: AddEvaluatorComponent },
+      { path: 'evaluator/:id', component: EvaluatorDetailsComponent },
+      { path: 'updateEvaluator/:id', component: UpdateEvaluatorComponent },
+      { path: 'students', component: StudentsListComponent },
+      { path: 'student/:id', component: StudentDetailsComponent },
+      { path: 'updateStudent/:id', component: UpdateStudentComponent },
+      { path: 'priorForm', component: PriorFormComponent },
+      { path: 'questions', component: QuestionsListComponent },
+      { path: 'questionDetails', component: QuestionDetailsComponent },
+      { path: 'updateQuestion/:id', component: UpdateQuestionComponents },
+      { path: 'socialForm', component: SocialFormComponent },
+      { path: 'socials', component: SocialsListComponent },
+      { path: 'updateSocial/:id', component: UpdateSocialComponent },
+      { path: 'fullForm', component: FullFormComponent },
+      { path: 'fullList', component: FullListComponent },
+      { path: 'fullDetails', component: FullDetailsComponent },
+      { path: 'updateFull/:id', component: UpdateFullComponent }
+    ],
+    canActivate: [AuthGuardService, RoleGuardGuard], data: {
+      expectedRoles: ['evaluator', 'admin']
+    }
+  },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent }
 
 ];
 

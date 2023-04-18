@@ -1,7 +1,7 @@
 import { Component, OnChanges, OnInit } from '@angular/core';
 import { AuthService } from '../admin/auth.service';
 import { onAuthStateChanged } from 'firebase/auth';
-import { Auth } from '@angular/fire/auth';
+import { Auth, reload } from '@angular/fire/auth';
 import { EvaluatorsService } from '../admin/evaluators.service';
 
 @Component({
@@ -34,6 +34,7 @@ export class HeaderComponent implements OnInit {
 
   logOut() {
     this.authService.logout()
+    window.location.reload();
   }
 
 
