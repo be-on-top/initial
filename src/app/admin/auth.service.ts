@@ -45,6 +45,7 @@ export class AuthService {
         this.authStatusSub.next(credential);
         console.log('User is logged in with credential', credential.uid);
         status = credential.uid
+        
         return status
       }
       else {

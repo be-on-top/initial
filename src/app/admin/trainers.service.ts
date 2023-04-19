@@ -1,55 +1,54 @@
 import { Injectable } from '@angular/core';
-import { Evaluators } from './evaluators';
+// import { trainers } from './trainers';
 
 // à vérifier
 import { Auth, createUserWithEmailAndPassword, sendPasswordResetEmail, deleteUser } from '@angular/fire/auth';
-import { Firestore, collectionData, collection, documentId, getDoc, docData, setDoc, query, where } from '@angular/fire/firestore';
-import { addDoc, deleteDoc, doc, getDocs } from 'firebase/firestore';
+import { Firestore, collectionData, collection, docData, setDoc, query, where } from '@angular/fire/firestore';
+import { deleteDoc, doc, getDocs } from 'firebase/firestore';
 import { Observable } from 'rxjs';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class EvaluatorsService {
+export class TrainersService {
 
   // évaluateurs ne serait pas un tableau de type any mais un observable
-  evaluators: any[] = [];
+  trainers: any[] = [];
   result: any;
 
   constructor(private auth: Auth, private firestore: Firestore) {
-
   }
 
-  async createEvaluator(evaluator: any) {
+  async createTrainer(trainer: any) {
 
-    // let newEvaluator = { id: Date.now(), ...evaluator };
-    let newEvaluator = { created: Date.now(), roles: 'evaluator', status: true, ...evaluator };
-    this.evaluators = [newEvaluator, ...this.evaluators];
-    console.log(this.evaluators);
+    // let newTrainer = { id: Date.now(), ...trainer };
+    let newTrainer = { created: Date.now(), roles: 'trainer', status: true, ...trainer };
+    this.trainers = [newTrainer, ...this.trainers];
+    console.log(this.trainers);
     // on va lui affecter un password aléatoire en fonction de la date
     let password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
 
     // enregistrement en base dans fireAuth d'une part : 
-    this.result = await createUserWithEmailAndPassword(this.auth, evaluator.email, password);
+    this.result = await createUserWithEmailAndPassword(this.auth, trainer.email, password);
 
     if (this.result && this.result.user) {
       // const { uid, emailVerified } = this.result.user;
-      newEvaluator.id = this.result.user.uid
+      newTrainer.id = this.result.user.uid
     }
 
-    // enregistre dans Firestore d'autre part avec un collection evaluators qui elle aura de multiples propriétés
-    let $evaluatorsRef = collection(this.firestore, "evaluators");
-    // addDoc($evaluatorsRef, newEvaluator)
-    setDoc(doc($evaluatorsRef, newEvaluator.id), newEvaluator)
+    // enregistre dans Firestore d'autre part avec un collection trainers qui elle aura de multiples propriétés
+    let $trainersRef = collection(this.firestore, "trainers");
+    // addDoc($trainersRef, newTrainer)
+    setDoc(doc($trainersRef, newTrainer.id), newTrainer)
 
     // enregistre dans Firestore d'autre part le role attribué dans une collection roles qui regroupera tous les roles de tous les utilisateurs avec comme idDoc uid d'authentification là aussi
     let $rolesRef = collection(this.firestore, "roles");
     // addDoc($trainersRef, newTrainer)
-    setDoc(doc($rolesRef, newEvaluator.id), { role: 'evaluator' })
+    setDoc(doc($rolesRef, newTrainer.id), { role: 'trainer' })
 
     // envoie un mail de réinitialisation du mot de passe
-    sendPasswordResetEmail(this.auth, newEvaluator.email)
+    sendPasswordResetEmail(this.auth, newTrainer.email)
       .then(() => {
         // Password reset email sent!
         // ..
@@ -63,17 +62,18 @@ export class EvaluatorsService {
 
   }
 
-  // getEvaluators(): Observable<Evaluators[]> {
-  getEvaluators() {
-    let $evaluatorsRef = collection(this.firestore, "evaluators");
-    return collectionData($evaluatorsRef, { idField: "id" }) as Observable<Evaluators[]>
+  // gettrainers(): Observable<trainers[]> {
+  getTrainers() {
+    let $trainersRef = collection(this.firestore, "trainers");
+    return collectionData($trainersRef, { idField: "id" }) as Observable<any[]>
 
   }
 
-  deleteEvaluator(id: string) {
-    let $evaluatorRef = doc(this.firestore, "evaluators/" + id)
-
-    deleteDoc($evaluatorRef);
+  deleteTrainer(id: string) {
+    // on utilisera la méthode deleteDoc() de Firestore et delete de currentUser
+    let $trainerRef = doc(this.firestore, "trainers/" + id)
+    console.log("this.auth.currentUser to delete", this.auth.currentUser);
+    deleteDoc($trainerRef);
     // HORS DE QUESTION d'utiliser cette méthode. Elle supprime l'utilisateur authentifié !!!!
     // let userToDelete:any=this.auth.currentUser
     // deleteUser(userToDelete).then(() => {
@@ -83,14 +83,14 @@ export class EvaluatorsService {
     // });
   }
 
-  getEvaluator(id: string) {
-    let $evaluatorRef = doc(this.firestore, "evaluators/" + id)
-    return docData($evaluatorRef, { idField: 'id' }) as Observable<Evaluators>;
+  getTrainer(id: string) {
+    let $trainerRef = doc(this.firestore, "trainers/" + id)
+    return docData($trainerRef, { idField: 'id' }) as Observable<any>;
   }
 
   // ça marche !!!! 
   async getDocsByParam(uid: string) {
-    const myData = query(collection(this.firestore, 'evaluators'), where('id', '==', uid));
+    const myData = query(collection(this.firestore, 'trainers'), where('id', '==', uid));
     const querySnapshot = await getDocs(myData);
     querySnapshot.forEach((doc) => {
       console.log(doc.id, ' => ', doc.data());
@@ -99,9 +99,9 @@ export class EvaluatorsService {
   }
 
 
-  updateEvaluator(id: string, evaluator: Evaluators) {
-    let $evaluatorRef = doc(this.firestore, "evaluators/" + id);
-    setDoc($evaluatorRef, evaluator)
+  updateTrainer(id: string, trainer: any) {
+    let $trainerRef = doc(this.firestore, "trainers/" + id);
+    setDoc($trainerRef, trainer)
   }
 
 

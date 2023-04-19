@@ -30,7 +30,9 @@ import { StudentDetailsComponent } from './Students/student-details/student-deta
 import { StudentsListComponent } from './Students/students-list/students-list.component';
 import { UpdateStudentComponent } from './Students/update-student/update-student.component';
 import { FeedbackMessagesComponent } from '../feedback-messages/feedback-messages.component';
-import { RoleGuardGuard } from '../role-guard.guard';
+import { AddTrainerComponent } from './Trainers/add-trainer/add-trainer.component';
+import { TrainersListComponent } from './Trainers/trainers-list/trainers-list.component';
+// import { RoleGuardGuard } from '../role-guard.guard';
 
 
 // import { EvaluatorDetailsComponent } from './Evaluators/evaluator-details/evaluator-details.component';
@@ -44,6 +46,10 @@ const routesAdmin: Routes = [
       { path: 'evaluators', component: EvaluatorsListComponent },
       { path: 'addEvaluator', component: AddEvaluatorComponent },
       { path: 'evaluator/:id', component: EvaluatorDetailsComponent },
+      { path: 'updateEvaluator/:id', component: UpdateEvaluatorComponent },
+      { path: 'trainers', component: TrainersListComponent },
+      { path: 'addTrainer', component: AddTrainerComponent },
+      // { path: 'trainer/:id', component: EvaluatorDetailsComponent },
       { path: 'updateEvaluator/:id', component: UpdateEvaluatorComponent },
       { path: 'students', component: StudentsListComponent },
       { path: 'student/:id', component: StudentDetailsComponent },
@@ -60,9 +66,10 @@ const routesAdmin: Routes = [
       { path: 'fullDetails', component: FullDetailsComponent },
       { path: 'updateFull/:id', component: UpdateFullComponent }
     ],
-    canActivate: [AuthGuardService, RoleGuardGuard], data: {
-      expectedRoles: ['evaluator', 'admin']
-    }
+    canActivate: [AuthGuardService]
+    // canActivate: [AuthGuardService, RoleGuardGuard], data: {
+    //   expectedRoles: ['evaluator', 'admin']
+    // }
   },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent }
@@ -74,7 +81,7 @@ const routesAdmin: Routes = [
     EvaluatorsListComponent,
     AddEvaluatorComponent,
     EvaluatorDetailsComponent,
-    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent, UpdateSocialComponent, SocialDetailsComponent, FullFormComponent, FullListComponent, FullDetailsComponent, UpdateFullComponent, LoginComponent, SearchComponent, StudentDetailsComponent, StudentsListComponent, UpdateStudentComponent, FeedbackMessagesComponent
+    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent, UpdateSocialComponent, SocialDetailsComponent, FullFormComponent, FullListComponent, FullDetailsComponent, UpdateFullComponent, LoginComponent, SearchComponent, StudentDetailsComponent, StudentsListComponent, UpdateStudentComponent, FeedbackMessagesComponent, AddTrainerComponent, TrainersListComponent
   ],
   imports: [
     BrowserModule,

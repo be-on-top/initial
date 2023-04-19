@@ -10,12 +10,12 @@ import { EvaluatorsService } from '../../evaluators.service';
 })
 
 export class EvaluatorsListComponent implements OnInit {
-  allEvaluators?:any
+  allEvaluators?: any
   // on le prépare à recevoir un terme de recherche
-  searchText:string=''
+  searchText: string = ''
 
 
-  constructor(private router:Router, private service:EvaluatorsService){
+  constructor(private router: Router, private service: EvaluatorsService) {
 
   }
 
@@ -23,33 +23,33 @@ export class EvaluatorsListComponent implements OnInit {
     this.getEvaluators();
   }
 
-  getEvaluators(){
+  getEvaluators() {
     // attention, puisque on récupère un observable depuis le service, on doit y souscrire
     // this.allEvaluators=this.service.getEvaluators(); devient donc nécessairement
-    this.service.getEvaluators().subscribe(data=>{
+    this.service.getEvaluators().subscribe(data => {
       console.log("data de getEvaluators()", data)
-      this.allEvaluators=data
+      this.allEvaluators = data
       return this.allEvaluators
     })
 
   }
 
-  deleteEvaluator(evaluatorid:string){
+  deleteEvaluator(evaluatorid: string) {
     console.log(evaluatorid);
-    
+
     this.service.deleteEvaluator(evaluatorid)
     this.router.navigate(['/evaluators'])
     // .then(()=>{
 
     // })
     // .catch(()=>{
-      
+
     // })
-  }  
+  }
 
   // pour utiliser le composant de recherche
-  onSearchTextEntered(searchValue:string){
-    this.searchText=searchValue
+  onSearchTextEntered(searchValue: string) {
+    this.searchText = searchValue
     console.log(this.searchText);
   }
 
