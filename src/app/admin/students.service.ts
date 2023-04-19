@@ -22,7 +22,7 @@ export class StudentsService {
   // createStudent(studentForm: NgForm) {
   createStudent(student: any) {
     const newStudent: any = {
-      id: '', created: Date.now(), roles: 'student', status: true, cp: '', details: '', ...student
+      id: '', created: Date.now(), status: true, cp: '', details: '', ...student
     };
 
     if (!student.email) {
@@ -32,7 +32,7 @@ export class StudentsService {
 
     createUserWithEmailAndPassword(this.auth, student.email, student.studentPw)
       .then((userCredential) => {
-        console.log("userCredential depuis le service", userCredential);        
+        console.log("userCredential depuis le service", userCredential);
         const user = userCredential.user;
         newStudent.id = user.uid;
         newStudent.trainer = "Attribué ultérieurement"
@@ -45,6 +45,10 @@ export class StudentsService {
         }).catch((error) => {
           console.error("Error adding student document: ", error);
         });
+        // enregistre dans Firestore d'autre part le role attribué dans une collection roles qui regroupera tous les roles de tous les utilisateurs avec comme idDoc uid d'authentification là aussi
+        let $rolesRef = collection(this.firestore, "roles");
+        // addDoc($trainersRef, newTrainer)
+        setDoc(doc($rolesRef, newStudent.id), { role: 'trainer' })
       })
       .catch((error) => {
         const errorCode = error.code;
