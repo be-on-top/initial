@@ -27,7 +27,9 @@ export class TrainersService {
     this.trainers = [newTrainer, ...this.trainers];
     console.log(this.trainers);
     // on va lui affecter un password aléatoire en fonction de la date
-    let password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
+    // mais pour le moment, je fais un password à la con pour pouvoir faire mes tests
+    let password = "password";
+    // let password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
 
     // enregistrement en base dans fireAuth d'une part : 
     this.result = await createUserWithEmailAndPassword(this.auth, trainer.email, password);
