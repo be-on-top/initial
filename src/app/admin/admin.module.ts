@@ -89,6 +89,9 @@ const routesAdmin: Routes = [
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forChild(routesAdmin)
+  ], 
+  exports:[
+    FeedbackMessagesComponent
   ]
 })
 

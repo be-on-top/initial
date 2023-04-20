@@ -20,41 +20,55 @@ export class StudentsService {
   constructor(private auth: Auth, private firestore: Firestore) { }
 
   // createStudent(studentForm: NgForm) {
-  createStudent(student: any) {
-    const newStudent: any = {
-      id: '', created: Date.now(), status: true, cp: '', details: '', ...student
-    };
-
-    if (!student.email) {
-      console.error("Error: Email is missing");
-      return;
-    }
-
-    createUserWithEmailAndPassword(this.auth, student.email, student.studentPw)
-      .then((userCredential) => {
-        console.log("userCredential depuis le service", userCredential);
-        const user = userCredential.user;
-        newStudent.id = user.uid;
-        newStudent.trainer = "Attribué ultérieurement"
-
-        const studentsRef = collection(this.firestore, "students");
+ async createStudent(student: any) {
+      // let newEvaluator = { id: Date.now(), ...evaluator };
+      let newStudent = { created: Date.now(), status: true, trainer: "Attribué ultérieurement", ...student };
+      // on va lui affecter un password aléatoire en fonction de la date
+      let password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
+  
+      // enregistrement en base dans fireAuth d'une part : 
+      const result = await createUserWithEmailAndPassword(this.auth, student.email, password);
+  
+      if (result && result.user) {
+        // const { uid, emailVerified } = this.result.user;
+        newStudent.id = result.user.uid
         delete newStudent.studentPw;
-        // addDoc(studentsRef, newStudent).then(() => {
-        setDoc(doc(studentsRef, newStudent.id), newStudent).then(() => {
-          console.log("New student added successfully");
-        }).catch((error) => {
-          console.error("Error adding student document: ", error);
-        });
-        // enregistre dans Firestore d'autre part le role attribué dans une collection roles qui regroupera tous les roles de tous les utilisateurs avec comme idDoc uid d'authentification là aussi
-        let $rolesRef = collection(this.firestore, "roles");
-        // addDoc($trainersRef, newTrainer)
-        setDoc(doc($rolesRef, newStudent.id), { role: 'trainer' })
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-      });
+      }
+
+    // const newStudent: any = {
+    //   id: '', created: Date.now(), status: true, cp: '', details: '', ...student
+    // };
+
+    // // if (!student.email) {
+    // //   console.error("Error: Email is missing");
+    // //   return;
+    // // }
+
+    //  let userCredential=await createUserWithEmailAndPassword(this.auth, student.email, student.studentPw)
+    //   // .then((userCredential) => {
+    //     console.log("userCredential depuis le service", userCredential);
+    //     // const user = userCredential.user;
+    //     newStudent.id = userCredential.user.uid;
+    //     newStudent.trainer = "Attribué ultérieurement"       
+    //   // }).catch((error) => {
+    //   //   const errorCode = error.code;
+    //   //   const errorMessage = error.message;
+    //   //   console.log(errorCode, errorMessage);
+    //   // });
+
+      let studentsRef = collection(this.firestore, "students");
+      // delete newStudent.studentPw;
+      // addDoc(studentsRef, newStudent).then(() => {
+      setDoc(doc(studentsRef, newStudent.id), newStudent)
+      // .then(() => {
+      //   console.log("New student added successfully");
+      // }).catch((error) => {
+      //   console.error("Error adding student document: ", error);
+      // });
+      // enregistre dans Firestore d'autre part le role attribué dans une collection roles qui regroupera tous les roles de tous les utilisateurs avec comme idDoc uid d'authentification là aussi
+      let $rolesRef = collection(this.firestore, "roles");
+      // addDoc($trainersRef, newTrainer)
+      setDoc(doc($rolesRef, newStudent.id), { role: 'student' })
   }
 
 

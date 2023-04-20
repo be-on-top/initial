@@ -11,37 +11,49 @@
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                        *ngIf="userUid!==undefined && userUid!==''">Admin</a>
+                        *ngIf="userUid!==undefined && userUid!=='' && userRole!=='student'">Admin</a>
                     <!-- <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Admin</a> -->
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" [routerLink]="['/admin/evaluators']">Gestion des évaluateurs</a>
+                        <li><a class="dropdown-item" [routerLink]="['/admin/evaluators']"
+                                *ngIf="userRole==='admin'">Gestion des évaluateurs</a>
                         </li>
-                        <li><a class="dropdown-item" [routerLink]="['/admin/students']">Gestion des candidats</a></li>
-                        <li><a class="dropdown-item" href="#">Gestion des formateurs</a></li>
-                        <li [ngClass]="{'d-none':userRole!=='evaluator'}">
+                        <li><a class="dropdown-item" [routerLink]="['/admin/students']"
+                                *ngIf="userRole==='admin'">Gestion des candidats</a></li>
+                        <li><a class="dropdown-item" [routerLink]="['/admin/trainers']"
+                                *ngIf="userRole==='admin'">Gestion des formateurs</a></li>
+                        <li *ngIf="userRole==='admin' ">
                             <hr>
                         </li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/priorForm']"
-                                [ngClass]="{'d-none':userRole!=='evaluator'}">Saisie des questions d'accroche</a>
+                                *ngIf="userRole==='evaluator' || userRole==='admin' ">Saisie des questions
+                                d'accroche</a>
                         </li>
+                        <li>
+                            <!-- <a class="dropdown-item" [routerLink]="['/admin/socialForm']"[ngClass]="{'d-none':userRole!=='evaluator' && userRole!=='admin'}">Saisie des questions sociales</a> -->
                         <li><a class="dropdown-item" [routerLink]="['/admin/socialForm']"
-                                [ngClass]="{'d-none':userRole!=='evaluator'}">Saisie des questions sociales</a>
-                            <!-- <li><a class="dropdown-item" [routerLink]="['/admin/socialForm']" *ngIf="userRole==='evaluator'">Saisie des questions sociales</a> -->
+                                *ngIf="userRole==='evaluator' || userRole==='admin' ">Saisie des questions sociales</a>
                         </li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/fullForm']"
-                                [ngClass]="{'d-none':userRole!=='evaluator'}">Saisie des questions de
+                                *ngIf="userRole==='evaluator' || userRole==='admin'">Saisie des questions de
                                 positionnement</a></li>
-                        <li [ngClass]="{'d-none':userRole!=='evaluator'}">
+                        <li *ngIf="userRole==='evaluator' || userRole==='admin'">
                             <hr>
                         </li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/questions']"
-                                [ngClass]="{'d-none':userRole!=='evaluator'}">Liste des questions d'accroche</a>
+                                *ngIf="userRole==='evaluator' || userRole==='admin'">Liste des questions d'accroche</a>
                         </li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/socials']"
-                                [ngClass]="{'d-none':userRole!=='evaluator'}">Liste des questions sociales</a></li>
+                                *ngIf="userRole==='evaluator' || userRole==='admin'">Liste des questions sociales</a>
+                        </li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/fullList']"
-                                [ngClass]="{'d-none':userRole!=='evaluator'}">Liste des questions de
+                                *ngIf="userRole==='evaluator' || userRole==='admin'">Liste des questions de
                                 positionnement</a></li>
+                        <li *ngIf="userRole==='admin'">
+                            <hr>
+                        </li>
+                        <li><a class="dropdown-item" href="" *ngIf="userRole==='trainer' || userRole==='admin'">Saisie
+                                des évaluations</a>
+                        </li>
                     </ul>
                 </li>
                 <!-- ajout login global (on aura ultérieurement un public et privé réservé aux contributeurs et évaluateurs...) -->

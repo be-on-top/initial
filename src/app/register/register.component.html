@@ -1,6 +1,7 @@
 <div class="container py-5">
 
     <h3>Inscription Utilisateur</h3>
+    <app-feedback-messages [feedbackMessages]="feedbackMessages" [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
     <form #studentForm="ngForm" class="mt-4" (submit)="addStudent(studentForm)" class="was-validated">
 
         <div class="form-group">

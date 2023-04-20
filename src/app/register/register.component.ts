@@ -10,26 +10,74 @@ import { ActivatedRoute, Route, Router } from '@angular/router';
 })
 export class RegisterComponent {
 
-  errorMessage?:string
+   // variables à passer à feedbackMessages component pour retours de firebase sur la soumission
+   feedbackMessages?:any=""
+   isSuccessMessage:boolean=true
+   // essai pour personnaliser les messages
+   // https://firebase.google.com/docs/auth/admin/errors?hl=fr
+   firebaseErrors:any = {
+     'auth/user-not-found': 'Aucun utilisateur ne correspond à cet email',
+     'auth/email-already-in-use': 'Cet email est déjà utilisé pour un autre compte',
+     'auth/wrong-password' : 'Le mot de passe est incorrect',
+     'auth/invalid-email' : 'Aucun enregistrement ne correspond au mail fourni'
+   }; // list of firebase error codes to alternate error messages
+ 
 
   // recuperation code sv
   constructor(private service: StudentsService, private router:Router) { }
 
-  addStudent(form: NgForm) {
-    /* console.log(form.value); */
-
-    if (!this.validateEmail(form.value.email)) { // vérifier si l'adresse e-mail est valide
-      alert("Adresse e-mail non valide!");
-    } else if (form.value.studentPw.length < 8) { // tester si le mot de passe contient au moins 8 caractères
-      alert("Attention: Le mot de passe doit contenir au moins 8 caractères!");
-    } else if (/\s/.test(form.value.studentPw)) { // vérifier si le mot de passe ne contient pas d'espace
-      alert("Attention: Le mot de passe ne doit pas contenir d'espaces vides!");
-    } else {
-    this.service.createStudent(form.value);
-    // form.reset();
-    this.router.navigate(['']);
+  async addStudent(form: any) {
+    // on vérifie la validité du formulaire
+    if (!form.valid) {
+      console.log('form valid');
+      return
     }
+
+    console.log("form registration", form.value);
+    this.service.createStudent(form.value).then((userCredential) => {
+      // Signed in 
+      const user = userCredential;
+      this.feedbackMessages = `Enregistrement OK`;
+      setTimeout(() => {
+        this.router.navigate([''])
+      }, 2000)
+    })
+      .catch((error) => {
+        this.feedbackMessages = error.message;
+        this.feedbackMessages=this.firebaseErrors[error.code];
+        this.isSuccessMessage = false;
+        console.log(this.feedbackMessages);
+
+        // ..};
+      })
+    // form.reset();
+    // redirige vers la vue de détail 
+    // this.router.navigate(['/admin/evaluators']);
+
   }
+
+  // addStudent(form: NgForm) {
+  //   /* console.log(form.value); */
+
+  //   // fait doublon avec les propriétés d'Angular combinées à bootstrap, html5...
+  //   // if (!this.validateEmail(form.value.email)) { // vérifier si l'adresse e-mail est valide
+  //   //   alert("Adresse e-mail non valide!");
+  //   // } else 
+  //   if (form.value.studentPw.length < 8) { // tester si le mot de passe contient au moins 8 caractères
+  //     alert("Attention: Le mot de passe doit contenir au moins 8 caractères!");
+  //   } else if (/\s/.test(form.value.studentPw)) { // vérifier si le mot de passe ne contient pas d'espace
+  //     alert("Attention: Le mot de passe ne doit pas contenir d'espaces vides!");
+  //   } else {
+  //   this.service.createStudent(form.value).catch((error)=>{
+  //     this.feedbackMessages=error.code;
+  //     this.isSuccessMessage=false
+
+  //   })
+    
+  //   // form.reset();
+  //   this.router.navigate(['']);
+  //   }
+  // }
 
   valid: boolean = false;
 
