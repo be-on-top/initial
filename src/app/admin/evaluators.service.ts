@@ -70,7 +70,7 @@ export class EvaluatorsService {
 
   }
 
-  deleteEvaluator(id: string) {
+  deleteEvaluator(id: any) {
     let $evaluatorRef = doc(this.firestore, "evaluators/" + id)
 
     deleteDoc($evaluatorRef);

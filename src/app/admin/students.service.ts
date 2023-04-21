@@ -79,7 +79,7 @@ export class StudentsService {
 
   getStudentById(studentId: string) {
     const studentRef = doc(this.firestore, 'students/' + studentId);
-    return docData(studentRef, { idField: 'id' }) as Observable<Student>;
+    return docData(studentRef) as Observable<Student>;
   }
 
   async deleteStudent(student: Student): Promise<void> {

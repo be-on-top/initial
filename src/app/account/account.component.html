@@ -1,0 +1,34 @@
+<div class="container py-5">
+
+    <h3>Account Page</h3>
+
+    <p class="alert bg-info p-2 mt-3">Me sert pour le moment à tester l'authentification utilisateur !!</p>
+
+    <div class="p-2 display-5">Données récupérées non pas grâce à un paramètre de route mais grâce aux données
+        d'authentification de l'utilisateur</div>
+
+    <div *ngIf="user" class="alert bg-light p-2">
+        Id Utilisateur authentifié sur firebase Auth : {{user | json}}
+    </div>
+
+    <!-- <p class="alert bg-light p-2"> authStatus!==0 : {{authStatus!==0}}</p> -->
+    <!-- ne fonctionne pas, mais on s'en tape -->
+    <div *ngIf="authStatus">{{authStatus}}</div>
+    <p class="alert bg-success p-2"> user test OK : {{user | json}}</p>
+    <!-- <p class="alert bg-success p-2"> userData test OK : {{userData | json}}</p> -->
+
+    <br>
+    <div *ngIf="userData" class="rounded bg-light p-2">
+        <ul class="list-group">
+            <li class="list-group-item">Son id sur firestore : {{userData.id}}</li>
+            <li class="list-group-item">Son email sur firestore : {{userData.email}}</li>
+            <li class="list-group-item">Son status sur firestore : {{userData.status}}</li>
+            <li class="list-group-item">Son prénom sur firestore : {{userData.firstName}}</li>
+            <li class="list-group-item">Son nom sur firestore : {{userData.lastName}}</li>
+            <li class="list-group-item">Date d'enregistrement sur firestore : {{userData.created | date:'dd/MM/yyyy' }}</li>
+            <li *ngIf="userData.sigle" class="list-group-item">Sigle métier si existant: {{userData.sigle}}</li>
+        </ul>
+    </div>
+    <button type="submit" class="btn btn-primary mt-4" (click)="notifyMe()">Accepter les notifications</button>
+
+</div>

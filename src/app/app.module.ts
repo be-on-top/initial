@@ -24,24 +24,17 @@ import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './header/header.component';
 import { RegisterComponent } from './register/register.component';
 import { ServiceWorkerModule} from '@angular/service-worker';
-// import { FeedbackMessagesComponent } from './feedback-messages/feedback-messages.component';
-
-
-// import { SocialComponentComponent } from './admin/Questions/social-component/social-component.component';
-
+import { AccountComponent } from './account/account.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     HookComponent,
-    // AddEvaluatorComponent,
-    // EvaluatorsListComponent,
-    // EvaluatorDetailsComponent,
     HomeComponent,
     HeaderComponent,
     RegisterComponent,
-    // FeedbackMessagesComponent
+    AccountComponent
   ],
   imports: [
     BrowserModule,

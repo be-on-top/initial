@@ -38,6 +38,7 @@ export class RegisterComponent {
       // Signed in 
       const user = userCredential;
       this.feedbackMessages = `Enregistrement OK`;
+      this.isSuccessMessage = true
       setTimeout(() => {
         this.router.navigate([''])
       }, 2000)
