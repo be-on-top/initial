@@ -131,9 +131,10 @@ export class HomeComponent implements OnInit {
       // Check if the browser supports notifications
       alert("This browser does not support desktop notification");
     } else if (Notification.permission === "granted") {
-      // Check whether notification permissions have already been granted;
+      // Check whether notification permissions have already been granted 
       // if so, create a notification
       const notification = new Notification("Coucou, vous avez demandé à être notifié !!! ");
+      alert(`Notification permission OK ${notification}`);
       // …
     } else if (Notification.permission !== "denied") {
       // We need to ask the user for permission

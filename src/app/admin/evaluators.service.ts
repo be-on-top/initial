@@ -81,6 +81,8 @@ export class EvaluatorsService {
     // }).catch((error) => {
     //   console.log("problème à la suppression sur Auth");
     // });
+
+    deleteUser(id)
   }
 
   getEvaluator(id: string) {

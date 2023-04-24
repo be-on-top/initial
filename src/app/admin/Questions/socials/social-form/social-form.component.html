@@ -62,8 +62,8 @@
         <textarea id="comment1" ngModel name="comment1" class="form-control" #comment1="ngModel"
             placeholder="Commentaire si besoin" cols="30" rows="5"></textarea>
         <!-- <div class="valid-feedback" *ngIf="comment1.valid">Champ correctement renseigné</div> -->
-        <!-- valeur de la réponse -->
-        <div class="form-group d-flex gap-5 mt-3">
+        <!-- valeur de la réponse : dans la mesure où on ne lui attribuera aucun score, ce n'est plus nécessaire -->
+        <!-- <div class="form-group d-flex gap-5 mt-3">
             <div class="form-check">
                 <input type="radio" class="form-check-input" name="optScoring1" value="true" ngModel
                     [checked]="optScoring1" required>Vraie
@@ -71,10 +71,8 @@
             </div>
             <div class="form-check">
                 <input type="radio" class="form-check-input" name="optScoring1" value="false" ngModel
-                    [checked]="optScoring1" required>Fausse
-                <!-- <label class="form-check-label" for="radio2"></label> -->
-            </div>
-        </div>
+                    [checked]="optScoring1" required>Fausse  </div>
+        </div> -->
         <!-- fin valeur de la réponse -->
         <hr>
         <label for="option2" class="form-label mt-3">Réponse 2 * </label>
@@ -89,8 +87,8 @@
         <textarea id="comment2" ngModel name="comment2" class="form-control" #comment2="ngModel"
             placeholder="Commentaire si besoin" cols="30" rows="5"></textarea>
         <!-- <div class="valid-feedback" *ngIf="comment2.valid">Champ correctement renseigné</div> -->
-        <!-- valeur de la réponse -->
-        <div class="form-group d-flex gap-5 mt-3">
+        <!-- valeur de la réponse : dans la mesure où on lui affecte aucun scrore, ce n'est plus nécessaire -->
+        <!-- <div class="form-group d-flex gap-5 mt-3">
             <div class="form-check">
                 <input type="radio" class="form-check-input" name="optScoring2" value="true" ngModel
                     [checked]="optScoring2" required>Vraie
@@ -98,10 +96,8 @@
             </div>
             <div class="form-check">
                 <input type="radio" class="form-check-input" name="optScoring2" value="false" ngModel
-                    [checked]="optScoring1" required>Fausse
-                <!-- <label class="form-check-label" for="radio2"></label> -->
-            </div>
-        </div>
+                    [checked]="optScoring1" required>Fausse  </div>
+        </div> -->
         <!-- fin valeur de la réponse -->
         <hr>
         <label for="option2" class="form-label mt-3">Réponse 3</label>
@@ -116,19 +112,15 @@
         <textarea id="comment3" ngModel name="comment3" class="form-control" #comment3="ngModel"
             placeholder="Commentaire si besoin" cols="30" rows="5"></textarea>
         <!-- <div class="valid-feedback" *ngIf="comment3.valid">Champ correctement renseigné</div> -->
-        <!-- valeur de la réponse -->
-        <div class="form-group d-flex gap-5 mt-3">
+        <!-- valeur de la réponse : n'est plus nécessaire -->
+        <!-- <div class="form-group d-flex gap-5 mt-3">
             <div class="form-check">
                 <input type="radio" class="form-check-input" name="optScoring3" value="true" ngModel
-                    [checked]="optScoring3" [required]="f.value.option3!=''">Vraie
-                <!-- <label class="form-check-label" for="radio1"></label> -->
-            </div>
+                    [checked]="optScoring3" [required]="f.value.option3!=''">Vraie </div>
             <div class="form-check">
                 <input type="radio" class="form-check-input" name="optScoring3" value="false" ngModel
-                    [checked]="optScoring3" [required]="f.value.option3!=''">Fausse
-                <!-- <label class="form-check-label" for="radio2"></label> -->
-            </div>
-        </div>
+                    [checked]="optScoring3" [required]="f.value.option3!=''">Fausse </div>
+        </div> -->
         <!-- fin valeur de la réponse -->
         <hr>
         <label for="option4" class="form-label mt-3">Réponse 4 </label>
@@ -143,21 +135,18 @@
         <textarea id="comment4" ngModel name="comment4" class="form-control" #comment4="ngModel"
             placeholder="Commentaire si besoin" cols="30" rows="5"></textarea>
         <!-- <div class="valid-feedback" *ngIf="comment1.valid">Champ correctement renseigné</div> -->
-        <!-- valeur de la réponse -->
-        <div class="form-group d-flex gap-5 mt-3">
+        <!-- valeur de la réponse : n'est plus nécessaire -->
+        <!-- <div class="form-group d-flex gap-5 mt-3">
             <div class="form-check">
                 <input type="radio" class="form-check-input" name="optScoring4" value="true" ngModel
                     [checked]="optScoring4" [required]="f.value.option4!=''">Vraie
-                <!-- <label class="form-check-label" for="radio1"></label> -->
             </div>
             <div class="form-check">
                 <input type="radio" class="form-check-input" name="optScoring4" value="false" ngModel
                     [checked]="optScoring4" [required]="f.value.option4!=''">Fausse
-                <!-- <label class="form-check-label" for="radio2"></label> -->
             </div>
-        </div>
+        </div> -->
         <!-- fin valeur de la réponse -->
-
 
         <hr>
 

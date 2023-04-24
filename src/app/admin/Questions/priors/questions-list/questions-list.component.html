@@ -8,10 +8,10 @@
         <app-search (searchTextChanged)="onSearchTextEntered($event)" searchText='searchText'></app-search>
 
         <!-- pour recracher autant de vues de détails qu'il y a de questions... -->
-        <div *ngFor="let q of questions">  <!-- {{q | json}} -->
+        <div *ngFor="let q of questions"> <!-- {{q | json}} -->
             <!-- ... et les filtrer si besoin -->
             <div
-                *ngIf="searchText==='' || q.question.toLowerCase().includes(searchText) || q.competence.toLowerCase().includes(searchText)">
+                *ngIf="searchText==='' || q.question.toUpperCase().includes(searchText) || q.question.toLowerCase().includes(searchText) || q.competence.toLowerCase().includes(searchText)">
                 <app-question-details [q]="q"></app-question-details>
             </div>
         </div>

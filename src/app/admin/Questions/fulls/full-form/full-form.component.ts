@@ -144,7 +144,7 @@ export class FullFormComponent {
     this.service.createQuestion(form.value, this.arrayFilesToUpload);
     // form.reset ne sert que si on continue la saisie.
     form.reset();
-    this.router.navigate(['/fullList'])
+    this.router.navigate(['/admin/fullList'])
     // window.location.reload();
   }
 
