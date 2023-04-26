@@ -11,6 +11,9 @@ import { EvaluatorsService } from '../admin/evaluators.service';
 import { query, Firestore, where, collection, getDocs } from '@angular/fire/firestore';
 import { onAuthStateChanged } from '@angular/fire/auth';
 
+// import { getMessaging, getToken } from "firebase/messaging"; 
+import { getMessaging, onMessage, getToken} from "@angular/fire/messaging";
+
 
 
 @Component({
@@ -32,6 +35,8 @@ export class HomeComponent implements OnInit {
   evaluatorData?: any;
   studentData?: any;
 
+  requestToken?:any
+
 
 
   constructor(private auth: Auth, private firestore: Firestore, private authService: AuthService, private evaluatorService: EvaluatorsService, private activatedRoute: ActivatedRoute, private router: Router) {
@@ -45,10 +50,52 @@ export class HomeComponent implements OnInit {
       return this.evaluator
     })
 
+
+
+
+    const messaging = getMessaging();
+    onMessage(messaging, (payload) => {
+      console.log('Message received. ', payload);
+      // ...
+    });
+
   }
 
 
   ngOnInit(): void {
+    // à externaliser
+    const messaging = getMessaging()
+    getToken(messaging, { vapidKey: "BOLK9wQoeo2ycP0yK1yTLQG8DlIYM1GnRLe09u3tdnCERUSOwW7iv_QV671oU8Xa4njllE64DbVvHPnrzsgRdpc" }).then((currentToken) => { 
+
+      if (currentToken) { 
+
+        // Send the token to your server and update the UI if necessary 
+        console.log('currentToken !!!!!!', currentToken);
+        
+
+        // ... 
+
+      } else { 
+
+        // Show permission request UI 
+
+        console.log('No registration token available. Request permission to generate one.'); 
+
+        // ... 
+
+      } 
+
+    }).catch((err) => { 
+
+      console.log('An error occurred while retrieving token. ', err); 
+
+      // ... 
+
+    }) 
+
+
+
+    
 
 
 
@@ -127,6 +174,7 @@ export class HomeComponent implements OnInit {
 
 
   notifyMe() {
+
     if (!("Notification" in window)) {
       // Check if the browser supports notifications
       alert("This browser does not support desktop notification");
@@ -134,7 +182,10 @@ export class HomeComponent implements OnInit {
       // Check whether notification permissions have already been granted 
       // if so, create a notification
       const notification = new Notification("Coucou, vous avez demandé à être notifié !!! ");
-      alert(`Notification permission OK ${notification}`);
+      alert(`Notification permission OK`);
+      
+
+
       // …
     } else if (Notification.permission !== "denied") {
       // We need to ask the user for permission
@@ -143,6 +194,39 @@ export class HomeComponent implements OnInit {
         if (permission === "granted") {
           const notification = new Notification("Coucou, vous avez demandé à être notifié !!! ");
           // …
+      //      // à externaliser
+      // const messaging = getMessaging()
+      // getToken(messaging, { vapidKey: "BOLK9wQoeo2ycP0yK1yTLQG8DlIYM1GnRLe09u3tdnCERUSOwW7iv_QV671oU8Xa4njllE64DbVvHPnrzsgRdpc" }).then((currentToken) => { 
+
+      //   if (currentToken) { 
+  
+      //     // Send the token to your server and update the UI if necessary 
+      //     console.log('currentToken !!!!!!', currentToken);
+          
+  
+      //     // ... 
+  
+      //   } else { 
+  
+      //     // Show permission request UI 
+  
+      //     console.log('No registration token available. Request permission to generate one.'); 
+  
+      //     // ... 
+  
+      //   } 
+  
+      // }).catch((err) => { 
+  
+      //   console.log('An error occurred while retrieving token. ', err); 
+  
+      //   // ... 
+  
+      // }) 
+
+
+      // …
+
         }
       });
     }
@@ -152,4 +236,5 @@ export class HomeComponent implements OnInit {
   }
 
 
+ 
 }

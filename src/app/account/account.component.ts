@@ -11,6 +11,8 @@ import { query, Firestore, where, collection, getDocs } from '@angular/fire/fire
 import { onAuthStateChanged } from '@angular/fire/auth';
 import { StudentsService } from '../admin/students.service';
 
+import { getMessaging, onMessage } from "@angular/fire/messaging";
+
 
 
 @Component({
@@ -34,10 +36,24 @@ export class AccountComponent implements OnInit {
 
 
   constructor(private auth: Auth, private firestore: Firestore, private authService: AuthService, private studentService: StudentsService, private activatedRoute: ActivatedRoute, private router: Router) {
+    const messaging = getMessaging();
+    onMessage(messaging, (payload) => {
+      console.log('Message received. ', payload);
+      // ...
+    });
   }
 
 
   ngOnInit(): void {
+
+    // https://firebase.google.com/docs/cloud-messaging/js/receive?hl=fr
+    // Gérer les messages lorsque l'application Web est au premier plan (l'utilisateur consulte actuellement notre page Web)
+    // const messaging = getMessaging();
+    // onMessage(messaging, (payload) => {
+    //   console.log('Message received. ', payload);
+    //   // ...
+    // });
+
 
     onAuthStateChanged(this.auth, (user: any) => {
       if (user) {
@@ -98,7 +114,7 @@ export class AccountComponent implements OnInit {
 
     // At last, if the user has denied notifications, and you
     // want to be respectful there is no need to bother them anymore.
-    
+
   }
 
 

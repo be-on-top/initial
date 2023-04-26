@@ -15,6 +15,7 @@ import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getStorage, provideStorage } from '@angular/fire/storage';
+import { getMessaging, provideMessaging } from '@angular/fire/messaging';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -25,6 +26,7 @@ import { HeaderComponent } from './header/header.component';
 import { RegisterComponent } from './register/register.component';
 import { ServiceWorkerModule} from '@angular/service-worker';
 import { AccountComponent } from './account/account.component';
+// import { getMessaging } from 'firebase/messaging';
 
 
 @NgModule({
@@ -46,6 +48,7 @@ import { AccountComponent } from './account/account.component';
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
     provideStorage(()=>getStorage()),
+    provideMessaging(()=>getMessaging()),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
       // Register the ServiceWorker as soon as the application is stable
