@@ -11,8 +11,9 @@ import { EvaluatorsService } from '../admin/evaluators.service';
 import { query, Firestore, where, collection, getDocs } from '@angular/fire/firestore';
 import { onAuthStateChanged } from '@angular/fire/auth';
 
-// import { getMessaging, getToken } from "firebase/messaging"; 
-import { getMessaging, onMessage, getToken } from "@angular/fire/messaging";
+// c'est maintenant le service qui régale !!!
+// import { getMessaging, onMessage, getToken } from "@angular/fire/messaging";
+import { PushNotificationService } from '../push-notification.service';
 
 
 
@@ -37,12 +38,13 @@ export class HomeComponent implements OnInit {
 
   requestToken?: any
 
-  messaging: any
-  newNotification:any
+  // on en a plus besoin, c'est le service qui régale !!!!
+  // messaging: any
+  newNotification: any
 
 
 
-  constructor(private auth: Auth, private firestore: Firestore, private authService: AuthService, private evaluatorService: EvaluatorsService, private activatedRoute: ActivatedRoute, private router: Router) {
+  constructor(private notificationService: PushNotificationService, private auth: Auth, private firestore: Firestore, private authService: AuthService, private evaluatorService: EvaluatorsService, private activatedRoute: ActivatedRoute, private router: Router) {
     // this.user = this.auth.currentUser
     this.evaluatorId = this.auth.currentUser
     console.log("evaluatorId", this.evaluatorId);
@@ -64,19 +66,26 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     // à externaliser
-    const messaging = getMessaging()
-    getToken(messaging, { vapidKey: "BOLK9wQoeo2ycP0yK1yTLQG8DlIYM1GnRLe09u3tdnCERUSOwW7iv_QV671oU8Xa4njllE64DbVvHPnrzsgRdpc" }).then((currentToken) => {
+    // const messaging = getMessaging()
+    // fonctionne parfaitement, mais on va utiliser le service dédié qui maintenant sait comment opérer !!!!
+    // getToken(messaging, { vapidKey: "BOLK9wQoeo2ycP0yK1yTLQG8DlIYM1GnRLe09u3tdnCERUSOwW7iv_QV671oU8Xa4njllE64DbVvHPnrzsgRdpc" }).then((currentToken) => {
+   this.notificationService.requestPermission().then((currentToken) => {
 
       if (currentToken) {
         // Send the token to your server and update the UI if necessary 
         console.log('currentToken !!!!!!', currentToken);
-        this.messaging = getMessaging();
-        onMessage(this.messaging, (payload) => {
-          console.log('Message received!!!!!! ', payload.notification);
-          // j'essaie de récupérer l'objet notification pour afficher ses proprietés (title, body, image), ce qui permettrait d'afficher dans des emplacements spécifiques le contenu de campagnes de notification (?)
-          this.newNotification= payload.notification
-          // ...
-        });
+        // this.messaging = getMessaging();
+        // fonctionne parfaitement, mais on va utiliser le service dédié qui maintenant sait comment opérer !!!!!!
+        // onMessage(this.messaging, (payload) => {
+        //   console.log('Message received!!!!!! ', payload.notification);
+        //   // j'essaie de récupérer l'objet notification pour afficher ses proprietés (title, body, image), ce qui permettrait d'afficher dans des emplacements spécifiques le contenu de campagnes de notification (?)
+        //   this.newNotification= payload.notification
+        // });
+
+        // tests ok : impeccable !!!
+        this.notificationService.receiveMessage().subscribe(data=>this.newNotification=data.notification)
+        console.log(this.newNotification);
+
 
         // ... 
 
