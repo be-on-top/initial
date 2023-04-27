@@ -41,6 +41,8 @@ export class HomeComponent implements OnInit {
   // on en a plus besoin, c'est le service qui régale !!!!
   // messaging: any
   newNotification: any
+  // pour détecter online et offline
+  offline:boolean=false
 
 
 
@@ -69,7 +71,7 @@ export class HomeComponent implements OnInit {
     // const messaging = getMessaging()
     // fonctionne parfaitement, mais on va utiliser le service dédié qui maintenant sait comment opérer !!!!
     // getToken(messaging, { vapidKey: "BOLK9wQoeo2ycP0yK1yTLQG8DlIYM1GnRLe09u3tdnCERUSOwW7iv_QV671oU8Xa4njllE64DbVvHPnrzsgRdpc" }).then((currentToken) => {
-   this.notificationService.requestPermission().then((currentToken) => {
+    this.notificationService.requestPermission().then((currentToken) => {
 
       if (currentToken) {
         // Send the token to your server and update the UI if necessary 
@@ -83,7 +85,7 @@ export class HomeComponent implements OnInit {
         // });
 
         // tests ok : impeccable !!!
-        this.notificationService.receiveMessage().subscribe(data=>this.newNotification=data.notification)
+        this.notificationService.receiveMessage().subscribe(data => this.newNotification = data.notification)
         console.log(this.newNotification);
 
 
@@ -98,7 +100,6 @@ export class HomeComponent implements OnInit {
 
     }).catch((err) => {
       console.log('An error occurred while retrieving token. ', err);
-      // ... 
 
     })
 
@@ -143,9 +144,27 @@ export class HomeComponent implements OnInit {
     // fonctionne parfaitement !!!!!!!!!!!!!!!!!!
     this.authService.authStatusListener()
 
+    // to check User offline status
+    // basic method : OK
+    // if (!navigator.onLine) {
+    //   // ici, en lançant l'application avec ng serve, on l rend accessible au navigateur sans  passer par le service worker (?)
+    //   alert('merci de vérifier votre connexion internet !!!');
+    //   // alert('please check your internet connection');
+    // }
+
+    // eventListener
+    addEventListener('offline', e => {
+      this.offline=true
+    })
+
+    addEventListener('online', e => {
+      this.offline=false
+    })
 
 
   }
+
+
 
   // top !!!
   async getStudentsByParam(uid: string) {

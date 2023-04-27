@@ -1,6 +1,8 @@
 <div class="container py-5">
 
     <h3>Home Page</h3>
+
+    <div class="alert bg-warning p-5" *ngIf="offline">Attention, vous êtes actuellement hor ligne</div>
     <div class="card my-3" *ngIf="newNotification">
         <div class="card-header">
             {{newNotification.title}}
@@ -43,3 +45,4 @@
     <button type="submit" class="btn btn-primary mt-4" (click)="notifyMe()">Accepter les notifications</button>
 
 </div>
+
