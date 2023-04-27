@@ -12,7 +12,7 @@ import { query, Firestore, where, collection, getDocs } from '@angular/fire/fire
 import { onAuthStateChanged } from '@angular/fire/auth';
 
 // import { getMessaging, getToken } from "firebase/messaging"; 
-import { getMessaging, onMessage, getToken} from "@angular/fire/messaging";
+import { getMessaging, onMessage, getToken } from "@angular/fire/messaging";
 
 
 
@@ -35,7 +35,9 @@ export class HomeComponent implements OnInit {
   evaluatorData?: any;
   studentData?: any;
 
-  requestToken?:any
+  requestToken?: any
+
+  messaging: any
 
 
 
@@ -50,14 +52,11 @@ export class HomeComponent implements OnInit {
       return this.evaluator
     })
 
-
-
-
-    const messaging = getMessaging();
-    onMessage(messaging, (payload) => {
-      console.log('Message received. ', payload);
-      // ...
-    });
+    // const messaging = getMessaging();
+    // onMessage(messaging, (payload) => {
+    //   console.log('Message received. ', payload);
+    //   // ...
+    // });
 
   }
 
@@ -65,37 +64,35 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     // à externaliser
     const messaging = getMessaging()
-    getToken(messaging, { vapidKey: "BOLK9wQoeo2ycP0yK1yTLQG8DlIYM1GnRLe09u3tdnCERUSOwW7iv_QV671oU8Xa4njllE64DbVvHPnrzsgRdpc" }).then((currentToken) => { 
+    getToken(messaging, { vapidKey: "BOLK9wQoeo2ycP0yK1yTLQG8DlIYM1GnRLe09u3tdnCERUSOwW7iv_QV671oU8Xa4njllE64DbVvHPnrzsgRdpc" }).then((currentToken) => {
 
-      if (currentToken) { 
-
+      if (currentToken) {
         // Send the token to your server and update the UI if necessary 
         console.log('currentToken !!!!!!', currentToken);
-        
+        this.messaging = getMessaging();
+        onMessage(this.messaging, (payload) => {
+          console.log('Message received!!!!!! ', payload);
+          // ...
+        });
 
         // ... 
 
-      } else { 
-
+      } else {
         // Show permission request UI 
+        console.log('No registration token available. Request permission to generate one.');
+        // ... inclure le notifyMe ici éventuellement, avec une popUp si besoin
 
-        console.log('No registration token available. Request permission to generate one.'); 
+      }
 
-        // ... 
-
-      } 
-
-    }).catch((err) => { 
-
-      console.log('An error occurred while retrieving token. ', err); 
-
+    }).catch((err) => {
+      console.log('An error occurred while retrieving token. ', err);
       // ... 
 
-    }) 
+    })
 
 
 
-    
+
 
 
 
@@ -117,8 +114,8 @@ export class HomeComponent implements OnInit {
         // méthode au top pour faire des requests
         this.getEvaluatorsByParam(user.uid)
         this.getStudentsByParam(user.uid)
-        console.log("userData from students or evaluators...",  this.userData);        
-        
+        console.log("userData from students or evaluators...", this.userData);
+
         // y a juste que je n'arrive pas à me la faire livrer pa le service !!!
         // this.evaluatorService.getDocsByParam(this.user)
 
@@ -142,10 +139,10 @@ export class HomeComponent implements OnInit {
   async getStudentsByParam(uid: string) {
     const myData = query(collection(this.firestore, 'students'), where('id', '==', uid));
     const querySnapshot = await getDocs(myData);
-    if (querySnapshot) {      
+    if (querySnapshot) {
       querySnapshot.forEach((doc) => {
         console.log(doc.id, ' => ', doc.data());
-        this.userData= doc.data()
+        this.userData = doc.data()
       });
     }
   }
@@ -156,9 +153,9 @@ export class HomeComponent implements OnInit {
     if (querySnapshot) {
       querySnapshot.forEach((doc) => {
         console.log(doc.id, ' => ', doc.data());
-        this.userData= doc.data()
+        this.userData = doc.data()
       });
-      
+
     }
 
   }
@@ -183,7 +180,7 @@ export class HomeComponent implements OnInit {
       // if so, create a notification
       const notification = new Notification("Coucou, vous avez demandé à être notifié !!! ");
       alert(`Notification permission OK`);
-      
+
 
 
       // …
@@ -194,47 +191,47 @@ export class HomeComponent implements OnInit {
         if (permission === "granted") {
           const notification = new Notification("Coucou, vous avez demandé à être notifié !!! ");
           // …
-      //      // à externaliser
-      // const messaging = getMessaging()
-      // getToken(messaging, { vapidKey: "BOLK9wQoeo2ycP0yK1yTLQG8DlIYM1GnRLe09u3tdnCERUSOwW7iv_QV671oU8Xa4njllE64DbVvHPnrzsgRdpc" }).then((currentToken) => { 
+          //      // à externaliser
+          // const messaging = getMessaging()
+          // getToken(messaging, { vapidKey: "BOLK9wQoeo2ycP0yK1yTLQG8DlIYM1GnRLe09u3tdnCERUSOwW7iv_QV671oU8Xa4njllE64DbVvHPnrzsgRdpc" }).then((currentToken) => { 
 
-      //   if (currentToken) { 
-  
-      //     // Send the token to your server and update the UI if necessary 
-      //     console.log('currentToken !!!!!!', currentToken);
-          
-  
-      //     // ... 
-  
-      //   } else { 
-  
-      //     // Show permission request UI 
-  
-      //     console.log('No registration token available. Request permission to generate one.'); 
-  
-      //     // ... 
-  
-      //   } 
-  
-      // }).catch((err) => { 
-  
-      //   console.log('An error occurred while retrieving token. ', err); 
-  
-      //   // ... 
-  
-      // }) 
+          //   if (currentToken) { 
+
+          //     // Send the token to your server and update the UI if necessary 
+          //     console.log('currentToken !!!!!!', currentToken);
 
 
-      // …
+          //     // ... 
+
+          //   } else { 
+
+          //     // Show permission request UI 
+
+          //     console.log('No registration token available. Request permission to generate one.'); 
+
+          //     // ... 
+
+          //   } 
+
+          // }).catch((err) => { 
+
+          //   console.log('An error occurred while retrieving token. ', err); 
+
+          //   // ... 
+
+          // }) 
+
+
+          // …
 
         }
       });
     }
-  
+
     // At last, if the user has denied notifications, and you
     // want to be respectful there is no need to bother them anymore.
   }
 
 
- 
+
 }
