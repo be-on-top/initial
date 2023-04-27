@@ -1,6 +1,15 @@
 <div class="container py-5">
 
     <h3>Home Page</h3>
+    <div class="card my-3" *ngIf="newNotification">
+        <div class="card-header">
+            {{newNotification.title}}
+        </div>
+        <img class="card-img-top" src="{{newNotification.image}}" alt="{{newNotification.title}}">
+        <div class="card-body">
+            <p class="card-text">{{newNotification.body}}</p>
+        </div>
+    </div>
 
     <p class="alert bg-info p-2 mt-3">Me sert pour le moment à tester l'authentification utilisateur !!</p>
 
@@ -25,7 +34,8 @@
             <li class="list-group-item">Son status sur firestore : {{userData.status}}</li>
             <li class="list-group-item">Son prénom sur firestore : {{userData.firstName}}</li>
             <li class="list-group-item">Son nom sur firestore : {{userData.lastName}}</li>
-            <li class="list-group-item">Date d'enregistrement sur firestore : {{userData.created | date:'dd/MM/yyyy' }}</li>
+            <li class="list-group-item">Date d'enregistrement sur firestore : {{userData.created | date:'dd/MM/yyyy' }}
+            </li>
             <li *ngIf="userData.sigle" class="list-group-item">Sigle métier si existant: {{userData.sigle}}</li>
         </ul>
     </div>

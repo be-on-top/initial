@@ -38,6 +38,7 @@ export class HomeComponent implements OnInit {
   requestToken?: any
 
   messaging: any
+  newNotification:any
 
 
 
@@ -71,7 +72,9 @@ export class HomeComponent implements OnInit {
         console.log('currentToken !!!!!!', currentToken);
         this.messaging = getMessaging();
         onMessage(this.messaging, (payload) => {
-          console.log('Message received!!!!!! ', payload);
+          console.log('Message received!!!!!! ', payload.notification);
+          // j'essaie de récupérer l'objet notification pour afficher ses proprietés (title, body, image), ce qui permettrait d'afficher dans des emplacements spécifiques le contenu de campagnes de notification (?)
+          this.newNotification= payload.notification
           // ...
         });
 
