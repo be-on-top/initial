@@ -14,6 +14,13 @@ import { onAuthStateChanged } from '@angular/fire/auth';
 // c'est maintenant le service qui régale !!!
 // import { getMessaging, onMessage, getToken } from "@angular/fire/messaging";
 import { PushNotificationService } from '../push-notification.service';
+import { SwPush } from '@angular/service-worker';
+// import { getMessaging } from '@angular/fire/messaging';
+
+import { getMessaging } from "firebase/messaging/sw";
+import { onBackgroundMessage } from "firebase/messaging/sw";
+import { getToken } from 'firebase/messaging';
+
 
 
 
@@ -42,11 +49,12 @@ export class HomeComponent implements OnInit {
   // messaging: any
   newNotification: any
   // pour détecter online et offline
-  offline:boolean=false
+  offline: boolean = false  
+  // test transmission d'une liste de jetons d'enregistrement
+  registrationTokens?:any
 
 
-
-  constructor(private notificationService: PushNotificationService, private auth: Auth, private firestore: Firestore, private authService: AuthService, private evaluatorService: EvaluatorsService, private activatedRoute: ActivatedRoute, private router: Router) {
+  constructor(private notificationService: PushNotificationService, private auth: Auth, private firestore: Firestore, private authService: AuthService, private evaluatorService: EvaluatorsService, private activatedRoute: ActivatedRoute, private router: Router, readonly swPush: SwPush) {
     // this.user = this.auth.currentUser
     this.evaluatorId = this.auth.currentUser
     console.log("evaluatorId", this.evaluatorId);
@@ -83,11 +91,13 @@ export class HomeComponent implements OnInit {
         //   // j'essaie de récupérer l'objet notification pour afficher ses proprietés (title, body, image), ce qui permettrait d'afficher dans des emplacements spécifiques le contenu de campagnes de notification (?)
         //   this.newNotification= payload.notification
         // });
+ 
+
+      
 
         // tests ok : impeccable !!!
         this.notificationService.receiveMessage().subscribe(data => this.newNotification = data.notification)
-        console.log(this.newNotification);
-
+        console.log("this.newNotification !!!!!! ", this.newNotification);
 
         // ... 
 
@@ -154,12 +164,38 @@ export class HomeComponent implements OnInit {
 
     // eventListener
     addEventListener('offline', e => {
-      this.offline=true
+      this.offline = true
     })
 
     addEventListener('online', e => {
-      this.offline=false
+      this.offline = false
     })
+
+    //  under progress : to do !!!!!!!!!!!!!
+    this.subscribeToPush()
+    this.getSubscription();
+  }
+
+  getSubscription() {
+    this.swPush.subscription.subscribe(data => console.log("data", data))
+  }
+
+  // private async subscribeToPush() {
+  async subscribeToPush() {
+    alert("et puis quoi ??? ")
+    try {
+      const sub = await this.swPush.requestSubscription({
+        // serverPublicKey: PUBLIC_VAPID_KEY_OF_SERVER,
+        serverPublicKey: 'AIzaSyAtKNEibUci4ru5bsd2Df1quoFBKIqbL-k'
+      });
+
+
+      // TODO: Send to server.
+    } catch (err) {
+      console.error('Could not subscribe due to:', err);
+    }
+
+
 
 
   }
@@ -202,6 +238,7 @@ export class HomeComponent implements OnInit {
 
 
   notifyMe() {
+    // alert("coucou")
 
     if (!("Notification" in window)) {
       // Check if the browser supports notifications
@@ -209,19 +246,42 @@ export class HomeComponent implements OnInit {
     } else if (Notification.permission === "granted") {
       // Check whether notification permissions have already been granted 
       // if so, create a notification
-      const notification = new Notification("Coucou, vous avez demandé à être notifié !!! ");
-      alert(`Notification permission OK`);
+      const notification = new Notification("Coucou, vous avez déjà demandé à être notifié. Votre demande a été prise en compte !!! ");
+      alert(`Notification permission OK : already registered`);
+
+        // c'est là qu'on peut mettre à jour registrationTokens
+        getToken(getMessaging(), { vapidKey: "BOLK9wQoeo2ycP0yK1yTLQG8DlIYM1GnRLe09u3tdnCERUSOwW7iv_QV671oU8Xa4njllE64DbVvHPnrzsgRdpc" })
+        .then((value) => {
+          const newToken: string = value;
+          this.notificationService.registerToken(newToken)})
 
 
 
       // …
     } else if (Notification.permission !== "denied") {
       // We need to ask the user for permission
+      alert('notification request for push notification')
       Notification.requestPermission().then((permission) => {
         // If the user accepts, let's create a notification
         if (permission === "granted") {
-          const notification = new Notification("Coucou, vous avez demandé à être notifié !!! ");
-          // …
+          alert("nouveau !!!!")
+          const notification = new Notification("Coucou, vous venez de demander à être notifié !!! ");
+          // c'est là qu'on peut mettre à jour registrationTokens
+          getToken(getMessaging(), { vapidKey: "BOLK9wQoeo2ycP0yK1yTLQG8DlIYM1GnRLe09u3tdnCERUSOwW7iv_QV671oU8Xa4njllE64DbVvHPnrzsgRdpc" })
+          .then((value) => {
+            const newToken: string = value;
+            console.log(newToken);
+            
+            this.notificationService.registerToken(newToken)
+            
+            // this.registrationTokens.push(newToken)
+          });
+          
+      
+       
+          
+        
+          // …:
           //      // à externaliser
           // const messaging = getMessaging()
           // getToken(messaging, { vapidKey: "BOLK9wQoeo2ycP0yK1yTLQG8DlIYM1GnRLe09u3tdnCERUSOwW7iv_QV671oU8Xa4njllE64DbVvHPnrzsgRdpc" }).then((currentToken) => { 
