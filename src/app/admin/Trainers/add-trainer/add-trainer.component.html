@@ -1,17 +1,34 @@
 <div class="container py-5">
 
     <h3>Ajouter un formateur à la liste des formateurs</h3>
-    <app-feedback-messages [feedbackMessages]="feedbackMessages" [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
+    <app-feedback-messages [feedbackMessages]="feedbackMessages"
+        [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
+    <div class="alert alert-info mt-3">Si vous souhaitez ajouter un évaluateur existant à la liste des formateurs en
+        charge du suivi
+        pédagogique des futurs apprenants, merci de les sélectionner dans la liste suivante</div>
+    <form class="form row mx-1" #reg="ngForm" (submit)="addRole(reg)">
+        <div class="form-group col-md-6">
+            <select name="idEval" *ngIf="registryEvaluators" class="form-select" name="idEval" ngModel
+                #idEval="ngModel">
+                <option value="">Evaluateurs inscrits</option>
+                <option *ngFor="let evaluator of registryEvaluators" value="{{evaluator.id}}">{{evaluator.email}}
+                </option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary col-md-6">Les ajouter à la liste</button>
+    </form>
+    <hr>
 
+    <div class="alert alert-info">Pour tout nouveau formateur, procéder normalement</div>
     <!-- pour les messages de retour/validation des champs du formulaire ou form validation, on utilisera BOOTSTRAP plutôt que des directives structurelles -->
     <form class="form" #f="ngForm" (submit)="addTrainer(f)" class="was-validated">
 
         <!-- attention à virer les fonctions pour l'exercice sur (change) et (input) !!!!!! -->
-
         <div class="row">
             <div class="form-group col-md-6">
                 <label for="firstName" class="form-label mt-3">Prénom *</label>
-                <input type="text" id="firstName" ngModel name="firstName" class="form-control" placeholder="Prénom" required>
+                <input type="text" id="firstName" ngModel name="firstName" class="form-control" placeholder="Prénom"
+                    required>
                 <div class="valid-feedback" *ngIf="lastName.valid">Champ correctement renseigné</div>
                 <div class="invalid-feedback" *ngIf="lastName.invalid">Merci de renseigner le champ nom.</div>
             </div>
@@ -31,8 +48,8 @@
                     <span class="input-group-text" id="inputGroupPrepend2">@</span>
                     <input type="email" id="email" ngModel name="email" class="form-control" #email="ngModel"
                         placeholder="Email" required>
-                        <div class="valid-feedback" *ngIf="email.valid">Email Valide </div>
-                        <div class="invalid-feedback" *ngIf="email.invalid">Merci de renseigner le champ email.</div>
+                    <div class="valid-feedback" *ngIf="email.valid">Email Valide </div>
+                    <div class="invalid-feedback" *ngIf="email.invalid">Merci de renseigner le champ email.</div>
                 </div>
             </div>
             <div class="form-group col-md-6">
@@ -57,8 +74,7 @@
         <textarea name="details" id="details" ngModel name="details" cols="100" rows="10" class="form-control mt-3"
             #details="ngModel" [ngClass]="{'.is-valid':details.value && details.touched}"
             placeholder="Commentaires optionnels...">Détails / Remarques & Objectifs...</textarea>
-        <button type="submit" id="submit" class="btn btn-primary mt-3"
-            [ngClass]="{'disabled':f.invalid}">Ajouter</button>
+        <button type="submit" class="btn btn-primary mt-3" [ngClass]="{'disabled':f.invalid}">Ajouter</button>
     </form>
 
 </div>

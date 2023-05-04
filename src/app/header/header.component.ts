@@ -42,6 +42,8 @@ export class HeaderComponent implements OnInit {
    }
   
    getRole(id:any){
+    // finalement, compte tenu du fait que les evaluators peuvent potentiellement aussi être des tuteurs (formateurs) roles sera un tableau
+    // au niveau de gtRole, cela ne change pas grand chose
      let $roleRef = doc(this.firestore, "roles/" + id)
      return docData($roleRef) as Observable <any>;
   

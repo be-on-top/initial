@@ -150,7 +150,7 @@ export class HomeComponent implements OnInit {
     // retourne this.ui tout de suite après la connexion. undefined plus tard, donc ne convient pas...
     // console.log("log de ui", this.ui);
     // tests ok pour information, mais ne semble pas être très utile 
-    this.authService.getToken()?.then(res => console.log(res.token))
+    this.authService.getToken()?.then(res => console.log("token authentification depuis authService", res.token))
     // fonctionne parfaitement !!!!!!!!!!!!!!!!!!
     this.authService.authStatusListener()
 
@@ -174,6 +174,7 @@ export class HomeComponent implements OnInit {
     //  under progress : to do !!!!!!!!!!!!!
     this.subscribeToPush()
     this.getSubscription();
+  
   }
 
   getSubscription() {
@@ -182,7 +183,7 @@ export class HomeComponent implements OnInit {
 
   // private async subscribeToPush() {
   async subscribeToPush() {
-    alert("et puis quoi ??? ")
+    // alert("et puis quoi ????????????????? ")
     try {
       const sub = await this.swPush.requestSubscription({
         // serverPublicKey: PUBLIC_VAPID_KEY_OF_SERVER,
@@ -190,12 +191,10 @@ export class HomeComponent implements OnInit {
       });
 
 
-      // TODO: Send to server.
+      // TODO: Send to server ?????????????????????????????????????????????????????????????????????????
     } catch (err) {
       console.error('Could not subscribe due to:', err);
     }
-
-
 
 
   }

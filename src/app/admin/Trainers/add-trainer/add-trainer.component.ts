@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { TrainersService } from '../../trainers.service';
 import { Router } from '@angular/router';
+import { EvaluatorsService } from '../../evaluators.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-add-trainer',
@@ -13,6 +15,7 @@ export class AddTrainerComponent {
   firstName: string = "";
   email: string = "";
   selectedSigles: string[] = []
+  registryEvaluators: any[] = []
 
   feedbackMessages?: any = ""
   isSuccessMessage: boolean = true
@@ -25,9 +28,20 @@ export class AddTrainerComponent {
     'auth/invalid-email': 'Aucun enregistrement ne correspond au mail fourni'
   }; // list of firebase error codes to alternate error messages
 
-  constructor(private service: TrainersService, private router: Router) { }
+  constructor(private service: TrainersService, private router: Router, private evaluatorsService:EvaluatorsService) { }
 
   ngOnInit(): void {
+    this.evaluatorsService.getEvaluators().subscribe(data => {
+      // console.log(data);
+      for (let e of data) {
+        // console.log(this.registryNumbers);
+        this.registryEvaluators = [...this.registryEvaluators, e]
+        console.log("result des évaluateurs", this.registryEvaluators);
+      }
+      // return this.registryNumbers
+    })
+
+
   }
 
 
@@ -69,6 +83,12 @@ export class AddTrainerComponent {
   checkIfSelected(sigle: any) {
     console.log(sigle);
     this.selectedSigles = [...this.selectedSigles, sigle]
+  }
+
+  addRole(form:NgForm){
+    console.log(form.value.idEval)    
+    this.service.addRoleToEvaluator(form.value.idEval)
+
   }
 
 }

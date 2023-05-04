@@ -106,5 +106,18 @@ export class TrainersService {
     setDoc($trainerRef, trainer)
   }
 
+  addRoleToEvaluator(id:string){
+    // console.log("id récupéré depuis addRoleToEvaluator", id);
+    
+        // enregistre dans Firestore d'autre part le role attribué dans une collection roles qui regroupera tous les roles de tous les utilisateurs avec comme idDoc uid d'authentification là aussi
+        let $rolesRef = collection(this.firestore, "roles");
+        // addDoc($trainersRef, newTrainer)
+        setDoc(doc($rolesRef, id), { role: ['trainer', 'evaluator'] })
+
+
+
+
+  }
+
 
 }

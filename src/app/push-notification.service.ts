@@ -3,7 +3,8 @@ import { Observable } from 'rxjs';
 // import { environment } from './../../environments/environment';
 import { MessagePayload } from './notification';
 import { initializeApp, FirebaseOptions } from 'firebase/app'
-import { getMessaging, isSupported, Messaging, onMessage, getToken } from '@angular/fire/messaging'
+import { getMessaging, isSupported, Messaging, onMessage, getToken} from '@angular/fire/messaging'
+import { AngularFireMessaging } from '@angular/fire/compat/messaging';
 import { environment } from '../environments/environment';
 // pour enregistrer les jetons utilisateurs en base 
 import { Firestore, collection, addDoc} from '@angular/fire/firestore';
@@ -37,7 +38,9 @@ export class PushNotificationService {
       } else {
         reject(new Error("No se otorgaron los permisos"))
       }
-    })    
+    }) 
+    
+    
   }
 
   // onMessage ne fonctionne plus comme ça aujourd'hui !!! 
@@ -57,7 +60,7 @@ export class PushNotificationService {
   }
 
 
-  // à supposer qu'on cherche à transmettre une liste de jetons pour des sujets spécifiques
+  // à supposer qu'on cherche à transmettre une liste de jetons pour des sujets spécifiques, j'ai crée un sujet prepa_cdes !!!!!!
   subscribeTokenToTopic(token:string, topic:string) {
     fetch('https://iid.googleapis.com/iid/v1/'+token+'/rel/topics/'+topic, {
       method: 'POST',

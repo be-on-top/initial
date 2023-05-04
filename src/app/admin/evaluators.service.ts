@@ -24,11 +24,15 @@ export class EvaluatorsService {
   async createEvaluator(evaluator: any) {
 
     // let newEvaluator = { id: Date.now(), ...evaluator };
-    let newEvaluator = { created: Date.now(), roles: 'evaluator', status: true, ...evaluator };
+    // puisque on n'accède plus aux rôles via la collection de l'utilisateur mais via la collection roles, on n'a plus de raison impérieuse de conserver les rôles dans cette collection...
+    // let newEvaluator = { created: Date.now(), roles: ['evaluator'], status: true, ...evaluator };
+    let newEvaluator = { created: Date.now(), status: true, ...evaluator };
     this.evaluators = [newEvaluator, ...this.evaluators];
     console.log(this.evaluators);
-    // on va lui affecter un password aléatoire en fonction de la date
-    let password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
+    // on va lui affecter un password aléatoire en fonction de la date ! Important !
+    // let password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
+    // ATTENTION à modifier. Juste pour les tests en interne, j'affecte password à TOUS les utilisateurs
+    let password = 'password';
 
     // enregistrement en base dans fireAuth d'une part : 
     this.result = await createUserWithEmailAndPassword(this.auth, evaluator.email, password);
@@ -46,7 +50,9 @@ export class EvaluatorsService {
     // enregistre dans Firestore d'autre part le role attribué dans une collection roles qui regroupera tous les roles de tous les utilisateurs avec comme idDoc uid d'authentification là aussi
     let $rolesRef = collection(this.firestore, "roles");
     // addDoc($trainersRef, newTrainer)
-    setDoc(doc($rolesRef, newEvaluator.id), { role: 'evaluator' })
+    // dès lors qu'on peut finalement avoir 2 rôles pour l'évaluateur, role devient un tableau
+    // setDoc(doc($rolesRef, newEvaluator.id), { role: 'evaluator' })
+    setDoc(doc($rolesRef, newEvaluator.id), { role: ['evaluator'] })
 
     // envoie un mail de réinitialisation du mot de passe
     sendPasswordResetEmail(this.auth, newEvaluator.email)

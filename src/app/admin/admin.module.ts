@@ -32,25 +32,24 @@ import { UpdateStudentComponent } from './Students/update-student/update-student
 import { FeedbackMessagesComponent } from '../feedback-messages/feedback-messages.component';
 import { AddTrainerComponent } from './Trainers/add-trainer/add-trainer.component';
 import { TrainersListComponent } from './Trainers/trainers-list/trainers-list.component';
+import { TrainerDetailsComponent } from './Trainers/trainer-details/trainer-details.component';
+import { UpdateTrainerComponent } from './Trainers/update-trainer/update-trainer.component';
 // import { AccountComponent } from '../account/account.component';
 // import { RoleGuardGuard } from '../role-guard.guard';
-
-
-// import { EvaluatorDetailsComponent } from './Evaluators/evaluator-details/evaluator-details.component';
 
 
 const routesAdmin: Routes = [
 
   {
     path: 'admin', children: [
-
       { path: 'evaluators', component: EvaluatorsListComponent },
       { path: 'addEvaluator', component: AddEvaluatorComponent },
       { path: 'evaluator/:id', component: EvaluatorDetailsComponent },
       { path: 'updateEvaluator/:id', component: UpdateEvaluatorComponent },
       { path: 'trainers', component: TrainersListComponent },
       { path: 'addTrainer', component: AddTrainerComponent },
-      // { path: 'trainer/:id', component: EvaluatorDetailsComponent },
+      { path: 'trainer/:id', component: TrainerDetailsComponent },
+      { path: 'updateTrainer/:id', component: UpdateTrainerComponent },
       { path: 'updateEvaluator/:id', component: UpdateEvaluatorComponent },
       { path: 'students', component: StudentsListComponent },
       { path: 'student/:id', component: StudentDetailsComponent },
@@ -82,7 +81,7 @@ const routesAdmin: Routes = [
     EvaluatorsListComponent,
     AddEvaluatorComponent,
     EvaluatorDetailsComponent,
-    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent, UpdateSocialComponent, SocialDetailsComponent, FullFormComponent, FullListComponent, FullDetailsComponent, UpdateFullComponent, LoginComponent, SearchComponent, StudentDetailsComponent, StudentsListComponent, UpdateStudentComponent, FeedbackMessagesComponent, AddTrainerComponent, TrainersListComponent
+    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent, UpdateSocialComponent, SocialDetailsComponent, FullFormComponent, FullListComponent, FullDetailsComponent, UpdateFullComponent, LoginComponent, SearchComponent, StudentDetailsComponent, StudentsListComponent, UpdateStudentComponent, FeedbackMessagesComponent, AddTrainerComponent, TrainersListComponent, TrainerDetailsComponent, UpdateTrainerComponent
   ],
   imports: [
     BrowserModule,
