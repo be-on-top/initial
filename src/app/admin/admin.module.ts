@@ -34,6 +34,8 @@ import { AddTrainerComponent } from './Trainers/add-trainer/add-trainer.componen
 import { TrainersListComponent } from './Trainers/trainers-list/trainers-list.component';
 import { TrainerDetailsComponent } from './Trainers/trainer-details/trainer-details.component';
 import { UpdateTrainerComponent } from './Trainers/update-trainer/update-trainer.component';
+// essai mutualisation du ts et template
+import { UsersListComponent } from './shared/users-list.component';
 // import { AccountComponent } from '../account/account.component';
 // import { RoleGuardGuard } from '../role-guard.guard';
 
@@ -42,12 +44,18 @@ const routesAdmin: Routes = [
 
   {
     path: 'admin', children: [
-      { path: 'evaluators', component: EvaluatorsListComponent },
+      // essai mutualisation des vues pour la liste des formateurs + trainers
+      // { path: 'evaluators', component: EvaluatorsListComponent },
+      { path: 'evaluators', component: UsersListComponent, data: { details: 'evaluator' } },
       { path: 'addEvaluator', component: AddEvaluatorComponent },
       { path: 'evaluator/:id', component: EvaluatorDetailsComponent },
       { path: 'updateEvaluator/:id', component: UpdateEvaluatorComponent },
-      { path: 'trainers', component: TrainersListComponent },
+      // essai mutualisation des vues pour la liste des formateurs + trainers
+      // { path: 'trainers', component: TrainersListComponent },
+      { path: 'trainers', component: UsersListComponent, data: { details: 'trainer' } },
       { path: 'addTrainer', component: AddTrainerComponent },
+      // essai mutualisation des vues pour le détail depuis la liste des evaluateurs + formateurs
+      // { path: 'trainer/:id', component: TrainerDetailsComponent },
       { path: 'trainer/:id', component: TrainerDetailsComponent },
       { path: 'updateTrainer/:id', component: UpdateTrainerComponent },
       { path: 'updateEvaluator/:id', component: UpdateEvaluatorComponent },
@@ -81,7 +89,7 @@ const routesAdmin: Routes = [
     EvaluatorsListComponent,
     AddEvaluatorComponent,
     EvaluatorDetailsComponent,
-    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent, UpdateSocialComponent, SocialDetailsComponent, FullFormComponent, FullListComponent, FullDetailsComponent, UpdateFullComponent, LoginComponent, SearchComponent, StudentDetailsComponent, StudentsListComponent, UpdateStudentComponent, FeedbackMessagesComponent, AddTrainerComponent, TrainersListComponent, TrainerDetailsComponent, UpdateTrainerComponent
+    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent, UpdateSocialComponent, SocialDetailsComponent, FullFormComponent, FullListComponent, FullDetailsComponent, UpdateFullComponent, LoginComponent, SearchComponent, StudentDetailsComponent, StudentsListComponent, UpdateStudentComponent, FeedbackMessagesComponent, AddTrainerComponent, TrainersListComponent, TrainerDetailsComponent, UpdateTrainerComponent, UsersListComponent
   ],
   imports: [
     BrowserModule,
@@ -89,8 +97,8 @@ const routesAdmin: Routes = [
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forChild(routesAdmin)
-  ], 
-  exports:[
+  ],
+  exports: [
     FeedbackMessagesComponent
   ]
 })

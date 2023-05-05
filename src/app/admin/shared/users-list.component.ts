@@ -1,24 +1,31 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-// import { Trainers } from '../../evaluators';
-import { TrainersService } from '../../trainers.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TrainersService } from '../trainers.service';
+import { EvaluatorsService } from '../evaluators.service';
 
 @Component({
-  selector: 'app-trainers-list',
-  // templateUrl: '../../shared/users-list.component.html',
-  templateUrl: './trainers-list.component.html',
-  styleUrls: ['./trainers-list.component.css']
+  selector: 'app-users-list',
+  templateUrl: 'users-list.component.html',
+  // templateUrl: './trainers-list.component.html',
+  // styleUrls: ['./trainers-list.component.css']
 })
-export class TrainersListComponent {
+export class UsersListComponent {
 
 
   allUsers?: any
   // on le prépare à recevoir un terme de recherche
   searchText: string = ''
 
-  constructor(private router: Router, private service: TrainersService) {
+  userDetails:any;
+
+  // vous pouvez injecter le service ActivatedRoute pour accéder aux paramètres de route et déterminer quelle méthode doit être utilisée
+  constructor(private router: Router, private service: TrainersService, private activatedRoute:ActivatedRoute) {
+    this.userDetails = this.activatedRoute.snapshot.data;
+    console.log("user to edit", this.userDetails);    
+    console.log("user to edit", this.userDetails.details);    
 
   }
+
 
   ngOnInit(): void {
     this.getUsers();

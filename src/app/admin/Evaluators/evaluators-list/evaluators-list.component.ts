@@ -6,38 +6,37 @@ import { EvaluatorsService } from '../../evaluators.service';
 @Component({
   selector: 'app-evaluators-list',
   templateUrl: './evaluators-list.component.html',
+  // templateUrl: '../../shared/users-list.component.html',
   styleUrls: ['./evaluators-list.component.css']
 })
 
 export class EvaluatorsListComponent implements OnInit {
-  allEvaluators?: any
+  allUsers?: any
   // on le prépare à recevoir un terme de recherche
   searchText: string = ''
 
 
-  constructor(private router: Router, private service: EvaluatorsService) {
-
-  }
+  constructor(private router: Router, private service: EvaluatorsService) {}
 
   ngOnInit(): void {
-    this.getEvaluators();
+    this.getUsers();
   }
 
-  getEvaluators() {
+  getUsers() {
     // attention, puisque on récupère un observable depuis le service, on doit y souscrire
     // this.allEvaluators=this.service.getEvaluators(); devient donc nécessairement
     this.service.getEvaluators().subscribe(data => {
       console.log("data de getEvaluators()", data)
-      this.allEvaluators = data
-      return this.allEvaluators
+      this.allUsers = data
+      return this.allUsers
     })
 
   }
 
-  deleteEvaluator(evaluatorid: string) {
-    console.log(evaluatorid);
+  deleteUser(userId: string) {
+    console.log(userId);
 
-    this.service.deleteEvaluator(evaluatorid)
+    this.service.deleteEvaluator(userId)
     this.router.navigate(['/evaluators'])
     // .then(()=>{
 

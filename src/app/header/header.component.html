@@ -20,14 +20,13 @@
                         <li><a class="dropdown-item" [routerLink]="['/admin/students']"
                                 *ngIf="userRole.includes('admin')">Gestion des candidats</a></li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/trainers']"
-                            *ngIf="userRole.includes('admin')">Gestion des formateurs</a></li>
+                                *ngIf="userRole.includes('admin')">Gestion des formateurs</a></li>
                         <li *ngIf="userRole.includes('admin') || userRole.includes('evaluators')">
                             <hr>
                         </li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/priorForm']"
                                 *ngIf="userRole.includes('evaluator') || userRole.includes('admin')">Saisie des
-                                questions
-                                d'accroche</a>
+                                questions d'accroche</a>
                         </li>
                         <li>
                             <!-- <a class="dropdown-item" [routerLink]="['/admin/socialForm']"[ngClass]="{'d-none':userRole!=='evaluator' && userRole!=='admin'}">Saisie des questions sociales</a> -->
