@@ -46,13 +46,13 @@ const routesAdmin: Routes = [
     path: 'admin', children: [
       // essai mutualisation des vues pour la liste des formateurs + trainers
       // { path: 'evaluators', component: EvaluatorsListComponent },
-      { path: 'evaluators', component: UsersListComponent, data: { details: 'evaluator' } },
+      { path: 'evaluators', component: UsersListComponent, data: { user: 'evaluator' } },
       { path: 'addEvaluator', component: AddEvaluatorComponent },
       { path: 'evaluator/:id', component: EvaluatorDetailsComponent },
       { path: 'updateEvaluator/:id', component: UpdateEvaluatorComponent },
       // essai mutualisation des vues pour la liste des formateurs + trainers
       // { path: 'trainers', component: TrainersListComponent },
-      { path: 'trainers', component: UsersListComponent, data: { details: 'trainer' } },
+      { path: 'trainers', component: UsersListComponent, data: { user: 'trainer' } },
       { path: 'addTrainer', component: AddTrainerComponent },
       // essai mutualisation des vues pour le détail depuis la liste des evaluateurs + formateurs
       // { path: 'trainer/:id', component: TrainerDetailsComponent },

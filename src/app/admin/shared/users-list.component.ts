@@ -16,14 +16,12 @@ export class UsersListComponent {
   // on le prépare à recevoir un terme de recherche
   searchText: string = ''
 
-  userDetails:any;
+  userRouterLinks:any;
 
   // vous pouvez injecter le service ActivatedRoute pour accéder aux paramètres de route et déterminer quelle méthode doit être utilisée
   constructor(private router: Router, private service: TrainersService, private activatedRoute:ActivatedRoute) {
-    this.userDetails = this.activatedRoute.snapshot.data;
-    console.log("user to edit", this.userDetails);    
-    console.log("user to edit", this.userDetails.details);    
-
+    this.userRouterLinks = this.activatedRoute.snapshot.data;
+    console.log("user to edit", this.userRouterLinks);    
   }
 
 

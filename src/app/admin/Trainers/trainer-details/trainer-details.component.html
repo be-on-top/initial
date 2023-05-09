@@ -20,8 +20,15 @@
                 </p>
                 <ng-template #checkbox> Status : inactif</ng-template>
                 <!-- affectation métiers -->
-                <p *ngIf="user.sigle">Métiers d'affectation ({{user.sigle.length}}) : 
+                <p *ngIf="user.sigle">Métiers d'affectation ({{user.sigle.length}}) :
                     <span *ngFor="let s of user.sigle">{{s}} </span>
+                </p>
+                <!-- option au plus simple où on ne fait qu'une requête dans trainers -->
+                <!-- <p *ngIf="user.students">Etudiants en cours de suivi ({{user.students.length}}) :
+                   {{user.students}}
+                </p> -->
+                <p *ngIf="studentsList">Etudiants en cours de suivi ({{studentsList.length}}) :
+                    {{studentsList}}
                 </p>
             </div>
             <div class="card-footer text-muted">
@@ -39,7 +46,7 @@
             </button>
 
             <button class="btn btn-danger">
-                <a class="text-white" (click)="deleteTrainer(user.id)">Supprimer</a>
+                <a class="text-white" (click)="deleteUser(user.id)">Supprimer</a>
             </button>
 
         </div>

@@ -54,7 +54,13 @@
             <option value="cl_vul">CLVUL</option>
         </select>
 
+        <!-- modification des étudiants qui lui sont affectés -->
 
+        <label for="students" class="form-label mt-3">Affectation étudiants :</label>
+        <select class="form-select" name="students" id="students" [ngModel]="user.students" #students="ngModel" multiple>
+            <option value>Selectionner le métier</option>
+            <option *ngFor="let student of studentsList" value="{{student.id}}">+{{student.lastName}} {{student.firstName}}</option>
+        </select>
 
         <!-- <label for="email" class="form-label mt-3">Commentaires optionnels</label> -->
         <textarea name="details" id="details" [(ngModel)]="user.details" name="details" cols="100" rows="10"

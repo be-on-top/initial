@@ -3,9 +3,11 @@ import { Injectable } from '@angular/core';
 
 // à vérifier
 import { Auth, createUserWithEmailAndPassword, sendPasswordResetEmail, deleteUser } from '@angular/fire/auth';
-import { Firestore, collectionData, collection, docData, setDoc, query, where } from '@angular/fire/firestore';
+import { Firestore, collectionData, collection, docData, setDoc, query, where,  updateDoc, getDoc } from '@angular/fire/firestore';
 import { deleteDoc, doc, getDocs } from 'firebase/firestore';
-import { Observable } from 'rxjs';
+import { Observable, pipe } from 'rxjs';
+import { StudentsService } from './students.service';
+pipe
 
 
 @Injectable({
@@ -17,7 +19,7 @@ export class TrainersService {
   trainers: any[] = [];
   result: any;
 
-  constructor(private auth: Auth, private firestore: Firestore) {
+  constructor(private auth: Auth, private firestore: Firestore, private studentsService:StudentsService) {
   }
 
   async createTrainer(trainer: any) {
@@ -91,8 +93,8 @@ export class TrainersService {
   }
 
   // ça marche !!!! 
-  async getDocsByParam(uid: string) {
-    const myData = query(collection(this.firestore, 'trainers'), where('id', '==', uid));
+  async getMyStudentsByParam(uid: string) {
+    const myData = query(collection(this.firestore, 'students'), where('id', '==', uid));
     const querySnapshot = await getDocs(myData);
     querySnapshot.forEach((doc) => {
       console.log(doc.id, ' => ', doc.data());
@@ -104,6 +106,19 @@ export class TrainersService {
   updateTrainer(id: string, trainer: any) {
     let $trainerRef = doc(this.firestore, "trainers/" + id);
     setDoc($trainerRef, trainer)
+    for (let student of trainer.students){
+      let $trainerRef = doc(this.firestore, "students/" + student);
+      updateDoc($trainerRef,{trainer:trainer.lastName} )
+    }
+
+  }
+
+  
+  // methode à tester pour récupérer le nom
+  getLinkedStudentName(id: string) {
+      let $studentRef = doc(this.firestore, "students/" + id);
+      return docData($studentRef) as Observable<any>;
+
   }
 
   addRoleToEvaluator(id:string){
@@ -113,11 +128,18 @@ export class TrainersService {
         let $rolesRef = collection(this.firestore, "roles");
         // addDoc($trainersRef, newTrainer)
         setDoc(doc($rolesRef, id), { role: ['trainer', 'evaluator'] })
-
-
-
-
   }
+
+  // async getStudentByParam(uid: string) {
+  //   const myData = query(collection(this.firestore, 'students'), where('id', '==', uid));
+  //   const querySnapshot = await getDocs(myData);
+  //   if (querySnapshot) {
+  //     querySnapshot.forEach((doc) => {
+  //       console.log(doc.id, ' => ', doc.data());
+  //       doc.data()
+  //     });
+  //   }
+  // }
 
 
 }
