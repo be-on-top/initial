@@ -49,9 +49,9 @@ export class HomeComponent implements OnInit {
   // messaging: any
   newNotification: any
   // pour détecter online et offline
-  offline: boolean = false  
+  offline: boolean = false
   // test transmission d'une liste de jetons d'enregistrement
-  registrationTokens?:any
+  registrationTokens?: any
 
 
   constructor(private notificationService: PushNotificationService, private auth: Auth, private firestore: Firestore, private authService: AuthService, private evaluatorService: EvaluatorsService, private activatedRoute: ActivatedRoute, private router: Router, readonly swPush: SwPush) {
@@ -91,9 +91,9 @@ export class HomeComponent implements OnInit {
         //   // j'essaie de récupérer l'objet notification pour afficher ses proprietés (title, body, image), ce qui permettrait d'afficher dans des emplacements spécifiques le contenu de campagnes de notification (?)
         //   this.newNotification= payload.notification
         // });
- 
 
-      
+
+
 
         // tests ok : impeccable !!!
         this.notificationService.receiveMessage().subscribe(data => this.newNotification = data.notification)
@@ -174,7 +174,7 @@ export class HomeComponent implements OnInit {
     //  under progress : to do !!!!!!!!!!!!!
     this.subscribeToPush()
     this.getSubscription();
-  
+
   }
 
   getSubscription() {
@@ -248,11 +248,12 @@ export class HomeComponent implements OnInit {
       const notification = new Notification("Coucou, vous avez déjà demandé à être notifié. Votre demande a été prise en compte !!! ");
       alert(`Notification permission OK : already registered`);
 
-        // c'est là qu'on peut mettre à jour registrationTokens
-        getToken(getMessaging(), { vapidKey: "BOLK9wQoeo2ycP0yK1yTLQG8DlIYM1GnRLe09u3tdnCERUSOwW7iv_QV671oU8Xa4njllE64DbVvHPnrzsgRdpc" })
+      // c'est là qu'on peut mettre à jour registrationTokens
+      getToken(getMessaging(), { vapidKey: "BOLK9wQoeo2ycP0yK1yTLQG8DlIYM1GnRLe09u3tdnCERUSOwW7iv_QV671oU8Xa4njllE64DbVvHPnrzsgRdpc" })
         .then((value) => {
           const newToken: string = value;
-          this.notificationService.registerToken(newToken)})
+          this.notificationService.registerToken(newToken, this.userData.id)
+        })
 
 
 
@@ -267,19 +268,18 @@ export class HomeComponent implements OnInit {
           const notification = new Notification("Coucou, vous venez de demander à être notifié !!! ");
           // c'est là qu'on peut mettre à jour registrationTokens
           getToken(getMessaging(), { vapidKey: "BOLK9wQoeo2ycP0yK1yTLQG8DlIYM1GnRLe09u3tdnCERUSOwW7iv_QV671oU8Xa4njllE64DbVvHPnrzsgRdpc" })
-          .then((value) => {
-            const newToken: string = value;
-            console.log(newToken);
-            
-            this.notificationService.registerToken(newToken)
-            
-            // this.registrationTokens.push(newToken)
-          });
-          
-      
-       
-          
-        
+            .then((value) => {
+              const newToken: string = value;
+              console.log(newToken);
+              this.notificationService.registerToken(newToken, this.userData.id)
+
+              // this.registrationTokens.push(newToken)
+            });
+
+
+
+
+
           // …:
           //      // à externaliser
           // const messaging = getMessaging()

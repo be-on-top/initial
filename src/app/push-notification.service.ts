@@ -3,11 +3,11 @@ import { Observable } from 'rxjs';
 // import { environment } from './../../environments/environment';
 import { MessagePayload } from './notification';
 import { initializeApp, FirebaseOptions } from 'firebase/app'
-import { getMessaging, isSupported, Messaging, onMessage, getToken} from '@angular/fire/messaging'
+import { getMessaging, isSupported, Messaging, onMessage, getToken } from '@angular/fire/messaging'
 import { AngularFireMessaging } from '@angular/fire/compat/messaging';
 import { environment } from '../environments/environment';
 // pour enregistrer les jetons utilisateurs en base 
-import { Firestore, collection, addDoc} from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, setDoc, doc, getDoc, DocumentSnapshot} from '@angular/fire/firestore';
 import { pipe } from "rxjs";
 
 
@@ -49,6 +49,7 @@ export class PushNotificationService {
   //     observe.next(payload)
   //   })
   // })
+
   private messaginObservable = new Observable<MessagePayload>(observe => {
     onMessage(this.messagingFirebase,(payload:any )=> {
       observe.next(payload)
@@ -96,13 +97,55 @@ export class PushNotificationService {
       })
     }
 
-  registerToken(newToken:any){
+  // l'enregistrement, si il ne se fait pas directement dans le doc de l'utilisateur doit pouvoir récupérer l'id de l'utilisateur authentifié
+    registerToken(newToken:any, id:string){
      // enregistre dans Firestore d'autre part avec un collection trainers qui elle aura de multiples propriétés
      let $tokensRef = collection(this.firestore, "tokens")
-     let userTokenNotification = {key:newToken}
-     addDoc($tokensRef, userTokenNotification)
-     this.subscribeToken(newToken)
+     let userTokenNotification = {key:newToken}  
+    setDoc(doc($tokensRef, id), userTokenNotification)
+    //  this.subscribeToken(newToken)
+  }
 
+  // en cours...
+  notifyStudent(uid: string) {
+    alert("ok")
+    if (Notification.permission === "granted") {
+      const notification = new Notification("Coucou. Nous avons notifié les élèves concernés !");
+      // let studentToken: DocumentSnapshot
+      let studentToken: any
+      let $tokensRef = collection(this.firestore, "tokens")
+      getDoc(doc($tokensRef, uid)).then(value=>{
+        studentToken=value
+        console.log("studentToken", studentToken)
+      })
+      
+      const payload = {
+        notification: {
+          title: 'Nouveau formateur affecté',
+          body: 'Un nouveau formateur vous a été désigné pour votre suivi pédagogique',
+          // icon: '/assets/icon.png',
+          click_action: 'https://example.com',
+        },
+      };
+      const options = {
+        priority: 'high',
+        timeToLive: 60 * 60 * 24, // 1 jour
+      };
+
+      getToken( this.messagingFirebase,  { vapidKey: "BOLK9wQoeo2ycP0yK1yTLQG8DlIYM1GnRLe09u3tdnCERUSOwW7iv_QV671oU8Xa4njllE64DbVvHPnrzsgRdpc" })
+      // première méthode qui retourne un this.messagingFirebase.send n'est pas une fonction !!!!!! 
+      .then((studentToken) => {
+        return  this.messagingFirebase.send({ token: studentToken }, payload, options);
+      })
+      .then((response) => {
+        console.log('Notification envoyée avec succès :', response);
+      })
+      .catch((error) => {
+        console.error('Erreur lors de l\'envoi de la notification :', error);
+      });
+
+      
+    }
   }
 
   

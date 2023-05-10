@@ -43,6 +43,7 @@ export class TrainerDetailsComponent implements OnInit {
         //     this.studentsList.push(affectedStudentData)
         //   });
         // }
+        
 
         // option concluante 
         if (this.user.students) {

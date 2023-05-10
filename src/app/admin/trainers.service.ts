@@ -7,6 +7,7 @@ import { Firestore, collectionData, collection, docData, setDoc, query, where,  
 import { deleteDoc, doc, getDocs } from 'firebase/firestore';
 import { Observable, pipe } from 'rxjs';
 import { StudentsService } from './students.service';
+import { PushNotificationService } from '../push-notification.service';
 pipe
 
 
@@ -19,7 +20,7 @@ export class TrainersService {
   trainers: any[] = [];
   result: any;
 
-  constructor(private auth: Auth, private firestore: Firestore, private studentsService:StudentsService) {
+  constructor(private auth: Auth, private firestore: Firestore, private studentsService:StudentsService, private notificationsService:PushNotificationService) {
   }
 
   async createTrainer(trainer: any) {
@@ -106,9 +107,13 @@ export class TrainersService {
   updateTrainer(id: string, trainer: any) {
     let $trainerRef = doc(this.firestore, "trainers/" + id);
     setDoc($trainerRef, trainer)
+    // plutôt que d'utiliser ma fonction notifyStudent depuis le ts de updateTrainer, on profite de la boucle sur les candidats affectés pour les notifier
     for (let student of trainer.students){
-      let $trainerRef = doc(this.firestore, "students/" + student);
-      updateDoc($trainerRef,{trainer:trainer.lastName} )
+      let $studentRef = doc(this.firestore, "students/" + student);
+      updateDoc($studentRef,{trainer:trainer.lastName} )
+      // +++ notifyStudent
+      alert(`notification à envoyer à ${student}`)
+      this.notificationsService.notifyStudent(student)
     }
 
   }
