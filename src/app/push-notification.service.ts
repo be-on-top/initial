@@ -4,11 +4,13 @@ import { Observable } from 'rxjs';
 import { MessagePayload } from './notification';
 import { initializeApp, FirebaseOptions } from 'firebase/app'
 import { getMessaging, isSupported, Messaging, onMessage, getToken } from '@angular/fire/messaging'
-import { AngularFireMessaging } from '@angular/fire/compat/messaging';
+// import { AngularFireMessaging } from '@angular/fire/compat/messaging';
 import { environment } from '../environments/environment';
 // pour enregistrer les jetons utilisateurs en base 
 import { Firestore, collection, addDoc, setDoc, doc, getDoc, DocumentSnapshot} from '@angular/fire/firestore';
 import { pipe } from "rxjs";
+// Importez le module HttpClient d'Angular pour effectuer une requête HTTP à l'API 
+import { HttpClient } from '@angular/common/http';
 
 
 // setBackgroundMessageh
@@ -20,7 +22,7 @@ import { pipe } from "rxjs";
 export class PushNotificationService {
   messagingFirebase: any;
 
-
+// Utiliser le HttpClient pour envoyer une requête POST à l'API FCM avec le token de l'utilisateur et la notification :
   constructor(private firestore:Firestore) {
     this.messagingFirebase = getMessaging()
     initializeApp(environment.firebaseConfig)
@@ -148,6 +150,76 @@ export class PushNotificationService {
     }
   }
 
+  newNotifyUser(uid:string){
+    let registrationToken: any
+    let $tokensRef = collection(this.firestore, "tokens")
+    getDoc(doc($tokensRef, uid)).then(value=>{
+      registrationToken=value
+      console.log("registrationToken", registrationToken)
+    })
+
+    const message = {
+      data: {
+        score: '850',
+        time: '2:45'
+      },
+      token: registrationToken
+    };
+    
+    // Send a message to the device corresponding to the provided
+    // registration token.
+    this.messagingFirebase.send(message)
+      .then((response:Response) => {
+        // Response is a message ID string.
+        console.log('Successfully sent message:', response);
+      })
+      .catch((error:Error) => {
+        console.log('Error sending message:', error);
+      });
+  }
+
+  // // alternative avec requête http *************************************************
+  // // async sendNotificationToUser(userId: string, notification: any) {
+  // async sendNotificationToUser(userId: string) {
+  //   // const token = await this.getUserToken(userId);
+  //   const token ="dczrfqm60ZZ82FlLGc7bgY:APA91bEXn5KC4otI8xyizCKkaTAyLLgULyKhTxkNQ6avZLxLgigH759AtZbkKSavXPSIOhyG3GC0Wt3bsJBJQigukH0tOvuF_BN5bFwvjVUbaPj_MWjMAwoBYxtrXNeIZaLeKPxKTCEu"
+
+  //   if (token) {
+  //     const payload = {
+  //       to: token,
+  //       notification: {
+  //         title: "le titre de ma notification",
+  //         body: "le body de ma notification"
+  //         // title: notification.title,
+  //         // body: notification.body
+  //       }
+  //     };
+  
+  //     const headers = {
+  //       'Content-Type': 'application/json',
+  //       Authorization: '509490429297'
+  //     };
+  
+  //     const url = 'https://fcm.googleapis.com/fcm/send';
+  
+  //     // Envoyer la requête POST à l'API FCM
+  //     await this.http.post(url, payload, { headers }).toPromise();
+  //   }
+  // }
+
+  // async getUserToken(userId: string): Promise<string | null> {
+  //   const $tokenRef = doc(this.firestore, 'tokens', userId);
+  //   const tokenDoc = await getDoc($tokenRef);
+  
+  //   if (tokenDoc.exists()) {
+  //     const { token } = tokenDoc.data()
+  //     return token.key;
+  //   }
+  
+  //   return null;
+
+
+
   
 
 }
@@ -188,3 +260,4 @@ export class PushNotificationService {
 //       })
 //   }
 // }
+

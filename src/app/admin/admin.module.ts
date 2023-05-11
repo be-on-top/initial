@@ -7,6 +7,7 @@ import { EvaluatorsListComponent } from './Evaluators/evaluators-list/evaluators
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule} from '@angular/common/http';
 import { AddEvaluatorComponent } from './Evaluators/add-evaluator/add-evaluator.component';
 import { EvaluatorDetailsComponent } from './Evaluators/evaluator-details/evaluator-details.component';
 import { UpdateEvaluatorComponent } from './Evaluators/update-evaluator/update-evaluator.component';
@@ -74,7 +75,7 @@ const routesAdmin: Routes = [
       { path: 'fullDetails', component: FullDetailsComponent },
       { path: 'updateFull/:id', component: UpdateFullComponent }
     ],
-    canActivate: [AuthGuardService]
+    // canActivate: [AuthGuardService]
     // canActivate: [AuthGuardService, RoleGuardGuard], data: {
     //   expectedRoles: ['evaluator', 'admin']
     // }
@@ -96,6 +97,7 @@ const routesAdmin: Routes = [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule,    
     RouterModule.forChild(routesAdmin)
   ],
   exports: [

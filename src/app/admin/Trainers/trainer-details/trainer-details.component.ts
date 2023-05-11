@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { TrainersService } from '../../trainers.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StudentsService } from '../../students.service';
-import { StudentDetailsComponent } from '../../Students/student-details/student-details.component';
-import { pipe } from 'rxjs';
+// import { StudentDetailsComponent } from '../../Students/student-details/student-details.component';
+// import { pipe } from 'rxjs';
 
 
 
@@ -20,10 +20,6 @@ export class TrainerDetailsComponent implements OnInit {
 
   constructor(private service: TrainersService, private ac: ActivatedRoute, private router: Router, private studentsService: StudentsService) {
     this.userId = this.ac.snapshot.params["id"];
-
-
-
-
 
   }
 
@@ -43,7 +39,8 @@ export class TrainerDetailsComponent implements OnInit {
         //     this.studentsList.push(affectedStudentData)
         //   });
         // }
-        
+
+       
 
         // option concluante 
         if (this.user.students) {
@@ -59,8 +56,6 @@ export class TrainerDetailsComponent implements OnInit {
 
 
   }
-
-
 
 
   deleteUser(userId: string) {

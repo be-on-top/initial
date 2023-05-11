@@ -113,7 +113,8 @@ export class TrainersService {
       updateDoc($studentRef,{trainer:trainer.lastName} )
       // +++ notifyStudent
       alert(`notification à envoyer à ${student}`)
-      this.notificationsService.notifyStudent(student)
+      // this.notificationsService.newNotifyUser(student)
+      // this.notificationsService.sendNotificationToUser(student)
     }
 
   }

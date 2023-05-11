@@ -13,7 +13,7 @@ import {Observable} from 'rxjs'
 })
 export class HeaderComponent implements OnInit {
   userUid?: any
-  userRole?:any
+  userRole:any=[]
 
   constructor(private authService: AuthService, private auth: Auth, private evaluatorService: EvaluatorsService, private firestore:Firestore) {
     // this.userUid=this.authService.getUserId()
@@ -29,8 +29,10 @@ export class HeaderComponent implements OnInit {
           console.log("data de getEvaluator depuis header", data);
           this.userRole=data.role
           console.log("roles depuis header", data.role);
+
       })}
     })
+    
     //  onAuthStateChanged(this.auth, (user: any) => {
     //    if (user) {
     //      this.getRole( user.uid).subscribe((data)=>{
@@ -43,7 +45,7 @@ export class HeaderComponent implements OnInit {
   
    getRole(id:any){
     // finalement, compte tenu du fait que les evaluators peuvent potentiellement aussi être des tuteurs (formateurs) roles sera un tableau
-    // au niveau de gtRole, cela ne change pas grand chose
+    // au niveau de getRole, cela ne change pas grand chose
      let $roleRef = doc(this.firestore, "roles/" + id)
      return docData($roleRef) as Observable <any>;
   

@@ -11,7 +11,9 @@ import { query, Firestore, where, collection, getDocs } from '@angular/fire/fire
 import { onAuthStateChanged } from '@angular/fire/auth';
 import { StudentsService } from '../admin/students.service';
 
-import { getMessaging, onMessage } from "@angular/fire/messaging";
+import { getMessaging, getToken, onMessage } from "@angular/fire/messaging";
+import { PushNotificationService } from '../push-notification.service';
+
 
 
 
@@ -30,12 +32,12 @@ export class AccountComponent implements OnInit {
   myData?: any;
   studentId: any;
   student: any
-  userData?: any;
+  userData: any = {};
   // evaluatorData?: any;
   studentData?: any;
 
 
-  constructor(private auth: Auth, private firestore: Firestore, private authService: AuthService, private studentService: StudentsService, private activatedRoute: ActivatedRoute, private router: Router) {
+  constructor(private auth: Auth, private firestore: Firestore, private authService: AuthService, private studentService: StudentsService, private activatedRoute: ActivatedRoute, private router: Router, private notificationService: PushNotificationService) {
     const messaging = getMessaging();
     onMessage(messaging, (payload) => {
       console.log('Message received. ', payload);
@@ -45,6 +47,8 @@ export class AccountComponent implements OnInit {
 
 
   ngOnInit(): void {
+
+
 
     // https://firebase.google.com/docs/cloud-messaging/js/receive?hl=fr
     // Gérer les messages lorsque l'application Web est au premier plan (l'utilisateur consulte actuellement notre page Web)
@@ -56,31 +60,24 @@ export class AccountComponent implements OnInit {
 
 
     onAuthStateChanged(this.auth, (user: any) => {
+      // impeccable
+      // console.log("this.user dispensé par onAuthStateChanged", this.auth.currentUser);
       if (user) {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
         this.user = user.uid
-        this.myData = this.studentService.getStudentById(user.uid).subscribe();
-        console.log("user.uid", user.uid);
-        console.log("user.email", user.email);
-        console.log("data", this.myData);
 
-        // méthode au top pour faire des requests mais je n'en ai plus besoin :)
-        // this.getStudentsByParam(user.uid)   
+
         this.studentService.getStudentById(user.uid).subscribe(data => {
           console.log("userData from students 0...", data);
           this.userData = data
         })
-        console.log("userData from students 1...", this.userData);
         // y a juste que je n'arrive pas à me la faire livrer par le service !!!
         // this.studentService.getDocsByParam(this.user)
       }
     })
 
-    this.authService.getToken()?.then(res => console.log(res.token))
-    // fonctionne parfaitement !!!!!!!!!!!!!!!!!!
-    this.authService.authStatusListener()
-
+    this.authService.getToken()?.then(res => console.log("token authentification depuis authService", res.token))
   }
 
   onClick() {
@@ -93,28 +90,86 @@ export class AccountComponent implements OnInit {
 
 
   notifyMe() {
+    // alert("coucou")
+
     if (!("Notification" in window)) {
       // Check if the browser supports notifications
       alert("This browser does not support desktop notification");
     } else if (Notification.permission === "granted") {
-      // Check whether notification permissions have already been granted;
+      // Check whether notification permissions have already been granted 
       // if so, create a notification
-      const notification = new Notification("Coucou, vous avez demandé à être notifié !!! ");
+      const notification = new Notification("Coucou, vous avez déjà demandé à être notifié. Votre demande a été prise en compte !!! ");
+      alert(`Notification permission OK : already registered`);
+
+      // c'est là qu'on peut mettre à jour registrationTokens
+      getToken(getMessaging(), { vapidKey: "BOLK9wQoeo2ycP0yK1yTLQG8DlIYM1GnRLe09u3tdnCERUSOwW7iv_QV671oU8Xa4njllE64DbVvHPnrzsgRdpc" })
+        .then((value) => {
+          const newToken: string = value;
+          this.notificationService.registerToken(newToken, this.userData.id)
+        })
+
+
+
       // …
     } else if (Notification.permission !== "denied") {
       // We need to ask the user for permission
+      alert('notification request for push notification')
       Notification.requestPermission().then((permission) => {
         // If the user accepts, let's create a notification
         if (permission === "granted") {
-          const notification = new Notification("Coucou, vous avez demandé à être notifié !!! ");
+          alert("nouveau !!!!")
+          const notification = new Notification("Coucou, vous venez de demander à être notifié !!! ");
+          // c'est là qu'on peut mettre à jour registrationTokens
+          getToken(getMessaging(), { vapidKey: "BOLK9wQoeo2ycP0yK1yTLQG8DlIYM1GnRLe09u3tdnCERUSOwW7iv_QV671oU8Xa4njllE64DbVvHPnrzsgRdpc" })
+            .then((value) => {
+              const newToken: string = value;
+              console.log(newToken);
+              this.notificationService.registerToken(newToken, this.userData.id)
+
+              // this.registrationTokens.push(newToken)
+            });
+
+
+
+
+
+          // …:
+          //      // à externaliser
+          // const messaging = getMessaging()
+          // getToken(messaging, { vapidKey: "BOLK9wQoeo2ycP0yK1yTLQG8DlIYM1GnRLe09u3tdnCERUSOwW7iv_QV671oU8Xa4njllE64DbVvHPnrzsgRdpc" }).then((currentToken) => { 
+
+          //   if (currentToken) { 
+
+          //     // Send the token to your server and update the UI if necessary 
+          //     console.log('currentToken !!!!!!', currentToken);
+
+
+          //     // ... 
+
+          //   } else { 
+
+          //     // Show permission request UI 
+
+          //     console.log('No registration token available. Request permission to generate one.'); 
+
+          //     // ... 
+
+          //   } 
+
+          // }).catch((err) => { 
+
+          //   console.log('An error occurred while retrieving token. ', err); 
+
+          //   // ... 
+
+          // }) 
+
+
           // …
+
         }
       });
     }
-
-    // At last, if the user has denied notifications, and you
-    // want to be respectful there is no need to bother them anymore.
-
   }
 
 

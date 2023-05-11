@@ -1,11 +1,10 @@
 <div class="container py-5">
 
-    <h3>Account Page</h3>
+    <h3>Votre compte BE-ON-TOP</h3>
 
-    <p class="alert bg-info p-2 mt-3">Me sert pour le moment à tester l'authentification utilisateur !!</p>
+    <p class="alert bg-primary text-light p-2 my-3 fs-4 fw-light ">Bonjour {{userData.firstName}}, ceci est votre compte BE-ON-TOP</p>
 
-    <div class="p-2 display-5">Données récupérées non pas grâce à un paramètre de route mais grâce aux données
-        d'authentification de l'utilisateur</div>
+    <div class="p-2 fs-3">Les données ci-dessous ont été récupérées grâce à vos données d'authentification</div>
 
     <div *ngIf="user" class="alert bg-light p-2">
         Id Utilisateur authentifié sur firebase Auth : {{user | json}}
@@ -14,21 +13,83 @@
     <!-- <p class="alert bg-light p-2"> authStatus!==0 : {{authStatus!==0}}</p> -->
     <!-- ne fonctionne pas, mais on s'en tape -->
     <div *ngIf="authStatus">{{authStatus}}</div>
-    <p class="alert bg-success p-2"> user test OK : {{user | json}}</p>
+    <!-- <p class="alert bg-success p-2"> user test OK : {{user | json}}</p> -->
     <!-- <p class="alert bg-success p-2"> userData test OK : {{userData | json}}</p> -->
-
-    <br>
-    <div *ngIf="userData" class="rounded bg-light p-2">
+    <!-- <div *ngIf="userData" class="rounded bg-light p-2">
         <ul class="list-group">
             <li class="list-group-item">Son id sur firestore : {{userData.id}}</li>
-            <li class="list-group-item">Son email sur firestore : {{userData.email}}</li>
-            <li class="list-group-item">Son status sur firestore : {{userData.status}}</li>
-            <li class="list-group-item">Son prénom sur firestore : {{userData.firstName}}</li>
-            <li class="list-group-item">Son nom sur firestore : {{userData.lastName}}</li>
+            <li class="list-group-item">Votre email sur firestore : {{userData.email}}</li>
+            <li class="list-group-item">Votre status sur firestore : {{userData.status}}</li>
+            <li class="list-group-item">Prénom sur firestore : {{userData.firstName}}</li>
+            <li class="list-group-item">Nom sur firestore : {{userData.lastName}}</li>
             <li class="list-group-item">Date d'enregistrement sur firestore : {{userData.created | date:'dd/MM/yyyy' }}</li>
             <li *ngIf="userData.sigle" class="list-group-item">Sigle métier si existant: {{userData.sigle}}</li>
         </ul>
-    </div>
+    </div> -->
+
+    <!-- à faire -->
+    <div id="accordion">
+
+        <div class="card" *ngIf="userData">
+          <div class="card-header bg-dark d-flex justify-content-between">
+            <a class="btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseOne">
+              Vos données personnelles
+            </a><i class="bi bi-person-fill fs-4 text-light"></i>
+          </div>
+          <div id="collapseOne" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+                <div class="rounded p-2">
+                    <ul class="list-group">
+                        <!-- <li class="list-group-item"><span class="fw-bolder">Son id sur firestore :</span>  {{userData.id}}</li> -->
+                        <li class="list-group-item"><span class="fw-bolder">Votre email sur firestore :</span> {{userData.email}}</li>
+                        <!-- <li class="list-group-item"><span class="fw-bolder">Votre status sur firestore :</span> {{userData.status}}</li> -->
+                        <li class="list-group-item"><span class="fw-bolder">Prénom sur firestore :</span> {{userData.firstName}}</li>
+                        <li class="list-group-item"><span class="fw-bolder">Nom sur firestore :</span> {{userData.lastName}}</li>
+                        <li class="list-group-item"><span class="fw-bolder">Date d'enregistrement sur firestore :</span> {{userData.created | date:'dd/MM/yyyy' }}</li>
+                        <li *ngIf="userData.sigle" class="list-group-item">Sigle métier si existant: {{userData.sigle}}</li>
+                    </ul>
+                </div>
+            </div>
+          </div>
+        </div>
+      
+        <div class="card">
+          <div class="card-header bg-dark d-flex justify-content-between">
+            <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseTwo">
+              Votre suivi pédagogique
+            </a><i class="bi bi-clipboard-data-fill fs-4 text-light"></i>
+          </div>
+          <div id="collapseTwo" class="collapse" data-bs-parent="#accordion">
+            <div class="card-body">
+                <div class="rounded p-2">
+                    <ul class="list-group">
+                        <!-- <li class="list-group-item"><span class="fw-bolder">Son id sur firestore :</span>  {{userData.id}}</li> -->
+                        <li class="list-group-item"><span class="fw-bolder">Votre formateur référent :</span> {{userData.trainer}}</li>
+                        <!-- si y a déjà des enregistrements daté des évaluations de suivi pédagogique, on bouclera dessus -->
+                        <!-- si aucune évaluation de suivi jusqu'ici, on le mentionne -->
+                        <li class="list-group-item"><span class="fw-bolder">Pas de suivi consultable pour le moment</span></li>
+                    </ul>
+                </div>
+            </div>
+          </div>
+        </div>
+      
+        <div class="card">
+          <div class="card-header bg-dark d-flex justify-content-between">
+            <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseThree">
+              Votre positionnement
+            </a><i class="bi bi-bar-chart-steps fs-4 text-light"></i>
+          </div>
+          <div id="collapseThree" class="collapse" data-bs-parent="#accordion">
+            <div class="card-body">
+              Lorem ipsum..
+            </div>
+          </div>
+        </div>
+      
+      </div>
+
+      <!-- fin collapse -->
     <button type="submit" class="btn btn-primary mt-4" (click)="notifyMe()">Accepter les notifications</button>
 
 </div>
