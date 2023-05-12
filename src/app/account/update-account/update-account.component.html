@@ -1,0 +1,38 @@
+<div *ngIf="student">
+    <!-- <div class="container py-5"> -->
+        <form class="form" #f="ngForm" (submit)="updateStudent(f)" class="was-validated">
+
+            <input type="text" id="created" [(ngModel)]="student.created" name="created" class="form-control invisible"
+                placeholder="Date de création : non modifiable">
+            <input type="text" id="id" [(ngModel)]="student.id" name="id" class="form-control"
+                placeholder="id d'authentification : non modifiable" class="form-control text-white" disabled>
+            <!--  <input type="text" id="trainer" [(ngModel)]="student.trainer" name="trainer" class="form-control"
+                placeholder="évaluateur : non modifiable" class="form-control text-white" disabled> -->
+
+            <label for="firstName" class="form-label mt-3">Prénom</label>
+            <input type="text" id="firstName" [(ngModel)]="student.firstName" name="firstName" class="form-control"
+                placeholder="Prénom">
+
+            <label for="lastname" class="form-label mt-3">Nom *</label>
+            <input type="text" id="lastName" [(ngModel)]="student.lastName" name="lastName" class="form-control"
+                #lastName="ngModel" placeholder="Nom" required>
+            <div class="valid-feedback" *ngIf="lastName.valid">Champ correctement renseigné</div>
+            <div class="invalid-feedback" *ngIf="lastName.invalid">Merci de renseigner le champ nom.</div>
+
+            <label for="email" class="form-label mt-3 disabled text">Email *</label>
+            <div class="input-group">
+                <span class="input-group-text" id="inputGroupPrepend2">@</span>
+                <input type="email" id="email" [(ngModel)]="student.email" name="email" class="form-control text-white"
+                    #email="ngModel" placeholder="Email" disabled>
+            </div>
+
+            <label for="cp" class="form-label mt-3">CP</label>
+            <input type="text" id="cp" [(ngModel)]="student.cp" name="cp" class="form-control"
+                placeholder="Code Postal Optionnel...">
+            <button type="submit" id="submit" class="btn btn-primary mt-3"
+                [ngClass]="{'disabled':f.invalid}">Valider</button>
+        </form>
+
+
+    <!-- </div> -->
+</div>

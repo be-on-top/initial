@@ -101,6 +101,25 @@ export class StudentsService {
     // }
   }
 
+  
+  async deleteAccount() {
+  
+      if (this.auth.currentUser) {
+        await this.auth.currentUser.delete(); 
+        console.log('Compte utilisateur auth supprimé.');
+      } 
+
+
+
+    // try {
+    //   await deleteDoc(studentRef);
+    //   console.log(`Student with id=${student.id} deleted from firebase successfully`);
+    // } catch (error) {
+    //   console.error(`Error deleting student from firebase with id=${student.id}: `, error);
+    // }
+    
+  }
+
   updateStudent(id: string, student: any) {
     // let $studentRef = doc(this.firestore, "students/" + id);
     // setDoc($studentRef, student);

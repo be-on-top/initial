@@ -26,7 +26,10 @@ import { HeaderComponent } from './header/header.component';
 import { RegisterComponent } from './register/register.component';
 import { ServiceWorkerModule} from '@angular/service-worker';
 import { AccountComponent } from './account/account.component';
+// pour appliquer à la lettre la division des tâches. ceci ne me semble pourtant pas très pertinent ici. 
+import { UpdateAccountComponent } from './account/update-account/update-account.component';
 // import { getMessaging } from 'firebase/messaging';
+
 
 
 @NgModule({
@@ -36,7 +39,8 @@ import { AccountComponent } from './account/account.component';
     HomeComponent,
     HeaderComponent,
     RegisterComponent,
-    AccountComponent
+    AccountComponent,
+    UpdateAccountComponent
   ],
   imports: [
     BrowserModule,

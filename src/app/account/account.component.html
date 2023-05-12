@@ -2,7 +2,8 @@
 
     <h3>Votre compte BE-ON-TOP</h3>
 
-    <p class="alert bg-primary text-light p-2 my-3 fs-4 fw-light ">Bonjour {{userData.firstName}}, ceci est votre compte BE-ON-TOP</p>
+    <p class="alert bg-primary text-light p-2 my-3 fs-4 fw-light ">Bonjour {{userData.firstName}}, ceci est votre compte
+        BE-ON-TOP</p>
 
     <div class="p-2 fs-3">Les données ci-dessous ont été récupérées grâce à vos données d'authentification</div>
 
@@ -31,65 +32,97 @@
     <div id="accordion">
 
         <div class="card" *ngIf="userData">
-          <div class="card-header bg-dark d-flex justify-content-between">
-            <a class="btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseOne">
-              Vos données personnelles
-            </a><i class="bi bi-person-fill fs-4 text-light"></i>
-          </div>
-          <div id="collapseOne" class="collapse show" data-bs-parent="#accordion">
-            <div class="card-body">
-                <div class="rounded p-2">
-                    <ul class="list-group">
-                        <!-- <li class="list-group-item"><span class="fw-bolder">Son id sur firestore :</span>  {{userData.id}}</li> -->
-                        <li class="list-group-item"><span class="fw-bolder">Votre email sur firestore :</span> {{userData.email}}</li>
-                        <!-- <li class="list-group-item"><span class="fw-bolder">Votre status sur firestore :</span> {{userData.status}}</li> -->
-                        <li class="list-group-item"><span class="fw-bolder">Prénom sur firestore :</span> {{userData.firstName}}</li>
-                        <li class="list-group-item"><span class="fw-bolder">Nom sur firestore :</span> {{userData.lastName}}</li>
-                        <li class="list-group-item"><span class="fw-bolder">Date d'enregistrement sur firestore :</span> {{userData.created | date:'dd/MM/yyyy' }}</li>
-                        <li *ngIf="userData.sigle" class="list-group-item">Sigle métier si existant: {{userData.sigle}}</li>
-                    </ul>
+            <div class="card-header bg-dark d-flex justify-content-between">
+                <a class="btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseOne">
+                    Vos données personnelles
+                </a><i class="bi bi-person-fill fs-4 text-light"></i>
+            </div>
+
+
+            <div id="collapseOne" class="collapse show" data-bs-parent="#accordion">
+                <div class="card-body">
+                    <div class="rounded p-2">
+                        <ul class="list-group">
+                            <!-- <li class="list-group-item"><span class="fw-bolder">Son id sur firestore :</span>  {{userData.id}}</li> -->
+                            <li class="list-group-item"><span class="fw-bolder">Votre email sur firestore :</span>
+                                {{userData.email}}</li>
+                            <!-- <li class="list-group-item"><span class="fw-bolder">Votre status sur firestore :</span> {{userData.status}}</li> -->
+                            <li class="list-group-item"><span class="fw-bolder">Prénom sur firestore :</span>
+                                {{userData.firstName}}</li>
+                            <li class="list-group-item"><span class="fw-bolder">Nom sur firestore :</span>
+                                {{userData.lastName}}</li>
+                            <li class="list-group-item"><span class="fw-bolder">Date d'enregistrement sur firestore
+                                    :</span> {{userData.created | date:'dd/MM/yyyy' }}</li>
+                            <li *ngIf="userData.sigle" class="list-group-item">Sigle métier si existant:
+                                {{userData.sigle}}</li>
+                        </ul>
+
+                        <!-- option édition avec modale -->
+                        <button class="btn bg-dark mt-3" data-bs-toggle="modal" data-bs-target="#myModal">
+                            <i class="bi bi-pencil-square text-light p-0"></i>Modifier
+                            <!-- <a (click)="delete()"><i class="bi bi-person-x-fill fs-4 text-light "></i></a> -->
+                        </button>
+                        <!-- The Modal -->
+                        <div class="modal" id="myModal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <!-- Modal Header -->
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Modification</h4>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <!-- Modal body avec passage de userData -->
+                                    <app-update-account class="modal-body" [student]="userData"></app-update-account>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- fin de l'option édition avec modale -->
+                    </div>
+                </div>
+
+            </div>
+            <div class="card">
+                <div class="card-header bg-dark d-flex justify-content-between">
+                    <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseTwo">
+                        Votre suivi pédagogique
+                    </a><i class="bi bi-clipboard-data-fill fs-4 text-light"></i>
+                </div>
+                <div id="collapseTwo" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        <div class="rounded p-2">
+                            <ul class="list-group">
+                                <!-- <li class="list-group-item"><span class="fw-bolder">Son id sur firestore :</span>  {{userData.id}}</li> -->
+                                <li class="list-group-item"><span class="fw-bolder">Votre formateur référent
+                                        :</span>
+                                    {{userData.trainer}}</li>
+                                <!-- si y a déjà des enregistrements daté des évaluations de suivi pédagogique, on bouclera dessus -->
+                                <!-- si aucune évaluation de suivi jusqu'ici, on le mentionne -->
+                                <li class="list-group-item"><span class="fw-bolder">Pas de suivi consultable
+                                        pour le
+                                        moment</span></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
-          </div>
-        </div>
-      
-        <div class="card">
-          <div class="card-header bg-dark d-flex justify-content-between">
-            <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseTwo">
-              Votre suivi pédagogique
-            </a><i class="bi bi-clipboard-data-fill fs-4 text-light"></i>
-          </div>
-          <div id="collapseTwo" class="collapse" data-bs-parent="#accordion">
-            <div class="card-body">
-                <div class="rounded p-2">
-                    <ul class="list-group">
-                        <!-- <li class="list-group-item"><span class="fw-bolder">Son id sur firestore :</span>  {{userData.id}}</li> -->
-                        <li class="list-group-item"><span class="fw-bolder">Votre formateur référent :</span> {{userData.trainer}}</li>
-                        <!-- si y a déjà des enregistrements daté des évaluations de suivi pédagogique, on bouclera dessus -->
-                        <!-- si aucune évaluation de suivi jusqu'ici, on le mentionne -->
-                        <li class="list-group-item"><span class="fw-bolder">Pas de suivi consultable pour le moment</span></li>
-                    </ul>
+
+            <div class="card">
+                <div class="card-header bg-dark d-flex justify-content-between">
+                    <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseThree">
+                        Votre positionnement
+                    </a><i class="bi bi-bar-chart-steps fs-4 text-light"></i>
+                </div>
+                <div id="collapseThree" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        Lorem ipsum..
+                    </div>
                 </div>
             </div>
-          </div>
-        </div>
-      
-        <div class="card">
-          <div class="card-header bg-dark d-flex justify-content-between">
-            <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseThree">
-              Votre positionnement
-            </a><i class="bi bi-bar-chart-steps fs-4 text-light"></i>
-          </div>
-          <div id="collapseThree" class="collapse" data-bs-parent="#accordion">
-            <div class="card-body">
-              Lorem ipsum..
-            </div>
-          </div>
-        </div>
-      
-      </div>
 
-      <!-- fin collapse -->
-    <button type="submit" class="btn btn-primary mt-4" (click)="notifyMe()">Accepter les notifications</button>
+        </div>
 
-</div>
+        <!-- fin collapse -->
+        <button type="submit" class="btn btn-primary mt-4" (click)="notifyMe()">Accepter les
+            notifications</button>
+
+    </div>

@@ -14,9 +14,6 @@ import { StudentsService } from '../admin/students.service';
 import { getMessaging, getToken, onMessage } from "@angular/fire/messaging";
 import { PushNotificationService } from '../push-notification.service';
 
-
-
-
 @Component({
   selector: 'app-home',
   templateUrl: './account.component.html',
@@ -35,6 +32,8 @@ export class AccountComponent implements OnInit {
   userData: any = {};
   // evaluatorData?: any;
   studentData?: any;
+  // pour afficher le formulaire d'édition
+  editMode:boolean=false
 
 
   constructor(private auth: Auth, private firestore: Firestore, private authService: AuthService, private studentService: StudentsService, private activatedRoute: ActivatedRoute, private router: Router, private notificationService: PushNotificationService) {
@@ -108,8 +107,6 @@ export class AccountComponent implements OnInit {
           this.notificationService.registerToken(newToken, this.userData.id)
         })
 
-
-
       // …
     } else if (Notification.permission !== "denied") {
       // We need to ask the user for permission
@@ -125,52 +122,19 @@ export class AccountComponent implements OnInit {
               const newToken: string = value;
               console.log(newToken);
               this.notificationService.registerToken(newToken, this.userData.id)
-
-              // this.registrationTokens.push(newToken)
             });
-
-
-
-
-
-          // …:
-          //      // à externaliser
-          // const messaging = getMessaging()
-          // getToken(messaging, { vapidKey: "BOLK9wQoeo2ycP0yK1yTLQG8DlIYM1GnRLe09u3tdnCERUSOwW7iv_QV671oU8Xa4njllE64DbVvHPnrzsgRdpc" }).then((currentToken) => { 
-
-          //   if (currentToken) { 
-
-          //     // Send the token to your server and update the UI if necessary 
-          //     console.log('currentToken !!!!!!', currentToken);
-
-
-          //     // ... 
-
-          //   } else { 
-
-          //     // Show permission request UI 
-
-          //     console.log('No registration token available. Request permission to generate one.'); 
-
-          //     // ... 
-
-          //   } 
-
-          // }).catch((err) => { 
-
-          //   console.log('An error occurred while retrieving token. ', err); 
-
-          //   // ... 
-
-          // }) 
-
-
-          // …
-
         }
       });
     }
   }
 
+  edit(){
+    this.editMode=true
+  }
+
+  delete() {
+    /* console.log("data à supprimer", userData);   */
+    this.studentService.deleteAccount();
+  }
 
 }
