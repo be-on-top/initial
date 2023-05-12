@@ -35,6 +35,8 @@ export class AccountComponent implements OnInit {
   // pour afficher le formulaire d'édition
   editMode:boolean=false
 
+  feedbackMessages:any
+
 
   constructor(private auth: Auth, private firestore: Firestore, private authService: AuthService, private studentService: StudentsService, private activatedRoute: ActivatedRoute, private router: Router, private notificationService: PushNotificationService) {
     const messaging = getMessaging();
@@ -136,5 +138,11 @@ export class AccountComponent implements OnInit {
     /* console.log("data à supprimer", userData);   */
     this.studentService.deleteAccount();
   }
+
+    // pour utiliser le composant de recherche
+    onValidFeedback(feedbackMessages: string) {
+      this.feedbackMessages = feedbackMessages
+
+    }
 
 }

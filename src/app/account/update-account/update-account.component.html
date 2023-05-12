@@ -1,13 +1,12 @@
 <div *ngIf="student">
     <!-- <div class="container py-5"> -->
+        <app-feedback-messages [feedbackMessages]="feedbackMessages" [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
         <form class="form" #f="ngForm" (submit)="updateStudent(f)" class="was-validated">
 
             <input type="text" id="created" [(ngModel)]="student.created" name="created" class="form-control invisible"
                 placeholder="Date de création : non modifiable">
             <input type="text" id="id" [(ngModel)]="student.id" name="id" class="form-control"
                 placeholder="id d'authentification : non modifiable" class="form-control text-white" disabled>
-            <!--  <input type="text" id="trainer" [(ngModel)]="student.trainer" name="trainer" class="form-control"
-                placeholder="évaluateur : non modifiable" class="form-control text-white" disabled> -->
 
             <label for="firstName" class="form-label mt-3">Prénom</label>
             <input type="text" id="firstName" [(ngModel)]="student.firstName" name="firstName" class="form-control"
@@ -30,7 +29,7 @@
             <input type="text" id="cp" [(ngModel)]="student.cp" name="cp" class="form-control"
                 placeholder="Code Postal Optionnel...">
             <button type="submit" id="submit" class="btn btn-primary mt-3"
-                [ngClass]="{'disabled':f.invalid}">Valider</button>
+                [ngClass]="{'disabled':f.invalid}" data-bs-toggle="collapse" data-bs-target="#demo">Valider</button>
         </form>
 
 

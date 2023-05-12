@@ -19,6 +19,19 @@ export class UpdateAccountComponent {
   // va recevoir la data de student depuis account 
   @Input() student: any;
 
+  // variables à passer à feedbackMessages component pour retours de firebase sur la soumission
+  feedbackMessages?: any = ""
+  isSuccessMessage: boolean = true
+  // essai pour personnaliser les messages
+  // https://firebase.google.com/docs/auth/admin/errors?hl=fr
+  // firebaseErrors:any = {
+  //   'auth/user-not-found': 'Aucun utilisateur ne correspond à cet email',
+  //   'auth/email-already-in-use': 'Cet email est déjà utilisé pour un autre compte',
+  //   'auth/wrong-password' : 'Le mot de passe est incorrect',
+  //   'auth/invalid-email' : 'Aucun enregistrement ne correspond au mail fourni'
+  // }; // list of firebase error codes to alternate error messages
+
+
   constructor(private service: StudentsService, private router: Router) {
 
   }
@@ -29,10 +42,12 @@ export class UpdateAccountComponent {
       /* console.log('form valid'); */
       return
     }
-    /* console.log("form update values", form.value); */
-    this.service.updateStudent(this.studentId, form.value)
-    // il faudra prévoir une redirection... 
-    this.router.navigate(['/admin/student', this.studentId])
+    console.log("form update values", form.value);
+    this.service.updateStudent(this.student.id, form.value)
+
+    // this.feedbackMessages = `Enregistrement OK`;
+    // this.isSuccessMessage = true
+
   }
 
 }
