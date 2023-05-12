@@ -57,27 +57,32 @@
                                 {{userData.sigle}}</li>
                         </ul>
 
-                        <!-- option édition avec modale -->
-                        <button class="btn bg-dark mt-3" data-bs-toggle="modal" data-bs-target="#myModal">
+                        <!-- option avec déroulé -->
+                        <button class="btn bg-dark mt-3 text-light" data-bs-toggle="collapse" data-bs-target="#demo">
                             <i class="bi bi-pencil-square text-light p-0"></i>Modifier
-                            <!-- <a (click)="delete()"><i class="bi bi-person-x-fill fs-4 text-light "></i></a> -->
                         </button>
-                        <!-- The Modal -->
+                        <div id="demo" class="collapse">
+                            <app-update-account [student]="userData"></app-update-account>
+                        </div>
+
+                        <!-- option édition avec modale -->
+                        <!-- <button class="btn bg-dark mt-3 text-light" data-bs-toggle="modal" data-bs-target="#myModal">
+                            <i class="bi bi-pencil-square text-light p-0"></i>Modifier
+                        </button>
                         <div class="modal" id="myModal">
                             <div class="modal-dialog">
                                 <div class="modal-content">
-                                    <!-- Modal Header -->
                                     <div class="modal-header">
                                         <h4 class="modal-title">Modification</h4>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                     </div>
-                                    <!-- Modal body avec passage de userData -->
                                     <app-update-account class="modal-body" [student]="userData"></app-update-account>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <!-- fin de l'option édition avec modale -->
                     </div>
+
                 </div>
 
             </div>
