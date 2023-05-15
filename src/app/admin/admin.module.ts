@@ -37,6 +37,7 @@ import { TrainerDetailsComponent } from './Trainers/trainer-details/trainer-deta
 import { UpdateTrainerComponent } from './Trainers/update-trainer/update-trainer.component';
 // essai mutualisation du ts et template
 import { UsersListComponent } from './shared/users-list.component';
+import { SettingsComponent } from './settings/settings/settings.component';
 // import { AccountComponent } from '../account/account.component';
 // import { RoleGuardGuard } from '../role-guard.guard';
 
@@ -73,7 +74,9 @@ const routesAdmin: Routes = [
       { path: 'fullForm', component: FullFormComponent },
       { path: 'fullList', component: FullListComponent },
       { path: 'fullDetails', component: FullDetailsComponent },
-      { path: 'updateFull/:id', component: UpdateFullComponent }
+      { path: 'updateFull/:id', component: UpdateFullComponent }, 
+      { path: 'settings', component: SettingsComponent }, 
+
     ],
     // canActivate: [AuthGuardService]
     // canActivate: [AuthGuardService, RoleGuardGuard], data: {
@@ -90,7 +93,7 @@ const routesAdmin: Routes = [
     EvaluatorsListComponent,
     AddEvaluatorComponent,
     EvaluatorDetailsComponent,
-    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent, UpdateSocialComponent, SocialDetailsComponent, FullFormComponent, FullListComponent, FullDetailsComponent, UpdateFullComponent, LoginComponent, SearchComponent, StudentDetailsComponent, StudentsListComponent, UpdateStudentComponent, FeedbackMessagesComponent, AddTrainerComponent, TrainersListComponent, TrainerDetailsComponent, UpdateTrainerComponent, UsersListComponent
+    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent, UpdateSocialComponent, SocialDetailsComponent, FullFormComponent, FullListComponent, FullDetailsComponent, UpdateFullComponent, LoginComponent, SearchComponent, StudentDetailsComponent, StudentsListComponent, UpdateStudentComponent, FeedbackMessagesComponent, AddTrainerComponent, TrainersListComponent, TrainerDetailsComponent, UpdateTrainerComponent, UsersListComponent, SettingsComponent
   ],
   imports: [
     BrowserModule,
