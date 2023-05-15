@@ -103,11 +103,20 @@ export class StudentsService {
 
   
   async deleteAccount() {
-  
+
+    try {
       if (this.auth.currentUser) {
         await this.auth.currentUser.delete(); 
         console.log('Compte utilisateur auth supprimé.');
       } 
+      
+    } catch (error) {
+      console.log(error);
+      
+      
+    }
+  
+
 
 
 

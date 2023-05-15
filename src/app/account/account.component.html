@@ -40,7 +40,7 @@
 
             <div id="collapseOne" class="collapse show" data-bs-parent="#accordion">
                 <div class="card-body">
-                    <div class="rounded p-2">
+                    <div class="rounded p-2" id="actual" #actual>
                         <ul class="list-group">
                             <!-- <li class="list-group-item"><span class="fw-bolder">Son id sur firestore :</span>  {{userData.id}}</li> -->
                             <li class="list-group-item"><span class="fw-bolder">Votre email sur firestore :</span>
@@ -57,9 +57,17 @@
                         </ul>
 
                         <!-- option avec déroulé -->
-                        <button class="btn bg-dark mt-3 text-light" data-bs-toggle="collapse" data-bs-target="#demo">
-                            <i class="bi bi-pencil-square text-light p-0"></i>Modifier
-                        </button>
+                        <div class="d-flex gap-1">
+                            <button class="btn bg-dark mt-3 text-light" data-bs-toggle="collapse"
+                                data-bs-target="#demo">
+                                <i class="bi bi-pencil-square text-light p-0"></i><span
+                                    (click)="toogleText()">{{editButtonLabel}}</span>
+                            </button>
+                            <!-- ajout d'un bouton supprimer -->
+                            <button class="btn bg-danger mt-3 text-light" (click)="delete()">
+                                Supprimer
+                            </button>
+                        </div>
                         <div id="demo" class="collapse">
                             <app-update-account [student]="userData"></app-update-account>
                         </div>
@@ -99,7 +107,7 @@
                                 <li class="list-group-item"><span class="fw-bolder">Votre formateur référent
                                         :</span>
                                     {{userData.trainer}}</li>
-                                <!-- si y a déjà des enregistrements daté des évaluations de suivi pédagogique, on bouclera dessus -->
+                                <!-- si y a déjà des enregistrements datés des évaluations de suivi pédagogique, on bouclera dessus -->
                                 <!-- si aucune évaluation de suivi jusqu'ici, on le mentionne -->
                                 <li class="list-group-item"><span class="fw-bolder">Pas de suivi consultable
                                         pour le
@@ -128,5 +136,4 @@
         <!-- fin collapse -->
         <button type="submit" class="btn btn-primary mt-4" (click)="notifyMe()">Accepter les
             notifications</button>
-
     </div>

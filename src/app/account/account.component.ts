@@ -36,6 +36,7 @@ export class AccountComponent implements OnInit {
   editMode:boolean=false
 
   feedbackMessages:any
+  editButtonLabel:string="Modifier"
 
 
   constructor(private auth: Auth, private firestore: Firestore, private authService: AuthService, private studentService: StudentsService, private activatedRoute: ActivatedRoute, private router: Router, private notificationService: PushNotificationService) {
@@ -130,13 +131,41 @@ export class AccountComponent implements OnInit {
     }
   }
 
+  focus(){
+    let myDoc:any= document.querySelector("#demo");
+    myDoc.focus()
+  }
+
+  toogleItem(item:string){
+    let x:any= document.getElementById(item);
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }    
+
+  }
+  
+  toogleText() {
+    // you should set this values to their default for finishing loading state
+    // you can either do this in a another method which you run on the success or fail scenarios for subscribtion.
+    // Or you can use setTimeout to set back to default values after a certain time.
+
+    this.editButtonLabel == 'Modifier'? this.editButtonLabel = 'Annuler' : this.editButtonLabel = 'Modifier';
+    /*
+    setTimeout(() => {
+      this.loading = false;
+      this.subscribeButtonLabel = 'Subscribe';
+    }, 1000); // sets back to default values after 1 sec.
+    */
+  }
   edit(){
     this.editMode=true
   }
 
   delete() {
     /* console.log("data à supprimer", userData);   */
-    this.studentService.deleteAccount();
+    // this.studentService.deleteAccount();
   }
 
     // pour utiliser le composant de recherche
