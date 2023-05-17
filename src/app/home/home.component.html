@@ -13,23 +13,16 @@
         </div>
     </div>
 
-    <p class="alert bg-info p-2 mt-3">Me sert pour le moment à tester l'authentification utilisateur !!</p>
+    <p class="alert bg-success p-2 mt-3 fs-5">Me sert pour le moment à tester l'authentification utilisateur, la récupération des sigles métiers pour boucler dessus et afficher chaque zone. Zones qui seront éditables pour le seul utilisateur ayant le role d'éditeur !!</p>
 
-    <div class="p-2 display-5">Données récupérées non pas grâce à un paramètre de route mais grâce aux données
-        d'authentification de l'utilisateur</div>
+    <!-- <div class="p-2 display-5">Données récupérées non pas grâce à un paramètre de route mais grâce aux données
+        d'authentification de l'utilisateur</div> -->
 
     <div *ngIf="user" class="alert bg-light p-2">
         Id Utilisateur authentifié sur firebase Auth : {{user | json}}
     </div>
 
-    <!-- <p class="alert bg-light p-2"> authStatus!==0 : {{authStatus!==0}}</p> -->
-    <!-- ne fonctionne pas, mais on s'en tape -->
-    <div *ngIf="authStatus">{{authStatus}}</div>
-    <p class="alert bg-success p-2"> user test OK : {{user | json}}</p>
-    <!-- <p class="alert bg-success p-2"> userData test OK : {{userData | json}}</p> -->
-
-    <br>
-    <div *ngIf="userData" class="rounded bg-light p-2">
+    <!-- <div *ngIf="userData" class="rounded bg-light p-2">
         <ul class="list-group">
             <li class="list-group-item">Son id sur firestore : {{userData.id}}</li>
             <li class="list-group-item">Son email sur firestore : {{userData.email}}</li>
@@ -40,9 +33,27 @@
             </li>
             <li *ngIf="userData.sigle" class="list-group-item">Sigle métier si existant: {{userData.sigle}}</li>
         </ul>
+    </div> -->
+
+    <div *ngIf="tradesData" class="rounded bg-light row column-gap-1">
+
+        <div class="col-6" *ngFor="let trade of tradesData">
+            <div class="card my-3">
+                <div class="card-body">
+                    <!-- <h4 class="card-title">id : {{student.id}}</h4> -->
+                    <!-- <p class="card-text"><span class="fw-bold">Son sigle (référence métier) sur firestore : </span> : {{trade.sigle}}</p> -->
+                    <p class="card-text"><span class="fw-bold">Dénomination: </span> : {{trade.denomination}}</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
+                    <div *ngIf="isEditor=='editor'" class="d-flex justify-content-end"><button class="btn btn-transparent"><i class="bi bi-pencil-square"></i>
+                            Editer</button></div>
+    
+                    <!-- à tester : (str.length>6)? (str | slice:0:6)+'...':(str) -->
+                </div>
+                <div class="card-footer text-muted">Réf. {{trade.sigle}}</div>
+            </div>
+        </div>
     </div>
 
     <button class="btn btn-primary mt-4" (click)="notifyMe()">Accepter les notifications</button>
 
 </div>
-

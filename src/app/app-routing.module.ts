@@ -5,6 +5,7 @@ import { AccountComponent } from './account/account.component';
 
 const routes: Routes = [
   { path: '', component:HomeComponent },
+  { path: 'home/:userRole', component:HomeComponent },
   { path: 'admin', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'account', component: AccountComponent }
   

@@ -1,6 +1,6 @@
 <div class="container py-5">
 
-    <h3>Gestion des Formateurs</h3>
+    <h3>Gestion des Utilisateurs</h3>
     <hr>
     <div *ngIf="(!allUsers)">
         ...loading
@@ -27,6 +27,7 @@
                     <!-- <a [routerLink]="['/admin/user', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a> -->
                     <a *ngIf="userRouterLinks.user==='trainer'" [routerLink]="['/admin/trainer', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
                     <a *ngIf="userRouterLinks.user==='evaluator'" [routerLink]="['/admin/evaluator', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
+                    <a *ngIf="userRouterLinks.user==='editor'" [routerLink]="['/admin/user', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
                 </button></div>
             </div>
         </div>
@@ -36,6 +37,7 @@
                 <!-- <a [routerLink]="['/admin/addUser']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a> -->
                 <a *ngIf="userRouterLinks.user==='trainer'" [routerLink]="['/admin/addTrainer']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a>
                 <a *ngIf="userRouterLinks.user==='evaluator'" [routerLink]="['/admin/addEvaluator']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a>
+                <a *ngIf="userRouterLinks.user==='editor'" [routerLink]="['/admin/addUser']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a>
             </button></div>
         </div>
 

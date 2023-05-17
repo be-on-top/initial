@@ -45,7 +45,7 @@ export class AddTrainerComponent {
   }
 
 
-  async addTrainer(form: any) {
+  async addTrainer(form: NgForm) {
     // on vérifie la validité du formulaire
     if (!form.valid) {
       console.log('form valid');

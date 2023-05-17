@@ -7,7 +7,7 @@ import { EvaluatorsListComponent } from './Evaluators/evaluators-list/evaluators
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { AddEvaluatorComponent } from './Evaluators/add-evaluator/add-evaluator.component';
 import { EvaluatorDetailsComponent } from './Evaluators/evaluator-details/evaluator-details.component';
 import { UpdateEvaluatorComponent } from './Evaluators/update-evaluator/update-evaluator.component';
@@ -38,6 +38,9 @@ import { UpdateTrainerComponent } from './Trainers/update-trainer/update-trainer
 // essai mutualisation du ts et template
 import { UsersListComponent } from './shared/users-list.component';
 import { SettingsComponent } from './settings/settings/settings.component';
+import { UserDetailsComponent } from './Users/user-details/user-details.component';
+import { UpdateUserComponent } from './Users/update-user/update-user.component';
+import { AddUserComponent } from './Users/add-user/add-user.component';
 // import { AccountComponent } from '../account/account.component';
 // import { RoleGuardGuard } from '../role-guard.guard';
 
@@ -61,6 +64,13 @@ const routesAdmin: Routes = [
       { path: 'trainer/:id', component: TrainerDetailsComponent },
       { path: 'updateTrainer/:id', component: UpdateTrainerComponent },
       { path: 'updateEvaluator/:id', component: UpdateEvaluatorComponent },
+      
+      // l'éditeur est générique pour l'esssai. on va conserver une route distincte pour le moment (?)
+      { path: 'users', component: UsersListComponent, data: { user: 'editor' } },
+      { path: 'addUser', component: AddUserComponent },
+      { path: 'user/:id', component: UserDetailsComponent },
+      { path: 'updateUser/:id', component: UpdateUserComponent },
+
       { path: 'students', component: StudentsListComponent },
       { path: 'student/:id', component: StudentDetailsComponent },
       { path: 'updateStudent/:id', component: UpdateStudentComponent },
@@ -74,8 +84,8 @@ const routesAdmin: Routes = [
       { path: 'fullForm', component: FullFormComponent },
       { path: 'fullList', component: FullListComponent },
       { path: 'fullDetails', component: FullDetailsComponent },
-      { path: 'updateFull/:id', component: UpdateFullComponent }, 
-      { path: 'settings', component: SettingsComponent }, 
+      { path: 'updateFull/:id', component: UpdateFullComponent },
+      { path: 'settings', component: SettingsComponent },
 
     ],
     // canActivate: [AuthGuardService]
@@ -93,14 +103,14 @@ const routesAdmin: Routes = [
     EvaluatorsListComponent,
     AddEvaluatorComponent,
     EvaluatorDetailsComponent,
-    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent, UpdateSocialComponent, SocialDetailsComponent, FullFormComponent, FullListComponent, FullDetailsComponent, UpdateFullComponent, LoginComponent, SearchComponent, StudentDetailsComponent, StudentsListComponent, UpdateStudentComponent, FeedbackMessagesComponent, AddTrainerComponent, TrainersListComponent, TrainerDetailsComponent, UpdateTrainerComponent, UsersListComponent, SettingsComponent
+    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent, UpdateSocialComponent, SocialDetailsComponent, FullFormComponent, FullListComponent, FullDetailsComponent, UpdateFullComponent, LoginComponent, SearchComponent, StudentDetailsComponent, StudentsListComponent, UpdateStudentComponent, FeedbackMessagesComponent, AddTrainerComponent, TrainersListComponent, TrainerDetailsComponent, UpdateTrainerComponent, UsersListComponent, SettingsComponent, AddUserComponent, UserDetailsComponent, UpdateUserComponent
   ],
   imports: [
     BrowserModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule,    
+    HttpClientModule,
     RouterModule.forChild(routesAdmin)
   ],
   exports: [

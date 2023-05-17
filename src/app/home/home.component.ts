@@ -20,6 +20,9 @@ import { SwPush } from '@angular/service-worker';
 import { getMessaging } from "firebase/messaging/sw";
 import { onBackgroundMessage } from "firebase/messaging/sw";
 import { getToken } from 'firebase/messaging';
+import { SettingsService } from '../admin/settings.service';
+import { Trades } from '../admin/trades';
+import { Observable } from 'rxjs';
 
 
 
@@ -53,8 +56,14 @@ export class HomeComponent implements OnInit {
   // test transmission d'une liste de jetons d'enregistrement
   registrationTokens?: any
 
+  tradesData?:any
 
-  constructor(private notificationService: PushNotificationService, private auth: Auth, private firestore: Firestore, private authService: AuthService, private evaluatorService: EvaluatorsService, private activatedRoute: ActivatedRoute, private router: Router, readonly swPush: SwPush) {
+  isEditor:string=""
+
+  constructor(private notificationService: PushNotificationService, private auth: Auth, private firestore: Firestore, private authService: AuthService, private evaluatorService: EvaluatorsService, private ac: ActivatedRoute, private router: Router, readonly swPush: SwPush, private settingsService:SettingsService) {
+    // pour savoir si l'utilisateur est éditeur sans interroger firestore, on peut (?) récupérer userRole livré en paramètre de route
+    this.isEditor=this.ac.snapshot.params["userRole"];
+    
     // this.user = this.auth.currentUser
     this.evaluatorId = this.auth.currentUser
     console.log("evaluatorId", this.evaluatorId);
@@ -139,7 +148,7 @@ export class HomeComponent implements OnInit {
         this.getStudentsByParam(user.uid)
         console.log("userData from students or evaluators...", this.userData);
 
-        // y a juste que je n'arrive pas à me la faire livrer pa le service !!!
+        // y a juste que je n'arrive pas à me la faire livrer par le service !!!
         // this.evaluatorService.getDocsByParam(this.user)
 
       }
@@ -175,6 +184,8 @@ export class HomeComponent implements OnInit {
     this.subscribeToPush()
     this.getSubscription();
 
+    // pour récupérer les métiers (sigles) enregistrés en base qui détermineront les différentes zones éditioriales
+    this.settingsService.getTrades().subscribe(data=>this.tradesData=data)
   }
 
   getSubscription() {
