@@ -1,31 +1,49 @@
 <div class="container py-5">
 
-    <h3>Paramètres de l'application BE-ON-TOP</h3>
-    <!-- <app-feedback-messages [feedbackMessages]="feedbackMessages" [isSuccessMessage]="isSuccessMessage"></app-feedback-messages> -->
-    <form #settingsForm="ngForm" class="mt-4" (submit)="addSettings(settingsForm)" class="was-validated">
+  <h3>Paramètres de l'application BE-ON-TOP</h3>
+  <!-- <app-feedback-messages [feedbackMessages]="feedbackMessages" [isSuccessMessage]="isSuccessMessage"></app-feedback-messages> -->
+  <form #settingsForm="ngForm" class="mt-4" (submit)="addSettings(settingsForm)" class="was-validated">
 
-        <div class="form-group">
-          <label for="sigle">Sigle</label>
-          <input type="text" name="sigle" ngModel #sigle="ngModel" class="form-control" required minlength="3">
-            <div
-            *ngIf="sigle.dirty || (sigle.touched && sigle.invalid)"
-            class="invalid-feedback">
-            Veuillez fournir un sigle valide.
-          </div>
-          <label for="denomination">Dénomination</label>
-          <input type="text" name="denomination" ngModel #denomination="ngModel" class="form-control" required minlength="3">
-            <div
-            *ngIf="denomination.dirty || (denomination.touched && denomination.invalid)"
-            class="invalid-feedback">
-            Veuillez fournir une dénomination valide.
-          </div>
-          <div *ngIf="sigle.valid" class="valid-feedback">
-            Nom valide.
-          </div>
-        </div>        
-  
-        <button type="submit" class="btn btn-primary mt-4" [disabled]=settingsForm.invalid>Ajouter</button>
-      </form>
+    <div class="form-group">
+      <label for="sigle" class="form-label mt-3">Sigle</label>
+      <input type="text" name="sigle" ngModel #sigle="ngModel" class="form-control" required minlength="3">
+      <div *ngIf="sigle.dirty || (sigle.touched && sigle.invalid)" class="invalid-feedback">
+        Veuillez fournir un sigle valide.
+      </div>
+      <label for="denomination" class="form-label mt-3">Dénomination</label>
+      <input type="text" name="denomination" ngModel #denomination="ngModel" class="form-control" required
+        minlength="3">
+      <div *ngIf="denomination.dirty || (denomination.touched && denomination.invalid)" class="invalid-feedback">
+        Veuillez fournir une dénomination valide.
+      </div>
+      <div *ngIf="sigle.valid" class="valid-feedback">
+        Nom valide.
+      </div>
+      <!-- pour arrêter le nombre de compétences par métier -->
+      <label for="totalCP" class="form-label mt-3">Nombre de compétences au référenciel métier</label>
+      <input type="number" name="totalCP" ngModel #totalCP="ngModel" class="form-control mb-1" required
+        (change)="getTotal(totalCP)">
+      <div *ngIf="totalCP.touched && totalCP.invalid" class="invalid-feedback">Veuillez fournir un nombre minimum de
+        compétences.
+      </div>
+      <div *ngIf="totalCP.valid" class="valid-feedback">
+        Champ OK.
+      </div>
 
-   
+      <div *ngIf="total?.length!=0">
+        <div *ngFor="let nb of total">
+          <label for="CP" class="form-label mt-3">CP{{nb}}</label>
+          <input type="text" name="CP{{nb}}" ngModel class="form-control" required minlength="7">
+        </div>
+      </div>
+
+      <!-- essai boutons additionnels pour ajouter des compétences à l'unité -->
+      <!-- <button (click)="addField('CP')">+</button> -->
     </div>
+
+    <button id="settingsForm" type="submit" class="btn btn-primary mt-4"
+      [disabled]=settingsForm.invalid>Ajouter</button>
+  </form>
+
+
+</div>

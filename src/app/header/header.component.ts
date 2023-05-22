@@ -13,7 +13,7 @@ import {Observable} from 'rxjs'
 })
 export class HeaderComponent implements OnInit {
   userUid?: any
-  userRole:any=[]
+  userRole:any="[]"
 
   constructor(private authService: AuthService, private auth: Auth, private evaluatorService: EvaluatorsService, private firestore:Firestore) {
     // this.userUid=this.authService.getUserId()
@@ -30,7 +30,10 @@ export class HeaderComponent implements OnInit {
           this.userRole=data.role
           console.log("roles depuis header", data.role);
 
-      })}
+      })
+    
+    }
+    console.log("pas d'utilisateur authentifié")
     })
     
     //  onAuthStateChanged(this.auth, (user: any) => {

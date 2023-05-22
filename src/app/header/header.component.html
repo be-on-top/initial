@@ -1,6 +1,7 @@
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark mb-md-2">
     <div class="container mx-auto">
-        <a class="navbar-brand" [routerLink]="['home', userRole]">BE-ON-TOP</a>
+        <a class="navbar-brand" [routerLink]="['home', userRole || '']">BE-ON-TOP</a>
+        <!-- <a class="navbar-brand" [routerLink]="['']">BE-ON-TOP</a> -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>

@@ -21,7 +21,7 @@ import { getMessaging } from "firebase/messaging/sw";
 import { onBackgroundMessage } from "firebase/messaging/sw";
 import { getToken } from 'firebase/messaging';
 import { SettingsService } from '../admin/settings.service';
-import { Trades } from '../admin/trades';
+import { Trade } from '../admin/trade';
 import { Observable } from 'rxjs';
 
 
@@ -58,11 +58,14 @@ export class HomeComponent implements OnInit {
 
   tradesData?:any
 
-  isEditor:string=""
+  isEditor:boolean=false
 
   constructor(private notificationService: PushNotificationService, private auth: Auth, private firestore: Firestore, private authService: AuthService, private evaluatorService: EvaluatorsService, private ac: ActivatedRoute, private router: Router, readonly swPush: SwPush, private settingsService:SettingsService) {
     // pour savoir si l'utilisateur est éditeur sans interroger firestore, on peut (?) récupérer userRole livré en paramètre de route
-    this.isEditor=this.ac.snapshot.params["userRole"];
+    // this.ac.snapshot.params["userRole"]="editor"?this.isEditor=true:this.isEditor=false
+    console.log("this.ac.snapshot.params",this.ac.snapshot.params!==null)
+    console.log("this.ac.snapshot.params['userRole']",this.ac.snapshot.params["userRole"])
+
     
     // this.user = this.auth.currentUser
     this.evaluatorId = this.auth.currentUser
@@ -121,9 +124,6 @@ export class HomeComponent implements OnInit {
       console.log('An error occurred while retrieving token. ', err);
 
     })
-
-
-
 
 
 
