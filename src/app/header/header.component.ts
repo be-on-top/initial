@@ -13,8 +13,7 @@ import {Observable} from 'rxjs'
 })
 export class HeaderComponent implements OnInit {
   userUid?: any
-  userRole:any="[]"
-
+  userRole:any=""
   constructor(private authService: AuthService, private auth: Auth, private evaluatorService: EvaluatorsService, private firestore:Firestore) {
     // this.userUid=this.authService.getUserId()
   }
@@ -26,9 +25,11 @@ export class HeaderComponent implements OnInit {
         this.userUid = user.uid
         console.log("log user uid depuis le header", user.uid);   
         this.getRole(this.userUid).subscribe(data=>{
-          console.log("data de getEvaluator depuis header", data);
-          this.userRole=data.role
-          console.log("roles depuis header", data.role);
+          console.log("data de l'utilisateur depuis header", data);
+          // si on a un tableau de rôles, c'est data.role[0]
+          // this.userRole=data.role
+          this.userRole=data.role[0]
+          console.log("roles depuis header", data.role[0]);
 
       })
     
