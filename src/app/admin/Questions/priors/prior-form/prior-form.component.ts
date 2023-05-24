@@ -36,7 +36,7 @@ export class PriorFormComponent implements OnInit {
   comment5: string = "";
   // Create a root reference
 
-  numbers: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+  numbers: number[] = []
   registryNumbers: any[] = []
   // isRegistered:boolean = false
   competences_ite: any = {
@@ -52,7 +52,7 @@ export class PriorFormComponent implements OnInit {
     CP10: "Entretenir et rénover d'anciens systèmes d'isolation thermique extérieure avec une finition enduit mince"
   }
 
-  competences_cdes : any = {
+  competences_cdes: any = {
     CP1: "Conduire en sécurité les chariots de manutention à conducteur porté de la catégorie 1A",
     CP2: "Préparer et emballer les commandes",
     CP3: "Charger, décharger les véhicules routiers à partir d'un quai et expédier les marchandises",
@@ -83,12 +83,10 @@ export class PriorFormComponent implements OnInit {
     CP8: "Prévenir les risques liés à l'activité professionnelle et appliquer les procédures."
   }
 
-  
 
-  
-  selectedSigle:string=""
+  selectedSigle: string = ""
 
-  constructor(private service: QuestionsService, private router : Router) { }
+  constructor(private service: QuestionsService, private router: Router) { }
 
   fileIsUploading = false;
   fileUrl!: string;
@@ -101,20 +99,21 @@ export class PriorFormComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.service.getQuestions().subscribe(data => {
-      // console.log(data);
-      for (let n of data) {
-        this.registryNumbers = [...this.registryNumbers, Number(n.number)]
-        // console.log(this.registryNumbers);
-        this.numbers = this.numbers.filter(element => {
-          return element != n.number
-        });
-        // console.log("result", this.numbers);
-      }
-      // return this.registryNumbers
-    })
+    // le getQuestion ne doit a priori pas se faire AVANT qu'un SELECT ne soit sélectionné !!!!
+    // ou alors, on le récupère PUIS on filtre ultérieurement
 
-
+    // this.service.getQuestions().subscribe(data => {
+    //   // console.log(data);
+    //   for (let n of data) {
+    //     this.registryNumbers = [...this.registryNumbers, Number(n.number)]
+    //     // console.log(this.registryNumbers);
+    //     this.numbers = this.numbers.filter(element => {
+    //       return element != n.number
+    //     });
+    //     // console.log("result", this.numbers);
+    //   }
+    //   // return this.registryNumbers
+    // })
 
   }
 
@@ -137,20 +136,39 @@ export class PriorFormComponent implements OnInit {
     // this.onUploadFile(event.target.files[0], fieldName.name);
   }
 
-
-
   // ne servira plus si on parvient à mettre à jour this.registryNumbers à chaque nouvel enregistrement. *
   checkIfRegistered(n: any) {
     console.log(n)
-    // this.registryNumbers.includes(n)?this.isRegistered==true:this.isRegistered==false) 
+    // this.registryNumbers.includes(n)?this.isRegistered==true:this.isRegistered==false)
   }
 
-  checkIfSelected(sigle:any){
+  checkIfSelected(sigle: any) {
     console.log(sigle);
-    this.selectedSigle=sigle   
+    this.selectedSigle = sigle
+    this.numbers=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 
+    // c'est l'endroit pour transvaser le getQuestion() avec comme filtre  préalable et additionnel : sigle.value
+
+    this.service.getQuestions().subscribe(data => {
+
+      const dataFiltered = data.filter(redutedData => {
+        return redutedData.sigle == this.selectedSigle
+      });
+
+      console.log("datafiltered", dataFiltered);
+
+      for (let n of dataFiltered) {
+        console.log("n", n.number);
+        this.numbers=this.numbers.filter(element => element != n.number)
+
+      }
+
+
+
+
+
+    })
   }
-  
 
 
 }
