@@ -10,9 +10,11 @@ import { SettingsService } from '../../settings.service';
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
-  sigles: Trade = { sigle: "", denomination: "" , competences: [{ cpName: "", cpResume: "" }] }
+  sigles: Trade = { sigle: "", denomination: "" , competences: [], totalCP:0 }
   form: any
   total:any = []
+
+  CPNumber:any
 
 
   //  dans un premier temps, on peut ne leur donner qu'un nom. l'important étant de savoir à combien les catégories métiers s'élèveront pour pouvoir  prévoir
@@ -30,8 +32,16 @@ export class SettingsComponent implements OnInit {
 
 
   addSettings(form: NgForm) {
+    this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination , totalCP:form.value.totalCP, competences:[] }
+    for (let i =1; i<=form.value.totalCP;i++) {
+      this.CPNumber=`CP${i}`
+      console.log(this.CPNumber);
+      this.sigles.competences.push(form.value[this.CPNumber])
+    }
+
     console.log("form récupéré", form.value);
-    this.service.addTrade(form.value)
+    console.log("form optimisé", this.sigles);
+    this.service.addTrade(this.sigles)
   }
 
 
@@ -48,7 +58,7 @@ export class SettingsComponent implements OnInit {
   getTotal(e:any){
     console.log(e.value)
     this.total.push(e.value)
-    // ce qui suit fonctionne si on fait abstraction du fait que ngForm transforme HTMLElement en object. 
+    // ce qui suit fonctionne si on fait abstraction du fait que ngForm transforme HTMLElement en object.
     // donc même si les champs s'affichent, ils ne sont pas reconnus pour autant comme les propriétés/valeurs de l'objet settingsForm
     //  let cpField=`<input id="dfsdf" type="text" name="CP${e.value}" placeholder="CP${e.value} à renseigner" ngModel class="form-control my-1" required minlength="3">`
     //  let fiedl= document.createElement("div")

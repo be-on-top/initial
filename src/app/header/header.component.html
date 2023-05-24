@@ -12,7 +12,7 @@
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                        *ngIf="userUid!==undefined && userUid!=='' && userRole!=='student'">Admin</a>
+                        *ngIf="userUid!==undefined && userUid!=='' && userRole!=='student' && userRole!=='editor'">Admin</a>
                     <!-- <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Admin</a> -->
                     <ul class="dropdown-menu">
                         <li *ngIf="userRole.includes('admin')"><a class="dropdown-item"
