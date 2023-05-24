@@ -16,7 +16,8 @@ import { query, Firestore, where, collection, getDocs } from '@angular/fire/fire
 export class FullFormComponent {
   //  pour les données liées à l'évaluateur authentifié
   authId?: any;
-  userData?: any;
+  // attention : userData?:any cause erreur en console lorsque le composant est initialisé puisqu'il n'a pas encore eu le temps de récupérer userData
+  userData: any = {};
   // obligée de récupérer l'uid de l'évaluateur pour connaitre ses affectations métier
   ui: any = ''
   user?: any;
@@ -91,7 +92,7 @@ export class FullFormComponent {
 
   // import de auth pour tester les spécificités de l'évaluateur connecté si il est reconnu
   // import du service EvaluatorsService pour tester la récupération des affectations métiers spécifiques à l'évaluateur
-  constructor(private service: QuestionsService, private router: Router, private auth: Auth, private evaluatorService: EvaluatorsService, private firestore:Firestore) {
+  constructor(private service: QuestionsService, private router: Router, private auth: Auth, private evaluatorService: EvaluatorsService, private firestore: Firestore) {
   }
 
   arrayFilesToUpload: any = []
@@ -100,25 +101,28 @@ export class FullFormComponent {
 
   ngOnInit(): void {
 
-    this.service.getQuestions().subscribe(data => {
-      // console.log(data);
-      // attention : c'est la différence avec prior-form, on ne veut pas afficher les 20 premières questions dans le dénombre
-      for (let n of data) {
-        n.number > 20 ? this.registryNumbers = [...this.registryNumbers, Number(n.number)] : ""
-        // console.log(this.registryNumbers);
-        this.numbers = this.numbers.filter(element => {
-          return element != n.number
-        });
-        // console.log("result", this.numbers);
-      }
-      // return this.registryNumbers
-    })
+    // le getQuestion ne doit a priori pas se faire AVANT qu'un SELECT ne soit sélectionné !!!!
+    // ou alors, on le récupère PUIS on filtre ultérieurement
 
-    for (let i = 20; i < 201; i++) {
-      this.numbers.push(i)
-      console.log(this.numbers);
+    // this.service.getQuestions().subscribe(data => {
+    //   // console.log(data);
+    //   // attention : c'est la différence avec prior-form, on ne veut pas afficher les 20 premières questions dans le dénombre
+    //   for (let n of data) {
+    //     n.number > 20 ? this.registryNumbers = [...this.registryNumbers, Number(n.number)] : ""
+    //     // console.log(this.registryNumbers);
+    //     this.numbers = this.numbers.filter(element => {
+    //       return element != n.number
+    //     });
+    //     // console.log("result", this.numbers);
+    //   }
+    //   // return this.registryNumbers
+    // })
 
-    }
+    // for (let i = 20; i < 201; i++) {
+    //   this.numbers.push(i)
+    //   console.log(this.numbers);
+
+    // }
 
     onAuthStateChanged(this.auth, (user: any) => {
       if (user) {
@@ -162,7 +166,39 @@ export class FullFormComponent {
   checkIfSelected(sigle: any) {
     console.log(sigle);
     this.selectedSigle = sigle
+
+    // Attention : à chaque changement de selected, on doit tout réinitialiser : 
+
+    for (let i = 20; i < 201; i++) {
+      this.numbers.push(i)
+      console.log(this.numbers);
+    }
+    this.registryNumbers = []
+
+    // fin réinitialisation !!!!! 
+
+
+    // c'est l'endroit pour transvaser le getQuestion() avec comme filtre  préalable et additionnel : sigle.value
+    this.service.getQuestions().subscribe(data => {
+      const dataFiltered = data.filter(reducedData => {
+        return reducedData.sigle == this.selectedSigle
+      });
+
+      console.log("datafiltered!!!!!!!!", dataFiltered);
+      // attention : c'est la différence avec prior-form, on ne veut pas afficher les 20 premières questions dans le dénombre
+      for (let n of dataFiltered) {
+        console.log("n", n.number);
+        this.registryNumbers.push(n.number)
+        console.log("registryNumber", this.registryNumbers);
+        this.numbers = this.numbers.filter(element => element != n.number)
+
+        // console.log("result", this.numbers);
+      }
+      // return this.registryNumbers
+
+    })
   }
+
 
   // getData() {
   //   let userKey = this.auth.currentUser?.uid;

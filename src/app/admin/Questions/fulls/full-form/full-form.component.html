@@ -1,7 +1,9 @@
 <div class="container py-5">
 
-    <h3>Formulaire de saisie des questions de positionnement</h3>
-    <p class="border-dark bg-light rounded p-2" role="alert">Numéros de questions déjà enregistrées :
+    <h3>Formulaire de saisie des questions de positionnement
+        <span *ngIf="userData.sigle">{{userData.sigle}}</span>
+    </h3>
+    <p *ngIf="registryNumbers.length!==0" class="border-dark bg-light rounded p-2" role="alert">Numéros de questions déjà enregistrées :
         {{registryNumbers}}</p>
     <!-- {{userData.sigle.includes('prepa_cdes')}}
     {{userData.sigle}} -->
