@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Trade } from '../../trade';
 import { NgForm, NgModel } from '@angular/forms';
 import { SettingsService } from '../../settings.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -10,18 +11,27 @@ import { SettingsService } from '../../settings.service';
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
-  sigles: Trade = { sigle: "", denomination: "" , competences: [], totalCP:0 }
+  sigles: Trade = { sigle: "", denomination: "", competences: [], totalCP: 0 }
   form: any
-  total:any = []
+  total: any = []
 
-  CPNumber:any
+  CPNumber: any
+
+  // variables à passer à feedbackMessages component pour retours de firebase sur la soumission
+  feedbackMessages?: any = ""
+  isSuccessMessage: boolean = true
+  // essai pour personnaliser les messages
+  // https://firebase.google.com/docs/auth/admin/errors?hl=fr
+  firebaseErrors: any = {
+    // chercher !!!!!!!F
+  }; // list of firebase error codes to alternate error messages
 
 
   //  dans un premier temps, on peut ne leur donner qu'un nom. l'important étant de savoir à combien les catégories métiers s'élèveront pour pouvoir  prévoir
   // 1 - autant de zones éditables sur la  page d'accueil
   // 2 - rattacher le décompte des questions à une catégorie et non un tronc commun
 
-  constructor(private service: SettingsService) {
+  constructor(private service: SettingsService, private router:Router) {
 
   }
 
@@ -32,9 +42,9 @@ export class SettingsComponent implements OnInit {
 
 
   addSettings(form: NgForm) {
-    this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination , totalCP:form.value.totalCP, competences:[] }
-    for (let i =1; i<=form.value.totalCP;i++) {
-      this.CPNumber=`CP${i}`
+    this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, totalCP: form.value.totalCP, competences: [] }
+    for (let i = 1; i <= form.value.totalCP; i++) {
+      this.CPNumber = `CP${i}`
       console.log(this.CPNumber);
       this.sigles.competences.push(form.value[this.CPNumber])
     }
@@ -42,6 +52,23 @@ export class SettingsComponent implements OnInit {
     console.log("form récupéré", form.value);
     console.log("form optimisé", this.sigles);
     this.service.addTrade(this.sigles)
+    .then(() => {
+      // Signed in 
+      this.feedbackMessages = `Enregistrement OK`;
+      this.isSuccessMessage = true
+      setTimeout(() => {
+        form.reset()
+        // this.router.navigate([''])
+      }, 1000)
+    })
+    .catch((error) => {
+      this.feedbackMessages = error.message;
+      // this.feedbackMessages = this.firebaseErrors[error.code];
+      this.isSuccessMessage = false;
+      console.log(this.feedbackMessages);
+
+      // ..};
+    })
   }
 
 
@@ -55,7 +82,7 @@ export class SettingsComponent implements OnInit {
   }
 
 
-  getTotal(e:any){
+  getTotal(e: any) {
     console.log(e.value)
     this.total.push(e.value)
     // ce qui suit fonctionne si on fait abstraction du fait que ngForm transforme HTMLElement en object.

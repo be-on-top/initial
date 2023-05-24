@@ -160,9 +160,7 @@ export class PriorFormComponent implements OnInit {
       for (let n of dataFiltered) {
         console.log("n", n.number);
         this.numbers=this.numbers.filter(element => element != n.number)
-
       }
-
 
     })
   }

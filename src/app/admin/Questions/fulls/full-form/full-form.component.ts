@@ -168,13 +168,8 @@ export class FullFormComponent {
     this.selectedSigle = sigle
 
     // Attention : à chaque changement de selected, on doit tout réinitialiser : 
-
-    for (let i = 20; i < 201; i++) {
-      this.numbers.push(i)
-      console.log(this.numbers);
-    }
+    for (let i = 20; i < 201; i++) {this.numbers.push(i)}
     this.registryNumbers = []
-
     // fin réinitialisation !!!!! 
 
 
@@ -191,10 +186,8 @@ export class FullFormComponent {
         this.registryNumbers.push(n.number)
         console.log("registryNumber", this.registryNumbers);
         this.numbers = this.numbers.filter(element => element != n.number)
-
         // console.log("result", this.numbers);
       }
-      // return this.registryNumbers
 
     })
   }
