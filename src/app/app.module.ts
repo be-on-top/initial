@@ -28,6 +28,8 @@ import { ServiceWorkerModule} from '@angular/service-worker';
 import { AccountComponent } from './account/account.component';
 // pour appliquer à la lettre la division des tâches. ceci ne me semble pourtant pas très pertinent ici. 
 import { UpdateAccountComponent } from './account/update-account/update-account.component';
+import { QuizzComponent } from './quizz/quizz.component';
+import { SocialFormComponent } from './social/social-form/social-form.component';
 // import { getMessaging } from 'firebase/messaging';
 
 
@@ -40,7 +42,9 @@ import { UpdateAccountComponent } from './account/update-account/update-account.
     HeaderComponent,
     RegisterComponent,
     AccountComponent,
-    UpdateAccountComponent
+    UpdateAccountComponent,
+    QuizzComponent,
+    SocialFormComponent
   ],
   imports: [
     BrowserModule,

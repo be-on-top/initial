@@ -8,15 +8,18 @@
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">liens à venir pour {{userRole}}..</a>
+                    <!-- <a class="nav-link" href="#">liens à venir pour {{userRole}}..</a> -->
+                    <a class="nav-link" [routerLink]="['socialregistration']">Pré-inscription Formation</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                        *ngIf="userUid!==undefined && userUid!=='' && userRole!=='student' && userRole!=='editor'">Admin</a>
+                <li class="nav-item dropdown"  *ngIf="userUid!==undefined && userUid!=='' && userRole!=='student' && userRole!=='editor'">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Admin</a>
                     <!-- <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Admin</a> -->
                     <ul class="dropdown-menu">
                         <li *ngIf="userRole.includes('admin')"><a class="dropdown-item"
                                 [routerLink]="['/admin/settings']">Paramètres</a>
+                        </li>
+                        <li *ngIf="userRole.includes('admin')">
+                            <hr>
                         </li>
                         <li *ngIf="userRole.includes('admin')"><a class="dropdown-item"
                                 [routerLink]="['/admin/evaluators']">Gestion des évaluateurs</a>

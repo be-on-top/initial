@@ -25,8 +25,6 @@ import { Trade } from '../admin/trade';
 import { Observable } from 'rxjs';
 
 
-
-
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -99,7 +97,6 @@ export class HomeComponent implements OnInit {
 
     }).catch((err) => {
       console.log('An error occurred while retrieving token. ', err);
-
     })
 
 
@@ -142,7 +139,17 @@ export class HomeComponent implements OnInit {
     })
 
     // pour récupérer les métiers (sigles) enregistrés en base qui détermineront les différentes zones éditioriales
-    this.settingsService.getTrades().subscribe(data=>this.tradesData=data)
+    this.settingsService.getTrades().subscribe(data=>{
+
+      this.tradesData=data,
+      console.log("this.tradesData", this.tradesData);
+      
+    })
+  }
+
+  selectTrade(id:string){
+    
+
   }
 
 

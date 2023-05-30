@@ -31,7 +31,7 @@ export class SettingsComponent implements OnInit {
   // 1 - autant de zones éditables sur la  page d'accueil
   // 2 - rattacher le décompte des questions à une catégorie et non un tronc commun
 
-  constructor(private service: SettingsService, private router:Router) {
+  constructor(private service: SettingsService, private router: Router) {
 
   }
 
@@ -43,32 +43,37 @@ export class SettingsComponent implements OnInit {
 
   addSettings(form: NgForm) {
     this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, totalCP: form.value.totalCP, competences: [] }
+    // si on souhaite un objet, comme ceux écrits initialement en dur exemple : competences:{CP1:"", CP2:""}
+    // this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, totalCP: form.value.totalCP, competences: {} }
     for (let i = 1; i <= form.value.totalCP; i++) {
       this.CPNumber = `CP${i}`
       console.log(this.CPNumber);
+      // this.sigles.competences.push(form.value[this.CPNumber])
+      // si on souhaite un objet, comme ceux écrits initialement en dur exemple : competences:{CP1:"", CP2:""}
+      // cela ne pourrait a priori être enregistré en base qu'en tant que sous collection d'un doc de la collection sigles
       this.sigles.competences.push(form.value[this.CPNumber])
     }
 
     console.log("form récupéré", form.value);
     console.log("form optimisé", this.sigles);
     this.service.addTrade(this.sigles)
-    .then(() => {
-      // Signed in 
-      this.feedbackMessages = `Enregistrement OK`;
-      this.isSuccessMessage = true
-      setTimeout(() => {
-        form.reset()
-        // this.router.navigate([''])
-      }, 1000)
-    })
-    .catch((error) => {
-      this.feedbackMessages = error.message;
-      // this.feedbackMessages = this.firebaseErrors[error.code];
-      this.isSuccessMessage = false;
-      console.log(this.feedbackMessages);
+      .then(() => {
+        // Signed in 
+        this.feedbackMessages = `Enregistrement OK`;
+        this.isSuccessMessage = true
+        setTimeout(() => {
+          form.reset()
+          // this.router.navigate([''])
+        }, 1000)
+      })
+      .catch((error) => {
+        this.feedbackMessages = error.message;
+        // this.feedbackMessages = this.firebaseErrors[error.code];
+        this.isSuccessMessage = false;
+        console.log(this.feedbackMessages);
 
-      // ..};
-    })
+        // ..};
+      })
   }
 
 

@@ -35,7 +35,7 @@ export class SettingsService {
   
   getTrades() {
     const tradesRef = collection(this.firestore, "sigles");
-    return collectionData(tradesRef) as Observable<Trade[]>;
+    return collectionData(tradesRef, {idField:"id"}) as Observable<Trade[]>;
   }
 
 }

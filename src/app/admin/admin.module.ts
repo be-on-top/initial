@@ -42,7 +42,7 @@ import { UserDetailsComponent } from './Users/user-details/user-details.componen
 import { UpdateUserComponent } from './Users/update-user/update-user.component';
 import { AddUserComponent } from './Users/add-user/add-user.component';
 // import { AccountComponent } from '../account/account.component';
-// import { RoleGuardGuard } from '../role-guard.guard';
+import { RoleGuardGuard } from '../role-guard.guard';
 
 
 const routesAdmin: Routes = [
@@ -89,9 +89,9 @@ const routesAdmin: Routes = [
 
     ],
     // canActivate: [AuthGuardService]
-    // canActivate: [AuthGuardService, RoleGuardGuard], data: {
-    //   expectedRoles: ['evaluator', 'admin']
-    // }
+    canActivate: [AuthGuardService, RoleGuardGuard], data: {
+      expectedRoles: ['evaluator', 'admin', 'trainer']
+    }
   },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent }
