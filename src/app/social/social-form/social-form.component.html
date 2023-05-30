@@ -1,12 +1,12 @@
 <div class="container py-5">
 
-    <h3 class="text-capitalize">Pré-inscription Formation de {{userData.firstName}} {{userData.firstName}}</h3>
+    <h3 class="text-capitalize">Pré-inscription Formation de {{userData.firstName}} {{userData.lastName}}</h3>
     <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)" class="marginSocialForm">
 
         <h3 class="pt-5 pb-2">Votre identité</h3>
 
         <div class="form-group row">
-            <label class="col-md-3 col-form-label text-decoration-underline pt-3">
+            <label class="col-md-3 col-form-label text-decoration-underline pt-3 pb-2">
                 Nom : {{lastName}}
             </label>
             <div class="col-md-9">
@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="form-group row">
-            <label class="col-md-3 col-form-label text-decoration-underline pt-3">
+            <label class="col-md-3 col-form-label text-decoration-underline pt-3 pb-2">
                 Prénom : {{firstName}}
             </label>
             <div class="col-md-9">
@@ -26,7 +26,7 @@
             </div>
         </div>
         <div class="form-group row">
-            <label class="col-md-3 col-form-label text-decoration-underline pt-3">
+            <label class="col-md-3 col-form-label text-decoration-underline pt-3 pb-2">
                 Date de naissance :
             </label>
             <div class="col-md-9">
@@ -34,15 +34,16 @@
             </div>
         </div>
         <div class="form-group row">
-            <label class="col-md-3 col-form-label text-decoration-underline pt-3">
+            <label class="col-md-3 col-form-label text-decoration-underline pt-3 pb-2">
                 Adresse complète :
             </label>
             <div class="col-md-9">
-                <input type="text" name="address" ngModel required class="form-control" placeholder="(bat, rue, chemin, n°)">
+                <input type="text" name="address" ngModel required class="form-control"
+                    placeholder="(bat, rue, chemin, n°)">
             </div>
         </div>
         <div class="form-group row">
-            <label class="col-md-3 col-form-label text-decoration-underline pt-3">
+            <label class="col-md-3 col-form-label text-decoration-underline pt-3 pb-2">
                 Code Postal :
             </label>
             <div class="col-md-9">
@@ -50,7 +51,7 @@
             </div>
         </div>
         <div class="form-group row">
-            <label class="col-md-3 col-form-label text-decoration-underline pt-3">
+            <label class="col-md-3 col-form-label text-decoration-underline pt-3 pb-2">
                 Ville :
             </label>
             <div class="col-md-9">
@@ -58,7 +59,7 @@
             </div>
         </div>
         <div class="form-group row">
-            <label class="col-md-3 col-form-label text-decoration-underline pt-3">
+            <label class="col-md-3 col-form-label text-decoration-underline pt-3 pb-2">
                 Téléphone :
             </label>
             <div class="col-md-9">
@@ -66,7 +67,7 @@
             </div>
         </div>
         <div class="form-group row">
-            <label class="col-md-3 col-form-label text-decoration-underline pt-3">
+            <label class="col-md-3 col-form-label text-decoration-underline pt-3 pb-2">
                 Mail : {{email}}
             </label>
             <div class="col-md-9">
@@ -77,7 +78,7 @@
 
         <!-- <div class="row justify-content-center">
             <div class="col-md-6">
-                <h2 class="text-center text-decoration-underline pt-3">Permis de conduire</h3>
+                <h2 class="text-center text-decoration-underline pt-3 pb-2">Permis de conduire</h3>
             </div>
         </div> -->
 
@@ -85,7 +86,7 @@
 
 
         <div class="form-group row">
-            <label class="col-md-4 text-decoration-underline pt-3">
+            <label class="col-md-4 text-decoration-underline pt-3 pb-2">
                 Permis B :
             </label>
             <div class="col-md-9">
@@ -97,8 +98,9 @@
                     <input class="form-check-input" type="radio" id="permisBNon" name="permisB" ngModel value="Non">
                     <label class="form-check-label" for="permisBNon">Non</label>
                 </div>
-            </div>">
-            <label for="permisBEtranger" class="col-md-4 text-decoration-underline pt-3">Pour les publics étrangers,
+            </div>
+            <label for="permisBEtranger" class="col-md-4 text-decoration-underline pt-3 pb-2">Pour les publics
+                étrangers,
                 Permis B
                 valide en France :</label>
             <div class="col-md-6">
@@ -114,7 +116,7 @@
                 </div>
             </div>
 
-            <label for="autrePermis" class="col-md-4 control-label text-decoration-underline pt-3">Possédez-vous un
+            <label for="autrePermis" class="col-md-4 control-label text-decoration-underline pt-3 pb-2">Possédez-vous un
                 autre
                 permis valide ?</label>
             <div class="col-md-8">
@@ -164,10 +166,10 @@
 
         <div *ngIf="myForm.value.pieceIdentiteAJour=='non' && myForm.value.nationaliteFrancaise=='oui'"
             class="form-group row">
-            <div class="pt-2 col-md-5">
+            <div class="pt-2 col-md-4">
                 Votre renouvellement est-il en cours ?
             </div>
-            <div class="col-md-7">
+            <div class="col-md-8">
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="renouvellementPIEnCours"
                         id="renouvellementPIEnCours_oui" ngModel value="oui">
@@ -179,8 +181,12 @@
                     <label class="form-check-label" for="renouvellementPIEnCours_non">Non</label>
                 </div>
             </div>
-" *ngIf="myForm.value.nationaliteFrancaise=='non'">
-            <div class="col-md-4 text-decoration-underline pt-3">Vous êtes de nationalité étrangère :</div>
+        </div>
+
+        <!-- attention à ce qu'il ne se retrouve pas inséré dans une autre boucle !!!  -->
+        <!-- <h1>{{myForm.value.nationaliteFrancaise | json}}</h1> -->
+        <div *ngIf="myForm.value.nationaliteFrancaise=='non' && myForm.value.nationaliteFrancaise!==''">
+            <div class="col-md-4 text-decoration-underline pt-3 pb-2">Vous êtes de nationalité étrangère :</div>
             <div class="col-md-8">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="visaLongSejour" ngModel id="visaLongSejour">
@@ -207,7 +213,8 @@
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="autorisationTravail" ngModel
                         id="autorisationTravail">
-                    <label class="form-check-label" for="autorisationTravail">Vous avez une autorisation de travail en
+                    <label class="form-check-label" for="autorisationTravail">Vous avez une autorisation de travail
+                        en
                         France ? Date de fin d'expiration</label>
                     <input type="date" class="form-control" name="dateExpirationAutorisationTravail" ngModel
                         ng-show="autorisationTravail">
@@ -215,17 +222,19 @@
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="visaVacancesTravail" ngModel
                         id="visaVacancesTravail">
-                    <label class="form-check-label" for="visaVacancesTravail">Vous avez un visa vacances-travail ? Date
+                    <label class="form-check-label" for="visaVacancesTravail">Vous avez un visa vacances-travail ?
+                        Date
                         de fin d'expiration ?</label>
                     <input type="date" class="form-control" name="dateExpirationVisaVacancesTravail" ngModel
                         ng-show="visaVacancesTravail">
                 </div>
             </div>
         </div>
+        <!-- fin nationalité étrangère  -->
 
         <h3 class="pt-5 pb-2">Votre situation actuelle face à l’emploi</h3>
         <div class="form-group">
-            <div class="text-decoration-underline pt-3" for="demandeurEmploi">Demandeur
+            <div class="text-decoration-underline pt-3 pb-2" for="demandeurEmploi">Demandeur
                 d'Emploi</div>
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" name="inscritPoleEmploi" [(ngModel)]="inscritPoleEmploi"
@@ -240,7 +249,7 @@
             </div>
 
             <!-- <div class="form-group"> -->
-            <div class="text-decoration-underline pt-3">Etes-vous bénéficiaire des minima sociaux
+            <div class="text-decoration-underline pt-3 pb-2">Etes-vous bénéficiaire des minima sociaux
                 (RSA)</div>
             <div class="d-flex align-items-center gap-3">
                 <div class="form-check">
@@ -254,13 +263,14 @@
                         id="beneficiaireMinimaSociauxDetail_non" ngModel value="non">
                 </div>
             </div>
-            <div class="text-decoration-underline pt-3">Salarié en CDI ? </div>
+            <div class="text-decoration-underline pt-3 pb-2">Salarié en CDI ? </div>
             <div class="d-flex  align-items-center gap-3">
 
                 <label for="yearsInCdi" class="form-label">Depuis combien d'années ?</label>
                 <input type="number" class="form-control" ngModel name="yearsInCdi">
             </div>
-            <div class="text-decoration-underline pt-3">Pouvez-vous justifier d'une ancienneté de 24 mois en qualité
+            <div class="text-decoration-underline pt-3 pb-2">Pouvez-vous justifier d'une ancienneté de 24 mois en
+                qualité
                 de salarié, dont 12 mois dans la même
                 entreprise ?</div>
             <div class="d-flex  align-items-center gap-3">
@@ -274,7 +284,7 @@
                 </div>
             </div>
 
-            <div class="text-decoration-underline pt-3">Salarié en CDD ?</div>
+            <div class="text-decoration-underline pt-3 pb-2">Salarié en CDD ?</div>
             <div class="d-sm-flex align-items-center gap-3">
                 <div class="form-group">
                     <label class="form-label" for="cddDuration">Durée du contrat (en mois) :</label>
@@ -286,7 +296,7 @@
                 </div>
             </div>
 
-            <div class="text-decoration-underline pt-3">Pouvez-vous justifier de 24 mois d'activité professionnelle
+            <div class="text-decoration-underline pt-3 pb-2">Pouvez-vous justifier de 24 mois d'activité professionnelle
                 dans les 5 dernières années, dont 4
                 mois en CDD au cours de la dernière année ?</div>
             <div class="d-flex  align-items-center gap-3">
@@ -300,7 +310,7 @@
                 </div>
             </div>
 
-            <div class="text-decoration-underline pt-3">Êtes-vous intérimaire ?</div>
+            <div class="text-decoration-underline pt-3 pb-2">Êtes-vous intérimaire ?</div>
             <div class="d-flex  align-items-center gap-3">
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="interimaire" value="Oui" ngModel>
@@ -342,7 +352,7 @@
 
             </div>
 
-            <div class="text-decoration-underline pt-3">Êtes-vous étudiant ?</div>
+            <div class="text-decoration-underline pt-3 pb-2">Êtes-vous étudiant ?</div>
             <div class="d-flex  align-items-center gap-3">
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="etudiant" value="Oui" ngModel> <label
@@ -359,7 +369,7 @@
                 </div> -->
             </div>
 
-            <div class="text-decoration-underline pt-3">Êtes-vous militaire ?</div>
+            <div class="text-decoration-underline pt-3 pb-2">Êtes-vous militaire ?</div>
             <div class="d-flex  align-items-center gap-3">
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="militaire" value="Oui" ngModel>
@@ -376,7 +386,8 @@
                 <input type="date" class="form-control" name="militaire_date_debut" ngModel>
             </div>
             <div class="form-group">
-                <label class="text-decoration-underline pt-3">Avez-vous fait part de votre projet à votre Conseiller
+                <label class="text-decoration-underline pt-3 pb-2">Avez-vous fait part de votre projet à votre
+                    Conseiller
                     Mobilité?</label>
                 <div class="d-flex  align-items-center gap-3">
                     <div class="form-check">
@@ -393,12 +404,14 @@
             </div>
             <hr>
             <div class="form-group">
-                <label for="autre_situation" class="text-decoration-underline pt-3">Êtes-vous dans une autre situation
+                <label for="autre_situation" class="text-decoration-underline pt-3 pb-2">Êtes-vous dans une autre
+                    situation
                     (précisez)?</label>
                 <input type="text" class="form-control" name="autre_situation" ngModel>
             </div>
             <hr>
-            <div class="text-decoration-underline pt-3">Possédez-vous une reconnaissance Travailleur Handicapé?</div>
+            <div class="text-decoration-underline pt-3 pb-2">Possédez-vous une reconnaissance Travailleur Handicapé?
+            </div>
             <div class="d-flex  align-items-center gap-3">
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="handicap" [(ngModel)]="handicap"
@@ -410,7 +423,7 @@
                 </div>
             </div>
             <div *ngIf="handicap === 'Oui'">
-                <div class="text-decoration-underline pt-3">Êtes-vous suivi par CAP EMPLOI ?</div>
+                <div class="text-decoration-underline pt-3 pb-2">Êtes-vous suivi par CAP EMPLOI ?</div>
                 <div class="d-flex  align-items-center gap-3">
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="suiviCapEmploi" value="Oui" ngModel><label
@@ -426,52 +439,46 @@
         <!-- <div class="form-group row"> -->
         <!-- pourquoi ??? -->
         <!-- <div class="row justify-content-center">
-                <div class="col-12 col-md-8 text-center text-decoration-underline pt-3">
+                <div class="col-12 col-md-8 text-center text-decoration-underline pt-3 pb-2">
                     <h3 class="pt-5 pb-2">Votre situation actuelle face à la formation</h3>
                 </div>
             </div> -->
         <h3 class="pt-5 pb-2">Votre situation actuelle face à la formation</h3>
 
         <div class="form-group row">
-            <label class="col-md-4 text-decoration-underline pt-3" for="formationInitiale">Formation initiale
+            <label class="col-md-4 text-decoration-underline pt-3 pb-2" for="formationInitiale">Formation initiale
                 ?</label>
-            <!-- <div class="col-sm-8"> -->
-            <input type="text" class="form-control col-md-8" name="formationInitiale" id="formationInitiale" ngModel>
-            <!-- </div> -->
+            <div class="col-md-8">
+                <input type="text" class="form-control" name="formationInitiale" ngModel>
+            </div>
         </div>
         <div class="form-group row">
-            <label class="col-md-4 text-decoration-underline pt-3" for="diplomeNonObtenu">Si le diplôme n'a pas été
+            <label class="col-md-4 text-decoration-underline pt-3 pb-2" for="diplomeNonObtenu">Si le diplôme n'a pas été
                 obtenu, indiquer le niveau</label>
             <div class="col-md-8">
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="niveauDiplome" id="sansDiplome" ngModel
-                        value="sansDiplome">
+                    <input class="form-check-input" type="radio" name="niveauDiplome" ngModel value="sansDiplome">
                     <label class="form-check-label" for="sansDiplome">Sans diplôme</label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="niveauDiplome" id="capOuEquivalent" ngModel
-                        value="capOuEquivalent">
+                    <input class="form-check-input" type="radio" name="niveauDiplome" ngModel value="capOuEquivalent">
                     <label class="form-check-label" for="capOuEquivalent">CAP ou autre reconnaissance du même
                         niveau</label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="niveauDiplome" id="bepOuEquivalent" ngModel
-                        value="bepOuEquivalent">
+                    <input class="form-check-input" type="radio" name="niveauDiplome" ngModel value="bepOuEquivalent">
                     <label class="form-check-label" for="bepOuEquivalent">BEP ou reconnaissance du même niveau</label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="niveauDiplome" id="bacOuEquivalent" ngModel
-                        value="bacOuEquivalent">
+                    <input class="form-check-input" type="radio" name="niveauDiplome" ngModel value="bacOuEquivalent">
                     <label class="form-check-label" for="bacOuEquivalent">BAC ou reconnaissance du même niveau</label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="niveauDiplome" id="bacPlus2" ngModel
-                        value="bacPlus2">
+                    <input class="form-check-input" type="radio" name="niveauDiplome" ngModel value="bacPlus2">
                     <label class="form-check-label" for="bacPlus2">BAC + 2</label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="niveauDiplome" id="bacPlus3" ngModel
-                        value="bacPlus3">
+                    <input class="form-check-input" type="radio" name="niveauDiplome" ngModel value="bacPlus3">
                     <label class="form-check-label" for="bacPlus3">BAC + 3</label>
                 </div>
                 <div class="form-check">
@@ -487,11 +494,11 @@
             </div>
         </div>
         <div class="form-group">
-            <div class="text-decoration-underline pt-3" for="formationContinue">
+            <div class="text-decoration-underline pt-3 pb-2" for="formationContinue">
                 Avez-vous suivi des formations dans le cadre de formation continue ?</div>
         </div>
 
-        <div class="form-group ps-3 p-md-auto">
+        <div class="form-group mx-1 m-md-auto pt-2">
             <div class="d-lg-flex gap-3 my-1 justify-content-space-between align-items-center">
                 <div class="formation">Formation: CACES® 482 : Engins de chantier</div>
                 <div class="d-sm-flex gap-3 align-items-center">
@@ -963,7 +970,7 @@
             </div>
         </div> -->
 
-        <div class="text-decoration-underline pt-3">Avez-vous des demandes de financement pour une formation en
+        <div class="text-decoration-underline pt-3 pb-2">Avez-vous des demandes de financement pour une formation en
             cours?</div>
         <!-- <div class="form-group row"> -->
 
@@ -981,7 +988,7 @@
         </div>
 
         <div *ngIf="demandeFinancement === 'Oui'">
-            <div class="text-decoration-underline pt-3">Choisissez le type de financement :</div>
+            <div class="text-decoration-underline pt-3 pb-2">Choisissez le type de financement :</div>
             <!-- on reprend tout -->
             <div class="form-check">
                 <label class="form-check-label">CPF</label>
@@ -1001,10 +1008,10 @@
                 <input class="form-control mt-1" type="text" name="autreFinancement" ngModel placeholder="Préciser...">
             </div>
 
-            <label class="text-decoration-underline pt-3" for="formation">Pour quelle formation ? :</label>
+            <label class="text-decoration-underline pt-3 pb-2" for="formation">Pour quelle formation ? :</label>
             <input class="form-control" type="text" name="formation" ngModel>
         </div>
-        <div class="text-decoration-underline pt-3">Avez-vous des droits CPF ?</div>
+        <div class="text-decoration-underline pt-3 pb-2">Avez-vous des droits CPF ?</div>
         <div class="d-flex  align-items-center gap-3">
             <div class="form-check">
                 <input class="form-check-input" type="radio" name="droitsCPF" value="oui" ngModel>
@@ -1015,7 +1022,7 @@
                 <label class="form-check-label"> Non </label>
             </div>
         </div>
-        <div class="text-decoration-underline pt-3">Avez-vous créé votre COMPTE CPF ?</div>
+        <div class="text-decoration-underline pt-3 pb-2">Avez-vous créé votre COMPTE CPF ?</div>
         <div class="d-flex  align-items-center gap-3">
             <div class="form-check">
                 <input class="form-check-input" type="radio" name="compteCPF" value="oui" ngModel>
@@ -1029,11 +1036,11 @@
         <!-- </div> -->
         <div class="form-group row">
             <div class="row justify-content-center">
-                <div class="col-12 col-md-8 text-center text-decoration-underline pt-3">
+                <div class="col-12 col-md-8 text-center text-decoration-underline pt-3 pb-2">
                     <h3 class="pt-5 pb-2">Notre accompagnement vers la formation et l'emploi</h3>
                 </div>
             </div>
-            <div class="text-decoration-underline pt-3">Comment avez-vous connu notre centre de formation?</div>
+            <div class="text-decoration-underline pt-3 pb-2">Comment avez-vous connu notre centre de formation?</div>
             <div>
                 <div class="form-check">
                     <label class="form-check-label" for="conseillerPoleEmploi">Un conseiller POLE EMPLOI</label>
@@ -1110,7 +1117,7 @@
             </div>
         </div>
 
-        <div class="text-decoration-underline pt-3">Avez-vous déjà une promesse d’embauche, après la formation
+        <div class="text-decoration-underline pt-3 pb-2">Avez-vous déjà une promesse d’embauche, après la formation
             ?</div>
         <!-- <div class="form-group"> -->
         <div class="d-flex  align-items-center gap-3">
@@ -1129,7 +1136,7 @@
         <!-- <p class="display-5">{{promesseEmbauche === 'Oui'}}</p> -->
         <!-- entièrement revu -->
         <div *ngIf="promesseEmbauche === 'Oui'">
-            <div class="text-decoration-underline pt-3">La durée du contrat de travail proposé suite à la
+            <div class="text-decoration-underline pt-3 pb-2">La durée du contrat de travail proposé suite à la
                 formation </div>
             <div class="form-check">
                 <label class="form-check-label" for="dureeContrat">CDD de moins de 6 mois</label>
@@ -1154,7 +1161,7 @@
             </div>
         </div>
 
-        <div class="text-decoration-underline pt-3">Connaissez-vous le financement de la formation ?</div>
+        <div class="text-decoration-underline pt-3 pb-2">Connaissez-vous le financement de la formation ?</div>
         <div>
             <div class="form-check">
                 <label class="form-check-label" for="financementPreFormation1"> Pôle Emploi (POEI, AFPR…)
@@ -1182,7 +1189,7 @@
                 <input class="form-check-input" type="checkbox" name="financementAutre" ngModel>
             </div>
 
-            <div class="text-decoration-underline pt-3">Vous n’avez pas encore de promesse d’embauche après la
+            <div class="text-decoration-underline pt-3 pb-2">Vous n’avez pas encore de promesse d’embauche après la
                 formation. Vous recherchez ?</div>
             <!-- <div> -->
             <div class="form-check">
@@ -1208,7 +1215,7 @@
 
         </div>
         <div>
-            <label class="text-decoration-underline pt-3 ">Vous recherchez un emploi à :</label>
+            <label class="text-decoration-underline pt-3 pb-2 ">Vous recherchez un emploi à :</label>
             <div class="d-flex  align-items-centergap-5">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="miTemps" value="Mi-temps" ngModel>
@@ -1220,7 +1227,7 @@
                 </div>
             </div>
             <div>
-                <div class="text-decoration-underline pt-3">Vous souhaitez travailler ou vous êtes prêts à
+                <div class="text-decoration-underline pt-3 pb-2">Vous souhaitez travailler ou vous êtes prêts à
                     travailler:
                 </div>
 
@@ -1248,7 +1255,7 @@
             </div>
 
 
-            <div class="text-decoration-underline pt-3">Etes-vous prêt à travailler en
+            <div class="text-decoration-underline pt-3 pb-2">Etes-vous prêt à travailler en
                 extérieur ?</div>
             <div class="d-flex  align-items-centergap-5">
                 <div class="form-check">
@@ -1267,7 +1274,7 @@
 
 
         <!-- <div> -->
-        <div class="text-decoration-underline pt-3">Mobilité: possédez-vous un moyen de transport ? </div>
+        <div class="text-decoration-underline pt-3 pb-2">Mobilité: possédez-vous un moyen de transport ? </div>
         <div class="d-flex  align-items-centergap-5">
             <div class="form-check">
                 <label class="form-check-label">Oui</label>
@@ -1304,7 +1311,7 @@
 
         <div>
 
-            <div class="text-decoration-underline pt-3">Quelle est votre mobilité pour aller travailler ?</div>
+            <div class="text-decoration-underline pt-3 pb-2">Quelle est votre mobilité pour aller travailler ?</div>
             <div class="form-check">
                 <input class="form-check-input" type="radio" name="mobility" value="10km" ngModel>
                 <label class="form-check-label"> à moins de 10
@@ -1327,7 +1334,7 @@
         </div>
 
         <!-- <div>
-            <div class="text-decoration-underline pt-3">Pour terminer, souhaitez-vous que nous adressions vos
+            <div class="text-decoration-underline pt-3 pb-2">Pour terminer, souhaitez-vous que nous adressions vos
                 résultats
                 à une personne en charge de votre orientation
                 ?</div>
