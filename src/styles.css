@@ -54,20 +54,30 @@ p.question {
 
 .custom-file-button input[type=file] {
     margin-left: -2px !important;
-  }
-  
-  .custom-file-button input[type=file]::-webkit-file-upload-button {
+}
+
+.custom-file-button input[type=file]::-webkit-file-upload-button {
     display: none;
-  }
-  
-  .custom-file-button input[type=file]::file-selector-button {
+}
+
+.custom-file-button input[type=file]::file-selector-button {
     display: none;
-  }
-  
-  .custom-file-button:hover label {
+}
+
+.custom-file-button:hover label {
     background-color: #dde0e3;
     cursor: pointer;
-  }
+}
+
+/* added to avoid container reduced on landscape screen under 992px */
+
+@media screen and (min-width:576px) and (max-width:992px) {
+    .container{
+        background-color: #B2BC00;
+        max-width: 100% !important;
+    }
+    
+}
 
 
 /* @media only screen and (max-width: 768px) { */
@@ -90,21 +100,22 @@ p.question {
 
     button.btn,
     button a,
-    .card-body p, 
+    .card-body p,
     .card-body span,
-    .card-body a, form p {
+    .card-body a,
+    form p {
         font-size: 0.8rem ! important;
     }
 
-    .order-perso2{
+    .order-perso2 {
         order: 2;
     }
 
-    .order-perso4{
+    .order-perso4 {
         order: 4;
     }
 
-    button{
+    button {
         margin-bottom: 0.5rem;
     }
 
@@ -114,7 +125,6 @@ p.question {
 
 @media only screen and (max-width: 992px) {
 
-
     button.btn,
     button a {
         font-size: 0.8rem ! important;
@@ -122,6 +132,6 @@ p.question {
 
     .d-xs-none {
         display: none ! important;
-    }
-
+    }    
 }
+
