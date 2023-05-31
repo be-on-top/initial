@@ -283,7 +283,7 @@
                 <div class="card-header bg-dark">
                     <a class="collapsed btn text-light text-capitalize d-flex justify-content-between"
                         data-bs-toggle="collapse" href="#collapseFor">
-                        <span>Votre Situation face à l'emploi</span> <i
+                        <span>Votre historique emploi</span> <i
                             class="bi bi-plus-square-fill text-light"></i>
                     </a>
                 </div>
@@ -454,9 +454,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="text-decoration-underline pt-3 pb-2">Avez-vous fait part de votre projet à
-                                    votre
-                                    Conseiller
-                                    Mobilité?</label>
+                                    votre Conseiller  Mobilité?</label>
                                 <div class="d-flex  align-items-center gap-3">
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="militaire_conseiller"
@@ -472,11 +470,8 @@
                             </div>
                             <hr>
                             <div class="form-group">
-                                <label for="autre_situation" class="text-decoration-underline pt-3 pb-2">Êtes-vous dans
-                                    une autre
-                                    situation
-                                    (précisez)?</label>
-                                <input type="text" class="form-control" name="autre_situation" ngModel>
+                                <label for="autre_situation" class="text-decoration-underline pt-3 pb-2">Êtes-vous dans une autre situation?</label>
+                                <input type="text" class="form-control" name="autre_situation" ngModel placeholder="précisez...">
                             </div>
                             <hr>
                             <div class="text-decoration-underline pt-3 pb-2">Possédez-vous une reconnaissance
@@ -516,7 +511,7 @@
                 <div class="card-header bg-dark">
                     <a class="collapsed btn text-light text-capitalize d-flex justify-content-between"
                         data-bs-toggle="collapse" href="#collapseFive">
-                        <span>Votre situation face à la formation</span> <i
+                        <span>Votre historique formation</span> <i
                             class="bi bi-plus-square-fill text-light"></i>
                     </a>
                 </div>
@@ -1013,7 +1008,7 @@
                 <div class="card-header bg-dark">
                     <a class="collapsed btn text-light text-capitalize d-flex justify-content-between"
                         data-bs-toggle="collapse" href="#collapseSix">
-                        <span>Notre accompagnement formation & emploi</span> <i
+                        <span>Notre accompagnement</span> <i
                             class="bi bi-plus-square-fill text-light"></i>
                     </a>
                 </div>
@@ -1054,13 +1049,10 @@
                                     value="Un Conseiller RSA du Conseil Départemental" ngModel>
                             </div>
                             <div class="form-check">
-                                <label class="form-check-label" for="groupementEmployeurs">Un groupement d’employeurs
-                                    (GE) ou
-                                    groupement d’employeurs
-                                    par l’insertion et la qualification (GEIQ)</label>
+                                <label class="form-check-label" for="groupementEmployeurs">Un groupement d'employeurs (GE) ou
+                                    groupement d'employeurs par l'insertion et la qualification (GEIQ)</label>
                                 <input class="form-check-input" type="checkbox" name="groupementEmployeurs"
-                                    value="Un groupement d’employeurs (GE) ou groupement d’employeurs par l’insertion et la qualification (GEIQ)"
-                                    ngModel>
+                                    value="GEIQ" ngModel>
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label" for="agenceTravailTemporaire">Une agence de travail
@@ -1119,7 +1111,7 @@
                     </div>
 
                     <!-- <p class="display-5">{{promesseEmbauche === 'Oui'}}</p> -->
-                    <!-- entièrement revu -->
+
                     <div *ngIf="promesseEmbauche === 'Oui'">
                         <div class="text-decoration-underline pt-3 pb-2">La durée du contrat de travail proposé suite à
                             la
@@ -1210,7 +1202,7 @@
                     </div>
                     <div>
                         <label class="text-decoration-underline pt-3 pb-2 ">Vous recherchez un emploi à :</label>
-                        <div class="d-flex  align-items-centergap-5">
+                        <div class="d-flex align-items-center gap-5">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="miTemps" value="Mi-temps" ngModel>
                                 <label class="form-check-label" for="miTemps">Mi-temps</label>
@@ -1255,7 +1247,7 @@
 
                         <div class="text-decoration-underline pt-3 pb-2">Etes-vous prêt à travailler en extérieur ?
                         </div>
-                        <div class="d-flex  align-items-centergap-5">
+                        <div class="d-flex align-items-center gap-5">
                             <div class="form-check">
                                 <label class="form-check-label">Oui</label>
                                 <input class="form-check-input" type="radio" name="travailExterieur" value="oui"
@@ -1290,7 +1282,7 @@
                     <!-- début éléments de formulaire -->
                     <div class="text-decoration-underline pt-3 pb-2">Mobilité: possédez-vous un moyen de transport ?
                     </div>
-                    <div class="d-flex  align-items-centergap-5">
+                    <div class="d-flex align-items-center gap-5">
                         <div class="form-check">
                             <label class="form-check-label">Oui</label>
                             <input class="form-check-input" type="radio" name="MoyenDeTransport" value="Oui"
@@ -1360,8 +1352,6 @@
                 </div>
             </div>
         </div>
-
-
 
         <button class="btn btn-success mt-5" type="submit">Envoyer</button>
     </form>
