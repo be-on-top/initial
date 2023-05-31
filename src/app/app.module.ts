@@ -30,6 +30,7 @@ import { AccountComponent } from './account/account.component';
 import { UpdateAccountComponent } from './account/update-account/update-account.component';
 import { QuizzComponent } from './quizz/quizz.component';
 import { SocialFormComponent } from './social/social-form/social-form.component';
+import { DetailsComponent } from './quizz/vues/details/details.component';
 // import { getMessaging } from 'firebase/messaging';
 
 
@@ -44,7 +45,8 @@ import { SocialFormComponent } from './social/social-form/social-form.component'
     AccountComponent,
     UpdateAccountComponent,
     QuizzComponent,
-    SocialFormComponent
+    SocialFormComponent,
+    DetailsComponent
   ],
   imports: [
     BrowserModule,

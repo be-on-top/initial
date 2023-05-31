@@ -73,7 +73,7 @@ p.question {
 
 @media screen and (min-width:576px) and (max-width:992px) {
     .container{
-        background-color: #B2BC00;
+        /* background-color: #B2BC00; */
         max-width: 100% !important;
     }
     
@@ -118,7 +118,6 @@ p.question {
     button {
         margin-bottom: 0.5rem;
     }
-
 
 
 }

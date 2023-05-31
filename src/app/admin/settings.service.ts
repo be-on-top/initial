@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, collectionData, docData, setDoc, addDoc, doc } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, docData, setDoc, addDoc, doc, where, getDocs } from '@angular/fire/firestore';
 import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Trade } from './trade';
+import { query } from '@angular/animations';
 
 @Injectable({
   providedIn: 'root'
@@ -37,5 +38,6 @@ export class SettingsService {
     const tradesRef = collection(this.firestore, "sigles");
     return collectionData(tradesRef, {idField:"id"}) as Observable<Trade[]>;
   }
+
 
 }
