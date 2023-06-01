@@ -8,10 +8,11 @@ import { QuestionsService } from 'src/app/admin/questions.service';
 })
 export class DetailsComponent {
 
+  counter: number = 0
   questionsMedias: any = []
   responsesMedias: any = []
-// questionId va être transmis par son parent qui le reçoit lui-même en paramètre de route
-@Input() q: any;
+  // questionId va être transmis par son parent qui le reçoit lui-même en paramètre de route
+  @Input() q: any;
 
   constructor(private service: QuestionsService) {
   }
@@ -28,8 +29,15 @@ export class DetailsComponent {
 
   }
 
-  choice(optScoring:any){
-    optScoring=="true"?alert("Bingo ! "):alert("Mauvaise réponse ! ")
+  choice(optScoring: any) {
+    // test OK
+    // optScoring == "true" ? alert("Bingo ! ") : alert("Mauvaise réponse ! ")
+    if (optScoring == "true") {
+      this.counter = this.counter + this.q.notation
+      alert(this.counter)
+
+    } else { alert('Aucun point supplémentnaire') }
+
   }
 
 }
