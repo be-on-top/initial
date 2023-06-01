@@ -28,4 +28,8 @@ export class DetailsComponent {
 
   }
 
+  choice(optScoring:any){
+    optScoring=="true"?alert("Bingo ! "):alert("Mauvaise réponse ! ")
+  }
+
 }
