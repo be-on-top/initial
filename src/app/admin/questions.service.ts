@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Storage, ref, uploadBytes, getDownloadURL, listAll, deleteObject } from '@angular/fire/storage';
-import { Firestore, collection, collectionData, docData, setDoc } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, docData, setDoc, query, orderBy, startAt, startAfter, limit, getDocs} from '@angular/fire/firestore';
 import { addDoc, doc } from 'firebase/firestore';
 import { Observable } from 'rxjs';
 
@@ -27,10 +27,11 @@ export class QuestionsService {
 
   constructor(private storage: Storage, private firestore: Firestore) {
     // this.pathResponses = []
+
   }
 
 
-  async createQuestion(question: any, allFilesToUplad: [], isVideo: boolean=false) {
+  async createQuestion(question: any, allFilesToUplad: [], isVideo: boolean = false) {
 
     // let newQuestion if mediasAttached;
     if (question.mediaQuestion) {
@@ -63,7 +64,7 @@ export class QuestionsService {
 
 
     // let newQuestion if no mediasAttached;
-  //  let newQuestion = { created: Date.now(), idMediaQuestion: this.idMediaQuestion, idMediaOption1: this.idMediaOption1, idMediaOption2: this.idMediaOption2, idMediaOption3: this.idMediaOption3, idMediaOption4: this.idMediaOption4, isVideo: this.isVideo, ...question };
+    //  let newQuestion = { created: Date.now(), idMediaQuestion: this.idMediaQuestion, idMediaOption1: this.idMediaOption1, idMediaOption2: this.idMediaOption2, idMediaOption3: this.idMediaOption3, idMediaOption4: this.idMediaOption4, isVideo: this.isVideo, ...question };
     let newQuestion = { created: Date.now(), isVideo: isVideo, ...question };
     this.questions = [newQuestion, ...this.questions];
     console.log(this.questions);
@@ -166,6 +167,14 @@ export class QuestionsService {
     return collectionData($questionsRef, { idField: "id" }) as Observable<any[]>
   }
 
+
+  getSortedQuestions() {
+    let $questionsRef = collection(this.firestore, "questions");
+    const q = query($questionsRef, orderBy("number"), startAt(0));
+    return collectionData($questionsRef, { idField: "id" }) as Observable<any[]>
+  }
+
+
   getQuestion(id: string) {
     let $questionRef = doc(this.firestore, "questions/" + id)
     return docData($questionRef, { idField: 'id' }) as Observable<any>;
@@ -237,6 +246,7 @@ export class QuestionsService {
           // depuis les mises à jour effectuées sur les questions sociales !!!! 
           item.fullPath.includes(id) == true ? mediasResponsesById.push(await getDownloadURL(item)) : ""
           // console.log("mediaResponsesById", mediasResponsesById);
+
         }
 
       }).catch((error) => {
@@ -269,7 +279,6 @@ export class QuestionsService {
     return (mediaQuestionById)
 
   }
-
 
 }
 

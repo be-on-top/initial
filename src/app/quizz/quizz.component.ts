@@ -19,6 +19,10 @@ export class QuizzComponent implements OnInit {
   uid: string = ""
   // doit récupérer les questions (préalables et de positionnement) via le service dédié (questionsService) pour le métier visé
   questions: any[] = []
+  questionsMedias: any = []
+  responsesMedias: any = []
+  // pour passer de l'une à l'autre, faut qu'on ait un indexQuestion qui soit susceptible de s'incrémenter
+  indexQuestion:number=0
 
   constructor(private ac: ActivatedRoute, private auth: Auth, private questionsService: QuestionsService, private settingService:SettingsService) {
     this.trade = this.ac.snapshot.params["id"]
@@ -35,21 +39,40 @@ export class QuizzComponent implements OnInit {
     })
 
 
-
-
     // pour recevoir la liste des questions relatives au métier
     this.questionsService.getQuestions().subscribe(data => {
       let allQuestions = data;
       console.log("allQuestions", allQuestions);
 
       this.questions = allQuestions.filter(q => q.number < 21 && q.sigle==this.trade)
-      // this.questions.sort(this.compare)
+      this.questions.sort(this.compare)
+
+
+          // pour recevoir la liste des médias relatifs aux questions relatives au métier
+    this.questionsMedias = this.questionsService.getMediaQuestionById(this.questions[this.indexQuestion].id)
+    console.log("questionsMedias depuis questions-details", this.questionsMedias);
+    this.responsesMedias = this.questionsService.getMediasResponsesById(this.questions[this.indexQuestion].id)
     })
+
+
+
   }
 
-  // compare(a: any, b: any) {
-  //   return a.number - b.number;
-  // }
+  compare(a: any, b: any) {
+    return a.number - b.number;
+  }
+
+  next(indexQuestion:number){
+    this.indexQuestion=indexQuestion+1
+    alert(this.indexQuestion)
+
+    // pour rappeler la liste des medias 
+    this.questionsMedias = this.questionsService.getMediaQuestionById(this.questions[this.indexQuestion].id)
+    console.log("questionsMedias depuis questions-details", this.questionsMedias);
+    this.responsesMedias = this.questionsService.getMediasResponsesById(this.questions[this.indexQuestion].id)
+    
+
+  }
 
 
   }

@@ -2,20 +2,32 @@
     <h3>Quizz à venir... pour métier {{trade}}</h3>
     <div class="alert alert-info my-5">
         <!-- {{uid}} -->
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Placeat dolorem eveniet beatae culpa molestias numquam quis ex quidem animi fugit consequuntur voluptatibus quo corrupti nobis ab, laboriosam minima commodi nostrum?
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Placeat dolorem eveniet beatae culpa molestias numquam
+        quis ex quidem animi fugit consequuntur voluptatibus quo corrupti nobis ab, laboriosam minima commodi nostrum?
     </div>
     <!-- partie visuelle similaire à la vue de détail des administrateurs (en mode aperçu) qui ici va devenir réactive -->
-   
-    <div *ngIf="questions">
-        <!-- pour recracher autant de vues de détails qu'il y a de questions... -->
-        <div *ngFor="let q of questions"> <!-- {{q | json}} -->
-            <!-- ... et les filtrer si besoin -->
+
+    {{questions[0] | json}}
+
+
+   <!-- ça, c'est la logique pour récupérer toutes les questions du métier en question... -->
+    <!-- <div *ngIf="questions">
+        <div *ngFor="let q of questions">
             <div>
                 <app-details [q]="q"></app-details>
             </div>
         </div>
+    </div> -->
+
+    <!-- on veut juste la  première de la liste initialement -->
+    <div *ngIf="questions[indexQuestion]">
+        <!-- <div *ngFor="let q of questions"> -->
+        <div>
+            <app-details [q]="questions[indexQuestion]" [questionsMedias]="questionsMedias" [responsesMedias]="responsesMedias"></app-details>
+        </div>
     </div>
+    <!-- </div> -->
 
-
+    <button class="btn btn-success"  (click)="next(indexQuestion)">next</button>
 
 </div>
