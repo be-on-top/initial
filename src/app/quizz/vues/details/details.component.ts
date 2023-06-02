@@ -34,8 +34,8 @@ export class DetailsComponent {
     // test OK
     // optScoring == "true" ? alert("Bingo ! ") : alert("Mauvaise réponse ! ")
     if (optScoring == "true") {
-      this.counter = this.counter + this.q.notation
-      alert(this.counter)
+      this.counter =   this.counter + Number(this.q.notation) 
+      alert(`etat du compter avec les notations ${this.counter}`)
     } else { alert('Aucun point supplémentnaire') }
     // ici, on enregistrera sûrement en base
 

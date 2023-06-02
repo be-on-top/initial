@@ -6,20 +6,9 @@
         quis ex quidem animi fugit consequuntur voluptatibus quo corrupti nobis ab, laboriosam minima commodi nostrum?
     </div>
     <!-- partie visuelle similaire à la vue de détail des administrateurs (en mode aperçu) qui ici va devenir réactive -->
+    <!-- {{questions[0] | json}} -->
 
-    {{questions[0] | json}}
-
-
-   <!-- ça, c'est la logique pour récupérer toutes les questions du métier en question... -->
-    <!-- <div *ngIf="questions">
-        <div *ngFor="let q of questions">
-            <div>
-                <app-details [q]="q"></app-details>
-            </div>
-        </div>
-    </div> -->
-
-    <!-- on veut juste la  première de la liste initialement -->
+    <!-- on veut juste la première de la liste initiale -->
     <div *ngIf="questions[indexQuestion]">
         <!-- <div *ngFor="let q of questions"> -->
         <div>
