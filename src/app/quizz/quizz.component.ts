@@ -14,7 +14,7 @@ export class QuizzComponent implements OnInit {
   // doit récupérer via le paramètre de route l'id relative au métier
   trade: any = ""
   // doit retrouver le sigle correspondant à l'id du métier
-  specificSigle:any=""
+  specificSigle: any = ""
   // doit récupérer l'uid de l'utilisateur authentifié
   uid: string = ""
   // doit récupérer les questions (préalables et de positionnement) via le service dédié (questionsService) pour le métier visé
@@ -22,9 +22,11 @@ export class QuizzComponent implements OnInit {
   questionsMedias: any = []
   responsesMedias: any = []
   // pour passer de l'une à l'autre, faut qu'on ait un indexQuestion qui soit susceptible de s'incrémenter
-  indexQuestion:number=0
+  indexQuestion: number = 0
+  // on le prépare à recevoir un Output depuis détails
+  isCompleted:boolean=false
 
-  constructor(private ac: ActivatedRoute, private auth: Auth, private questionsService: QuestionsService, private settingService:SettingsService) {
+  constructor(private ac: ActivatedRoute, private auth: Auth, private questionsService: QuestionsService, private settingService: SettingsService) {
     this.trade = this.ac.snapshot.params["id"]
   }
 
@@ -44,16 +46,15 @@ export class QuizzComponent implements OnInit {
       let allQuestions = data;
       console.log("allQuestions", allQuestions);
 
-      this.questions = allQuestions.filter(q => q.number < 21 && q.sigle==this.trade)
+      this.questions = allQuestions.filter(q => q.number < 21 && q.sigle == this.trade)
       this.questions.sort(this.compare)
 
 
-          // pour recevoir la liste des médias relatifs aux questions relatives au métier
-    this.questionsMedias = this.questionsService.getMediaQuestionById(this.questions[this.indexQuestion].id)
-    console.log("questionsMedias depuis questions-details", this.questionsMedias);
-    this.responsesMedias = this.questionsService.getMediasResponsesById(this.questions[this.indexQuestion].id)
+      // pour recevoir la liste des médias relatifs aux questions relatives au métier
+      this.questionsMedias = this.questionsService.getMediaQuestionById(this.questions[this.indexQuestion].id)
+      console.log("questionsMedias depuis questions-details", this.questionsMedias);
+      this.responsesMedias = this.questionsService.getMediasResponsesById(this.questions[this.indexQuestion].id)
     })
-
 
 
   }
@@ -62,20 +63,29 @@ export class QuizzComponent implements OnInit {
     return a.number - b.number;
   }
 
-  next(indexQuestion:number){
-    this.indexQuestion=indexQuestion+1
-    alert(this.indexQuestion)
+  answered(value:boolean){
+    // alert(value)
+    value==true?this.isCompleted=true:"this.isCompleted==false"
+    // alert(this.isCompleted)
+
+  }
+
+  next(indexQuestion: number) {
+    this.indexQuestion = indexQuestion + 1
 
     // pour rappeler la liste des medias 
     this.questionsMedias = this.questionsService.getMediaQuestionById(this.questions[this.indexQuestion].id)
     console.log("questionsMedias depuis questions-details", this.questionsMedias);
     this.responsesMedias = this.questionsService.getMediasResponsesById(this.questions[this.indexQuestion].id)
-    
+
+    // et puisqu'on commence une nouvelle question, isCompleted redevient false
+    this.isCompleted=false
+
 
   }
 
 
-  }
+}
 
 
 

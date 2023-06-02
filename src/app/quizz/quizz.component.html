@@ -23,11 +23,11 @@
     <div *ngIf="questions[indexQuestion]">
         <!-- <div *ngFor="let q of questions"> -->
         <div>
-            <app-details [q]="questions[indexQuestion]" [questionsMedias]="questionsMedias" [responsesMedias]="responsesMedias"></app-details>
+            <app-details [q]="questions[indexQuestion]" [questionsMedias]="questionsMedias" [responsesMedias]="responsesMedias" (hasBeenClicked)="answered($event)"></app-details>
         </div>
     </div>
     <!-- </div> -->
 
-    <button class="btn btn-success"  (click)="next(indexQuestion)">next</button>
+    <button class="btn btn-primary" [disabled]="isCompleted==false" (click)="next(indexQuestion)">Question suivante</button>
 
 </div>
