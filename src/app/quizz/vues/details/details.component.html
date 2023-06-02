@@ -2,7 +2,7 @@
     <p class="rounded bg-success px-3 py-2 h3 fw-normal text-center">Q{{q.number}} : {{q.question}}
     </p>
     <!-- <p class="fs-5">Cette question peut vous rapporter <i class="bi bi-{{q.notation}}-square-fill fs-5"></i> PNTS</p> -->
-    <p class="fs-6 mb-0"><span class="fw-bold">Compétence évaluée :</span>
+    <p class="fs-6 mb-3"><span class="fw-bold">Compétence évaluée :</span>
         {{q.competence}} - <span class="fw-bold"> QUESTION à + {{q.notation}} PNTS</span> - <span class="fw-bold">CUMUL de vos points : {{counter}} PNT(S)</span></p>
     <!-- <p class="fs-6"><span class="fw-bold">Id :</span>{{q.id}}</p> -->
 
@@ -26,10 +26,8 @@
     <!-- début des réponses -->
     <div class="p-3 row justify-content-between align-items-end mb-3 rounded bg-light w-100">
 
-        <div class="col-sm-6 rounded text-center" [ngClass]="{'text-success':q.optScoring1=='true'}">
-            <button (click)="choice(q.optScoring1)" class="btn btn-transparent text-center fs-5 p">R1 : {{q.option1}} </button>
-                    <!-- {{responsesMedias.length}}
-                    {{responsesMedias}} -->
+        <div class="col-sm-6 rounded text-center" >
+            <button [ngClass]="{'bg-test':q.optScoring1=='true'}" (click)="choice(q.optScoring1)" class="btn btn-transparent border-0 text-center fs-5">R1 : {{q.option1}} </button>
             <div *ngIf="responsesMedias && responsesMedias.length!==0">
                 <div *ngFor="let item of responsesMedias">
                     <img *ngIf="item.includes(q.id) && item.includes('Option1')" class="img-fluid rounded mb-3"
@@ -38,8 +36,8 @@
             </div>
             <!-- si pas d'images -->
         </div>
-        <div class="col-sm-6 rounded text-center" [ngClass]="{'text-success':q.optScoring2=='true'}">
-            <button (click)="choice(q.optScoring2)" class="btn btn-transparent text-center fs-5">R2 : {{q.option2}} </button>
+        <div class="col-sm-6 rounded text-center">
+            <button [ngClass]="{'bg-test':q.optScoring2=='true'}" (click)="choice(q.optScoring2)" class="btn btn-transparent border-0 text-center fs-5">R2 : {{q.option2}} </button>
             <div *ngIf="responsesMedias">
                 <div *ngFor="let item of responsesMedias">
                     <img *ngIf="item.includes(q.id) && item.includes('Option2')" class="img-fluid rounded mb-3"
@@ -48,8 +46,8 @@
             </div>
         </div>
         <!-- à partir d'ici, les options Réponse 3 et Réponse 4 n'étant pas obligatoires, faut qu'on s'assure qu'elles existent -->
-        <div class="col-sm-6 rounded text-center" *ngIf="q.option3" [ngClass]="{'text-success':q.optScoring3=='true'}">
-            <button (click)="choice(q.optScoring3)" class="btn btn-transparent text-center fs-5 align-self-center">R3 : {{q.option3}} </button>
+        <div class="col-sm-6 rounded text-center">
+            <button *ngIf="q.option3" [ngClass]="{'bg-test':q.optScoring3=='true'}" (click)="choice(q.optScoring3)" class="btn btn-transparent text-center fs-5 align-self-center">R3 : {{q.option3}} </button>
             <div *ngIf="responsesMedias">
                 <div *ngFor="let item of responsesMedias">
                     <img *ngIf="item.includes(q.id) && item.includes('Option3')" class="img-fluid rounded mb-3"
@@ -57,8 +55,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 rounded text-center" *ngIf="q.option4" [ngClass]="{'text-success':q.optScoring4=='true'}">
-            <button (click)="choice(q.optScoring4)" class="btn btn-transparent text-center fs-5">R4 : {{q.option4}} </button>
+        <div class="col-sm-6 rounded text-center" *ngIf="q.option4">
+            <button  [ngClass]="{'bg-test':q.optScoring4=='true'}" (click)="choice(q.optScoring4)" class="btn btn-transparent text-center fs-5">R4 : {{q.option4}} </button>
             <div *ngIf="responsesMedias">
                 <div *ngFor="let item of responsesMedias">
                     <img *ngIf="item.includes(q.id) && item.includes('Option4')" class="img-fluid rounded mb-3"
