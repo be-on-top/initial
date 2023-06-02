@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Firestore, collection, orderBy, startAt, startAfter, query, where, limit } from '@angular/fire/firestore';
-import { QuestionsService } from 'src/app/admin/questions.service';
+// import { Firestore, collection, orderBy, startAt, startAfter, query, where, limit } from '@angular/fire/firestore';
+// import { QuestionsService } from 'src/app/admin/questions.service';
 
 @Component({
   selector: 'app-details',
@@ -20,7 +20,7 @@ export class DetailsComponent {
   isCompleted: boolean = false
   @Output() hasBeenClicked: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(private service: QuestionsService, private firestore: Firestore) {
+  constructor() {
   }
 
   ngOnInit() {
