@@ -52,12 +52,12 @@ h4,
 }
 
 
-.btn:hover  {
+.btn:hover {
     transform: scale(1.05);
     box-shadow: 0 10px 20px rgba(0, 0, 0, .12), 0 4px 8px rgba(0, 0, 0, .06);
 }
 
-.bg-test:hover{
+.bg-test:hover {
     background-color: #B2BC00 !important;
 }
 
@@ -90,11 +90,11 @@ p.question {
 /* added to avoid container reduced on landscape screen under 992px */
 
 @media screen and (min-width:576px) and (max-width:992px) {
-    .container{
+    .container {
         /* background-color: #B2BC00; */
         max-width: 100% !important;
     }
-    
+
 }
 
 
@@ -149,6 +149,5 @@ p.question {
 
     .d-xs-none {
         display: none ! important;
-    }    
+    }
 }
-

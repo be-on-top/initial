@@ -39,7 +39,7 @@
 
     <div *ngIf="tradesData" class="rounded bg-light row column-gap-1">
 
-        <div class="col-6" *ngFor="let trade of tradesData">
+        <div class="col-md-6" *ngFor="let trade of tradesData">
             <a [routerLink]="['/quizz/', trade.sigle]" class="text-decoration-none text-dark">
                 <div class="card my-3" (click)="selectTrade(trade.id)">
                     <div class="card-header text-muted">{{trade.id}}</div>
