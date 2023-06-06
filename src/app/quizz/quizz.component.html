@@ -12,7 +12,7 @@
     <div *ngIf="questions[indexQuestion]">
         <!-- <div *ngFor="let q of questions"> -->
         <div>
-            <app-details [q]="questions[indexQuestion]" [questionsMedias]="questionsMedias" [responsesMedias]="responsesMedias" (hasBeenClicked)="answered($event)"></app-details>
+            <app-details (resetCounter)="resetChildCounter()" [q]="questions[indexQuestion]" [questionsMedias]="questionsMedias" [responsesMedias]="responsesMedias" (hasBeenClicked)="answered($event)" [fullGoodAnswersClicked]="fullGoodAnswersClicked" [fullAnswersClicked]="fullAnswersClicked" [totalAnswersAvailable]="totalAnswersAvailable" [fullOptScoringTrue]="fullOptScoringTrue"></app-details>
         </div>
     </div>
     <!-- </div> -->
