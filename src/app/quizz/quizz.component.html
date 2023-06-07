@@ -1,22 +1,30 @@
-<div class="container py-5">
+<div class="container py-5 text-center">
     <h3>Quizz à venir... pour métier {{trade}}</h3>
     <div class="alert bg-light mt-3 mb-4">
         <!-- {{uid}} -->
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Placeat dolorem eveniet beatae culpa molestias numquam
-        quis ex quidem animi fugit consequuntur voluptatibus quo corrupti nobis ab, laboriosam minima commodi nostrum?
+        Placeat dolorem eveniet beatae culpa molestias numquam quis ex quidem animi fugit consequuntur voluptatibus quo corrupti nobis ab, laboriosam minima commodi nostrum?
     </div>
     <!-- partie visuelle similaire à la vue de détail des administrateurs (en mode aperçu) qui ici va devenir réactive -->
     <!-- {{questions[0] | json}} -->
+    <div class="alert bg-info text-white text-smaller">Cumul des points récupéré par le parent : {{scoreCounter}}</div>
 
     <!-- on veut juste la première de la liste initiale -->
     <div *ngIf="questions[indexQuestion]">
         <!-- <div *ngFor="let q of questions"> -->
         <div>
-            <app-details (resetCounter)="resetChildCounter()" [q]="questions[indexQuestion]" [questionsMedias]="questionsMedias" [responsesMedias]="responsesMedias" (hasBeenClicked)="answered($event)" [fullGoodAnswersClicked]="fullGoodAnswersClicked" [fullAnswersClicked]="fullAnswersClicked" [totalAnswersAvailable]="totalAnswersAvailable" [fullOptScoringTrue]="fullOptScoringTrue"></app-details>
+            <app-details (resetCounter)="resetChildCounter()" [q]="questions[indexQuestion]"
+                [questionsMedias]="questionsMedias" [responsesMedias]="responsesMedias"
+                (hasBeenClicked)="answered($event)" [fullGoodAnswersClicked]="fullGoodAnswersClicked"
+                [fullAnswersClicked]="fullAnswersClicked" [totalAnswersAvailable]="totalAnswersAvailable"
+                [fullOptScoringTrue]="fullOptScoringTrue" (hasBeenUpdated)="updated($event)"></app-details>
         </div>
     </div>
     <!-- </div> -->
 
-    <button class="btn btn-primary" [disabled]="isCompleted==false" (click)="next(indexQuestion)">Question suivante</button>
+    <button *ngIf="indexQuestion<3; else elseBlock" class="btn btn-primary m-auto"
+        [disabled]="isCompleted==false || indexQuestion==3" (click)="next(indexQuestion)">Question suivante</button>
+    <ng-template #elseBlock> <button class="btn btn-primary m-md-auto" (click)="next(indexQuestion)">Fin du QCM
+            d'accroche</button>
+    </ng-template>
 
 </div>

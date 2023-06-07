@@ -31,6 +31,7 @@ export class DetailsComponent implements OnInit {
   // pour prévenir le parent qu'au minimum un clic a été détecté donc une réponse donnée (quelle que soit sa valeur)
   isCompleted: boolean = false
   @Output() hasBeenClicked: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() hasBeenUpdated: EventEmitter<number> = new EventEmitter<number>();
 
   constructor() {
     // this.fullAnswersClicked=0
@@ -87,9 +88,10 @@ export class DetailsComponent implements OnInit {
 
     // ici, on enregistrera sûrement en base !!!!
 
-    // et on fait remonter l'information : une réponse a bien été cliquée, ce qui en soit suffit pour pouvoir passer à la suivante ! 
+    // on fait remonter l'information : une réponse a bien été cliquée (au minimum), ce qui en soit suffit pour pouvoir passer à la suivante ! 
     this.isCompleted = true
     this.hasBeenClicked.emit(this.isCompleted)
+    this.hasBeenUpdated.emit(this.counter)
 
   }
 

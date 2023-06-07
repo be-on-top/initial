@@ -5,6 +5,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { QuestionsService } from '../admin/questions.service';
 import { SettingsService } from '../admin/settings.service';
 import { DetailsComponent } from './vues/details/details.component';
+import { StudentsService } from '../admin/students.service';
 
 @Component({
   selector: 'app-quizz',
@@ -32,8 +33,9 @@ export class QuizzComponent implements OnInit {
   fullAnswersClicked: number = 0
   fullOptScoringTrue: number = 0
   totalAnswersAvailable: number = 0
+  scoreCounter:number = 0
 
-  constructor(private ac: ActivatedRoute, private auth: Auth, private questionsService: QuestionsService, private settingService: SettingsService) {
+  constructor(private ac: ActivatedRoute, private auth: Auth, private questionsService: QuestionsService, private settingService: SettingsService, private studentService: StudentsService) {
     this.trade = this.ac.snapshot.params["id"]
   }
 
@@ -96,6 +98,11 @@ export class QuizzComponent implements OnInit {
     value == true ? this.isCompleted = true : "this.isCompleted==false"
     // alert(this.isCompleted)
 
+  }
+
+  updated(value: number) {
+    this.scoreCounter=value
+    this.studentService.updateStudentScore(this.uid, this.scoreCounter)
   }
 
   next(indexQuestion: number) {
