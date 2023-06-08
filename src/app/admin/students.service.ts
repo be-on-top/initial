@@ -155,18 +155,10 @@ export class StudentsService {
     }
   }
 
-  updateStudentScore(id: string, scoreCounter:number){
+  updateStudentScore(id: string, scoreCounter:number, indexQuestion:number, trade:string){
 
     let $studentRef = doc(this.firestore, "students/" + id);
-    // let studentToUpdate: any = {};
-    // for (let key of Object.values(student)) {
-    //   if (key !== undefined) {
-    //     studentToUpdate = student;
-    //     console.log("studentToUpdate avant soumission", studentToUpdate);        
-    //   }
-    // }
-
-    let updateStudent={scoreCounter:scoreCounter}
+    let updateStudent={scoreCounter:scoreCounter, lastIndexQuestion:indexQuestion, tradeEvaluated:trade}
     updateDoc($studentRef, updateStudent);
 
 

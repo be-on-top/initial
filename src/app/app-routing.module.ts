@@ -11,7 +11,7 @@ const routes: Routes = [
   { path: 'admin', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'account', component: AccountComponent },
   { path: 'socialregistration', component: AdminForm },
-  { path: 'quizz/:id', component: QuizzComponent},
+  { path: 'quizz/:id/:indexQuestion/:scoreCounter', component: QuizzComponent},
   
 ];
 

@@ -33,10 +33,12 @@ export class QuizzComponent implements OnInit {
   fullAnswersClicked: number = 0
   fullOptScoringTrue: number = 0
   totalAnswersAvailable: number = 0
-  scoreCounter:number = 0
+  scoreCounter?:number
 
   constructor(private ac: ActivatedRoute, private auth: Auth, private questionsService: QuestionsService, private settingService: SettingsService, private studentService: StudentsService) {
     this.trade = this.ac.snapshot.params["id"]
+    this.ac.snapshot.params["indexedQuestion"]?this.indexQuestion=this.ac.snapshot.params["indexedQuestion"]:""    
+    this.ac.snapshot.params["scoreCounter"]?this.scoreCounter=this.ac.snapshot.params["scoreCounter"]:this.scoreCounter= 0
   }
 
   ngOnInit() {
@@ -102,7 +104,7 @@ export class QuizzComponent implements OnInit {
 
   updated(value: number) {
     this.scoreCounter=value
-    this.studentService.updateStudentScore(this.uid, this.scoreCounter)
+    this.studentService.updateStudentScore(this.uid, this.scoreCounter, this.indexQuestion, this.trade)
   }
 
   next(indexQuestion: number) {

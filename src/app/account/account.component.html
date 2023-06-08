@@ -126,7 +126,12 @@
                 </div>
                 <div id="collapseThree" class="collapse" data-bs-parent="#accordion">
                     <div class="card-body">
-                        Lorem ipsum..
+                        <p *ngIf="userData.scoreCounter">Le cumul actuel de vos points :  {{userData.scoreCounter}} PNTS</p>
+                        <p *ngIf="userData.tradeEvaluated">Métier concerné :  {{userData.tradeEvaluated}}</p>
+                        <p *ngIf="userData.lastIndexQuestion">Vous avez jusqu'ici répondu à {{userData.lastIndexQuestion}} Questions</p>
+                        <button class="btn bg-primary"><a class="text-light" [routerLink]="['/quizz/', userData.tradeEvaluated, userData.lastIndexQuestion, userData.scoreCounter]">
+                            Poursuivre le QCM</a>
+                        </button>
                     </div>
                 </div>
             </div>
