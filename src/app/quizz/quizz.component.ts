@@ -25,7 +25,7 @@ export class QuizzComponent implements OnInit {
   questionsMedias: any = []
   responsesMedias: any = []
   // pour passer de l'une à l'autre, faut qu'on ait un indexQuestion qui soit susceptible de s'incrémenter
-  indexQuestion: number = 0
+  indexQuestion: number
   // on le prépare à recevoir un Output depuis détails
   isCompleted: boolean = false
   // pour les compteurs de réponses qui seront à réinitialiser lors du passage à la question suivante :
@@ -33,12 +33,12 @@ export class QuizzComponent implements OnInit {
   fullAnswersClicked: number = 0
   fullOptScoringTrue: number = 0
   totalAnswersAvailable: number = 0
-  scoreCounter?:number
+  scoreCounter:number
 
   constructor(private ac: ActivatedRoute, private auth: Auth, private questionsService: QuestionsService, private settingService: SettingsService, private studentService: StudentsService) {
     this.trade = this.ac.snapshot.params["id"]
-    this.ac.snapshot.params["indexedQuestion"]?this.indexQuestion=this.ac.snapshot.params["indexedQuestion"]:""    
-    this.ac.snapshot.params["scoreCounter"]?this.scoreCounter=this.ac.snapshot.params["scoreCounter"]:this.scoreCounter= 0
+    this.indexQuestion=this.ac.snapshot.params["indexedQuestion"] || 0    
+    this.scoreCounter=this.ac.snapshot.params["scoreCounter"] || 0
   }
 
   ngOnInit() {

@@ -156,5 +156,9 @@ export class HomeComponent implements OnInit {
 
   }
 
+  navigateToQuizz(trade:string, indexedQuestion:number=0, score:number=0) {
+    this.router.navigate(['/quizz', trade, indexedQuestion, score]);
+  }
+
 
 }
