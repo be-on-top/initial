@@ -37,8 +37,8 @@ export class QuizzComponent implements OnInit {
 
   constructor(private ac: ActivatedRoute, private auth: Auth, private questionsService: QuestionsService, private settingService: SettingsService, private studentService: StudentsService) {
     this.trade = this.ac.snapshot.params["id"]
-    this.indexQuestion=this.ac.snapshot.params["indexedQuestion"] || 0    
-    this.scoreCounter=this.ac.snapshot.params["scoreCounter"] || 0
+    this.indexQuestion=this.ac.snapshot.params["indexedQuestion"]   
+    this.scoreCounter=this.ac.snapshot.params["scoreCounter"]
   }
 
   ngOnInit() {
