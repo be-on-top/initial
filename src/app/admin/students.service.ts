@@ -24,7 +24,10 @@ export class StudentsService {
       // let newEvaluator = { id: Date.now(), ...evaluator };
       let newStudent = { created: Date.now(), status: true, trainer: "Attribué ultérieurement", ...student };
       // on va lui affecter un password aléatoire en fonction de la date
-      let password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
+      // let password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
+      // juste le temps du test, let password sera le même pour tous : password
+      let password="password"
+
   
       // enregistrement en base dans fireAuth d'une part : 
       const result = await createUserWithEmailAndPassword(this.auth, student.email, password);

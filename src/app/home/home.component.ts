@@ -5,7 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Auth } from '@angular/fire/auth';
 // import { of } from 'rxjs';
 import { AuthService } from '../admin/auth.service';
-import { EvaluatorsService } from '../admin/evaluators.service';
+// EvaluatorsSerive servait initialement à faire des tests qui ont été déportés
+// import { EvaluatorsService } from '../admin/evaluators.service';
 // on a pu se passer de rxjs, donc on désactive tout pour le moment
 // import { Observable, Subscription, switchMap } from 'rxjs';
 import { query, Firestore, where, collection, getDocs } from '@angular/fire/firestore';
@@ -23,6 +24,7 @@ import { getToken } from 'firebase/messaging';
 import { SettingsService } from '../admin/settings.service';
 import { Trade } from '../admin/trade';
 import { Observable } from 'rxjs';
+import { StudentsService } from '../admin/students.service';
 
 
 @Component({
@@ -54,19 +56,19 @@ export class HomeComponent implements OnInit {
   // test transmission d'une liste de jetons d'enregistrement
   registrationTokens?: any
 
-  tradesData?:any
+  tradesData?: any
 
-  isEditor:boolean=false
+  isEditor: boolean = false
 
-  constructor(private notificationService: PushNotificationService, private auth: Auth, private firestore: Firestore, private authService: AuthService, private evaluatorService: EvaluatorsService, private ac: ActivatedRoute, private router: Router, readonly swPush: SwPush, private settingsService:SettingsService) {
+  constructor(private notificationService: PushNotificationService, private auth: Auth, private firestore: Firestore, private authService: AuthService, private studentService: StudentsService, private ac: ActivatedRoute, private router: Router, readonly swPush: SwPush, private settingsService: SettingsService) {
     // pour savoir si l'utilisateur est éditeur sans interroger firestore, on peut (?) récupérer userRole livré en paramètre de route
     // this.ac.snapshot.params["userRole"]="editor"?this.isEditor=true:""
 
-    if (this.ac.snapshot.params && this.ac.snapshot.params["userRole"]=="editor" ) {
-      this.isEditor=true      
+    if (this.ac.snapshot.params && this.ac.snapshot.params["userRole"] == "editor") {
+      this.isEditor = true
     }
-    console.log("this.ac.snapshot.params",this.ac.snapshot.params!==null)
-    console.log("this.ac.snapshot.params['userRole']",this.ac.snapshot.params["userRole"])
+    console.log("this.ac.snapshot.params", this.ac.snapshot.params !== null)
+    console.log("this.ac.snapshot.params['userRole']", this.ac.snapshot.params["userRole"])
 
   }
 
@@ -105,10 +107,12 @@ export class HomeComponent implements OnInit {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
         this.user = user.uid
-        this.myData = this.evaluatorService.getEvaluator(user.uid).subscribe();
-        console.log("dddd", user.uid);
-        console.log("www", user.email);
-        console.log("data", this.myData);
+        this.studentService.getStudentById(user.uid).subscribe((data) => this.studentData = data)
+
+        // récupération OK 
+        // console.log("student uid récupération", this.studentData.id);
+        // console.log("student Email récupération", this.studentData.email);
+        // console.log("data", this.studentData.scoreCounter);
       }
     })
 
@@ -139,16 +143,16 @@ export class HomeComponent implements OnInit {
     })
 
     // pour récupérer les métiers (sigles) enregistrés en base qui détermineront les différentes zones éditioriales
-    this.settingsService.getTrades().subscribe(data=>{
+    this.settingsService.getTrades().subscribe(data => {
 
-      this.tradesData=data,
-      console.log("this.tradesData", this.tradesData);
-      
+      this.tradesData = data,
+        console.log("this.tradesData", this.tradesData);
+
     })
   }
 
-  selectTrade(id:string){
-    
+  selectTrade(id: string) {
+
 
   }
 

@@ -2,7 +2,8 @@
 
     <h3>Home Page</h3>
 
-    <div class="alert bg-warning p-5" *ngIf="offline">Attention, vous êtes actuellement hor ligne</div>
+    <!-- tests OK à voir pour campagnes notification -->
+    <!-- <div class="alert bg-warning p-5" *ngIf="offline">Attention, vous êtes actuellement hor ligne</div>
     <div class="card my-3" *ngIf="newNotification">
         <div class="card-header">
             {{newNotification.title}}
@@ -11,7 +12,8 @@
         <div class="card-body">
             <p class="card-text">{{newNotification.body}}</p>
         </div>
-    </div>
+    </div> -->
+    <!-- fin tests de notification desktop -->
 
     <p class="alert bg-success p-2 mt-3 fs-5">Me sert pour le moment à tester l'authentification utilisateur, la
         récupération des sigles métiers pour boucler dessus et afficher chaque zone. Zones qui seront éditables pour le
@@ -20,27 +22,29 @@
     <!-- <div class="p-2 display-5">Données récupérées non pas grâce à un paramètre de route mais grâce aux données
         d'authentification de l'utilisateur</div> -->
 
-    <div *ngIf="user" class="alert bg-light p-2">
+    <!-- test ok -->
+    <!-- <div *ngIf="user" class="alert bg-light p-2">
         Id Utilisateur authentifié sur firebase Auth : {{user | json}}
-    </div>
-
-    <!-- <div *ngIf="userData" class="rounded bg-light p-2">
-        <ul class="list-group">
-            <li class="list-group-item">Son id sur firestore : {{userData.id}}</li>
-            <li class="list-group-item">Son email sur firestore : {{userData.email}}</li>
-            <li class="list-group-item">Son status sur firestore : {{userData.status}}</li>
-            <li class="list-group-item">Son prénom sur firestore : {{userData.firstName}}</li>
-            <li class="list-group-item">Son nom sur firestore : {{userData.lastName}}</li>
-            <li class="list-group-item">Date d'enregistrement sur firestore : {{userData.created | date:'dd/MM/yyyy' }}
-            </li>
-            <li *ngIf="userData.sigle" class="list-group-item">Sigle métier si existant: {{userData.sigle}}</li>
-        </ul>
     </div> -->
+
+    <div *ngIf="studentData" class="rounded bg-light p-2">
+        <ul class="list-group">
+            <!-- <li class="list-group-item">Son id sur firestore : {{studentData.id}}</li>
+            <li class="list-group-item">Son email sur firestore : {{studentData.email}}</li>
+            <li class="list-group-item">Son status sur firestore : {{studentData.status}}</li> -->
+            <li class="list-group-item">Son prénom sur firestore : {{studentData.firstName}}</li>
+            <li class="list-group-item">Son nom sur firestore : {{studentData.lastName}}</li>
+            <!-- <li class="list-group-item">Date d'enregistrement sur firestore : {{studentData.created | date:'dd/MM/yyyy'}}</li> -->
+            <li *ngIf="studentData.scoreCounter" class="list-group-item">Votre score pour le moment:
+                {{studentData.scoreCounter}}</li>
+        </ul>
+    </div>
 
     <div *ngIf="tradesData" class="rounded bg-light row column-gap-1">
 
         <div class="col-md-6" *ngFor="let trade of tradesData">
-            <a [routerLink]="['/quizz/', trade.sigle]" class="text-decoration-none text-dark">
+            <a [routerLink]="['/quizz/',  trade.sigle, studentData.lastIndexQuestion ?studentData.lastIndexQuestion:'', studentData.scoreCounter && studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle?studentData.scoreCounter:'']"
+                class="text-decoration-none text-dark">
                 <div class="card my-3" (click)="selectTrade(trade.id)">
                     <div class="card-header text-muted">{{trade.id}}</div>
                     <div class="card-body">
@@ -53,9 +57,17 @@
                                     class="bi bi-pencil-square"></i>
                                 Editer</button></div>
 
+                        <!-- <div class="d-flex justify-content-end"><button class="btn btn-transparent"><i
+                                    class="bi bi-clock-history"></i>
+                                Démarrer l'évaluation</button></div> -->
+                        <!-- pour switcher d'un intitulé à un autre selon que studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle -->
                         <div class="d-flex justify-content-end"><button class="btn btn-transparent"><i
                                     class="bi bi-clock-history"></i>
-                                Démarrer l'évaluation</button></div>
+                                <span
+                                    *ngIf="studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle; else elseItem">Poursuivre
+                                    l'évaluation</span>
+                                <ng-template #elseItem>Démarrer l'évaluation</ng-template>
+                            </button></div>
 
                         <!-- à tester : (str.length>6)? (str | slice:0:6)+'...':(str) -->
                     </div>
