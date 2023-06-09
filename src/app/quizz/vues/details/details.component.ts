@@ -9,7 +9,8 @@ import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit } from '@
 })
 export class DetailsComponent implements OnInit {
 
-  counter: number = 0
+  // counter: number = 0
+  @Input() counter: number = 0
   // faut qu'il provienne du  parent... incrémenté depuis le parent
   // counterQuestionNumber: number=0
 
@@ -75,15 +76,12 @@ export class DetailsComponent implements OnInit {
       // on incrémente le nombre de bonnes réponses données
       this.fullGoodAnswersClicked++
       console.log("this.fullGoodAnswersClicked", this.fullGoodAnswersClicked);
-      this.fullGoodAnswersClicked === this.fullOptScoringTrue ? this.counter = this.counter + Number(this.q.notation) : ""
-      // this.fullGoodAnswersClicked>this.fullOptScoringTrue?alert("Vous devez faire un choix. Toutes les réponses ne peuvent être bonnes"): ""
-      // this.fullAnswersClicked === 4 ? (alert("Vous ne pouvez pas cocher toutes les réponses. Il faut faire une sélection"), this.fullAnswersClicked = 0, this.fullGoodAnswersClicked = 0, this.counter = 0) : ""
-      // console.log("this.fullGoodAnswersClicked", this.fullAnswersClicked)
-      // comme on peut en réalité avoir un nombre de réponse entre 2, 3 et 4...
-      this.fullAnswersClicked >= this.totalAnswersAvailable ? (alert("Vous ne pouvez pas cocher toutes les réponses. Il faut faire une sélection"), this.fullAnswersClicked = 0, this.fullGoodAnswersClicked = 0,  this.counter-= Number(this.q.notation)) : ""
+      this.fullGoodAnswersClicked === this.fullOptScoringTrue ? this.counter = Number(this.counter) + Number(this.q.notation) : ""
+      // this.fullGoodAnswersClicked>this.fullOptScoringTrue?alert("Vous devez faire un choix. Toutes les réponses ne peuvent être bonnes"): ""    
       console.log("this.fullAnswersClicked", this.fullAnswersClicked)
-
     }
+
+    this.fullAnswersClicked === this.totalAnswersAvailable ? (alert("Vous ne pouvez pas cocher toutes les réponses. Il faut faire une sélection"), this.fullAnswersClicked = 0, this.fullGoodAnswersClicked = 0, this.counter -= Number(this.q.notation)) : ""
 
 
     // ici, on enregistrera sûrement en base !!!!

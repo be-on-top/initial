@@ -8,6 +8,7 @@
     <!-- {{questions[0] | json}} -->
     <div class="alert bg-info text-white text-smaller">Cumul des points récupéré par le parent : {{scoreCounter}}</div>
 
+
     <!-- on veut juste la première de la liste initiale -->
     <div *ngIf="questions[indexQuestion]">
         <!-- <div *ngFor="let q of questions"> -->
@@ -16,7 +17,7 @@
                 [questionsMedias]="questionsMedias" [responsesMedias]="responsesMedias"
                 (hasBeenClicked)="answered($event)" [fullGoodAnswersClicked]="fullGoodAnswersClicked"
                 [fullAnswersClicked]="fullAnswersClicked" [totalAnswersAvailable]="totalAnswersAvailable"
-                [fullOptScoringTrue]="fullOptScoringTrue" (hasBeenUpdated)="updated($event)"></app-details>
+                [fullOptScoringTrue]="fullOptScoringTrue" (hasBeenUpdated)="updated($event)" [counter]="scoreCounter"></app-details>
         </div>
     </div>
     <!-- </div> -->
