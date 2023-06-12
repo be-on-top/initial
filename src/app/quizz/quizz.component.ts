@@ -35,6 +35,7 @@ export class QuizzComponent implements OnInit {
   totalAnswersAvailable: number = 0
   scoreCounter: number
   competences?: any = []
+  studentCompetences?: any = []
 
   constructor(private ac: ActivatedRoute, private auth: Auth, private questionsService: QuestionsService, private settingService: SettingsService, private studentService: StudentsService) {
     this.trade = this.ac.snapshot.params["id"]
@@ -95,6 +96,13 @@ export class QuizzComponent implements OnInit {
 
       this.competences = [...new Set(this.competences)];
       console.log("this.competences", this.competences);
+
+
+        this.studentCompetences=this.competences.map((item:any) => ({ [item]: 0 }));
+
+        console.log(this.studentCompetences);
+        
+
 
     })
 
