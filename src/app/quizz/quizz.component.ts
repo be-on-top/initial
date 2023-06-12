@@ -33,12 +33,13 @@ export class QuizzComponent implements OnInit {
   fullAnswersClicked: number = 0
   fullOptScoringTrue: number = 0
   totalAnswersAvailable: number = 0
-  scoreCounter:number
+  scoreCounter: number
+  competences?: any = []
 
   constructor(private ac: ActivatedRoute, private auth: Auth, private questionsService: QuestionsService, private settingService: SettingsService, private studentService: StudentsService) {
     this.trade = this.ac.snapshot.params["id"]
-    this.indexQuestion=this.ac.snapshot.params["indexQuestion"]   
-    this.scoreCounter=this.ac.snapshot.params["scoreCounter"]
+    this.indexQuestion = this.ac.snapshot.params["indexQuestion"]
+    this.scoreCounter = this.ac.snapshot.params["scoreCounter"]
   }
 
   ngOnInit() {
@@ -86,6 +87,15 @@ export class QuizzComponent implements OnInit {
       this.questions[this.indexQuestion].optScoring4 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
       console.log("this.totalAnswersAvailable", this.totalAnswersAvailable)
 
+      // Pour générer le tableau de compétences dans le compte utilisateur 
+      this.questions.forEach(value => {
+        this.competences.push(value.competence)
+      }
+      )
+
+      this.competences = [...new Set(this.competences)];
+      console.log("this.competences", this.competences);
+
     })
 
 
@@ -103,7 +113,7 @@ export class QuizzComponent implements OnInit {
   }
 
   updated(value: number) {
-    this.scoreCounter=value
+    this.scoreCounter = value
     this.studentService.updateStudentScore(this.uid, this.scoreCounter, this.indexQuestion, this.trade)
   }
 
@@ -120,9 +130,9 @@ export class QuizzComponent implements OnInit {
 
     // et puisqu'on commence une nouvelle question, isCompleted redevient false
     this.isCompleted = false
-    this.fullGoodAnswersClicked=0
-    this.fullOptScoringTrue=0
-    this.totalAnswersAvailable=0
+    this.fullGoodAnswersClicked = 0
+    this.fullOptScoringTrue = 0
+    this.totalAnswersAvailable = 0
 
     // on initialise la valeur réelle de fullOptScoringArray pour avoir un point de comparaison
     this.questions[this.indexQuestion].optScoring1 === 'true' ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
