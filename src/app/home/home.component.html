@@ -44,34 +44,41 @@
 
         <div class="col-md-6" *ngFor="let trade of tradesData">
             <!-- <a [routerLink]="['/quizz/',  trade.sigle]" class="text-decoration-none text-dark"> -->
-                <div class="card my-3" (click)="selectTrade(trade.id)"  (click)="navigateToQuizz(trade.sigle, studentData.lastIndexQuestion, studentData.scoreCounter)">
-                    <div class="card-header text-muted">{{trade.id}}</div>
-                    <div class="card-body">
-                        <!-- <h4 class="card-title">id : {{student.id}}</h4> -->
-                        <!-- <p class="card-text"><span class="fw-bold">Son sigle (référence métier) sur firestore : </span> : {{trade.sigle}}</p> -->
-                        <p class="card-text"><span class="fw-bold">Dénomination: </span> : {{trade.denomination}}</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
+            <div class="card my-3" (click)="selectTrade(trade.id)"
+                (click)="navigateToQuizz(trade.sigle, studentData.lastIndexQuestion+1, studentData.scoreCounter)">
+                <div class="card-header text-muted">{{trade.id}}</div>
+                <div class="card-body">
+                    <!-- <h4 class="card-title">id : {{student.id}}</h4> -->
+                    <!-- <p class="card-text"><span class="fw-bold">Son sigle (référence métier) sur firestore : </span> : {{trade.sigle}}</p> -->
+                    <p class="card-text"><span class="fw-bold">Dénomination: </span> : {{trade.denomination}}</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
 
-                        <div *ngIf="isEditor" class="d-flex justify-content-end"><button class="btn btn-transparent"><i
-                                    class="bi bi-pencil-square"></i>
-                                Editer</button></div>
+                    <div *ngIf="isEditor" class="d-flex justify-content-end"><button class="btn btn-transparent"><i
+                                class="bi bi-pencil-square"></i>
+                            Editer</button></div>
 
-                        <!-- <div class="d-flex justify-content-end"><button class="btn btn-transparent"><i
+                    <!-- <div class="d-flex justify-content-end"><button class="btn btn-transparent"><i
                                     class="bi bi-clock-history"></i>
                                 Démarrer l'évaluation</button></div> -->
-                        <!-- pour switcher d'un intitulé à un autre selon que studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle -->
-                        <div class="d-flex justify-content-end"><button class="btn btn-transparent"><i
-                                    class="bi bi-clock-history"></i>
-                                <span
-                                    *ngIf="studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle; else elseItem">Poursuivre
-                                    l'évaluation</span>
-                                <ng-template #elseItem>Démarrer l'évaluation</ng-template>
-                            </button></div>
+                    <!-- pour switcher d'un intitulé à un autre selon que studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle -->
 
-                        <!-- à tester : (str.length>6)? (str | slice:0:6)+'...':(str) -->
-                    </div>
-                    <div class="card-footer text-muted">Réf. {{trade.sigle}}</div>
+
+                    <div class="d-flex justify-content-end" *ngIf="studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle && studentData.lastIndexQuestion && studentData.lastIndexQuestion<2" class="d-flex justify-content-end"><button
+                            class="btn btn-transparent"><i class="bi bi-clock-history"></i>
+                            Poursuivre</button></div>
+
+                    <div class="d-flex justify-content-end" *ngIf="!studentData.tradeEvaluated ||studentData.tradeEvaluated!==trade.sigle" class="d-flex justify-content-end"><button
+                            class="btn btn-transparent"><i class="bi bi-clock-history"></i>
+                            Démarrer votre évaluation</button></div>
+
+                    <div class="d-flex justify-content-end" *ngIf="studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle && studentData.lastIndexQuestion>=2" class="d-flex justify-content-end"><button
+                            class="btn btn-transparent"><i class="bi bi-check-square-fill"></i>
+                            Votre évaluation est terminée</button></div>
+
+                    <!-- à tester : (str.length>6)? (str | slice:0:6)+'...':(str) -->
                 </div>
+                <div class="card-footer text-muted">Réf. {{trade.sigle}}</div>
+            </div>
             <!-- </a> -->
         </div>
     </div>

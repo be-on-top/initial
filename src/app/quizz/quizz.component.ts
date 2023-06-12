@@ -110,7 +110,8 @@ export class QuizzComponent implements OnInit {
   next(indexQuestion: number) {
     // Appel de la méthode "reset" du composant enfant
     this.childComponent.reset();
-    this.indexQuestion = indexQuestion + 1
+    this.indexQuestion = Number(indexQuestion) + 1
+    alert(this.indexQuestion)
 
     // pour rappeler la liste des medias 
     this.questionsMedias = this.questionsService.getMediaQuestionById(this.questions[this.indexQuestion].id)
@@ -136,8 +137,6 @@ export class QuizzComponent implements OnInit {
     this.questions[this.indexQuestion].optScoring3 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
     this.questions[this.indexQuestion].optScoring4 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
     console.log("this.totalAnswersAvailable", this.totalAnswersAvailable)
-
-
 
   }
 
