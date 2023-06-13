@@ -7,6 +7,8 @@
     <!-- partie visuelle similaire à la vue de détail des administrateurs (en mode aperçu) qui ici va devenir réactive -->
     <!-- {{questions[0] | json}} -->
     <div class="alert bg-info text-white text-smaller">Cumul des points récupéré par le parent : {{scoreCounter}}</div>
+    <!-- etat des compétences en base -->
+    <div class="alert bg-info text-white text-smaller">Etat des compétences en base : {{studentCompetences | json}}</div>
 
 
     <!-- on veut juste la première de la liste initiale -->
@@ -17,7 +19,7 @@
                 [questionsMedias]="questionsMedias" [responsesMedias]="responsesMedias"
                 (hasBeenClicked)="answered($event)" [fullGoodAnswersClicked]="fullGoodAnswersClicked"
                 [fullAnswersClicked]="fullAnswersClicked" [totalAnswersAvailable]="totalAnswersAvailable"
-                [fullOptScoringTrue]="fullOptScoringTrue" (hasBeenUpdated)="updated($event)" [counter]="scoreCounter"></app-details>
+                [fullOptScoringTrue]="fullOptScoringTrue" (hasBeenUpdated)="updated($event)" [counter]="scoreCounter" [studentCompetences]="studentCompetences"></app-details>
         </div>
     </div>
     <!-- </div> -->

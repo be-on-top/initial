@@ -9,6 +9,7 @@ import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit } from '@
 })
 export class DetailsComponent implements OnInit {
 
+
   // counter: number = 0
   @Input() counter: number = 0
   // faut qu'il provienne du  parent... incrémenté depuis le parent
@@ -29,10 +30,13 @@ export class DetailsComponent implements OnInit {
   @Input() q: any
   @Input() questionsMedias: any
   @Input() responsesMedias: any
+  @Input() studentCompetences: any
+  @Input() hasStartedEvaluation: any
   // pour prévenir le parent qu'au minimum un clic a été détecté donc une réponse donnée (quelle que soit sa valeur)
   isCompleted: boolean = false
   @Output() hasBeenClicked: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() hasBeenUpdated: EventEmitter<number> = new EventEmitter<number>();
+  // @Output() hasBeenUpdated: EventEmitter<number> = new EventEmitter<number>();
+  @Output() hasBeenUpdated: EventEmitter<{ counter: number, hasStartedEvaluation: boolean, evaluatedCompetence:string }> = new EventEmitter<{ counter: number, hasStartedEvaluation: boolean, evaluatedCompetence:string }>();
 
   constructor() {
     // this.fullAnswersClicked=0
@@ -79,6 +83,9 @@ export class DetailsComponent implements OnInit {
       this.fullGoodAnswersClicked === this.fullOptScoringTrue ? this.counter = Number(this.counter) + Number(this.q.notation) : ""
       // this.fullGoodAnswersClicked>this.fullOptScoringTrue?alert("Vous devez faire un choix. Toutes les réponses ne peuvent être bonnes"): ""    
       console.log("this.fullAnswersClicked", this.fullAnswersClicked)
+      alert(Number(this.counter))
+
+
     }
 
     this.fullAnswersClicked === this.totalAnswersAvailable ? (alert("Vous ne pouvez pas cocher toutes les réponses. Il faut faire une sélection"), this.fullAnswersClicked = 0, this.fullGoodAnswersClicked = 0, this.counter -= Number(this.q.notation)) : ""
@@ -89,7 +96,9 @@ export class DetailsComponent implements OnInit {
     // on fait remonter l'information : une réponse a bien été cliquée (au minimum), ce qui en soit suffit pour pouvoir passer à la suivante ! 
     this.isCompleted = true
     this.hasBeenClicked.emit(this.isCompleted)
-    this.hasBeenUpdated.emit(this.counter)
+    // // À un certain endroit de votre composant enfant...
+    // this.variablesRemontees.emit({ variable1: 'valeur1', variable2: 42 });
+    this.hasBeenUpdated.emit({counter:Number(this.counter),hasStartedEvaluation:this.hasStartedEvaluation, evaluatedCompetence:this.q.competence})
 
   }
 

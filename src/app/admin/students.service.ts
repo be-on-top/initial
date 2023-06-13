@@ -20,23 +20,23 @@ export class StudentsService {
   constructor(private auth: Auth, private firestore: Firestore) { }
 
   // createStudent(studentForm: NgForm) {
- async createStudent(student: any) {
-      // let newEvaluator = { id: Date.now(), ...evaluator };
-      let newStudent = { created: Date.now(), status: true, trainer: "Attribué ultérieurement", ...student };
-      // on va lui affecter un password aléatoire en fonction de la date
-      // let password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
-      // juste le temps du test, let password sera le même pour tous : password
-      let password="password"
+  async createStudent(student: any) {
+    // let newEvaluator = { id: Date.now(), ...evaluator };
+    let newStudent = { created: Date.now(), status: true, trainer: "Attribué ultérieurement", ...student };
+    // on va lui affecter un password aléatoire en fonction de la date
+    // let password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
+    // juste le temps du test, let password sera le même pour tous : password
+    let password = "password"
 
-  
-      // enregistrement en base dans fireAuth d'une part : 
-      const result = await createUserWithEmailAndPassword(this.auth, student.email, password);
-  
-      if (result && result.user) {
-        // const { uid, emailVerified } = this.result.user;
-        newStudent.id = result.user.uid
-        delete newStudent.studentPw;
-      }
+
+    // enregistrement en base dans fireAuth d'une part : 
+    const result = await createUserWithEmailAndPassword(this.auth, student.email, password);
+
+    if (result && result.user) {
+      // const { uid, emailVerified } = this.result.user;
+      newStudent.id = result.user.uid
+      delete newStudent.studentPw;
+    }
 
     // const newStudent: any = {
     //   id: '', created: Date.now(), status: true, cp: '', details: '', ...student
@@ -59,19 +59,19 @@ export class StudentsService {
     //   //   console.log(errorCode, errorMessage);
     //   // });
 
-      let studentsRef = collection(this.firestore, "students");
-      // delete newStudent.studentPw;
-      // addDoc(studentsRef, newStudent).then(() => {
-      setDoc(doc(studentsRef, newStudent.id), newStudent)
-      // .then(() => {
-      //   console.log("New student added successfully");
-      // }).catch((error) => {
-      //   console.error("Error adding student document: ", error);
-      // });
-      // enregistre dans Firestore d'autre part le role attribué dans une collection roles qui regroupera tous les roles de tous les utilisateurs avec comme idDoc uid d'authentification là aussi
-      let $rolesRef = collection(this.firestore, "roles");
-      // addDoc($trainersRef, newTrainer)
-      setDoc(doc($rolesRef, newStudent.id), { role: 'student' })
+    let studentsRef = collection(this.firestore, "students");
+    // delete newStudent.studentPw;
+    // addDoc(studentsRef, newStudent).then(() => {
+    setDoc(doc(studentsRef, newStudent.id), newStudent)
+    // .then(() => {
+    //   console.log("New student added successfully");
+    // }).catch((error) => {
+    //   console.error("Error adding student document: ", error);
+    // });
+    // enregistre dans Firestore d'autre part le role attribué dans une collection roles qui regroupera tous les roles de tous les utilisateurs avec comme idDoc uid d'authentification là aussi
+    let $rolesRef = collection(this.firestore, "roles");
+    // addDoc($trainersRef, newTrainer)
+    setDoc(doc($rolesRef, newStudent.id), { role: 'student' })
   }
 
 
@@ -104,21 +104,21 @@ export class StudentsService {
     // }
   }
 
-  
+
   async deleteAccount() {
 
     try {
       if (this.auth.currentUser) {
-        await this.auth.currentUser.delete(); 
+        await this.auth.currentUser.delete();
         console.log('Compte utilisateur auth supprimé.');
-      } 
-      
+      }
+
     } catch (error) {
       console.log(error);
-      
-      
+
+
     }
-  
+
 
 
 
@@ -129,7 +129,7 @@ export class StudentsService {
     // } catch (error) {
     //   console.error(`Error deleting student from firebase with id=${student.id}: `, error);
     // }
-    
+
   }
 
   updateStudent(id: string, student: any) {
@@ -158,11 +158,31 @@ export class StudentsService {
     }
   }
 
-  updateStudentScore(id: string, scoreCounter:number, indexQuestion:number, trade:string){
+  updateStudentScore(id: string, scoreCounter: number, indexQuestion: number, trade: string, hasStartedEvaluation: boolean, studentCompetences: any, evaluatedCompetence: string) {
+    alert(scoreCounter)
 
     let $studentRef = doc(this.firestore, "students/" + id);
-    let updateStudent={scoreCounter:scoreCounter, lastIndexQuestion:indexQuestion, tradeEvaluated:trade}
-    updateDoc($studentRef, updateStudent);
+
+    if (hasStartedEvaluation == false) {
+      alert("on attend toujours")
+      let updateStudent = { scoreCounter: scoreCounter, lastIndexQuestion: indexQuestion, tradeEvaluated: trade, studentCompetences:studentCompetences }
+      updateDoc($studentRef, updateStudent);
+
+    }else {
+
+          // si true
+
+    // ce qui laisse entendre qu'il faut aussi le score affecté à la question, c'est à dire récupérer q.notation qui remplacera 6
+    
+    // studentCompetences.tradeEvaluated += 6
+
+    let updateStudent = { scoreCounter: scoreCounter, lastIndexQuestion: indexQuestion, tradeEvaluated: trade }
+    updateDoc($studentRef, updateStudent)
+
+
+    }
+
+
 
 
   }

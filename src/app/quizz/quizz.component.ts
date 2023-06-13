@@ -36,6 +36,7 @@ export class QuizzComponent implements OnInit {
   scoreCounter: number
   competences?: any = []
   studentCompetences?: any = []
+  hasStartedEvaluation:boolean = false
 
   constructor(private ac: ActivatedRoute, private auth: Auth, private questionsService: QuestionsService, private settingService: SettingsService, private studentService: StudentsService) {
     this.trade = this.ac.snapshot.params["id"]
@@ -97,14 +98,12 @@ export class QuizzComponent implements OnInit {
       this.competences = [...new Set(this.competences)];
       console.log("this.competences", this.competences);
 
-
         this.studentCompetences=this.competences.map((item:any) => ({ [item]: 0 }));
-
-        console.log(this.studentCompetences);
-        
-
+        console.log(this.studentCompetences);        
 
     })
+
+
 
 
   }
@@ -120,9 +119,18 @@ export class QuizzComponent implements OnInit {
 
   }
 
-  updated(value: number) {
-    this.scoreCounter = value
-    this.studentService.updateStudentScore(this.uid, this.scoreCounter, this.indexQuestion, this.trade)
+  // principale !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  // exemple générique : 
+  // Composant parent
+// handleVariablesRemontees(event: { variable1: string, variable2: number }) {
+
+  updated(event: { counter: number, hasStartedEvaluation: boolean, evaluatedCompetence:string }) {
+    // puisque value intègre la remontée de 2 variables différentes
+    this.scoreCounter = event.counter
+    this.hasStartedEvaluation= event.hasStartedEvaluation
+    const evaluatedCompetence = event.evaluatedCompetence
+    alert(`this.scoreCounter depuis quizzComponent", ${this.scoreCounter}`)
+    this.studentService.updateStudentScore(this.uid, this.scoreCounter, this.indexQuestion, this.trade, this.hasStartedEvaluation, this.studentCompetences ,evaluatedCompetence)
   }
 
   next(indexQuestion: number) {
