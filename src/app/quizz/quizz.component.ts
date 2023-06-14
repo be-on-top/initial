@@ -36,7 +36,8 @@ export class QuizzComponent implements OnInit {
   scoreCounter: number
   competences?: any = []
   studentCompetences?: any = []
-  hasStartedEvaluation:boolean = false
+  hasStartedEvaluation: boolean = false
+  numberOfPoints: number = 0
 
   constructor(private ac: ActivatedRoute, private auth: Auth, private questionsService: QuestionsService, private settingService: SettingsService, private studentService: StudentsService) {
     this.trade = this.ac.snapshot.params["id"]
@@ -89,6 +90,11 @@ export class QuizzComponent implements OnInit {
       this.questions[this.indexQuestion].optScoring4 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
       console.log("this.totalAnswersAvailable", this.totalAnswersAvailable)
 
+      // Pour connaitre le nombre de points affectés à la question et la refiler à l'instant t au service, 
+      // on peut passer par une variable intermédiaire pour plus de lisibilité, mais ce n'est pas impératif
+      this.numberOfPoints = this.questions[this.indexQuestion].notation
+      console.log('numberOfPoints depuis quizzComponent', this.numberOfPoints);
+
       // Pour générer le tableau de compétences dans le compte utilisateur 
       this.questions.forEach(value => {
         this.competences.push(value.competence)
@@ -98,8 +104,8 @@ export class QuizzComponent implements OnInit {
       this.competences = [...new Set(this.competences)];
       console.log("this.competences", this.competences);
 
-        this.studentCompetences=this.competences.map((item:any) => ({ [item]: 0 }));
-        console.log(this.studentCompetences);        
+      this.studentCompetences = this.competences.map((item: any) => ({ [item]: 0 }));
+      console.log(this.studentCompetences);
 
     })
 
@@ -122,15 +128,15 @@ export class QuizzComponent implements OnInit {
   // principale !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   // exemple générique : 
   // Composant parent
-// handleVariablesRemontees(event: { variable1: string, variable2: number }) {
+  // handleVariablesRemontees(event: { variable1: string, variable2: number }) {
 
-  updated(event: { counter: number, hasStartedEvaluation: boolean, evaluatedCompetence:string }) {
+  updated(event: { counter: number, hasStartedEvaluation: boolean, evaluatedCompetence: string }) {
     // puisque value intègre la remontée de 2 variables différentes
     this.scoreCounter = event.counter
-    this.hasStartedEvaluation= event.hasStartedEvaluation
+    this.hasStartedEvaluation = event.hasStartedEvaluation
     const evaluatedCompetence = event.evaluatedCompetence
     alert(`this.scoreCounter depuis quizzComponent", ${this.scoreCounter}`)
-    this.studentService.updateStudentScore(this.uid, this.scoreCounter, this.indexQuestion, this.trade, this.hasStartedEvaluation, this.studentCompetences ,evaluatedCompetence)
+    this.studentService.updateStudentScore(this.uid, this.scoreCounter, this.indexQuestion, this.trade, this.hasStartedEvaluation, this.studentCompetences, evaluatedCompetence, this.numberOfPoints)
   }
 
   next(indexQuestion: number) {
