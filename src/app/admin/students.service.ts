@@ -163,39 +163,26 @@ export class StudentsService {
 
     let $studentRef = doc(this.firestore, "students/" + id);
 
+    // si n'a encore eu AUCUNE interaction aucune, qu'elle soit bonne ou mauvaise
     if (hasStartedEvaluation == false) {
       alert("on attend toujours")
       let updateStudent = { scoreCounter: scoreCounter, lastIndexQuestion: indexQuestion, tradeEvaluated: trade, studentCompetences: studentCompetences }
       updateDoc($studentRef, updateStudent);
 
     } else {
-
-      // si true
-
-      // ce qui laisse entendre qu'il faut aussi le score affecté à la question, c'est à dire récupérer q.notation qui remplacera 6
-
-      // studentCompetences.tradeEvaluated += 6
-
-      // let updateStudent = { scoreCounter: scoreCounter, lastIndexQuestion: indexQuestion, tradeEvaluated: trade, studentCompetences}
-      // updateDoc($studentRef, updateStudent)
-
+      // dans le cas contraire...
       const updatedTableauObjets = studentCompetences.map((obj: any) => {
-        console.log("evaluatedCompetence reçue par le service", evaluatedCompetence);
+        console.log("evaluatedCompetence reçue par le service", evaluatedCompetence)
 
         if (evaluatedCompetence in obj) {
-          return { ...obj, [evaluatedCompetence]: obj[evaluatedCompetence] + numberOfPoints };
+          return { ...obj, [evaluatedCompetence]: obj[evaluatedCompetence] + numberOfPoints }
         }
         return obj;
-      });
-
+      })
       let updateStudent = { scoreCounter: scoreCounter, lastIndexQuestion: indexQuestion, tradeEvaluated: trade, studentCompetences: updatedTableauObjets }
       updateDoc($studentRef, updateStudent)
 
-
     }
-
-
-
 
   }
 

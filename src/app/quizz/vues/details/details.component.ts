@@ -31,12 +31,12 @@ export class DetailsComponent implements OnInit {
   @Input() questionsMedias: any
   @Input() responsesMedias: any
   @Input() studentCompetences: any
-  @Input() hasStartedEvaluation: any
+  // @Input() hasStartedEvaluation: any
   // pour prévenir le parent qu'au minimum un clic a été détecté donc une réponse donnée (quelle que soit sa valeur)
   isCompleted: boolean = false
   @Output() hasBeenClicked: EventEmitter<boolean> = new EventEmitter<boolean>();
   // @Output() hasBeenUpdated: EventEmitter<number> = new EventEmitter<number>();
-  @Output() hasBeenUpdated: EventEmitter<{ counter: number, hasStartedEvaluation: boolean, evaluatedCompetence:string }> = new EventEmitter<{ counter: number, hasStartedEvaluation: boolean, evaluatedCompetence:string }>();
+  @Output() hasBeenUpdated: EventEmitter<{ counter: number, evaluatedCompetence:string }> = new EventEmitter<{ counter: number, evaluatedCompetence:string }>();
 
   constructor() {
     // this.fullAnswersClicked=0
@@ -98,7 +98,7 @@ export class DetailsComponent implements OnInit {
     this.hasBeenClicked.emit(this.isCompleted)
     // // À un certain endroit de votre composant enfant...
     // this.variablesRemontees.emit({ variable1: 'valeur1', variable2: 42 });
-    this.hasBeenUpdated.emit({counter:Number(this.counter),hasStartedEvaluation:this.hasStartedEvaluation, evaluatedCompetence:this.q.competence})
+    this.hasBeenUpdated.emit({counter:Number(this.counter),evaluatedCompetence:this.q.competence})
 
   }
 

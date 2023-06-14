@@ -43,6 +43,7 @@ export class QuizzComponent implements OnInit {
     this.trade = this.ac.snapshot.params["id"]
     this.indexQuestion = this.ac.snapshot.params["indexQuestion"]
     this.scoreCounter = this.ac.snapshot.params["scoreCounter"]
+    this.hasStartedEvaluation= this.ac.snapshot.params['hasStartedEvaluation']
   }
 
   ngOnInit() {
@@ -130,10 +131,9 @@ export class QuizzComponent implements OnInit {
   // Composant parent
   // handleVariablesRemontees(event: { variable1: string, variable2: number }) {
 
-  updated(event: { counter: number, hasStartedEvaluation: boolean, evaluatedCompetence: string }) {
+  updated(event: { counter: number, evaluatedCompetence: string }) {
     // puisque value intègre la remontée de 2 variables différentes
     this.scoreCounter = event.counter
-    this.hasStartedEvaluation = event.hasStartedEvaluation
     const evaluatedCompetence = event.evaluatedCompetence
     alert(`this.scoreCounter depuis quizzComponent", ${this.scoreCounter}`)
     this.studentService.updateStudentScore(this.uid, this.scoreCounter, this.indexQuestion, this.trade, this.hasStartedEvaluation, this.studentCompetences, evaluatedCompetence, this.numberOfPoints)

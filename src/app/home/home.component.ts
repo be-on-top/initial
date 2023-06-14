@@ -59,6 +59,7 @@ export class HomeComponent implements OnInit {
   tradesData?: any
 
   isEditor: boolean = false
+  hasStartedEvaluation: boolean = false
 
   constructor(private notificationService: PushNotificationService, private auth: Auth, private firestore: Firestore, private authService: AuthService, private studentService: StudentsService, private ac: ActivatedRoute, private router: Router, readonly swPush: SwPush, private settingsService: SettingsService) {
     // pour savoir si l'utilisateur est éditeur sans interroger firestore, on peut (?) récupérer userRole livré en paramètre de route
@@ -108,6 +109,7 @@ export class HomeComponent implements OnInit {
         // https://firebase.google.com/docs/reference/js/firebase.User
         this.user = user.uid
         this.studentService.getStudentById(user.uid).subscribe((data) => this.studentData = data)
+        this.studentData.scoreCounter?this.hasStartedEvaluation==true:""
 
         // récupération OK 
         // console.log("student uid récupération", this.studentData.id);
