@@ -158,31 +158,45 @@ export class StudentsService {
     }
   }
 
-  updateStudentScore(id: string, scoreCounter: number, indexQuestion: number, trade: string, hasStartedEvaluation: boolean, studentCompetences: any, evaluatedCompetence: string, numberOfPoints: number) {
+  updateStudentScore(id: string, scoreCounter: number, indexQuestion: number, trade: string, hasStartedEvaluation: boolean, studentCompetences: any, evaluatedCompetence: string, numberOfPoints: number,  isIncremented:boolean ) {
     alert(scoreCounter)
 
     let $studentRef = doc(this.firestore, "students/" + id);
 
     // si n'a encore eu AUCUNE interaction aucune, qu'elle soit bonne ou mauvaise
-    if (hasStartedEvaluation == false) {
-      alert("on attend toujours")
-      let updateStudent = { scoreCounter: scoreCounter, lastIndexQuestion: indexQuestion, tradeEvaluated: trade, studentCompetences: studentCompetences }
-      updateDoc($studentRef, updateStudent);
-
-    } else {
+    if (hasStartedEvaluation === true) {
+      alert('hasStartedEvaluation ! ')
       // dans le cas contraire...
       const updatedTableauObjets = studentCompetences.map((obj: any) => {
         console.log("evaluatedCompetence reçue par le service", evaluatedCompetence)
 
-        if (evaluatedCompetence in obj) {
-          return { ...obj, [evaluatedCompetence]: obj[evaluatedCompetence] + numberOfPoints }
+        console.log(isIncremented)        
+
+        if (evaluatedCompetence in obj && isIncremented==true) {
+          return { ...obj, [evaluatedCompetence]: Number(obj[evaluatedCompetence]) + Number(numberOfPoints) }
+        }
+        if (evaluatedCompetence in obj && isIncremented==false) {
+          return { ...obj, [evaluatedCompetence]: Number(obj[evaluatedCompetence]) + Number(0) }
         }
         return obj;
+
       })
       let updateStudent = { scoreCounter: scoreCounter, lastIndexQuestion: indexQuestion, tradeEvaluated: trade, studentCompetences: updatedTableauObjets }
       updateDoc($studentRef, updateStudent)
 
+
+
+
+    } else {
+      alert('has NOT startedEvaluation ! ')
+
+      // alert("on attend toujours")
+      // let updateStudent = { scoreCounter: scoreCounter, lastIndexQuestion: indexQuestion, tradeEvaluated: trade, studentCompetences }
+      // updateDoc($studentRef, updateStudent);
+
     }
+
+
 
   }
 

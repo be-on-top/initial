@@ -44,9 +44,9 @@
 
         <div class="col-md-6" *ngFor="let trade of tradesData">
             <!-- <a [routerLink]="['/quizz/',  trade.sigle]" class="text-decoration-none text-dark"> -->
-            <a [routerLink]="['/quizz/',  trade.sigle, studentData.lastIndexQuestion ?studentData.lastIndexQuestion:0, studentData.scoreCounter && studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle?studentData.scoreCounter:0, studentData.scoreCounter && studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle?true:false]">
+            <a [routerLink]="['/quizz/',  trade.sigle, studentData.lastIndexQuestion ?studentData.lastIndexQuestion:0, studentData.scoreCounter && studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle?studentData.scoreCounter:0, studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle?true:false]" class="text-decoration-none text-dark">
                 <div class="card my-3" (click)="selectTrade(trade.id)">
-                    <div class="card-header text-muted">{{trade.id}}</div>
+                    <div class="card-header text-muted">{{trade.id}} - {{hasStartedEvaluation}} {{studentData.scoreCounter}} - {{studentData.tradeEvaluated}}</div>
                     <div class="card-body">
                         <!-- <h4 class="card-title">id : {{student.id}}</h4> -->
                         <!-- <p class="card-text"><span class="fw-bold">Son sigle (référence métier) sur firestore : </span> : {{trade.sigle}}</p> -->
