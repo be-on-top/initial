@@ -38,8 +38,18 @@ export class QuizzComponent implements OnInit {
   studentCompetences?: any = []
   hasStartedEvaluation: boolean = false
   numberOfPoints: number = 0
+  // puisqu'on va interroger students tout compte fait...
+  studentId:string=""
+  dataStudent:any
+  // selon qu'on a déjà un tableau studentCompetences en base
+  hasAlreadyCompetences:boolean=false
 
-  constructor(private ac: ActivatedRoute, private auth: Auth, private questionsService: QuestionsService, private settingService: SettingsService, private studentService: StudentsService) {
+  constructor(
+    private ac: ActivatedRoute, 
+    // private auth: Auth, 
+    private questionsService: QuestionsService, 
+    // private settingService: SettingsService, 
+    private studentService: StudentsService) {
     // this.trade = this.ac.snapshot.params["id"]
     // this.indexQuestion = this.ac.snapshot.params["indexQuestion"]
     // this.scoreCounter = this.ac.snapshot.params["scoreCounter"]
@@ -51,15 +61,16 @@ export class QuizzComponent implements OnInit {
     this.indexQuestion = this.ac.snapshot.params["indexQuestion"]
     this.scoreCounter = this.ac.snapshot.params["scoreCounter"]
     this.hasStartedEvaluation = this.ac.snapshot.params['hasStartedEvaluation'] === 'true'
+    this.studentId=this.ac.snapshot.params["studentId"]
 
-    onAuthStateChanged(this.auth, (user: any) => {
-      if (user) {
-        this.uid = user.uid
-      }
-      else {
-        console.log("Personne n'est authentifié actuellement !");
-      }
-    })
+    // onAuthStateChanged(this.auth, (user: any) => {
+    //   if (user) {
+    //     this.uid = user.uid
+    //   }
+    //   else {
+    //     console.log("Personne n'est authentifié actuellement !");
+    //   }
+    // })
 
 
     // pour recevoir la liste des questions relatives au métier
@@ -101,7 +112,7 @@ export class QuizzComponent implements OnInit {
       this.numberOfPoints = this.questions[this.indexQuestion].notation
       console.log('numberOfPoints depuis quizzComponent', this.numberOfPoints);
 
-      // Pour générer le tableau de compétences dans le compte utilisateur 
+      // Pour générer le tableau de compétences dans le compte utilisateur si il n'y en a  pas
       this.questions.forEach(value => {
         this.competences.push(value.competence)
       }
@@ -113,6 +124,11 @@ export class QuizzComponent implements OnInit {
       this.studentCompetences = this.competences.map((item: any) => ({ [item]: 0 }));
       console.log(this.studentCompetences);
 
+    })
+
+    this.studentService.getStudentById(this.studentId).subscribe((data) => {
+      this.dataStudent = data
+      this.dataStudent.studentCompetences? this.studentCompetences=this.dataStudent.studentCompetences:''
     })
 
 
@@ -143,7 +159,9 @@ export class QuizzComponent implements OnInit {
     const evaluatedCompetence = event.evaluatedCompetence
     // alert(`this.scoreCounter depuis quizzComponent", ${this.scoreCounter}`)
     this.hasStartedEvaluation=true
-    this.studentService.updateStudentScore(this.uid, this.scoreCounter, this.indexQuestion, this.trade, this.hasStartedEvaluation, this.studentCompetences, evaluatedCompetence, this.numberOfPoints, isIncremented)
+    this.studentService.updateStudentScore(this.studentId, this.scoreCounter, this.indexQuestion, this.trade, this.hasStartedEvaluation, this.studentCompetences, evaluatedCompetence, this.numberOfPoints, isIncremented)
+    // et pour être certain qu'à la prochaine étape, c'est bien dataStudent.studentCompetences qui sera incrémenté !!!!!!!!!!!!
+    this.studentCompetences=this.dataStudent.studentCompetences
   }
 
   next(indexQuestion: number) {
@@ -152,6 +170,7 @@ export class QuizzComponent implements OnInit {
     this.indexQuestion = Number(indexQuestion) + 1
     // alert(this.indexQuestion)
     // pour mettre à jour les points à attribuer à la question une fois l'index incrémenté
+    this.numberOfPoints=this.questions[this.indexQuestion].notation
     
 
     // pour rappeler la liste des medias 

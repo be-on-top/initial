@@ -116,12 +116,7 @@ export class StudentsService {
     } catch (error) {
       console.log(error);
 
-
     }
-
-
-
-
 
     // try {
     //   await deleteDoc(studentRef);
@@ -136,13 +131,6 @@ export class StudentsService {
     // let $studentRef = doc(this.firestore, "students/" + id);
     // setDoc($studentRef, student);
     let $studentRef = doc(this.firestore, "students/" + id);
-    // let studentToUpdate: any = {};
-    // for (let key of Object.values(student)) {
-    //   if (key !== undefined) {
-    //     studentToUpdate = student;
-    //     console.log("studentToUpdate avant soumission", studentToUpdate);        
-    //   }
-    // }
     updateDoc($studentRef, student);
   }
 
