@@ -10,7 +10,11 @@
     <div class="alert bg-info text-white text-smaller">Cumul des points récupéré par le parent : {{scoreCounter}}</div>
     <!-- etat des compétences en base -->
     <div class="alert bg-info text-white text-smaller" *ngIf="!dataStudent.studentCompetences">StudentCompetences à rattacher en base : {{studentCompetences | json}}</div>
-    <div class="alert bg-info text-white text-smaller" *ngIf="dataStudent.studentCompetences">StudentCompetences récupéré en base : {{studentCompetences | json}}</div>
+    <!-- <div class="alert bg-info text-white text-smaller" *ngIf="dataStudent.studentCompetences">StudentCompetences récupéré en base : {{studentCompetences | json}}</div> -->
+    <!-- <div class="alert bg-info text-white text-smaller" *ngIf="dataStudent.studentCompetences">StudentCompetences récupéré en base : </div> -->
+
+    <div *ngIf="dataStudent.studentCompetences" class="mb-3"> <div *ngFor="let objet of dataStudent.studentCompetences"> <div *ngFor="let item of objet | keyvalue"><span class="fw-bold">{{ item.key }}:</span> {{ item.value }} PNTS</div> </div> </div>
+
     <!-- a commencé l'évaluation -->
     <div class="alert bg-info text-white text-smaller">hasStartedEvaluation : {{hasStartedEvaluation}}</div>
 
@@ -37,6 +41,7 @@
     <hr>
 
     <button (click)="setLevel()" class="btn bg-warning m-md-auto text-light  fs-4"><i class="me-3 bi bi-bar-chart-steps text-light"></i>Votre positionnement</button>
-    <div *ngIf="levelsArray && levelsArray.length>0">{{levelsArray | json}}</div>
+    <!-- <div *ngIf="levelsArray && levelsArray.length>0">{{levelsArray | json}}</div> -->
+    <div *ngIf="levelsArray && levelsArray.length>0" class="mt-3"> <div *ngFor="let objet of levelsArray"> <div *ngFor="let item of objet | keyvalue"> <span class="fw-bold">{{ item.key }}: </span>fourchette {{ item.value }} </div> </div> </div>
 
 </div>
