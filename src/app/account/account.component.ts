@@ -174,4 +174,10 @@ export class AccountComponent implements OnInit {
 
     }
 
+
+    
+  getObjectProperties(obj: any): any[] {
+    return Object.entries(obj);
+  }
+
 }

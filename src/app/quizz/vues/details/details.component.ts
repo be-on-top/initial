@@ -1,3 +1,4 @@
+import { NumberFormatStyle } from '@angular/common';
 import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit } from '@angular/core';
 // import { Firestore, collection, orderBy, startAt, startAfter, query, where, limit } from '@angular/fire/firestore';
 // import { QuestionsService } from 'src/app/admin/questions.service';
@@ -88,7 +89,7 @@ export class DetailsComponent implements OnInit {
 
     }
 
-    this.fullAnswersClicked === this.totalAnswersAvailable ? (alert("Vous ne pouvez pas cocher toutes les réponses. Il faut faire une sélection"), this.fullAnswersClicked = 0, this.fullGoodAnswersClicked = 0, this.counter -= Number(this.q.notation)) : ""
+    this.fullAnswersClicked === this.totalAnswersAvailable ? (alert("Vous ne pouvez pas cocher toutes les réponses. Il faut faire une sélection"), this.fullAnswersClicked = 0, this.fullGoodAnswersClicked = 0, this.counter -= Number(this.q.notation), this.isIncremented=false) : ""
 
 
     // ici, on enregistrera sûrement en base !!!!

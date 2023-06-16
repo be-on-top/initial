@@ -126,11 +126,32 @@
                 </div>
                 <div id="collapseThree" class="collapse" data-bs-parent="#accordion">
                     <div class="card-body">
-                        <p *ngIf="userData.scoreCounter">Le cumul actuel de vos points :  {{userData.scoreCounter}} PNTS</p>
-                        <p *ngIf="userData.tradeEvaluated">Métier concerné :  {{userData.tradeEvaluated}}</p>
-                        <p *ngIf="userData.lastIndexQuestion">Vous avez jusqu'ici répondu à {{userData.lastIndexQuestion}} Questions</p>
-                        <button class="btn bg-primary"><a class="text-light" [routerLink]="['/quizz/', userData.tradeEvaluated, userData.lastIndexQuestion, userData.scoreCounter]">
-                            Poursuivre le QCM</a>
+                        <p class="card-text" *ngIf="userData.scoreCounter">Le cumul actuel de vos points :
+                            <span class="fw-bold">
+                                {{userData.scoreCounter}} PNTS
+                            </span>
+                        </p>
+                        <p class="card-text" *ngIf="userData.tradeEvaluated">Métier concerné : <span
+                                class="fw-bold">{{userData.tradeEvaluated}}</span></p>
+                        <p class="card-text" *ngIf="userData.lastIndexQuestion">Vous avez jusqu'ici répondu à
+                            <span class="fw-bold">{{userData.lastIndexQuestion+1}} Questions</span>
+                        </p>
+
+                        <p class="card-text" *ngIf="userData.studentCompetences">Répartition des points par compétences
+                            :
+                            <!-- {{userData.studentCompetences|json}} -->
+                            <span class="fw-bold" *ngFor="let objet of userData.studentCompetences">
+                                <span *ngFor="let item of objet | keyvalue" class="d-block">
+                                    {{ item.key }}: {{ item.value }}
+                                </span>
+                            </span>
+                        </p>
+
+                        <button class="btn bg-primary"><a class="text-light"
+                                [routerLink]="['/quizz/', userData.tradeEvaluated, userData.lastIndexQuestion+1, userData.scoreCounter]">
+                                <span *ngIf="userData.lastIndexQuestion<2; else elseBlock">Question suivante</span>
+                                <ng-template #elseBlock> <span>Fin du QCM d'accroche</span>
+                                </ng-template></a>
                         </button>
                     </div>
                 </div>
