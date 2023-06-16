@@ -39,15 +39,21 @@ export class QuizzComponent implements OnInit {
   hasStartedEvaluation: boolean = false
   numberOfPoints: number = 0
   // puisqu'on va interroger students tout compte fait...
-  studentId:string=""
-  dataStudent:any
+  studentId: string = ""
+  dataStudent: any
   // selon qu'on a déjà un tableau studentCompetences en base
-  hasAlreadyCompetences:boolean=false
+  hasAlreadyCompetences: boolean = false
+  // ultérieurement, ils seront enregistrés comme paramètres d'application
+  cursors: number[] = [10, 15]
+  firstCursor: number = 0
+  secondCursor: number = 0
+
+  levelsArray: [] = []
 
   constructor(
-    private ac: ActivatedRoute, 
+    private ac: ActivatedRoute,
     // private auth: Auth, 
-    private questionsService: QuestionsService, 
+    private questionsService: QuestionsService,
     // private settingService: SettingsService, 
     private studentService: StudentsService) {
     // this.trade = this.ac.snapshot.params["id"]
@@ -57,11 +63,15 @@ export class QuizzComponent implements OnInit {
   }
 
   ngOnInit() {
+
+
+
+
     this.trade = this.ac.snapshot.params["id"]
     this.indexQuestion = this.ac.snapshot.params["indexQuestion"]
     this.scoreCounter = this.ac.snapshot.params["scoreCounter"]
     this.hasStartedEvaluation = this.ac.snapshot.params['hasStartedEvaluation'] === 'true'
-    this.studentId=this.ac.snapshot.params["studentId"]
+    this.studentId = this.ac.snapshot.params["studentId"]
 
     // onAuthStateChanged(this.auth, (user: any) => {
     //   if (user) {
@@ -128,11 +138,15 @@ export class QuizzComponent implements OnInit {
 
     this.studentService.getStudentById(this.studentId).subscribe((data) => {
       this.dataStudent = data
-      this.dataStudent.studentCompetences? this.studentCompetences=this.dataStudent.studentCompetences:''
+      this.dataStudent.studentCompetences ? this.studentCompetences = this.dataStudent.studentCompetences : ''
     })
 
+    this.firstCursor = this.cursors[0]
+    this.secondCursor = this.cursors[1]
 
 
+    console.log(this.firstCursor);
+    console.log(this.secondCursor);
 
   }
 
@@ -152,16 +166,21 @@ export class QuizzComponent implements OnInit {
   // Composant parent
   // handleVariablesRemontees(event: { variable1: string, variable2: number }) {
 
-  updated(event: { counter: number, evaluatedCompetence: string,  isIncremented:boolean }) {
+  updated(event: { counter: number, evaluatedCompetence: string, isIncremented: boolean }) {
     // puisque value intègre la remontée de 2 variables différentes
     this.scoreCounter = event.counter
     const isIncremented = event.isIncremented
     const evaluatedCompetence = event.evaluatedCompetence
     // alert(`this.scoreCounter depuis quizzComponent", ${this.scoreCounter}`)
-    this.hasStartedEvaluation=true
+    this.hasStartedEvaluation = true
     this.studentService.updateStudentScore(this.studentId, this.scoreCounter, this.indexQuestion, this.trade, this.hasStartedEvaluation, this.studentCompetences, evaluatedCompetence, this.numberOfPoints, isIncremented)
     // et pour être certain qu'à la prochaine étape, c'est bien dataStudent.studentCompetences qui sera incrémenté !!!!!!!!!!!!
-    this.studentCompetences=this.dataStudent.studentCompetences
+    this.studentCompetences = this.dataStudent.studentCompetences
+
+    // une fois qu'il a fait tout ça,  on va tester le retour de levelsArray
+    // this.setLevel() 
+    
+
   }
 
   next(indexQuestion: number) {
@@ -170,8 +189,8 @@ export class QuizzComponent implements OnInit {
     this.indexQuestion = Number(indexQuestion) + 1
     // alert(this.indexQuestion)
     // pour mettre à jour les points à attribuer à la question une fois l'index incrémenté
-    this.numberOfPoints=this.questions[this.indexQuestion].notation
-    
+    this.numberOfPoints = this.questions[this.indexQuestion].notation
+
 
     // pour rappeler la liste des medias 
     this.questionsMedias = this.questionsService.getMediaQuestionById(this.questions[this.indexQuestion].id)
@@ -203,7 +222,35 @@ export class QuizzComponent implements OnInit {
 
   resetChildCounter() {
     // Réinitialisation du compteur dans le composant enfant
-    this.childComponent.counter = 0;
+    this.childComponent.counter = 0
+  }
+
+  setLevel() {
+    this.levelsArray = this.dataStudent.studentCompetences.map((obj: any) => {
+      const newObj: any = {};
+      for (let prop in obj) {
+        if (obj.hasOwnProperty(prop)) {
+          const levelProp = `level_${prop}`;
+          const value = obj[prop];
+
+          let levelValue;
+          if (value < 10) {
+            levelValue = 1;
+          } else if (value > 15) {
+            levelValue = 3;
+          } else {
+            levelValue = 2;
+          }
+
+          newObj[levelProp] = levelValue;
+        }
+      }
+      return newObj;
+    });
+
+    
+    
+    console.log("this.levelsArray)", this.levelsArray);
   }
 
 
