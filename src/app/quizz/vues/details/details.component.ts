@@ -34,9 +34,11 @@ export class DetailsComponent implements OnInit {
   // pour prévenir le parent qu'au minimum un clic a été détecté donc une réponse donnée (quelle que soit sa valeur)
   isCompleted: boolean = false
   isIncremented: boolean = false
+  isDecremented: boolean = false
+
   @Output() hasBeenClicked: EventEmitter<boolean> = new EventEmitter<boolean>();
   // @Output() hasBeenUpdated: EventEmitter<number> = new EventEmitter<number>();
-  @Output() hasBeenUpdated: EventEmitter<{ counter: number, evaluatedCompetence: string, isIncremented:boolean }> = new EventEmitter<{ counter: number, evaluatedCompetence: string,  isIncremented:boolean }>();
+  @Output() hasBeenUpdated: EventEmitter<{ counter: number, evaluatedCompetence: string, isIncremented: boolean, isDecremented:boolean }> = new EventEmitter<{ counter: number, evaluatedCompetence: string, isIncremented: boolean, isDecremented:boolean }>();
 
   constructor() {
     // this.fullAnswersClicked=0
@@ -76,12 +78,16 @@ export class DetailsComponent implements OnInit {
   choice(optScoring: any) {
     // on incrémente le nombre total de réponses cliquées (ou cochées)
     this.fullAnswersClicked++
+
+    this.fullAnswersClicked >= this.totalAnswersAvailable ? (alert("Vous ne pouvez pas cocher toutes les réponses. Il faut faire une sélection"), this.fullAnswersClicked = 0, this.fullGoodAnswersClicked = 0, this.counter -= Number(this.q.notation), this.isIncremented = false, this.isDecremented = true) : ""
+    // ici, on enregistrera sûrement en base !!!!
+    
     if (optScoring === 'true') {
       // on incrémente le nombre de bonnes réponses données
       this.fullGoodAnswersClicked++
       console.log("this.fullGoodAnswersClicked", this.fullGoodAnswersClicked);
       this.fullGoodAnswersClicked === this.fullOptScoringTrue ? this.counter = Number(this.counter) + Number(this.q.notation) : ""
-      this.fullGoodAnswersClicked === this.fullOptScoringTrue ? this.isIncremented=true : this.isIncremented=false
+      this.fullGoodAnswersClicked === this.fullOptScoringTrue ? this.isIncremented = true : this.isIncremented = false
       // this.fullGoodAnswersClicked>this.fullOptScoringTrue?alert("Vous devez faire un choix. Toutes les réponses ne peuvent être bonnes"): ""    
       console.log("this.fullAnswersClicked", this.fullAnswersClicked)
       alert(Number(this.counter))
@@ -89,17 +95,15 @@ export class DetailsComponent implements OnInit {
 
     }
 
-    this.fullAnswersClicked === this.totalAnswersAvailable ? (alert("Vous ne pouvez pas cocher toutes les réponses. Il faut faire une sélection"), this.fullAnswersClicked = 0, this.fullGoodAnswersClicked = 0, this.counter -= Number(this.q.notation), this.isIncremented=false) : ""
 
 
-    // ici, on enregistrera sûrement en base !!!!
 
     // on fait remonter l'information : une réponse a bien été cliquée (au minimum), ce qui en soit suffit pour pouvoir passer à la suivante ! 
     this.isCompleted = true
     this.hasBeenClicked.emit(this.isCompleted)
     // // À un certain endroit de votre composant enfant...
     // this.variablesRemontees.emit({ variable1: 'valeur1', variable2: 42 });
-    this.hasBeenUpdated.emit({ counter: Number(this.counter), evaluatedCompetence: this.q.competence, isIncremented:this.isIncremented })
+    this.hasBeenUpdated.emit({ counter: Number(this.counter), evaluatedCompetence: this.q.competence, isIncremented: this.isIncremented, isDecremented: this.isDecremented })
 
   }
 

@@ -64,9 +64,6 @@ export class QuizzComponent implements OnInit {
 
   ngOnInit() {
 
-
-
-
     this.trade = this.ac.snapshot.params["id"]
     this.indexQuestion = this.ac.snapshot.params["indexQuestion"]
     this.scoreCounter = this.ac.snapshot.params["scoreCounter"]
@@ -166,19 +163,22 @@ export class QuizzComponent implements OnInit {
   // Composant parent
   // handleVariablesRemontees(event: { variable1: string, variable2: number }) {
 
-  updated(event: { counter: number, evaluatedCompetence: string, isIncremented: boolean }) {
+  updated(event: { counter: number, evaluatedCompetence: string, isIncremented: boolean,  isDecremented: boolean }) {
     // puisque value intègre la remontée de 2 variables différentes
     this.scoreCounter = event.counter
     const isIncremented = event.isIncremented
+    const isDecremented = event.isDecremented
     const evaluatedCompetence = event.evaluatedCompetence
     // alert(`this.scoreCounter depuis quizzComponent", ${this.scoreCounter}`)
     this.hasStartedEvaluation = true
-    this.studentService.updateStudentScore(this.studentId, this.scoreCounter, this.indexQuestion, this.trade, this.hasStartedEvaluation, this.studentCompetences, evaluatedCompetence, this.numberOfPoints, isIncremented)
+    this.studentService.updateStudentScore(this.studentId, this.scoreCounter, this.indexQuestion, this.trade, this.hasStartedEvaluation, this.studentCompetences, evaluatedCompetence, this.numberOfPoints, isIncremented, isDecremented)
     // et pour être certain qu'à la prochaine étape, c'est bien dataStudent.studentCompetences qui sera incrémenté !!!!!!!!!!!!
     this.studentCompetences = this.dataStudent.studentCompetences
 
     // une fois qu'il a fait tout ça,  on va tester le retour de levelsArray
     // this.setLevel() 
+
+    
     
 
   }

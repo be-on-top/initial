@@ -146,22 +146,29 @@ export class StudentsService {
     }
   }
 
-  updateStudentScore(id: string, scoreCounter: number, indexQuestion: number, trade: string, hasStartedEvaluation: boolean, studentCompetences: any, evaluatedCompetence: string, numberOfPoints: number, isIncremented: boolean) {
+  updateStudentScore(id: string, scoreCounter: number, indexQuestion: number, trade: string, hasStartedEvaluation: boolean, studentCompetences: any, evaluatedCompetence: string, numberOfPoints: number, isIncremented: boolean, isDecremented: boolean) {
     alert(scoreCounter)
 
     let $studentRef = doc(this.firestore, "students/" + id);
 
     if (hasStartedEvaluation === true) {
-      alert('hasStartedEvaluation ! ')
+      // alert('hasStartedEvaluation ! ')
       const updatedTableauObjets = studentCompetences.map((obj: any) => {
         console.log("evaluatedCompetence reçue par le service", evaluatedCompetence)
 
         console.log(isIncremented)
+        console.log(isDecremented)
+        console.log(numberOfPoints);
+        
 
-        if (evaluatedCompetence in obj && isIncremented == true) {
+        if (evaluatedCompetence in obj && isIncremented == true && isDecremented==false) {
           return { ...obj, [evaluatedCompetence]: Number(obj[evaluatedCompetence]) + Number(numberOfPoints) }
         }
-        if (evaluatedCompetence in obj && isIncremented == false) {
+        // on le rajoute pour décrémenter LA compétence si compteurs réinitialisés parce que TOUTES les réponses ont été cochées !!!!
+        if (evaluatedCompetence in obj && isIncremented == false && isDecremented == true) {
+          return { ...obj, [evaluatedCompetence]: Number(obj[evaluatedCompetence]) - Number(numberOfPoints) }
+        }
+        if (evaluatedCompetence in obj && isIncremented == false && isDecremented==false) {
           return { ...obj, [evaluatedCompetence]: Number(obj[evaluatedCompetence]) + Number(0) }
         }
         return obj;
