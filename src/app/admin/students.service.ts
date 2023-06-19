@@ -161,12 +161,12 @@ export class StudentsService {
         console.log(numberOfPoints);
         
 
-        if (evaluatedCompetence in obj && isIncremented == true && isDecremented==false) {
-          return { ...obj, [evaluatedCompetence]: Number(obj[evaluatedCompetence]) + Number(numberOfPoints) }
-        }
         // on le rajoute pour décrémenter LA compétence si compteurs réinitialisés parce que TOUTES les réponses ont été cochées !!!!
         if (evaluatedCompetence in obj && isIncremented == false && isDecremented == true) {
           return { ...obj, [evaluatedCompetence]: Number(obj[evaluatedCompetence]) - Number(numberOfPoints) }
+        }
+        if(evaluatedCompetence in obj && isIncremented == true && isDecremented==false) {
+          return { ...obj, [evaluatedCompetence]: Number(obj[evaluatedCompetence]) + Number(numberOfPoints) }
         }
         if (evaluatedCompetence in obj && isIncremented == false && isDecremented==false) {
           return { ...obj, [evaluatedCompetence]: Number(obj[evaluatedCompetence]) + Number(0) }

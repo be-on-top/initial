@@ -38,7 +38,7 @@ export class DetailsComponent implements OnInit {
 
   @Output() hasBeenClicked: EventEmitter<boolean> = new EventEmitter<boolean>();
   // @Output() hasBeenUpdated: EventEmitter<number> = new EventEmitter<number>();
-  @Output() hasBeenUpdated: EventEmitter<{ counter: number, evaluatedCompetence: string, isIncremented: boolean, isDecremented:boolean }> = new EventEmitter<{ counter: number, evaluatedCompetence: string, isIncremented: boolean, isDecremented:boolean }>();
+  @Output() hasBeenUpdated: EventEmitter<{ counter: number, evaluatedCompetence: string, isIncremented: boolean, isDecremented: boolean }> = new EventEmitter<{ counter: number, evaluatedCompetence: string, isIncremented: boolean, isDecremented: boolean }>();
 
   constructor() {
     // this.fullAnswersClicked=0
@@ -79,8 +79,9 @@ export class DetailsComponent implements OnInit {
     // on incrémente le nombre total de réponses cliquées (ou cochées)
     this.fullAnswersClicked++
 
-    this.fullAnswersClicked >= this.totalAnswersAvailable ? (alert("Vous ne pouvez pas cocher toutes les réponses. Il faut faire une sélection"), this.fullAnswersClicked = 0, this.fullGoodAnswersClicked = 0, this.counter -= Number(this.q.notation), this.isIncremented = false, this.isDecremented = true) : ""
-    // ici, on enregistrera sûrement en base !!!!
+    alert(optScoring)
+
+
 
     if (optScoring === 'true') {
       // on incrémente le nombre de bonnes réponses données
@@ -92,9 +93,16 @@ export class DetailsComponent implements OnInit {
       console.log("this.fullAnswersClicked", this.fullAnswersClicked)
       // alert(Number(this.counter))
 
+      // this.fullAnswersClicked >= this.totalAnswersAvailable ? (alert("Vous ne pouvez pas cocher toutes les réponses. Il faut faire une sélection"), this.fullAnswersClicked = 0, this.fullGoodAnswersClicked = 0, this.counter -= Number(this.q.notation), this.isIncremented = false, this.isDecremented = true) : ""
+      // // ici, on enregistrera sûrement en base !!!!
+
+    } else {
+
+      this.isIncremented = false
+
+
     }
-
-
+    this.fullAnswersClicked >= this.totalAnswersAvailable ? (alert("Vous ne pouvez pas cocher toutes les réponses. Il faut faire une sélection"), this.fullAnswersClicked = 0, this.fullGoodAnswersClicked = 0, this.counter -= Number(this.q.notation), this.isIncremented = false, this.isDecremented = true) : ""
 
 
     // on fait remonter l'information : une réponse a bien été cliquée (au minimum), ce qui en soit suffit pour pouvoir passer à la suivante ! 
