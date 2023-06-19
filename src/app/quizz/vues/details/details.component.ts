@@ -81,7 +81,7 @@ export class DetailsComponent implements OnInit {
 
     this.fullAnswersClicked >= this.totalAnswersAvailable ? (alert("Vous ne pouvez pas cocher toutes les réponses. Il faut faire une sélection"), this.fullAnswersClicked = 0, this.fullGoodAnswersClicked = 0, this.counter -= Number(this.q.notation), this.isIncremented = false, this.isDecremented = true) : ""
     // ici, on enregistrera sûrement en base !!!!
-    
+
     if (optScoring === 'true') {
       // on incrémente le nombre de bonnes réponses données
       this.fullGoodAnswersClicked++
@@ -90,8 +90,7 @@ export class DetailsComponent implements OnInit {
       this.fullGoodAnswersClicked === this.fullOptScoringTrue ? this.isIncremented = true : this.isIncremented = false
       // this.fullGoodAnswersClicked>this.fullOptScoringTrue?alert("Vous devez faire un choix. Toutes les réponses ne peuvent être bonnes"): ""    
       console.log("this.fullAnswersClicked", this.fullAnswersClicked)
-      alert(Number(this.counter))
-
+      // alert(Number(this.counter))
 
     }
 
