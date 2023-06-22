@@ -61,7 +61,7 @@ export class HomeComponent implements OnInit {
   isEditor: boolean = false
   hasStartedEvaluation: boolean = false
   // ne sert pas et ne doit pas avoir à être nécessaire. 
-//  lastIndexQuestion:number=0
+  // lastIndexQuestion: number = 0
 
   constructor(private notificationService: PushNotificationService, private auth: Auth, private firestore: Firestore, private authService: AuthService, private studentService: StudentsService, private ac: ActivatedRoute, private router: Router, readonly swPush: SwPush, private settingsService: SettingsService) {
     // pour savoir si l'utilisateur est éditeur sans interroger firestore, on peut (?) récupérer userRole livré en paramètre de route
@@ -111,7 +111,7 @@ export class HomeComponent implements OnInit {
         // https://firebase.google.com/docs/reference/js/firebase.User
         this.user = user.uid
         this.studentService.getStudentById(user.uid).subscribe((data) => this.studentData = data)
-        this.studentData.scoreCounter?this.hasStartedEvaluation==true:""
+        this.studentData && this.studentData.scoreCounter ? this.hasStartedEvaluation == true : ""
         // ne sert et ne doit pas avoir à être nécessaire... c'est qu'il y aurait un problème de typage
         // this.studentData.lastIndexQuestion?this.lastIndexQuestion==Number(this.studentData.lastIndexQuestion):""
 
@@ -162,8 +162,8 @@ export class HomeComponent implements OnInit {
 
   }
 
-  navigateToQuizz(trade:string, indexedQuestion:number=0, score:number=0) {
-    this.studentData.tradeEvaluated && this.studentData.tradeEvaluated==trade ? this.router.navigate(['/quizz', trade, indexedQuestion, score]):this.router.navigate(['/quizz', trade, 0, 0])
+  navigateToQuizz(trade: string, indexedQuestion: number = 0, score: number = 0) {
+    this.studentData.tradeEvaluated && this.studentData.tradeEvaluated == trade ? this.router.navigate(['/quizz', trade, indexedQuestion, score]) : this.router.navigate(['/quizz', trade, 0, 0])
   }
 
 
