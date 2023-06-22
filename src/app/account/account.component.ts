@@ -33,10 +33,12 @@ export class AccountComponent implements OnInit {
   // evaluatorData?: any;
   studentData?: any;
   // pour afficher le formulaire d'édition
-  editMode:boolean=false
+  editMode: boolean = false
 
-  feedbackMessages:any
-  editButtonLabel:string="Modifier"
+  feedbackMessages: any
+  editButtonLabel: string = "Modifier"
+
+  lastIndex: number = 0
 
 
   constructor(private auth: Auth, private firestore: Firestore, private authService: AuthService, private studentService: StudentsService, private activatedRoute: ActivatedRoute, private router: Router, private notificationService: PushNotificationService) {
@@ -73,6 +75,7 @@ export class AccountComponent implements OnInit {
         this.studentService.getStudentById(user.uid).subscribe(data => {
           console.log("userData from students 0...", data);
           this.userData = data
+          this.lastIndex=Number(this.userData.lastIndexQuestion)
         })
         // y a juste que je n'arrive pas à me la faire livrer par le service !!!
         // this.studentService.getDocsByParam(this.user)
@@ -131,27 +134,27 @@ export class AccountComponent implements OnInit {
     }
   }
 
-  focus(){
-    let myDoc:any= document.querySelector("#demo");
+  focus() {
+    let myDoc: any = document.querySelector("#demo");
     myDoc.focus()
   }
 
-  toogleItem(item:string){
-    let x:any= document.getElementById(item);
+  toogleItem(item: string) {
+    let x: any = document.getElementById(item);
     if (x.style.display === "none") {
       x.style.display = "block";
     } else {
       x.style.display = "none";
-    }    
+    }
 
   }
-  
+
   toogleText() {
     // you should set this values to their default for finishing loading state
     // you can either do this in a another method which you run on the success or fail scenarios for subscribtion.
     // Or you can use setTimeout to set back to default values after a certain time.
 
-    this.editButtonLabel == 'Modifier'? this.editButtonLabel = 'Annuler' : this.editButtonLabel = 'Modifier';
+    this.editButtonLabel == 'Modifier' ? this.editButtonLabel = 'Annuler' : this.editButtonLabel = 'Modifier';
     /*
     setTimeout(() => {
       this.loading = false;
@@ -159,8 +162,8 @@ export class AccountComponent implements OnInit {
     }, 1000); // sets back to default values after 1 sec.
     */
   }
-  edit(){
-    this.editMode=true
+  edit() {
+    this.editMode = true
   }
 
   delete() {
@@ -168,14 +171,14 @@ export class AccountComponent implements OnInit {
     // this.studentService.deleteAccount();
   }
 
-    // pour utiliser le composant de recherche
-    onValidFeedback(feedbackMessages: string) {
-      this.feedbackMessages = feedbackMessages
+  // pour utiliser le composant de recherche
+  onValidFeedback(feedbackMessages: string) {
+    this.feedbackMessages = feedbackMessages
 
-    }
+  }
 
 
-    
+
   getObjectProperties(obj: any): any[] {
     return Object.entries(obj);
   }

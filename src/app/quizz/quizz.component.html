@@ -1,12 +1,11 @@
 <div class="container py-5 text-center">
     <h3>Quizz à venir... pour métier {{trade}}</h3>
     <h4 class="fs-6">Id de l'étudiant récupéré : {{studentId}}</h4>
-    <div class="alert bg-light mt-3 mb-4">
-        <!-- {{uid}} -->
+    <!-- <div class="alert bg-light mt-3 mb-4">
         Placeat dolorem eveniet beatae culpa molestias numquam quis ex quidem animi fugit consequuntur voluptatibus quo corrupti nobis ab, laboriosam minima commodi nostrum?
-    </div>
+    </div> -->
     <!-- partie visuelle similaire à la vue de détail des administrateurs (en mode aperçu) qui ici va devenir réactive -->
-    <!-- {{questions[0] | json}} -->
+    {{questions[0] | json}}
     <div class="alert bg-info text-white text-smaller">Cumul des points récupéré par le parent : {{scoreCounter}}</div>
     <!-- etat des compétences en base -->
     <div class="alert bg-info text-white text-smaller" *ngIf="!dataStudent.studentCompetences">StudentCompetences à rattacher en base : {{studentCompetences | json}}</div>
@@ -16,7 +15,7 @@
     <div *ngIf="dataStudent.studentCompetences" class="mb-3"> <div *ngFor="let objet of dataStudent.studentCompetences"> <div *ngFor="let item of objet | keyvalue"><span class="fw-bold">{{ item.key }}:</span> {{ item.value }} PNTS</div> </div> </div>
 
     <!-- a commencé l'évaluation -->
-    <div class="alert bg-info text-white text-smaller">hasStartedEvaluation : {{hasStartedEvaluation}}</div>
+    <!-- <div class="alert bg-info text-white text-smaller">hasStartedEvaluation : {{hasStartedEvaluation}}</div> -->
 
 
     <!-- on veut juste la première de la liste initiale -->

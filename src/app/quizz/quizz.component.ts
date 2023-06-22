@@ -197,11 +197,13 @@ export class QuizzComponent implements OnInit {
     console.log("questionsMedias depuis questions-details", this.questionsMedias)
     this.responsesMedias = this.questionsService.getMediasResponsesById(this.questions[this.indexQuestion].id)
 
-    // et puisqu'on commence une nouvelle question, isCompleted redevient false
+    // et puisqu'on commence une nouvelle question, isCompleted redevient false, de même que les variabless qui suivent
     this.isCompleted = false
     this.fullGoodAnswersClicked = 0
     this.fullOptScoringTrue = 0
     this.totalAnswersAvailable = 0
+  this.resetChildCounter()
+    
 
     // on initialise la valeur réelle de fullOptScoringArray pour avoir un point de comparaison
     this.questions[this.indexQuestion].optScoring1 === 'true' ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
@@ -222,7 +224,10 @@ export class QuizzComponent implements OnInit {
 
   resetChildCounter() {
     // Réinitialisation du compteur dans le composant enfant
-    this.childComponent.counter = 0
+    // this.childComponent.counter = 0
+    this.childComponent.isDecremented = false
+    this.fullAnswersClicked=0
+    // this.childComponent.isIncremented=false
   }
 
   setLevel() {

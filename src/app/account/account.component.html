@@ -134,7 +134,7 @@
                         <p class="card-text" *ngIf="userData.tradeEvaluated">Métier concerné : <span
                                 class="fw-bold">{{userData.tradeEvaluated}}</span></p>
                         <p class="card-text" *ngIf="userData.lastIndexQuestion">Vous avez jusqu'ici répondu à
-                            <span class="fw-bold">{{userData.lastIndexQuestion+1}} Questions</span>
+                            <span class="fw-bold">{{lastIndex+1}} Questions</span>
                         </p>
 
                         <p class="card-text" *ngIf="userData.studentCompetences">Répartition des points par compétences
@@ -148,10 +148,33 @@
                         </p>
 
                         <button class="btn bg-primary"><a class="text-light"
-                                [routerLink]="['/quizz/', userData.tradeEvaluated, userData.lastIndexQuestion+1, userData.scoreCounter]">
-                                <span *ngIf="userData.lastIndexQuestion<2; else elseBlock">Question suivante</span>
+                                [routerLink]="['/quizz/', userData.tradeEvaluated, lastIndex+1, userData.scoreCounter,true, user]">
+                                <span *ngIf="userData.lastIndexQuestion<2; else elseBlock">Poursuivre</span>
                                 <ng-template #elseBlock> <span>Fin du QCM d'accroche</span>
                                 </ng-template></a>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- bouton d'accès au formulaire de préinscription administrative -->
+            <div class="card" *ngIf="userData.lastIndexQuestion>=2">
+                <div class="card-header bg-dark d-flex justify-content-between">
+                    <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseFor">
+                        Inscription Formation
+                    </a><i class="bi bi-info-square-fill fs-4 text-light"></i>
+                </div>
+                <div id="collapseFor" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        <p class="card-text" *ngIf="userData.scoreCounter">Félicitation ! Vous êtes parvenu(e) à la fin
+                            du questionnaire de positionnement.
+                        </p>
+                        <p class="card-text" *ngIf="userData.scoreCounter">Pour faciliter votre inscription et votre prise en
+                            charge, nous vous invitons à remplir le formulaire ci-dessous...
+                        </p>
+                        <button class="btn bg-primary"><a class="text-light"
+                                [routerLink]="['/quizz/', userData.tradeEvaluated, lastIndex+1, userData.scoreCounter,true, user]">
+                                Formulaire de pré-inscription</a>
                         </button>
                     </div>
                 </div>
