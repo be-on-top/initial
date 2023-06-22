@@ -44,7 +44,7 @@
 
         <div class="col-md-6" *ngFor="let trade of tradesData">
             <!-- <a [routerLink]="['/quizz/',  trade.sigle]" class="text-decoration-none text-dark"> -->
-            <a [routerLink]="['/quizz/',  trade.sigle, studentData.lastIndexQuestion?lastIndexQuestion+1:0, studentData.scoreCounter && studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle?studentData.scoreCounter:0, studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle?true:false, studentData.id]" class="text-decoration-none text-dark">
+            <a [routerLink]="['/quizz/',  trade.sigle, studentData.lastIndexQuestion?studentData.lastIndexQuestion+1:0, studentData.scoreCounter && studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle?studentData.scoreCounter:0, studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle?true:false, studentData.id]" class="text-decoration-none text-dark">
                 <div class="card my-3" (click)="selectTrade(trade.id)">
                     <div class="card-header text-muted">{{trade.id}} - {{hasStartedEvaluation}} {{studentData.scoreCounter}} - {{studentData.tradeEvaluated}}</div>
                     <div class="card-body">
@@ -73,6 +73,7 @@
                             *ngIf="studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle && studentData.lastIndexQuestion && studentData.lastIndexQuestion<2"
                             class="d-flex justify-content-end"><button class="btn btn-transparent"><i
                                     class="bi bi-clock-history"></i>
+                                <!-- Reprendre à la question {{studentData.lastIndexQuestion+1}}</button></div> -->
                                 Poursuivre</button></div>
 
                         <div class="d-flex justify-content-end"
