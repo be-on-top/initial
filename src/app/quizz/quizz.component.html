@@ -9,11 +9,11 @@
     <div class="alert bg-info text-white text-smaller">Cumul des points récupéré par le parent : {{scoreCounter}}</div>
     <!-- etat des compétences en base -->
     <!-- <p>{{indexQuestion}}</p> -->
-    <div class="alert bg-info text-white text-smaller" *ngIf="!dataStudent.studentCompetences">StudentCompetences à rattacher en base : {{studentCompetences | json}}</div>
+    <div class="alert bg-info text-white text-smaller" *ngIf="dataStudent && !dataStudent.studentCompetences">StudentCompetences à rattacher en base : {{studentCompetences | json}}</div>
     <!-- <div class="alert bg-info text-white text-smaller" *ngIf="dataStudent.studentCompetences">StudentCompetences récupéré en base : {{studentCompetences | json}}</div> -->
     <!-- <div class="alert bg-info text-white text-smaller" *ngIf="dataStudent.studentCompetences">StudentCompetences récupéré en base : </div> -->
 
-    <div *ngIf="dataStudent.studentCompetences" class="mb-3"> <div *ngFor="let objet of dataStudent.studentCompetences"> <div *ngFor="let item of objet | keyvalue"><span class="fw-bold">{{ item.key }}:</span> {{ item.value }} PNTS</div> </div> </div>
+    <div *ngIf="dataStudent && dataStudent.studentCompetences" class="mb-3"> <div *ngFor="let objet of dataStudent.studentCompetences"> <div *ngFor="let item of objet | keyvalue"><span class="fw-bold">{{ item.key }}:</span> {{ item.value }} PNTS</div> </div> </div>
 
     <!-- a commencé l'évaluation -->
     <!-- <div class="alert bg-info text-white text-smaller">hasStartedEvaluation : {{hasStartedEvaluation}}</div> -->
