@@ -216,6 +216,8 @@ if (this.indexQuestion<this.questions.length) {
   // fin de la vérification de l'existence d'un index correspondant à indexQuestion
   
 } else {
+
+  alert('indexQuestion ne correspond plus à aucune question identifiable')
   
 }
 
