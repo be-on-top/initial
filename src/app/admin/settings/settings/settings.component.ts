@@ -15,6 +15,8 @@ export class SettingsComponent implements OnInit {
   form: any
   total: any = []
 
+  cursors: any
+
   CPNumber: any
 
   // variables à passer à feedbackMessages component pour retours de firebase sur la soumission
@@ -41,7 +43,7 @@ export class SettingsComponent implements OnInit {
   }
 
 
-  addSettings(form: NgForm) {
+  addSigles(form: NgForm) {
     this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, totalCP: form.value.totalCP, competences: [] }
     // si on souhaite un objet, comme ceux écrits initialement en dur exemple : competences:{CP1:"", CP2:""}
     // this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, totalCP: form.value.totalCP, competences: {} }
@@ -59,7 +61,7 @@ export class SettingsComponent implements OnInit {
     this.service.addTrade(this.sigles)
       .then(() => {
         // Signed in 
-        this.feedbackMessages = `Enregistrement OK`;
+        this.feedbackMessages = `Enregistrement du métier et ses compétences OK`;
         this.isSuccessMessage = true
         setTimeout(() => {
           form.reset()
@@ -98,6 +100,32 @@ export class SettingsComponent implements OnInit {
     //  fiedl.innerHTML+=cpField
     // formButton.insertAdjacentElement('beforebegin',fiedl)
   }
+
+  addLevelCursors(form: NgForm){
+
+    this.cursors = { firstCursor: form.value.firstCursor, secondCursor: form.value.secondCursor}
+
+    this.service.addLevelCursors(this.cursors)
+      .then(() => {
+        // Signed in 
+        this.feedbackMessages = `Enregistrement des curseurs OK`;
+        this.isSuccessMessage = true
+        setTimeout(() => {
+          form.reset()
+          // this.router.navigate([''])
+        }, 1000)
+      })
+      .catch((error) => {
+        this.feedbackMessages = error.message;
+        // this.feedbackMessages = this.firebaseErrors[error.code];
+        this.isSuccessMessage = false;
+        console.log(this.feedbackMessages);
+
+        // ..};
+      })
+
+  }
+
 
 
 }

@@ -55,7 +55,9 @@ export class QuizzComponent implements OnInit {
     // private auth: Auth, 
     private questionsService: QuestionsService,
     // private settingService: SettingsService, 
-    private studentService: StudentsService) {
+    private studentService: StudentsService,
+    // pour tester la récupération des curseurs
+    private settingsService: SettingsService) {
     // this.trade = this.ac.snapshot.params["id"]
     // this.indexQuestion = this.ac.snapshot.params["indexQuestion"]
     // this.scoreCounter = this.ac.snapshot.params["scoreCounter"]
@@ -88,51 +90,51 @@ export class QuizzComponent implements OnInit {
       this.questions = allQuestions.filter(q => q.number < 21 && q.sigle == this.trade)
       this.questions.sort(this.compare)
 
-// pour qu'on ne se retrouve pas en console avec un can not read id parce qu'il n'y en a plus
-// on peut rajouter ATTENTION !!!!! 
-if (this.indexQuestion<this.questions.length) {
+      // pour qu'on ne se retrouve pas en console avec un can not read id parce qu'il n'y en a plus
+      // on peut rajouter ATTENTION !!!!! 
+      if (this.indexQuestion < this.questions.length) {
 
 
 
-       // pour recevoir la liste des médias relatifs aux questions relatives au métier
-       this.questionsMedias = this.questionsService.getMediaQuestionById(this.questions[this.indexQuestion].id)
-       console.log("questionsMedias depuis questions-details", this.questionsMedias);
-       this.responsesMedias = this.questionsService.getMediasResponsesById(this.questions[this.indexQuestion].id)
- 
-       console.log("this.fullOptScoringArray initial", this.fullOptScoringTrue)
-       console.log("this.totalAnswersAvailable initial", this.totalAnswersAvailable)
-       console.log("this.fullAnswersClicked initial", this.fullAnswersClicked)
-       console.log("this.fullGoodAnswersClicked: initial", this.fullGoodAnswersClicked)
-       // console.log("this.q.optScoring1", this.q.optScoring1 === 'false');
- 
-       // on initialise la valeur réelle de fullOptScoringArray pour avoir un point de comparaison
-       this.questions[this.indexQuestion].optScoring1 === 'true' ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
-       this.questions[this.indexQuestion].optScoring2 === 'true' ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
-       this.questions[this.indexQuestion].optScoring3 === 'true' ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
-       this.questions[this.indexQuestion].optScoring4 === 'true' ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
-       console.log("this.fullOptScoringArray", this.fullOptScoringTrue)
- 
-       // on initialise la valeur réelle de totalAnswersAvailable pour la limite à 2, 3 ou 4 réponses max
-       this.questions[this.indexQuestion].optScoring1 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
-       this.questions[this.indexQuestion].optScoring2 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
-       this.questions[this.indexQuestion].optScoring3 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
-       this.questions[this.indexQuestion].optScoring4 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
-       console.log("this.totalAnswersAvailable", this.totalAnswersAvailable)
- 
-       // Pour connaitre le nombre de points affectés à la question et la refiler à l'instant t au service, 
-       // on peut passer par une variable intermédiaire pour plus de lisibilité, mais ce n'est pas impératif
-       this.numberOfPoints = this.questions[this.indexQuestion].notation
-       console.log('numberOfPoints depuis quizzComponent', this.numberOfPoints);
+        // pour recevoir la liste des médias relatifs aux questions relatives au métier
+        this.questionsMedias = this.questionsService.getMediaQuestionById(this.questions[this.indexQuestion].id)
+        console.log("questionsMedias depuis questions-details", this.questionsMedias);
+        this.responsesMedias = this.questionsService.getMediasResponsesById(this.questions[this.indexQuestion].id)
+
+        console.log("this.fullOptScoringArray initial", this.fullOptScoringTrue)
+        console.log("this.totalAnswersAvailable initial", this.totalAnswersAvailable)
+        console.log("this.fullAnswersClicked initial", this.fullAnswersClicked)
+        console.log("this.fullGoodAnswersClicked: initial", this.fullGoodAnswersClicked)
+        // console.log("this.q.optScoring1", this.q.optScoring1 === 'false');
+
+        // on initialise la valeur réelle de fullOptScoringArray pour avoir un point de comparaison
+        this.questions[this.indexQuestion].optScoring1 === 'true' ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
+        this.questions[this.indexQuestion].optScoring2 === 'true' ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
+        this.questions[this.indexQuestion].optScoring3 === 'true' ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
+        this.questions[this.indexQuestion].optScoring4 === 'true' ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
+        console.log("this.fullOptScoringArray", this.fullOptScoringTrue)
+
+        // on initialise la valeur réelle de totalAnswersAvailable pour la limite à 2, 3 ou 4 réponses max
+        this.questions[this.indexQuestion].optScoring1 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
+        this.questions[this.indexQuestion].optScoring2 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
+        this.questions[this.indexQuestion].optScoring3 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
+        this.questions[this.indexQuestion].optScoring4 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
+        console.log("this.totalAnswersAvailable", this.totalAnswersAvailable)
+
+        // Pour connaitre le nombre de points affectés à la question et la refiler à l'instant t au service, 
+        // on peut passer par une variable intermédiaire pour plus de lisibilité, mais ce n'est pas impératif
+        this.numberOfPoints = this.questions[this.indexQuestion].notation
+        console.log('numberOfPoints depuis quizzComponent', this.numberOfPoints);
 
 
-  // fin du décompte de la longueur de this.questons
-  
-} else {
+        // fin du décompte de la longueur de this.questons
 
-  alert('plus aucun id ne correspond au paramètre')
-  
-}
- 
+      } else {
+
+        alert('plus aucun id ne correspond au paramètre')
+
+      }
+
 
       // Pour générer le tableau de compétences dans le compte utilisateur si il n'y en a  pas
       this.questions.forEach(value => {
@@ -153,12 +155,12 @@ if (this.indexQuestion<this.questions.length) {
       this.dataStudent.studentCompetences ? this.studentCompetences = this.dataStudent.studentCompetences : ''
     })
 
-    this.firstCursor = this.cursors[0]
-    this.secondCursor = this.cursors[1]
+    // c'était bien, mais faut tester la récupération des curseurs en base si besoin
+    // this.firstCursor = this.cursors[0]
+    // this.secondCursor = this.cursors[1]
+    this.getCursors()
 
 
-    console.log(this.firstCursor);
-    console.log(this.secondCursor);
 
   }
 
@@ -178,7 +180,7 @@ if (this.indexQuestion<this.questions.length) {
   // Composant parent
   // handleVariablesRemontees(event: { variable1: string, variable2: number }) {
 
-  updated(event: { counter: number, evaluatedCompetence: string, isIncremented: boolean,  isDecremented: boolean }) {
+  updated(event: { counter: number, evaluatedCompetence: string, isIncremented: boolean, isDecremented: boolean }) {
     // puisque value intègre la remontée de 2 variables différentes
     this.scoreCounter = event.counter
     const isIncremented = event.isIncremented
@@ -193,9 +195,6 @@ if (this.indexQuestion<this.questions.length) {
     // une fois qu'il a fait tout ça,  on va tester le retour de levelsArray
     // this.setLevel() 
 
-    
-    
-
   }
 
   next(indexQuestion: number) {
@@ -205,25 +204,21 @@ if (this.indexQuestion<this.questions.length) {
     // alert(this.indexQuestion)
 
     // pour qu'on ne se retrouve pas en console avec un can not read id parce qu'il n'y en a plus
-// on peut rajouter ATTENTION !!!!! 
-// pour qu'on ne se retrouve pas en console avec un can not read id parce qu'il n'y en a plus
-// on peut rajouter ATTENTION !!!!! 
-if (this.indexQuestion<this.questions.length) {
+    // on peut rajouter ATTENTION !!!!! 
+    // pour qu'on ne se retrouve pas en console avec un can not read id parce qu'il n'y en a plus
+    // on peut rajouter ATTENTION !!!!! 
+    if (this.indexQuestion < this.questions.length) {
 
-    // pour mettre à jour les points à attribuer à la question une fois l'index incrémenté
-    this.questions[this.indexQuestion].notation?this.numberOfPoints = this.questions[this.indexQuestion].notation:''
+      // pour mettre à jour les points à attribuer à la question une fois l'index incrémenté
+      this.questions[this.indexQuestion].notation ? this.numberOfPoints = this.questions[this.indexQuestion].notation : ''
 
-  // fin de la vérification de l'existence d'un index correspondant à indexQuestion
-  
-} else {
+      // fin de la vérification de l'existence d'un index correspondant à indexQuestion
 
-  alert('indexQuestion ne correspond plus à aucune question identifiable')
-  
-}
+    } else {
 
+      alert('indexQuestion ne correspond plus à aucune question identifiable')
 
-
-
+    }
 
     // pour rappeler la liste des medias 
     this.questionsMedias = this.questionsService.getMediaQuestionById(this.questions[this.indexQuestion].id)
@@ -235,8 +230,8 @@ if (this.indexQuestion<this.questions.length) {
     this.fullGoodAnswersClicked = 0
     this.fullOptScoringTrue = 0
     this.totalAnswersAvailable = 0
-  this.resetChildCounter()
-    
+    this.resetChildCounter()
+
 
     // on initialise la valeur réelle de fullOptScoringArray pour avoir un point de comparaison
     this.questions[this.indexQuestion].optScoring1 === 'true' ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
@@ -259,7 +254,7 @@ if (this.indexQuestion<this.questions.length) {
     // Réinitialisation du compteur dans le composant enfant
     // this.childComponent.counter = 0
     this.childComponent.isDecremented = false
-    this.fullAnswersClicked=0
+    this.fullAnswersClicked = 0
     // this.childComponent.isIncremented=false
   }
 
@@ -272,9 +267,9 @@ if (this.indexQuestion<this.questions.length) {
           const value = obj[prop];
 
           let levelValue;
-          if (value < 10) {
+          if (value < this.firstCursor) {
             levelValue = 1;
-          } else if (value > 15) {
+          } else if (value > this.secondCursor) {
             levelValue = 3;
           } else {
             levelValue = 2;
@@ -286,9 +281,27 @@ if (this.indexQuestion<this.questions.length) {
       return newObj;
     });
 
-    
-    
+
     console.log("this.levelsArray)", this.levelsArray);
+  }
+
+  getCursors(){
+
+    this.settingsService.getLevelsCursors().subscribe((data) => {
+      // console.log("data!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", data[0]);
+
+      console.log(data[0]);
+      this.cursors = data[0]
+
+      this.firstCursor = data[0]['firstCursor']
+      this.secondCursor = data[0]['secondCursor']
+
+      
+    console.log(this.firstCursor);
+    console.log(this.secondCursor);
+
+    })
+
   }
 
 

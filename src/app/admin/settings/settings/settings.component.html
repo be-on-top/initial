@@ -1,8 +1,11 @@
 <div class="container py-5">
 
-  <h3>Paramètres de l'application BE-ON-TOP</h3>
-  <app-feedback-messages [feedbackMessages]="feedbackMessages" [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
-  <form #settingsForm="ngForm" class="mt-4" (submit)="addSettings(settingsForm)" class="was-validated">
+  <h3 class="mb-3">Paramètres de l'application</h3>
+  <app-feedback-messages [feedbackMessages]="feedbackMessages"
+    [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
+
+  <h4>Ajout des métiers (sigles) et leurs compétences (AT)</h4>
+  <form #settingsForm="ngForm" class="mt-4" (submit)="addSigles(settingsForm)" class="was-validated">
 
     <div class="form-group">
       <label for="sigle" class="form-label mt-3">Sigle</label>
@@ -44,6 +47,41 @@
     <button id="settingsForm" type="submit" class="btn btn-primary mt-4"
       [disabled]=settingsForm.invalid>Ajouter</button>
   </form>
+
+  <hr>
+
+  <h3>Ajout de curseurs peronnalisés pour le calcul des 3 niveaux de résultat au terme du positionnement des
+    candidats
+  </h3>
+
+  <!-- pour les curseurs -->
+  <form #setCursorsForm="ngForm" class="mt-4" (submit)="addLevelCursors(setCursorsForm)" class="was-validated">
+
+    <div class="form-group">
+
+      <label for="firstCursor" class="form-label mt-3">Curseur 1</label>
+      <input type="number" name="firstCursor" ngModel #firstCursor="ngModel" class="form-control" required>
+      <div *ngIf="firstCursor.touched && firstCursor.invalid" class="invalid-feedback">
+        Veuillez fournir un sigle valide.
+      </div>
+      <div *ngIf="secondCursor.valid" class="valid-feedback">
+        Ok. Curseur pris en compte
+      </div>
+      <label for="secondCursor" class="form-label mt-3">Curseur 2</label>
+      <input type="number" name="secondCursor" ngModel #secondCursor="ngModel" class="form-control" required>
+      <div *ngIf="secondCursor.touched && secondCursor.invalid" class="invalid-feedback">
+        Veuillez fournir un nombre
+      </div>
+      <div *ngIf="secondCursor.valid" class="valid-feedback">
+        Ok. Curseur pris en compte
+      </div>
+
+    </div>
+
+    <button id="settingsForm" type="submit" class="btn btn-primary mt-4"
+      [disabled]=setCursorsForm.invalid>Ajouter</button>
+  </form>
+
 
 
 </div>
