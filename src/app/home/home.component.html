@@ -44,7 +44,8 @@
 
         <div class="col-md-6" *ngFor="let trade of tradesData">
             <!-- <a [routerLink]="['/quizz/',  trade.sigle]" class="text-decoration-none text-dark"> -->
-            <a [routerLink]="['/quizz/',  trade.sigle, studentData && studentData.lastIndexQuestion?studentData.lastIndexQuestion+1:0, studentData && studentData.scoreCounter && studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle?studentData.scoreCounter:0, studentData && studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle?true:false, studentData && studentData.id?studentData.id:'']" class="text-decoration-none text-dark">
+            <a [routerLink]="['/quizz/',  trade.sigle, studentData && studentData.lastIndexQuestion?studentData.lastIndexQuestion+1:0, studentData && studentData.scoreCounter && studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle?studentData.scoreCounter:0, studentData && studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle?true:false, studentData && studentData.id?studentData.id:'']"
+                class="text-decoration-none text-dark">
                 <div class="card my-3" (click)="selectTrade(trade.id)">
                     <div class="card-header text-muted">{{trade.id}}</div>
                     <div class="card-body">
@@ -81,11 +82,16 @@
                             class="d-flex justify-content-end"><button class="btn btn-transparent"><i
                                     class="bi bi-check-square-fill"></i>
                                 Votre évaluation est terminée</button>
-                                <p>{{hasStartedEvaluation}} {{studentData.scoreCounter}} - {{studentData.tradeEvaluated}}</p>
-                            
-                            </div>
+
+                        </div>
+
+                        <div class="bg-warning text-light p-3 rounded"
+                            *ngIf="studentData && studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle && studentData.lastIndexQuestion>=2">
+                            {{studentData.scoreCounter}} - {{studentData.tradeEvaluated}}
+                        </div>
 
                         <!-- à tester : (str.length>6)? (str | slice:0:6)+'...':(str) -->
+                        
                     </div>
                     <div class="card-footer text-muted">Réf. {{trade.sigle}}</div>
                 </div>

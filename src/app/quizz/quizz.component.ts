@@ -88,36 +88,51 @@ export class QuizzComponent implements OnInit {
       this.questions = allQuestions.filter(q => q.number < 21 && q.sigle == this.trade)
       this.questions.sort(this.compare)
 
+// pour qu'on ne se retrouve pas en console avec un can not read id parce qu'il n'y en a plus
+// on peut rajouter ATTENTION !!!!! 
+if (this.indexQuestion<this.questions.length) {
 
-      // pour recevoir la liste des médias relatifs aux questions relatives au métier
-      this.questionsMedias = this.questionsService.getMediaQuestionById(this.questions[this.indexQuestion].id)
-      console.log("questionsMedias depuis questions-details", this.questionsMedias);
-      this.responsesMedias = this.questionsService.getMediasResponsesById(this.questions[this.indexQuestion].id)
 
-      console.log("this.fullOptScoringArray initial", this.fullOptScoringTrue)
-      console.log("this.totalAnswersAvailable initial", this.totalAnswersAvailable)
-      console.log("this.fullAnswersClicked initial", this.fullAnswersClicked)
-      console.log("this.fullGoodAnswersClicked: initial", this.fullGoodAnswersClicked)
-      // console.log("this.q.optScoring1", this.q.optScoring1 === 'false');
 
-      // on initialise la valeur réelle de fullOptScoringArray pour avoir un point de comparaison
-      this.questions[this.indexQuestion].optScoring1 === 'true' ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
-      this.questions[this.indexQuestion].optScoring2 === 'true' ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
-      this.questions[this.indexQuestion].optScoring3 === 'true' ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
-      this.questions[this.indexQuestion].optScoring4 === 'true' ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
-      console.log("this.fullOptScoringArray", this.fullOptScoringTrue)
+       // pour recevoir la liste des médias relatifs aux questions relatives au métier
+       this.questionsMedias = this.questionsService.getMediaQuestionById(this.questions[this.indexQuestion].id)
+       console.log("questionsMedias depuis questions-details", this.questionsMedias);
+       this.responsesMedias = this.questionsService.getMediasResponsesById(this.questions[this.indexQuestion].id)
+ 
+       console.log("this.fullOptScoringArray initial", this.fullOptScoringTrue)
+       console.log("this.totalAnswersAvailable initial", this.totalAnswersAvailable)
+       console.log("this.fullAnswersClicked initial", this.fullAnswersClicked)
+       console.log("this.fullGoodAnswersClicked: initial", this.fullGoodAnswersClicked)
+       // console.log("this.q.optScoring1", this.q.optScoring1 === 'false');
+ 
+       // on initialise la valeur réelle de fullOptScoringArray pour avoir un point de comparaison
+       this.questions[this.indexQuestion].optScoring1 === 'true' ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
+       this.questions[this.indexQuestion].optScoring2 === 'true' ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
+       this.questions[this.indexQuestion].optScoring3 === 'true' ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
+       this.questions[this.indexQuestion].optScoring4 === 'true' ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
+       console.log("this.fullOptScoringArray", this.fullOptScoringTrue)
+ 
+       // on initialise la valeur réelle de totalAnswersAvailable pour la limite à 2, 3 ou 4 réponses max
+       this.questions[this.indexQuestion].optScoring1 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
+       this.questions[this.indexQuestion].optScoring2 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
+       this.questions[this.indexQuestion].optScoring3 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
+       this.questions[this.indexQuestion].optScoring4 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
+       console.log("this.totalAnswersAvailable", this.totalAnswersAvailable)
+ 
+       // Pour connaitre le nombre de points affectés à la question et la refiler à l'instant t au service, 
+       // on peut passer par une variable intermédiaire pour plus de lisibilité, mais ce n'est pas impératif
+       this.numberOfPoints = this.questions[this.indexQuestion].notation
+       console.log('numberOfPoints depuis quizzComponent', this.numberOfPoints);
 
-      // on initialise la valeur réelle de totalAnswersAvailable pour la limite à 2, 3 ou 4 réponses max
-      this.questions[this.indexQuestion].optScoring1 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
-      this.questions[this.indexQuestion].optScoring2 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
-      this.questions[this.indexQuestion].optScoring3 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
-      this.questions[this.indexQuestion].optScoring4 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
-      console.log("this.totalAnswersAvailable", this.totalAnswersAvailable)
 
-      // Pour connaitre le nombre de points affectés à la question et la refiler à l'instant t au service, 
-      // on peut passer par une variable intermédiaire pour plus de lisibilité, mais ce n'est pas impératif
-      this.numberOfPoints = this.questions[this.indexQuestion].notation
-      console.log('numberOfPoints depuis quizzComponent', this.numberOfPoints);
+  // fin du décompte de la longueur de this.questons
+  
+} else {
+
+  alert('plus aucun id ne correspond au paramètre')
+  
+}
+ 
 
       // Pour générer le tableau de compétences dans le compte utilisateur si il n'y en a  pas
       this.questions.forEach(value => {
@@ -188,8 +203,24 @@ export class QuizzComponent implements OnInit {
     this.childComponent.reset();
     this.indexQuestion = Number(indexQuestion) + 1
     // alert(this.indexQuestion)
+
+    // pour qu'on ne se retrouve pas en console avec un can not read id parce qu'il n'y en a plus
+// on peut rajouter ATTENTION !!!!! 
+// pour qu'on ne se retrouve pas en console avec un can not read id parce qu'il n'y en a plus
+// on peut rajouter ATTENTION !!!!! 
+if (this.indexQuestion<this.questions.length) {
+
     // pour mettre à jour les points à attribuer à la question une fois l'index incrémenté
-    this.numberOfPoints = this.questions[this.indexQuestion].notation
+    this.questions[this.indexQuestion].notation?this.numberOfPoints = this.questions[this.indexQuestion].notation:''
+
+  // fin de la vérification de l'existence d'un index correspondant à indexQuestion
+  
+} else {
+  
+}
+
+
+
 
 
     // pour rappeler la liste des medias 
