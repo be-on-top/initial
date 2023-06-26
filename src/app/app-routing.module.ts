@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: 'home/:userRole', component:HomeComponent, pathMatch: 'full' },
   { path: 'admin', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'account', component: AccountComponent },
-  { path: 'socialregistration', component: AdminForm },
+  { path: 'socialregistration', component: AdminForm},
   { path: 'quizz/:id/:indexQuestion/:scoreCounter/:hasStartedEvaluation/:studentId', component: QuizzComponent},
   
 ];

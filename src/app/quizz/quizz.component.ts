@@ -95,7 +95,6 @@ export class QuizzComponent implements OnInit {
       if (this.indexQuestion < this.questions.length) {
 
 
-
         // pour recevoir la liste des médias relatifs aux questions relatives au métier
         this.questionsMedias = this.questionsService.getMediaQuestionById(this.questions[this.indexQuestion].id)
         console.log("questionsMedias depuis questions-details", this.questionsMedias);
@@ -126,12 +125,12 @@ export class QuizzComponent implements OnInit {
         this.numberOfPoints = this.questions[this.indexQuestion].notation
         console.log('numberOfPoints depuis quizzComponent', this.numberOfPoints);
 
-
         // fin du décompte de la longueur de this.questons
 
       } else {
 
-        alert('plus aucun id ne correspond au paramètre')
+        console.log('plus aucun id ne correspond au paramètre') 
+        // alert('plus aucun id ne correspond au paramètre')
 
       }
 
@@ -215,8 +214,8 @@ export class QuizzComponent implements OnInit {
       // fin de la vérification de l'existence d'un index correspondant à indexQuestion
 
     } else {
-
-      alert('indexQuestion ne correspond plus à aucune question identifiable')
+      console.log('indexQuestion ne correspond plus à aucune question identifiable'); 
+      // alert('indexQuestion ne correspond plus à aucune question identifiable')
 
     }
 

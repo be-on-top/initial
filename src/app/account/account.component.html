@@ -169,11 +169,11 @@
                         <p class="card-text" *ngIf="userData.scoreCounter">Félicitation ! Vous êtes parvenu(e) à la fin
                             du questionnaire de positionnement.
                         </p>
-                        <p class="card-text" *ngIf="userData.scoreCounter">Pour faciliter votre inscription et votre prise en
+                        <p class="card-text" *ngIf="userData.scoreCounter">Pour faciliter votre inscription et votre
+                            prise en
                             charge, nous vous invitons à remplir le formulaire ci-dessous...
                         </p>
-                        <button class="btn bg-primary"><a class="text-light"
-                                [routerLink]="['/quizz/', userData.tradeEvaluated, lastIndex+1, userData.scoreCounter,true, user]">
+                        <button class="btn bg-primary"><a class="text-light" [routerLink]="['/socialregistration']">
                                 Formulaire de pré-inscription</a>
                         </button>
                     </div>
