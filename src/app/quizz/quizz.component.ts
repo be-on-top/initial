@@ -35,6 +35,7 @@ export class QuizzComponent implements OnInit {
   totalAnswersAvailable: number = 0
   scoreCounter: number = 0
   competences?: any = []
+  actualCompetence:string=""
   studentCompetences?: any = []
   hasStartedEvaluation: boolean = false
   numberOfPoints: number = 0
@@ -49,6 +50,8 @@ export class QuizzComponent implements OnInit {
   secondCursor: number = 0
 
   levelsArray: [] = []
+
+  denominatorsCompetences: any = []
 
   constructor(
     private ac: ActivatedRoute,
@@ -125,11 +128,15 @@ export class QuizzComponent implements OnInit {
         this.numberOfPoints = this.questions[this.indexQuestion].notation
         console.log('numberOfPoints depuis quizzComponent', this.numberOfPoints);
 
+        // competence evaluée
+        this.actualCompetence = this.questions[this.indexQuestion].competence
+        console.log('actualCompetence', this.actualCompetence);
+
         // fin du décompte de la longueur de this.questons
 
       } else {
 
-        console.log('plus aucun id ne correspond au paramètre') 
+        console.log('plus aucun id ne correspond au paramètre')
         // alert('plus aucun id ne correspond au paramètre')
 
       }
@@ -144,9 +151,26 @@ export class QuizzComponent implements OnInit {
       this.competences = [...new Set(this.competences)];
       console.log("this.competences", this.competences);
 
-      this.studentCompetences = this.competences.map((item: any) => ({ [item]: 0 }));
+      this.studentCompetences = this.competences.map((item: number) => ({ [item]: 0 }));
       console.log(this.studentCompetences);
 
+      // une fois studentCompmetences généré, on va générer son clone
+      this.denominatorsCompetences = [...this.studentCompetences]
+      console.log('denominatorsCompetences', this.denominatorsCompetences);
+
+      for (let i = 0; i <  this.denominatorsCompetences.length; i++) {
+        let objet =  this.denominatorsCompetences[i];
+      
+        // Vérifier si l'objet contient la clé actualCompetence
+        if (this.actualCompetence in objet) {
+          // Augmenter la valeur de cl_vul_CP1 de 2
+          objet[this.actualCompetence] += Number(this.numberOfPoints);
+        }
+      }
+
+      // this.denominatorsCompetences[this.actualCompetence] += Number(this.numberOfPoints)
+
+      console.log('  this.denominatorsCompetences dans OnInit après incrément!', this.denominatorsCompetences);
     })
 
     this.studentService.getStudentById(this.studentId).subscribe((data) => {
@@ -184,6 +208,7 @@ export class QuizzComponent implements OnInit {
     this.scoreCounter = event.counter
     const isIncremented = event.isIncremented
     const isDecremented = event.isDecremented
+
     const evaluatedCompetence = event.evaluatedCompetence
     // alert(`this.scoreCounter depuis quizzComponent", ${this.scoreCounter}`)
     this.hasStartedEvaluation = true
@@ -197,6 +222,19 @@ export class QuizzComponent implements OnInit {
   }
 
   next(indexQuestion: number) {
+    // const updatedDenominatorsArray = this.denominatorsCompetences.map((obj: any) => {
+    //   console.log("evaluatedCompetence reçue par le service", this.questions[this.indexQuestion].notation)
+    //   return { ...obj, [this.competences]: Number(obj[this.questions[this.indexQuestion].notation]) + Number(this.numberOfPoints) }
+    // })
+
+    // this.denominatorsCompetences = updatedDenominatorsArray
+    // console.log('  this.denominatorsCompetences', this.denominatorsCompetences);
+
+
+
+
+
+
     // Appel de la méthode "reset" du composant enfant
     this.childComponent.reset();
     this.indexQuestion = Number(indexQuestion) + 1
@@ -213,9 +251,17 @@ export class QuizzComponent implements OnInit {
 
       // fin de la vérification de l'existence d'un index correspondant à indexQuestion
 
+
+      this.denominatorsCompetences[this.questions[this.indexQuestion].competence] += this.numberOfPoints
+      console.log("evaluatedCompetence reçue par le service", this.questions[this.indexQuestion].notation)
+      console.log('  this.denominatorsCompetences!!!!!!!!!!!!!!!!!!!!!!!!!', this.denominatorsCompetences);
+
     } else {
-      console.log('indexQuestion ne correspond plus à aucune question identifiable'); 
+      console.log('indexQuestion ne correspond plus à aucune question identifiable');
       // alert('indexQuestion ne correspond plus à aucune question identifiable')
+
+
+
 
     }
 
@@ -284,7 +330,7 @@ export class QuizzComponent implements OnInit {
     console.log("this.levelsArray)", this.levelsArray);
   }
 
-  getCursors(){
+  getCursors() {
 
     this.settingsService.getLevelsCursors().subscribe((data) => {
       // console.log("data!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", data[0]);
@@ -295,9 +341,9 @@ export class QuizzComponent implements OnInit {
       this.firstCursor = data[0]['firstCursor']
       this.secondCursor = data[0]['secondCursor']
 
-      
-    console.log(this.firstCursor);
-    console.log(this.secondCursor);
+
+      console.log(this.firstCursor);
+      console.log(this.secondCursor);
 
     })
 
