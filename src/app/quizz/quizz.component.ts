@@ -50,7 +50,7 @@ export class QuizzComponent implements OnInit {
   firstCursor: number = 0
   secondCursor: number = 0
 
-  levelsArray: [] = []
+  levelsArray: Denominator[] = []
 
   denominatorsCompetences: Denominator[] = []
 
@@ -342,17 +342,19 @@ export class QuizzComponent implements OnInit {
   setLevel() {
 
     // ne sera appeler qu'à ce moment !!!!!!
-    const realEvaluations: any = this.convertirNoteSurVingt();
+    const realEvaluations:Denominator[] = this.convertirNoteSurVingt();
+    console.log("realEvaluations", realEvaluations);
+    
 
     // this.levelsArray = this.dataStudent.studentCompetences.map((obj: any) => {
-    this.levelsArray = realEvaluations.map((obj: any) => {
+    this.levelsArray= realEvaluations.map((obj: any) => {
       const newObj: any = {};
       for (let prop in obj) {
         if (obj.hasOwnProperty(prop)) {
           const levelProp = `level_${prop}`;
           const value = obj[prop];
 
-          let levelValue;
+          let levelValue:number;
           if (value < this.firstCursor) {
             levelValue = 1;
           } else if (value > this.secondCursor) {
