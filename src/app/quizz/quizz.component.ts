@@ -130,7 +130,7 @@ export class QuizzComponent implements OnInit {
         this.numberOfPoints = this.questions[this.indexQuestion].notation
         console.log('numberOfPoints depuis quizzComponent', this.numberOfPoints);
 
-        // competence evaluée
+        // competence evaluée pas forcément nécessaire de la rajouter mais plus simple si denominatorsCompetences incrémenté au fur à mesure
         this.actualCompetence = this.questions[this.indexQuestion].competence
         console.log('actualCompetence', this.actualCompetence);
 
@@ -158,6 +158,7 @@ export class QuizzComponent implements OnInit {
       // et dans l'hypothèse où denominatorsCompetences est incrémenté par le biais de nex
       // et dans l'hypothèse où on peut l'initier dans ngOnInit sans l'écrasesr à chaque fois... 
       this.denominatorsCompetences = this.competences.map((item: number) => ({ [item]: 0 }));
+      this.generateFullDenominatorsCompetences(this.competences)
 
     })
 
@@ -209,8 +210,9 @@ export class QuizzComponent implements OnInit {
 
   next(indexQuestion: number) {
 
-    this.incrementDenominatorsCompetences(this.denominatorsCompetences, this.actualCompetence, this.numberOfPoints)
-    console.log('denominatorsCompetences dans next après execution fonction', this.denominatorsCompetences);
+    // fonctionne bien dans l'hyothèse où on n'utilise pas generateFullDenominatorsCompetences
+    // this.incrementDenominatorsCompetences(this.denominatorsCompetences, this.actualCompetence, this.numberOfPoints)
+    // console.log('denominatorsCompetences dans next après execution fonction', this.denominatorsCompetences);
 
     // Appel de la méthode "reset" du composant enfant
     this.childComponent.reset();
@@ -280,17 +282,39 @@ export class QuizzComponent implements OnInit {
   }
 
 
+  // si on génère illico denominatorsCompetences dans son intégralité
+  generateFullDenominatorsCompetences(competences: []) {
+
+    competences.forEach((objet: string) => {
+      // Filtrer les questions selon LA compétence
+      let filteredQuestions: any = this.questions.filter(question => question.competence === objet);
+      // Calculer la somme des notations pour les questions filtrées 
+      const totalNotations: number = filteredQuestions.reduce((total: number, question: any) => total + Number(question.notation), 0);
+      console.log("total des notations (donc dénominateur) pour la copétence en cours de testt", totalNotations);
+      
+      // return totalNotations
+      this.incrementDenominatorsCompetences(this.denominatorsCompetences, objet, totalNotations)
+    });
+
+  }
+
+
   incrementDenominatorsCompetences(tableau: Denominator[], competence: string, points: number): void {
-    console.log('tableau reçu avant execution fonction', tableau);
+
     tableau.forEach((objet: Denominator) => {
       Object.keys(objet).forEach((clé: string) => {
         if (clé === competence) {
           objet[clé] += Number(points);
+          // ATTENTION je crois qu'il ne faut pas de return si generateFullDenominatorsCompetences() est utilisé (?)
           return; // Si la compétence est trouvée, on arrête la fonction
         }
       });
     });
+
+    console.log('denominatorsCompetences', tableau);
   }
+
+
 
   convertirNoteSurVingt() {
     const resultQuizz = this.dataStudent.studentCompetences
