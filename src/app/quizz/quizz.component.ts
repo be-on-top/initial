@@ -6,6 +6,7 @@ import { QuestionsService } from '../admin/questions.service';
 import { SettingsService } from '../admin/settings.service';
 import { DetailsComponent } from './vues/details/details.component';
 import { StudentsService } from '../admin/students.service';
+import { Denominator } from './denominator';
 
 @Component({
   selector: 'app-quizz',
@@ -35,7 +36,7 @@ export class QuizzComponent implements OnInit {
   totalAnswersAvailable: number = 0
   scoreCounter: number = 0
   competences?: any = []
-  actualCompetence:string=""
+  actualCompetence: string = ""
   studentCompetences?: any = []
   hasStartedEvaluation: boolean = false
   numberOfPoints: number = 0
@@ -51,7 +52,8 @@ export class QuizzComponent implements OnInit {
 
   levelsArray: [] = []
 
-  denominatorsCompetences: any = []
+  denominatorsCompetences: Denominator[] = []
+
 
   constructor(
     private ac: ActivatedRoute,
@@ -141,7 +143,6 @@ export class QuizzComponent implements OnInit {
 
       }
 
-
       // Pour générer le tableau de compétences dans le compte utilisateur si il n'y en a  pas
       this.questions.forEach(value => {
         this.competences.push(value.competence)
@@ -154,23 +155,10 @@ export class QuizzComponent implements OnInit {
       this.studentCompetences = this.competences.map((item: number) => ({ [item]: 0 }));
       console.log(this.studentCompetences);
 
-      // une fois studentCompmetences généré, on va générer son clone
-      this.denominatorsCompetences = [...this.studentCompetences]
-      console.log('denominatorsCompetences', this.denominatorsCompetences);
+      // et dans l'hypothèse où denominatorsCompetences est incrémenté par le biais de nex
+      // et dans l'hypothèse où on peut l'initier dans ngOnInit sans l'écrasesr à chaque fois... 
+      this.denominatorsCompetences = this.competences.map((item: number) => ({ [item]: 0 }));
 
-      for (let i = 0; i <  this.denominatorsCompetences.length; i++) {
-        let objet =  this.denominatorsCompetences[i];
-      
-        // Vérifier si l'objet contient la clé actualCompetence
-        if (this.actualCompetence in objet) {
-          // Augmenter la valeur de cl_vul_CP1 de 2
-          objet[this.actualCompetence] += Number(this.numberOfPoints);
-        }
-      }
-
-      // this.denominatorsCompetences[this.actualCompetence] += Number(this.numberOfPoints)
-
-      console.log('  this.denominatorsCompetences dans OnInit après incrément!', this.denominatorsCompetences);
     })
 
     this.studentService.getStudentById(this.studentId).subscribe((data) => {
@@ -182,8 +170,6 @@ export class QuizzComponent implements OnInit {
     // this.firstCursor = this.cursors[0]
     // this.secondCursor = this.cursors[1]
     this.getCursors()
-
-
 
   }
 
@@ -222,18 +208,9 @@ export class QuizzComponent implements OnInit {
   }
 
   next(indexQuestion: number) {
-    // const updatedDenominatorsArray = this.denominatorsCompetences.map((obj: any) => {
-    //   console.log("evaluatedCompetence reçue par le service", this.questions[this.indexQuestion].notation)
-    //   return { ...obj, [this.competences]: Number(obj[this.questions[this.indexQuestion].notation]) + Number(this.numberOfPoints) }
-    // })
 
-    // this.denominatorsCompetences = updatedDenominatorsArray
-    // console.log('  this.denominatorsCompetences', this.denominatorsCompetences);
-
-
-
-
-
+    this.incrementDenominatorsCompetences(this.denominatorsCompetences, this.actualCompetence, this.numberOfPoints)
+    console.log('denominatorsCompetences dans next après execution fonction', this.denominatorsCompetences);
 
     // Appel de la méthode "reset" du composant enfant
     this.childComponent.reset();
@@ -252,8 +229,7 @@ export class QuizzComponent implements OnInit {
       // fin de la vérification de l'existence d'un index correspondant à indexQuestion
 
 
-      this.denominatorsCompetences[this.questions[this.indexQuestion].competence] += this.numberOfPoints
-      console.log("evaluatedCompetence reçue par le service", this.questions[this.indexQuestion].notation)
+
       console.log('  this.denominatorsCompetences!!!!!!!!!!!!!!!!!!!!!!!!!', this.denominatorsCompetences);
 
     } else {
@@ -303,8 +279,49 @@ export class QuizzComponent implements OnInit {
     // this.childComponent.isIncremented=false
   }
 
+
+  incrementDenominatorsCompetences(tableau: Denominator[], competence: string, points: number): void {
+    console.log('tableau reçu avant execution fonction', tableau);
+    tableau.forEach((objet: Denominator) => {
+      Object.keys(objet).forEach((clé: string) => {
+        if (clé === competence) {
+          objet[clé] += Number(points);
+          return; // Si la compétence est trouvée, on arrête la fonction
+        }
+      });
+    });
+  }
+
+  convertirNoteSurVingt() {
+    const resultQuizz = this.dataStudent.studentCompetences
+    const denominatorsQuizz = this.denominatorsCompetences
+
+    let studentCompetencesSurVingt = [];
+
+    for (let i = 0; i < resultQuizz.length; i++) {
+      const competence = resultQuizz[i];
+      const competenceName = Object.keys(competence)[0];
+      const competenceValue: any = Object.values(competence)[0];
+
+      const denominator = denominatorsQuizz.find((item: any) => item.hasOwnProperty(competenceName));
+      if (denominator) {
+        const denominatorValue: any = Object.values(denominator)[0];
+        const noteSurVingt = (competenceValue / denominatorValue) * 20;
+        studentCompetencesSurVingt.push({ [competenceName]: noteSurVingt });
+      }
+    }
+
+    return studentCompetencesSurVingt;
+  }
+
+
   setLevel() {
-    this.levelsArray = this.dataStudent.studentCompetences.map((obj: any) => {
+
+    // ne sera appeler qu'à ce moment !!!!!!
+    const realEvaluations: any = this.convertirNoteSurVingt();
+
+    // this.levelsArray = this.dataStudent.studentCompetences.map((obj: any) => {
+    this.levelsArray = realEvaluations.map((obj: any) => {
       const newObj: any = {};
       for (let prop in obj) {
         if (obj.hasOwnProperty(prop)) {
