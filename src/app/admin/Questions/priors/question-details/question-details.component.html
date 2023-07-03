@@ -27,8 +27,8 @@
     <!-- début des réponses -->
     <div class="p-3 row justify-content-between align-items-end mb-3 rounded bg-light w-100">
 
-        <div class="col-sm-6 rounded" [ngClass]="{'text-success':q.optScoring1=='true'}">
-            <p class="text-center fs-5">R1 : {{q.option1}} <i *ngIf="q.optScoring1=='true'"
+        <div class="col-sm-6 rounded" [ngClass]="{'text-success':q.optScoring1===true}">
+            <p class="text-center fs-5">R1 : {{q.option1}} <i *ngIf="q.optScoring1===true"
                     class="text-success fs-6 bi bi-check-lg"></i></p>
                     <!-- {{responsesMedias.length}}
                     {{responsesMedias}} -->
@@ -40,8 +40,8 @@
             </div>
             <!-- si pas d'images -->
         </div>
-        <div class="col-sm-6 rounded" [ngClass]="{'text-success':q.optScoring2=='true'}">
-            <p class="text-center fs-5">R2 : {{q.option2}} <i *ngIf="q.optScoring2=='true'"
+        <div class="col-sm-6 rounded" [ngClass]="{'text-success':q.optScoring2===true}">
+            <p class="text-center fs-5">R2 : {{q.option2}} <i *ngIf="q.optScoring2===true"
                     class="text-success fs-6 bi bi-check-lg"></i></p>
             <div *ngIf="responsesMedias">
                 <div *ngFor="let item of responsesMedias">
@@ -51,8 +51,8 @@
             </div>
         </div>
         <!-- à partir d'ici, les options Réponse 3 et Réponse 4 n'étant pas obligatoires, faut qu'on s'assure qu'elles existent -->
-        <div class="col-sm-6 rounded" *ngIf="q.option3" [ngClass]="{'text-success':q.optScoring3=='true'}">
-            <p class="text-center fs-5">R3 : {{q.option3}} <i *ngIf="q.optScoring3=='true'"
+        <div class="col-sm-6 rounded" *ngIf="q.option3" [ngClass]="{'text-success':q.optScoring3===true}">
+            <p class="text-center fs-5">R3 : {{q.option3}} <i *ngIf="q.optScoring3===true"
                     class="text-success fs-6 bi bi-check-lg"></i></p>
             <div *ngIf="responsesMedias">
                 <div *ngFor="let item of responsesMedias">
@@ -61,8 +61,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 rounded" *ngIf="q.option4" [ngClass]="{'text-success':q.optScoring4=='true'}">
-            <p class="text-center fs-5">R4 : {{q.option4}} <i *ngIf="q.optScoring4=='true'"
+        <div class="col-sm-6 rounded" *ngIf="q.option4" [ngClass]="{'text-success':q.optScoring4===true}">
+            <p class="text-center fs-5">R4 : {{q.option4}} <i *ngIf="q.optScoring4===true"
                     class="text-success fs-6 bi bi-check-lg"></i></p>
             <div *ngIf="responsesMedias">
                 <div *ngFor="let item of responsesMedias">

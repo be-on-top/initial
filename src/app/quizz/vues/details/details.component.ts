@@ -83,7 +83,7 @@ export class DetailsComponent implements OnInit {
 
 
 
-    if (optScoring === 'true') {
+    if (optScoring === true) {
       // on incrémente le nombre de bonnes réponses données
       this.fullGoodAnswersClicked++
       console.log("this.fullGoodAnswersClicked", this.fullGoodAnswersClicked);

@@ -49,6 +49,9 @@ export class UpdateFullComponent {
   numbers: number[] = []
   registryNumbers: any[] = []
 
+  optScoring3: boolean | null = null;
+  optScoring4: boolean | null = null;
+
   constructor(private service: QuestionsService, private ac: ActivatedRoute, private router: Router, private evaluatorService: EvaluatorsService
   ) {
   }
@@ -68,6 +71,8 @@ export class UpdateFullComponent {
       console.log("data depuis update-full component !!!!!!!!!!!!!", data);
       this.result = data
       this.isVideo=data.isVideo
+      data.optScoring3?this.optScoring3=data.optScoring3:'null'
+      data.optScoring4?this.optScoring4=data.optScoring3:'null'
     })
 
     this.service.getQuestions().subscribe(data => {
@@ -97,6 +102,13 @@ export class UpdateFullComponent {
     if (!form.valid) {
       console.log('form valid');
       return
+    }
+
+    if (form.value.optScoring3 === null) {
+      delete form.value.optScoring3;
+    }
+    if (form.value.optScoring4 === null) {
+      delete form.value.optScoring4;
     }
 
     // console.log("form update values", form.value);

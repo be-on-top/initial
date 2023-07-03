@@ -52,6 +52,9 @@ export class UpdateQuestionComponents implements OnInit {
   numbers: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
   registryNumbers: any[] = []
 
+  optScoring3: boolean | null = null;
+  optScoring4: boolean | null = null;
+
   constructor(private service: QuestionsService, private ac: ActivatedRoute, private router: Router) {
   }
 
@@ -67,6 +70,8 @@ export class UpdateQuestionComponents implements OnInit {
       this.result = data
       this.isVideo = data.isVideo
       console.log('status de la video', this.isVideo);
+      data.optScoring3?this.optScoring3=data.optScoring3:'null'
+      data.optScoring4?this.optScoring4=data.optScoring3:'null'
       
 
     })
@@ -94,6 +99,13 @@ export class UpdateQuestionComponents implements OnInit {
     if (!form.valid) {
       console.log('form valid');
       return
+    }
+
+    if (form.value.optScoring3 === null) {
+      delete form.value.optScoring3;
+    }
+    if (form.value.optScoring4 === null) {
+      delete form.value.optScoring4;
     }
 
     // console.log("form update values", form.value);

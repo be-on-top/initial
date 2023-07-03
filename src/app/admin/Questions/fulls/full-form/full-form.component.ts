@@ -33,11 +33,15 @@ export class FullFormComponent {
   optScoring2: boolean = false;
   comment2: string = "";
   mediaOption3: any;
-  optScoring3: boolean = false;
+  // optScoring3: boolean = false;
+  // pour que rien ne soit enregistré si pas cochée
+  optScoring3: boolean | null = null;
   option3: string = "";
   comment3: string = "";
   mediaOption4: any;
-  optScoring4: boolean = false;
+  // optScoring4: boolean = false;
+  // pour que rien ne soit enregistré si pas cochée
+  optScoring4: boolean | null = null;
   option4: string = "";
   comment4: string = "";
 
@@ -144,6 +148,14 @@ export class FullFormComponent {
   }
 
   async submitForm(form: NgForm) {
+
+    if (form.value.optScoring3 === null) {
+      delete form.value.optScoring3;
+    }
+    if (form.value.optScoring4 === null) {
+      delete form.value.optScoring4;
+    }
+
     console.log(form.value);
     this.service.createQuestion(form.value, this.arrayFilesToUpload);
     // form.reset ne sert que si on continue la saisie.
@@ -151,6 +163,8 @@ export class FullFormComponent {
     this.router.navigate(['/admin/fullList'])
     // window.location.reload();
   }
+
+
 
   detectFiles(event: any, fieldName: any) {
     console.log(event.target.files[0].size);
@@ -168,7 +182,7 @@ export class FullFormComponent {
     this.selectedSigle = sigle
 
     // Attention : à chaque changement de selected, on doit tout réinitialiser : 
-    for (let i = 20; i < 201; i++) {this.numbers.push(i)}
+    for (let i = 20; i < 201; i++) { this.numbers.push(i) }
     this.registryNumbers = []
     // fin réinitialisation !!!!! 
 
@@ -212,6 +226,9 @@ export class FullFormComponent {
       console.log("this.userData", this.userData);
     });
   }
+
+
+
 
 
 }

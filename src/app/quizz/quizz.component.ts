@@ -7,6 +7,7 @@ import { SettingsService } from '../admin/settings.service';
 import { DetailsComponent } from './vues/details/details.component';
 import { StudentsService } from '../admin/students.service';
 import { Denominator } from './denominator';
+import { Questions } from '../admin/Questions/questions';
 
 @Component({
   selector: 'app-quizz',
@@ -22,7 +23,7 @@ export class QuizzComponent implements OnInit {
   // doit récupérer l'uid de l'utilisateur authentifié
   uid: string = ""
   // doit récupérer les questions (préalables et de positionnement) via le service dédié (questionsService) pour le métier visé
-  questions: any[] = []
+  questions: Questions[] = []
   questionsMedias: any = []
   responsesMedias: any = []
   // pour passer de l'une à l'autre, faut qu'on ait un indexQuestion qui soit susceptible de s'incrémenter
@@ -37,7 +38,7 @@ export class QuizzComponent implements OnInit {
   scoreCounter: number = 0
   competences?: any = []
   actualCompetence: string = ""
-  studentCompetences?: any = []
+  studentCompetences: Denominator[] = []
   hasStartedEvaluation: boolean = false
   numberOfPoints: number = 0
   // puisqu'on va interroger students tout compte fait...
@@ -112,17 +113,17 @@ export class QuizzComponent implements OnInit {
         // console.log("this.q.optScoring1", this.q.optScoring1 === 'false');
 
         // on initialise la valeur réelle de fullOptScoringArray pour avoir un point de comparaison
-        this.questions[this.indexQuestion].optScoring1 === 'true' ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
-        this.questions[this.indexQuestion].optScoring2 === 'true' ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
-        this.questions[this.indexQuestion].optScoring3 === 'true' ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
-        this.questions[this.indexQuestion].optScoring4 === 'true' ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
+        this.questions[this.indexQuestion].optScoring1 && this.questions[this.indexQuestion].optScoring1 === true ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
+        this.questions[this.indexQuestion].optScoring2 && this.questions[this.indexQuestion].optScoring2 === true ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
+        this.questions[this.indexQuestion].optScoring3 && this.questions[this.indexQuestion].optScoring3 === true ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
+        this.questions[this.indexQuestion].optScoring4 && this.questions[this.indexQuestion].optScoring4 === true ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
         console.log("this.fullOptScoringArray", this.fullOptScoringTrue)
 
         // on initialise la valeur réelle de totalAnswersAvailable pour la limite à 2, 3 ou 4 réponses max
-        this.questions[this.indexQuestion].optScoring1 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
-        this.questions[this.indexQuestion].optScoring2 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
-        this.questions[this.indexQuestion].optScoring3 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
-        this.questions[this.indexQuestion].optScoring4 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
+        this.questions[this.indexQuestion].option1 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
+        this.questions[this.indexQuestion].option2 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
+        this.questions[this.indexQuestion].option3 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
+        this.questions[this.indexQuestion].option4 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
         console.log("this.totalAnswersAvailable", this.totalAnswersAvailable)
 
         // Pour connaitre le nombre de points affectés à la question et la refiler à l'instant t au service, 
@@ -230,17 +231,11 @@ export class QuizzComponent implements OnInit {
 
       // fin de la vérification de l'existence d'un index correspondant à indexQuestion
 
-
-
       console.log('  this.denominatorsCompetences!!!!!!!!!!!!!!!!!!!!!!!!!', this.denominatorsCompetences);
 
     } else {
       console.log('indexQuestion ne correspond plus à aucune question identifiable');
       // alert('indexQuestion ne correspond plus à aucune question identifiable')
-
-
-
-
     }
 
     // pour rappeler la liste des medias 
@@ -257,17 +252,17 @@ export class QuizzComponent implements OnInit {
 
 
     // on initialise la valeur réelle de fullOptScoringArray pour avoir un point de comparaison
-    this.questions[this.indexQuestion].optScoring1 === 'true' ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
-    this.questions[this.indexQuestion].optScoring2 === 'true' ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
-    this.questions[this.indexQuestion].optScoring3 === 'true' ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
-    this.questions[this.indexQuestion].optScoring4 === 'true' ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
+    this.questions[this.indexQuestion].optScoring1 && this.questions[this.indexQuestion].optScoring1 === true ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
+    this.questions[this.indexQuestion].optScoring2 && this.questions[this.indexQuestion].optScoring2 === true ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
+    this.questions[this.indexQuestion].optScoring3 && this.questions[this.indexQuestion].optScoring3 === true ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
+    this.questions[this.indexQuestion].optScoring4 && this.questions[this.indexQuestion].optScoring4 === true ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
     console.log("this.fullOptScoringArray", this.fullOptScoringTrue)
 
     // on initialise la valeur réelle de totalAnswersAvailable pour la limite à 2, 3 ou 4 réponses max
-    this.questions[this.indexQuestion].optScoring1 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
-    this.questions[this.indexQuestion].optScoring2 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
-    this.questions[this.indexQuestion].optScoring3 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
-    this.questions[this.indexQuestion].optScoring4 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
+    this.questions[this.indexQuestion].option1 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
+    this.questions[this.indexQuestion].option2 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
+    this.questions[this.indexQuestion].option3 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
+    this.questions[this.indexQuestion].option4 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
     console.log("this.totalAnswersAvailable", this.totalAnswersAvailable)
 
   }
@@ -291,7 +286,7 @@ export class QuizzComponent implements OnInit {
       // Calculer la somme des notations pour les questions filtrées 
       const totalNotations: number = filteredQuestions.reduce((total: number, question: any) => total + Number(question.notation), 0);
       console.log("total des notations (donc dénominateur) pour la copétence en cours de testt", totalNotations);
-      
+
       // return totalNotations
       this.incrementDenominatorsCompetences(this.denominatorsCompetences, objet, totalNotations)
     });
@@ -342,19 +337,19 @@ export class QuizzComponent implements OnInit {
   setLevel() {
 
     // ne sera appeler qu'à ce moment !!!!!!
-    const realEvaluations:Denominator[] = this.convertirNoteSurVingt();
+    const realEvaluations: Denominator[] = this.convertirNoteSurVingt();
     console.log("realEvaluations", realEvaluations);
-    
+
 
     // this.levelsArray = this.dataStudent.studentCompetences.map((obj: any) => {
-    this.levelsArray= realEvaluations.map((obj: any) => {
+    this.levelsArray = realEvaluations.map((obj: any) => {
       const newObj: any = {};
       for (let prop in obj) {
         if (obj.hasOwnProperty(prop)) {
           const levelProp = `level_${prop}`;
           const value = obj[prop];
 
-          let levelValue:number;
+          let levelValue: number;
           if (value < this.firstCursor) {
             levelValue = 1;
           } else if (value > this.secondCursor) {
@@ -362,13 +357,11 @@ export class QuizzComponent implements OnInit {
           } else {
             levelValue = 2;
           }
-
           newObj[levelProp] = levelValue;
         }
       }
       return newObj;
     });
-
 
     console.log("this.levelsArray)", this.levelsArray);
   }

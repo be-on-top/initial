@@ -24,11 +24,15 @@ export class PriorFormComponent implements OnInit {
   optScoring2: boolean = false;
   comment2: string = "";
   mediaOption3: any;
-  optScoring3: boolean = false;
+  // optScoring3: boolean = false;
+  // pour que rien ne soit enregistré si pas cochée
+  optScoring3: boolean | null = null;
   option3: string = "";
   comment3: string = "";
   mediaOption4: any;
-  optScoring4: boolean = false;
+  // optScoring4: boolean = false;
+  // pour que rien ne soit enregistré si pas cochée
+  optScoring4: boolean | null = null;
   option4: string = "";
   comment4: string = "";
   mediaOption5: any;
@@ -118,10 +122,19 @@ export class PriorFormComponent implements OnInit {
   }
 
   async submitForm(form: NgForm) {
+    // Exclure la valeur de optScoring3 si l'option n'est pas cochée
+
+    if (form.value.optScoring3 === null) {
+      delete form.value.optScoring3;
+    }
+    if (form.value.optScoring4 === null) {
+      delete form.value.optScoring4;
+    }
+
     console.log(form.value);
     this.service.createQuestion(form.value, this.arrayFilesToUpload);
-    // form.reset();
-    this.router.navigate(['/questions'])
+    form.reset();
+    this.router.navigate(['/admin/questions'])
     // window.location.reload();
   }
 
@@ -145,7 +158,7 @@ export class PriorFormComponent implements OnInit {
   checkIfSelected(sigle: any) {
     console.log(sigle);
     this.selectedSigle = sigle
-    this.numbers=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+    this.numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 
     // c'est l'endroit pour transvaser le getQuestion() avec comme filtre  préalable et additionnel : sigle.value
 
@@ -159,11 +172,25 @@ export class PriorFormComponent implements OnInit {
 
       for (let n of dataFiltered) {
         console.log("n", n.number);
-        this.numbers=this.numbers.filter(element => element != n.number)
+        this.numbers = this.numbers.filter(element => element != n.number)
       }
 
     })
   }
+
+  // checkOptionSelected(f: NgForm) {
+  //   if (f.value.optScoring3 === null && f.value.option3!=="") {
+
+  //     // Aucune option sélectionnée et le champ n'est pas requis
+  //     this.optScoring3 = null; // ou assignez une valeur par défaut
+  //   }
+
+
+  //   if (f.value.optScoring4 === null && f.value.option4!=="") {
+  //     // Aucune option sélectionnée et le champ n'est pas requis
+  //     this.optScoring4 = null; // ou assignez une valeur par défaut
+  //   }
+  // }
 
 
 }

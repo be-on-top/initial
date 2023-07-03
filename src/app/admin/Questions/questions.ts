@@ -1,6 +1,6 @@
 export interface Questions {
 
-    id: number | null;
+    id: string;
     comment1: string;
     comment2: string;
     comment3: string;
@@ -17,7 +17,8 @@ export interface Questions {
     option3: string;
     option4: string;
     sigle:string;
-    number:string;
+    number:number;
+    notation:number;
     is_video:boolean;
     mediaOption1:string | null;
     mediaOption2:string | null;
