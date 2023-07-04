@@ -35,8 +35,14 @@
 
       <div *ngIf="total?.length!=0">
         <div *ngFor="let nb of total">
-          <label for="CP" class="form-label mt-3">CP{{nb}}</label>
+          <label for="CP{{nb}}" class="form-label mt-3">CP{{nb}}</label>
           <input type="text" name="CP{{nb}}" ngModel class="form-control" required minlength="7">
+          <label class="form-label mt-3">Estimation du nombre d'heures pour CP{{nb}}</label>
+          <div class="form-group">
+            <input type="number" name="level1_CP{{nb}}" ngModel class="form-control" minlength="1">
+            <input type="number" name="level2_CP{{nb}}" ngModel class="form-control" minlength="1">
+            <input type="number" name="level3_CP{{nb}}" ngModel class="form-control" minlength="1">
+          </div>
         </div>
       </div>
 
@@ -55,6 +61,7 @@
   </h3>
 
   <!-- pour les curseurs -->
+  <hr>
   <form #setCursorsForm="ngForm" class="mt-4" (submit)="addLevelCursors(setCursorsForm)" class="was-validated">
 
     <div class="form-group">

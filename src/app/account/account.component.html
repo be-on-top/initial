@@ -147,12 +147,14 @@
                             </span>
                         </p>
 
-                        <button class="btn bg-primary"><a class="text-light"
+                        <button class="btn bg-primary" *ngIf="userData.tradeEvaluated; else none"><a class="text-light"
                                 [routerLink]="['/quizz/', userData.tradeEvaluated, lastIndex+1, userData.scoreCounter,true, user]">
                                 <span *ngIf="userData.lastIndexQuestion<2; else elseBlock">Poursuivre</span>
                                 <ng-template #elseBlock> <span>Fin du QCM d'accroche</span>
                                 </ng-template></a>
                         </button>
+                        <ng-template #none> <span>Aucun QCM enn cours</span>
+                        </ng-template>
                     </div>
                 </div>
             </div>
