@@ -54,7 +54,11 @@ export class QuizzComponent implements OnInit {
   levelsArray: Denominator[] = []
 
   denominatorsCompetences: Denominator[] = []
-  durations:{}={}
+  resultingDurationsByCompetences: Denominator[] = []
+  durations: { [key: string]: number[] } = {}
+  durationsByLevels: { [key: string]: number } = {};
+  // troisiemeTableau:{ [key: string]: number } ={}
+  troisiemeTableau: { [key: string]: any } = {}
 
 
   constructor(
@@ -157,10 +161,13 @@ export class QuizzComponent implements OnInit {
       this.studentCompetences = this.competences.map((item: number) => ({ [item]: 0 }));
       console.log(this.studentCompetences);
 
-      // et dans l'hypothèse où denominatorsCompetences est incrémenté par le biais de nex
+      // et dans l'hypothèse où denominatorsCompetences est incrémenté par le biais de next()
       // et dans l'hypothèse où on peut l'initier dans ngOnInit sans l'écrasesr à chaque fois... 
       this.denominatorsCompetences = this.competences.map((item: number) => ({ [item]: 0 }));
       this.generateFullDenominatorsCompetences(this.competences)
+
+      this.resultingDurationsByCompetences = this.competences.map((item: number) => ({ [item]: 0 }));
+
 
     })
 
@@ -176,7 +183,11 @@ export class QuizzComponent implements OnInit {
 
     // this.settingsService.getDurationsBySigle(this.trade).then((data)=>console.log('duration récupéré', data))
 
-    this.getDurations(this.trade) 
+    this.getDurations(this.trade)
+
+
+
+
 
   }
 
@@ -338,7 +349,7 @@ export class QuizzComponent implements OnInit {
     return studentCompetencesSurVingt;
   }
 
-  async getDurations(sigle:string) {
+  async getDurations(sigle: string) {
     try {
       this.durations = await this.settingsService.getDurationsBySigle(sigle);
       console.log('Durations associées au sigle :', this.durations);
@@ -372,13 +383,48 @@ export class QuizzComponent implements OnInit {
             levelValue = 2;
           }
           newObj[levelProp] = levelValue;
+
+
+
+          // this.displayDuration(levelValue, this.actualCompetence)
+
         }
       }
       return newObj;
     });
 
     console.log("this.levelsArray)", this.levelsArray);
+    this.displayDuration(this.durations, this.levelsArray)
+
   }
+
+
+  displayDuration(durationsBySigle: any, levelsArray: any): void {
+    for (const key in durationsBySigle) {
+      if (/^.*_CP\d+$/.test(key)) {
+        const level = parseInt(key.substring(key.lastIndexOf('_CP') + 3));
+        console.log('level', level);
+        
+        const levelMatch = key.substring(0, key.lastIndexOf('_CP'));
+        console.log('!!!',levelMatch);
+        
+        // const index = levelsArray.findIndex((obj:any) => Object.keys(obj)[0] === `${levelMatch}_CP${level}`);
+        const index = levelsArray.findIndex((obj:any) => Object.keys(obj)[0].endsWith(`_CP${level}`));
+        console.log('index', index);
+        
+        if (index !== -1) {
+          const value = durationsBySigle[key][index];
+          this.troisiemeTableau[`${levelMatch}_CP${level}`] = value;
+          // this.troisiemeTableau[index] = value;
+        }
+      }
+    }
+    
+    console.log('this.troisiemeTableau', this.troisiemeTableau);
+  }
+
+
+
 
   getCursors() {
 
@@ -390,7 +436,6 @@ export class QuizzComponent implements OnInit {
 
       this.firstCursor = data[0]['firstCursor']
       this.secondCursor = data[0]['secondCursor']
-
 
       console.log(this.firstCursor);
       console.log(this.secondCursor);
