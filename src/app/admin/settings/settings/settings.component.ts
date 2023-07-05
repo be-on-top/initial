@@ -71,11 +71,8 @@ export class SettingsComponent implements OnInit {
       competenceDurations.push(form.value[`level1_CP${i}`], form.value[`level2_CP${i}`], form.value[`level3_CP${i}`])
       // impeccable !!!! mais on va changer la dénomination...
       // this.sigles.durations[`duration${i}`] = competenceDurations;
-      this.sigles.durations[`duration_CP${i}`] = competenceDurations;
+      this.sigles.durations[`${this.sigles.sigle}_duration_CP${i}`] = competenceDurations;
       console.log('this.sigles.durations', this.durations);
-
-
-
 
     }
 

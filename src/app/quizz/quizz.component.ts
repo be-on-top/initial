@@ -54,6 +54,7 @@ export class QuizzComponent implements OnInit {
   levelsArray: Denominator[] = []
 
   denominatorsCompetences: Denominator[] = []
+  durations:{}={}
 
 
   constructor(
@@ -172,6 +173,10 @@ export class QuizzComponent implements OnInit {
     // this.firstCursor = this.cursors[0]
     // this.secondCursor = this.cursors[1]
     this.getCursors()
+
+    // this.settingsService.getDurationsBySigle(this.trade).then((data)=>console.log('duration récupéré', data))
+
+    this.getDurations(this.trade) 
 
   }
 
@@ -331,6 +336,15 @@ export class QuizzComponent implements OnInit {
     }
 
     return studentCompetencesSurVingt;
+  }
+
+  async getDurations(sigle:string) {
+    try {
+      this.durations = await this.settingsService.getDurationsBySigle(sigle);
+      console.log('Durations associées au sigle :', this.durations);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
 
