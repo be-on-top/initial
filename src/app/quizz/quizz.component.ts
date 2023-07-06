@@ -399,28 +399,34 @@ export class QuizzComponent implements OnInit {
   }
 
 
-  displayDuration(durationsBySigle: any, levelsArray: any): void {
-    for (const key in durationsBySigle) {
-      if (/^.*_CP\d+$/.test(key)) {
-        const level = parseInt(key.substring(key.lastIndexOf('_CP') + 3));
-        console.log('level', level);
-        
-        const levelMatch = key.substring(0, key.lastIndexOf('_CP'));
-        console.log('!!!',levelMatch);
-        
-        // const index = levelsArray.findIndex((obj:any) => Object.keys(obj)[0] === `${levelMatch}_CP${level}`);
-        const index = levelsArray.findIndex((obj:any) => Object.keys(obj)[0].endsWith(`_CP${level}`));
-        console.log('index', index);
-        
-        if (index !== -1) {
-          const value = durationsBySigle[key][index];
-          this.troisiemeTableau[`${levelMatch}_CP${level}`] = value;
-          // this.troisiemeTableau[index] = value;
+  displayDuration(durations: any, levelsArray: any): void {
+  
+    for (const key in durations) {
+      const level = parseInt(key.match(/\d+$/)?.[0] || ""); // Obtient le niveau à partir de la clé
+    
+      if (!isNaN(level)) {
+        const levelMatch = `CP${level}`; // Construit la clé correspondante dans le tableau final
+        let levelValue: number | undefined; // Stocke la valeur du niveau correspondant
+    
+        // Itère sur les objets de levelsArray pour trouver la correspondance avec le niveau
+        for (const levelObj of levelsArray) {
+          const objKey = Object.keys(levelObj)[0]; // Obtient la clé de l'objet
+          if (objKey.endsWith(`_CP${level}`)) { // Vérifie si la clé se termine par "_CP{level}"
+            levelValue = levelObj[objKey]; // Stocke la valeur correspondante
+            break; // Sort de la boucle une fois la correspondance trouvée
+          }
+        }
+    
+        if (levelValue !== undefined) {
+          const value = durations[key][levelValue - 1]; // Obtient la valeur à partir de durationsBySigle
+          this.durationsByLevels[levelMatch] = value; // Stocke la valeur dans le tableau final avec la clé correspondante
         }
       }
     }
-    
-    console.log('this.troisiemeTableau', this.troisiemeTableau);
+
+
+
+    console.log('this.troisiemeTableau', this.durationsByLevels);
   }
 
 
