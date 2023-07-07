@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Firestore, collection, collectionData, docData, setDoc, addDoc, doc, where, getDocs, DocumentData, getDoc } from '@angular/fire/firestore';
-import { NgForm } from '@angular/forms';
+// import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Trade } from './trade';
 import { query } from '@angular/animations';

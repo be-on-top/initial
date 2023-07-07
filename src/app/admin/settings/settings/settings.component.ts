@@ -3,6 +3,7 @@ import { Trade } from '../../trade';
 import { NgForm, NgModel } from '@angular/forms';
 import { SettingsService } from '../../settings.service';
 import { Router } from '@angular/router';
+import { Denominator } from 'src/app/quizz/denominator';
 
 
 
@@ -12,7 +13,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
-  sigles: Trade = { sigle: "", denomination: "", competences: [], totalCP: 0, durations: {} }
+  sigles: Trade = { sigle: "", denomination: "", competences: [], totalCP: 0, durations: {}, costs: {} }
   form: any
   total: any = []
 
@@ -20,7 +21,9 @@ export class SettingsComponent implements OnInit {
   CPNumber: any
   CPDuration: any
 
-  durations: {}= {}
+  durations: {} = {}
+
+  competencesCostByHours: any = []
 
   // variables à passer à feedbackMessages component pour retours de firebase sur la soumission
   feedbackMessages?: any = ""
@@ -48,7 +51,7 @@ export class SettingsComponent implements OnInit {
 
   addSigles(form: NgForm) {
     this.durations = []; // Réinitialise le tableau avant d'ajouter les durées
-    this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, totalCP: form.value.totalCP, competences: [], durations:{} }
+    this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, totalCP: form.value.totalCP, competences: [], durations: {}, costs: {}}
     // si on souhaite un objet, comme ceux écrits initialement en dur exemple : competences:{CP1:"", CP2:""}
     // this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, totalCP: form.value.totalCP, competences: {} }
     for (let i = 1; i <= form.value.totalCP; i++) {
@@ -56,7 +59,7 @@ export class SettingsComponent implements OnInit {
       console.log(this.CPNumber);
       this.sigles.competences.push(form.value[this.CPNumber])
       console.log('this.sigles.competences', this.sigles.competences);
-      
+
 
       // et on peut tenter un truc "similaire" pour les durées, sans qu'elles soient nécessairement imbriquées
       // il ne faut aucune  référence à this ici, pour que les 3 niveaux propres à une compétence ne se cumulent pas
@@ -73,6 +76,13 @@ export class SettingsComponent implements OnInit {
       // this.sigles.durations[`duration${i}`] = competenceDurations;
       this.sigles.durations[`${this.sigles.sigle}_duration_CP${i}`] = competenceDurations;
       console.log('this.sigles.durations', this.durations);
+
+      // pour les taux horaires, à savoir ici qu'on aura 1 taux par compétence, indifféremment des durées
+
+
+      // this.competencesCostByHours[`cost_CP${i}`]= form.value[`cost_CP${i}`]
+      this.sigles.costs[`cost_CP${i}`]= form.value[`cost_CP${i}`]
+      console.log('this.sigles.costs', this.sigles.costs);
 
     }
 

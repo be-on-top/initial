@@ -37,6 +37,9 @@
         <div *ngFor="let nb of total">
           <label for="CP{{nb}}" class="form-label mt-3">CP{{nb}}</label>
           <input type="text" name="CP{{nb}}" ngModel class="form-control" required minlength="7">
+          <label for="cost_CP{{nb}}" class="form-label mt-3">Coût horaire de CP{{nb}}</label>
+          <input type="number" name="cost_CP{{nb}}" ngModel class="form-control" placeholder="renseigner le prix horaire en entier">
+          <hr>
           <label class="form-label mt-3">Estimation du nombre d'heures pour CP{{nb}}</label>
           <div class="form-group w-75">
             <input type="number" name="level1_CP{{nb}}" ngModel class="form-control" minlength="1" placeholder="durée courte en heures">
