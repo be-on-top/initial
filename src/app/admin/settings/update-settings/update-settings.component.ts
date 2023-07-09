@@ -1,23 +1,29 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Trade } from '../../trade';
-import { NgForm, NgModel } from '@angular/forms';
+import { Component } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { SettingsService } from '../../settings.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Trade } from '../../trade';
+
 import { Denominator } from 'src/app/quizz/denominator';
-
-
+import { CPData } from '../CPData';
 
 @Component({
-  selector: 'app-settings',
-  templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.css']
+  selector: 'app-update-settings',
+  templateUrl: './update-settings.component.html',
+  styleUrls: ['./update-settings.component.css']
 })
-export class SettingsComponent implements OnInit {
+export class UpdateSettingsComponent {
+
+cpDataList: CPData[] = []
+
+  sigleId: string = ""
+  trade: any
+
   sigles: Trade = { sigle: "", denomination: "", competences: [], totalCP: 0, durations: {}, costs: {} }
   form: any
   total: any = []
 
-  cursors: any
+  cursors: any = {}
   CPNumber: any
   CPDuration: any
 
@@ -39,19 +45,32 @@ export class SettingsComponent implements OnInit {
   // 1 - autant de zones éditables sur la  page d'accueil
   // 2 - rattacher le décompte des questions à une catégorie et non un tronc commun
 
-  constructor(private service: SettingsService, private router: Router) {
+  constructor(private service: SettingsService, private ac: ActivatedRoute, private router: Router) {
+    this.sigleId = this.ac.snapshot.params["id"];
+    // on fait appel à getSigle pour récupérer les entrées de l'existant. méthode qui pour memo renvoie un observable
+    this.service.getSigle(this.sigleId).subscribe((data) => {
+      console.log("data depuis update-evaluator component", data);
+      this.trade = data
+      this.total=data.competences
+      console.log(this.total.length);  
+      console.log('data.durations depuis le contructeur', data.durations)   
+      
+
+    })
+
 
   }
 
 
   ngOnInit(): void {
-    this.form = document.getElementById("settingsForm")
+    // this.form = document.getElementById("settingsForm")
+
   }
 
 
-  addSigles(form: NgForm) {
+  updateSigles(form: NgForm) {
     this.durations = []; // Réinitialise le tableau avant d'ajouter les durées
-    this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, totalCP: form.value.totalCP, competences: [], durations: {}, costs: {}}
+    this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, totalCP: form.value.totalCP, competences: [], durations: {}, costs: {} }
     // si on souhaite un objet, comme ceux écrits initialement en dur exemple : competences:{CP1:"", CP2:""}
     // this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, totalCP: form.value.totalCP, competences: {} }
     for (let i = 1; i <= form.value.totalCP; i++) {
@@ -77,7 +96,7 @@ export class SettingsComponent implements OnInit {
 
       // pour les taux horaires, à savoir ici qu'on aura 1 taux par compétence, indifféremment des durées
       // this.competencesCostByHours[`cost_CP${i}`]= form.value[`cost_CP${i}`]
-      this.sigles.costs[`cost_CP${i}`]= form.value[`cost_CP${i}`]
+      this.sigles.costs[`cost_CP${i}`] = form.value[`cost_CP${i}`]
       console.log('this.sigles.costs', this.sigles.costs);
 
     }
@@ -127,7 +146,7 @@ export class SettingsComponent implements OnInit {
     // formButton.insertAdjacentElement('beforebegin',fiedl)
   }
 
-  addLevelCursors(form: NgForm) {
+  updateLevelCursors(form: NgForm) {
 
     this.cursors = { firstCursor: form.value.firstCursor, secondCursor: form.value.secondCursor }
 
@@ -151,7 +170,5 @@ export class SettingsComponent implements OnInit {
       })
 
   }
-
-
 
 }

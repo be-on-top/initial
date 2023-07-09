@@ -43,6 +43,7 @@ import { UpdateUserComponent } from './Users/update-user/update-user.component';
 import { AddUserComponent } from './Users/add-user/add-user.component';
 // import { AccountComponent } from '../account/account.component';
 import { RoleGuardGuard } from '../role-guard.guard';
+import { UpdateSettingsComponent } from './settings/update-settings/update-settings.component';
 
 
 const routesAdmin: Routes = [
@@ -84,8 +85,9 @@ const routesAdmin: Routes = [
       { path: 'fullForm', component: FullFormComponent },
       { path: 'fullList', component: FullListComponent },
       { path: 'fullDetails', component: FullDetailsComponent },
-      { path: 'updateFull/:id', component: UpdateFullComponent },
+      { path: 'updateFullc', component: UpdateFullComponent },
       { path: 'settings', component: SettingsComponent },
+      // { path: '/updateSettings/:id', component: UpdateSettingsComponent },
 
     ],
     // canActivate: [AuthGuardService]
@@ -94,7 +96,9 @@ const routesAdmin: Routes = [
     }
   },
   { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent }
+  { path: 'register', component: RegisterComponent },
+  { path: 'updateSettings/:id', component: UpdateSettingsComponent }
+
 
 ];
 
@@ -103,7 +107,7 @@ const routesAdmin: Routes = [
     EvaluatorsListComponent,
     AddEvaluatorComponent,
     EvaluatorDetailsComponent,
-    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent, UpdateSocialComponent, SocialDetailsComponent, FullFormComponent, FullListComponent, FullDetailsComponent, UpdateFullComponent, LoginComponent, SearchComponent, StudentDetailsComponent, StudentsListComponent, UpdateStudentComponent, FeedbackMessagesComponent, AddTrainerComponent, TrainersListComponent, TrainerDetailsComponent, UpdateTrainerComponent, UsersListComponent, SettingsComponent, AddUserComponent, UserDetailsComponent, UpdateUserComponent
+    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent, UpdateSocialComponent, SocialDetailsComponent, FullFormComponent, FullListComponent, FullDetailsComponent, UpdateFullComponent, LoginComponent, SearchComponent, StudentDetailsComponent, StudentsListComponent, UpdateStudentComponent, FeedbackMessagesComponent, AddTrainerComponent, TrainersListComponent, TrainerDetailsComponent, UpdateTrainerComponent, UsersListComponent, SettingsComponent, AddUserComponent, UserDetailsComponent, UpdateUserComponent, UpdateSettingsComponent
   ],
   imports: [
     BrowserModule,

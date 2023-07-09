@@ -70,9 +70,10 @@ export class SettingsService {
     return collectionData(cursorsRef) as Observable<DocumentData>;
   }
 
-
-
-
+  getSigle(id:string){
+      let $sigleRef = doc(this.firestore, "sigles/" + id)
+      return docData($sigleRef, { idField: 'id' }) as Observable<Trade>;
+  }
 
 
 
