@@ -60,6 +60,9 @@ export class QuizzComponent implements OnInit {
   // troisiemeTableau:{ [key: string]: number } ={}
   troisiemeTableau: { [key: string]: any } = {}
 
+  // ces valeurs n'ont principalemenet d'intérêt à l'affichage que pour attester du bon retour du calculateur
+  realEvaluations: Denominator[] = []
+
 
   constructor(
     private ac: ActivatedRoute,
@@ -98,7 +101,9 @@ export class QuizzComponent implements OnInit {
       let allQuestions = data;
       console.log("allQuestions", allQuestions);
 
-      this.questions = allQuestions.filter(q => q.number < 21 && q.sigle == this.trade)
+      // on ne compte pas afficher un résulat intermédiaire, donc pour tester le calcul au global...
+      // this.questions = allQuestions.filter(q => q.number < 21 && q.sigle == this.trade)
+      this.questions = allQuestions.filter(q => q.number < 100 && q.sigle == this.trade)
       this.questions.sort(this.compare)
 
       // pour qu'on ne se retrouve pas en console avec un can not read id parce qu'il n'y en a plus
@@ -150,13 +155,17 @@ export class QuizzComponent implements OnInit {
       }
 
       // Pour générer le tableau de compétences dans le compte utilisateur si il n'y en a  pas
+      // pour essayer de comprendre pourquoi je n'ai plus qu'une compétence dans compétences
+      console.log('this.questions', this.questions);
+      console.log('this.questions.length', this.questions.length);
+
       this.questions.forEach(value => {
         this.competences.push(value.competence)
       }
       )
 
       this.competences = [...new Set(this.competences)];
-      console.log("this.competences", this.competences);
+      console.log("this.competences!!!!!!!!!!!!!!", this.competences);
 
       this.studentCompetences = this.competences.map((item: number) => ({ [item]: 0 }));
       console.log(this.studentCompetences);
@@ -362,12 +371,14 @@ export class QuizzComponent implements OnInit {
   setLevel() {
 
     // ne sera appeler qu'à ce moment !!!!!!
-    const realEvaluations: Denominator[] = this.convertirNoteSurVingt();
-    console.log("realEvaluations", realEvaluations);
+    // const realEvaluations: Denominator[] = this.convertirNoteSurVingt();
+    // si on veut l'afficher à l'utilisateur
+    this.realEvaluations = this.convertirNoteSurVingt();
+    console.log("realEvaluations", this.realEvaluations);
 
 
     // this.levelsArray = this.dataStudent.studentCompetences.map((obj: any) => {
-    this.levelsArray = realEvaluations.map((obj: any) => {
+    this.levelsArray = this.realEvaluations.map((obj: any) => {
       const newObj: any = {};
       for (let prop in obj) {
         if (obj.hasOwnProperty(prop)) {
@@ -400,14 +411,14 @@ export class QuizzComponent implements OnInit {
 
 
   displayDuration(durations: any, levelsArray: any): void {
-  
+
     for (const key in durations) {
       const level = parseInt(key.match(/\d+$/)?.[0] || ""); // Obtient le niveau à partir de la clé
-    
+
       if (!isNaN(level)) {
         const levelMatch = `CP${level}`; // Construit la clé correspondante dans le tableau final
         let levelValue: number | undefined; // Stocke la valeur du niveau correspondant
-    
+
         // Itère sur les objets de levelsArray pour trouver la correspondance avec le niveau
         for (const levelObj of levelsArray) {
           const objKey = Object.keys(levelObj)[0]; // Obtient la clé de l'objet
@@ -416,7 +427,7 @@ export class QuizzComponent implements OnInit {
             break; // Sort de la boucle une fois la correspondance trouvée
           }
         }
-    
+
         if (levelValue !== undefined) {
           const value = durations[key][levelValue - 1]; // Obtient la valeur à partir de durationsBySigle
           this.durationsByLevels[levelMatch] = value; // Stocke la valeur dans le tableau final avec la clé correspondante

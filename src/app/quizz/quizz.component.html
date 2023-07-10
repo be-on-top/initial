@@ -1,7 +1,8 @@
 <div class="container py-5 text-center">
     <h3>Quizz à venir... pour métier {{trade}}</h3>
     <h4 class="fs-6">Id de l'étudiant récupéré : {{studentId}}</h4>
-    <p class="alert bg-dark text-white text-smaller">Tableau des durées depuis la vue format json: {{durations | json}}</p>
+    <p class="alert bg-dark text-white text-smaller">Tableau des durées depuis la vue format json: {{durations | json}}
+    </p>
     <!-- <div class="alert bg-light mt-3 mb-4">
         Placeat dolorem eveniet beatae culpa molestias numquam quis ex quidem animi fugit consequuntur voluptatibus quo corrupti nobis ab, laboriosam minima commodi nostrum?
     </div> -->
@@ -14,7 +15,13 @@
     <!-- <div class="alert bg-info text-white text-smaller" *ngIf="dataStudent.studentCompetences">StudentCompetences récupéré en base : {{studentCompetences | json}}</div> -->
     <!-- <div class="alert bg-info text-white text-smaller" *ngIf="dataStudent.studentCompetences">StudentCompetences récupéré en base : </div> -->
 
-    <div *ngIf="dataStudent && dataStudent.studentCompetences" class="mb-3"> <div *ngFor="let objet of dataStudent.studentCompetences"> <div *ngFor="let item of objet | keyvalue"><span class="fw-bold">{{ item.key }}:</span> {{ item.value }} PNTS</div> </div> </div>
+    <div *ngIf="dataStudent && dataStudent.studentCompetences" class="mb-3">
+        <div *ngFor="let objet of dataStudent.studentCompetences">
+            <div *ngFor="let item of objet | keyvalue"><span class="fw-bold">Points affectés à {{ item.key }}:</span> {{
+                item.value }}
+                PNTS</div>
+        </div>
+    </div>
 
     <!-- a commencé l'évaluation -->
     <!-- <div class="alert bg-info text-white text-smaller">hasStartedEvaluation : {{hasStartedEvaluation}}</div> -->
@@ -28,23 +35,59 @@
                 [questionsMedias]="questionsMedias" [responsesMedias]="responsesMedias"
                 (hasBeenClicked)="answered($event)" [fullGoodAnswersClicked]="fullGoodAnswersClicked"
                 [fullAnswersClicked]="fullAnswersClicked" [totalAnswersAvailable]="totalAnswersAvailable"
-                [fullOptScoringTrue]="fullOptScoringTrue" (hasBeenUpdated)="updated($event)" [counter]="scoreCounter" [studentCompetences]="studentCompetences"></app-details>
+                [fullOptScoringTrue]="fullOptScoringTrue" (hasBeenUpdated)="updated($event)" [counter]="scoreCounter"
+                [studentCompetences]="studentCompetences"></app-details>
         </div>
     </div>
     <!-- </div> -->
 
-    <button *ngIf="indexQuestion<3; else elseBlock" class="btn btn-primary m-auto"
-        [disabled]="isCompleted==false || indexQuestion==3" (click)="next(indexQuestion)">Question suivante</button>
-    <ng-template #elseBlock> <button class="btn btn-primary m-md-auto"><i
-        class="bi bi-check text-light"></i>QCM d'accroche terminé !</button>
+    <!-- le < 3 ne vallait qu'en mode test !!!!!!!! -->
+    <!-- <button *ngIf="indexQuestion<3; else elseBlock" class="btn btn-primary m-auto"
+        [disabled]="isCompleted==false || indexQuestion==3" (click)="next(indexQuestion)">Question suivante</button> -->
+    <button *ngIf="indexQuestion<questions.length; else elseBlock" class="btn btn-primary m-auto"
+        [disabled]="isCompleted==false || indexQuestion==questions.length" (click)="next(indexQuestion)">Question suivante</button>
+    <ng-template #elseBlock> <button class="btn btn-primary m-md-auto"><i class="bi bi-check text-light"></i>QCM
+            d'accroche terminé !</button>
     </ng-template>
 
     <hr>
 
-    <button (click)="setLevel()" class="btn bg-warning m-md-auto text-light  fs-4"><i class="me-3 bi bi-bar-chart-steps text-light"></i>Votre positionnement</button>
+    <!-- tableau des dénominateurs propres à chaque compétence -->
+    <div *ngIf="denominatorsCompetences && denominatorsCompetences.length>0" class="mt-3">
+        {{denominatorsCompetences | json}}
+        <div *ngFor="let denominator of denominatorsCompetences">
+            <div *ngFor="let item of denominator | keyvalue">
+                <span class="fw-bold">Réel dénominateur pour {{ item.key }}
+                </span> {{ item.value }}
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+
+
+    <button (click)="setLevel()" class="btn bg-warning m-md-auto text-light  fs-4"><i
+            class="me-3 bi bi-bar-chart-steps text-light"></i>Votre positionnement</button>
     <!-- <div *ngIf="levelsArray && levelsArray.length>0">{{levelsArray | json}}</div> -->
-    <div *ngIf="levelsArray && levelsArray.length>0" class="mt-3"> <div *ngFor="let objet of levelsArray"> <div *ngFor="let item of objet | keyvalue"> <span class="fw-bold">{{ item.key }}: </span>fourchette {{ item.value }} </div> </div> </div>
+
+
+
+    <!-- notes réelles sur 20 -->
+    <div *ngIf="realEvaluations && realEvaluations.length>0" class="mt-3">
+        <div *ngFor="let result of realEvaluations">
+            <div *ngFor="let item of result | keyvalue"> <span class="fw-bold">Note pour {{ item.key }} </span> {{
+                item.value | number:'1.1-1' }} /20 </div>
+        </div>
+    </div>
+    <!-- fourchette -->
+    <div *ngIf="levelsArray && levelsArray.length>0">
+        <div *ngFor="let objet of levelsArray">
+            <div *ngFor="let item of objet | keyvalue"> <span class="fw-bold">( {{ item.key }}: </span>fourchette {{
+                item.value }}) </div>
+        </div>
+    </div>
     <div *ngFor="let item of durationsByLevels | keyvalue">
-        {{ item.key }}: {{ item.value }}
-      </div>
+        <span class="fw-bold">Durée de la formation pour {{ item.key }}:</span> {{ item.value }} jours
+    </div>
 </div>
