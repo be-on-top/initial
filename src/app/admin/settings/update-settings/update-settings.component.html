@@ -56,9 +56,7 @@
               [ngModel]="trade.durations[sigleId + '_duration_CP' + (i+1)]['2']" class="form-control" minlength="1"
               placeholder="durée moyenne en heures">
           </div>
-
         </div>
-
       </div>
 
 
@@ -66,21 +64,21 @@
       <input type="number" name="totalNewCP" ngModel #totalNewCP="ngModel" class="form-control mb-1"
         (change)="getNewTotal(totalNewCP)">
 
-      <div *ngFor="let item of newTotal">
-        <label for="CP{{item+minValue}}" class="form-label mt-3">CP{{item+minValue}}</label>
-        <input type="text" name="CP{{item+minValue}}" ngModel class="form-control" required minlength="7">
-        <label for="cost_CP{{item+minValue}}" class="form-label mt-3">Coût horaire de CP{{item+minValue}}</label>
-        <input type="number" name="cost_CP{{item+minValue}}" ngModel class="form-control"
+      <div *ngFor="let item of newTotal, let i = index">
+        <label for="CP{{i+minValue}}" class="form-label mt-3">CP{{i+minValue}}</label>
+        <input type="text" name="CP{{i+minValue}}" ngModel class="form-control" required minlength="7">
+        <label for="cost_CP{{i+minValue}}" class="form-label mt-3">Coût horaire de CP{{i+minValue}}</label>
+        <input type="number" name="cost_CP{{i+minValue}}" ngModel class="form-control"
           placeholder="renseigner le prix horaire en entier">
         <hr>
-        <label for="level1_CP{{item+minValue}}" class="form-label mt-3">Estimation du nombre d'heures pour
-          CP{{item+minValue}}</label>
+        <label for="level1_CP{{i+minValue}}" class="form-label mt-3">Estimation du nombre d'heures pour
+          CP{{i+minValue}}</label>
         <div class="form-group w-75">
-          <input type="number" name="level1_CP{{item+minValue}}" ngModel class="form-control" minlength="1"
+          <input type="number" name="level1_CP{{i+minValue}}" ngModel class="form-control" minlength="1"
             placeholder="durée courte en heures">
-          <input type="number" name="level2_CP{{item+minValue}}" ngModel class="form-control" minlength="1"
+          <input type="number" name="level2_CP{{i+minValue}}" ngModel class="form-control" minlength="1"
             placeholder="durée moyenne en heures">
-          <input type="number" name="level3_CP{{item+minValue}}" ngModel class="form-control" minlength="1"
+          <input type="number" name="level3_CP{{i+minValue}}" ngModel class="form-control" minlength="1"
             placeholder="durée longue en heures">
         </div>
       </div>

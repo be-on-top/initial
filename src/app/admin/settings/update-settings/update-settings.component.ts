@@ -14,7 +14,7 @@ import { CPData } from '../CPData';
 })
 export class UpdateSettingsComponent {
 
-cpDataList: CPData[] = []
+  cpDataList: CPData[] = []
 
   sigleId: string = ""
   trade: any
@@ -23,7 +23,7 @@ cpDataList: CPData[] = []
   form: any
   total: any = []
   minValue: number = 0; // Valeur minimale pour toute nouvelle compétence
-  newTotal:any = []
+  newTotal: any = []
 
   cursors: any = {}
   CPNumber: any
@@ -56,10 +56,10 @@ cpDataList: CPData[] = []
     this.service.getSigle(this.sigleId).subscribe((data) => {
       console.log("data depuis update-evaluator component", data);
       this.trade = data
-      this.total=data.competences
+      this.total = data.competences
       // this.minValue=data.competences.length
-      console.log(this.total.length);  
-      console.log('data.durations depuis le contructeur', data.durations)        
+      console.log(this.total.length);
+      console.log('data.durations depuis le contructeur', data.durations)
 
     })
 
@@ -80,6 +80,8 @@ cpDataList: CPData[] = []
       // il ne faut aucune  référence à this ici, pour que les 3 niveaux de durée propres à une compétence ne se cumulent pas
 
       let competenceDurations: number[] = []
+      // compétences additionnelles
+      let newCompetenceDurations: number[] = []
 
       console.log(form.value[`level1_CP${i}`]);
       console.log(form.value[`level2_CP${i}`]);
@@ -87,6 +89,8 @@ cpDataList: CPData[] = []
 
 
       competenceDurations.push(form.value[`level1_CP${i}`], form.value[`level2_CP${i}`], form.value[`level3_CP${i}`])
+      // compétences additionnelles 
+      newCompetenceDurations.push(form.value[`level1_CP${i}`], form.value[`level2_CP${i}`], form.value[`level3_CP${i}`])
       // impeccable !!!! mais on va changer la dénomination...
       // this.sigles.durations[`duration${i}`] = competenceDurations;
       this.sigles.durations[`${this.sigles.sigle}_duration_CP${i}`] = competenceDurations;
@@ -137,13 +141,16 @@ cpDataList: CPData[] = []
     this.total.push(e.value)
   }
 
-  getNewTotal(e: any){
+  getNewTotal(e: any) {
     this.newTotal.push(e.value) //3
     alert(`this.newTotal ${this.newTotal}`)
     // this.total.push(e.value)//5
     alert(`this.total.length ${this.total.length}`)
-    this.minValue=this.total.length
+    this.minValue = this.total.length
     alert(`this.minValue ${this.minValue}`)
+    const troisiemeTableau = [...this.total, ...this.newTotal]
+    console.log('troisiemeTableau', troisiemeTableau);
+
 
   }
 

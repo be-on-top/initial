@@ -31,6 +31,7 @@ import { UpdateAccountComponent } from './account/update-account/update-account.
 import { QuizzComponent } from './quizz/quizz.component';
 import { SocialFormComponent } from './social/social-form/social-form.component';
 import { DetailsComponent } from './quizz/vues/details/details.component';
+import { SettingsListComponent } from './admin/settings/settings-list/settings-list.component';
 // import { getMessaging } from 'firebase/messaging';
 
 
@@ -46,7 +47,8 @@ import { DetailsComponent } from './quizz/vues/details/details.component';
     UpdateAccountComponent,
     QuizzComponent,
     SocialFormComponent,
-    DetailsComponent
+    DetailsComponent,
+    SettingsListComponent
   ],
   imports: [
     BrowserModule,

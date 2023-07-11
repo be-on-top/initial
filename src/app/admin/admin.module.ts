@@ -44,6 +44,7 @@ import { AddUserComponent } from './Users/add-user/add-user.component';
 // import { AccountComponent } from '../account/account.component';
 import { RoleGuardGuard } from '../role-guard.guard';
 import { UpdateSettingsComponent } from './settings/update-settings/update-settings.component';
+import { SettingsListComponent } from './settings/settings-list/settings-list.component';
 
 
 const routesAdmin: Routes = [
@@ -86,7 +87,8 @@ const routesAdmin: Routes = [
       { path: 'fullList', component: FullListComponent },
       { path: 'fullDetails', component: FullDetailsComponent },
       { path: 'updateFullc', component: UpdateFullComponent },
-      { path: 'settings', component: SettingsComponent },
+      { path: 'addSettings', component: SettingsComponent },
+      { path: 'settings', component: SettingsListComponent },
       // { path: '/updateSettings/:id', component: UpdateSettingsComponent },
 
     ],
