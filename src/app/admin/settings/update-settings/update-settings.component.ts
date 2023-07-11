@@ -22,6 +22,8 @@ cpDataList: CPData[] = []
   sigles: Trade = { sigle: "", denomination: "", competences: [], totalCP: 0, durations: {}, costs: {} }
   form: any
   total: any = []
+  minValue: number = 0; // Valeur minimale pour toute nouvelle compétence
+  newTotal:any = []
 
   cursors: any = {}
   CPNumber: any
@@ -46,17 +48,7 @@ cpDataList: CPData[] = []
   // 2 - rattacher le décompte des questions à une catégorie et non un tronc commun
 
   constructor(private service: SettingsService, private ac: ActivatedRoute, private router: Router) {
-    this.sigleId = this.ac.snapshot.params["id"];
-    // on fait appel à getSigle pour récupérer les entrées de l'existant. méthode qui pour memo renvoie un observable
-    this.service.getSigle(this.sigleId).subscribe((data) => {
-      console.log("data depuis update-evaluator component", data);
-      this.trade = data
-      this.total=data.competences
-      console.log(this.total.length);  
-      console.log('data.durations depuis le contructeur', data.durations)   
-      
 
-    })
 
 
   }
@@ -64,6 +56,18 @@ cpDataList: CPData[] = []
 
   ngOnInit(): void {
     // this.form = document.getElementById("settingsForm")
+
+    this.sigleId = this.ac.snapshot.params["id"];
+    // on fait appel à getSigle pour récupérer les entrées de l'existant. méthode qui pour memo renvoie un observable
+    this.service.getSigle(this.sigleId).subscribe((data) => {
+      console.log("data depuis update-evaluator component", data);
+      this.trade = data
+      this.total=data.competences
+      this.minValue=data.competences.length
+      console.log(this.total.length);  
+      console.log('data.durations depuis le contructeur', data.durations)        
+
+    })
 
   }
 
@@ -144,6 +148,16 @@ cpDataList: CPData[] = []
     // let formButton:any = document.querySelector("#settingsForm")
     // fiedl.innerHTML+=cpField
     // formButton.insertAdjacentElement('beforebegin',fiedl)
+  }
+
+  getNewTotal(e: any){
+    this.newTotal.push(e.value) //3
+    alert(`this.newTotal ${this.newTotal}`)
+    // this.total.push(e.value)//5
+    alert(`this.total.length ${this.total.length}`)
+    this.minValue=this.total.length
+    alert(`this.minValue ${this.minValue}`)
+
   }
 
   updateLevelCursors(form: NgForm) {

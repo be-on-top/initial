@@ -1,125 +1,148 @@
 <div class="container py-5">
 
-    <h3 class="mb-3">Mise à jour des Paramètres de l'application</h3>
-    <app-feedback-messages [feedbackMessages]="feedbackMessages"
-      [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
-  
-    <h4>Ajout des métiers (sigles) et leurs compétences (AT)</h4>
-    <form #settingsForm="ngForm" class="mt-4" (submit)="updateSigles(settingsForm)" class="was-validated" novalidate>
-  
-      <div class="form-group">
-        <label for="sigle" class="form-label mt-3">Sigle</label>
-        <input type="text" name="sigle" [(ngModel)]="trade.sigle" #sigle="ngModel" class="form-control" required minlength="3">
-        <div *ngIf="sigle.dirty || (sigle.touched && sigle.invalid)" class="invalid-feedback">
-          Veuillez fournir un sigle valide.
-        </div>
-        <label for="denomination" class="form-label mt-3">Dénomination</label>
-        <input type="text" name="denomination" [(ngModel)]="trade.denomination" #denomination="ngModel" class="form-control" required
-          minlength="3">
-        <div *ngIf="denomination.dirty || (denomination.touched && denomination.invalid)" class="invalid-feedback">
-          Veuillez fournir une dénomination valide.
-        </div>
-        <div *ngIf="sigle.valid" class="valid-feedback">
-          Nom valide.
-        </div>
-        <!-- pour arrêter le nombre de compétences par métier -->
-        <label for="totalCP" class="form-label mt-3">Nombre de compétences au référenciel métier</label>
-        <input type="number" name="totalCP" [(ngModel)]="trade.totalCP" #totalCP="ngModel" class="form-control mb-1" required>
-        <div *ngIf="totalCP.touched && totalCP.invalid" class="invalid-feedback">Veuillez fournir un nombre minimum de
-          compétences.
-        </div>
-        <div *ngIf="totalCP.valid" class="valid-feedback">
-          Champ OK.
-        </div>
+  <h3 class="mb-3">Mise à jour des Paramètres de l'application</h3>
+  <app-feedback-messages [feedbackMessages]="feedbackMessages"
+    [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
 
+  <h4>Ajout des métiers (sigles) et leurs compétences (AT)</h4>
+  <form #settingsForm="ngForm" class="mt-4" (submit)="updateSigles(settingsForm)" class="was-validated" novalidate>
 
-        <div *ngIf="total?.length != 0">
-            <div *ngFor="let nb of total; let i = index">
-              <label for="CP{{i+1}}" class="form-label mt-3">CP{{i+1}}</label>
-              <input type="text" name="CP{{i+1}}" [ngModel]="total[i]" class="form-control">
-              <!-- Autres champs de saisie pour chaque élément du tableau total -->
-              <!-- <label for="cost_CP{{i+1}}" class="form-label mt-3">Coût horaire de CP{{i+1}}</label>
-              <input type="number" name="cost_CP{{i+1}}" [ngModel]="total[i]" class="form-control" placeholder="renseigner le prix horaire en entier">
-              <hr>
-              <label class="form-label mt-3">Estimation du nombre d'heures pour CP{{nb}}</label>
-              <div class="form-group w-75">
-                <input type="number" name="level1_CP{{i+1}}" [(ngModel)]="total[i]" class="form-control" minlength="1" placeholder="durée courte en heures">
-                <input type="number" name="level2_CP{{i+1}}" [(ngModel)]="total[i]" class="form-control" minlength="1" placeholder="durée moyenne en heures">
-                <input type="number" name="level3_CP{{i+1}}" [(ngModel)]="total[i]" class="form-control" minlength="1" placeholder="durée longue en heures">
-              </div> -->
-
-              <label for="cost_CP{{i+1}}" class="form-label mt-3">Coût horaire de CP{{i+1}}</label>
-              <input type="number" name="cost_CP{{i+1}}" [ngModel]="trade.costs['cost_CP' + (i+1)]" class="form-control" placeholder="prix horaire en entier">
-              <hr>
-              <label class="form-label mt-3">Estimation du nombre d'heures pour CP{{1+1}}</label>
-              <div class="form-group w-75">
-                <input type="number" name="level1_CP{{i+1}}" [ngModel]="trade.durations[sigleId + '_duration_CP' + (i+1)][0]" class="form-control" minlength="1" placeholder="durée courte en heures">
-                <input type="number" name="level2_CP{{i+1}}" [ngModel]="trade.durations[sigleId + '_duration_CP' + (i+1)][1]" class="form-control" minlength="1" placeholder="durée moyenne en heures">
-                <input type="number" name="level3_CP{{i+1}}" [ngModel]="trade.durations[sigleId + '_duration_CP' + (i+1)][2]" class="form-control" minlength="1" placeholder="durée moyenne en heures">
-              </div>
-
-            </div>
-          </div>
-  
-        <!-- <div *ngIf="trade.totalCP!=0">
-          <div *ngFor="let nb of trade.totalCP">
-            <label for="CP{{nb}}" class="form-label mt-3">trade.CP{{nb}}</label>
-            <input type="text" name="CP{{nb}}" [(ngModel)]="trade[CP{{nb}}]" class="form-control" required minlength="7">
-            <label for="cost_CP{{nb}}" class="form-label mt-3">Coût horaire de CP{{nb}}</label>
-            <input type="number" name="cost_CP{{nb}}" [(ngModel)]="trade.cost_CP{{nb}}" class="form-control" placeholder="renseigner le prix horaire en entier">
-            <hr>
-            <label class="form-label mt-3">Estimation du nombre d'heures pour CP{{nb}}</label>
-            <div class="form-group w-75">
-              <input type="number" name="level1_CP{{nb}}" [(ngModel)]="trade.level1_CP{{nb}}" class="form-control" minlength="1" placeholder="durée courte en heures">
-              <input type="number" name="level2_CP{{nb}}" [(ngModel)]="trade.level2_CP{{nb}}" class="form-control" minlength="1" placeholder="durée moyenne en heures">
-              <input type="number" name="level3_CP{{nb}}" [(ngModel)]="trade.level3_CP{{nb}}" class="form-control" minlength="1" placeholder="durée longue en heures">
-            </div>
-          </div>
-        </div> -->
-  
-        <!-- essai boutons additionnels pour ajouter des compétences à l'unité -->
-        <!-- <button (click)="addField('CP')">+</button> -->
+    <div class="form-group">
+      <label for="sigle" class="form-label mt-3">Sigle</label>
+      <input type="text" name="sigle" [(ngModel)]="trade.sigle" #sigle="ngModel" class="form-control" required
+        minlength="3">
+      <div *ngIf="sigle.dirty || (sigle.touched && sigle.invalid)" class="invalid-feedback">
+        Veuillez fournir un sigle valide.
       </div>
-  
-      <button id="settingsForm" type="submit" class="btn btn-primary mt-4"
-        [disabled]=settingsForm.invalid>Ajouter</button>
-    </form>
-  
-    <hr>
-  
-    <h3>Ajout de curseurs peronnalisés pour le calcul des 3 niveaux de résultat au terme du positionnement des
-      candidats
-    </h3>
-  
-    <!-- pour les curseurs -->
-    <hr>
-    <form #setCursorsForm="ngForm" class="mt-4" (submit)="updateLevelCursors(setCursorsForm)" class="was-validated">
-  
-      <div class="form-group">
-  
-        <label for="firstCursor" class="form-label mt-3">Curseur 1</label>
-        <input type="number" name="firstCursor" [(ngModel)]="trade.firstCursor" #firstCursor="ngModel" class="form-control" required>
-        <div *ngIf="firstCursor.touched && firstCursor.invalid" class="invalid-feedback">
-          Veuillez fournir un sigle valide.
-        </div>
-        <div *ngIf="secondCursor.valid" class="valid-feedback">
-          Ok. Curseur pris en compte
-        </div>
-        <label for="secondCursor" class="form-label mt-3">Curseur 2</label>
-        <input type="number" name="secondCursor" [(ngModel)]="trade.secondCursor" #secondCursor="ngModel" class="form-control" required>
-        <div *ngIf="secondCursor.touched && secondCursor.invalid" class="invalid-feedback">
-          Veuillez fournir un nombre
-        </div>
-        <div *ngIf="secondCursor.valid" class="valid-feedback">
-          Ok. Curseur pris en compte
-        </div>
-  
+      <label for="denomination" class="form-label mt-3">Dénomination</label>
+      <input type="text" name="denomination" [(ngModel)]="trade.denomination" #denomination="ngModel"
+        class="form-control" required minlength="3">
+      <div *ngIf="denomination.dirty || (denomination.touched && denomination.invalid)" class="invalid-feedback">
+        Veuillez fournir une dénomination valide.
       </div>
-  
-      <button id="settingsForm" type="submit" class="btn btn-primary mt-4"
-        [disabled]=setCursorsForm.invalid>Ajouter</button>
-    </form>
-  
-  
-  
-  </div>
+      <div *ngIf="sigle.valid" class="valid-feedback">
+        Nom valide.
+      </div>
+      <!-- pour arrêter le nombre de compétences par métier -->
+      <label for="totalCP" class="form-label mt-3">Nombre de compétences au référenciel métier</label>
+      <input type="number" name="totalCP" [(ngModel)]="trade.totalCP" #totalCP="ngModel" class="form-control mb-1"
+        required>
+      <div *ngIf="totalCP.touched && totalCP.invalid" class="invalid-feedback">Veuillez fournir un nombre minimum de
+        compétences.
+      </div>
+      <div *ngIf="totalCP.valid" class="valid-feedback">
+        Champ OK.
+      </div>
+
+
+      <div *ngIf="total?.length != 0">
+        <div *ngFor="let nb of total; let i = index">
+          <label for="CP{{i+1}}" class="form-label mt-3">CP{{i+1}}</label>
+          <input type="text" name="CP{{i+1}}" [ngModel]="total[i]" class="form-control">
+
+          <label for="cost_CP{{i+1}}" class="form-label mt-3">Coût horaire de CP{{i+1}}</label>
+          <input type="number" name="cost_CP{{i+1}}" [ngModel]="trade.costs['cost_CP' + (i+1)]" class="form-control"
+            placeholder="prix horaire en entier">
+          <hr>
+          <label class="form-label mt-3">Estimation du nombre d'heures pour CP{{i+1}}</label>
+          <div class="form-group w-75">
+            <input type="number" name="level1_CP{{i+1}}"
+              [ngModel]="trade.durations[sigleId + '_duration_CP' + (i+1)]['0']" class="form-control" minlength="1"
+              placeholder="durée courte en heures">
+            <input type="number" name="level2_CP{{i+1}}"
+              [ngModel]="trade.durations[sigleId + '_duration_CP' + (i+1)]['1']" class="form-control" minlength="1"
+              placeholder="durée moyenne en heures">
+            <input type="number" name="level3_CP{{i+1}}"
+              [ngModel]="trade.durations[sigleId + '_duration_CP' + (i+1)]['2']" class="form-control" minlength="1"
+              placeholder="durée moyenne en heures">
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <label for="totalNewCP" class="form-label mt-3">Ajout d'une compétence au référenciel métier</label>
+      <input type="number" name="totalNewCP" ngModel #totalNewCP="ngModel" class="form-control mb-1"
+        (change)="getNewTotal(totalNewCP)">
+
+      <div *ngFor="let item of newTotal">
+        <label for="CP{{item+minValue}}" class="form-label mt-3">CP{{item+minValue}}</label>
+        <input type="text" name="CP{{item+minValue}}" ngModel class="form-control" required minlength="7">
+        <label for="cost_CP{{item+minValue}}" class="form-label mt-3">Coût horaire de CP{{item+minValue}}</label>
+        <input type="number" name="cost_CP{{item+minValue}}" ngModel class="form-control"
+          placeholder="renseigner le prix horaire en entier">
+        <hr>
+        <label for="level1_CP{{item+minValue}}" class="form-label mt-3">Estimation du nombre d'heures pour
+          CP{{item+minValue}}</label>
+        <div class="form-group w-75">
+          <input type="number" name="level1_CP{{item+minValue}}" ngModel class="form-control" minlength="1"
+            placeholder="durée courte en heures">
+          <input type="number" name="level2_CP{{item+minValue}}" ngModel class="form-control" minlength="1"
+            placeholder="durée moyenne en heures">
+          <input type="number" name="level3_CP{{item+minValue}}" ngModel class="form-control" minlength="1"
+            placeholder="durée longue en heures">
+        </div>
+      </div>
+
+
+
+      <!-- pour augmenter le nombre de compétences -->
+
+
+
+
+
+
+
+
+
+
+      <!-- essai boutons additionnels pour ajouter des compétences à l'unité -->
+      <!-- <button (click)="addField('CP')">+</button> -->
+    </div>
+
+    <button id="settingsForm" type="submit" class="btn btn-primary mt-4"
+      [disabled]=settingsForm.invalid>Ajouter</button>
+  </form>
+
+  <hr>
+
+  <h3>Ajout de curseurs peronnalisés pour le calcul des 3 niveaux de résultat au terme du positionnement des
+    candidats
+  </h3>
+
+  <!-- pour les curseurs -->
+  <hr>
+  <form #setCursorsForm="ngForm" class="mt-4" (submit)="updateLevelCursors(setCursorsForm)" class="was-validated">
+
+    <div class="form-group">
+
+      <label for="firstCursor" class="form-label mt-3">Curseur 1</label>
+      <input type="number" name="firstCursor" [(ngModel)]="trade.firstCursor" #firstCursor="ngModel"
+        class="form-control" required>
+      <div *ngIf="firstCursor.touched && firstCursor.invalid" class="invalid-feedback">
+        Veuillez fournir un sigle valide.
+      </div>
+      <div *ngIf="secondCursor.valid" class="valid-feedback">
+        Ok. Curseur pris en compte
+      </div>
+      <label for="secondCursor" class="form-label mt-3">Curseur 2</label>
+      <input type="number" name="secondCursor" [(ngModel)]="trade.secondCursor" #secondCursor="ngModel"
+        class="form-control" required>
+      <div *ngIf="secondCursor.touched && secondCursor.invalid" class="invalid-feedback">
+        Veuillez fournir un nombre
+      </div>
+      <div *ngIf="secondCursor.valid" class="valid-feedback">
+        Ok. Curseur pris en compte
+      </div>
+
+    </div>
+
+    <button id="settingsForm" type="submit" class="btn btn-primary mt-4"
+      [disabled]=setCursorsForm.invalid>Ajouter</button>
+  </form>
+
+
+
+</div>
