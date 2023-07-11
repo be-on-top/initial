@@ -4,7 +4,7 @@ import { SettingsService } from '../../settings.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Trade } from '../../trade';
 
-import { Denominator } from 'src/app/quizz/denominator';
+// import { Denominator } from 'src/app/quizz/denominator';
 import { CPData } from '../CPData';
 
 @Component({
@@ -43,13 +43,7 @@ cpDataList: CPData[] = []
   }; // list of firebase error codes to alternate error messages
 
 
-  //  dans un premier temps, on peut ne leur donner qu'un nom. l'important étant de savoir à combien les catégories métiers s'élèveront pour pouvoir  prévoir
-  // 1 - autant de zones éditables sur la  page d'accueil
-  // 2 - rattacher le décompte des questions à une catégorie et non un tronc commun
-
   constructor(private service: SettingsService, private ac: ActivatedRoute, private router: Router) {
-
-
 
   }
 
@@ -63,7 +57,7 @@ cpDataList: CPData[] = []
       console.log("data depuis update-evaluator component", data);
       this.trade = data
       this.total=data.competences
-      this.minValue=data.competences.length
+      // this.minValue=data.competences.length
       console.log(this.total.length);  
       console.log('data.durations depuis le contructeur', data.durations)        
 
@@ -141,13 +135,6 @@ cpDataList: CPData[] = []
   getTotal(e: any) {
     console.log(e.value)
     this.total.push(e.value)
-    // ce qui suit fonctionne si on fait abstraction du fait que ngForm transforme HTMLElement en object.
-    // donc même si les champs s'affichent, ils ne sont pas reconnus pour autant comme les propriétés/valeurs de l'objet settingsForm
-    // let cpField=`<input id="dfsdf" type="text" name="CP${e.value}" placeholder="CP${e.value} à renseigner" ngModel class="form-control my-1" required minlength="3">`
-    // let fiedl= document.createElement("div")
-    // let formButton:any = document.querySelector("#settingsForm")
-    // fiedl.innerHTML+=cpField
-    // formButton.insertAdjacentElement('beforebegin',fiedl)
   }
 
   getNewTotal(e: any){
