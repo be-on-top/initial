@@ -33,6 +33,29 @@ export class SettingsService {
     //   });
 
   }
+  async updateTrade(trade: Trade, totalToRegister:number) {
+
+    console.log(trade);
+    console.log('trade.totalCP',trade.totalCP);
+    
+    trade.totalCP=totalToRegister
+
+
+    // // les 2 méthodes fonctionnent très bien.
+    let $settingsRef = collection(this.firestore, "sigles");
+    // await addDoc($settingsRef, trade).then((response) => {
+    //   console.log(response.id);
+    // })
+
+    await setDoc(doc($settingsRef, trade.sigle), trade)
+
+    //   .catch((error) => {
+    //     const errorCode = error.code;
+    //     const errorMessage = error.message;
+    //     // ..
+    //   });
+
+  }
 
 
   getTrades() {

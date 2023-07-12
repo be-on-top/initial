@@ -30,6 +30,7 @@ export class UpdateSettingsComponent {
   CPDuration: any
 
   durations: {} = {}
+  newCPDurations: number[] = []
 
   competencesCostByHours: any = []
 
@@ -71,6 +72,9 @@ export class UpdateSettingsComponent {
     this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, totalCP: form.value.totalCP, competences: [], durations: {}, costs: {} }
     // si on souhaite un objet, comme ceux écrits initialement en dur exemple : competences:{CP1:"", CP2:""}
     // this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, totalCP: form.value.totalCP, competences: {} }
+
+    // si compétences additionnelles
+
     for (let i = 1; i <= form.value.totalCP; i++) {
       this.CPNumber = `CP${i}`
       console.log(this.CPNumber);
@@ -92,20 +96,45 @@ export class UpdateSettingsComponent {
       // compétences additionnelles 
       newCompetenceDurations.push(form.value[`level1_CP${i}`], form.value[`level2_CP${i}`], form.value[`level3_CP${i}`])
       // impeccable !!!! mais on va changer la dénomination...
-      // this.sigles.durations[`duration${i}`] = competenceDurations;
       this.sigles.durations[`${this.sigles.sigle}_duration_CP${i}`] = competenceDurations;
       console.log('this.sigles.durations', this.durations);
 
-      // pour les taux horaires, à savoir ici qu'on aura 1 taux par compétence, indifféremment des durées
-      // this.competencesCostByHours[`cost_CP${i}`]= form.value[`cost_CP${i}`]
       this.sigles.costs[`cost_CP${i}`] = form.value[`cost_CP${i}`]
       console.log('this.sigles.costs', this.sigles.costs);
 
     }
 
-    console.log("form récupéré", form.value);
-    console.log("form optimisé", this.sigles);
-    this.service.addTrade(this.sigles)
+    for (let i = 0; i < form.value.totalNewCP; i++) {
+      this.CPNumber = `CP${i + this.minValue}`
+      console.log(this.CPNumber);
+      this.sigles.competences.push(form.value[this.CPNumber])
+      console.log('this.sigles.competences avec les nouvelles', this.sigles.competences);
+
+      console.log(form.value[`level1_CP${i + this.minValue}`]);
+      console.log(form.value[`level2_CP${i + this.minValue}`]);
+      console.log(form.value[`level3_CP${i + this.minValue}`]);
+
+
+      // compétences additionnelles 
+      // newCompetenceDurations.push(form.value[`level1_CP${i+this.minValue}`], form.value[`level2_CP${i+this.minValue}`], form.value[`level3_CP${i+this.minValue}`])
+      this.newCPDurations.push(form.value[`level1_CP${i + this.minValue}`], form.value[`level2_CP${i + this.minValue}`], form.value[`level3_CP${i + this.minValue}`])
+      // impeccable !!!! mais on va changer la dénomination...
+      this.sigles.durations[`${this.sigles.sigle}_duration_CP${i + this.minValue}`] = this.newCPDurations
+      console.log('this.sigles.durations avec les nouvelles', this.sigles.durations);
+
+      this.sigles.costs[`cost_CP${i + this.minValue}`] = form.value[`cost_CP${i + this.minValue}`]
+      console.log('this.sigles.costs pour les nouvelles', this.sigles.costs);
+
+    }
+
+
+    console.log("form récupéré", form.value)
+
+    // et parce que pour l'update, faut ajouter à totalCP totalNewCP
+    let totalToRegister: number = this.sigles.totalCP + form.value.totalNewCP
+    console.log('totalCP augmenté des nouvelles', totalToRegister)
+    console.log("form optimisé", this.sigles)
+    this.service.updateTrade(this.sigles, totalToRegister)
       .then(() => {
         // Signed in 
         this.feedbackMessages = `Enregistrement du métier et ses compétences OK`;
@@ -146,11 +175,10 @@ export class UpdateSettingsComponent {
     alert(`this.newTotal ${this.newTotal}`)
     // this.total.push(e.value)//5
     alert(`this.total.length ${this.total.length}`)
-    this.minValue = this.total.length
+    this.minValue = this.total.length + 1
     alert(`this.minValue ${this.minValue}`)
     const troisiemeTableau = [...this.total, ...this.newTotal]
     console.log('troisiemeTableau', troisiemeTableau);
-
 
   }
 

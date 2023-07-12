@@ -1,4 +1,4 @@
-<div class="container py-5">
+<div class="container py-5 text-center">
 
     <h3>Gestion des Paramètres</h3>
     <hr>
@@ -6,31 +6,32 @@
         ...loading
     </div> -->
 
-    <div *ngIf="trades">
+    <div *ngIf="trades" class="mx-auto">
         <!-- on introduit un champ de recherche -->
         <!-- <app-search (searchTextChanged)="onSearchTextEntered($event)"></app-search> -->
 
         <!-- <div class="row mt-5"> -->
-        <div class="row mt-4 d-xs-none">
-            <div class="col-sm-3 h5">Sigle</div>
-            <div class="col-sm-3 h5">Dénomination</div>
-            <div class="col-sm-3 h5">Nombre de CP</div>
-            <div class="col-sm-3 h5">Lien de détails</div>
+        <div class="row justify-content-center mt-4 d-xs-none">
+            <div class="col-sm-4 h5">Sigle</div>
+            <!-- <div class="col-sm-3 h5">Dénomination</div> -->
+            <div class="col-sm-4 h5">Nombre de CP</div>
+            <div class="col-sm-4 h5">Lien de détails</div>
         </div>
 
         <div *ngFor="let trade of trades">
-            <div class="row mt-4 ps-5 ps-sm-0"
+            <div class="row justify-content-center mt-4 ps-5 ps-sm-0"
                 *ngIf="searchText==='' || trade.denomination.toLowerCase().includes(searchText)">
-                <div class="col-sm-3 col-6">{{trade.sigle}}</div>
-                <div class="col-sm-3 col-6 order-perso2">{{trade.denomination}}</div>
-                <div class="col-sm-3 col-6 order-perso2">{{trade.totalCP}}</div>
-                <div class="col-sm-3 col-6 order-perso4"><button class="btn btn-primary"><a href=""
-                            class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a></button></div>
+                <div class="col-sm-4 col-6">{{trade.sigle}}</div>
+                <!-- <div class="col-sm-3 col-6 order-perso2">{{trade.denomination}}</div> -->
+                <div class="col-sm-4 col-6 order-perso2"><span *ngIf="trade.totalCP">{{trade.totalCP}} CP</span></div>
+                <div class="col-sm-4 col-6 order-perso4"><button class="btn btn-primary"><a  [routerLink]="['/admin/updateSettings', trade.id]" 
+                            class="text-white"><i class="bi bi-pencil-square"></i>Editer</a></button></div>
             </div>
         </div>
         <div class="row my-5 justify-content-end ps-5 ps-sm-0">
-            <div class="col-sm-3"><button class="btn btn-primary"><a [routerLink]="['/admin/addSettings']"
-                        class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a></button></div>
+            <div class="col-sm-4 col-6"><button class="btn btn-primary"><a [routerLink]="['/admin/addSettings']"
+                        class="text-white"><i class="bi bi-file-earmark-plus"></i>Ajouter</a></button></div>
         </div>
     </div>
+
 </div>

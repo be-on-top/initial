@@ -1,10 +1,10 @@
 <div class="container py-5">
 
-  <h3 class="mb-3">Mise à jour des Paramètres de l'application</h3>
+  <!-- <h3 class="mb-3">Mise à jour des Paramètres de l'application</h3> -->
+  <h3 class="mb-3">Ajout des métiers (sigles) et leurs compétences (AT)</h3>
   <app-feedback-messages [feedbackMessages]="feedbackMessages"
     [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
 
-  <h4>Ajout des métiers (sigles) et leurs compétences (AT)</h4>
   <form #settingsForm="ngForm" class="mt-4" (submit)="updateSigles(settingsForm)" class="was-validated" novalidate>
 
     <div class="form-group">

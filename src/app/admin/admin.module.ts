@@ -89,7 +89,7 @@ const routesAdmin: Routes = [
       { path: 'updateFullc', component: UpdateFullComponent },
       { path: 'addSettings', component: SettingsComponent },
       { path: 'settings', component: SettingsListComponent },
-      // { path: '/updateSettings/:id', component: UpdateSettingsComponent },
+      { path: 'updateSettings/:id', component: UpdateSettingsComponent }
 
     ],
     // canActivate: [AuthGuardService]
@@ -98,8 +98,7 @@ const routesAdmin: Routes = [
     }
   },
   { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'updateSettings/:id', component: UpdateSettingsComponent }
+  { path: 'register', component: RegisterComponent }
 
 
 ];
