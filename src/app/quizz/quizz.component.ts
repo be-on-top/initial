@@ -8,6 +8,7 @@ import { DetailsComponent } from './vues/details/details.component';
 import { StudentsService } from '../admin/students.service';
 import { Denominator } from './denominator';
 import { Questions } from '../admin/Questions/questions';
+import { Trade } from '../admin/trade';
 
 @Component({
   selector: 'app-quizz',
@@ -62,6 +63,9 @@ export class QuizzComponent implements OnInit {
 
   // ces valeurs n'ont principalemenet d'intérêt à l'affichage que pour attester du bon retour du calculateur
   realEvaluations: Denominator[] = []
+  // pour le coût individualisé d'une compétence en fonction du niveau et du coût horaire
+  cpCostByHour: number = 0
+  estimatedCPCost: any = 0
 
 
   constructor(
@@ -368,6 +372,8 @@ export class QuizzComponent implements OnInit {
   }
 
 
+
+
   setLevel() {
 
     // ne sera appeler qu'à ce moment !!!!!!
@@ -421,9 +427,18 @@ export class QuizzComponent implements OnInit {
 
         // Itère sur les objets de levelsArray pour trouver la correspondance avec le niveau
         for (const levelObj of levelsArray) {
-          const objKey = Object.keys(levelObj)[0]; // Obtient la clé de l'objet
+          const objKey = Object.keys(levelObj)[0] // Obtient la clé de l'objet
           if (objKey.endsWith(`_CP${level}`)) { // Vérifie si la clé se termine par "_CP{level}"
-            levelValue = levelObj[objKey]; // Stocke la valeur correspondante
+            levelValue = levelObj[objKey] // Stocke la valeur correspondante
+            // c'est là qu'on doit  pouvoir récupérer le coût horaire de LA compétence 
+            this.settingsService.getSigle(this.trade).subscribe((data: Trade) => {
+              console.log("dta", data.costs[`cost_CP${level}`])
+              this.cpCostByHour=data.costs[`cost_CP${level}`]
+            })
+            console.log("le coût horaire de la compétence", this.cpCostByHour)
+            console.log("on s'assure qu'on récupère bien le sigle pour interroger le coût", this.trade)
+            console.log("on s'assure qu'on récupère bien la compétence pour interroger le coût", `cost_CP${level}`)
+
             break; // Sort de la boucle une fois la correspondance trouvée
           }
         }

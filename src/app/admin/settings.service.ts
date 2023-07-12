@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, collectionData, docData, setDoc, addDoc, doc, where, getDocs, DocumentData, getDoc } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, docData, setDoc, addDoc, query, doc, where, getDocs, DocumentData, getDoc } from '@angular/fire/firestore';
 // import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Trade } from './trade';
-import { query } from '@angular/animations';
 import { Settings } from './settings';
 
 @Injectable({
@@ -33,12 +32,12 @@ export class SettingsService {
     //   });
 
   }
-  async updateTrade(trade: Trade, totalToRegister:number) {
+  async updateTrade(trade: Trade, totalToRegister: number) {
 
     console.log(trade);
-    console.log('trade.totalCP',trade.totalCP);
-    
-    trade.totalCP=totalToRegister
+    console.log('trade.totalCP', trade.totalCP);
+
+    trade.totalCP = totalToRegister
 
 
     // // les 2 méthodes fonctionnent très bien.
@@ -93,9 +92,9 @@ export class SettingsService {
     return collectionData(cursorsRef) as Observable<DocumentData>;
   }
 
-  getSigle(id:string){
-      let $sigleRef = doc(this.firestore, "sigles/" + id)
-      return docData($sigleRef, { idField: 'id' }) as Observable<Trade>;
+  getSigle(id: string) {
+    let $sigleRef = doc(this.firestore, "sigles/" + id)
+    return docData($sigleRef, { idField: 'id' }) as Observable<Trade>;
   }
 
 
