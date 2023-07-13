@@ -65,7 +65,7 @@ export class QuizzComponent implements OnInit {
   realEvaluations: Denominator[] = []
   // pour le coût individualisé d'une compétence en fonction du niveau et du coût horaire
   cpCostByHour: number = 0
-  estimatedCPCost: any = 0
+  estimatedCPCost: { [key: string]: number } = {};
 
 
   constructor(
@@ -197,9 +197,6 @@ export class QuizzComponent implements OnInit {
     // this.settingsService.getDurationsBySigle(this.trade).then((data)=>console.log('duration récupéré', data))
 
     this.getDurations(this.trade)
-
-
-
 
 
   }
@@ -419,7 +416,7 @@ export class QuizzComponent implements OnInit {
   displayDuration(durations: any, levelsArray: any): void {
 
     for (const key in durations) {
-      const level = parseInt(key.match(/\d+$/)?.[0] || ""); // Obtient le niveau à partir de la clé
+      const level = parseInt(key.match(/\d+$/)?.[0] || ""); // Obtient le niveau de résultat à partir de la clé
 
       if (!isNaN(level)) {
         const levelMatch = `CP${level}`; // Construit la clé correspondante dans le tableau final
@@ -430,24 +427,49 @@ export class QuizzComponent implements OnInit {
           const objKey = Object.keys(levelObj)[0] // Obtient la clé de l'objet
           if (objKey.endsWith(`_CP${level}`)) { // Vérifie si la clé se termine par "_CP{level}"
             levelValue = levelObj[objKey] // Stocke la valeur correspondante
-            // c'est là qu'on doit  pouvoir récupérer le coût horaire de LA compétence 
+
             this.settingsService.getSigle(this.trade).subscribe((data: Trade) => {
-              console.log("dta", data.costs[`cost_CP${level}`])
-              this.cpCostByHour=data.costs[`cost_CP${level}`]
+              console.log("data.costsdata.costs[`cost_CP${level}`]", data.costs[`cost_CP${level}`])
+              this.cpCostByHour = data.costs[`cost_CP${level}`]
+
+              // ajout calcul
+              this.estimatedCPCost[`individual_cost_CP${level}`] = data.costs[`cost_CP${level}`] * 7
             })
             console.log("le coût horaire de la compétence", this.cpCostByHour)
-            console.log("on s'assure qu'on récupère bien le sigle pour interroger le coût", this.trade)
-            console.log("on s'assure qu'on récupère bien la compétence pour interroger le coût", `cost_CP${level}`)
-
             break; // Sort de la boucle une fois la correspondance trouvée
           }
         }
 
+        // if (levelValue !== undefined) {
+        //   const value = durations[key][levelValue - 1]; // Obtient la valeur à partir de durationsBySigle
+        //   this.durationsByLevels[levelMatch] = value; // Stocke la valeur dans le tableau final avec la clé correspondante
+        //   console.log(`individual_cost_CP${level}`);
+        //   console.log(value);
+          
+        //   // this.estimatedCPCost[`individual_cost_CP${level}`]=this.estimatedCPCost[`individual_cost_CP${level}`]*value
+        //   if (this.estimatedCPCost.hasOwnProperty(`individual_cost_CP${level}`)) {
+        //     this.estimatedCPCost[`individual_cost_CP${level}`] *= value;
+        //   }
+        //   console.log('individual_cost_CP${level}', `individual_cost_CP${level}`); 
+        //   console.log('this.estimatedCPCost)', this.estimatedCPCost);
+
+        // }
+
         if (levelValue !== undefined) {
-          const value = durations[key][levelValue - 1]; // Obtient la valeur à partir de durationsBySigle
-          this.durationsByLevels[levelMatch] = value; // Stocke la valeur dans le tableau final avec la clé correspondante
+          const value = durations[key][levelValue - 1];
+          this.durationsByLevels[levelMatch] = value;
+    
+          this.settingsService.getSigle(this.trade).subscribe((data: Trade) => {
+            this.cpCostByHour = data.costs[`cost_CP${level}`];
+            this.estimatedCPCost[`individual_cost_CP${level}`] *= value;
+    
+            console.log('this.estimatedCPCost', this.estimatedCPCost);
+          });
+    
+          console.log('value', value);
         }
       }
+      
     }
 
 
