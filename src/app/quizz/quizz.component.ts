@@ -431,29 +431,12 @@ export class QuizzComponent implements OnInit {
             this.settingsService.getSigle(this.trade).subscribe((data: Trade) => {
               console.log("data.costsdata.costs[`cost_CP${level}`]", data.costs[`cost_CP${level}`])
               this.cpCostByHour = data.costs[`cost_CP${level}`]
-
-              // ajout calcul
-              this.estimatedCPCost[`individual_cost_CP${level}`] = data.costs[`cost_CP${level}`] * 7
+              this.estimatedCPCost[`individual_cost_CP${level}`] = data.costs[`cost_CP${level}`]
             })
             console.log("le coût horaire de la compétence", this.cpCostByHour)
             break; // Sort de la boucle une fois la correspondance trouvée
           }
         }
-
-        // if (levelValue !== undefined) {
-        //   const value = durations[key][levelValue - 1]; // Obtient la valeur à partir de durationsBySigle
-        //   this.durationsByLevels[levelMatch] = value; // Stocke la valeur dans le tableau final avec la clé correspondante
-        //   console.log(`individual_cost_CP${level}`);
-        //   console.log(value);
-          
-        //   // this.estimatedCPCost[`individual_cost_CP${level}`]=this.estimatedCPCost[`individual_cost_CP${level}`]*value
-        //   if (this.estimatedCPCost.hasOwnProperty(`individual_cost_CP${level}`)) {
-        //     this.estimatedCPCost[`individual_cost_CP${level}`] *= value;
-        //   }
-        //   console.log('individual_cost_CP${level}', `individual_cost_CP${level}`); 
-        //   console.log('this.estimatedCPCost)', this.estimatedCPCost);
-
-        // }
 
         if (levelValue !== undefined) {
           const value = durations[key][levelValue - 1];
