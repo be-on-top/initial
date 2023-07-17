@@ -36,7 +36,7 @@ export class DetailsComponent implements OnInit {
   isIncremented: boolean = false
   isDecremented: boolean = false
   // pour pouvoir avoir un toggle et l'illusion d'un sélected
-  isToggled: boolean = false
+  isToggled:boolean=false
 
   @Output() hasBeenClicked: EventEmitter<boolean> = new EventEmitter<boolean>();
   // @Output() hasBeenUpdated: EventEmitter<number> = new EventEmitter<number>();
@@ -78,7 +78,6 @@ export class DetailsComponent implements OnInit {
   }
 
   choice(optScoring: any) {
-    alert("on est dans choice")
     // on incrémente le nombre total de réponses cliquées (ou cochées)
     this.fullAnswersClicked++
 
@@ -87,13 +86,11 @@ export class DetailsComponent implements OnInit {
 
 
     if (optScoring === true) {
-
       // on incrémente le nombre de bonnes réponses données
       this.fullGoodAnswersClicked++
       console.log("this.fullGoodAnswersClicked", this.fullGoodAnswersClicked);
       this.fullGoodAnswersClicked === this.fullOptScoringTrue ? this.counter = Number(this.counter) + Number(this.q.notation) : ""
       this.fullGoodAnswersClicked === this.fullOptScoringTrue ? this.isIncremented = true : this.isIncremented = false
-      this.fullGoodAnswersClicked === this.fullOptScoringTrue ? this.isDecremented = false : this.isDecremented = true
       // this.fullGoodAnswersClicked>this.fullOptScoringTrue?alert("Vous devez faire un choix. Toutes les réponses ne peuvent être bonnes"): ""    
       console.log("this.fullAnswersClicked", this.fullAnswersClicked)
       // alert(Number(this.counter))
@@ -104,7 +101,7 @@ export class DetailsComponent implements OnInit {
     } else {
 
       this.isIncremented = false
-      this.isDecremented = false
+
 
     }
     this.fullAnswersClicked >= this.totalAnswersAvailable ? (alert("Vous ne pouvez pas cocher toutes les réponses. Il faut faire une sélection"), this.fullAnswersClicked = 0, this.fullGoodAnswersClicked = 0, this.counter -= Number(this.q.notation), this.isDecremented = true) : ""
@@ -118,25 +115,21 @@ export class DetailsComponent implements OnInit {
     this.hasBeenUpdated.emit({ counter: Number(this.counter), evaluatedCompetence: this.q.competence, isIncremented: this.isIncremented, isDecremented: this.isDecremented })
 
   }
-
   unchoice(optScoring: any) {
+    // on incrémente le nombre total de réponses cliquées (ou cochées)
+    this.fullAnswersClicked--
 
     alert(optScoring)
-    this.fullAnswersClicked--
-    console.log('fullAnswersClicked', this.fullAnswersClicked)
+
 
 
     if (optScoring === true) {
-      this.fullGoodAnswersClicked === this.fullOptScoringTrue ? this.isDecremented = true : this.isDecremented = false
-      this.isIncremented = false
-      // on décrémente le nombre de bonnes réponses données
+      // on incrémente le nombre de bonnes réponses données
       this.fullGoodAnswersClicked--
-      console.log('fullGoodAnswersClicked', this.fullGoodAnswersClicked);
-
-
       console.log("this.fullGoodAnswersClicked", this.fullGoodAnswersClicked);
       this.counter = Number(this.counter) - Number(this.q.notation)
-
+      this.isIncremented = false
+      this.isDecremented = true
       // this.fullGoodAnswersClicked>this.fullOptScoringTrue?alert("Vous devez faire un choix. Toutes les réponses ne peuvent être bonnes"): ""    
       console.log("this.fullAnswersClicked", this.fullAnswersClicked)
       // alert(Number(this.counter))
@@ -145,13 +138,15 @@ export class DetailsComponent implements OnInit {
     } else {
 
       this.isIncremented = false
-      this.isDecremented=false
+
 
     }
-    // dans le cas du toggle, faut a priori le passer à false si et seulement si fullAnswersClicked = 0
-    this.fullAnswersClicked <= 0 ? this.isCompleted = false : this.isCompleted = true
-    console.log("(this.isCompleted", this.isCompleted);
+    // this.fullAnswersClicked >= this.totalAnswersAvailable ? (alert("Vous ne pouvez pas cocher toutes les réponses. Il faut faire une sélection"), this.fullAnswersClicked = 0, this.fullGoodAnswersClicked = 0, this.counter -= Number(this.q.notation), this.isDecremented = true) : ""
 
+
+    // on fait remonter l'information : une réponse a bien été cliquée (au minimum), ce qui en soit suffit pour pouvoir passer à la suivante ! 
+    // dans le cas du toggle, faut a priori le passer à false
+    this.isCompleted = false
     this.hasBeenClicked.emit(this.isCompleted)
     // // À un certain endroit de votre composant enfant...
     // this.variablesRemontees.emit({ variable1: 'valeur1', variable2: 42 });
@@ -160,16 +155,15 @@ export class DetailsComponent implements OnInit {
   }
 
   // si on fait du toggle et qu'on déporte la logique de choix choice ()
-  toggle(optScoring: boolean) {
+  toggle(optScoring:boolean) {
     this.isToggled = !this.isToggled;
-    this.isToggled === true ? this.choice(optScoring) : this.unchoice(optScoring)
+    this.isToggled===true?this.choice(optScoring):this.unchoice(optScoring)
   }
 
   // Méthode pour réinitialiser le compteur
   reset() {
     this.fullAnswersClicked = 0;
     this.fullGoodAnswersClicked = 0
-    this.isToggled = false
   }
 
 }
