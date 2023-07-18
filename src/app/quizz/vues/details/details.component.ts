@@ -36,7 +36,8 @@ export class DetailsComponent implements OnInit {
   isIncremented: boolean = false
   isDecremented: boolean = false
   // pour pouvoir avoir un toggle et l'illusion d'un sélected
-  isToggled: boolean = false
+  // isToggled: boolean = false
+  toggledStates: { [key: string]: boolean } = {};
 
   @Output() hasBeenClicked: EventEmitter<boolean> = new EventEmitter<boolean>();
   // @Output() hasBeenUpdated: EventEmitter<number> = new EventEmitter<number>();
@@ -84,6 +85,10 @@ export class DetailsComponent implements OnInit {
 
     alert(optScoring)
 
+    // je doute
+    // this.isIncremented = false
+    // this.isDecremented = false
+
 
 
     if (optScoring === true) {
@@ -107,7 +112,8 @@ export class DetailsComponent implements OnInit {
       this.isDecremented = false
 
     }
-    this.fullAnswersClicked >= this.totalAnswersAvailable ? (alert("Vous ne pouvez pas cocher toutes les réponses. Il faut faire une sélection"), this.fullAnswersClicked = 0, this.fullGoodAnswersClicked = 0, this.counter -= Number(this.q.notation), this.isDecremented = true) : ""
+    this.fullAnswersClicked >= this.totalAnswersAvailable ? (alert("Vous ne pouvez pas cocher toutes les réponses. Il faut faire une sélection"),
+    this.fullAnswersClicked = 0, this.fullGoodAnswersClicked = 0, this.counter -= Number(this.q.notation), this.isDecremented = true, this.resetToggledStates()) : this.isDecremented=false
 
 
     // on fait remonter l'information : une réponse a bien été cliquée (au minimum), ce qui en soit suffit pour pouvoir passer à la suivante ! 
@@ -160,16 +166,24 @@ export class DetailsComponent implements OnInit {
   }
 
   // si on fait du toggle et qu'on déporte la logique de choix choice ()
-  toggle(optScoring: boolean) {
-    this.isToggled = !this.isToggled;
-    this.isToggled === true ? this.choice(optScoring) : this.unchoice(optScoring)
+  toggle(key:string, optScoring: boolean) {
+    // this.isToggled = !this.isToggled;
+    this.toggledStates[key] = !this.toggledStates[key];
+    this.toggledStates[key] === true ? this.choice(optScoring) : this.unchoice(optScoring)
   }
 
   // Méthode pour réinitialiser le compteur
   reset() {
     this.fullAnswersClicked = 0;
     this.fullGoodAnswersClicked = 0
-    this.isToggled = false
+    // this.isToggled = false
+    this.resetToggledStates()
+  }
+
+  resetToggledStates() {
+    for (let key in this.toggledStates) {
+      this.toggledStates[key] = false;
+    }
   }
 
 }

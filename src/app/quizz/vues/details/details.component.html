@@ -31,11 +31,11 @@
     <!-- début des réponses -->
     <div class="p-3 row justify-content-between align-items-end mb-3 w-100">
 
-        <div class="col-sm-6 rounded text-center choice mb-3" (click)="toggle(q.optScoring1)">
-            <button [ngClass]="{'bg-test':q.optScoring1==true, 'text-success':isToggled===true}"
+        <div class="col-sm-6 rounded text-center choice mb-3" (click)="toggle(q.option1, q.optScoring1)">
+            <button [ngClass]="{'bg-test':q.optScoring1==true, 'text-choiced':toggledStates[q.option1]}"
                 class="btn btn-transparent border-0 text-center fs-5 bg-light">R1 : {{q.option1}}
                 <!-- pour illusion du selected  -->
-                <i *ngIf="isToggled===true" class="text-success fs-6 bi bi-check-lg"></i>
+                <i *ngIf="toggledStates[q.option1]" class="text-choiced fs-6 bi bi-check-lg"></i>
             </button>
             <div *ngIf="responsesMedias && responsesMedias.length!==0">
                 <div *ngFor="let item of responsesMedias">
@@ -45,11 +45,11 @@
             </div>
             <!-- si pas d'images -->
         </div>
-        <div class="col-sm-6 rounded text-center choice mb-3" (click)="toggle(q.optScoring2)">
-            <button [ngClass]="{'bg-test':q.optScoring2==true, 'text-success':isToggled===true}"
+        <div class="col-sm-6 rounded text-center choice mb-3" (click)="toggle(q.option2, q.optScoring2)">
+            <button [ngClass]="{'bg-test':q.optScoring2==true, 'text-choiced':toggledStates[q.option2]}"
                 class="btn btn-transparent border-0 text-center fs-5 bg-light">R2 : {{q.option2}}
                 <!-- pour illusion du selected  -->
-                <i *ngIf="isToggled===true" class="text-success fs-6 bi bi-check-lg"></i>
+                <i *ngIf="toggledStates[q.option2]" class="text-choiced fs-6 bi bi-check-lg"></i>
             </button>
             <div *ngIf="responsesMedias">
                 <div *ngFor="let item of responsesMedias">
@@ -59,11 +59,11 @@
             </div>
         </div>
         <!-- à partir d'ici, les options Réponse 3 et Réponse 4 n'étant pas obligatoires, faut qu'on s'assure qu'elles existent -->
-        <div class="col-sm-6 rounded text-center choice mb-3" (click)="toggle(q.optScoring3)">
-            <button *ngIf="q.option3" [ngClass]="{'bg-test':q.optScoring3==true, 'text-success':isToggled===true}"
+        <div class="col-sm-6 rounded text-center choice mb-3" (click)="toggle(q.option3, q.optScoring3)">
+            <button *ngIf="q.option3" [ngClass]="{'bg-test':q.optScoring3==true, 'text-choiced':toggledStates[q.option3]}"
                 class="btn btn-transparent text-center fs-5 bg-light align-self-center">R3 : {{q.option3}}
                 <!-- pour illusion du selected  -->
-                <i *ngIf="isToggled===true" class="text-success fs-6 bi bi-check-lg"></i>
+                <i *ngIf="toggledStates[q.option3]" class="text-choiced fs-6 bi bi-check-lg"></i>
             </button>
 
             <div *ngIf="responsesMedias">
@@ -75,11 +75,11 @@
         </div>
         <!-- <div class="col-sm-6 rounded text-center choice mb-3" *ngIf="q.option4" (click)="choice(q.optScoring4)"> -->
         <!-- si je fais du toggle...  -->
-        <div class="col-sm-6 rounded text-center choice mb-3" *ngIf="q.option4" (click)="toggle(q.optScoring4)">
-            <button [ngClass]="{'bg-test':q.optScoring4==true, 'text-success':isToggled===true}"
+        <div class="col-sm-6 rounded text-center choice mb-3" *ngIf="q.option4" (click)="toggle(q.option4, q.optScoring4)">
+            <button [ngClass]="{'bg-test':q.optScoring4==true, 'text-choiced':toggledStates[q.option4]}"
                 class="btn btn-transparent text-center fs-5 bg-light">R4 : {{q.option4}}
                 <!-- pour illusion du selected  -->
-                <i *ngIf="isToggled===true" class="text-success fs-6 bi bi-check-lg"></i>
+                <i *ngIf="toggledStates[q.option4]" class="text-choiced fs-6 bi bi-check-lg"></i>
             </button>
             <div *ngIf="responsesMedias">
                 <div *ngFor="let item of responsesMedias">

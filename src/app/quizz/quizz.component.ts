@@ -429,7 +429,7 @@ export class QuizzComponent implements OnInit {
             levelValue = levelObj[objKey] // Stocke la valeur correspondante
 
             this.settingsService.getSigle(this.trade).subscribe((data: Trade) => {
-              console.log("data.costsdata.costs[`cost_CP${level}`]", data.costs[`cost_CP${level}`])
+              console.log(`data.costsdata.costs["cost_CP${level}"]`, data.costs[`cost_CP${level}`])
               this.cpCostByHour = data.costs[`cost_CP${level}`]
               this.estimatedCPCost[`individual_cost_CP${level}`] = data.costs[`cost_CP${level}`]
             })
