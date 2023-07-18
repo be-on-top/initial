@@ -1,0 +1,44 @@
+.btn:hover {
+    box-shadow: none
+}
+
+
+.bg-test:hover {
+    background-color: #B2BC00 !important;
+}
+
+.text-choiced {
+    position: relative;
+    overflow: hidden;
+    /* Empêche le débordement de l'élément */
+}
+
+.text-choiced::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: #8B00BD;
+    animation: stretchWidth 0.3s ease forwards;
+}
+
+/* .text-choiced i::after {
+    display: none;
+} */
+
+i.text-choiced::after {
+    display: none;
+    /* Annule l'effet de soulignement pour les éléments <i> */
+}
+
+@keyframes stretchWidth {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 100%;
+    }
+}
