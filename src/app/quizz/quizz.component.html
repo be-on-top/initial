@@ -45,7 +45,7 @@
     <!-- <button *ngIf="indexQuestion<3; else elseBlock" class="btn btn-primary m-auto"
         [disabled]="isCompleted==false || indexQuestion==3" (click)="next(indexQuestion)">Question suivante</button> -->
     <button *ngIf="indexQuestion<questions.length; else elseBlock" class="btn btn-primary m-auto"
-        [disabled]="isCompleted==false || indexQuestion==questions.length" (click)="next(indexQuestion)">Question suivante</button>
+        [disabled]="isCompleted==false || fullAnswersClicked===0 || indexQuestion==questions.length" (click)="next(indexQuestion)">Question suivante</button>
     <ng-template #elseBlock> <button class="btn btn-primary m-md-auto"><i class="bi bi-check text-light"></i>QCM
             d'accroche terminé !</button>
     </ng-template>

@@ -41,7 +41,7 @@ export class DetailsComponent implements OnInit {
 
   @Output() hasBeenClicked: EventEmitter<boolean> = new EventEmitter<boolean>();
   // @Output() hasBeenUpdated: EventEmitter<number> = new EventEmitter<number>();
-  @Output() hasBeenUpdated: EventEmitter<{ counter: number, evaluatedCompetence: string, isIncremented: boolean, isDecremented: boolean }> = new EventEmitter<{ counter: number, evaluatedCompetence: string, isIncremented: boolean, isDecremented: boolean }>();
+  @Output() hasBeenUpdated: EventEmitter<{ counter: number, evaluatedCompetence: string, isIncremented: boolean, isDecremented: boolean, fullAnswersClicked: number }> = new EventEmitter<{ counter: number, evaluatedCompetence: string, isIncremented: boolean, isDecremented: boolean, fullAnswersClicked:number }>();
 
   constructor() {
     // this.fullAnswersClicked=0
@@ -113,7 +113,7 @@ export class DetailsComponent implements OnInit {
 
     }
     this.fullAnswersClicked >= this.totalAnswersAvailable ? (alert("Vous ne pouvez pas cocher toutes les réponses. Il faut faire une sélection"),
-    this.fullAnswersClicked = 0, this.fullGoodAnswersClicked = 0, this.counter -= Number(this.q.notation), this.isDecremented = true, this.resetToggledStates()) : this.isDecremented=false
+      this.fullAnswersClicked = 0, this.fullGoodAnswersClicked = 0, this.counter -= Number(this.q.notation), this.isDecremented = true, this.resetToggledStates()) : this.isDecremented = false
 
 
     // on fait remonter l'information : une réponse a bien été cliquée (au minimum), ce qui en soit suffit pour pouvoir passer à la suivante ! 
@@ -121,7 +121,7 @@ export class DetailsComponent implements OnInit {
     this.hasBeenClicked.emit(this.isCompleted)
     // // À un certain endroit de votre composant enfant...
     // this.variablesRemontees.emit({ variable1: 'valeur1', variable2: 42 });
-    this.hasBeenUpdated.emit({ counter: Number(this.counter), evaluatedCompetence: this.q.competence, isIncremented: this.isIncremented, isDecremented: this.isDecremented })
+    this.hasBeenUpdated.emit({ counter: Number(this.counter), evaluatedCompetence: this.q.competence, isIncremented: this.isIncremented, isDecremented: this.isDecremented, fullAnswersClicked:this.fullAnswersClicked })
 
   }
 
@@ -151,7 +151,7 @@ export class DetailsComponent implements OnInit {
     } else {
 
       this.isIncremented = false
-      this.isDecremented=false
+      this.isDecremented = false
 
     }
     // dans le cas du toggle, faut a priori le passer à false si et seulement si fullAnswersClicked = 0
@@ -161,12 +161,12 @@ export class DetailsComponent implements OnInit {
     this.hasBeenClicked.emit(this.isCompleted)
     // // À un certain endroit de votre composant enfant...
     // this.variablesRemontees.emit({ variable1: 'valeur1', variable2: 42 });
-    this.hasBeenUpdated.emit({ counter: Number(this.counter), evaluatedCompetence: this.q.competence, isIncremented: this.isIncremented, isDecremented: this.isDecremented })
+    this.hasBeenUpdated.emit({ counter: Number(this.counter), evaluatedCompetence: this.q.competence, isIncremented: this.isIncremented, isDecremented: this.isDecremented, fullAnswersClicked: this.fullAnswersClicked })
 
   }
 
   // si on fait du toggle et qu'on déporte la logique de choix choice ()
-  toggle(key:string, optScoring: boolean) {
+  toggle(key: string, optScoring: boolean) {
     // this.isToggled = !this.isToggled;
     this.toggledStates[key] = !this.toggledStates[key];
     this.toggledStates[key] === true ? this.choice(optScoring) : this.unchoice(optScoring)

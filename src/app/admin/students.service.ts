@@ -16,6 +16,7 @@ import { NgForm } from '@angular/forms';
   providedIn: 'root'
 })
 export class StudentsService {
+  private fullResults: { [key: string]: { duration: number; cost: number } }[] = [];
 
   constructor(private auth: Auth, private firestore: Firestore) { }
 
@@ -159,20 +160,20 @@ export class StudentsService {
         console.log(isIncremented)
         console.log(isDecremented)
         console.log(numberOfPoints);
-        
+
 
         // on le rajoute pour décrémenter LA compétence si compteurs réinitialisés parce que TOUTES les réponses ont été cochées !!!!
 
-        if(evaluatedCompetence in obj && isIncremented == true && isDecremented==false) {
+        if (evaluatedCompetence in obj && isIncremented == true && isDecremented == false) {
           return { ...obj, [evaluatedCompetence]: Number(obj[evaluatedCompetence]) + Number(numberOfPoints) }
         }
-        if ((evaluatedCompetence in obj && isIncremented == false && isDecremented == true) ) {
+        if ((evaluatedCompetence in obj && isIncremented == false && isDecremented == true)) {
           return { ...obj, [evaluatedCompetence]: Number(obj[evaluatedCompetence]) - Number(numberOfPoints) }
         }
 
         // il n'a pas eu le temps d'être incrémenté, qu'on lui dit déjà de décrémenter
         // cas où la dernière réponse cochée était bonne
-        if (evaluatedCompetence in obj && isIncremented == false && isDecremented==false) {
+        if (evaluatedCompetence in obj && isIncremented == false && isDecremented == false) {
           return { ...obj, [evaluatedCompetence]: Number(obj[evaluatedCompetence]) + Number(0) }
         }
 
@@ -194,5 +195,57 @@ export class StudentsService {
 
 
   }
+
+
+  setFullResults(id:string, durationsByLevels: { [key: string]: number }, estimatedCPCost: { [key: string]: number }) {
+    console.log("id de l'étudiant récupéré par studentsService", id);
+    console.log("durationsByLevels récupéré par studentsService", durationsByLevels);
+    console.log("estimatedCPCost récupéré par studentsService", estimatedCPCost);
+
+    // let fullResults: { [key: string]: { duration: number; cost: number } }[] = []
+
+    const estimatedKeys = Object.keys(estimatedCPCost);
+
+    for (const estimatedKey of estimatedKeys) {
+      const durationKey = estimatedKey.replace('individual_cost_', '');
+      if (durationsByLevels.hasOwnProperty(durationKey)) {
+        const entry = {
+          [durationKey]: {
+            duration: durationsByLevels[durationKey],
+            cost: estimatedCPCost[estimatedKey]
+          }
+        };
+        this.fullResults.push(entry);
+      }
+
+      console.log('this.fullResults', this.fullResults);
+
+
+    }
+    this.updateFullResults(id)
+
+  }
+
+  updateFullResults(id:string){
+
+    let $studentRef = doc(this.firestore, "students/" + id);
+
+    let updateStudent = {fullResults:this.fullResults }
+    updateDoc($studentRef, updateStudent)
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

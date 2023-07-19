@@ -217,9 +217,10 @@ export class QuizzComponent implements OnInit {
   // Composant parent
   // handleVariablesRemontees(event: { variable1: string, variable2: number }) {
 
-  updated(event: { counter: number, evaluatedCompetence: string, isIncremented: boolean, isDecremented: boolean }) {
+  updated(event: { counter: number, evaluatedCompetence: string, isIncremented: boolean, isDecremented: boolean, fullAnswersClicked:number }) {
     // puisque value intègre la remontée de 2 variables différentes
     this.scoreCounter = event.counter
+    this.fullAnswersClicked = event.fullAnswersClicked
     const isIncremented = event.isIncremented
     const isDecremented = event.isDecremented
 
@@ -368,8 +369,7 @@ export class QuizzComponent implements OnInit {
     }
   }
 
-
-
+  
 
   setLevel() {
 
@@ -409,6 +409,9 @@ export class QuizzComponent implements OnInit {
 
     console.log("this.levelsArray)", this.levelsArray);
     this.displayDuration(this.durations, this.levelsArray)
+
+    // et là on peut essayer d'enregistrer
+    this.studentService.setFullResults(this.studentId, this.durationsByLevels, this.estimatedCPCost)
 
   }
 
