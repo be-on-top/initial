@@ -40,6 +40,9 @@ export class AccountComponent implements OnInit {
 
   lastIndex: number = 0
 
+  // pour afficher si on garde cette option fullResuls à l'utilisateur
+  fullResults: { [key: string]: { duration: number; cost: number } }[] = [];
+
 
   constructor(private auth: Auth, private firestore: Firestore, private authService: AuthService, private studentService: StudentsService, private activatedRoute: ActivatedRoute, private router: Router, private notificationService: PushNotificationService) {
     const messaging = getMessaging();
@@ -76,6 +79,7 @@ export class AccountComponent implements OnInit {
           console.log("userData from students 0...", data);
           this.userData = data
           this.lastIndex=Number(this.userData.lastIndexQuestion)
+          this.userData.fullResults?this.fullResults=this.userData.fullResults:[]
         })
         // y a juste que je n'arrive pas à me la faire livrer par le service !!!
         // this.studentService.getDocsByParam(this.user)

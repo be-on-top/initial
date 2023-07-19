@@ -411,7 +411,8 @@ export class QuizzComponent implements OnInit {
     this.displayDuration(this.durations, this.levelsArray)
 
     // et là on peut essayer d'enregistrer
-    this.studentService.setFullResults(this.studentId, this.durationsByLevels, this.estimatedCPCost)
+    let fullResults= this.studentService.setFullResults(this.durationsByLevels, this.estimatedCPCost)
+    this.studentService.updateFullResults(this.studentId, fullResults)
 
   }
 

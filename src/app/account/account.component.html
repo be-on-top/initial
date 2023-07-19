@@ -126,34 +126,43 @@
                 </div>
                 <div id="collapseThree" class="collapse" data-bs-parent="#accordion">
                     <div class="card-body">
-                        <p class="card-text" *ngIf="userData.scoreCounter">Le cumul actuel de vos points :
-                            <span class="fw-bold">
-                                {{userData.scoreCounter}} PNTS
-                            </span>
-                        </p>
-                        <p class="card-text" *ngIf="userData.tradeEvaluated">Métier concerné : <span
-                                class="fw-bold">{{userData.tradeEvaluated}}</span></p>
-                        <p class="card-text" *ngIf="userData.lastIndexQuestion">Vous avez jusqu'ici répondu à
-                            <span class="fw-bold">{{lastIndex+1}} Questions</span>
-                        </p>
 
-                        <p class="card-text" *ngIf="userData.studentCompetences">Répartition des points par compétences
-                            :
-                            <!-- {{userData.studentCompetences|json}} -->
-                            <span class="fw-bold" *ngFor="let objet of userData.studentCompetences">
-                                <span *ngFor="let item of objet | keyvalue" class="d-block">
-                                    {{ item.key }}: {{ item.value }}
-                                </span>
-                            </span>
-                        </p>
+                        <div *ngIf="userData.tradeEvaluated; else none">
+                            <p class="card-text" *ngIf="userData.tradeEvaluated">Métier concerné : <span
+                                    class="fw-bold">{{userData.tradeEvaluated}}</span></p>
+                            <!-- Partie 1 si QCM en cours -->
+                            <div *ngIf="userData.lastIndexQuestion<2, else done">
+                                <p class="card-text" *ngIf="userData.lastIndexQuestion">Vous avez jusqu'ici répondu à
+                                    <span class="fw-bold">{{lastIndex+1}} Questions</span>
+                                </p>
 
-                        <button class="btn bg-primary" *ngIf="userData.tradeEvaluated; else none"><a class="text-light"
-                                [routerLink]="['/quizz/', userData.tradeEvaluated, lastIndex+1, userData.scoreCounter,true, user]">
-                                <span *ngIf="userData.lastIndexQuestion<2; else elseBlock">Poursuivre</span>
-                                <ng-template #elseBlock> <span>Fin du QCM d'accroche</span>
-                                </ng-template></a>
-                        </button>
-                        <ng-template #none> <span>Aucun QCM enn cours</span>
+                                <button class="btn bg-primary"><a class="text-light"
+                                        [routerLink]="['/quizz/', userData.tradeEvaluated, lastIndex+1, userData.scoreCounter,true, user]">
+                                        Poursuivre</a>
+                                </button>
+
+                            </div>
+
+                            <!-- Partie 2 si QCM terminé -->
+                            <ng-template #done>
+                                <p class="btn bg-primary text-light">QCM de positionnement terminé </p>
+                                <p class="card-text fw-bold mb-3">Estimation personnalisée</p>
+
+                                <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
+                                <p class="card-text" *ngIf="fullResults">
+                                    <span *ngFor="let result of fullResults">
+                                        <span *ngFor="let item of result | keyvalue" class="d-block">
+                                            <span class="fw-bold"> Compétence {{ item.key }}: </span>Nombre d'heures
+                                            estimé
+                                            {{ item.value.duration }} - coût pour l'ensemble {{ item.value.cost }}€
+                                        </span>
+                                    </span>
+                                </p>
+
+                            </ng-template>
+                        </div>
+
+                        <ng-template #none> <span>Aucun QCM en cours</span>
                         </ng-template>
                     </div>
                 </div>

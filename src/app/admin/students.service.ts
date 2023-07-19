@@ -16,7 +16,7 @@ import { NgForm } from '@angular/forms';
   providedIn: 'root'
 })
 export class StudentsService {
-  private fullResults: { [key: string]: { duration: number; cost: number } }[] = [];
+  // private fullResults: { [key: string]: { duration: number; cost: number } }[] = [];
 
   constructor(private auth: Auth, private firestore: Firestore) { }
 
@@ -197,15 +197,14 @@ export class StudentsService {
   }
 
 
-  setFullResults(id:string, durationsByLevels: { [key: string]: number }, estimatedCPCost: { [key: string]: number }) {
-    console.log("id de l'étudiant récupéré par studentsService", id);
+  private fullResults: { [key: string]: { duration: number; cost: number } }[] = [];
+
+  setFullResults(durationsByLevels: { [key: string]: number }, estimatedCPCost: { [key: string]: number }) {
     console.log("durationsByLevels récupéré par studentsService", durationsByLevels);
     console.log("estimatedCPCost récupéré par studentsService", estimatedCPCost);
-
-    // let fullResults: { [key: string]: { duration: number; cost: number } }[] = []
-
+  
     const estimatedKeys = Object.keys(estimatedCPCost);
-
+  
     for (const estimatedKey of estimatedKeys) {
       const durationKey = estimatedKey.replace('individual_cost_', '');
       if (durationsByLevels.hasOwnProperty(durationKey)) {
@@ -217,20 +216,19 @@ export class StudentsService {
         };
         this.fullResults.push(entry);
       }
-
+  
       console.log('this.fullResults', this.fullResults);
-
-
     }
-    this.updateFullResults(id)
-
+  
+    // Renvoie le tableau à la fin de la méthode
+    return this.fullResults;
   }
 
-  updateFullResults(id:string){
+  updateFullResults(id:string, fullResults:any){
 
     let $studentRef = doc(this.firestore, "students/" + id);
 
-    let updateStudent = {fullResults:this.fullResults }
+    let updateStudent = {fullResults:fullResults }
     updateDoc($studentRef, updateStudent)
 
 
