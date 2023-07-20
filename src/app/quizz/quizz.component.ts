@@ -68,6 +68,7 @@ export class QuizzComponent implements OnInit {
   estimatedCPCost: { [key: string]: number } = {};
   fullResults: { [key: string]: { duration: number; cost: number } }[] = [];
   quotationIsReady:boolean=false
+  totalCost:number=0
 
 
 
@@ -493,6 +494,8 @@ export class QuizzComponent implements OnInit {
 
     this.studentService.updateFullResults(this.studentId, this.fullResults)
 
+    this.totalCost = this.sumCosts(this.fullResults)
+
   }
 
   getCursors() {
@@ -512,6 +515,23 @@ export class QuizzComponent implements OnInit {
     })
 
   }
+
+
+
+  sumCosts(fullResults: { [key: string]: { duration: number; cost: number } }[]): number {
+    let totalCost = 0;
+  
+    for (const entry of fullResults) {
+      for (const key in entry) {
+        if (entry.hasOwnProperty(key)) {
+          totalCost += entry[key].cost;
+        }
+      }
+    }
+  
+    return totalCost;
+  }
+  
 
 
 }

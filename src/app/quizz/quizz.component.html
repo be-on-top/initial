@@ -99,7 +99,10 @@
         </div>
         <div *ngFor="let item of estimatedCPCost | keyvalue">
             <span class="fw-bold">Coût individualisé pour {{ item.key | slice:16 }}:</span> {{ item.value }} euros
-        </div> 
+        </div>
+        <hr>
+        <span class="fw-bold">Coût total de la formation {{ totalCost }} euros</span>
     </div>
+
 
 </div>
