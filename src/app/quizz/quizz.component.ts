@@ -66,6 +66,9 @@ export class QuizzComponent implements OnInit {
   // pour le coût individualisé d'une compétence en fonction du niveau et du coût horaire
   cpCostByHour: number = 0
   estimatedCPCost: { [key: string]: number } = {};
+  fullResults: { [key: string]: { duration: number; cost: number } }[] = [];
+  quotationIsReady:boolean=false
+
 
 
   constructor(
@@ -217,7 +220,7 @@ export class QuizzComponent implements OnInit {
   // Composant parent
   // handleVariablesRemontees(event: { variable1: string, variable2: number }) {
 
-  updated(event: { counter: number, evaluatedCompetence: string, isIncremented: boolean, isDecremented: boolean, fullAnswersClicked:number }) {
+  updated(event: { counter: number, evaluatedCompetence: string, isIncremented: boolean, isDecremented: boolean, fullAnswersClicked: number }) {
     // puisque value intègre la remontée de 2 variables différentes
     this.scoreCounter = event.counter
     this.fullAnswersClicked = event.fullAnswersClicked
@@ -369,9 +372,9 @@ export class QuizzComponent implements OnInit {
     }
   }
 
-  
 
-  setLevel() {
+
+  async setLevel() {
 
     // ne sera appeler qu'à ce moment !!!!!!
     // const realEvaluations: Denominator[] = this.convertirNoteSurVingt();
@@ -408,11 +411,15 @@ export class QuizzComponent implements OnInit {
     });
 
     console.log("this.levelsArray)", this.levelsArray);
-    this.displayDuration(this.durations, this.levelsArray)
+    // this.displayDuration(this.durations, this.levelsArray)
 
-    // et là on peut essayer d'enregistrer
-    let fullResults= this.studentService.setFullResults(this.durationsByLevels, this.estimatedCPCost)
-    this.studentService.updateFullResults(this.studentId, fullResults)
+    // // et là on peut essayer d'enregistrer
+    // // let fullResults = this.studentService.setFullResults(this.durationsByLevels, this.estimatedCPCost)
+    // // this.studentService.updateFullResults(this.studentId, fullResults)
+
+    // // Appelez la fonction pour générer fullResults
+    await this.generateFullResults()
+
 
   }
 
@@ -445,27 +452,48 @@ export class QuizzComponent implements OnInit {
         if (levelValue !== undefined) {
           const value = durations[key][levelValue - 1];
           this.durationsByLevels[levelMatch] = value;
-    
+
           this.settingsService.getSigle(this.trade).subscribe((data: Trade) => {
             this.cpCostByHour = data.costs[`cost_CP${level}`];
             this.estimatedCPCost[`individual_cost_CP${level}`] *= value;
-    
+
             console.log('this.estimatedCPCost', this.estimatedCPCost);
           });
-    
+
           console.log('value', value);
         }
       }
-      
+
     }
-
-
 
     console.log('this.troisiemeTableau', this.durationsByLevels);
   }
 
 
+  async generateFullResults() { 
+    this.quotationIsReady=true
 
+    // ce qu'on avait rattaché à setLevel, bien que ce ne soit pas cohérent du point de vue de la seule logique
+    this.displayDuration(this.durations, this.levelsArray)
+
+    // Par exemple, si ces objets proviennent d'une autre fonction, vous les récupérerez ici.
+    const durationsByLevels = this.durationsByLevels // Récupérez les données de manière appropriée
+    const estimatedCPCost = this.estimatedCPCost // Récupérez les données de manière appropriée
+
+    console.log("this.durationsByLevels dans generateFullResults", this.durationsByLevels);
+    console.log("this.levelsArray dans generateFullResults", this.levelsArray);
+    
+
+
+    // Appelez la fonction setFullResults pour générer le tableau fullResults
+    this.fullResults = await this.studentService.setFullResults(durationsByLevels, estimatedCPCost);
+
+    // Maintenant, vous pouvez utiliser this.fullResults en sachant qu'il est correctement rempli
+    console.log('this.fullResults', this.fullResults)
+
+    this.studentService.updateFullResults(this.studentId, this.fullResults)
+
+  }
 
   getCursors() {
 

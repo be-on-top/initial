@@ -45,7 +45,8 @@
     <!-- <button *ngIf="indexQuestion<3; else elseBlock" class="btn btn-primary m-auto"
         [disabled]="isCompleted==false || indexQuestion==3" (click)="next(indexQuestion)">Question suivante</button> -->
     <button *ngIf="indexQuestion<questions.length; else elseBlock" class="btn btn-primary m-auto"
-        [disabled]="isCompleted==false || fullAnswersClicked===0 || indexQuestion==questions.length" (click)="next(indexQuestion)">Question suivante</button>
+        [disabled]="isCompleted==false || fullAnswersClicked===0 || indexQuestion==questions.length"
+        (click)="next(indexQuestion)">Question suivante</button>
     <ng-template #elseBlock> <button class="btn btn-primary m-md-auto"><i class="bi bi-check text-light"></i>QCM
             d'accroche terminé !</button>
     </ng-template>
@@ -71,7 +72,6 @@
     <!-- <div *ngIf="levelsArray && levelsArray.length>0">{{levelsArray | json}}</div> -->
 
 
-
     <!-- notes réelles sur 20 -->
     <div *ngIf="realEvaluations && realEvaluations.length>0" class="mt-3">
         <div *ngFor="let result of realEvaluations">
@@ -86,10 +86,20 @@
                 item.value }}) </div>
         </div>
     </div>
-    <div *ngFor="let item of durationsByLevels | keyvalue">
-        <span class="fw-bold">Durée de la formation pour {{ item.key }}:</span> {{ item.value }} heures
+
+    <hr>
+
+    <button (click)="generateFullResults()" class="btn bg-warning m-md-auto text-light  fs-4"><i
+            class="me-3 bi bi-bar-chart-steps text-light"></i>Votre devis</button>
+    <!-- <div *ngIf="levelsArray && levelsArray.length>0">{{levelsArray | json}}</div> -->
+
+    <div *ngIf="fullResults && fullResults.length>0" class="mt-3">
+        <div *ngFor="let item of durationsByLevels | keyvalue">
+            <span class="fw-bold">Durée de la formation pour {{ item.key }}:</span> {{ item.value }} heures
+        </div>
+        <div *ngFor="let item of estimatedCPCost | keyvalue">
+            <span class="fw-bold">Coût individualisé pour {{ item.key | slice:16 }}:</span> {{ item.value }} euros
+        </div> 
     </div>
-    <div *ngFor="let item of estimatedCPCost | keyvalue">
-        <span class="fw-bold">Coût individualisé pour {{  item.key | slice:16 }}:</span> {{ item.value }} euros
-    </div>
+
 </div>

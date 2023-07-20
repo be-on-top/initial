@@ -197,14 +197,10 @@ export class StudentsService {
   }
 
 
-  private fullResults: { [key: string]: { duration: number; cost: number } }[] = [];
-
-  setFullResults(durationsByLevels: { [key: string]: number }, estimatedCPCost: { [key: string]: number }) {
-    console.log("durationsByLevels récupéré par studentsService", durationsByLevels);
-    console.log("estimatedCPCost récupéré par studentsService", estimatedCPCost);
-  
+  async setFullResults(durationsByLevels: { [key: string]: number }, estimatedCPCost: { [key: string]: number }) {
     const estimatedKeys = Object.keys(estimatedCPCost);
-  
+    const fullResults = []; // Initialise le tableau ici
+
     for (const estimatedKey of estimatedKeys) {
       const durationKey = estimatedKey.replace('individual_cost_', '');
       if (durationsByLevels.hasOwnProperty(durationKey)) {
@@ -213,26 +209,24 @@ export class StudentsService {
             duration: durationsByLevels[durationKey],
             cost: estimatedCPCost[estimatedKey]
           }
-        };
-        this.fullResults.push(entry);
+        }
+        fullResults.push(entry);
       }
-  
-      console.log('this.fullResults', this.fullResults);
     }
-  
-    // Renvoie le tableau à la fin de la méthode
-    return this.fullResults;
+
+    console.log('this.fullResults', fullResults);
+    return fullResults; // Renvoie le tableau à la fin de la méthode
   }
 
-  updateFullResults(id:string, fullResults:any){
+  updateFullResults(id: string, fullResults: any) {
 
     let $studentRef = doc(this.firestore, "students/" + id);
 
-    let updateStudent = {fullResults:fullResults }
+    let updateStudent = { fullResults: fullResults }
     updateDoc($studentRef, updateStudent)
 
 
-    }
+  }
 
 
 
