@@ -180,8 +180,22 @@ export class StudentsService {
         return obj;
 
       })
-      let updateStudent = { scoreCounter: scoreCounter, lastIndexQuestion: indexQuestion, tradeEvaluated: trade, studentCompetences: updatedTableauObjets }
+
+      let updateStudent: any = { scoreCounter: scoreCounter, lastIndexQuestion: indexQuestion, tradeEvaluated: trade, studentCompetences: updatedTableauObjets }
+      console.log('updateStudent', updateStudent);
+
+      // c'est là qu'on peut le transformer pour adjoindre le sigle au nom des principales propriétés concernées
+      let globalUpdatedStudent: any = {}
+      for (const key in updateStudent) {
+        const newKey = `${trade}_${key}`;
+        globalUpdatedStudent[newKey] = updateStudent[key]
+      }
+
+      console.log('globalUpdatedStudent', globalUpdatedStudent)
+
+      // ça ne change pas vraiment, on donnera globalUpdatedStudent à enregistrer plus tard...
       updateDoc($studentRef, updateStudent)
+
 
     } else {
       alert('has NOT startedEvaluation ! ')
@@ -191,9 +205,6 @@ export class StudentsService {
       // updateDoc($studentRef, updateStudent);
 
     }
-
-
-
   }
 
 
@@ -210,6 +221,7 @@ export class StudentsService {
             cost: estimatedCPCost[estimatedKey]
           }
         }
+
         fullResults.push(entry);
       }
     }
@@ -224,7 +236,6 @@ export class StudentsService {
 
     let updateStudent = { fullResults: fullResults }
     updateDoc($studentRef, updateStudent)
-
 
   }
 
