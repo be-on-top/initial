@@ -159,8 +159,7 @@ export class StudentsService {
 
         console.log(isIncremented)
         console.log(isDecremented)
-        console.log(numberOfPoints);
-
+        console.log(numberOfPoints)
 
         // on le rajoute pour décrémenter LA compétence si compteurs réinitialisés parce que TOUTES les réponses ont été cochées !!!!
 
@@ -185,6 +184,10 @@ export class StudentsService {
       console.log('updateStudent', updateStudent);
 
       // c'est là qu'on peut le transformer pour adjoindre le sigle au nom des principales propriétés concernées
+      // mais avant, juste pour anticiper les tests à venir, on va dégager tradeEvaluated de uddateStudent
+      delete (updateStudent.tradeEvaluated)
+
+
       let globalUpdatedStudent: any = {}
       for (const key in updateStudent) {
         const newKey = `${trade}_${key}`;
@@ -192,6 +195,11 @@ export class StudentsService {
       }
 
       console.log('globalUpdatedStudent', globalUpdatedStudent)
+
+      // et toujours juste pour anticiper le contexte où plusiers QCM seront entammés. 
+      globalUpdatedStudent.tradesEvaluated = [trade]
+
+      console.log('globalUpdatedStudent with tradesEvaluated[]', globalUpdatedStudent)
 
       // ça ne change pas vraiment, on donnera globalUpdatedStudent à enregistrer plus tard...
       updateDoc($studentRef, updateStudent)
