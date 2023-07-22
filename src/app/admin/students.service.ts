@@ -185,7 +185,7 @@ export class StudentsService {
 
       // c'est là qu'on peut le transformer pour adjoindre le sigle au nom des principales propriétés concernées
       // mais avant, juste pour anticiper les tests à venir, on va dégager tradeEvaluated de uddateStudent
-      delete (updateStudent.tradeEvaluated)
+      // delete (updateStudent.tradeEvaluated)
 
 
       let globalUpdatedStudent: any = {}
