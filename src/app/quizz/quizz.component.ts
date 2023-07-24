@@ -425,7 +425,7 @@ export class QuizzComponent implements OnInit {
   }
 
 
-  displayDuration(durations: any, levelsArray: any): void {
+  async displayDuration(durations: any, levelsArray: any): Promise<any> {
 
     for (const key in durations) {
       const level = parseInt(key.match(/\d+$/)?.[0] || ""); // Obtient le niveau de résultat à partir de la clé
@@ -475,7 +475,7 @@ export class QuizzComponent implements OnInit {
     this.quotationIsReady=true
 
     // ce qu'on avait rattaché à setLevel, bien que ce ne soit pas cohérent du point de vue de la seule logique
-    this.displayDuration(this.durations, this.levelsArray)
+    await this.displayDuration(this.durations, this.levelsArray)
 
     // Par exemple, si ces objets proviennent d'une autre fonction, vous les récupérerez ici.
     const durationsByLevels = this.durationsByLevels // Récupérez les données de manière appropriée
