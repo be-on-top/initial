@@ -163,7 +163,6 @@ export class QuizzComponent implements OnInit {
       }
 
       // Pour générer le tableau de compétences dans le compte utilisateur si il n'y en a  pas
-      // pour essayer de comprendre pourquoi je n'ai plus qu'une compétence dans compétences
       console.log('this.questions', this.questions);
       console.log('this.questions.length', this.questions.length);
 
@@ -190,7 +189,14 @@ export class QuizzComponent implements OnInit {
 
     this.studentService.getStudentById(this.studentId).subscribe((data) => {
       this.dataStudent = data
-      this.dataStudent.studentCompetences ? this.studentCompetences = this.dataStudent.studentCompetences : ''
+      // on ne peut plus faire référence à this.dataStudent.studentCompetences si multiple quizz VERSION 2
+      // this.dataStudent.studentCompetences ? this.studentCompetences = this.dataStudent.studentCompetences : ''
+      const quizzKey : string = 'quizz_'+this.trade
+      console.log('this.dataStudent[quizzKey]', this.dataStudent[quizzKey]);
+      console.log('this.dataStudent[quizzKey]', this.dataStudent[quizzKey].studentCompetences);
+      
+      this.dataStudent[quizzKey] ? this.studentCompetences = this.dataStudent[quizzKey].studentCompetences : ''
+
     })
 
     // c'était bien, mais faut tester la récupération des curseurs en base si besoin
@@ -343,7 +349,12 @@ export class QuizzComponent implements OnInit {
 
 
   convertirNoteSurVingt() {
-    const resultQuizz = this.dataStudent.studentCompetences
+    // avec les multiples quizz, ce n'est plus possible
+    // const resultQuizz = this.dataStudent.studentCompetences
+    const quizzKey : string = 'quizz_'+this.trade
+    const resultQuizz = this.dataStudent[quizzKey].studentCompetences
+
+
     const denominatorsQuizz = this.denominatorsCompetences
 
     let studentCompetencesSurVingt = [];
@@ -492,7 +503,7 @@ export class QuizzComponent implements OnInit {
     // Maintenant, vous pouvez utiliser this.fullResults en sachant qu'il est correctement rempli
     console.log('this.fullResults', this.fullResults)
 
-    this.studentService.updateFullResults(this.studentId, this.fullResults)
+    this.studentService.updateFullResults(this.studentId, this.fullResults, this.trade)
 
     this.totalCost = this.sumCosts(this.fullResults)
 

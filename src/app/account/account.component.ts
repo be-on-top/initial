@@ -43,6 +43,11 @@ export class AccountComponent implements OnInit {
   // pour afficher si on garde cette option fullResuls à l'utilisateur
   fullResults: { [key: string]: { duration: number; cost: number } }[] = [];
 
+  // puisque dans cette VERSION 2 des quizz multiples, tradesEvaluated n'existe pas en base et que tradeEvaluated n'existe plus, on va reconstruire le premier
+  tradesEvaluated: any = []
+  // et pour VERSION 2 des quizz multiples, on ne peut pas savoir si un quizz est terminé sans interroger tous les quizz, ce qu'on ne veut pas côté template, donc on crée un bolean
+  isOneQuizzAchieved: boolean = false;
+
 
   constructor(private auth: Auth, private firestore: Firestore, private authService: AuthService, private studentService: StudentsService, private activatedRoute: ActivatedRoute, private router: Router, private notificationService: PushNotificationService) {
     const messaging = getMessaging();
@@ -78,8 +83,29 @@ export class AccountComponent implements OnInit {
         this.studentService.getStudentById(user.uid).subscribe(data => {
           console.log("userData from students 0...", data);
           this.userData = data
-          this.lastIndex=Number(this.userData.lastIndexQuestion)
-          this.userData.fullResults?this.fullResults=this.userData.fullResults:[]
+          this.lastIndex = Number(this.userData.lastIndexQuestion)
+          // this.userData.fullResults ? this.fullResults = this.userData.fullResults : []
+
+          for (const key in this.userData) {
+            console.log('key', key.includes('quizz'));
+
+            if (key.includes('quizz')) {
+              // const element = this.userData[key];
+              this.tradesEvaluated.push(key)
+
+            }
+          }
+
+          console.log('tradesEvaluated construit dans ngOnInit de accountComponent', this.tradesEvaluated)
+
+          // lignes pour récupérer isOneQuizzAchieved
+          const achievedArray:any=[]
+          for (const item of this.tradesEvaluated) {              
+            this.userData[item].fullResults? achievedArray.push(item) : ''
+            achievedArray.length>0? this.isOneQuizzAchieved = true : false
+            
+          }
+
         })
         // y a juste que je n'arrive pas à me la faire livrer par le service !!!
         // this.studentService.getDocsByParam(this.user)
@@ -87,6 +113,8 @@ export class AccountComponent implements OnInit {
     })
 
     this.authService.getToken()?.then(res => console.log("token authentification depuis authService", res.token))
+
+    // this.detectQuizzAchied()
   }
 
   onClick() {
@@ -183,8 +211,13 @@ export class AccountComponent implements OnInit {
 
 
 
-  getObjectProperties(obj: any): any[] {
+  // Fonction récursive pour accéder aux sous-propriétés en profondeur
+  // Fonction pour obtenir les entrées d'un objet
+  objectEntries(obj: any): [string, any][] {
     return Object.entries(obj);
   }
+
+
+
 
 }

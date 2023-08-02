@@ -42,10 +42,39 @@
 
     <div *ngIf="tradesData" class="rounded bg-light row column-gap-1">
 
+        <!-- <ng-container *ngFor="let trade of tradesData">
+           
+            <div *ngIf="studentData && studentData['quizz_'+trade.sigle]">
+             ce que je récupère :  {{ studentData['quizz_'+trade.sigle].lastIndexQuestion | json }}
+            </div>
+          </ng-container> -->
+
+
         <div class="col-md-6" *ngFor="let trade of tradesData">
             <!-- <a [routerLink]="['/quizz/',  trade.sigle]" class="text-decoration-none text-dark"> -->
-            <a [routerLink]="['/quizz/',  trade.sigle, studentData && studentData.lastIndexQuestion?studentData.lastIndexQuestion+1:0, studentData && studentData.scoreCounter && studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle?studentData.scoreCounter:0, studentData && studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle?true:false, studentData && studentData.id?studentData.id:'']"
-                class="text-decoration-none text-dark">
+            <!-- <a [routerLink]="['/quizz/',  trade.sigle, studentData && studentData['quizz_' + trade].lastIndexQuestion?studentData['quizz_' + trade].lastIndexQuestion+1:0, studentData && studentData['quizz_' + trade].scoreCounter?studentData['quizz_' + trade].scoreCounter:0, studentData && studentData['quizz_' + trade]?true:false, studentData && studentData.id?studentData.id:'']"
+                class="text-decoration-none text-dark"> -->
+
+
+
+            <div class="d-block alert alert-info" *ngIf="studentData && studentData['quizz_'+trade.sigle]">
+                ce que je récupère : {{ studentData['quizz_'+trade.sigle].lastIndexQuestion | json }}
+            </div>
+
+
+
+
+
+
+            <!-- <a [routerLink]="['/quizz/',  trade.sigle, studentData && studentData['quizz_'+trade.sigle] && studentData['quizz_'+trade.sigle].lastIndexQuestion?(studentData['quizz_'+trade.sigle].lastIndexQuestion | number)+1:0, studentData && studentData['quizz_'+trade.sigle] && studentData['quizz_'+trade.sigle].scoreCounter?studentData['quizz_'+trade.sigle].scoreCounter:0, studentData && studentData['quizz_'+trade.sigle]?true:false, studentData && studentData.id?studentData.id:'']" class="text-decoration-none text-dark"> -->
+            <a [routerLink]="[
+                    '/quizz/',
+                    trade.sigle,
+                    ((studentData?.['quizz_'+trade.sigle]?.lastIndexQuestion || 0) + 1 | number),
+                    ((studentData?.['quizz_'+trade.sigle]?.scoreCounter || 0 | number)),
+                    studentData?.['quizz_'+trade.sigle] ? true : false,
+                    studentData?.id ? studentData.id : ''
+                  ]" class="text-decoration-none text-dark">
                 <div class="card my-3" (click)="selectTrade(trade.id)">
                     <div class="card-header text-muted">{{trade.id}}</div>
                     <div class="card-body">
@@ -91,7 +120,7 @@
                         </div>
 
                         <!-- à tester : (str.length>6)? (str | slice:0:6)+'...':(str) -->
-                        
+
                     </div>
                     <div class="card-footer text-muted">Réf. {{trade.sigle}}</div>
                 </div>

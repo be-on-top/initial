@@ -180,29 +180,38 @@ export class StudentsService {
 
       })
 
-      let updateStudent: any = { scoreCounter: scoreCounter, lastIndexQuestion: indexQuestion, tradeEvaluated: trade, studentCompetences: updatedTableauObjets }
-      console.log('updateStudent', updateStudent);
+      let updatedStudent: any = { scoreCounter: scoreCounter, lastIndexQuestion: indexQuestion, tradeEvaluated: trade, studentCompetences: updatedTableauObjets }
+      console.log('scoreCounter normalement sans sigle!!!!!!!!!!!!!!!!!!!', scoreCounter);
+
+      console.log('updateStudent!!!!!!!!!!', updatedStudent);
 
       // c'est là qu'on peut le transformer pour adjoindre le sigle au nom des principales propriétés concernées
       // mais avant, juste pour anticiper les tests à venir, on va dégager tradeEvaluated de uddateStudent
       // delete (updateStudent.tradeEvaluated)
 
 
-      let globalUpdatedStudent: any = {}
-      for (const key in updateStudent) {
-        const newKey = `${trade}_${key}`;
-        globalUpdatedStudent[newKey] = updateStudent[key]
-      }
+      // let globalUpdatedStudent: any = {}
+      // for (const key in updatedStudent) {
+      //   const newKey = `${trade}_${key}`;
+      //   globalUpdatedStudent[newKey] = updatedStudent[key]
+      // }
 
-      console.log('globalUpdatedStudent', globalUpdatedStudent)
+      // console.log('globalUpdatedStudent', globalUpdatedStudent)
+      // globalUpdatedStudent.tradesEvaluated = [trade]
+      // console.log('globalUpdatedStudent with tradesEvaluated[]', globalUpdatedStudent)
 
-      // et toujours juste pour anticiper le contexte où plusiers QCM seront entammés. 
-      globalUpdatedStudent.tradesEvaluated = [trade]
+      // si options multiples Quizz VERSION 2
+      let globalUpdatedQuizzToAdd: any = {}
+      const keyNewQuizz: string = 'quizz_' + trade
+      globalUpdatedQuizzToAdd[keyNewQuizz] = updatedStudent
 
-      console.log('globalUpdatedStudent with tradesEvaluated[]', globalUpdatedStudent)
+      console.log("globalUpdatedQuizzToAdd", globalUpdatedQuizzToAdd);
+
 
       // ça ne change pas vraiment, on donnera globalUpdatedStudent à enregistrer plus tard...
-      updateDoc($studentRef, updateStudent)
+      updateDoc($studentRef, globalUpdatedQuizzToAdd)
+
+
 
 
     } else {
@@ -238,14 +247,35 @@ export class StudentsService {
     return fullResults; // Renvoie le tableau à la fin de la méthode
   }
 
-  updateFullResults(id: string, fullResults: any) {
+  // pour essayer une modification de la fonction compatible avec les options de quizz multiples
+  // updateFullResults(id: string, fullResults: any) {
 
-    let $studentRef = doc(this.firestore, "students/" + id);
+  //   let $studentRef = doc(this.firestore, "students/" + id);
 
-    let updateStudent = { fullResults: fullResults }
-    updateDoc($studentRef, updateStudent)
+  //   let updateStudent = { fullResults: fullResults }
+  //   updateDoc($studentRef, updateStudent)
 
+  // }
+
+  // updateFullResults(id: string, fullResults: any, trade : string) {
+  //   const studentRef = doc(this.firestore, "students/" + id);
+  //   const quizzKey : string = 'quizz_'+trade
+  //   const updateStudent = {
+  //     [quizzKey]: fullResults
+  //   };
+  //   updateDoc(studentRef, updateStudent)
+
+  // }
+
+
+  updateFullResults(id: string, fullResults: any, trade: string) {
+    const studentRef = doc(this.firestore, "students/" + id);
+    const updateStudent = {
+      ['quizz_' + trade]: { fullResults: fullResults }
+    };
+    setDoc(studentRef, updateStudent, { merge: true });
   }
+  
 
 
 
