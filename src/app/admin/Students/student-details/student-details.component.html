@@ -12,8 +12,10 @@
                     <span class="fw-bold">Prénom</span> : {{student.firstName}}<br>
                     <span class="fw-bold">Email</span> : <a href="#" class="card-link">{{student.email}}</a><br>
                     <span *ngIf="student.cp" class="d-block"><span class="fw-bold">CP</span> : {{student.cp}}</span>
-                    <span *ngIf="student.details" class="d-block"><span class="fw-bold">Détails</span> : {{student.details}}</span>
-                    <span *ngIf="student.trainer" class="d-block"><span class="fw-bold">Formateur</span> : {{student.trainer}}</span>
+                    <span *ngIf="student.details" class="d-block"><span class="fw-bold">Détails</span> :
+                        {{student.details}}</span>
+                    <span *ngIf="student.trainer" class="d-block"><span class="fw-bold">Formateur</span> :
+                        {{student.trainer}}</span>
                 </p>
                 <hr>
                 <p> <span *ngIf="student.status; else checkbox">Status : actif</span>
@@ -38,6 +40,63 @@
             </button>
 
         </div>
+
+        <div class="card">
+            <div class="card-body">
+
+                <!-- {{tradesEvaluated}} -->
+
+                <!-- nouveauté pour multi quizz VERSION 2 -->
+
+                <div *ngIf="student && tradesEvaluated; else none">
+                    <!-- comme on ne questionnera plus tradeEvaluated mais tradesEvaluated [], on va devoir, avant d'inspecter la suite des ngIf, avoir une boucle ngFor pour voir métier après métier...  -->
+                    <!-- attention, compte tenu de la manière dont tradesEvaluated a été généré, trade ici, c'est une chaine de caractère type quizz_sigle -->
+                    <div *ngFor="let trade of tradesEvaluated, let last=last">
+                        <!-- {{student | json}}
+                        {{student[trade].fullResults | json}} -->
+
+                        <p class="card-text">Métier concerné : <span class="fw-bold">{{trade}}</span></p>
+                        <!-- Partie 1 si QCM en cours -->
+                        <!-- <div *ngIf="student.lastIndexQuestions[trade]<2, else done"> -->
+                        <div *ngIf="!student[trade].fullResults, else done">
+                            <p class="card-text">A déjà répondu à
+                                <span class="fw-bold">{{student[trade].lastIndexQuestion +1 | number}} Questions</span>, mais n'a pas terminé
+                            </p>
+
+                        </div>
+
+                        <!-- Partie 2 si QCM terminé -->
+                        <!-- Il semble que la directive keyvalue provoque des problèmes lorsqu'elle est utilisée dans une boucle *ngFor. 
+                            Pour contourner ce problème, on peut utiliser la fonction créée Object.entries() pour obtenir les clés et valeurs de result.value. -->
+                        <ng-template #done class="mb-3">
+                            <p class="btn bg-success text-light">QCM de positionnement terminé pour {{ trade }}</p>
+                            <p class="card-text fw-bold mb-0">Estimation personnalisée</p>
+                            <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
+                            <p class="card-text mb-0 d-flex align-items-center"
+                                *ngFor="let result of student[trade].fullResults | keyvalue">
+                                <ng-container *ngFor="let item of objectEntries(result.value)">
+                                    <span class="fw-bold">{{ item[0] }}</span>
+                                    <i class="bi fs-4 bi-arrow-right-short"></i>
+                                    <span>{{ item[1].duration }} jours - Coût : {{ item[1].cost }} €</span>
+                                </ng-container>
+                            </p>
+                        </ng-template>
+
+                        <!-- Affichez le hr sauf dans la dernière itération -->
+                        <hr *ngIf="!last">
+                    </div>
+
+                    <!-- fin boucle supplémentaire pour ngFor avec les options de multi-quizz -->
+
+                </div>
+
+                <ng-template #none> <span>Aucun QCM en cours</span>
+                </ng-template>
+            </div>
+        </div>
+
+
+
     </div>
 
 </div>

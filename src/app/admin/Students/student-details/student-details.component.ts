@@ -13,38 +13,72 @@ import { Student } from '../student';
 export class StudentDetailsComponent {
 
   editMode: boolean = false;
-  editedStudent?: Student; 
+  editedStudent?: Student;
   editing: boolean = false;
-  studentId: string= "";
+  studentId: string = "";
   // @Input() student: Student;
-  student?:Student
+  student: any = {};
   // @Output() deleteStudent = new EventEmitter<Student>();
+
+
+  lastIndex: number = 0
+  // pour afficher si on garde cette option fullResuls à l'administrateur
+  fullResults: { [key: string]: { duration: number; cost: number } }[] = [];
+  tradesEvaluated: any = []
+
 
   constructor(
     private service: StudentsService,
     private route: ActivatedRoute,
-  ) {}
+  ) { }
 
   ngOnInit() {
-    this.studentId = this.route.snapshot.params['id'];
+    this.studentId = this.route.snapshot.params['id']
     if (!this.studentId) {
-      console.error('studentId is undefined.');
+      console.error('studentId is undefined.')
       return;
     }
-    this.getStudentDetails(this.studentId);
+    this.getStudentDetails(this.studentId)
+
+    
   }
-  
+
   getStudentDetails(studentId: string) {
     this.service.getStudentById(studentId).subscribe(student => {
-      this.student = student;   
+      this.student = student
       /* console.log(studentId); */
-    });
+      
+    // Utilisation d'un Set pour stocker les tradesEvaluated uniques
+    const tradesEvaluatedSet = new Set<string>();
+
+    for (const key in this.student) {
+      if (key.includes('quizz')) {
+        tradesEvaluatedSet.add(key);
+      }
+    }
+
+    // Convertir le Set en tableau avec l'opérateur spread (...)
+    this.tradesEvaluated = [...tradesEvaluatedSet];
+
+      console.log('tradesEvaluated construit avec getStudentDetails dans studentDetailsComponent', this.tradesEvaluated)
+    })
+
+
   }
 
   delete(student: Student) {
     /* console.log(student);   */
-    this.service.deleteStudent(student);
+    this.service.deleteStudent(student)
   }
+
+
+  
+  // Fonction pour obtenir les entrées d'un objet
+  objectEntries(obj: any): [string, any][] {
+    return Object.entries(obj);
+  }
+
+
 
 
 

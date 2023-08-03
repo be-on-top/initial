@@ -38,6 +38,7 @@ export class AccountComponent implements OnInit {
   feedbackMessages: any
   editButtonLabel: string = "Modifier"
 
+  // on n'a plus besoin de s'y référer dès qu'on traite de quizz multiples comme ici dans la V2
   lastIndex: number = 0
 
   // pour afficher si on garde cette option fullResuls à l'utilisateur
@@ -96,7 +97,7 @@ export class AccountComponent implements OnInit {
             }
           }
 
-          console.log('tradesEvaluated construit dans ngOnInit de accountComponent', this.tradesEvaluated)
+          // console.log('tradesEvaluated construit dans ngOnInit de accountComponent', this.tradesEvaluated)
 
           // lignes pour récupérer isOneQuizzAchieved
           const achievedArray:any=[]
@@ -210,14 +211,10 @@ export class AccountComponent implements OnInit {
   }
 
 
-
-  // Fonction récursive pour accéder aux sous-propriétés en profondeur
   // Fonction pour obtenir les entrées d'un objet
   objectEntries(obj: any): [string, any][] {
     return Object.entries(obj);
   }
-
-
 
 
 }
