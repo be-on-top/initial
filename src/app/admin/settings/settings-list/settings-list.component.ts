@@ -11,6 +11,7 @@ export class SettingsListComponent implements OnInit{
 
   allSettings?: any
   trades?: any
+  cursors:{string:number}[]=[]
   // on le prépare à recevoir un terme de recherche
   searchText: string = ''
 
@@ -30,6 +31,15 @@ export class SettingsListComponent implements OnInit{
       // return this.allUsers
     })
 
+    this.service.getLevelsCursors().subscribe(data=>{
+      console.log("data de getLevelsCursors()", data)
+      for (const key in data) {
+        this.cursors.push(data[key])
+        console.log("cursors array", this.cursors)                  
+        }
+      }
+
+    )
   }
 
   // pour utiliser le composant de recherche
