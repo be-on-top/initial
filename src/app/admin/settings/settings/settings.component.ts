@@ -153,5 +153,29 @@ export class SettingsComponent implements OnInit {
   }
 
 
+  addMaxIndexQuestion(form: NgForm){
+    
+    this.service.addMaxIndexQuestion({maxIndexQuestion:form.value.maxIndexQuestion})
+    .then(() => {
+      // Signed in 
+      this.feedbackMessages = `Enregistrement des curseurs OK`;
+      this.isSuccessMessage = true
+      setTimeout(() => {
+        form.reset()
+        // this.router.navigate([''])
+      }, 1000)
+    })
+    .catch((error) => {
+      this.feedbackMessages = error.message;
+      // this.feedbackMessages = this.firebaseErrors[error.code];
+      this.isSuccessMessage = false;
+      console.log(this.feedbackMessages);
+
+      // ..};
+    })
+
+  }
+
+
 
 }

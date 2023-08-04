@@ -38,13 +38,17 @@
           <label for="CP{{nb}}" class="form-label mt-3">CP{{nb}}</label>
           <input type="text" name="CP{{nb}}" ngModel class="form-control" required minlength="7">
           <label for="cost_CP{{nb}}" class="form-label mt-3">Coût horaire de CP{{nb}}</label>
-          <input type="number" name="cost_CP{{nb}}" ngModel class="form-control" placeholder="renseigner le prix horaire en entier">
+          <input type="number" name="cost_CP{{nb}}" ngModel class="form-control"
+            placeholder="renseigner le prix horaire en entier">
           <hr>
           <label class="form-label mt-3">Estimation du nombre d'heures pour CP{{nb}}</label>
           <div class="form-group w-75">
-            <input type="number" name="level1_CP{{nb}}" ngModel class="form-control" minlength="1" placeholder="durée courte en heures">
-            <input type="number" name="level2_CP{{nb}}" ngModel class="form-control" minlength="1" placeholder="durée moyenne en heures">
-            <input type="number" name="level3_CP{{nb}}" ngModel class="form-control" minlength="1" placeholder="durée longue en heures">
+            <input type="number" name="level1_CP{{nb}}" ngModel class="form-control" minlength="1"
+              placeholder="durée courte en heures">
+            <input type="number" name="level2_CP{{nb}}" ngModel class="form-control" minlength="1"
+              placeholder="durée moyenne en heures">
+            <input type="number" name="level3_CP{{nb}}" ngModel class="form-control" minlength="1"
+              placeholder="durée longue en heures">
           </div>
         </div>
       </div>
@@ -95,3 +99,29 @@
 
 
 </div>
+
+<hr>
+
+<h3>Nombre de questions néccessaires à la finalisation d'un QCM de positionnement
+</h3>
+
+
+<form #setMaxForm="ngForm" class="mt-4" (submit)="addMaxIndexQuestion(setMaxForm)" class="was-validated">
+
+  <div class="form-group">
+
+    <label for="maxIndexQuestion" class="form-label mt-3">Nombre de questions</label>
+    <input type="number" name="maxIndexQuestion" ngModel #maxIndexQuestion="ngModel" class="form-control" required
+      min="40">
+    <div *ngIf="maxIndexQuestion.touched && maxIndexQuestion.invalid" class="invalid-feedback">
+      Veuillez indiquer un nombre supérieur à 40
+    </div>
+    <div *ngIf="secondCursor.valid" class="valid-feedback">
+      Ok. Maxium pris en compte
+    </div>
+
+  </div>
+
+  <button id="settingsForm" type="submit" class="btn btn-primary mt-4"
+    [disabled]=setMaxForm.invalid>Ajouter</button>
+</form>

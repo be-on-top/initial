@@ -45,14 +45,13 @@
         <!-- on introduit un champ de recherche -->
         <!-- <app-search (searchTextChanged)="onSearchTextEntered($event)"></app-search> -->
 
-        <div *ngFor="let cursor of cursors">
-            <div *ngFor="let item of cursor | keyvalue" class="row mb-3">
+        <div *ngFor="let cursor of cursors | keyvalue" class="row">
 
-                <div class="col-6">{{item.key}} : <span>{{item.value}}</span></div>
-                <div class="col-6"><button class="btn btn-primary"><a [routerLink]="['/admin/updateSettings']"
-                            class="text-white"><i class="bi bi-pencil-square"></i>Editer</a></button></div>
-            </div>
+            <div class="col-6 mb-3">{{cursor.key}} : <span>{{cursor.value}}</span></div>
+            <div class="col-6 mb-3"><button class="btn btn-primary"><a [routerLink]="['/admin/updateSettings']"
+                        class="text-white"><i class="bi bi-pencil-square"></i>Editer</a></button></div>
         </div>
+
     </div>
 
 

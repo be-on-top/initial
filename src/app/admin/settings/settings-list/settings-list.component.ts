@@ -7,11 +7,11 @@ import { SettingsService } from '../../settings.service';
   templateUrl: './settings-list.component.html',
   styleUrls: ['./settings-list.component.css']
 })
-export class SettingsListComponent implements OnInit{
+export class SettingsListComponent implements OnInit {
 
   allSettings?: any
   trades?: any
-  cursors:{string:number}[]=[]
+  cursors: any = {}
   // on le prépare à recevoir un terme de recherche
   searchText: string = ''
 
@@ -31,13 +31,14 @@ export class SettingsListComponent implements OnInit{
       // return this.allUsers
     })
 
-    this.service.getLevelsCursors().subscribe(data=>{
+    this.service.getLevelsCursors().subscribe(data => {
       console.log("data de getLevelsCursors()", data)
       for (const key in data) {
-        this.cursors.push(data[key])
+        this.cursors[key]=(data[key])
         console.log("cursors array", this.cursors)                  
         }
-      }
+
+    }
 
     )
   }

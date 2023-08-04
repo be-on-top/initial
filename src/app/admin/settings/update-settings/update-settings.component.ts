@@ -18,8 +18,8 @@ export class UpdateSettingsComponent {
   total: any = []
 
   cursors: any = []
-  firstCursor:number=0
-  secondCursor:number=0
+  firstCursor: number = 0
+  secondCursor: number = 0
 
   // variables à passer à feedbackMessages component pour retours de firebase sur la soumission
   feedbackMessages?: any = ""
@@ -34,36 +34,24 @@ export class UpdateSettingsComponent {
   constructor(private service: SettingsService, private router: Router) {
 
 
-    
-
   }
 
 
   ngOnInit(): void {
 
-    this.service.getLevelsCursors().subscribe(data=>{
-      console.log("data de getLevelsCursors()", data[0])
-      // for (const key in data) {
-      //   this.cursors.push(data[key])
-      //   console.log("cursors array", this.cursors)                  
-      //   }
-this.cursors=data[0]
-
-console.log(this.cursors.firstCursor);
-console.log(this.cursors.secondCursor);
-
-       
-      })
+    this.service.getLevelsCursors().subscribe(data => {
+      console.log("data de getLevelsCursors()", data)
+      this.cursors = data
+      console.log(this.cursors.firstCursor)
+      console.log(this.cursors.secondCursor)
+    })
 
   }
 
 
- 
-
   updateLevelCursors(form: NgForm) {
 
     this.cursors = { firstCursor: form.value.firstCursor, secondCursor: form.value.secondCursor }
-
     this.service.addLevelCursors(this.cursors)
       .then(() => {
         // Signed in 
