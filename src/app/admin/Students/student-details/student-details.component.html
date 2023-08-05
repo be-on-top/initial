@@ -60,7 +60,8 @@
                         <!-- <div *ngIf="student.lastIndexQuestions[trade]<2, else done"> -->
                         <div *ngIf="!student[trade].fullResults, else done">
                             <p class="card-text">A déjà répondu à
-                                <span class="fw-bold">{{student[trade].lastIndexQuestion +1 | number}} Questions</span>, mais n'a pas terminé
+                                <span class="fw-bold">{{student[trade].lastIndexQuestion +1 | number}} Questions</span>,
+                                mais n'a pas terminé
                             </p>
 
                         </div>
@@ -80,6 +81,21 @@
                                     <span>{{ item[1].duration }} jours - Coût : {{ item[1].cost }} €</span>
                                 </ng-container>
                             </p>
+
+                            <p class="card-text fw-bold mb-0">Résultats obtenus</p>
+                            <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
+                            <p class="card-text mb-0 d-flex align-items-center"
+                                *ngFor="let result of student[trade].fullResults | keyvalue">
+                                <ng-container *ngFor="let item of objectEntries(result.value)">
+                                    <span class="fw-bold">{{ item[0] }} : </span>
+                                    <i class="bi fs-4 bi-arrow-right-short"></i>
+                                    <span>{{ item[1].notation | json| number:'1.1-1' }}/20</span>
+                                </ng-container>
+                            </p>
+
+
+
+
                         </ng-template>
 
                         <!-- Affichez le hr sauf dans la dernière itération -->

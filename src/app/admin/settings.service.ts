@@ -4,6 +4,7 @@ import { Firestore, collection, collectionData, docData, setDoc, addDoc, query, 
 import { Observable } from 'rxjs';
 import { Trade } from './trade';
 import { Settings } from './settings';
+import { getMetadata } from '@angular/fire/storage';
 
 @Injectable({
   providedIn: 'root'
@@ -76,27 +77,36 @@ export class SettingsService {
 
 
   async addLevelCursors(cursors: any) {
-
     console.log(cursors);
+    const $settingsRef = collection(this.firestore, "settings");
+    let $cursorsRef = doc($settingsRef, 'cursors');
+    await setDoc($cursorsRef, cursors);
+  }
 
-    let $cursorsRef = collection(this.firestore, "cursors");
-    await addDoc($cursorsRef, cursors).then((response) => {
-      console.log(response.id);
-    })
+  async addMaxIndexQuestion(maximum: any) {
+    const $settingsRef = collection(this.firestore, "settings");
+    const $maximumsDocRef = doc($settingsRef, 'maximums')
+    await setDoc($maximumsDocRef, maximum)
 
   }
 
+  // getLevelsCursors() {
+  //   const cursorsRef = collection(this.firestore, "cursors")
+  //   return collectionData(cursorsRef) as Observable<DocumentData>
+  // }
 
+  // si finalement, on enregistre les curseurs dans un doc dédié de la collection settings
   getLevelsCursors() {
-    const cursorsRef = collection(this.firestore, "cursors");
-    return collectionData(cursorsRef) as Observable<DocumentData>;
+    const settinfsRef = collection(this.firestore, "settings")
+    // Référence au document spécifique "maximums" dans la collection "settings"
+    const maximumsDocRef = doc(this.firestore, 'settings/cursors');
+    return docData(maximumsDocRef) as Observable<DocumentData>
   }
 
   getSigle(id: string) {
     let $sigleRef = doc(this.firestore, "sigles/" + id)
-    return docData($sigleRef, { idField: 'id' }) as Observable<Trade>;
+    return docData($sigleRef, { idField: 'id' }) as Observable<Trade>
   }
-
 
 
 }

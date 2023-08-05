@@ -116,7 +116,7 @@ export class QuizzComponent implements OnInit {
 
       // pour qu'on ne se retrouve pas en console avec un can not read id parce qu'il n'y en a plus
       // on peut rajouter ATTENTION !!!!! 
-      if (this.indexQuestion < this.questions.length) {
+      if (this.indexQuestion < this.questions.length-1) {
 
 
         // pour recevoir la liste des médias relatifs aux questions relatives au métier
@@ -498,7 +498,7 @@ export class QuizzComponent implements OnInit {
 
 
     // Appelez la fonction setFullResults pour générer le tableau fullResults
-    this.fullResults = await this.studentService.setFullResults(durationsByLevels, estimatedCPCost);
+    this.fullResults = await this.studentService.setFullResults(durationsByLevels, estimatedCPCost, this.realEvaluations);
 
     // Maintenant, vous pouvez utiliser this.fullResults en sachant qu'il est correctement rempli
     console.log('this.fullResults', this.fullResults)

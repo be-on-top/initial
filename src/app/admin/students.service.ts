@@ -225,27 +225,70 @@ export class StudentsService {
   }
 
 
-  async setFullResults(durationsByLevels: { [key: string]: number }, estimatedCPCost: { [key: string]: number }) {
-    const estimatedKeys = Object.keys(estimatedCPCost);
-    const fullResults = []; // Initialise le tableau ici
+  // async setFullResults(durationsByLevels: { [key: string]: number }, estimatedCPCost: { [key: string]: number }) {
+  //   const estimatedKeys = Object.keys(estimatedCPCost);
+  //   const fullResults = []; // Initialise le tableau ici
 
+  //   for (const estimatedKey of estimatedKeys) {
+  //     const durationKey = estimatedKey.replace('individual_cost_', '');
+  //     if (durationsByLevels.hasOwnProperty(durationKey)) {
+  //       const entry = {
+  //         [durationKey]: {
+  //           duration: durationsByLevels[durationKey],
+  //           cost: estimatedCPCost[estimatedKey]
+  //         }
+  //       }
+
+  //       fullResults.push(entry);
+  //     }
+  //   }
+
+  //   console.log('this.fullResults', fullResults);
+  //   return fullResults; // Renvoie le tableau à la fin de la méthode
+  // }
+  async setFullResults(
+    durationsByLevels: { [key: string]: number },
+    estimatedCPCost: { [key: string]: number },
+    thirdArray: { [key: string]: number }[]
+  ) {
+    const estimatedKeys = Object.keys(estimatedCPCost);
+    const fullResults = [];
+  
     for (const estimatedKey of estimatedKeys) {
       const durationKey = estimatedKey.replace('individual_cost_', '');
       if (durationsByLevels.hasOwnProperty(durationKey)) {
         const entry = {
           [durationKey]: {
             duration: durationsByLevels[durationKey],
-            cost: estimatedCPCost[estimatedKey]
+            cost: estimatedCPCost[estimatedKey],
+            notation: this.findNotation(durationKey, thirdArray) // Appelle une fonction pour trouver la notation correspondante
           }
-        }
-
+        };
+  
         fullResults.push(entry);
       }
     }
-
+  
     console.log('this.fullResults', fullResults);
-    return fullResults; // Renvoie le tableau à la fin de la méthode
+    return fullResults;
   }
+  
+  findNotation(durationKey: string, thirdArray: { [key: string]: number }[]) {
+    const matchingNotationObj = thirdArray.find((notationObj) =>
+      Object.keys(notationObj)[0].includes(durationKey)
+    );
+  
+    if (matchingNotationObj) {
+      const notationKey = Object.keys(matchingNotationObj)[0];
+      return matchingNotationObj[notationKey];
+    }
+  
+    return null; // Retourne null si aucune notation correspondante n'est trouvée
+  }
+  
+  
+  
+  
 
   // pour essayer une modification de la fonction compatible avec les options de quizz multiples
   // updateFullResults(id: string, fullResults: any) {
