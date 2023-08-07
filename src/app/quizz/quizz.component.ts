@@ -48,7 +48,9 @@ export class QuizzComponent implements OnInit {
   // selon qu'on a déjà un tableau studentCompetences en base
   hasAlreadyCompetences: boolean = false
   // ultérieurement, ils seront enregistrés comme paramètres d'application
-  cursors: number[] = [10, 15]
+  // cursors: number[] = [10, 15]
+  // avec cursors devenu dynamique
+  cursors:any={}
   firstCursor: number = 0
   secondCursor: number = 0
 
@@ -191,15 +193,21 @@ export class QuizzComponent implements OnInit {
       this.dataStudent = data
       // on ne peut plus faire référence à this.dataStudent.studentCompetences si multiple quizz VERSION 2
       // this.dataStudent.studentCompetences ? this.studentCompetences = this.dataStudent.studentCompetences : ''
+
       const quizzKey : string = 'quizz_'+this.trade
-      console.log('this.dataStudent[quizzKey]', this.dataStudent[quizzKey]);
-      console.log('this.dataStudent[quizzKey]', this.dataStudent[quizzKey].studentCompetences);
+      console.log('quizzKey!!!!!!!!!!!!!!!!!!!!', quizzKey);
+
       
-      this.dataStudent[quizzKey] ? this.studentCompetences = this.dataStudent[quizzKey].studentCompetences : ''
+      // ici, il est bon
+      console.log('this.dataStudent', this.dataStudent);
+      
+      this.hasStartedEvaluation==true && this.dataStudent[quizzKey] && this.dataStudent[quizzKey].studentCompetences  ? this.studentCompetences = this.dataStudent[quizzKey].studentCompetences : '';
+      this.dataStudent && this.dataStudent[quizzKey] ? console.log('this.dataStudent[quizzKey]', this.dataStudent[quizzKey]):console.log("pas encore généré");
+      console.log('this.studentCompetences tel que récupéré en base dans ngOnInit', this.studentCompetences);
 
     })
 
-    // c'était bien, mais faut tester la récupération des curseurs en base si besoin
+    // faut tester la récupération des curseurs en base si besoin
     // this.firstCursor = this.cursors[0]
     // this.secondCursor = this.cursors[1]
     this.getCursors()
@@ -239,7 +247,10 @@ export class QuizzComponent implements OnInit {
     this.hasStartedEvaluation = true
     this.studentService.updateStudentScore(this.studentId, this.scoreCounter, this.indexQuestion, this.trade, this.hasStartedEvaluation, this.studentCompetences, evaluatedCompetence, this.numberOfPoints, isIncremented, isDecremented)
     // et pour être certain qu'à la prochaine étape, c'est bien dataStudent.studentCompetences qui sera incrémenté !!!!!!!!!!!!
-    this.studentCompetences = this.dataStudent.studentCompetences
+    // quoi que puisque on a une affectation conditionnée dans ngOnInit, ça fera probablement double emploi !!!!!
+    // this.studentCompetences = this.dataStudent.studentCompetences
+     const quizzKey : string = 'quizz_'+this.trade
+    this.studentCompetences = this.dataStudent[quizzKey].studentCompetences
 
     // une fois qu'il a fait tout ça,  on va tester le retour de levelsArray
     // this.setLevel() 
@@ -512,10 +523,12 @@ export class QuizzComponent implements OnInit {
   getCursors() {
 
     this.settingsService.getLevelsCursors().subscribe((data) => {
-      // console.log("data!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", data[0]);
+      // plus besoin d'indexer data[0] une fois qu'on a un doc cursors et un objet à lire
+      // console.log("data!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", data);
 
-      console.log(data[0]);
-      this.cursors = data[0]
+      
+      console.log(data);
+      this.cursors = data
 
       this.firstCursor = data[0]['firstCursor']
       this.secondCursor = data[0]['secondCursor']

@@ -150,7 +150,9 @@ export class StudentsService {
   updateStudentScore(id: string, scoreCounter: number, indexQuestion: number, trade: string, hasStartedEvaluation: boolean, studentCompetences: any, evaluatedCompetence: string, numberOfPoints: number, isIncremented: boolean, isDecremented: boolean) {
     alert(scoreCounter)
 
-    let $studentRef = doc(this.firestore, "students/" + id);
+    let $studentRef = doc(this.firestore, "students/" + id)
+
+    alert(hasStartedEvaluation)
 
     if (hasStartedEvaluation === true) {
       // alert('hasStartedEvaluation ! ')
@@ -183,7 +185,7 @@ export class StudentsService {
       let updatedStudent: any = { scoreCounter: scoreCounter, lastIndexQuestion: indexQuestion, tradeEvaluated: trade, studentCompetences: updatedTableauObjets }
       console.log('scoreCounter normalement sans sigle!!!!!!!!!!!!!!!!!!!', scoreCounter);
 
-      console.log('updateStudent!!!!!!!!!!', updatedStudent);
+      console.log('updateStudent tel que service est prêt à updater!!!!!!!!!!', updatedStudent);
 
       // c'est là qu'on peut le transformer pour adjoindre le sigle au nom des principales propriétés concernées
       // mais avant, juste pour anticiper les tests à venir, on va dégager tradeEvaluated de uddateStudent
@@ -205,13 +207,11 @@ export class StudentsService {
       const keyNewQuizz: string = 'quizz_' + trade
       globalUpdatedQuizzToAdd[keyNewQuizz] = updatedStudent
 
-      console.log("globalUpdatedQuizzToAdd", globalUpdatedQuizzToAdd);
+      console.log("globalUpdatedQuizzToAdd", globalUpdatedQuizzToAdd)
 
 
       // ça ne change pas vraiment, on donnera globalUpdatedStudent à enregistrer plus tard...
       updateDoc($studentRef, globalUpdatedQuizzToAdd)
-
-
 
 
     } else {

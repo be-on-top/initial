@@ -159,7 +159,7 @@ export class DetailsComponent implements OnInit {
     console.log("(this.isCompleted", this.isCompleted);
 
     this.hasBeenClicked.emit(this.isCompleted)
-    // // À un certain endroit de votre composant enfant...
+    // // À un certain endroit du composant enfant...
     // this.variablesRemontees.emit({ variable1: 'valeur1', variable2: 42 });
     this.hasBeenUpdated.emit({ counter: Number(this.counter), evaluatedCompetence: this.q.competence, isIncremented: this.isIncremented, isDecremented: this.isDecremented, fullAnswersClicked: this.fullAnswersClicked })
 
