@@ -83,10 +83,10 @@ export class SettingsService {
     await setDoc($cursorsRef, cursors);
   }
 
-  async addMaxIndexQuestion(maximum: any) {
+  async addMaximums(maximums: any) {
     const $settingsRef = collection(this.firestore, "settings");
     const $maximumsDocRef = doc($settingsRef, 'maximums')
-    await setDoc($maximumsDocRef, maximum)
+    await setDoc($maximumsDocRef, maximums)
 
   }
 
@@ -97,9 +97,16 @@ export class SettingsService {
 
   // si finalement, on enregistre les curseurs dans un doc dédié de la collection settings
   getLevelsCursors() {
-    const settinfsRef = collection(this.firestore, "settings")
+    // const settinfsRef = collection(this.firestore, "settings")
     // Référence au document spécifique "maximums" dans la collection "settings"
-    const maximumsDocRef = doc(this.firestore, 'settings/cursors');
+    const cursorsDocRef = doc(this.firestore, 'settings/cursors')
+    return docData(cursorsDocRef) as Observable<DocumentData>
+  }
+
+  // si finalement, on enregistre les maximums dan un doc dédié de la collection settings
+  getMaximums(){
+    // const settinfsRef = collection(this.firestore, "settings")
+    const maximumsDocRef = doc(this.firestore, 'settings/maximums')
     return docData(maximumsDocRef) as Observable<DocumentData>
   }
 

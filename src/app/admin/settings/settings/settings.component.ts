@@ -155,10 +155,10 @@ export class SettingsComponent implements OnInit {
 
   addMaxIndexQuestion(form: NgForm){
     
-    this.service.addMaxIndexQuestion({maxIndexQuestion:form.value.maxIndexQuestion})
+    this.service.addMaximums({maxIndexQuestion:form.value.maxIndexQuestion})
     .then(() => {
       // Signed in 
-      this.feedbackMessages = `Enregistrement des curseurs OK`;
+      this.feedbackMessages = `Enregistrement des maximums OK`;
       this.isSuccessMessage = true
       setTimeout(() => {
         form.reset()

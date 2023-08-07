@@ -54,5 +54,22 @@
 
     </div>
 
+    <hr>
+
+    <h4 class="my-5">Ajustement des Maxiums</h4>
+
+    <div *ngIf="maximums" class="mx-auto">
+        <!-- on introduit un champ de recherche -->
+        <!-- <app-search (searchTextChanged)="onSearchTextEntered($event)"></app-search> -->
+
+        <div *ngFor="let max of maximums | keyvalue" class="row">
+
+            <div class="col-6 mb-3">{{max.key}} : <span>{{max.value}}</span></div>
+            <div class="col-6 mb-3"><button class="btn btn-primary"><a [routerLink]="['/admin/updateSettings']"
+                        class="text-white"><i class="bi bi-pencil-square"></i>Editer</a></button></div>
+        </div>
+
+    </div>
+
 
 </div>

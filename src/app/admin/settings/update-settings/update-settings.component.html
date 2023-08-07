@@ -32,8 +32,36 @@
     </div>
 
     <button id="settingsForm" type="submit" class="btn btn-primary mt-4"
-      [disabled]=setCursorsForm.invalid>Ajouter</button>
+      [disabled]=setCursorsForm.invalid>Modifier</button>
   </form>
+
+  <!-- pour la mise à jour des maximums -->
+
+  <h3>Modification des maximums pour arrêter la fin des questionnaires d'évaluation
+  </h3>
+
+  <hr>
+
+  <form #setMaxForm="ngForm" class="mt-4" (submit)="updateMaximums(setMaxForm)" class="was-validated">
+
+    <div class="form-group">
+
+      <label for="maxIndexQuestion" class="form-label mt-3">Curseur 1</label>
+      <input type="number" name="maxIndexQuestion" [(ngModel)]="maximums.maxIndexQuestion" #maxIndexQuestion="ngModel"
+        class="form-control" required>
+      <!-- <div *ngIf="maxIndexQuestion.touched && maxIndexQuestion.invalid" class="invalid-feedback">
+        Veuillez fournir un sigle valide.
+      </div>
+      <div *ngIf="maxIndexQuestion.valid" class="valid-feedback">
+        Ok. Curseur pris en compte
+      </div> -->
+    </div>
+
+    <button id="settingsForm" type="submit" class="btn btn-primary mt-4"
+      [disabled]=setMaxForm.invalid>Modifier</button>
+  </form>
+
+
 
 
 
