@@ -253,7 +253,7 @@ export class StudentsService {
   ) {
     const estimatedKeys = Object.keys(estimatedCPCost);
     const fullResults = [];
-  
+
     for (const estimatedKey of estimatedKeys) {
       const durationKey = estimatedKey.replace('individual_cost_', '');
       if (durationsByLevels.hasOwnProperty(durationKey)) {
@@ -264,31 +264,28 @@ export class StudentsService {
             notation: this.findNotation(durationKey, thirdArray) // Appelle une fonction pour trouver la notation correspondante
           }
         };
-  
+
         fullResults.push(entry);
       }
     }
-  
+
     console.log('this.fullResults', fullResults);
     return fullResults;
   }
-  
+
   findNotation(durationKey: string, thirdArray: { [key: string]: number }[]) {
     const matchingNotationObj = thirdArray.find((notationObj) =>
       Object.keys(notationObj)[0].includes(durationKey)
     );
-  
+
     if (matchingNotationObj) {
       const notationKey = Object.keys(matchingNotationObj)[0];
       return matchingNotationObj[notationKey];
     }
-  
+
     return null; // Retourne null si aucune notation correspondante n'est trouvée
   }
-  
-  
-  
-  
+
 
   // pour essayer une modification de la fonction compatible avec les options de quizz multiples
   // updateFullResults(id: string, fullResults: any) {
@@ -315,19 +312,14 @@ export class StudentsService {
     const studentRef = doc(this.firestore, "students/" + id);
     const updateStudent = {
       ['quizz_' + trade]: { fullResults: fullResults }
-    };
-    setDoc(studentRef, updateStudent, { merge: true });
+    }
+    setDoc(studentRef, updateStudent, { merge: true })
   }
-  
 
-
-
-
-
-
-
-
-
+  addFollowUpEvaluation(id: string, evaluation: any) {
+    const studentRef = doc(this.firestore, "students/" + id)
+    setDoc(studentRef, evaluation, { merge: true })
+  }
 
 
 

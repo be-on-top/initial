@@ -46,6 +46,9 @@ import { RoleGuardGuard } from '../role-guard.guard';
 import { UpdateSettingsComponent } from './settings/update-settings/update-settings.component';
 import { SettingsListComponent } from './settings/settings-list/settings-list.component';
 import { UpdateTradesComponent } from './settings/update-trades/update-trades.component';
+import { UpdateFollowUpComponent } from './Follow-up/update-follow-up/update-follow-up.component';
+import { MyStudentsComponent } from './Follow-up/my-students/my-students.component';
+import { AddFollowUpComponent } from './Follow-up/add-follow-up/add-follow-up.component';
 
 
 const routesAdmin: Routes = [
@@ -54,13 +57,13 @@ const routesAdmin: Routes = [
     path: 'admin', children: [
       // essai mutualisation des vues pour la liste des formateurs + trainers
       // { path: 'evaluators', component: EvaluatorsListComponent },
-      { path: 'evaluators', component: UsersListComponent, data: { user: 'evaluator' } },
+      { path: 'evaluators', component: UsersListComponent, data: { user: 'evaluator' }},
       { path: 'addEvaluator', component: AddEvaluatorComponent },
       { path: 'evaluator/:id', component: EvaluatorDetailsComponent },
       { path: 'updateEvaluator/:id', component: UpdateEvaluatorComponent },
       // essai mutualisation des vues pour la liste des formateurs + trainers
       // { path: 'trainers', component: TrainersListComponent },
-      { path: 'trainers', component: UsersListComponent, data: { user: 'trainer' } },
+      { path: 'trainers', component: UsersListComponent, data: { user: 'trainer' }},
       { path: 'addTrainer', component: AddTrainerComponent },
       // essai mutualisation des vues pour le détail depuis la liste des evaluateurs + formateurs
       // { path: 'trainer/:id', component: TrainerDetailsComponent },
@@ -69,13 +72,12 @@ const routesAdmin: Routes = [
       { path: 'updateEvaluator/:id', component: UpdateEvaluatorComponent },
       
       // l'éditeur est générique pour l'esssai. on va conserver une route distincte pour le moment (?)
-      { path: 'users', component: UsersListComponent, data: { user: 'editor' } },
+      { path: 'users', component: UsersListComponent, data: { user: 'editor' }},
       { path: 'addUser', component: AddUserComponent },
       { path: 'user/:id', component: UserDetailsComponent },
       { path: 'updateUser/:id', component: UpdateUserComponent },
-
       { path: 'students', component: StudentsListComponent },
-      { path: 'student/:id', component: StudentDetailsComponent },
+      { path: 'student/:id', component: StudentDetailsComponent, data: { user: 'admin' }},
       { path: 'updateStudent/:id', component: UpdateStudentComponent },
       { path: 'priorForm', component: PriorFormComponent },
       { path: 'questions', component: QuestionsListComponent },
@@ -91,7 +93,10 @@ const routesAdmin: Routes = [
       { path: 'addSettings', component: SettingsComponent },
       { path: 'settings', component: SettingsListComponent },
       { path: 'updateTrades/:id', component: UpdateTradesComponent },
-      { path: 'updateSettings', component: UpdateSettingsComponent }
+      { path: 'updateSettings', component: UpdateSettingsComponent },
+      { path: 'myStudents', component: MyStudentsComponent },
+      { path: 'myStudentDetails/:id', component: StudentDetailsComponent,  data: { user: 'trainer' }},
+      { path: 'addStudentEvaluation/:id', component: AddFollowUpComponent,  data: { user: 'trainer' }}
 
     ],
     // canActivate: [AuthGuardService]
@@ -102,7 +107,6 @@ const routesAdmin: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent }
 
-
 ];
 
 @NgModule({
@@ -110,7 +114,7 @@ const routesAdmin: Routes = [
     EvaluatorsListComponent,
     AddEvaluatorComponent,
     EvaluatorDetailsComponent,
-    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent, UpdateSocialComponent, SocialDetailsComponent, FullFormComponent, FullListComponent, FullDetailsComponent, UpdateFullComponent, LoginComponent, SearchComponent, StudentDetailsComponent, StudentsListComponent, UpdateStudentComponent, FeedbackMessagesComponent, AddTrainerComponent, TrainersListComponent, TrainerDetailsComponent, UpdateTrainerComponent, UsersListComponent, SettingsComponent, AddUserComponent, UserDetailsComponent, UpdateUserComponent, UpdateSettingsComponent, UpdateTradesComponent
+    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent, UpdateSocialComponent, SocialDetailsComponent, FullFormComponent, FullListComponent, FullDetailsComponent, UpdateFullComponent, LoginComponent, SearchComponent, StudentDetailsComponent, StudentsListComponent, UpdateStudentComponent, FeedbackMessagesComponent, AddTrainerComponent, TrainersListComponent, TrainerDetailsComponent, UpdateTrainerComponent, UsersListComponent, SettingsComponent, AddUserComponent, UserDetailsComponent, UpdateUserComponent, UpdateSettingsComponent, UpdateTradesComponent, MyStudentsComponent, UpdateFollowUpComponent, AddFollowUpComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,40 @@
+<div class="container py-5">
+
+    <h3>Ajouter un évaluation de suivi</h3>
+    <!-- <app-feedback-messages [feedbackMessages]="feedbackMessages" [isSuccessMessage]="isSuccessMessage"></app-feedback-messages> -->
+
+    <!-- pour les messages de retour/validation des champs du formulaire ou form validation, on utilisera BOOTSTRAP plutôt que des directives structurelles -->
+    <form class="form" #f="ngForm" (submit)="addEvaluation(studentId, f)" class="was-validated">
+
+        <!-- attention à virer les fonctions pour l'exercice sur (change) et (input) !!!!!! -->
+
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="subject" class="form-label mt-3">Sujet *</label>
+                <input type="text" ngModel name="subject" class="form-control" #subject="ngModel" required>
+                <div class="valid-feedback" *ngIf="subject.valid">Champ correctement renseigné</div>
+                <div class="invalid-feedback" *ngIf="subject.invalid">Merci de renseigner le sujet de l'évaluation.
+                </div>
+            </div>
+            <div class="form-group  col-md-6">
+                <label for="date" class="form-label mt-3">Date *</label>
+                <input type="date" name="details" ngModel name="date" class="form-control" #date="ngModel"
+                    placeholder="Saisissez l'évaluation reçue en présentiel" required>
+                <div class="valid-feedback" *ngIf="date.valid">Champ correctement renseigné</div>
+                <div class="invalid-feedback" *ngIf="date.invalid">Merci de renseigner la date</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="details" class="form-label mt-3">Details *</label>
+            <textarea name="details" id="" cols="50" rows="30" ngModel name="details" class="form-control"
+                #details="ngModel" placeholder="Saisissez l'évaluation reçue en présentiel" required></textarea>
+            <div class="valid-feedback" *ngIf="details.valid">Evaluation correctement renseignée</div>
+            <div class="invalid-feedback" *ngIf="details.invalid">Merci de saisir votre évaluation de suivi</div>
+        </div>
+
+        <button type="submit" id="submit" class="btn btn-primary mt-3"
+            [ngClass]="{'disabled':f.invalid}">Ajouter</button>
+    </form>
+
+</div>

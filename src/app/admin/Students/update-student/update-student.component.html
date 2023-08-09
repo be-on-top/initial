@@ -54,6 +54,14 @@
                 [ngClass]="{'disabled':f.invalid}">Valider</button>
         </form>
 
+        <!-- spécifiquement, pour la saisie des évaluations de suivi -->
+        <h3>Mise à jour de ses évaluations de suivi</h3>
+
+        <form class="form" #followUp="ngForm" (submit)="updateStudent(followUp)" class="was-validated">          
+            <button type="submit" id="submit" class="btn btn-primary mt-3"
+                [ngClass]="{'disabled':followUp.invalid}">Valider</button>
+        </form>
+
 
     </div>
 </div>

@@ -1,0 +1,39 @@
+<div class="container py-5">
+
+    <h3>Mes étudiants</h3>
+    <hr>
+    <div *ngIf="(!myStudents)">
+        ...loading
+    </div>
+
+    <div *ngIf="myStudents" class="text-center">
+        <!-- on introduit un champ de recherche -->
+        <!-- <app-search (searchTextChanged)="onSearchTextEntered($event)"></app-search> -->
+        <!-- <div class="row mt-5"> -->
+        <div class="row mt-4 d-xs-none">
+            <div class="col-sm-3 h5">Nom</div>
+            <div class="col-sm-3 h5">Prénom</div>
+            <div class="col-sm-3 h5">Détails</div>
+            <div class="col-sm-3 h5">Nouvelle évaluation</div>
+        </div>
+
+        <div *ngFor="let student of myStudents">
+            <!-- <div class="row mt-4 ps-5 ps-sm-0" *ngIf="searchText==='' || student.lastName.toLowerCase().includes(searchText) || student.firstName.toLowerCase().includes(searchText) "> -->
+            <div class="row mt-4 ps-5 ps-sm-0">
+                <div class="col-sm-3 col-6">{{student.lastName}}</div>
+                <div class="col-sm-3 col-6 order-perso2">{{student.firstName}}</div>
+                <div class="col-sm-3 col-6 order-perso4"><button class="btn btn-primary"><a
+                            [routerLink]="['/admin/myStudentDetails', student.id]" class="text-white"><i
+                                class="bi bi-person-lines-fill"></i>Détails</a></button></div>
+                <div class="col-sm-3 col-6"><button class="btn btn-danger"><a
+                            [routerLink]="['/admin/addStudentEvaluation', student.id]" class="text-white"><i
+                                class="bi bi-pen"></i>Ajouter</a></button></div>
+            </div>
+        </div>
+        <!-- il n'a pas à en ajouter !!! c'est son administrateur qui lui affecte les étudiants -->
+        <!-- <div class="row my-5 justify-content-end ps-5 ps-sm-0">
+            <div class="col-sm-3"><button class="btn btn-primary"><a [routerLink]="['/admin/addTrainer']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a></button></div>
+        </div> -->
+    </div>
+
+</div>
