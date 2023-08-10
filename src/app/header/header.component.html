@@ -1,6 +1,7 @@
 <nav class="navbar navbar-expand-md bg-dark navbar-dark mb-md-2 sticky-top">
     <div class="container mx-auto">
         <a class="navbar-brand" [routerLink]="['home', userRole || '']">BE-ON-TOP</a>
+        <!-- <p class="text-light">{{userRole}} Authentification</p> -->
         <!-- <a class="navbar-brand" [routerLink]="['']">BE-ON-TOP</a> -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
@@ -10,8 +11,9 @@
                 <!-- <li class="nav-item">
                     <a class="nav-link" [routerLink]="['socialregistration']">Pré-inscription Formation</a>
                 </li> -->
+
                 <li class="nav-item dropdown"  *ngIf="userUid!==undefined && userUid!=='' && userRole!=='student' && userRole!=='editor'">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" *ngIf="userRole.includes('admin')">Admin</a>
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" *ngIf="userRole.includes('admin') || userRole.includes('trainer')">Admin</a>
                     <!-- <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Admin</a> -->
                     <ul class="dropdown-menu">
                         <li *ngIf="userRole.includes('admin')"><a class="dropdown-item"
@@ -69,7 +71,7 @@
                         <li *ngIf="userRole.includes('admin')">
                             <hr>
                         </li>
-                        <li><a class="dropdown-item" href=""
+                        <li><a class="dropdown-item" [routerLink]="['/admin/myStudents']"
                                 *ngIf="userRole.includes('trainer') || userRole.includes('admin')">Suivi pédagogique</a>
                         </li>
                     </ul>

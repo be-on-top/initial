@@ -28,8 +28,8 @@ export class HeaderComponent implements OnInit {
           console.log("data de l'utilisateur depuis header", data);
           // si on a un tableau de rôles, c'est data.role[0]
           // this.userRole=data.role
-          this.userRole=data.role[0]
-          console.log("roles depuis header", data.role[0]);
+          this.userRole=data.role
+          console.log("roles depuis header", data.role);
 
       })
     

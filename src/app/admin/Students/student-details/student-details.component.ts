@@ -33,7 +33,7 @@ export class StudentDetailsComponent {
 
   constructor(
     private service: StudentsService,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute
   ) { 
 
     this.userRouterLinks = this.route.snapshot.data;

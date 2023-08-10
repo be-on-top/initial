@@ -46,7 +46,7 @@ import { RoleGuardGuard } from '../role-guard.guard';
 import { UpdateSettingsComponent } from './settings/update-settings/update-settings.component';
 import { SettingsListComponent } from './settings/settings-list/settings-list.component';
 import { UpdateTradesComponent } from './settings/update-trades/update-trades.component';
-import { UpdateFollowUpComponent } from './Follow-up/update-follow-up/update-follow-up.component';
+// import { UpdateFollowUpComponent } from './Follow-up/update-follow-up/update-follow-up.component';
 import { MyStudentsComponent } from './Follow-up/my-students/my-students.component';
 import { AddFollowUpComponent } from './Follow-up/add-follow-up/add-follow-up.component';
 
@@ -96,7 +96,8 @@ const routesAdmin: Routes = [
       { path: 'updateSettings', component: UpdateSettingsComponent },
       { path: 'myStudents', component: MyStudentsComponent },
       { path: 'myStudentDetails/:id', component: StudentDetailsComponent,  data: { user: 'trainer' }},
-      { path: 'addStudentEvaluation/:id', component: AddFollowUpComponent,  data: { user: 'trainer' }}
+      { path: 'addStudentEvaluation/:id', component: AddFollowUpComponent,  data: { user: 'trainer' }},
+      { path: 'updateEvaluation/:id/:evaluationKey', component: UpdateStudentComponent },
 
     ],
     // canActivate: [AuthGuardService]
@@ -114,7 +115,7 @@ const routesAdmin: Routes = [
     EvaluatorsListComponent,
     AddEvaluatorComponent,
     EvaluatorDetailsComponent,
-    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent, UpdateSocialComponent, SocialDetailsComponent, FullFormComponent, FullListComponent, FullDetailsComponent, UpdateFullComponent, LoginComponent, SearchComponent, StudentDetailsComponent, StudentsListComponent, UpdateStudentComponent, FeedbackMessagesComponent, AddTrainerComponent, TrainersListComponent, TrainerDetailsComponent, UpdateTrainerComponent, UsersListComponent, SettingsComponent, AddUserComponent, UserDetailsComponent, UpdateUserComponent, UpdateSettingsComponent, UpdateTradesComponent, MyStudentsComponent, UpdateFollowUpComponent, AddFollowUpComponent
+    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent, UpdateSocialComponent, SocialDetailsComponent, FullFormComponent, FullListComponent, FullDetailsComponent, UpdateFullComponent, LoginComponent, SearchComponent, StudentDetailsComponent, StudentsListComponent, UpdateStudentComponent, FeedbackMessagesComponent, AddTrainerComponent, TrainersListComponent, TrainerDetailsComponent, UpdateTrainerComponent, UsersListComponent, SettingsComponent, AddUserComponent, UserDetailsComponent, UpdateUserComponent, UpdateSettingsComponent, UpdateTradesComponent, MyStudentsComponent, AddFollowUpComponent
   ],
   imports: [
     BrowserModule,

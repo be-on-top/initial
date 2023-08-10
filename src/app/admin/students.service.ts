@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 // import { switchMap, tap } from 'rxjs/operators';
 import { Student } from './Students/student';
 import { NgForm } from '@angular/forms';
+import { Evaluation } from './evaluation';
 
 
 
@@ -133,6 +134,15 @@ export class StudentsService {
     // setDoc($studentRef, student);
     let $studentRef = doc(this.firestore, "students/" + id);
     updateDoc($studentRef, student);
+  }
+
+  updateStudentEvaluation(id: string, evaluations: {}) {
+    // let $studentRef = doc(this.firestore, "students/" + id);
+    // setDoc($studentRef, student);
+    let $studentRef = doc(this.firestore, "students/" + id);
+    console.log("evaluation", evaluations);
+    
+    updateDoc($studentRef, evaluations);
   }
 
 
