@@ -3,6 +3,7 @@ import { StudentsService } from '../../students.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { Evaluation } from '../../evaluation';
+import { AnimationKeyframesSequenceMetadata } from '@angular/animations';
 
 @Component({
   selector: 'app-update-student',
@@ -17,9 +18,11 @@ export class UpdateStudentComponent implements OnInit {
   // et dans l'hypothèse où le formateur utilise ce même composant pour mettre à jour son évaluation
   evaluationToUpdate: Evaluation = { details: '', subject: '', date: '' }
   evaluationKey: string = ""
+  userRouterLinks:any
+
 
   constructor(private service: StudentsService, private ac: ActivatedRoute, private router: Router) {
-
+    this.userRouterLinks = this.ac.snapshot.data;
   }
 
   ngOnInit(): void {
@@ -40,8 +43,9 @@ export class UpdateStudentComponent implements OnInit {
 
     })
 
-  }
+    this.getUsers()
 
+  }
 
 
   updateStudent(form: NgForm) {
@@ -70,6 +74,15 @@ export class UpdateStudentComponent implements OnInit {
     this.service.updateStudentEvaluation(this.studentId, updatedEvaluations)
     // il faudra prévoir une redirection... 
     this.router.navigate(['/admin/student', this.studentId])
+  }
+
+  getUsers() {
+    if (this.userRouterLinks.user == "trainer") {
+      alert("C'est un formateur !!!")
+    }
+    else if (this.userRouterLinks.user == "admin") {
+      alert("C'est un super administrateur !!!")
+    }
   }
 
 }

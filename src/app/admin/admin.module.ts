@@ -97,7 +97,7 @@ const routesAdmin: Routes = [
       { path: 'myStudents', component: MyStudentsComponent },
       { path: 'myStudentDetails/:id', component: StudentDetailsComponent,  data: { user: 'trainer' }},
       { path: 'addStudentEvaluation/:id', component: AddFollowUpComponent,  data: { user: 'trainer' }},
-      { path: 'updateEvaluation/:id/:evaluationKey', component: UpdateStudentComponent },
+      { path: 'updateEvaluation/:id/:evaluationKey', component: UpdateStudentComponent, data: { user: 'trainer' } },
 
     ],
     // canActivate: [AuthGuardService]

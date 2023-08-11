@@ -15,11 +15,11 @@
 
             <label for="firstName" class="form-label mt-3">Prénom</label>
             <input type="text" id="firstName" [(ngModel)]="student.firstName" name="firstName" class="form-control"
-                placeholder="Prénom">
+                placeholder="Prénom" [disabled]="userRouterLinks.user==='trainer'">
 
             <label for="lastname" class="form-label mt-3">Nom *</label>
             <input type="text" id="lastName" [(ngModel)]="student.lastName" name="lastName" class="form-control"
-                #lastName="ngModel" placeholder="Nom" required>
+                #lastName="ngModel" placeholder="Nom" required [disabled]="userRouterLinks.user==='trainer'">
             <div class="valid-feedback" *ngIf="lastName.valid">Champ correctement renseigné</div>
             <div class="invalid-feedback" *ngIf="lastName.invalid">Merci de renseigner le champ nom.</div>
 
@@ -34,12 +34,12 @@
 
             <label for="cp" class="form-label mt-3">CP</label>
             <input type="text" id="cp" [(ngModel)]="student.cp" name="cp" class="form-control"
-                placeholder="Code Postal Optionnel...">
+                placeholder="Code Postal Optionnel..." [disabled]="userRouterLinks.user==='trainer'">
 
             <!-- Tooggle Swith for student status -->
             <div class="form-check form-switch my-3">
                 <input class="form-check-input" type="checkbox" id="status" name="status" value="true"
-                    [(checked)]="student.status" [(ngModel)]="student.status">
+                    [(checked)]="student.status" [(ngModel)]="student.status" [disabled]="userRouterLinks.user==='trainer'">
                 <label class="form-check-label" for="status">Status de l'utilisateur :
                     <span *ngIf="student.status; else elseBlock" class="fw-bold">Actif</span>
                     <ng-template #elseBlock> <span class="fw-bold">Inactif</span></ng-template>
@@ -49,9 +49,9 @@
             <!-- <label for="email" class="form-label mt-3">Commentaires optionnels</label> -->
             <textarea name="details" id="details" [(ngModel)]="student.details" name="details" cols="100" rows="10"
                 class="form-control mt-3" #details="ngModel" [ngClass]="{'.is-valid':details.value && details.touched}"
-                placeholder="Commentaires optionnels...">Détails / Remarques & Objectifs...</textarea>
+                placeholder="Commentaires optionnels..." [disabled]="userRouterLinks.user==='trainer'">Détails / Remarques & Objectifs...</textarea>
             <button type="submit" id="submit" class="btn btn-primary mt-3"
-                [ngClass]="{'disabled':f.invalid}">Valider</button>
+                [ngClass]="{'disabled':f.invalid || userRouterLinks.user=='trainer'}">Valider</button>
         </form>
 
         <!-- spécifiquement, pour la saisie des évaluations de suivi -->

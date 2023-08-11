@@ -30,39 +30,56 @@ export class MyStudentsComponent implements OnInit {
 
         // pour récupérer le nom de l'utilisateur authentifié, mais faudra changer ça :
         this.trainerService.getTrainer(user.uid).subscribe(data => {
-          console.log("userData from myStudents 0...", data)
-          console.log("userData lastName from myStudents...", data.lastName)
-          this.userLastName = data.lastName
+          console.log("data", data);
 
-          // et maintenant qu'on a le lastName
-          this.service.getStudents().subscribe(students => {
-            students.filter((student): any => {
-              console.log('student qu\'on essaie de filtrer', student.trainer)           
-              student.trainer.includes(this.userLastName)?this.myStudents.push(student):''
+          if (data) {
+            console.log("userData from myStudents 0...", data)
+            console.log("userData lastName from myStudents...", data.lastName)
+            this.userLastName = data.lastName
+
+            // et maintenant qu'on a le lastName
+            this.service.getStudents().subscribe(students => {
+              students.filter((student): any => {
+                console.log('student qu\'on essaie de filtrer', student.trainer)
+                student.trainer.includes(this.userLastName) ? this.myStudents.push(student) : ''
+              })
+
+              console.log('this.myStudents filtré avec trainer', this.myStudents)
             })
-      
-            console.log(this.myStudents)
-          })
+          } else {
 
+            // c'est que c'est un  admin
+            this.service.getStudents().subscribe(students => {
+              // et là, ne filtrer que ceux qui ont des évaluations
+              students.filter((student): any => {
+                console.log('student qu\'on essaie de filtrer', student.trainer)
+                student.evaluations? this.myStudents.push(student) : ''
+              })
+
+              console.log("this.myStudents sans filtres", this.myStudents)
+            })
+          }
 
         })
 
       }
 
+
+
+
+
+      // getStudents() {
+      //   this.service.getStudents().subscribe(students => {
+      //     this.myStudents = students.filter((student): any => {
+      //       student.trainer = this.userLastName
+      //     })
+
+      //     console.log(this.myStudents)
+      //   })
+      // }
+
     })
 
-
-
   }
-
-  // getStudents() {
-  //   this.service.getStudents().subscribe(students => {
-  //     this.myStudents = students.filter((student): any => {
-  //       student.trainer = this.userLastName
-  //     })
-
-  //     console.log(this.myStudents)
-  //   })
-  // }
 
 }
