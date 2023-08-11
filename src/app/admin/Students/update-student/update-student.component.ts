@@ -44,7 +44,6 @@ export class UpdateStudentComponent implements OnInit {
     })
 
     this.getUsers()
-
   }
 
 

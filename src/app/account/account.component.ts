@@ -13,6 +13,7 @@ import { StudentsService } from '../admin/students.service';
 
 import { getMessaging, getToken, onMessage } from "@angular/fire/messaging";
 import { PushNotificationService } from '../push-notification.service';
+import { Evaluation } from '../admin/evaluation';
 
 @Component({
   selector: 'app-home',
@@ -48,6 +49,8 @@ export class AccountComponent implements OnInit {
   tradesEvaluated: any = []
   // et pour VERSION 2 des quizz multiples, on ne peut pas savoir si un quizz est terminé sans interroger tous les quizz, ce qu'on ne veut pas côté template, donc on crée un bolean
   isOneQuizzAchieved: boolean = false;
+  // pour les évaluations de l'étudiant si elles existent
+  evaluations:Record<string, Evaluation> = {};
 
 
   constructor(private auth: Auth, private firestore: Firestore, private authService: AuthService, private studentService: StudentsService, private activatedRoute: ActivatedRoute, private router: Router, private notificationService: PushNotificationService) {
@@ -97,15 +100,19 @@ export class AccountComponent implements OnInit {
             }
           }
 
-          // console.log('tradesEvaluated construit dans ngOnInit de accountComponent', this.tradesEvaluated)
-
           // lignes pour récupérer isOneQuizzAchieved
           const achievedArray:any=[]
           for (const item of this.tradesEvaluated) {              
             this.userData[item].fullResults? achievedArray.push(item) : ''
-            achievedArray.length>0? this.isOneQuizzAchieved = true : false
-            
+            achievedArray.length>0? this.isOneQuizzAchieved = true : false            
           }
+
+          // lignes pour récupérer evaluations
+          if (this.userData.evaluations) {
+            this.evaluations = this.userData.evaluations
+
+          }
+
 
         })
         // y a juste que je n'arrive pas à me la faire livrer par le service !!!

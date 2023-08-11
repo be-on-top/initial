@@ -108,10 +108,22 @@
                                         :</span>
                                     {{userData.trainer}}</li>
                                 <!-- si y a déjà des enregistrements datés des évaluations de suivi pédagogique, on bouclera dessus -->
+                                <ng-container *ngIf="evaluations; else noEvaluation">
+                                    <li class="list-group-item">
+                                        <ng-container *ngFor="let evaluation of evaluations | keyvalue">
+                                            <p><span class="fw-bold">Objet : </span>{{evaluation.value.subject}}</p>
+                                            <p>{{evaluation.value.details}}</p>
+                                            <p><span class="fw-bold">Date : </span>{{evaluation.value.date}}</p>
+                                        </ng-container>
+                                        <!-- {{userData.evaluations | json}} -->
+                                    </li>
+                                </ng-container>
                                 <!-- si aucune évaluation de suivi jusqu'ici, on le mentionne -->
-                                <li class="list-group-item"><span class="fw-bolder">Pas de suivi consultable
-                                        pour le
-                                        moment</span></li>
+                                <ng-template #noEvaluation>
+                                    <li class="list-group-item">
+                                        <span class="fw-bolder">Pas de suivi consultable pour le moment</span>
+                                    </li>
+                                </ng-template>
                             </ul>
                         </div>
                     </div>
@@ -133,7 +145,7 @@
 
                         <div *ngIf="userData && tradesEvaluated; else none">
                             <!-- comme on ne questionnera plus tradeEvaluated mais tradesEvaluated [], on va devoir, avant d'inspecter la suite des ngIf, avoir une boucle ngFor pour voir métier après métier...  -->
-                           <!-- attention, compte tenu de la manière dont tradesEvaluated a été généré, trade ici, c'est une chaine de caractère type quizz_sigle -->
+                            <!-- attention, compte tenu de la manière dont tradesEvaluated a été généré, trade ici, c'est une chaine de caractère type quizz_sigle -->
                             <div *ngFor="let trade of tradesEvaluated, let last=last">
                                 <p>coucou</p>
                                 {{userData | json}}
@@ -145,11 +157,13 @@
                                 <!-- <div *ngIf="userData.lastIndexQuestions[trade]<2, else done"> -->
                                 <div *ngIf="!userData[trade].fullResults, else done">
                                     <p class="card-text">Vous avez répondu à
-                                        <span class="fw-bold">{{userData[trade].lastIndexQuestion +1 | number}} Questions</span>
+                                        <span class="fw-bold">{{userData[trade].lastIndexQuestion +1 | number}}
+                                            Questions</span>
                                     </p>
 
                                     <button class="btn bg-primary pe-5 d-flex align-items-center"><a class="text-light"
-                                        [routerLink]="['/quizz/', trade.slice(6), userData[trade].lastIndexQuestion +1 | number, userData[trade].scoreCounter,true, user]"><i class="bi fs-5 bi-clock-history"></i>
+                                            [routerLink]="['/quizz/', trade.slice(6), userData[trade].lastIndexQuestion +1 | number, userData[trade].scoreCounter,true, user]"><i
+                                                class="bi fs-5 bi-clock-history"></i>
                                             Poursuivre</a>
                                     </button>
 
@@ -159,18 +173,20 @@
                                 <!-- Il semble que la directive keyvalue provoque des problèmes lorsqu'elle est utilisée dans une boucle *ngFor. 
                                     Pour contourner ce problème, on peut utiliser la fonction créée Object.entries() pour obtenir les clés et valeurs de result.value. -->
                                 <ng-template #done class="mb-3">
-                                    <p class="btn bg-success text-light">QCM de positionnement terminé pour {{ trade }}</p>
+                                    <p class="btn bg-success text-light">QCM de positionnement terminé pour {{ trade }}
+                                    </p>
                                     <p class="card-text fw-bold mb-0">Estimation personnalisée pour {{ trade }}</p>
                                     <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
-                                    <p class="card-text mb-0 d-flex align-items-center" *ngFor="let result of userData[trade].fullResults | keyvalue">
-                                      <ng-container *ngFor="let item of objectEntries(result.value)">
-                                        <span class="fw-bold">{{ item[0] }}</span>
-                                        <i class="bi fs-4 bi-arrow-right-short"></i>
-                                        <span>{{ item[1].duration }} jours - Coût : {{ item[1].cost }} €</span>
-                                      </ng-container>
+                                    <p class="card-text mb-0 d-flex align-items-center"
+                                        *ngFor="let result of userData[trade].fullResults | keyvalue">
+                                        <ng-container *ngFor="let item of objectEntries(result.value)">
+                                            <span class="fw-bold">{{ item[0] }}</span>
+                                            <i class="bi fs-4 bi-arrow-right-short"></i>
+                                            <span>{{ item[1].duration }} jours - Coût : {{ item[1].cost }} €</span>
+                                        </ng-container>
                                     </p>
-                                  </ng-template>
-                                  
+                                </ng-template>
+
                                 <!-- Affichez le hr sauf dans la dernière itération -->
                                 <hr *ngIf="!last">
                             </div>
