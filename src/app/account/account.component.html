@@ -169,18 +169,20 @@
                                 <!-- Il semble que la directive keyvalue provoque des problèmes lorsqu'elle est utilisée dans une boucle *ngFor. 
                                     Pour contourner ce problème, on peut utiliser la fonction créée Object.entries() pour obtenir les clés et valeurs de result.value. -->
                                 <ng-template #done class="mb-3">
-                                    <p class="btn bg-success text-light">QCM de positionnement terminé pour {{ trade }}
-                                    </p>
-                                    <p class="card-text fw-bold mb-0">Estimation personnalisée pour {{ trade }}</p>
+                                    <p class="card-text fw-bold">QCM de positionnement terminé !</p>
+                                    <p class="card-text fw-bold text-decoration-underline">Votre estimation personnalisée :</p>
                                     <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
-                                    <p class="card-text mb-0 d-flex align-items-center"
-                                        *ngFor="let result of userData[trade].fullResults | keyvalue">
+                                    <div class="card-text mb-0"
+                                        *ngFor="let result of userData[trade].fullResults | keyvalue, let lastResult=last">
                                         <ng-container *ngFor="let item of objectEntries(result.value)">
-                                            <span class="fw-bold">{{ item[0] }}</span>
-                                            <i class="bi fs-4 bi-arrow-right-short"></i>
-                                            <span>{{ item[1].duration }} jours - Coût : {{ item[1].cost }} €</span>
+                                            <div class="d-flex align-items-center">
+                                                <span class="fw-bold">{{ item[0] }}</span>
+                                                <i class="bi fs-4 bi-arrow-right-short"></i>
+                                                <span>{{ item[1].duration }} jours - Coût : {{ item[1].cost }} € - Pour une note de {{ item[1].notation | json | number:'1.1-1' }}/20</span>
+                                            </div>
+                                            <hr *ngIf="!lastResult">
                                         </ng-container>
-                                    </p>
+                                    </div>
                                 </ng-template>
 
                                 <!-- Affichez le hr sauf dans la dernière itération -->
