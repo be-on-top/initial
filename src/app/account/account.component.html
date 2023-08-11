@@ -143,15 +143,11 @@
 
                         <!-- nouveauté pour multi quizz VERSION 2 -->
 
-                        <div *ngIf="userData && tradesEvaluated; else none">
+                        <div *ngIf="userData && tradesEvaluated.length>0; else none">
                             <!-- comme on ne questionnera plus tradeEvaluated mais tradesEvaluated [], on va devoir, avant d'inspecter la suite des ngIf, avoir une boucle ngFor pour voir métier après métier...  -->
                             <!-- attention, compte tenu de la manière dont tradesEvaluated a été généré, trade ici, c'est une chaine de caractère type quizz_sigle -->
                             <div *ngFor="let trade of tradesEvaluated, let last=last">
-                                <p>coucou</p>
-                                {{userData | json}}
-                                {{userData[trade].fullResults | json}}
-
-
+                                <!-- {{userData | json}} {{userData[trade].fullResults | json}} -->
                                 <p class="card-text">Métier concerné : <span class="fw-bold">{{trade}}</span></p>
                                 <!-- Partie 1 si QCM en cours -->
                                 <!-- <div *ngIf="userData.lastIndexQuestions[trade]<2, else done"> -->
