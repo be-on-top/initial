@@ -40,26 +40,33 @@
         </div>
         <!-- fin de la zone dédiée spécifiquement à l'administration des comptes -->
 
-        <div class="card" *ngIf="userRouterLinks.user!=='trainer' && tradesEvaluated">
+        <!-- {{tradesEvaluated}} -->
+
+        <!-- zone dédiée au suivi des QCM et estimations chiffrées si elles existent -->
+        <h3 class="mt-3"><i class="bi bi-clipboard-data-fill fs-3 me-3 me-sm-5"></i>Ses QCM(s)</h3>
+        <!-- <div class="card my-5" *ngIf="userRouterLinks.user!=='trainer' && tradesEvaluated"> -->
+        <div class="card my-5" *ngIf="tradesEvaluated">
             <div class="card-body">
 
                 <!-- {{tradesEvaluated}} -->
                 <!-- nouveauté pour multi quizz VERSION 2 -->
 
                 <div *ngIf="student && tradesEvaluated; else none">
+                    <!-- {{tradesEvaluated | json}}
+                  {{student | json}} -->
                     <!-- <div *ngIf="student && tradesEvaluated; else none"> -->
                     <!-- comme on ne questionnera plus tradeEvaluated mais tradesEvaluated [], on va devoir, avant d'inspecter la suite des ngIf, avoir une boucle ngFor pour voir métier après métier...  -->
                     <!-- attention, compte tenu de la manière dont tradesEvaluated a été généré, trade ici, c'est une chaine de caractère type quizz_sigle -->
                     <div *ngFor="let trade of tradesEvaluated, let last=last">
-                        <!-- {{student | json}}
-                        {{student[trade].fullResults | json}} -->
 
-                        <p class="card-text">Métier concerné : <span class="fw-bold">{{trade}}</span></p>
+                        <!-- {{student[trade].fullResults | json}} -->
+
+                        <p class="card-text"><span class="fw-bold">Métier concerné :</span> {{trade}}</p>
                         <!-- Partie 1 si QCM en cours -->
                         <!-- <div *ngIf="student.lastIndexQuestions[trade]<2, else done"> -->
-                        <div *ngIf="!student[trade].fullResults, else done">
+                        <div *ngIf="getTradeDetails(trade) as quizDetails, else done">
                             <p class="card-text">A déjà répondu à
-                                <span class="fw-bold">{{student[trade].lastIndexQuestion +1 | number}} Questions</span>,
+                                <span class="fw-bold">{{quizDetails.lastIndexQuestion +1 | number}} Questions</span>,
                                 mais n'a pas terminé
                             </p>
                         </div>
@@ -72,7 +79,7 @@
                             <p class="card-text fw-bold mb-0">Estimation personnalisée</p>
                             <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
                             <p class="card-text mb-0 d-flex align-items-center"
-                                *ngFor="let result of student[trade].fullResults | keyvalue">
+                                *ngFor="let result of getTradeDetails(trade)?.fullResults | keyvalue">
                                 <ng-container *ngFor="let item of objectEntries(result.value)">
                                     <span class="fw-bold">{{ item[0] }}</span>
                                     <i class="bi fs-4 bi-arrow-right-short"></i>
@@ -83,7 +90,7 @@
                             <p class="card-text fw-bold mb-0">Résultats obtenus</p>
                             <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
                             <p class="card-text mb-0 d-flex align-items-center"
-                                *ngFor="let result of student[trade].fullResults | keyvalue">
+                                *ngFor="let result of getTradeDetails(trade)?.fullResults | keyvalue">
                                 <ng-container *ngFor="let item of objectEntries(result.value)">
                                     <span class="fw-bold">{{ item[0] }} : </span>
                                     <i class="bi fs-4 bi-arrow-right-short"></i>
@@ -106,17 +113,21 @@
 
         <!-- affichage des évaluations -->
 
-        <h3 class="mb-3"><i class="bi bi-clipboard-data-fill fs-3 me-3 me-sm-5"></i>Ses évaluations de suivi pédagogique</h3>
-        <ng-container *ngIf="student && userFollowUpEvaluations">
-            <div *ngFor="let evaluation of userFollowUpEvaluations | keyvalue">
+        <h3 class="mt-3"><i class="bi bi-clipboard-data-fill fs-3 me-3 me-sm-5"></i>Ses évaluations de suivi pédagogique
+        </h3>
+        <ng-container *ngIf="student && evaluations">
+            <div *ngFor="let evaluation of evaluations | keyvalue">
                 <div class="card my-5">
                     <div class="card-body">
                         <p class="card-text"><span class="fw-bold">Sujet</span>: {{ evaluation.value.subject }}</p>
                         <p class="card-text"><span class="fw-bold">Détails</span>: {{ evaluation.value.details }}</p>
-                        <button class="btn btn-danger" [routerLink]="['/admin/updateEvaluation', studentId, evaluation.key]">Modifier l'évaluation</button>
+                        <button class="btn btn-danger"
+                            [routerLink]="['/admin/updateEvaluation', studentId, evaluation.key]">Modifier
+                            l'évaluation</button>
                     </div>
                     <div class="card-footer text-muted">
-                        <span *ngIf="student.created">Date de création : {{evaluation.value.date | date:'dd/MM/yyyy' }}</span>
+                        <span *ngIf="student.created">Date de création : {{evaluation.value.date | date:'dd/MM/yyyy'
+                            }}</span>
                     </div>
                 </div>
             </div>

@@ -169,7 +169,8 @@
                                 <!-- Il semble que la directive keyvalue provoque des problèmes lorsqu'elle est utilisée dans une boucle *ngFor. 
                                     Pour contourner ce problème, on peut utiliser la fonction créée Object.entries() pour obtenir les clés et valeurs de result.value. -->
                                 <ng-template #done class="mb-3">
-                                    <p class="card-text fw-bold">QCM de positionnement terminé !</p>
+                                    <p class="card-text fw-bold d-flex align-items-center">QCM de positionnement terminé <i
+                                    class="bi fs-4 bi-check-lg ms-3"></i></p>
                                     <p class="card-text fw-bold text-decoration-underline">Votre estimation personnalisée :</p>
                                     <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
                                     <div class="card-text mb-0"

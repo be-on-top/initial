@@ -5,6 +5,16 @@ import { ActivatedRoute } from '@angular/router';
 import { StudentsService } from '../../students.service';
 import { Student } from '../student';
 import { Evaluation } from '../../evaluation';
+import { QuizDetails } from '../../quizzDetails';
+
+// interface QuizDetails {
+//   lastIndexQuestion: number;
+//   fullResults: { [key: string]: { duration: number; cost: number } };
+//   scoreCounter:number;
+//   studentCompetences: { [key: string]: number }[];
+//   tradeEvaluated:string;
+//   // Autres propriétés spécifiques d'un quiz
+// }
 
 @Component({
   selector: 'app-student-details',
@@ -18,23 +28,24 @@ export class StudentDetailsComponent {
   editing: boolean = false;
   studentId: string = "";
   // @Input() student: Student;
-  student: any = {};
+  // student: any = {};
+  student: Student = {} as Student;
   // @Output() deleteStudent = new EventEmitter<Student>();
 
 
   lastIndex: number = 0
   // pour afficher si on garde cette option fullResuls à l'administrateur
   fullResults: { [key: string]: { duration: number; cost: number } }[] = [];
-  tradesEvaluated: any = []
+  tradesEvaluated: string[] = []
   userRouterLinks: any
-  userFollowUpEvaluations: Record<string, Evaluation> = {};
-
+  // userFollowUpEvaluations: Record<string, Evaluation> = {};
+  evaluations: Record<string, Evaluation> = {};
 
 
   constructor(
     private service: StudentsService,
     private route: ActivatedRoute
-  ) { 
+  ) {
 
     this.userRouterLinks = this.route.snapshot.data;
   }
@@ -62,14 +73,23 @@ export class StudentDetailsComponent {
           tradesEvaluatedSet.add(key);
         }
 
-        if (key.includes('evaluations')) {
-          this.userFollowUpEvaluations=this.student[key]          
+        // if (key.includes('evaluations')) {
+        //   this.userFollowUpEvaluations=this.student[key]          
+        // }
+
+        if (this.student.evaluations) {
+          // this.userFollowUpEvaluations = this.student.evaluations;
+          this.evaluations = this.student.evaluations;
+          console.log("this.evaluations", this.evaluations);
+
         }
+
       }
 
-      // Convertir le Set en tableau avec l'opérateur spread (...)
-      this.tradesEvaluated = [...tradesEvaluatedSet]
-      console.log('tradesEvaluated construit avec getStudentDetails dans studentDetailsComponent', this.tradesEvaluated)
+        // Convertir le Set en tableau avec l'opérateur spread (...)
+        this.tradesEvaluated = [...tradesEvaluatedSet]
+        console.log('tradesEvaluated construit avec getStudentDetails dans studentDetailsComponent', this.tradesEvaluated)
+
     })
 
   }
@@ -92,6 +112,13 @@ export class StudentDetailsComponent {
       alert("C'est un super administrateur !!!")
     }
   }
+
+  getTradeDetails(trade: string) {
+    if (this.student && this.student[trade]) {
+        return this.student[trade] as QuizDetails;
+    }
+    return null;
+}
 
 
 }

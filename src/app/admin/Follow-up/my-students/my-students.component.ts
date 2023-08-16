@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { StudentsService } from '../../students.service';
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { TrainersService } from '../../trainers.service';
+import { Student } from '../../Students/student';
 
 @Component({
   selector: 'app-students-list',
@@ -11,9 +12,9 @@ import { TrainersService } from '../../trainers.service';
 export class MyStudentsComponent implements OnInit {
 
 
-  myStudents: any[] = [];
+  myStudents: Student[] = [];
   user?: any
-  userLastName?: any
+  userLastName: string=""
 
   constructor(private service: StudentsService, private auth: Auth, private trainerService: TrainersService) { }
 
