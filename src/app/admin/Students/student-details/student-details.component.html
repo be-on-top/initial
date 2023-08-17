@@ -60,8 +60,19 @@
                     <div *ngFor="let trade of tradesEvaluated, let last=last">
 
                         <!-- {{student[trade].fullResults | json}} -->
+                        <p class="card-text">
+                            <span class="bi fw-bold trade-link">
+                                Métier concerné :
+                                <!-- Plutôt que de simplement attribuer une valeur statique à l'attribut title, vous pouvez utiliser des expressions pour générer dynamiquement cette valeur. -->
+                                <span class="trade-hover"                                
+                                    [title]="tradeName"
+                                    (mouseenter)="hoveredTrade = trade; getTradeName(trade)"
+                                    (mouseleave)="hoveredTrade = null; resetTradeName()">
+                                    {{ trade }}
+                                </span>
+                            </span>
+                        </p>
 
-                        <p class="card-text"><span class="fw-bold">Métier concerné :</span> {{trade}}</p>
                         <!-- Partie 1 si QCM en cours -->
                         <!-- <div *ngIf="student.lastIndexQuestions[trade]<2, else done"> -->
                         <div *ngIf="getTradeDetails(trade) as quizDetails, else done">

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Firestore, collection, collectionData, docData, setDoc, addDoc, query, doc, where, getDocs, DocumentData, getDoc } from '@angular/fire/firestore';
 // import { NgForm } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Trade } from './trade';
 import { Settings } from './settings';
 import { getMetadata } from '@angular/fire/storage';
@@ -113,6 +113,11 @@ export class SettingsService {
   getSigle(id: string) {
     let $sigleRef = doc(this.firestore, "sigles/" + id)
     return docData($sigleRef, { idField: 'id' }) as Observable<Trade>
+  }
+
+  getTradeName(tradeId: string): Observable<string> {
+    let $sigleRef = doc(this.firestore, "sigles/" + tradeId);
+    return docData($sigleRef, { idField: 'id' }).pipe(map(trade => trade['denomination']));
   }
 
 

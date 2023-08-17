@@ -6,6 +6,7 @@ import { StudentsService } from '../../students.service';
 import { Student } from '../student';
 import { Evaluation } from '../../evaluation';
 import { QuizDetails } from '../../quizzDetails';
+import { SettingsService } from '../../settings.service';
 
 // interface QuizDetails {
 //   lastIndexQuestion: number;
@@ -40,11 +41,17 @@ export class StudentDetailsComponent {
   userRouterLinks: any
   // userFollowUpEvaluations: Record<string, Evaluation> = {};
   evaluations: Record<string, Evaluation> = {};
+  // pour récupérer la dénomination complète d'un trade via son sigle
+  tradeName: string = ""
+  // Dans le composant
+  tradeNames: { [key: string]: string } = {};
+  hoveredTrade: string | null = null;
 
 
   constructor(
     private service: StudentsService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private settingsService: SettingsService
   ) {
 
     this.userRouterLinks = this.route.snapshot.data;
@@ -86,9 +93,9 @@ export class StudentDetailsComponent {
 
       }
 
-        // Convertir le Set en tableau avec l'opérateur spread (...)
-        this.tradesEvaluated = [...tradesEvaluatedSet]
-        console.log('tradesEvaluated construit avec getStudentDetails dans studentDetailsComponent', this.tradesEvaluated)
+      // Convertir le Set en tableau avec l'opérateur spread (...)
+      this.tradesEvaluated = [...tradesEvaluatedSet]
+      console.log('tradesEvaluated construit avec getStudentDetails dans studentDetailsComponent', this.tradesEvaluated)
 
     })
 
@@ -115,10 +122,24 @@ export class StudentDetailsComponent {
 
   getTradeDetails(trade: string) {
     if (this.student && this.student[trade]) {
-        return this.student[trade] as QuizDetails;
+      return this.student[trade] as QuizDetails;
     }
     return null;
-}
+  }
+
+
+  // La méthode replace renvoie une nouvelle chaîne avec les modifications, mais elle ne modifie pas la chaîne originale !!!!
+  getTradeName(tradeId: string) {
+    const cleanedTradeId = tradeId.replace('quizz_', '');
+    this.settingsService.getTradeName(cleanedTradeId).subscribe(data => {
+      this.tradeName = data;
+    });
+  }
+
+  // réinitialise simplement la valeur de tradeName à une chaîne vide lorsque le survol se termine, 
+  resetTradeName() {
+    this.tradeName = "";
+  }
 
 
 }
