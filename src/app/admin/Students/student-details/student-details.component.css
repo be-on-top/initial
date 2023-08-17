@@ -1,61 +1,44 @@
-/* .trade-hover {
-    position: relative;
-    cursor: pointer;
+/* Style de l'info-bulle */
+.trade-hover {
+  position: relative;
+  cursor: pointer;
+}
+
+.trade-hover::before {
+  content: "";
+  position: absolute;
+  bottom: 100%; /* Positionne le triangle */
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+  z-index: 1;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
 }
 
 .trade-hover::after {
-    content: attr(title);
-    position: absolute;
-    top: -30px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgba(0, 0, 0, 0.8);
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 4px;
-    font-size: 12px;
-    white-space: nowrap;
-    z-index: 1;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.2s, visibility 0.2s;
+  content: attr(title);
+  position: absolute;
+  bottom: calc(100% + 10px); /* Positionne l'info-bulle au-dessus du texte */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
 }
 
+.trade-hover:hover::before,
 .trade-hover:hover::after {
-    opacity: 1;
-    visibility: visible;
-} */
-
-/* Style de l'info-bulle */
-.trade-hover {
-    position: relative;
-    cursor: pointer;
-  }
-  
-  .trade-hover::after {
-    content: attr(title);
-    position: absolute;
-    top: -30px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgba(0, 0, 0, 0.8);
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 4px;
-    font-size: 12px;
-    white-space: nowrap;
-    z-index: 1;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.2s, visibility 0.2s;
-    /* Ajoutez du style de transition */
-    transition: opacity 0.2s, transform 0.2s;
-    transform: translateY(-10px);
-  }
-  
-  .trade-hover:hover::after {
-    opacity: 1;
-    visibility: visible;
-    /* Réinitialisez la transformation pour l'animation de survol */
-    transform: translateY(0);
-  }
+  opacity: 1;
+  visibility: visible;
+}
