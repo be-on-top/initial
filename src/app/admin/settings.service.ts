@@ -120,5 +120,11 @@ export class SettingsService {
     return docData($sigleRef, { idField: 'id' }).pipe(map(trade => trade['denomination']));
   }
 
+  getCPName(tradeId: string, cpId:number): Observable<string> {
+    console.log(cpId)    
+    let $sigleRef = doc(this.firestore, "sigles/" + tradeId)
+    return docData($sigleRef, { idField: 'id' }).pipe(map(trade => trade['competences'][cpId]))
+  }
+
 
 }

@@ -8,15 +8,6 @@ import { Evaluation } from '../../evaluation';
 import { QuizDetails } from '../../quizzDetails';
 import { SettingsService } from '../../settings.service';
 
-// interface QuizDetails {
-//   lastIndexQuestion: number;
-//   fullResults: { [key: string]: { duration: number; cost: number } };
-//   scoreCounter:number;
-//   studentCompetences: { [key: string]: number }[];
-//   tradeEvaluated:string;
-//   // Autres propriétés spécifiques d'un quiz
-// }
-
 @Component({
   selector: 'app-student-details',
   templateUrl: './student-details.component.html',
@@ -35,7 +26,7 @@ export class StudentDetailsComponent {
 
 
   lastIndex: number = 0
-  // pour afficher si on garde cette option fullResuls à l'administrateur
+  // pour afficher si on garde cette option fullResults à l'administrateur
   fullResults: { [key: string]: { duration: number; cost: number } }[] = [];
   tradesEvaluated: string[] = []
   userRouterLinks: any
@@ -44,9 +35,11 @@ export class StudentDetailsComponent {
   // pour récupérer la dénomination complète d'un trade via son sigle
   tradeName: string = ""
   // Dans le composant
-  tradeNames: { [key: string]: string } = {};
+  // tradeNames: { [key: string]: string } = {};
   hoveredTrade: string | null = null;
 
+  // en modularisant la logique d'affichage de l'info-bulle
+  moreInfo: string = ''; // pour définir une propriété très générique
 
   constructor(
     private service: StudentsService,
@@ -133,6 +126,14 @@ export class StudentDetailsComponent {
     const cleanedTradeId = tradeId.replace('quizz_', '');
     this.settingsService.getTradeName(cleanedTradeId).subscribe(data => {
       this.tradeName = data;
+    });
+  }
+
+  // pour modulariser la méthode de récupération de l'info-bulle avec des termes génériques
+  getMoreInfo(tradeId: string) {
+    const cleanedTradeId = tradeId.replace('quizz_', '');
+    this.settingsService.getTradeName(cleanedTradeId).subscribe(data => {
+      this.moreInfo = data;
     });
   }
 

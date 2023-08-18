@@ -9,6 +9,7 @@ import { StudentsService } from '../admin/students.service';
 import { Denominator } from './denominator';
 import { Questions } from '../admin/Questions/questions';
 import { Trade } from '../admin/trade';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-quizz',
@@ -50,7 +51,7 @@ export class QuizzComponent implements OnInit {
   // ultérieurement, ils seront enregistrés comme paramètres d'application
   // cursors: number[] = [10, 15]
   // avec cursors devenu dynamique
-  cursors:any={}
+  cursors: any = {}
   firstCursor: number = 0
   secondCursor: number = 0
 
@@ -69,8 +70,13 @@ export class QuizzComponent implements OnInit {
   cpCostByHour: number = 0
   estimatedCPCost: { [key: string]: number } = {};
   fullResults: { [key: string]: { duration: number; cost: number } }[] = [];
-  quotationIsReady:boolean=false
-  totalCost:number=0
+  quotationIsReady: boolean = false
+  totalCost: number = 0
+
+  // pour tester la modularité de tooltipComponent
+  // moreInfo: string = ""
+  // moreInfo?: Observable<string | null>
+  moreInfo: string | null = null;
 
 
 
@@ -118,7 +124,7 @@ export class QuizzComponent implements OnInit {
 
       // pour qu'on ne se retrouve pas en console avec un can not read id parce qu'il n'y en a plus
       // on peut rajouter ATTENTION !!!!! 
-      if (this.indexQuestion < this.questions.length-1) {
+      if (this.indexQuestion < this.questions.length - 1) {
 
 
         // pour recevoir la liste des médias relatifs aux questions relatives au métier
@@ -194,15 +200,15 @@ export class QuizzComponent implements OnInit {
       // on ne peut plus faire référence à this.dataStudent.studentCompetences si multiple quizz VERSION 2
       // this.dataStudent.studentCompetences ? this.studentCompetences = this.dataStudent.studentCompetences : ''
 
-      const quizzKey : string = 'quizz_'+this.trade
+      const quizzKey: string = 'quizz_' + this.trade
       console.log('quizzKey!!!!!!!!!!!!!!!!!!!!', quizzKey);
 
-      
+
       // ici, il est bon
       console.log('this.dataStudent', this.dataStudent);
-      
-      this.hasStartedEvaluation==true && this.dataStudent[quizzKey] && this.dataStudent[quizzKey].studentCompetences  ? this.studentCompetences = this.dataStudent[quizzKey].studentCompetences : '';
-      this.dataStudent && this.dataStudent[quizzKey] ? console.log('this.dataStudent[quizzKey]', this.dataStudent[quizzKey]):console.log("pas encore généré");
+
+      this.hasStartedEvaluation == true && this.dataStudent[quizzKey] && this.dataStudent[quizzKey].studentCompetences ? this.studentCompetences = this.dataStudent[quizzKey].studentCompetences : '';
+      this.dataStudent && this.dataStudent[quizzKey] ? console.log('this.dataStudent[quizzKey]', this.dataStudent[quizzKey]) : console.log("pas encore généré");
       console.log('this.studentCompetences tel que récupéré en base dans ngOnInit', this.studentCompetences);
 
     })
@@ -249,7 +255,7 @@ export class QuizzComponent implements OnInit {
     // et pour être certain qu'à la prochaine étape, c'est bien dataStudent.studentCompetences qui sera incrémenté !!!!!!!!!!!!
     // quoi que puisque on a une affectation conditionnée dans ngOnInit, ça fera probablement double emploi !!!!!
     // this.studentCompetences = this.dataStudent.studentCompetences
-     const quizzKey : string = 'quizz_'+this.trade
+    const quizzKey: string = 'quizz_' + this.trade
     this.studentCompetences = this.dataStudent[quizzKey].studentCompetences
 
     // une fois qu'il a fait tout ça,  on va tester le retour de levelsArray
@@ -362,7 +368,7 @@ export class QuizzComponent implements OnInit {
   convertirNoteSurVingt() {
     // avec les multiples quizz, ce n'est plus possible
     // const resultQuizz = this.dataStudent.studentCompetences
-    const quizzKey : string = 'quizz_'+this.trade
+    const quizzKey: string = 'quizz_' + this.trade
     const resultQuizz = this.dataStudent[quizzKey].studentCompetences
 
 
@@ -408,6 +414,8 @@ export class QuizzComponent implements OnInit {
 
     // this.levelsArray = this.dataStudent.studentCompetences.map((obj: any) => {
     this.levelsArray = this.realEvaluations.map((obj: any) => {
+      console.log("curseurs", this.firstCursor, this.secondCursor);
+      
       const newObj: any = {};
       for (let prop in obj) {
         if (obj.hasOwnProperty(prop)) {
@@ -466,6 +474,12 @@ export class QuizzComponent implements OnInit {
               console.log(`data.costsdata.costs["cost_CP${level}"]`, data.costs[`cost_CP${level}`])
               this.cpCostByHour = data.costs[`cost_CP${level}`]
               this.estimatedCPCost[`individual_cost_CP${level}`] = data.costs[`cost_CP${level}`]
+              // // et là le moreInfo qu'on souhaite récupérer
+              // this.moreInfo=data.competences[`${level-1}`]
+              // console.log(this.moreInfo);
+              console.log("this.moreInfo", this.moreInfo);
+
+
             })
             console.log("le coût horaire de la compétence", this.cpCostByHour)
             break; // Sort de la boucle une fois la correspondance trouvée
@@ -480,6 +494,10 @@ export class QuizzComponent implements OnInit {
             this.cpCostByHour = data.costs[`cost_CP${level}`];
             this.estimatedCPCost[`individual_cost_CP${level}`] *= value;
 
+            // et là le moreInfo qu'on souhaite récupérer
+            // this.moreInfo = data.competences[`${level - 1}`]
+            // console.log(this.moreInfo);
+
             console.log('this.estimatedCPCost', this.estimatedCPCost);
           });
 
@@ -493,8 +511,8 @@ export class QuizzComponent implements OnInit {
   }
 
 
-  async generateFullResults() { 
-    this.quotationIsReady=true
+  async generateFullResults() {
+    this.quotationIsReady = true
 
     // ce qu'on avait rattaché à setLevel, bien que ce ne soit pas cohérent du point de vue de la seule logique
     await this.displayDuration(this.durations, this.levelsArray)
@@ -505,7 +523,7 @@ export class QuizzComponent implements OnInit {
 
     console.log("this.durationsByLevels dans generateFullResults", this.durationsByLevels);
     console.log("this.levelsArray dans generateFullResults", this.levelsArray);
-    
+
 
 
     // Appelez la fonction setFullResults pour générer le tableau fullResults
@@ -526,12 +544,12 @@ export class QuizzComponent implements OnInit {
       // plus besoin d'indexer data[0] une fois qu'on a un doc cursors et un objet à lire
       // console.log("data!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", data);
 
-      
+
       console.log(data);
       this.cursors = data
 
-      this.firstCursor = data[0]['firstCursor']
-      this.secondCursor = data[0]['secondCursor']
+      this.firstCursor = data['firstCursor']
+      this.secondCursor = data['secondCursor']
 
       console.log(this.firstCursor);
       console.log(this.secondCursor);
@@ -544,7 +562,7 @@ export class QuizzComponent implements OnInit {
 
   sumCosts(fullResults: { [key: string]: { duration: number; cost: number } }[]): number {
     let totalCost = 0;
-  
+
     for (const entry of fullResults) {
       for (const key in entry) {
         if (entry.hasOwnProperty(key)) {
@@ -552,10 +570,40 @@ export class QuizzComponent implements OnInit {
         }
       }
     }
-  
+
     return totalCost;
   }
-  
+
+
+  // fonction test pour retourne LA clé que j'aurais toujours besoin de passer à settings : OK
+  //   transformTextToInfo(text: string, delimiter: string): string {
+  //     const startIndex = text.indexOf(delimiter);
+  //     if (startIndex !== -1) {
+  //         return delimiter + text.slice(startIndex + delimiter.length);
+  //     }
+  //     return text;
+  // }
+
+  updateMoreInfo(key: string): void {
+    this.transformTextToInfo(key, 'CP').subscribe(info => {
+      this.moreInfo = info;
+    });
+  }
+
+  transformTextToInfo(text: string, delimiter: string): Observable<string> {
+    const startIndex = text.indexOf(delimiter)
+    if (startIndex !== -1) {
+      // console.log(text.indexOf(delimiter))
+      const infoKey = parseInt(text.substring(startIndex + delimiter.length), 10) - 1;
+      console.log("infoKey", infoKey);
+      return this.settingsService.getCPName(this.trade, infoKey)
+    }
+    return of(text); // Retourner un observable avec la valeur actuelle si la clé n'est pas trouvée
+  }
+
+
+
+
 
 
 }

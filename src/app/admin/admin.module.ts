@@ -49,6 +49,8 @@ import { UpdateTradesComponent } from './settings/update-trades/update-trades.co
 // import { UpdateFollowUpComponent } from './Follow-up/update-follow-up/update-follow-up.component';
 import { MyStudentsComponent } from './Follow-up/my-students/my-students.component';
 import { AddFollowUpComponent } from './Follow-up/add-follow-up/add-follow-up.component';
+import { TooltipComponent } from '../tooltip/tooltip.component';
+
 
 
 const routesAdmin: Routes = [
@@ -97,8 +99,7 @@ const routesAdmin: Routes = [
       { path: 'myStudents', component: MyStudentsComponent },
       { path: 'myStudentDetails/:id', component: StudentDetailsComponent,  data: { user: 'trainer' }},
       { path: 'addStudentEvaluation/:id', component: AddFollowUpComponent,  data: { user: 'trainer' }},
-      { path: 'updateEvaluation/:id/:evaluationKey', component: UpdateStudentComponent, data: { user: 'trainer' } },
-
+      { path: 'updateEvaluation/:id/:evaluationKey', component: UpdateStudentComponent, data: { user: 'trainer' } }
     ],
     // canActivate: [AuthGuardService]
     canActivate: [AuthGuardService, RoleGuardGuard], data: {
@@ -115,7 +116,7 @@ const routesAdmin: Routes = [
     EvaluatorsListComponent,
     AddEvaluatorComponent,
     EvaluatorDetailsComponent,
-    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent, UpdateSocialComponent, SocialDetailsComponent, FullFormComponent, FullListComponent, FullDetailsComponent, UpdateFullComponent, LoginComponent, SearchComponent, StudentDetailsComponent, StudentsListComponent, UpdateStudentComponent, FeedbackMessagesComponent, AddTrainerComponent, TrainersListComponent, TrainerDetailsComponent, UpdateTrainerComponent, UsersListComponent, SettingsComponent, AddUserComponent, UserDetailsComponent, UpdateUserComponent, UpdateSettingsComponent, UpdateTradesComponent, MyStudentsComponent, AddFollowUpComponent
+    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent, UpdateSocialComponent, SocialDetailsComponent, FullFormComponent, FullListComponent, FullDetailsComponent, UpdateFullComponent, LoginComponent, SearchComponent, StudentDetailsComponent, StudentsListComponent, UpdateStudentComponent, FeedbackMessagesComponent, AddTrainerComponent, TrainersListComponent, TrainerDetailsComponent, UpdateTrainerComponent, UsersListComponent, SettingsComponent, AddUserComponent, UserDetailsComponent, UpdateUserComponent, UpdateSettingsComponent, UpdateTradesComponent, MyStudentsComponent, AddFollowUpComponent, TooltipComponent
   ],
   imports: [
     BrowserModule,
@@ -126,8 +127,11 @@ const routesAdmin: Routes = [
     RouterModule.forChild(routesAdmin)
   ],
   exports: [
-    FeedbackMessagesComponent
+    FeedbackMessagesComponent,
+    TooltipComponent
   ]
+
+  
 })
 
 export class AdminModule { }

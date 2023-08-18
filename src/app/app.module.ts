@@ -32,6 +32,8 @@ import { QuizzComponent } from './quizz/quizz.component';
 import { SocialFormComponent } from './social/social-form/social-form.component';
 import { DetailsComponent } from './quizz/vues/details/details.component';
 import { SettingsListComponent } from './admin/settings/settings-list/settings-list.component';
+import { TooltipComponent } from './tooltip/tooltip.component';
+import { KeysPipe } from './quizz/keys.pipe';
 // import { getMessaging } from 'firebase/messaging';
 
 
@@ -48,7 +50,10 @@ import { SettingsListComponent } from './admin/settings/settings-list/settings-l
     QuizzComponent,
     SocialFormComponent,
     DetailsComponent,
-    SettingsListComponent
+    SettingsListComponent,
+    KeysPipe
+
+    // TooltipComponent
   ],
   imports: [
     BrowserModule,
