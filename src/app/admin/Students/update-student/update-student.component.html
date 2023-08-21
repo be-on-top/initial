@@ -3,7 +3,7 @@
 
         <h3>Mise à jour du candidat ID-{{studentId}}</h3>
 
-        <form class="form" #f="ngForm" (submit)="updateStudent(f)" class="was-validated">
+        <form class="form mb-5 was-validated" #f="ngForm" (submit)="updateStudent(f)">
 
             <input type="text" id="created" [(ngModel)]="student.created" name="created" class="form-control invisible"
                 placeholder="Date de création : non modifiable">

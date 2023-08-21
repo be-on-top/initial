@@ -93,42 +93,6 @@
                 </div>
 
             </div>
-            <div class="card">
-                <div class="card-header bg-dark d-flex justify-content-between">
-                    <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseTwo">
-                        Votre suivi pédagogique
-                    </a><i class="bi bi-clipboard-data-fill fs-4 text-light"></i>
-                </div>
-                <div id="collapseTwo" class="collapse" data-bs-parent="#accordion">
-                    <div class="card-body">
-                        <div class="rounded p-2">
-                            <ul class="list-group">
-                                <!-- <li class="list-group-item"><span class="fw-bolder">Son id sur firestore :</span>  {{userData.id}}</li> -->
-                                <li class="list-group-item"><span class="fw-bolder">Votre formateur référent
-                                        :</span>
-                                    {{userData.trainer}}</li>
-                                <!-- si y a déjà des enregistrements datés des évaluations de suivi pédagogique, on bouclera dessus -->
-                                <ng-container *ngIf="evaluations; else noEvaluation">
-                                    <li class="list-group-item">
-                                        <ng-container *ngFor="let evaluation of evaluations | keyvalue">
-                                            <p><span class="fw-bold">Objet : </span>{{evaluation.value.subject}}</p>
-                                            <p>{{evaluation.value.details}}</p>
-                                            <p><span class="fw-bold">Date : </span>{{evaluation.value.date}}</p>
-                                        </ng-container>
-                                        <!-- {{userData.evaluations | json}} -->
-                                    </li>
-                                </ng-container>
-                                <!-- si aucune évaluation de suivi jusqu'ici, on le mentionne -->
-                                <ng-template #noEvaluation>
-                                    <li class="list-group-item">
-                                        <span class="fw-bolder">Pas de suivi consultable pour le moment</span>
-                                    </li>
-                                </ng-template>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <div class="card">
                 <div class="card-header bg-dark d-flex justify-content-between">
@@ -219,6 +183,44 @@
                         <button class="btn bg-primary"><a class="text-light" [routerLink]="['/socialregistration']">
                                 Formulaire de pré-inscription</a>
                         </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- inscription à la formation -->
+            <div class="card">
+                <div class="card-header bg-dark d-flex justify-content-between">
+                    <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseTwo">
+                        Votre suivi pédagogique
+                    </a><i class="bi bi-clipboard-data-fill fs-4 text-light"></i>
+                </div>
+                <div id="collapseTwo" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        <div class="rounded p-2">
+                            <ul class="list-group">
+                                <!-- <li class="list-group-item"><span class="fw-bolder">Son id sur firestore :</span>  {{userData.id}}</li> -->
+                                <li class="list-group-item"><span class="fw-bolder">Votre formateur référent
+                                        :</span>
+                                    {{userData.trainer}}</li>
+                                <!-- si y a déjà des enregistrements datés des évaluations de suivi pédagogique, on bouclera dessus -->
+                                <ng-container *ngIf="evaluations; else noEvaluation">
+                                    <li class="list-group-item">
+                                        <ng-container *ngFor="let evaluation of evaluations | keyvalue">
+                                            <p><span class="fw-bold">Objet : </span>{{evaluation.value.subject}}</p>
+                                            <p>{{evaluation.value.details}}</p>
+                                            <p><span class="fw-bold">Date : </span>{{evaluation.value.date}}</p>
+                                        </ng-container>
+                                        <!-- {{userData.evaluations | json}} -->
+                                    </li>
+                                </ng-container>
+                                <!-- si aucune évaluation de suivi jusqu'ici, on le mentionne -->
+                                <ng-template #noEvaluation>
+                                    <li class="list-group-item">
+                                        <span class="fw-bolder">Pas de suivi consultable pour le moment</span>
+                                    </li>
+                                </ng-template>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>

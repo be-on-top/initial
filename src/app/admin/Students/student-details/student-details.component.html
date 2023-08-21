@@ -83,39 +83,52 @@
 
                         <!-- Partie 1 si QCM en cours -->
                         <!-- <div *ngIf="student.lastIndexQuestions[trade]<2, else done"> -->
-                        <div *ngIf="getTradeDetails(trade) as quizDetails, else done">
-                            <p class="card-text">A déjà répondu à
-                                <span class="fw-bold">{{quizDetails.lastIndexQuestion +1 | number}} Questions</span>,
-                                mais n'a pas terminé
-                            </p>
+                        <div *ngIf="getTradeDetails(trade) as quizDetails">
+                            <ng-container *ngIf="!quizDetails.fullResults, else done">
+                                <p class="card-text">A déjà répondu à
+                                    <span class="fw-bold">{{quizDetails.lastIndexQuestion +1 | number}}
+                                        Questions</span>,
+                                    mais n'a pas terminé
+                                </p>
+                            </ng-container>
                         </div>
 
                         <!-- Partie 2 si QCM terminé -->
                         <!-- Il semble que la directive keyvalue provoque des problèmes lorsqu'elle est utilisée dans une boucle *ngFor. 
                             Pour contourner ce problème, on peut utiliser la fonction créée Object.entries() pour obtenir les clés et valeurs de result.value. -->
                         <ng-template #done class="mb-3">
-                            <p class="btn bg-success text-light">QCM de positionnement terminé pour {{ trade }}</p>
-                            <p class="card-text fw-bold mb-0">Estimation personnalisée</p>
-                            <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
-                            <p class="card-text mb-0 d-flex align-items-center"
-                                *ngFor="let result of getTradeDetails(trade)?.fullResults | keyvalue">
-                                <ng-container *ngFor="let item of objectEntries(result.value)">
-                                    <span class="fw-bold">{{ item[0] }}</span>
-                                    <i class="bi fs-4 bi-arrow-right-short"></i>
-                                    <span>{{ item[1].duration }} jours - Coût : {{ item[1].cost }} €</span>
-                                </ng-container>
-                            </p>
+                            <p class="alert bg-success text-light mt-2 d-flex justify-content-between py-2">QCM de positionnement terminé pour {{ trade }} <i class="bi bi-arrow-down-square-fill ms-auto"></i></p>
 
-                            <p class="card-text fw-bold mb-0">Résultats obtenus</p>
-                            <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
-                            <p class="card-text mb-0 d-flex align-items-center"
-                                *ngFor="let result of getTradeDetails(trade)?.fullResults | keyvalue">
-                                <ng-container *ngFor="let item of objectEntries(result.value)">
-                                    <span class="fw-bold">{{ item[0] }} : </span>
-                                    <i class="bi fs-4 bi-arrow-right-short"></i>
-                                    <span>{{ item[1].notation | json| number:'1.1-1' }}/20</span>
-                                </ng-container>
-                            </p>
+                            <!-- on peut les mettre en vis à vis pour les grands écrans -->
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
+                                    <p class="card-text fw-bold mb-0">Estimation personnalisée<i class="bi bi-currency-euro ms-3"></i></p>
+                                    <p class="card-text mb-0 d-flex align-items-center"
+                                        *ngFor="let result of getTradeDetails(trade)?.fullResults | keyvalue">
+                                        <ng-container *ngFor="let item of objectEntries(result.value)">
+                                            <span class="fw-bold">{{ item[0] }}</span>
+                                            <i class="bi fs-4 bi-arrow-right-short"></i>
+                                            <span>{{ item[1].duration }} jours - Coût : {{ item[1].cost }}€</span>
+                                        </ng-container>
+                                    </p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="card-text fw-bold mb-0">Résultats obtenus<i class="bi bi-pie-chart-fill ms-3"></i></p>
+                                    <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
+                                    <p class="card-text mb-0 d-flex align-items-center"
+                                        *ngFor="let result of getTradeDetails(trade)?.fullResults | keyvalue">
+                                        <ng-container *ngFor="let item of objectEntries(result.value)">
+                                            <span class="fw-bold">{{ item[0] }} : </span>
+                                            <i class="bi fs-4 bi-arrow-right-short"></i>
+                                            <span>{{ item[1].notation | json| number:'1.1-1' }}/20</span>
+                                        </ng-container>
+                                    </p>
+                                </div>
+
+                            </div>
+
                         </ng-template>
 
                         <!-- Affichez le hr sauf dans la dernière itération -->
