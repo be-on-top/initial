@@ -22,8 +22,8 @@
         <label for="email" class="form-label mt-3">Email *</label>
         <div class="input-group">
             <span class="input-group-text" id="inputGroupPrepend2">@</span>
-            <input type="email" id="email" [(ngModel)]="user.email" name="email" class="form-control"
-                #email="ngModel" placeholder="Email" required>
+            <input type="email" id="email" [(ngModel)]="user.email" name="email" class="form-control" #email="ngModel"
+                placeholder="Email" required>
         </div>
         <div class="valid-feedback" *ngIf="email.valid">Email Valide </div>
         <div class="invalid-feedback" *ngIf="email.invalid">Merci de renseigner le champ email.</div>
@@ -57,10 +57,18 @@
         <!-- modification des étudiants qui lui sont affectés -->
 
         <label for="students" class="form-label mt-3">Affectation étudiants :</label>
-        <select class="form-select" name="students" id="students" [ngModel]="user.students" #students="ngModel" multiple>
-            <option value>Selectionner le métier</option>
-            <option *ngFor="let student of studentsList" value="{{student.id}}">+{{student.lastName}} {{student.firstName}}</option>
+
+        <input type="text" class="form-control mb-2" name="searchText" [(ngModel)]="searchText"
+            placeholder="Rechercher un étudiant">
+
+        <select #studentSelect class="form-select" name="students" id="students" [(ngModel)]="selectedStudent" multiple>
+            <option value>Selectionner l'étudiant</option>
+            <option *ngFor="let student of studentsList" [value]="student.id" [id]="student.id" #[student.id]
+                [ngClass]="{'text-light bg-primary fst-italic': searchText && student.lastName.toLowerCase().includes(searchText.toLowerCase())}">
+                {{student.lastName}} {{student.firstName}}
+            </option>
         </select>
+
 
         <!-- <label for="email" class="form-label mt-3">Commentaires optionnels</label> -->
         <textarea name="details" id="details" [(ngModel)]="user.details" name="details" cols="100" rows="10"

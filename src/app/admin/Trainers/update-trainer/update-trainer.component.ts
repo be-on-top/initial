@@ -17,23 +17,32 @@ export class UpdateTrainerComponent implements OnInit {
   selectedSigles: string[] = []
   // pour affecter des étudiants à son compte
   studentsList: any = []
+  // pour le champs de recherche à intégrer au select
+  searchText: string = ''; // Assurez-vous de définir la propriété searchText ici
+  selectedStudent: string[] = []; // Déclarer en tant que tableau de chaînes
+  // ... Autres propriétés et initialisation ...
 
-  constructor(private service: TrainersService, private ac: ActivatedRoute, private router: Router, private studentsService: StudentsService, private notificationsService:PushNotificationService) {
+  constructor(private service: TrainersService, private ac: ActivatedRoute, private router: Router, private studentsService: StudentsService, private notificationsService: PushNotificationService) {
     this.userId = this.ac.snapshot.params["id"];
-    // on fait appel à geTrainer pour récupérer les entrées de l'existant. méthode qui pour memo renvoie un observable
-    this.service.getTrainer(this.userId).subscribe((data) => {
-      console.log("data depuis update-user component", data);
-      this.user = data
-    })
-
   }
 
   ngOnInit(): void {
+
+    // on fait appel à geTrainer pour récupérer les entrées de l'existant. méthode qui pour memo renvoie un observable
+    this.service.getTrainer(this.userId).subscribe((data) => {
+      console.log("data depuis update-user component", data);
+      this.user = data;
+      this.selectedStudent = this.user.students
+    })
+
     // parce que j'ai besoin de récupérer la liste pour les affectations
     this.studentsService.getStudents().subscribe((students) => {
       this.studentsList = students
     })
+
   }
+
+
 
   updateUser(form: NgForm) {
     // on vérifie la validité du formulaire
