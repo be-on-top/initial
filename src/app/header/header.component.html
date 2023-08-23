@@ -1,6 +1,9 @@
 <nav class="navbar navbar-expand-md bg-dark navbar-dark mb-md-2 sticky-top">
     <div class="container mx-auto">
-        <a class="navbar-brand" [routerLink]="['home', userRole || '']">BE-ON-TOP</a>
+        <!-- <a class="navbar-brand" [routerLink]="['home', userRole || '']">BE-ON-TOP</a> -->
+        <!-- pour éviter les erreurs d'interprétation des segments de chemin -->
+        <a class="navbar-brand" [routerLink]="['home']" [queryParams]="{ userRole: userRole }">BE-ON-TOP</a>
+        
         <!-- <p class="text-light">{{userRole}} Authentification</p> -->
         <!-- <a class="navbar-brand" [routerLink]="['']">BE-ON-TOP</a> -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">

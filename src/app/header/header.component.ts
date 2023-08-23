@@ -2,7 +2,6 @@ import { Component, OnChanges, OnInit } from '@angular/core';
 import { AuthService } from '../admin/auth.service';
 import { onAuthStateChanged } from 'firebase/auth';
 import { Auth, reload } from '@angular/fire/auth';
-import { EvaluatorsService } from '../admin/evaluators.service';
 import { Firestore, docData, doc } from '@angular/fire/firestore';
 import {Observable} from 'rxjs'
 
@@ -13,8 +12,8 @@ import {Observable} from 'rxjs'
 })
 export class HeaderComponent implements OnInit {
   userUid?: any
-  userRole:any=""
-  constructor(private authService: AuthService, private auth: Auth, private evaluatorService: EvaluatorsService, private firestore:Firestore) {
+  userRole:string=""
+  constructor(private authService: AuthService, private auth: Auth, private firestore:Firestore) {
     // this.userUid=this.authService.getUserId()
   }
 
@@ -27,7 +26,6 @@ export class HeaderComponent implements OnInit {
         this.getRole(this.userUid).subscribe(data=>{
           console.log("data de l'utilisateur depuis header", data);
           // si on a un tableau de rôles, c'est data.role[0]
-          // this.userRole=data.role
           this.userRole=data.role
           console.log("roles depuis header", data.role);
 

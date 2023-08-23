@@ -74,7 +74,7 @@
                     <div class="card-body">
                         <!-- <p class="card-text"><span class="fw-bold">Son sigle (référence métier) sur firestore : </span> : {{trade.sigle}}</p> -->
                         <p class="card-text"><span class="fw-bold">Dénomination: </span> : {{trade.denomination}}</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit... <a [routerLink]="['/trade',  trade.sigle]" class="text-decoration-none text-dark">en savoir plus</a></p>
 
                         <div *ngIf="isEditor" class="d-flex justify-content-end"><button class="btn btn-transparent"><i
                                     class="bi bi-pencil-square"></i>

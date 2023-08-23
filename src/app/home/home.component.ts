@@ -38,12 +38,12 @@ export class HomeComponent implements OnInit {
   uid = '';
 
   ui: string | undefined = ''
-  authStatus?: any;
+  authStatus?: boolean;
   myData?: any;
   // evaluatorId: any;
-  evaluator: any
+  // evaluator: any
   // userData?: any;
-  evaluatorData?: any;
+  // evaluatorData?: any;
   studentData?: any;
 
   requestToken?: any
@@ -63,6 +63,8 @@ export class HomeComponent implements OnInit {
   // ne sert pas et ne doit pas avoir à être nécessaire. 
   // lastIndexQuestion: number = 0
 
+  userRole:string=""
+
   constructor(private notificationService: PushNotificationService, private auth: Auth, private firestore: Firestore, private authService: AuthService, private studentService: StudentsService, private ac: ActivatedRoute, private router: Router, readonly swPush: SwPush, private settingsService: SettingsService) {
     // pour savoir si l'utilisateur est éditeur sans interroger firestore, on peut (?) récupérer userRole livré en paramètre de route
     // this.ac.snapshot.params["userRole"]="editor"?this.isEditor=true:""
@@ -72,6 +74,8 @@ export class HomeComponent implements OnInit {
     }
     console.log("this.ac.snapshot.params", this.ac.snapshot.params !== null)
     console.log("this.ac.snapshot.params['userRole']", this.ac.snapshot.params["userRole"])
+    this.userRole= this.ac.snapshot.params["userRole"]
+
 
   }
 

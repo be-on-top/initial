@@ -34,6 +34,7 @@ import { DetailsComponent } from './quizz/vues/details/details.component';
 import { SettingsListComponent } from './admin/settings/settings-list/settings-list.component';
 import { TooltipComponent } from './tooltip/tooltip.component';
 import { KeysPipe } from './quizz/keys.pipe';
+import { TradeDetailsComponent } from './trades/trade-details/trade-details.component';
 // import { getMessaging } from 'firebase/messaging';
 
 
@@ -51,7 +52,8 @@ import { KeysPipe } from './quizz/keys.pipe';
     SocialFormComponent,
     DetailsComponent,
     SettingsListComponent,
-    KeysPipe
+    KeysPipe,
+    TradeDetailsComponent
 
     // TooltipComponent
   ],
