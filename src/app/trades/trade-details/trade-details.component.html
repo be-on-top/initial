@@ -1,15 +1,73 @@
 <div class="container py-5">
 
-    <div class="mt-4 p-5 bg-primary text-white rounded">
-        <h1>{{tradeData.denomination}}</h1>
+    <div class="mt-4 p-5 bg-primary text-white rounded row">
+        <div class="col-md-6">
+            <h1>{{tradeData.denomination}}</h1>
+            <p>Sigle référence : {{tradeData.sigle}}.
+                <br>Nombre de compétences à valider : {{tradeData.competences.length}}.
+                <br>Durée max de la formation : {{firstValuesSum}} jours
+                <br>Pour vérification du rôle récupéré : {{userRole}}
+            </p>
+        </div>
+        <!-- il faut différencier le cas d'un userRole=none...  -->
+        <div *ngIf="userRole==='none' else switch" class="col-md-6 fs-3 text-white mt-md-5">
+            <p>Afin de commencer un  QCM, merci de vous authentifier ou vous  créer un compte !</p>
 
-        <p>Sigle référence : {{tradeData.sigle}}.
-            <br>Nombre de compétences à valider : {{tradeData.competences.length}}.
-            <br>Durée max de la formation : {{firstValuesSum}} jours
-        </p>
+        </div>
+        <!-- ...des autres cas -->
+        <ng-template #switch >
+            <div class="col-md-6 fs-3 text-white mt-md-5">
+                <a [routerLink]="[
+                '/quizz/',
+                this.tradeData.sigle,
+                ((studentData?.['quizz_'+this.tradeData.sigle]?.lastIndexQuestion || 0) + 1 | number),
+                ((studentData?.['quizz_'+this.tradeData.sigle]?.scoreCounter || 0 | number)),
+                studentData?.['quizz_'+this.tradeData.sigle] ? true : false,
+                studentData?.id ? studentId : ''
+              ]" class="text-decoration-none text-dark">
+                <!-- ---------------- -->
+                <ng-container *ngIf="studentData">
+                    <!-- ScoreCounter : {{ studentData['quizz_'+this.tradeData.sigle].scoreCounter | json }} -->
+                    <!-- pour switcher d'un intitulé à un autre selon que studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle -->
+    
+                    <div class="d-flex justify-content-md-end" *ngIf="hasStartedEvaluation==false, else none">
+                        <button
+                            class="btn btn-transparent"><i class="bi bi-clock"></i>
+                            Démarrer votre évaluation</button></div>
+    
+                    <ng-template #none>
+                        <div class="d-flex justify-content-md-end"
+                            *ngIf="!studentData['quizz_'+this.tradeData.sigle].fullResults"><button class="btn btn-transparent"><i
+                                    class="bi bi-clock-history"></i>
+                                <!-- Reprendre à la question {{studentData.lastIndexQuestion+1}}</button></div> -->
+                                Poursuivre</button></div>
+    
+                        <div class="d-flex justify-content-md-end"
+                            *ngIf="studentData['quizz_'+this.tradeData.sigle].fullResults"><button class="btn btn-transparent"><i
+                                    class="bi bi-check-square-fill"></i>
+                                Votre évaluation est terminée</button>
+                        </div>
+                    </ng-template>
+    
+                </ng-container>
+    
+    
+                <!-- ---------------- -->
+                </a>
+            </div>
+        </ng-template>
+
     </div>
     <!-- 
     {{tradeData | json}} -->
+
+    <div class="mt-4 p-5 bg-light rounded">
+        <ng-container *ngIf="tradeData.description">
+            <div>
+                {{tradeData.description}}
+            </div>
+        </ng-container>
+    </div>
 
     <div class="mt-4 p-5 bg-primary text-white rounded">
         <ng-container *ngIf="tradeData.competences">
@@ -17,6 +75,8 @@
                 <span class="fw-bold">CP{{index+1}} : </span> {{cp}}
             </p>
         </ng-container>
-
-
     </div>
+
+
+
+</div>

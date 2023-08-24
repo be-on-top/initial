@@ -73,10 +73,10 @@
 
                     <div class="card-body">
                         <!-- <p class="card-text"><span class="fw-bold">Son sigle (référence métier) sur firestore : </span> : {{trade.sigle}}</p> -->
-                        <p class="card-text"><span class="fw-bold">Dénomination: </span> : {{trade.denomination}}</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit... <a [routerLink]="['/trade',  trade.sigle]" class="text-decoration-none text-dark">en savoir plus</a></p>
+                        <div class="card-text"><a [routerLink]="['/trade', trade.sigle]" class="text-decoration-none">
+                            {{(trade.description | slice:0:100) + ' ...' }} </a></div>
 
-                        <div *ngIf="isEditor" class="d-flex justify-content-end"><button class="btn btn-transparent"><i
+                       <div *ngIf="isEditor" class="d-flex justify-content-end"><button class="btn btn-transparent"><i
                                     class="bi bi-pencil-square"></i>
                                 Editer</button></div>
 
@@ -86,24 +86,20 @@
                         <!-- pour switcher d'un intitulé à un autre selon que studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle -->
 
                         <div class="d-flex justify-content-end"
-                            *ngIf="(studentData && !studentData['quizz_'+trade.sigle])"
-                            class="d-flex justify-content-end"><button class="btn btn-transparent"><i
+                            *ngIf="(studentData && !studentData['quizz_'+trade.sigle])"><button class="btn btn-transparent"><i
                                     class="bi bi-clock"></i>
                                 Démarrer votre évaluation</button></div>
 
                         <div class="d-flex justify-content-end"
-                            *ngIf="studentData && studentData['quizz_'+trade.sigle] && !studentData['quizz_'+trade.sigle].fullResults"
-                            class="d-flex justify-content-end"><button class="btn btn-transparent"><i
+                            *ngIf="studentData && studentData['quizz_'+trade.sigle] && !studentData['quizz_'+trade.sigle].fullResults"><button class="btn btn-transparent"><i
                                     class="bi bi-clock-history"></i>
                                 <!-- Reprendre à la question {{studentData.lastIndexQuestion+1}}</button></div> -->
                                 Poursuivre</button></div>
 
                         <div class="d-flex justify-content-end"
-                            *ngIf="studentData && studentData['quizz_'+trade.sigle] && studentData['quizz_'+trade.sigle].fullResults"
-                            class="d-flex justify-content-end"><button class="btn btn-transparent"><i
+                            *ngIf="studentData && studentData['quizz_'+trade.sigle] && studentData['quizz_'+trade.sigle].fullResults"><button class="btn btn-transparent"><i
                                     class="bi bi-check-square-fill"></i>
                                 Votre évaluation est terminée</button>
-
                         </div>
 
                         <!-- à tester : (str.length>6)? (str | slice:0:6)+'...':(str) -->
