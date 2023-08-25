@@ -9,7 +9,7 @@
                 placeholder="Date de création : non modifiable">
             <input type="text" id="id" [(ngModel)]="student.id" name="id" class="form-control"
                 placeholder="id d'authentification : non modifiable" class="form-control text-white" disabled>
-<!-- 
+            <!-- 
             <input type="text" id="trainer" [(ngModel)]="student.trainer" name="trainer" class="form-control"
                 placeholder="évaluateur : non modifiable" class="form-control text-white" disabled> -->
 
@@ -39,7 +39,8 @@
             <!-- Tooggle Swith for student status -->
             <div class="form-check form-switch my-3">
                 <input class="form-check-input" type="checkbox" id="status" name="status" value="true"
-                    [(checked)]="student.status" [(ngModel)]="student.status" [disabled]="userRouterLinks.user==='trainer'">
+                    [(checked)]="student.status" [(ngModel)]="student.status"
+                    [disabled]="userRouterLinks.user==='trainer'">
                 <label class="form-check-label" for="status">Status de l'utilisateur :
                     <span *ngIf="student.status; else elseBlock" class="fw-bold">Actif</span>
                     <ng-template #elseBlock> <span class="fw-bold">Inactif</span></ng-template>
@@ -49,19 +50,21 @@
             <!-- <label for="email" class="form-label mt-3">Commentaires optionnels</label> -->
             <textarea name="details" id="details" [(ngModel)]="student.details" name="details" cols="100" rows="10"
                 class="form-control mt-3" #details="ngModel" [ngClass]="{'.is-valid':details.value && details.touched}"
-                placeholder="Commentaires optionnels..." [disabled]="userRouterLinks.user==='trainer'">Détails / Remarques & Objectifs...</textarea>
+                placeholder="Commentaires optionnels..."
+                [disabled]="userRouterLinks.user==='trainer'">Détails / Remarques & Objectifs...</textarea>
             <button type="submit" id="submit" class="btn btn-primary mt-3"
                 [ngClass]="{'disabled':f.invalid || userRouterLinks.user=='trainer'}">Valider</button>
         </form>
 
         <!-- spécifiquement, pour la saisie des évaluations de suivi -->
-        <h3>Mise à jour de ses évaluations de suivi</h3>              
+        <h3>Mise à jour de ses évaluations de suivi</h3>
 
-        <form class="form" #followUp="ngForm" (submit)="updateStudentEvaluation(followUp)" class="was-validated">            
+        <form class="form" #followUp="ngForm" (submit)="updateStudentEvaluation(followUp)" class="was-validated">
             <div class="row">
                 <div class="form-group col-md-6">
                     <label for="subject" class="form-label mt-3">Sujet *</label>
-                    <input type="text" [ngModel]="evaluationToUpdate.subject" name="subject" class="form-control" #subject="ngModel" required>
+                    <input type="text" [ngModel]="evaluationToUpdate.subject" name="subject" class="form-control"
+                        #subject="ngModel" required>
                     <div class="valid-feedback" *ngIf="subject.valid">Champ correctement renseigné</div>
                     <div class="invalid-feedback" *ngIf="subject.invalid">Merci de renseigner le sujet de l'évaluation.
                     </div>
@@ -72,11 +75,16 @@
                     <div class="valid-feedback" *ngIf="date.valid">Champ non sommis à modification</div>
                     <div class="invalid-feedback" *ngIf="date.invalid">Merci de renseigner la date</div>
                 </div> -->
-            </div>    
+            </div>
             <div class="form-group">
                 <label for="details" class="form-label mt-3">Details *</label>
-                <textarea name="details" id="" cols="50" rows="30" [ngModel]="evaluationToUpdate.details" name="details" class="form-control"
-                    #details="ngModel" placeholder="Saisissez l'évaluation reçue en présentiel" required></textarea>
+                <!-- Si on utilise TinyCME comme éditeur de texte pour enrichir la propriété details -->
+                <!-- <textarea name="details" id="" cols="50" rows="30" [ngModel]="evaluationToUpdate.details" name="details" class="form-control"
+                    #details="ngModel" placeholder="Saisissez l'évaluation reçue en présentiel" required></textarea> -->
+                <editor
+                    [init]="{ plugins: 'link image', toolbar: 'undo redo | bold italic | link image' }"
+                    [id]="'details'" [ngModel]="evaluationToUpdate.details" name="details"
+                    placeholder="Saisissez l'évaluation reçue en présentiel" required></editor>
                 <div class="valid-feedback" *ngIf="details.valid">Evaluation correctement renseignée</div>
                 <div class="invalid-feedback" *ngIf="details.invalid">Merci de saisir votre évaluation de suivi</div>
             </div>
