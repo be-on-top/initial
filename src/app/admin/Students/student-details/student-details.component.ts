@@ -1,4 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+// pour interpréter les balises HTML enregistrées en base avec un éditeur de text
+import { DomSanitizer } from '@angular/platform-browser';
 
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
@@ -44,7 +46,8 @@ export class StudentDetailsComponent {
   constructor(
     private service: StudentsService,
     private route: ActivatedRoute,
-    private settingsService: SettingsService
+    private settingsService: SettingsService,
+    public sanitizer: DomSanitizer
   ) {
 
     this.userRouterLinks = this.route.snapshot.data;

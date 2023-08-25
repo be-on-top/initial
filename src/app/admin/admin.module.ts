@@ -8,6 +8,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { EditorModule } from '@tinymce/tinymce-angular'; // Import du module EditorModule
 import { AddEvaluatorComponent } from './Evaluators/add-evaluator/add-evaluator.component';
 import { EvaluatorDetailsComponent } from './Evaluators/evaluator-details/evaluator-details.component';
 import { UpdateEvaluatorComponent } from './Evaluators/update-evaluator/update-evaluator.component';
@@ -124,7 +125,8 @@ const routesAdmin: Routes = [
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    RouterModule.forChild(routesAdmin)
+    RouterModule.forChild(routesAdmin),
+    EditorModule
   ],
   exports: [
     FeedbackMessagesComponent,

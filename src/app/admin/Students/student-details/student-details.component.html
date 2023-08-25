@@ -152,8 +152,12 @@
                 <div class="card my-5">
                     <div class="card-body">
                         <p class="card-text"><span class="fw-bold">Sujet</span>: {{ evaluation.value.subject }}</p>
-                        <p class="card-text"><span class="fw-bold">Détails</span>: {{ evaluation.value.details }}</p>
-                        <button class="btn btn-danger"
+                        <!-- version sans recours à TinyMCE donc sans balise html enregistrées en base -->
+                        <!-- <p class="card-text"><span class="fw-bold">Détails</span>: {{ evaluation.value.details }}</p> -->
+                        <!-- version avec filtre de rendu de balises HTML enregistrées en base -->
+                        <div class="card-text" [innerHTML]="sanitizer.bypassSecurityTrustHtml(evaluation.value.details)"></div>
+
+                        <button class="btn btn-danger mt-3"
                             [routerLink]="['/admin/updateEvaluation', studentId, evaluation.key]">Modifier
                             l'évaluation</button>
                     </div>
