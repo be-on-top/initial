@@ -3,7 +3,7 @@ import { StudentsService } from '../../students.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { Evaluation } from '../../evaluation';
-import { AnimationKeyframesSequenceMetadata } from '@angular/animations';
+// import { AnimationKeyframesSequenceMetadata } from '@angular/animations';
 
 @Component({
   selector: 'app-update-student',

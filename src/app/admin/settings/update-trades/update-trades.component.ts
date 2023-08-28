@@ -14,6 +14,7 @@ import { CPData } from '../CPData';
 })
 export class UpdateTradesComponent {
 
+  userRouterLinks: any
   cpDataList: CPData[] = []
 
   sigleId: string = ""
@@ -45,6 +46,7 @@ export class UpdateTradesComponent {
 
 
   constructor(private service: SettingsService, private ac: ActivatedRoute, private router: Router) {
+    this.userRouterLinks = this.ac.snapshot.data;
 
   }
 
@@ -63,6 +65,8 @@ export class UpdateTradesComponent {
       console.log('data.durations depuis le contructeur', data.durations)
 
     })
+
+    this.getUsers()
 
   }
 
@@ -205,6 +209,15 @@ export class UpdateTradesComponent {
         // ..};
       })
 
+  }
+
+  getUsers() {
+    if (this.userRouterLinks.user == "editor") {
+      alert("C'est un éditeur !!!")
+    }
+    else if (this.userRouterLinks.user == "admin") {
+      alert("C'est un super administrateur !!!")
+    }
   }
 
 }
