@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 // je ne vois pas l'utilité de cette méthode pour le moment, donc on désactive !!!!
 // import { loggedIn } from '@angular/fire/auth-guard';
 import { Auth } from '@angular/fire/auth';
+// editeur de texte
+import { DomSanitizer } from '@angular/platform-browser';
 // import { of } from 'rxjs';
 import { AuthService } from '../admin/auth.service';
 // on a pu se passer de rxjs, donc on désactive tout pour le moment
@@ -53,7 +55,7 @@ export class AccountComponent implements OnInit {
   evaluations:Record<string, Evaluation> = {};
 
 
-  constructor(private auth: Auth, private firestore: Firestore, private authService: AuthService, private studentService: StudentsService, private activatedRoute: ActivatedRoute, private router: Router, private notificationService: PushNotificationService) {
+  constructor(private auth: Auth, private firestore: Firestore, private authService: AuthService, private studentService: StudentsService, private activatedRoute: ActivatedRoute, private router: Router, private notificationService: PushNotificationService,  public sanitizer: DomSanitizer) {
     const messaging = getMessaging();
     onMessage(messaging, (payload) => {
       console.log('Message received. ', payload);

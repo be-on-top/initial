@@ -83,9 +83,8 @@ export class DetailsComponent implements OnInit {
     // on incrémente le nombre total de réponses cliquées (ou cochées)
     this.fullAnswersClicked++
 
-    alert(optScoring)
+    alert(`est-ce une option à score : ${optScoring}`)
 
-    // je doute
     // this.isIncremented = false
     // this.isDecremented = false
 
@@ -110,8 +109,8 @@ export class DetailsComponent implements OnInit {
 
       this.isIncremented = false
       this.isDecremented = false
-
     }
+    
     this.fullAnswersClicked >= this.totalAnswersAvailable ? (alert("Vous ne pouvez pas cocher toutes les réponses. Il faut faire une sélection"),
       this.fullAnswersClicked = 0, this.fullGoodAnswersClicked = 0, this.counter -= Number(this.q.notation), this.isDecremented = true, this.resetToggledStates()) : this.isDecremented = false
 
@@ -127,7 +126,7 @@ export class DetailsComponent implements OnInit {
 
   unchoice(optScoring: any) {
 
-    alert(optScoring)
+    alert(`est-ce que on vient de désélectionner une option à score : ${optScoring}`)
     this.fullAnswersClicked--
     console.log('fullAnswersClicked', this.fullAnswersClicked)
 

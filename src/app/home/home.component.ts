@@ -73,8 +73,9 @@ export class HomeComponent implements OnInit {
     if (this.ac.snapshot.params && this.ac.snapshot.params["userRole"] == "editor") {
       this.isEditor = true
     }
-    console.log("this.ac.snapshot.params", this.ac.snapshot.params !== null)
-    console.log("this.ac.snapshot.params['userRole']", this.ac.snapshot.params["userRole"])
+
+    // console.log("this.ac.snapshot.params", this.ac.snapshot.params !== null)
+    // console.log("this.ac.snapshot.params['userRole']", this.ac.snapshot.params["userRole"])
     this.userRole= this.ac.snapshot.params["userRole"]
 
 

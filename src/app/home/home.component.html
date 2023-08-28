@@ -60,8 +60,7 @@
            <!-- <a [routerLink]="['/quizz/',  trade.sigle, studentData && studentData['quizz_'+trade.sigle] && studentData['quizz_'+trade.sigle].lastIndexQuestion?(studentData['quizz_'+trade.sigle].lastIndexQuestion | number)+1:0, studentData && studentData['quizz_'+trade.sigle] && studentData['quizz_'+trade.sigle].scoreCounter?studentData['quizz_'+trade.sigle].scoreCounter:0, studentData && studentData['quizz_'+trade.sigle]?true:false, studentData && studentData.id?studentData.id:'']" class="text-decoration-none text-dark"> -->
             <a [routerLink]="[
                     '/quizz/',
-                    trade.sigle,
-                    ((studentData?.['quizz_'+trade.sigle]?.lastIndexQuestion || 0) + 1 | number),
+                    trade.sigle,studentData?.['quizz_'+trade.sigle]?((studentData?.['quizz_'+trade.sigle]?.lastIndexQuestion) + 1 | number):0,
                     ((studentData?.['quizz_'+trade.sigle]?.scoreCounter || 0 | number)),
                     studentData?.['quizz_'+trade.sigle] ? true : false,
                     studentData?.id ? studentData.id : ''
