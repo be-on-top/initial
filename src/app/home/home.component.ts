@@ -26,6 +26,7 @@ import { Trade } from '../admin/trade';
 import { Observable } from 'rxjs';
 import { StudentsService } from '../admin/students.service';
 import { Student } from '../admin/Students/student';
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 @Component({
@@ -66,7 +67,7 @@ export class HomeComponent implements OnInit {
 
   userRole:string=""
 
-  constructor(private notificationService: PushNotificationService, private auth: Auth, private authService: AuthService, private studentService: StudentsService, private ac: ActivatedRoute, private router: Router, readonly swPush: SwPush, private settingsService: SettingsService) {
+  constructor(private notificationService: PushNotificationService, private auth: Auth, private authService: AuthService, private studentService: StudentsService, private ac: ActivatedRoute, private router: Router, readonly swPush: SwPush, private settingsService: SettingsService, public sanitizer: DomSanitizer) {
     // pour savoir si l'utilisateur est éditeur sans interroger firestore, on peut (?) récupérer userRole livré en paramètre de route
     // this.ac.snapshot.params["userRole"]="editor"?this.isEditor=true:""
 

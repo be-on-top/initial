@@ -57,7 +57,7 @@
 
 
 
-           <!-- <a [routerLink]="['/quizz/',  trade.sigle, studentData && studentData['quizz_'+trade.sigle] && studentData['quizz_'+trade.sigle].lastIndexQuestion?(studentData['quizz_'+trade.sigle].lastIndexQuestion | number)+1:0, studentData && studentData['quizz_'+trade.sigle] && studentData['quizz_'+trade.sigle].scoreCounter?studentData['quizz_'+trade.sigle].scoreCounter:0, studentData && studentData['quizz_'+trade.sigle]?true:false, studentData && studentData.id?studentData.id:'']" class="text-decoration-none text-dark"> -->
+            <!-- <a [routerLink]="['/quizz/',  trade.sigle, studentData && studentData['quizz_'+trade.sigle] && studentData['quizz_'+trade.sigle].lastIndexQuestion?(studentData['quizz_'+trade.sigle].lastIndexQuestion | number)+1:0, studentData && studentData['quizz_'+trade.sigle] && studentData['quizz_'+trade.sigle].scoreCounter?studentData['quizz_'+trade.sigle].scoreCounter:0, studentData && studentData['quizz_'+trade.sigle]?true:false, studentData && studentData.id?studentData.id:'']" class="text-decoration-none text-dark"> -->
             <a [routerLink]="[
                     '/quizz/',
                     trade.sigle,studentData?.['quizz_'+trade.sigle]?((studentData?.['quizz_'+trade.sigle]?.lastIndexQuestion) + 1 | number):0,
@@ -66,16 +66,19 @@
                     studentData?.id ? studentData.id : ''
                   ]" class="text-decoration-none text-dark">
                 <div class="card my-3" (click)="selectTrade(trade.id)">
-                    <div class="card-header text-muted">{{trade.id}} <ng-container *ngIf="studentData && studentData['quizz_'+trade.sigle]">
-                        - ScoreCounter : {{ studentData['quizz_'+trade.sigle].scoreCounter | json }}
-                    </ng-container></div>
+                    <div class="card-header text-muted">{{trade.id}} <ng-container
+                            *ngIf="studentData && studentData['quizz_'+trade.sigle]">
+                            - ScoreCounter : {{ studentData['quizz_'+trade.sigle].scoreCounter | json }}
+                        </ng-container></div>
 
                     <div class="card-body">
                         <!-- <p class="card-text"><span class="fw-bold">Son sigle (référence métier) sur firestore : </span> : {{trade.sigle}}</p> -->
                         <div class="card-text"><a [routerLink]="['/trade', trade.sigle]" class="text-decoration-none">
-                            {{(trade.description | slice:0:100) + ' ...' }} </a></div>
+                            {{(trade.description | slice:0:100 ) + ' ...'| stripHtml }} </a></div>
+                        <!-- si on utilise l'éditeur de texte, pour récupérer le texte tronqué et brut -->
+                        <!-- <div class="card-text"><a [routerLink]="['/trade', trade.sigle]" class="text-decoration-none" [innerHTML]="sanitizer.bypassSecurityTrustHtml((trade.description | slice:0:100) +'...')"></a></div> -->
 
-                       <div *ngIf="isEditor" class="d-flex justify-content-end"><button class="btn btn-transparent"><i
+                        <div *ngIf="isEditor" class="d-flex justify-content-end"><button class="btn btn-transparent"><i
                                     class="bi bi-pencil-square"></i>
                                 Editer</button></div>
 
@@ -85,19 +88,19 @@
                         <!-- pour switcher d'un intitulé à un autre selon que studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle -->
 
                         <div class="d-flex justify-content-end"
-                            *ngIf="(studentData && !studentData['quizz_'+trade.sigle])"><button class="btn btn-transparent"><i
-                                    class="bi bi-clock"></i>
+                            *ngIf="(studentData && !studentData['quizz_'+trade.sigle])"><button
+                                class="btn btn-transparent"><i class="bi bi-clock"></i>
                                 Démarrer votre évaluation</button></div>
 
                         <div class="d-flex justify-content-end"
-                            *ngIf="studentData && studentData['quizz_'+trade.sigle] && !studentData['quizz_'+trade.sigle].fullResults"><button class="btn btn-transparent"><i
-                                    class="bi bi-clock-history"></i>
+                            *ngIf="studentData && studentData['quizz_'+trade.sigle] && !studentData['quizz_'+trade.sigle].fullResults">
+                            <button class="btn btn-transparent"><i class="bi bi-clock-history"></i>
                                 <!-- Reprendre à la question {{studentData.lastIndexQuestion+1}}</button></div> -->
                                 Poursuivre</button></div>
 
                         <div class="d-flex justify-content-end"
-                            *ngIf="studentData && studentData['quizz_'+trade.sigle] && studentData['quizz_'+trade.sigle].fullResults"><button class="btn btn-transparent"><i
-                                    class="bi bi-check-square-fill"></i>
+                            *ngIf="studentData && studentData['quizz_'+trade.sigle] && studentData['quizz_'+trade.sigle].fullResults">
+                            <button class="btn btn-transparent"><i class="bi bi-check-square-fill"></i>
                                 Votre évaluation est terminée</button>
                         </div>
 

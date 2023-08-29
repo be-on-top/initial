@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, collectionData, docData, setDoc, addDoc, query, doc, where, getDocs, DocumentData, getDoc } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, docData, setDoc, addDoc, query, doc, where, getDocs, DocumentData, getDoc, updateDoc } from '@angular/fire/firestore';
 // import { NgForm } from '@angular/forms';
 import { Observable, map } from 'rxjs';
 import { Trade } from './trade';
@@ -33,6 +33,7 @@ export class SettingsService {
     //   });
 
   }
+
   async updateTrade(trade: Trade, totalToRegister: number) {
 
     console.log(trade);
@@ -40,12 +41,7 @@ export class SettingsService {
 
     trade.totalCP = totalToRegister
 
-
-    // // les 2 méthodes fonctionnent très bien.
     let $settingsRef = collection(this.firestore, "sigles");
-    // await addDoc($settingsRef, trade).then((response) => {
-    //   console.log(response.id);
-    // })
 
     await setDoc(doc($settingsRef, trade.sigle), trade)
 
@@ -56,6 +52,22 @@ export class SettingsService {
     //   });
 
   }
+
+  async updateDescription(trade: Partial<Trade>) {
+  
+    let $settingsRef = collection(this.firestore, "sigles");
+    let updateData: Partial<Trade> = {};
+  
+    if (trade.description !== undefined) {
+      updateData.description = trade.description;
+    }
+  
+  
+    // ...
+  
+    await updateDoc(doc($settingsRef, trade.sigle), updateData);
+  }
+  
 
 
   getTrades() {

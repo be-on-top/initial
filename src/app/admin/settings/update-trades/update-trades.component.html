@@ -9,13 +9,13 @@
 
   <form #settingsForm="ngForm" class="mt-4" (submit)="updateSigles(settingsForm)" class="was-validated" novalidate>
 
+    <label for="sigle" class="form-label mt-3">Sigle</label>
+    <input type="text" name="sigle" [(ngModel)]="trade.sigle" #sigle="ngModel" class="form-control" required
+    minlength="3">
+    <div *ngIf="sigle.dirty || (sigle.touched && sigle.invalid)" class="invalid-feedback">
+      Veuillez fournir un sigle valide.
+    </div>
     <div class="form-group" *ngIf="userRouterLinks && userRouterLinks.user=='admin'">
-      <label for="sigle" class="form-label mt-3">Sigle</label>
-      <input type="text" name="sigle" [(ngModel)]="trade.sigle" #sigle="ngModel" class="form-control" required
-        minlength="3">
-      <div *ngIf="sigle.dirty || (sigle.touched && sigle.invalid)" class="invalid-feedback">
-        Veuillez fournir un sigle valide.
-      </div>
       <label for="denomination" class="form-label mt-3">Dénomination</label>
       <input type="text" name="denomination" [(ngModel)]="trade.denomination" #denomination="ngModel"
         class="form-control" required minlength="3">
@@ -89,11 +89,13 @@
       <!-- <button (click)="addField('CP')">+</button> -->
     </div>
 
-    <div class="fom-control" *ngIf="userRouterLinks && userRouterLinks.user=='editor'">
+    <div class="fom-control">
+    <!-- <div class="fom-control" *ngIf="userRouterLinks && userRouterLinks.user=='editor'"> -->
+      <!-- <div [ngClass]="{'hidden-class': userRouterLinks && userRouterLinks.user === 'editor'}"> -->
       <!-- ajout partie édition du seul champ description qui sera accessible à un éditeur -->
-      <label for="description" class="form-label my-3">Description textuelle</label>
-      <editor [init]="{ toolbar: 'undo redo | bold italic' }" [id]="'description'" [ngModel]="trade.description"
-        name="description" required></editor>
+      <label for="description" class="form-label my-3">Description textuelle à la charge du contributeur</label>
+      <editor [init]="{ toolbar: 'undo redo | bold italic' }" [id]="'description'" [(ngModel)]="trade.description"
+        name="description"></editor>
     </div>
 
     <button id="settingsForm" type="submit" class="btn btn-primary mt-4"

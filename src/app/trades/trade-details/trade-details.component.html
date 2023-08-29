@@ -62,8 +62,9 @@
 
     <div class="mt-4 p-5 bg-light rounded">
         <ng-container *ngIf="tradeData.description">
-            <div>
-                {{tradeData.description}}
+            <!-- si on utilise l'éditeur de texte -->
+            <div [innerHTML]="sanitizer.bypassSecurityTrustHtml(tradeData.description)">
+                <!-- {{tradeData.description}} -->
             </div>
             <!-- et pour avoir accès au lien d'édition -->
             <div *ngIf="userRole.includes('edit')" class="d-flex justify-content-end text"><button

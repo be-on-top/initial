@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Sanitizer } from '@angular/core';
 
 // à voir
 import { BrowserModule } from '@angular/platform-browser';
@@ -95,7 +95,7 @@ const routesAdmin: Routes = [
       { path: 'updateFullc', component: UpdateFullComponent },
       { path: 'addSettings', component: SettingsComponent },
       { path: 'settings', component: SettingsListComponent },
-      { path: 'updateTrades/:id', component: UpdateTradesComponent },
+      { path: 'updateTrades/:id', component: UpdateTradesComponent, data: { user: 'admin' } },
       { path: 'updateSettings', component: UpdateSettingsComponent },
       { path: 'myStudents', component: MyStudentsComponent },
       { path: 'myStudentDetails/:id', component: StudentDetailsComponent,  data: { user: 'trainer' }},

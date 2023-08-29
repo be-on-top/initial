@@ -35,6 +35,7 @@ import { SettingsListComponent } from './admin/settings/settings-list/settings-l
 import { TooltipComponent } from './tooltip/tooltip.component';
 import { KeysPipe } from './quizz/keys.pipe';
 import { TradeDetailsComponent } from './trades/trade-details/trade-details.component';
+import { StripHtmlPipe } from './strip-html.pipe';
 // import { getMessaging } from 'firebase/messaging';
 
 
@@ -53,7 +54,8 @@ import { TradeDetailsComponent } from './trades/trade-details/trade-details.comp
     DetailsComponent,
     SettingsListComponent,
     KeysPipe,
-    TradeDetailsComponent
+    TradeDetailsComponent,
+    StripHtmlPipe
 
     // TooltipComponent
   ],
