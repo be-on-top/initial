@@ -5,11 +5,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Auth } from '@angular/fire/auth';
 // import { of } from 'rxjs';
 import { AuthService } from '../admin/auth.service';
-// EvaluatorsSerive servait initialement à faire des tests qui ont été déportés
-// import { EvaluatorsService } from '../admin/evaluators.service';
-// on a pu se passer de rxjs, donc on désactive tout pour le moment
-// import { Observable, Subscription, switchMap } from 'rxjs';
-import { query, Firestore, where, collection, getDocs } from '@angular/fire/firestore';
 import { onAuthStateChanged } from '@angular/fire/auth';
 
 // c'est maintenant le service qui régale !!!
@@ -18,15 +13,15 @@ import { PushNotificationService } from '../push-notification.service';
 import { SwPush } from '@angular/service-worker';
 // import { getMessaging } from '@angular/fire/messaging';
 
-import { getMessaging } from "firebase/messaging/sw";
-import { onBackgroundMessage } from "firebase/messaging/sw";
-import { getToken } from 'firebase/messaging';
+// import { getMessaging } from "firebase/messaging/sw";
+// import { onBackgroundMessage } from "firebase/messaging/sw";
+// import { getToken } from 'firebase/messaging';
 import { SettingsService } from '../admin/settings.service';
-import { Trade } from '../admin/trade';
-import { Observable } from 'rxjs';
+// import { Trade } from '../admin/trade';
+// import { Observable } from 'rxjs';
 import { StudentsService } from '../admin/students.service';
 import { Student } from '../admin/Students/student';
-import { DomSanitizer } from '@angular/platform-browser';
+// import { DomSanitizer } from '@angular/platform-browser';
 
 
 @Component({
@@ -67,7 +62,7 @@ export class HomeComponent implements OnInit {
 
   userRole:string=""
 
-  constructor(private notificationService: PushNotificationService, private auth: Auth, private authService: AuthService, private studentService: StudentsService, private ac: ActivatedRoute, private router: Router, readonly swPush: SwPush, private settingsService: SettingsService, public sanitizer: DomSanitizer) {
+  constructor(private notificationService: PushNotificationService, private auth: Auth, private authService: AuthService, private studentService: StudentsService, private ac: ActivatedRoute, private router: Router, readonly swPush: SwPush, private settingsService: SettingsService) {
     // pour savoir si l'utilisateur est éditeur sans interroger firestore, on peut (?) récupérer userRole livré en paramètre de route
     // this.ac.snapshot.params["userRole"]="editor"?this.isEditor=true:""
 
