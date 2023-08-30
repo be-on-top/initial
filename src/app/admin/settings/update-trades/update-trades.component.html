@@ -1,4 +1,4 @@
-<div class="container py-5">
+<div class="container py-5" *ngIf="trade">
 
   <!-- <h3 class="mb-3">Mise à jour des Paramètres de l'application</h3> -->
   <h3 class="mb-3" *ngIf="userRouterLinks && userRouterLinks.user=='admin'">Modification des métiers (sigles) et leurs compétences (AT)</h3>
@@ -9,7 +9,7 @@
 
   <form #settingsForm="ngForm" class="mt-4" (submit)="updateSigles(settingsForm)" class="was-validated" novalidate>
 
-    <label for="sigle" class="form-label mt-3">Sigle</label>
+    <label for="sigle" class="form-label mt-3">Sigle <span *ngIf="userRouterLinks.user=='editor'"> (à ne surtout pas modifier)</span></label>
     <input type="text" name="sigle" [(ngModel)]="trade.sigle" #sigle="ngModel" class="form-control" required
     minlength="3">
     <div *ngIf="sigle.dirty || (sigle.touched && sigle.invalid)" class="invalid-feedback">
@@ -93,7 +93,7 @@
     <!-- <div class="fom-control" *ngIf="userRouterLinks && userRouterLinks.user=='editor'"> -->
       <!-- <div [ngClass]="{'hidden-class': userRouterLinks && userRouterLinks.user === 'editor'}"> -->
       <!-- ajout partie édition du seul champ description qui sera accessible à un éditeur -->
-      <label for="description" class="form-label my-3">Description textuelle à la charge du contributeur</label>
+      <label for="description" class="form-label my-3" [ngClass]="{'alert bg-warning p-3 mb-2':userRouterLinks.user=='admin'}">Description textuelle à la charge du contributeur</label>
       <editor [init]="{ toolbar: 'undo redo | bold italic' }" [id]="'description'" [(ngModel)]="trade.description"
         name="description"></editor>
     </div>

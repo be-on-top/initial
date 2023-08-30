@@ -27,8 +27,8 @@ export class RoleGuardGuard implements CanActivate {
         console.log("log user uid depuis le header", user.uid);   
         this.evaluatorService.getEvaluator(user.uid).subscribe(data=>{
           // let isAuthorized=false
-          console.log("data de getEvaluator depuis Role Guard Service", data);
-          console.log("roles depuis Role Guard Service", data.roles);
+          // console.log("data de getEvaluator depuis Role Guard Service", data);
+          // console.log("roles depuis Role Guard Service", data.roles);
           roles.push(data.roles)
           console.log(roles, "tableau des roles utilisateurs depuis Role Guard");
           

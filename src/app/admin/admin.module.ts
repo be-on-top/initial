@@ -101,13 +101,14 @@ const routesAdmin: Routes = [
       { path: 'myStudentDetails/:id', component: StudentDetailsComponent,  data: { user: 'trainer' }},
       { path: 'addStudentEvaluation/:id', component: AddFollowUpComponent,  data: { user: 'trainer' }},
       { path: 'updateEvaluation/:id/:evaluationKey', component: UpdateStudentComponent, data: { user: 'trainer' } }, 
-      { path: 'updateDescription/:id', component: UpdateTradesComponent, data: { user: 'editor' } }
+      { path: 'updateDescription/:id/:role', component: UpdateTradesComponent, data: { user: 'editor' } }
     ],
     // canActivate: [AuthGuardService]
     canActivate: [AuthGuardService, RoleGuardGuard], data: {
-      expectedRoles: ['evaluator', 'admin', 'trainer']
+      expectedRoles: ['evaluator', 'admin', 'trainer', 'editor']
     }
   },
+   
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent }
 

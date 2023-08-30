@@ -69,7 +69,7 @@
             <!-- et pour avoir accès au lien d'édition -->
             <div *ngIf="userRole.includes('edit')" class="d-flex justify-content-end text"><button
                     class="btn btn-transparent text-dark">
-                    <a class="text-white" [routerLink]="['/admin/updateDescription', tradeData.sigle]">
+                    <a class="text-white" [routerLink]="['/admin/updateDescription', tradeData.sigle, userRole]">
                     <i class="bi bi-pencil-square"></i>
                     Editer</a></button></div>
         </ng-container>

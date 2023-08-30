@@ -16,9 +16,11 @@ export class UpdateTradesComponent {
 
   userRouterLinks: any
   cpDataList: CPData[] = []
+  userRole: string = ""
 
   sigleId: string = ""
-  trade: any
+  trade: Trade = { sigle: "", denomination: "", competences: [], totalCP: 0, durations: {}, costs: {}, description:"" }
+
 
   sigles: Trade = { sigle: "", denomination: "", competences: [], totalCP: 0, durations: {}, costs: {}, description:"" }
   form: any
@@ -57,7 +59,7 @@ export class UpdateTradesComponent {
     this.sigleId = this.ac.snapshot.params["id"];
     // on fait appel à getSigle pour récupérer les entrées de l'existant. méthode qui pour memo renvoie un observable
     this.service.getSigle(this.sigleId).subscribe((data) => {
-      console.log("data depuis update-evaluator component", data);
+      console.log("data depuis update-trade component", data);
       this.trade = data
       this.total = data.competences
       // this.minValue=data.competences.length
@@ -75,9 +77,29 @@ export class UpdateTradesComponent {
 
     // on introduit juste une distinction pour le scénario où userRouterLinks est editor
     if (this.userRouterLinks.user === 'editor') {
-      if (form.value.description !== this.trade.description) {
-        this.service.updateDescription(form.value)
-      }
+      console.log("on a bien à faire à un éditeur");
+      // alert(form.value.description)
+      
+      
+      // if (form.value.description !== this.trade.description) {
+        alert(form.value.description)
+        this.service.updateDescription(form.value).then(() => {
+          this.feedbackMessages = `Modification de la description OK`;
+          this.isSuccessMessage = true
+          setTimeout(() => {
+            form.reset()
+            this.router.navigate(['/trade', this.sigleId])
+          }, 1000)
+        })
+        .catch((error) => {
+          this.feedbackMessages = error.message;
+          // this.feedbackMessages = this.firebaseErrors[error.code];
+          this.isSuccessMessage = false;
+          console.log(this.feedbackMessages);
+
+          // ..};
+        })
+      // }
     }
 
     else {
@@ -149,12 +171,11 @@ export class UpdateTradesComponent {
       console.log("form optimisé", this.sigles)
       this.service.updateTrade(this.sigles, totalToRegister)
         .then(() => {
-          // Signed in 
           this.feedbackMessages = `Enregistrement du métier et ses compétences OK`;
           this.isSuccessMessage = true
           setTimeout(() => {
             form.reset()
-            // this.router.navigate([''])
+            this.router.navigate(['/trade', this.sigleId])
           }, 1000)
         })
         .catch((error) => {
