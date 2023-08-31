@@ -106,6 +106,7 @@ p.question {
     backface-visibility: hidden;
 }
 
+
 /* added to avoid container reduced on landscape screen under 992px */
 
 @media screen and (min-width:576px) and (max-width:992px) {

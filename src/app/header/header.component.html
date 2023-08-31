@@ -91,7 +91,16 @@
                         <li><a class="dropdown-item" [routerLink]="['account']">Mon compte</a></li>
                     </ul>
                 </li>
-                <li class="nav-item">
+
+                <!-- pour les accès aux métiers en base -->
+                <li class="nav-item dropdown" *ngIf="trades">
+                    <a class="nav-link dropdown-toggle" href="#" role="button"
+                        data-bs-toggle="dropdown">Nos métiers</a>
+                    <ul class="dropdown-menu">  
+                    
+                        <li *ngFor="let trade of trades"><a class="dropdown-item" [routerLink]="['trade', trade.sigle]">{{trade.denomination}}</a></li>
+
+                    </ul>
                 </li>
             </ul>
         </div>

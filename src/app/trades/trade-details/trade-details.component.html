@@ -26,7 +26,7 @@
                 studentData?.id ? studentId : ''
               ]" class="text-decoration-none text-dark">
                     <!-- ---------------- -->
-                    <ng-container *ngIf="studentData">
+                    <ng-container *ngIf="studentData && userRole!=='editor'">
                         <!-- ScoreCounter : {{ studentData['quizz_'+this.tradeData.sigle].scoreCounter | json }} -->
                         <!-- pour switcher d'un intitulé à un autre selon que studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle -->
 
@@ -67,8 +67,8 @@
                 <!-- {{tradeData.description}} -->
             </div>
             <!-- et pour avoir accès au lien d'édition -->
-            <div *ngIf="userRole.includes('edit')" class="d-flex justify-content-end text"><button
-                    class="btn btn-transparent text-dark">
+            <div *ngIf="userRole=='editor'" class="d-flex justify-content-end text"><button
+                    class="btn btn-primary">
                     <a class="text-white" [routerLink]="['/admin/updateDescription', tradeData.sigle, userRole]">
                     <i class="bi bi-pencil-square"></i>
                     Editer</a></button></div>

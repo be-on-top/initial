@@ -4,6 +4,8 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { Auth, reload } from '@angular/fire/auth';
 import { Firestore, docData, doc } from '@angular/fire/firestore';
 import {Observable} from 'rxjs'
+import { Trade } from '../admin/trade';
+import { SettingsService } from '../admin/settings.service';
 
 @Component({
   selector: 'app-header',
@@ -13,7 +15,8 @@ import {Observable} from 'rxjs'
 export class HeaderComponent implements OnInit {
   userUid?: any
   userRole:string=""
-  constructor(private authService: AuthService, private auth: Auth, private firestore:Firestore) {
+  trades?:any
+  constructor(private authService: AuthService, private auth: Auth, private firestore:Firestore, private tradeService:SettingsService) {
     // this.userUid=this.authService.getUserId()
   }
 
@@ -42,7 +45,11 @@ export class HeaderComponent implements OnInit {
     //    }) }
   
     //  })
-  
+
+    this.tradeService.getTrades().subscribe(data=>{
+      // alert(data)
+      this.trades=data
+    })
    }
   
    getRole(id:any){

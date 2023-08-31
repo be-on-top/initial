@@ -8,8 +8,8 @@ import { TradeDetailsComponent } from './trades/trade-details/trade-details.comp
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
   { path: 'home/:userRole', component: HomeComponent, pathMatch: 'full' },
+  { path: 'home', component: HomeComponent },
   { path: 'admin', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'account', component: AccountComponent },
   { path: 'socialregistration', component: AdminForm},
