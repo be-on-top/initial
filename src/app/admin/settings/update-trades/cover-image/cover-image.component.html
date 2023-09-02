@@ -1,0 +1,36 @@
+<div class="container py-5">
+    <h3>Mise à jour de l'image de couverture pour le métier {{ tradeId }}</h3>
+    <hr>
+  
+    <!-- Afficher le formulaire de mise à jour si imageUrl existe -->
+    <form *ngIf="imageUrl" (submit)="updateImage()">
+      <div class="bg-light rounded rounded mb-3">
+        <div class="w-100 bg-primary p-2 rounded">
+          <img class="img-fluid" [src]="imageUrl" alt="Image existante">
+          <input
+            type="file"
+            accept="image/*"
+            id="mediaTrade"
+            class="form-control"
+            (change)="detectFiles($event)"
+          >
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary mt-3">Mettre à jour</button>
+    </form>
+  
+    <!-- Afficher le formulaire d'ajout si imageUrl est vide -->
+    <div *ngIf="!imageUrl">
+      <form (submit)="updateImage()">
+        <input
+          type="file"
+          accept="image/*"
+          id="mediaTrade"
+          class="form-control"
+          (change)="detectFiles($event)"
+        >
+        <button type="submit" class="btn btn-primary mt-3">Ajouter</button>
+      </form>
+    </div>
+  </div>
+  
