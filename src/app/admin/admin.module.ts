@@ -135,7 +135,8 @@ const routesAdmin: Routes = [
   ],
   exports: [
     FeedbackMessagesComponent,
-    TooltipComponent
+    TooltipComponent, 
+    CoverImageComponent
   ]
 
   

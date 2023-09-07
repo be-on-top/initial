@@ -1,5 +1,6 @@
 <div class="container py-5">
-  <h3>Mise à jour de l'image de couverture pour le métier {{ tradeId }}</h3>
+  <!-- si option modale à l'ouverture, le titre fera doublon -->
+  <!-- <h3>Mise à jour de l'image de couverture pour le métier {{ tradeId }}</h3> -->
   <hr>
   <!-- zone d'affichage des messages d'erreur pour informer l'utilisateur si le fichier est trop volumineux. -->
   <div *ngIf="imageFile==null && imageSelected" class="alert alert-warning">

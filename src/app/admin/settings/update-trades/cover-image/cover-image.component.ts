@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, Input } from '@angular/core';
+// import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SettingsService } from 'src/app/admin/settings.service';
 import {
@@ -17,7 +17,8 @@ import {
   styleUrls: ['./cover-image.component.css']
 })
 export class CoverImageComponent {
-  tradeId: string = ''; // Assurez-vous que cette variable est initialisée avec la valeur appropriée
+  @Input()tradeId:string=""
+  // tradeId: string = ''; // S'assurer que cette variable est initialisée avec la valeur appropriée
   imageUrl: string = ''; // Pour stocker l'URL de l'image
   imageFile: File | null = null; // Pour stocker la nouvelle image à télécharger
   imageSelected = false; // Pour conditionner l'affichage du message d'erreur

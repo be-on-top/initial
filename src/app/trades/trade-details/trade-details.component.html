@@ -60,25 +60,45 @@
     <!-- 
     {{tradeData | json}} -->
 
-    <div class="mt-4 p-5 bg-light rounded">
+    <div class="mt-4 p-5 bg-light rounded" [ngClass]="{'row justify-content-between align-items-between':imageUrl!=''}">
+        <div [ngClass]="{'col-lg-6':imageUrl!=''}" *ngIf="imageUrl && imageUrl!=''" >
+            <img class="img-fluid" [src]="imageUrl">
+        </div>
         <ng-container *ngIf="tradeData.description">
             <!-- si on utilise l'éditeur de texte -->
-            <div [innerHTML]="sanitizer.bypassSecurityTrustHtml(tradeData.description)">
+            <div [ngClass]="{'col-lg-6 mt-3':imageUrl!=''}" [innerHTML]="sanitizer.bypassSecurityTrustHtml(tradeData.description)">
                 <!-- {{tradeData.description}} -->
             </div>
             <!-- et pour avoir accès au lien d'édition -->
-            <div *ngIf="userRole=='editor'" class="d-flex justify-content-end text">
+            <div *ngIf="userRole=='editor'" class="d-flex justify-content-end text mt-3">
                 <button class="btn btn-primary">
                     <a class="text-white" [routerLink]="['/admin/updateDescription', tradeData.sigle, userRole]">
                         <i class="bi bi-pencil-square"></i>
                         Editer</a>
                 </button>
-                <!-- pour images -->
-                <button class="btn btn-primary ms-2">
+                <!-- pour images si option avec simple redirection vers le formulaire dédié -->
+                <!-- <button class="btn btn-primary ms-2">
                     <a class="text-white" [routerLink]="['/admin/updateTradeImage', tradeData.sigle]">
                         <i class="bi bi-image"></i>
                         Image</a>
-                </button>
+                </button> -->
+                <!-- option édition avec modale -->
+                <button class="btn btn-primary ms-2 text-light" data-bs-toggle="modal" data-bs-target="#myModal">
+                            <i class="bi  bi-image"></i>Image
+                        </button>
+                        <div class="modal" id="myModal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title ms-auto">Image de couverture pour {{tradeData.sigle}}</h4>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <app-cover-image class="modal-body" [tradeId]="tradeData.sigle"></app-cover-image>
+                                </div>
+                            </div>
+                        </div>
+                <!-- fin de l'option édition avec modale -->
+
             </div>
         </ng-container>
     </div>

@@ -9,6 +9,12 @@ import { AuthService } from 'src/app/admin/auth.service';
 import { SettingsService } from 'src/app/admin/settings.service';
 import { StudentsService } from 'src/app/admin/students.service';
 import { Trade } from 'src/app/admin/trade';
+// à externaliser vers un service
+import {
+  getDownloadURL,
+  ref,
+  Storage,
+} from '@angular/fire/storage';
 
 
 @Component({
@@ -28,9 +34,11 @@ export class TradeDetailsComponent implements OnInit {
   studentData?: Student
   hasStartedEvaluation: boolean = false
   userRole: string = ""
+  // pour charger l'image associée si image
+  imageUrl: string = ''; // Pour stocker l'URL de l'image
 
 
-  constructor(private service: SettingsService, private ac: ActivatedRoute, private auth: Auth, private authService: AuthService, private studentService: StudentsService, private firestore: Firestore,  public sanitizer: DomSanitizer) {
+  constructor(private service: SettingsService, private ac: ActivatedRoute, private auth: Auth, private authService: AuthService, private studentService: StudentsService, private firestore: Firestore, public sanitizer: DomSanitizer, private storage: Storage) {
 
   }
 
@@ -101,11 +109,10 @@ export class TradeDetailsComponent implements OnInit {
     })
 
 
-
-
-
-
     // alert(this.hasStartedEvaluation)
+
+    // pour charger l'image si image
+    this.loadImage()
 
   }
 
@@ -115,6 +122,22 @@ export class TradeDetailsComponent implements OnInit {
     // au niveau de getRole, cela ne change pas grand chose
     let $roleRef = doc(this.firestore, "roles/" + id)
     return docData($roleRef) as Observable<any>;
+
+  }
+
+  loadImage() {
+    const imageRef = ref(this.storage, 'images/trades/' + this.tradeId + '.jpeg');
+
+    getDownloadURL(imageRef).then(
+      (url) => {
+        // L'image existe, on la met à jour l'URL
+        this.imageUrl = url;
+      }).catch(
+        (error) => {
+          // L'image n'existe pas, gérer les erreurs ici
+          console.error('Erreur lors du chargement de l\'image', error);
+        }
+      );
 
   }
 
