@@ -4,14 +4,22 @@ import { Firestore, collection, collectionData, docData, setDoc, addDoc, query, 
 import { Observable, map } from 'rxjs';
 import { Trade } from './trade';
 import { Settings } from './settings';
-import { getMetadata } from '@angular/fire/storage';
+// à externaliser vers un service
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  Storage,
+  uploadBytes,
+  getMetadata
+} from '@angular/fire/storage';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SettingsService {
 
-  constructor(private firestore: Firestore) { }
+  constructor(private firestore: Firestore, private storage:Storage) { }
 
   async addTrade(trade: Trade) {
 
@@ -20,6 +28,8 @@ export class SettingsService {
 
     // // les 2 méthodes fonctionnent très bien.
     let $settingsRef = collection(this.firestore, "sigles");
+
+    
     // await addDoc($settingsRef, trade).then((response) => {
     //   console.log(response.id);
     // })
@@ -137,6 +147,68 @@ export class SettingsService {
     let $sigleRef = doc(this.firestore, "sigles/" + tradeId)
     return docData($sigleRef, { idField: 'id' }).pipe(map(trade => trade['competences'][cpId]))
   }
+
+  // pour les cover images des métiers
+  loadImage(tradeId: string) {
+    const imageRef = ref(this.storage, 'images/trades/' + tradeId + '.jpeg');
+    return getDownloadURL(imageRef)
+  }
+
+
+  // updateTradeImage(tradeId: string, file: File): Promise<string> {
+  //   const imageRef = ref(this.storage, 'images/trades/' + tradeId + '.jpeg');
+  
+  //   return deleteObject(imageRef) // Supprime l'ancienne image
+  //     .then(() => {
+  //       return uploadBytes(imageRef, file); // Télécharge la nouvelle image
+  //     })
+  //     .then(() => {
+  //       return getDownloadURL(imageRef); // Récupère l'URL de la nouvelle image
+  //     })
+  //     .then((url) => {
+  //       // Retourne l'URL de la nouvelle image
+  //       return url;
+  //     })
+  //     .catch((error) => {
+  //       console.error("Erreur lors de la mise à jour de l'image", error);
+  //       throw error; // Propage l'erreur pour une gestion ultérieure dans le composant
+  //     });
+  // }
+
+  updateTradeImage(tradeId: string, file: File): Promise<string> {
+    const imageRef = ref(this.storage, 'images/trades/' + tradeId + '.jpeg');
+  
+    // Vérifie d'abord si l'objet existe
+    return getMetadata(imageRef)
+      .then((metadata) => {
+        // L'ancienne image existe, on la supprime
+        return deleteObject(imageRef);
+      })
+      .catch((error) => {
+        // L'ancienne image n'existe pas ou une erreur s'est produite lors de la vérification, on gère l'erreur ici
+      })
+      .then(() => {
+        // Télécharger la nouvelle image
+        return uploadBytes(imageRef, file);
+      })
+      .then(() => {
+        // Récupérer l'URL de la nouvelle image
+        return getDownloadURL(imageRef);
+      })
+      .then((url) => {
+        // Retourner l'URL de la nouvelle image
+        return url;
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la mise à jour de l'image", error);
+        throw error; // Propage l'erreur pour une gestion ultérieure dans le composant
+      });
+  }
+  
+  
+  
+
+
 
 
 }
