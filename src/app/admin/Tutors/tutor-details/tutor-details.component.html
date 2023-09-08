@@ -1,0 +1,55 @@
+<div class="container py-5">
+
+    <h3 class="mb-3">Détails du Tuteur</h3>
+
+
+    <div *ngIf="user">
+
+        <div class="card mt-4">
+            <div class="card-header text-muted">id : {{user.id}}</div>
+            <div class="card-body">
+                <!-- <h4 class="card-title">id : {{user.id}}</h4> -->
+                <p class="card-text"><span class="fw-bold">Nom</span> : {{user.lastName}}<br>
+                    <span class="fw-bold">Prénom</span> : {{user.firstName}}<br>
+                    <span class="fw-bold">Email</span> : <a href="#" class="card-link">{{user.email}}</a><br>
+                    <span *ngIf="user.cp"><span class="fw-bold">CP</span> : {{user.cp}}</span>
+                </p>
+                <hr>
+                <p> <span *ngIf="user.status; else checkbox">Status : actif</span>
+                    <ng-template #checkbox> Status : inactif</ng-template>
+                </p>
+                <ng-template #checkbox> Status : inactif</ng-template>
+                <!-- affectation métiers -->
+                <p *ngIf="user.sigle">Métiers d'affectation ({{user.sigle.length}}) :
+                    <span *ngFor="let s of user.sigle">{{s}} </span>
+                </p>
+                <!-- option au plus simple où on ne fait qu'une requête dans trainers -->
+                <!-- <p *ngIf="user.students">Etudiants en cours de suivi ({{user.students.length}}) :
+                   {{user.students}}
+                </p> -->
+                <p *ngIf="studentsList">Etudiants en cours de suivi ({{studentsList.length}}) :
+                    {{studentsList}}
+                </p>
+            </div>
+            <div class="card-footer text-muted">
+                <span *ngIf="user.created">Date de création : {{user.created | date:'dd/MM/yyyy' }}</span><br>
+            </div>
+        </div>
+        <div class="d-flex my-4 justify-content-end gap-5">
+
+            <button class="btn btn-primary">
+                <a class="text-white" [routerLink]="['/admin/tutors']">Retour à la liste</a>
+            </button>
+
+            <button class="btn btn-warning">
+                <a class="text-white" [routerLink]="['/admin/updateTutor', user.id]">Modifier</a>
+            </button>
+
+            <button class="btn btn-danger">
+                <a class="text-white" (click)="deleteUser(user.id)">Supprimer</a>
+            </button>
+
+        </div>
+    </div>
+
+</div>

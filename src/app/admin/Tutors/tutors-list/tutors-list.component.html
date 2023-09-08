@@ -1,0 +1,33 @@
+<div class="container py-5">
+
+    <h3>Gestion des Tuteurs</h3>
+    <hr>
+    <div *ngIf="(!allUsers)">
+        ...loading
+    </div>
+
+    <div *ngIf="allUsers">
+        <!-- on introduit un champ de recherche -->
+        <app-search (searchTextChanged)="onSearchTextEntered($event)"></app-search>
+        <!-- <div class="row mt-5"> -->
+        <div class="row mt-4 d-xs-none">
+            <div class="col-sm-3 h5">Nom</div>
+            <div class="col-sm-3 h5">Prénom</div>
+            <div class="col-sm-3 h5">Suppression</div>
+            <div class="col-sm-3 h5">Détails</div>
+        </div>
+
+        <div *ngFor="let user of allUsers">
+            <div class="row mt-4 ps-5 ps-sm-0" *ngIf="searchText==='' || user.lastName.toLowerCase().includes(searchText) || user.firstName.toLowerCase().includes(searchText) ">
+                <div class="col-sm-3 col-6">{{user.lastName}}</div>
+                <div class="col-sm-3 col-6 order-perso2">{{user.firstName}}</div>
+                <div class="col-sm-3 col-6"><button class="btn btn-danger" (click)="deleteUser(user.id)"><i class="bi bi-person-dash-fill"></i>Suppression</button></div>
+                <div class="col-sm-3 col-6 order-perso4"><button class="btn btn-primary"><a [routerLink]="['/admin/trainer', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a></button></div>
+            </div>
+        </div>
+    </div>
+    <!-- doit être en dehors de la boucle (?) -->
+    <div class="row my-5 justify-content-end ps-5 ps-sm-0">
+        <div class="col-sm-3"><button class="btn btn-primary"><a [routerLink]="['/admin/addTutor']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a></button></div>
+    </div>
+</div>
