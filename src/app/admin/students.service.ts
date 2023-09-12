@@ -326,12 +326,12 @@ export class StudentsService {
     setDoc(studentRef, updateStudent, { merge: true })
   }
 
-  addFollowUpEvaluation(id: string, evaluation: any) {
+  async addFollowUpEvaluation(id: string, evaluation: any) {
     const studentRef = doc(this.firestore, "students/" + id)
     setDoc(studentRef, evaluation, { merge: true })
   }
 
-  addFollowUpTutorial(id: string, tutorial: any) {
+  async addFollowUpTutorial(id: string, tutorial: any) {
     const studentRef = doc(this.firestore, "students/" + id)
     setDoc(studentRef, tutorial, { merge: true })
   }
