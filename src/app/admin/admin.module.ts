@@ -52,6 +52,10 @@ import { MyStudentsComponent } from './Follow-up/my-students/my-students.compone
 import { AddFollowUpComponent } from './Follow-up/add-follow-up/add-follow-up.component';
 import { TooltipComponent } from '../tooltip/tooltip.component';
 import { CoverImageComponent } from './settings/update-trades/cover-image/cover-image.component';
+import { TutorDetailsComponent } from './Tutors/tutor-details/tutor-details.component';
+import { TutorsListComponent } from './Tutors/tutors-list/tutors-list.component';
+import { UpdateTutorComponent } from './Tutors/update-tutor/update-tutor.component';
+import { AddTutorComponent } from './Tutors/add-tutor/add-tutor.component';
 
 
 
@@ -61,27 +65,32 @@ const routesAdmin: Routes = [
     path: 'admin', children: [
       // essai mutualisation des vues pour la liste des formateurs + trainers
       // { path: 'evaluators', component: EvaluatorsListComponent },
-      { path: 'evaluators', component: UsersListComponent, data: { user: 'evaluator' }},
+      { path: 'evaluators', component: UsersListComponent, data: { user: 'evaluator' } },
       { path: 'addEvaluator', component: AddEvaluatorComponent },
       { path: 'evaluator/:id', component: EvaluatorDetailsComponent },
       { path: 'updateEvaluator/:id', component: UpdateEvaluatorComponent },
       // essai mutualisation des vues pour la liste des formateurs + trainers
       // { path: 'trainers', component: TrainersListComponent },
-      { path: 'trainers', component: UsersListComponent, data: { user: 'trainer' }},
+      { path: 'trainers', component: UsersListComponent, data: { user: 'trainer' } },
       { path: 'addTrainer', component: AddTrainerComponent },
       // essai mutualisation des vues pour le détail depuis la liste des evaluateurs + formateurs
       // { path: 'trainer/:id', component: TrainerDetailsComponent },
       { path: 'trainer/:id', component: TrainerDetailsComponent },
       { path: 'updateTrainer/:id', component: UpdateTrainerComponent },
-      { path: 'updateEvaluator/:id', component: UpdateEvaluatorComponent },
-      
+      // { path: 'tutors', component: TutorsListComponent },
+      { path: 'tutors', component: UsersListComponent, data: { user: 'tutor' } },
+      { path: 'addTutor', component: AddTutorComponent},
+      { path: 'tutor/myStudents', component: MyStudentsComponent, data: { user: 'tutor' } },
+      { path: 'tutor/:id', component: TutorDetailsComponent },
+      { path: 'updateTutor/:id', component: UpdateTutorComponent },
+
       // l'éditeur est générique pour l'esssai. on va conserver une route distincte pour le moment (?)
-      { path: 'users', component: UsersListComponent, data: { user: 'editor' }},
+      { path: 'users', component: UsersListComponent, data: { user: 'editor' } },
       { path: 'addUser', component: AddUserComponent },
       { path: 'user/:id', component: UserDetailsComponent },
       { path: 'updateUser/:id', component: UpdateUserComponent },
       { path: 'students', component: StudentsListComponent },
-      { path: 'student/:id', component: StudentDetailsComponent, data: { user: 'admin' }},
+      { path: 'student/:id', component: StudentDetailsComponent, data: { user: 'admin' } },
       { path: 'updateStudent/:id', component: UpdateStudentComponent },
       { path: 'priorForm', component: PriorFormComponent },
       { path: 'questions', component: QuestionsListComponent },
@@ -98,20 +107,24 @@ const routesAdmin: Routes = [
       { path: 'settings', component: SettingsListComponent },
       { path: 'updateTrades/:id', component: UpdateTradesComponent, data: { user: 'admin' } },
       { path: 'updateSettings', component: UpdateSettingsComponent },
-      { path: 'myStudents', component: MyStudentsComponent },
-      { path: 'myStudentDetails/:id', component: StudentDetailsComponent,  data: { user: 'trainer' }},
-      { path: 'addStudentEvaluation/:id', component: AddFollowUpComponent,  data: { user: 'trainer' }},
-      { path: 'updateEvaluation/:id/:evaluationKey', component: UpdateStudentComponent, data: { user: 'trainer' } }, 
+      { path: 'myStudents', component: MyStudentsComponent},
+      // { path: 'trainer/myStudents', component: MyStudentsComponent, data: { user: 'trainer' } },
+      { path: 'myStudentDetails/:id', component: StudentDetailsComponent, data: { user: 'trainer' } },
+      // { path: 'trainer/myStudentDetails/:id', component: StudentDetailsComponent, data: { user: 'trainer' } },
+      { path: 'tutor/myStudentDetails/:id', component: StudentDetailsComponent, data: { user: 'tutor' } },
+      { path: 'addStudentEvaluation/:id', component: AddFollowUpComponent, data: { user: 'trainer' } },
+      { path: 'addStudentTutorial/:id', component: AddFollowUpComponent, data: { user: 'tutor' } },
+      { path: 'updateEvaluation/:id/:evaluationKey', component: UpdateStudentComponent, data: { user: 'trainer' } },
       { path: 'updateDescription/:id/:role', component: UpdateTradesComponent, data: { user: 'editor' } },
-      { path: 'updateTradeImage/:id', component: CoverImageComponent}
+      { path: 'updateTradeImage/:id', component: CoverImageComponent }
 
     ],
     // canActivate: [AuthGuardService]
     canActivate: [AuthGuardService, RoleGuardGuard], data: {
-      expectedRoles: ['evaluator', 'admin', 'trainer', 'editor']
+      expectedRoles: ['evaluator', 'admin', 'trainer', 'tutor', 'editor']
     }
   },
-   
+
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent }
 
@@ -122,7 +135,7 @@ const routesAdmin: Routes = [
     EvaluatorsListComponent,
     AddEvaluatorComponent,
     EvaluatorDetailsComponent,
-    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent, UpdateSocialComponent, SocialDetailsComponent, FullFormComponent, FullListComponent, FullDetailsComponent, UpdateFullComponent, LoginComponent, SearchComponent, StudentDetailsComponent, StudentsListComponent, UpdateStudentComponent, FeedbackMessagesComponent, AddTrainerComponent, TrainersListComponent, TrainerDetailsComponent, UpdateTrainerComponent, UsersListComponent, SettingsComponent, AddUserComponent, UserDetailsComponent, UpdateUserComponent, UpdateSettingsComponent, UpdateTradesComponent, MyStudentsComponent, AddFollowUpComponent, TooltipComponent, CoverImageComponent
+    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent, UpdateSocialComponent, SocialDetailsComponent, FullFormComponent, FullListComponent, FullDetailsComponent, UpdateFullComponent, LoginComponent, SearchComponent, StudentDetailsComponent, StudentsListComponent, UpdateStudentComponent, FeedbackMessagesComponent, AddTrainerComponent, TrainersListComponent, TrainerDetailsComponent, UpdateTrainerComponent, UsersListComponent, SettingsComponent, AddUserComponent, UserDetailsComponent, UpdateUserComponent, UpdateSettingsComponent, UpdateTradesComponent, MyStudentsComponent, AddFollowUpComponent, TooltipComponent, CoverImageComponent, TutorDetailsComponent, TutorsListComponent, UpdateTutorComponent, AddTutorComponent
   ],
   imports: [
     BrowserModule,
@@ -135,11 +148,11 @@ const routesAdmin: Routes = [
   ],
   exports: [
     FeedbackMessagesComponent,
-    TooltipComponent, 
+    TooltipComponent,
     CoverImageComponent
   ]
 
-  
+
 })
 
 export class AdminModule { }

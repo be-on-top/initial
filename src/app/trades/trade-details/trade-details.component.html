@@ -60,14 +60,20 @@
     <!-- 
     {{tradeData | json}} -->
 
-    <div class="mt-4 p-5 bg-light rounded" [ngClass]="{'row justify-content-between align-items-between':imageUrl!=''}">
-        <div [ngClass]="{'col-lg-6':imageUrl!=''}" *ngIf="imageUrl && imageUrl!=''" >
+    <div class="mt-4 p-5 bg-light rounded">
+        <!-- <div [ngClass]="{'col-lg-6':imageUrl!=''}" *ngIf="imageUrl && imageUrl!=''" >
             <img class="img-fluid" [src]="imageUrl">
-        </div>
+        </div> -->
+
+
+    <img class="cover rounded mb-5" [src]="imageUrl">
+
+
         <ng-container *ngIf="tradeData.description">
             <!-- si on utilise l'éditeur de texte -->
-            <div [ngClass]="{'col-lg-6 mt-3':imageUrl!=''}" [innerHTML]="sanitizer.bypassSecurityTrustHtml(tradeData.description)">
-                <!-- {{tradeData.description}} -->
+            <!-- <div [ngClass]="{'col-lg-6 mt-3':imageUrl!=''}" [innerHTML]="sanitizer.bypassSecurityTrustHtml(tradeData.description)">
+            </div> -->
+            <div [innerHTML]="sanitizer.bypassSecurityTrustHtml(tradeData.description)">
             </div>
             <!-- et pour avoir accès au lien d'édition -->
             <div *ngIf="userRole=='editor'" class="d-flex justify-content-end text mt-3">
@@ -109,6 +115,7 @@
                 <span class="fw-bold">CP{{index+1}} : </span> {{cp}}
             </p>
         </ng-container>
+        
     </div>
 
 

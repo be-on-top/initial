@@ -1,6 +1,8 @@
 <div class="container py-5">
 
     <h3>Mes étudiants</h3>
+    <!-- <h4>Mon rôle pour test : {{role}}</h4> -->
+    <!-- {{userRouterLinks}} -->
     <hr>
     <div *ngIf="(!myStudents)">
         ...loading
@@ -22,12 +24,23 @@
             <div class="row mt-4 ps-5 ps-sm-0">
                 <div class="col-sm-3 col-6">{{student.lastName}}</div>
                 <div class="col-sm-3 col-6 order-perso2">{{student.firstName}}</div>
-                <div class="col-sm-3 col-6 order-perso4"><button class="btn btn-primary"><a
-                            [routerLink]="['/admin/myStudentDetails', student.id]" class="text-white"><i
-                                class="bi bi-person-lines-fill"></i>Détails</a></button></div>
-                <div class="col-sm-3 col-6"><button class="btn btn-danger"><a
-                            [routerLink]="['/admin/addStudentEvaluation', student.id]" class="text-white"><i
-                                class="bi bi-pen"></i>Ajouter</a></button></div>
+                <div class="col-sm-3 col-6 order-perso4">
+                    <button class="btn btn-primary">
+                        <a [routerLink]="['/admin/myStudentDetails', student.id]" class="text-white"><i
+                                class="bi bi-person-lines-fill"></i>Détails</a>
+                    </button>
+                </div>
+                <div class="col-sm-3 col-6">
+                    <button class="btn btn-danger">
+                        <a *ngIf="userRouterLinks.user=='tutor', else evaluation"
+                            [routerLink]="['/admin/addStudentTutorial', student.id]" class="text-white"><i
+                                class="bi bi-pen"></i>Ajouter un suivi tutorial</a>
+                        <ng-template #evaluation>
+                            <a [routerLink]="['/admin/addStudentEvaluation', student.id]" class="text-white"><i
+                                    class="bi bi-pen"></i>Ajouter une évaluation pédagogique</a>
+                        </ng-template>
+                    </button>
+                </div>
             </div>
         </div>
         <!-- il n'a pas à en ajouter !!! c'est son administrateur qui lui affecte les étudiants -->

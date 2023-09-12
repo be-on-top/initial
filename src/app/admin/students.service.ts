@@ -331,7 +331,10 @@ export class StudentsService {
     setDoc(studentRef, evaluation, { merge: true })
   }
 
-
+  addFollowUpTutorial(id: string, tutorial: any) {
+    const studentRef = doc(this.firestore, "students/" + id)
+    setDoc(studentRef, tutorial, { merge: true })
+  }
 
 
 }

@@ -52,8 +52,8 @@
                                 {{userData.lastName}}</li>
                             <li class="list-group-item"><span class="fw-bolder">Date d'enregistrement sur firestore
                                     :</span> {{userData.created | date:'dd/MM/yyyy' }}</li>
-                            <li *ngIf="userData.sigle" class="list-group-item">Sigle métier si existant:
-                                {{userData.sigle}}</li>
+                            <!-- <li *ngIf="userData.sigle" class="list-group-item">Sigle métier si existant:
+                                {{userData.sigle}}</li> -->
                         </ul>
 
                         <!-- option avec déroulé -->
@@ -143,7 +143,7 @@
                                             <div class="d-flex align-items-center">
                                                 <span class="fw-bold">{{ item[0] }}</span>
                                                 <i class="bi fs-4 bi-arrow-right-short"></i>
-                                                <span>{{ item[1].duration }} heures - Coût : {{ item[1].cost }} € - Pour une note de {{ item[1].notation | json | number:'1.1-1' }}/20</span>
+                                                <span>Note obtenue : {{ item[1].notation | json | number:'1.1-1' }}/20 - Durée estimée :{{ item[1].duration }} heures - Coût : {{ item[1].cost }} €</span>
                                             </div>
                                             <hr *ngIf="!lastResult">
                                         </ng-container>

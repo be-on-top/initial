@@ -3,6 +3,8 @@ import { StudentsService } from '../../students.service';
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { TrainersService } from '../../trainers.service';
 import { Student } from '../../Students/student';
+import { ActivatedRoute } from '@angular/router';
+import { TutorsService } from '../../tutors.service';
 
 @Component({
   selector: 'app-students-list',
@@ -15,8 +17,12 @@ export class MyStudentsComponent implements OnInit {
   myStudents: Student[] = [];
   user?: any
   userLastName: string=""
+  // essai pour différencier le tuteur du formateur
+  userRouterLinks: any
 
-  constructor(private service: StudentsService, private auth: Auth, private trainerService: TrainersService) { }
+  constructor(private service: StudentsService, private auth: Auth, private trainerService: TrainersService, private tutorService:TutorsService, private route:ActivatedRoute) {
+    this.userRouterLinks = this.route.snapshot.data;
+   }
 
   ngOnInit() {
 
@@ -29,7 +35,34 @@ export class MyStudentsComponent implements OnInit {
         this.user = user.uid
         console.log('utilisateur authentifié', this.user)
 
-        // pour récupérer le nom de l'utilisateur authentifié, mais faudra changer ça :
+        // pour vérifier au préalable si c'est un tuteur ou pas
+        if (this.userRouterLinks.user=='tutor') {
+
+          alert("c'est un tutor ! ")
+          this.tutorService.getTutor(user.uid).subscribe(data=> {
+
+
+              console.log("userData from myStudents 0...", data)
+              console.log("userData lastName from myStudents...", data.lastName)
+              this.userLastName = data.lastName
+  
+              // et maintenant qu'on a le lastName
+              this.service.getStudents().subscribe(students => {
+                students.filter((student): any => {
+                  student['tutor'] && student['tutor'].includes(this.userLastName) ? this.myStudents.push(student) : ''
+                })
+  
+                console.log('this.myStudents filtré avec trainer', this.myStudents)
+              })
+
+          })        
+          
+          
+        }
+
+        else {
+
+                 // pour récupérer le nom de l'utilisateur authentifié, mais faudra changer ça :
         this.trainerService.getTrainer(user.uid).subscribe(data => {
           console.log("data", data);
 
@@ -63,10 +96,12 @@ export class MyStudentsComponent implements OnInit {
 
         })
 
+
+        }
+
+ 
+
       }
-
-
-
 
 
       // getStudents() {

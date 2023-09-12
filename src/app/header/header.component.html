@@ -16,7 +16,7 @@
                 </li> -->
 
                 <li class="nav-item dropdown"  *ngIf="userUid!==undefined && userUid!=='' && userRole!=='student' && userRole!=='editor'">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" *ngIf="userRole.includes('admin') || userRole.includes('trainer')">Admin</a>
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" *ngIf="userRole.includes('admin') || userRole.includes('trainer') || userRole.includes('tutor')">Admin</a>
                     <!-- <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Admin</a> -->
                     <ul class="dropdown-menu">
                         <li *ngIf="userRole.includes('admin')"><a class="dropdown-item"
@@ -31,6 +31,8 @@
                         </li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/trainers']"
                                 *ngIf="userRole.includes('admin')">Gestion des formateurs</a></li>
+                        <li><a class="dropdown-item" [routerLink]="['/admin/tutors']"
+                                *ngIf="userRole.includes('admin')">Gestion des Tuteurs</a></li>
                         <!-- pour mémo, pour l'instant on utilise le simple contributeur comme utilisateur générique -->
                         <li><a class="dropdown-item" [routerLink]="['/admin/users']"
                                 *ngIf="userRole.includes('admin')">Gestion des contributeurs</a></li>
@@ -76,6 +78,9 @@
                         </li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/myStudents']"
                                 *ngIf="userRole.includes('trainer') || userRole.includes('admin')">Suivi pédagogique</a>
+                        </li>
+                        <li><a class="dropdown-item" [routerLink]="['/admin/tutor/myStudents']"
+                                *ngIf="userRole.includes('tutor') || userRole.includes('admin')">Suivi tutorial</a>
                         </li>
                     </ul>
                 </li>

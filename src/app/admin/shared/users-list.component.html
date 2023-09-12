@@ -26,6 +26,7 @@
                 <div class="col-sm-3 col-6 order-perso4"><button class="btn btn-primary">
                     <!-- <a [routerLink]="['/admin/user', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a> -->
                     <a *ngIf="userRouterLinks.user==='trainer'" [routerLink]="['/admin/trainer', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
+                    <a *ngIf="userRouterLinks.user==='tutor'" [routerLink]="['/admin/tutor', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
                     <a *ngIf="userRouterLinks.user==='evaluator'" [routerLink]="['/admin/evaluator', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
                     <a *ngIf="userRouterLinks.user==='editor'" [routerLink]="['/admin/user', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
                 </button></div>
@@ -36,6 +37,7 @@
             <div class="col-sm-3"><button class="btn btn-primary">
                 <!-- <a [routerLink]="['/admin/addUser']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a> -->
                 <a *ngIf="userRouterLinks.user==='trainer'" [routerLink]="['/admin/addTrainer']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a>
+                <a *ngIf="userRouterLinks.user==='tutor'" [routerLink]="['/admin/addTutor']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a>
                 <a *ngIf="userRouterLinks.user==='evaluator'" [routerLink]="['/admin/addEvaluator']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a>
                 <a *ngIf="userRouterLinks.user==='editor'" [routerLink]="['/admin/addUser']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a>
             </button></div>

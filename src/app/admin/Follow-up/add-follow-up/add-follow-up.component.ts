@@ -14,11 +14,14 @@ export class AddFollowUpComponent implements AfterViewInit {
 
   // pour l'éditeur de text
   tinymce: any; // Déclaration pour accéder à l'objet tinymce global
+
+  userRouterLinks:string=""
 	
 	 
 
   constructor(private service: StudentsService, private activatedRoute: ActivatedRoute) {
     this.studentId = this.activatedRoute.snapshot.params['id']
+    this.userRouterLinks = this.activatedRoute.snapshot.data['user']
   }
 
 
@@ -28,6 +31,14 @@ export class AddFollowUpComponent implements AfterViewInit {
     let evalKey: string = 'evaluation-' + evaluation.value.date + Math.floor(Math.random() * 2)
     const evaluations = { [evalKey]: evaluation.value }
     this.service.addFollowUpEvaluation(studentId, { evaluations })
+  }
+
+  addTutorial(studentId: string, tutorial: NgForm) {
+    console.log(tutorial.value.date)
+    // let evaluations:any={}
+    let evalKey: string = 'tutorial-' + tutorial.value.date + Math.floor(Math.random() * 2)
+    const tutorials = { [evalKey]: tutorial.value }
+    this.service.addFollowUpTutorial(studentId, { tutorials })
   }
 
   ngAfterViewInit() {
