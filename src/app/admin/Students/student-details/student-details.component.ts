@@ -34,6 +34,8 @@ export class StudentDetailsComponent {
   userRouterLinks: any
   // userFollowUpEvaluations: Record<string, Evaluation> = {};
   evaluations: Record<string, Evaluation> = {};
+  // tutorialas, ajouté ultérieurement, est rigoureusement identique !
+  tutorials: Record<string, Evaluation> = {};
   // pour récupérer la dénomination complète d'un trade via son sigle
   tradeName: string = ""
   // Dans le composant
@@ -86,6 +88,8 @@ export class StudentDetailsComponent {
           console.log("this.evaluations", this.evaluations);
 
         }
+
+      if (this.student.tutorials) {this.tutorials = this.student.tutorials;console.log("this.tutorials", this.tutorials);        }
 
       }
 

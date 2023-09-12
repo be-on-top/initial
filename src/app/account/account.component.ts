@@ -53,6 +53,8 @@ export class AccountComponent implements OnInit {
   isOneQuizzAchieved: boolean = false;
   // pour les évaluations de l'étudiant si elles existent
   evaluations:Record<string, Evaluation> = {};
+  // pour le suivi tutorial de l'étudiant si il existe
+  tutorials:Record<string, Evaluation> = {};
 
 
   constructor(private auth: Auth, private firestore: Firestore, private authService: AuthService, private studentService: StudentsService, private activatedRoute: ActivatedRoute, private router: Router, private notificationService: PushNotificationService,  public sanitizer: DomSanitizer) {
@@ -112,8 +114,14 @@ export class AccountComponent implements OnInit {
           // lignes pour récupérer evaluations
           if (this.userData.evaluations) {
             this.evaluations = this.userData.evaluations
-
           }
+
+          // lignes pour récupérer le suivi tutorial
+          if (this.userData.tutorials) {
+            this.tutorials = this.userData.tutorials
+          }
+
+          
 
 
         })

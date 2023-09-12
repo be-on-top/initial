@@ -16,6 +16,8 @@
                         {{student.details}}</span>
                     <span *ngIf="student.trainer" class="d-block"><span class="fw-bold">Formateur</span> :
                         {{student.trainer}}</span>
+                    <span *ngIf="student.tutor" class="d-block"><span class="fw-bold">Tuteur</span> :
+                        {{student.tutor}}</span>
                 </p>
                 <hr>
                 <p> <span *ngIf="student.status; else checkbox">Status : actif</span>
@@ -97,25 +99,16 @@
                         <!-- Il semble que la directive keyvalue provoque des problèmes lorsqu'elle est utilisée dans une boucle *ngFor. 
                             Pour contourner ce problème, on peut utiliser la fonction créée Object.entries() pour obtenir les clés et valeurs de result.value. -->
                         <ng-template #done class="mb-3">
-                            <p class="alert bg-success text-light mt-2 d-flex justify-content-between py-2">QCM de positionnement terminé pour {{ trade }} <i class="bi bi-arrow-down-square-fill ms-auto"></i></p>
+                            <p class="alert bg-success text-light mt-2 d-flex justify-content-between py-2">QCM de
+                                positionnement terminé pour {{ trade }} <i
+                                    class="bi bi-arrow-down-square-fill ms-auto"></i></p>
 
                             <!-- on peut les mettre en vis à vis pour les grands écrans -->
                             <div class="row">
 
                                 <div class="col-md-6">
-                                    <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
-                                    <p class="card-text fw-bold mb-0">Estimation personnalisée<i class="bi bi-currency-euro ms-3"></i></p>
-                                    <p class="card-text mb-0 d-flex align-items-center"
-                                        *ngFor="let result of getTradeDetails(trade)?.fullResults | keyvalue">
-                                        <ng-container *ngFor="let item of objectEntries(result.value)">
-                                            <span class="fw-bold">{{ item[0] }}</span>
-                                            <i class="bi fs-4 bi-arrow-right-short"></i>
-                                            <span>{{ item[1].duration }} heures - Coût : {{ item[1].cost }}€</span>
-                                        </ng-container>
-                                    </p>
-                                </div>
-                                <div class="col-md-6">
-                                    <p class="card-text fw-bold mb-0">Résultats obtenus<i class="bi bi-pie-chart-fill ms-3"></i></p>
+                                    <p class="card-text fw-bold mb-0">Résultats obtenus<i
+                                            class="bi bi-pie-chart-fill ms-3"></i></p>
                                     <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
                                     <p class="card-text mb-0 d-flex align-items-center"
                                         *ngFor="let result of getTradeDetails(trade)?.fullResults | keyvalue">
@@ -126,6 +119,20 @@
                                         </ng-container>
                                     </p>
                                 </div>
+
+                                <div class="col-md-6">
+                                    <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
+                                    <p class="card-text fw-bold mb-0">Estimation personnalisée</p>
+                                    <p class="card-text mb-0 d-flex align-items-center"
+                                        *ngFor="let result of getTradeDetails(trade)?.fullResults | keyvalue">
+                                        <ng-container *ngFor="let item of objectEntries(result.value)">
+                                            <span class="fw-bold">{{ item[0] }}</span>
+                                            <i class="bi fs-4 bi-arrow-right-short"></i>
+                                            <span>{{ item[1].duration }} heures - Coût : {{ item[1].cost }}€</span>
+                                        </ng-container>
+                                    </p>
+                                </div>
+
 
                             </div>
 
@@ -155,7 +162,8 @@
                         <!-- version sans recours à TinyMCE donc sans balise html enregistrées en base -->
                         <!-- <p class="card-text"><span class="fw-bold">Détails</span>: {{ evaluation.value.details }}</p> -->
                         <!-- version avec filtre de rendu de balises HTML enregistrées en base -->
-                        <div class="card-text" [innerHTML]="sanitizer.bypassSecurityTrustHtml(evaluation.value.details)"></div>
+                        <div class="card-text"
+                            [innerHTML]="sanitizer.bypassSecurityTrustHtml(evaluation.value.details)"></div>
 
                         <button class="btn btn-danger mt-3"
                             [routerLink]="['/admin/updateEvaluation', studentId, evaluation.key]">Modifier
@@ -169,7 +177,32 @@
             </div>
         </ng-container>
 
+        <!-- affichage du  suivi entreprise (tutorials) -->
 
+        <ng-container *ngIf="student && tutorials">
+            <h3 class="mt-3"><i class="bi bi-clipboard-data-fill fs-3 me-3 me-sm-5"></i>Son suivi en entreprise</h3>
+
+            <div *ngFor="let tutorial of tutorials | keyvalue">
+                <div class="card my-5">
+                    <div class="card-body">
+                        <p class="card-text"><span class="fw-bold">Sujet</span>: {{ tutorial.value.subject }}</p>
+                        <!-- version sans recours à TinyMCE donc sans balise html enregistrées en base -->
+                        <!-- <p class="card-text"><span class="fw-bold">Détails</span>: {{ evaluation.value.details }}</p> -->
+                        <!-- version avec filtre de rendu de balises HTML enregistrées en base -->
+                        <div class="card-text" [innerHTML]="sanitizer.bypassSecurityTrustHtml(tutorial.value.details)">
+                        </div>
+
+                        <button class="btn btn-danger mt-3"
+                            [routerLink]="['/admin/updateTutorial', studentId, tutorial.key]">Modifier
+                            le suivi</button>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <span *ngIf="student.created">Date de création : {{tutorial.value.date | date:'dd/MM/yyyy'
+                            }} - Nom du tuteur : {{student.tutor}}</span>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
 
     </div>
 

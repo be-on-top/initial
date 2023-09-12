@@ -8,12 +8,14 @@ export interface Student {
     email: string;
     studentPw: string;
     evaluations?:{};
+    tutorials?:{};
     cp?: number;
     created: Date;
     status:boolean;
     roles:[];
     details:string;
     trainer: string;
+    tutor?: string;
     anpe?: boolean;
     tradesEvaluated?: string[];
      // Index signature

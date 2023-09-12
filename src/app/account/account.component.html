@@ -133,9 +133,11 @@
                                 <!-- Il semble que la directive keyvalue provoque des problèmes lorsqu'elle est utilisée dans une boucle *ngFor. 
                                     Pour contourner ce problème, on peut utiliser la fonction créée Object.entries() pour obtenir les clés et valeurs de result.value. -->
                                 <ng-template #done class="mb-3">
-                                    <p class="card-text fw-bold d-flex align-items-center">QCM de positionnement terminé <i
-                                    class="bi fs-4 bi-check-lg ms-3"></i></p>
-                                    <p class="card-text fw-bold text-decoration-underline">Votre estimation personnalisée :</p>
+                                    <p class="card-text fw-bold d-flex align-items-center">QCM de positionnement terminé
+                                        <i class="bi fs-4 bi-check-lg ms-3"></i>
+                                    </p>
+                                    <p class="card-text fw-bold text-decoration-underline">Votre estimation
+                                        personnalisée :</p>
                                     <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
                                     <div class="card-text mb-0"
                                         *ngFor="let result of userData[trade].fullResults | keyvalue, let lastResult=last">
@@ -143,7 +145,9 @@
                                             <div class="d-flex align-items-center">
                                                 <span class="fw-bold">{{ item[0] }}</span>
                                                 <i class="bi fs-4 bi-arrow-right-short"></i>
-                                                <span>Note obtenue : {{ item[1].notation | json | number:'1.1-1' }}/20 - Durée estimée :{{ item[1].duration }} heures - Coût : {{ item[1].cost }} €</span>
+                                                <span>Note obtenue : {{ item[1].notation | json | number:'1.1-1' }}/20 -
+                                                    Durée estimée :{{ item[1].duration }} heures - Coût : {{
+                                                    item[1].cost }} €</span>
                                             </div>
                                             <hr *ngIf="!lastResult">
                                         </ng-container>
@@ -187,7 +191,7 @@
                 </div>
             </div>
 
-            <!-- inscription à la formation -->
+            <!-- suivi pédagogique -->
             <div class="card">
                 <div class="card-header bg-dark d-flex justify-content-between">
                     <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseTwo">
@@ -208,7 +212,9 @@
                                         <ng-container *ngFor="let evaluation of evaluations | keyvalue">
                                             <p><span class="fw-bold">Objet : </span>{{evaluation.value.subject}}</p>
                                             <!-- <p>{{evaluation.value.details}}</p> -->
-                                            <div class="card-text" [innerHTML]="sanitizer.bypassSecurityTrustHtml(evaluation.value.details)"></div>
+                                            <div class="card-text"
+                                                [innerHTML]="sanitizer.bypassSecurityTrustHtml(evaluation.value.details)">
+                                            </div>
 
                                             <p><span class="fw-bold">Date : </span>{{evaluation.value.date}}</p>
                                         </ng-container>
@@ -221,6 +227,43 @@
                                         <span class="fw-bolder">Pas de suivi consultable pour le moment</span>
                                     </li>
                                 </ng-template>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- suivi entreprise -->
+            <div class="card" *ngIf="tutorials">
+                <div class="card-header bg-dark d-flex justify-content-between">
+                    <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse"
+                        href="#collapseTutorials">
+                        Votre suivi entreprise
+                    </a><i class="bi bi-activity fs-4 text-light"></i>
+                </div>
+                <div id="collapseTutorials" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        <div class="rounded p-2">
+                            <ul class="list-group">
+                                <!-- <li class="list-group-item"><span class="fw-bolder">Son id sur firestore :</span>  {{userData.id}}</li> -->
+                                <li class="list-group-item"><span class="fw-bolder">Votre tuteur en entreprise
+                                        :</span>
+                                    {{userData.tutor}}</li>
+                                <!-- si y a déjà des enregistrements datés des évaluations de suivi pédagogique, on bouclera dessus -->
+
+                                <li class="list-group-item">
+                                    <ng-container *ngFor="let tutorial of tutorials | keyvalue">
+                                        <p><span class="fw-bold">Objet : </span>{{tutorial.value.subject}}</p>
+                                        <!-- <p>{{evaluation.value.details}}</p> -->
+                                        <div class="card-text"
+                                            [innerHTML]="sanitizer.bypassSecurityTrustHtml(tutorial.value.details)">
+                                        </div>
+
+                                        <p><span class="fw-bold">Date : </span>{{tutorial.value.date}}</p>
+                                    </ng-container>
+                                    <!-- {{userData.evaluations | json}} -->
+                                </li>
+
                             </ul>
                         </div>
                     </div>
