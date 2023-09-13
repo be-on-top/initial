@@ -1,4 +1,5 @@
 <div class="container py-5">
+    <div class="alert bg-primary text-light my-3">Salut {{userRouterLinks.user}} !</div>
 
     <h3 class="mb-3"><i class="bi bi-person-fill fs-4 me-5 m-sm-e3"></i>Détails du compte candidat</h3>
 
@@ -164,8 +165,16 @@
                         <!-- version avec filtre de rendu de balises HTML enregistrées en base -->
                         <div class="card-text"
                             [innerHTML]="sanitizer.bypassSecurityTrustHtml(evaluation.value.details)"></div>
+                        <!-- 
+                        <button class="btn btn-danger mt-3" *ngIf="userRouterLinks.user=='trainer' || userRouterLinks.user=='admin'"
+                            [routerLink]="['/admin/updateEvaluation', studentId, evaluation.key]">Modifier
+                            l'évaluation</button> -->
 
-                        <button class="btn btn-danger mt-3"
+                        <button class="btn btn-danger mt-3" *ngIf="userRouterLinks.user=='trainer'"
+                            [routerLink]="['/admin/updateEvaluation', studentId, evaluation.key]">Modifier
+                            l'évaluation</button>
+
+                        <button class="btn btn-danger mt-3" *ngIf="userRouterLinks.user=='admin'"
                             [routerLink]="['/admin/updateEvaluation', studentId, evaluation.key]">Modifier
                             l'évaluation</button>
                     </div>
@@ -192,8 +201,12 @@
                         <div class="card-text" [innerHTML]="sanitizer.bypassSecurityTrustHtml(tutorial.value.details)">
                         </div>
 
-                        <button class="btn btn-danger mt-3"
+                        <button class="btn btn-danger mt-3" *ngIf="userRouterLinks.user=='tutor'"
                             [routerLink]="['/admin/updateTutorial', studentId, tutorial.key]">Modifier
+                            le suivi</button>
+
+                        <button class="btn btn-danger mt-3" *ngIf="userRouterLinks.user=='admin'"
+                            [routerLink]="['/admin/updateStudent', studentId, tutorial.key]">Modifier
                             le suivi</button>
                     </div>
                     <div class="card-footer text-muted">

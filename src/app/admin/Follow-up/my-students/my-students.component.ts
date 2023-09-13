@@ -16,13 +16,13 @@ export class MyStudentsComponent implements OnInit {
 
   myStudents: Student[] = [];
   user?: any
-  userLastName: string=""
+  userLastName: string = ""
   // essai pour différencier le tuteur du formateur
   userRouterLinks: any
 
-  constructor(private service: StudentsService, private auth: Auth, private trainerService: TrainersService, private tutorService:TutorsService, private route:ActivatedRoute) {
+  constructor(private service: StudentsService, private auth: Auth, private trainerService: TrainersService, private tutorService: TutorsService, private route: ActivatedRoute) {
     this.userRouterLinks = this.route.snapshot.data;
-   }
+  }
 
   ngOnInit() {
 
@@ -36,37 +36,12 @@ export class MyStudentsComponent implements OnInit {
         console.log('utilisateur authentifié', this.user)
 
         // pour vérifier au préalable si c'est un tuteur ou pas
-        if (this.userRouterLinks.user=='tutor') {
+        if (this.userRouterLinks.user == 'tutor') {
 
           alert("c'est un tutor ! ")
-          this.tutorService.getTutor(user.uid).subscribe(data=> {
+          this.tutorService.getTutor(user.uid).subscribe(data => {
 
 
-              console.log("userData from myStudents 0...", data)
-              console.log("userData lastName from myStudents...", data.lastName)
-              this.userLastName = data.lastName
-  
-              // et maintenant qu'on a le lastName
-              this.service.getStudents().subscribe(students => {
-                students.filter((student): any => {
-                  student['tutor'] && student['tutor'].includes(this.userLastName) ? this.myStudents.push(student) : ''
-                })
-  
-                console.log('this.myStudents filtré avec trainer', this.myStudents)
-              })
-
-          })        
-          
-          
-        }
-
-        else {
-
-                 // pour récupérer le nom de l'utilisateur authentifié, mais faudra changer ça :
-        this.trainerService.getTrainer(user.uid).subscribe(data => {
-          console.log("data", data);
-
-          if (data) {
             console.log("userData from myStudents 0...", data)
             console.log("userData lastName from myStudents...", data.lastName)
             this.userLastName = data.lastName
@@ -74,32 +49,56 @@ export class MyStudentsComponent implements OnInit {
             // et maintenant qu'on a le lastName
             this.service.getStudents().subscribe(students => {
               students.filter((student): any => {
-                console.log('student qu\'on essaie de filtrer', student.trainer)
-                student.trainer.includes(this.userLastName) ? this.myStudents.push(student) : ''
+                student['tutor'] && student['tutor'].includes(this.userLastName) ? this.myStudents.push(student) : ''
               })
 
               console.log('this.myStudents filtré avec trainer', this.myStudents)
             })
-          } else {
 
-            // c'est que c'est un  admin
-            this.service.getStudents().subscribe(students => {
-              // et là, ne filtrer que ceux qui ont des évaluations
-              students.filter((student): any => {
-                console.log('student qu\'on essaie de filtrer', student.trainer)
-                student.evaluations? this.myStudents.push(student) : ''
-              })
-
-              console.log("this.myStudents sans filtres", this.myStudents)
-            })
-          }
-
-        })
+          })
 
 
         }
 
- 
+        else {
+
+          // pour récupérer le nom de l'utilisateur authentifié, mais faudra changer ça :
+          this.trainerService.getTrainer(user.uid).subscribe(data => {
+            console.log("data", data);
+
+            if (data) {
+              console.log("userData from myStudents 0...", data)
+              console.log("userData lastName from myStudents...", data.lastName)
+              this.userLastName = data.lastName
+
+              // et maintenant qu'on a le lastName
+              this.service.getStudents().subscribe(students => {
+                students.filter((student): any => {
+                  console.log('student qu\'on essaie de filtrer', student.trainer)
+                  student.trainer.includes(this.userLastName) ? this.myStudents.push(student) : ''
+                })
+
+                console.log('this.myStudents filtré avec trainer', this.myStudents)
+              })
+            } else {
+
+              // c'est que c'est un  admin
+              this.service.getStudents().subscribe(students => {
+                // et là, ne filtrer que ceux qui ont des évaluations
+                students.filter((student): any => {
+                  console.log('student qu\'on essaie de filtrer', student.trainer)
+                  student.evaluations ? this.myStudents.push(student) : ''
+                })
+
+                console.log("this.myStudents sans filtres", this.myStudents)
+              })
+            }
+
+          })
+
+        }
+
+
 
       }
 

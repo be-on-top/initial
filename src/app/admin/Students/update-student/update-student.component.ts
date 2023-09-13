@@ -18,7 +18,11 @@ export class UpdateStudentComponent implements OnInit {
   // et dans l'hypothèse où le formateur utilise ce même composant pour mettre à jour son évaluation
   evaluationToUpdate: Evaluation = { details: '', subject: '', date: '' }
   evaluationKey: string = ""
-  userRouterLinks:any
+  userRouterLinks: any
+
+  // je rajoute (tout en maintenant là aussi le typage qui est rigoureusement le même)
+  tutorialToUpdate: Evaluation = { details: '', subject: '', date: '' }
+  tutorialKey: string = ""
 
 
   constructor(private service: StudentsService, private ac: ActivatedRoute, private router: Router) {
@@ -27,23 +31,30 @@ export class UpdateStudentComponent implements OnInit {
 
   ngOnInit(): void {
     this.studentId = this.ac.snapshot.params["id"]
-    this.evaluationKey = this.ac.snapshot.params["evaluationKey"]
+    this.ac.snapshot.params["evaluationKey"]? this.evaluationKey = this.ac.snapshot.params["evaluationKey"] : this.evaluationKey = this.ac.snapshot.params["editKey"]
+    this.ac.snapshot.params["tutorialKey"] ? this.tutorialKey = this.ac.snapshot.params["tutorialKey"] : this.tutorialKey = this.ac.snapshot.params["editKey"]
 
     console.log("voici l'ID", this.studentId)
     // on fait appel à getstudent pour récupérer les entrées de l'existant. méthode qui pour memo renvoie un observable
     this.service.getStudentById(this.studentId).subscribe((data) => {
       this.student = data
 
-      if (this.student.evaluations) {
+      if (this.student.evaluations || this.student.tutorials) {
         for (const key in this.student.evaluations) {
           key === this.evaluationKey ? this.evaluationToUpdate = this.student.evaluations[key] : ''
         }
         console.log("evaluationToUpdate", this.evaluationToUpdate)
+
+        for (const key in this.student.tutorials) {
+          key === this.tutorialKey ? this.tutorialToUpdate = this.student.tutorials[key] : ''
+        } console.log("tutorialToUpdate", this.tutorialToUpdate)
       }
+
 
     })
 
     this.getUsers()
+
   }
 
 
@@ -72,16 +83,35 @@ export class UpdateStudentComponent implements OnInit {
 
     this.service.updateStudentEvaluation(this.studentId, updatedEvaluations)
     // il faudra prévoir une redirection... 
-    this.router.navigate(['/admin/student', this.studentId])
+    this.router.navigate(['/admin/myStudentDetails', this.studentId])
+  }
+
+  updateStudentTutorial(form: NgForm) {
+    if (!form.valid) {
+      /* console.log('form valid'); */
+      return
+    }
+    /* console.log("form update values", form.value); */
+    const updatedTutorials: any = { tutorials: { ...this.student.tutorials } }
+    // updatedEvaluations.evaluations[this.evaluationKey]=form.value
+    updatedTutorials.tutorials[this.tutorialKey] = { "date": this.student.tutorials[this.tutorialKey].date, "details": form.value.details, "subject": form.value.subject }
+    console.log("this.student.evaluations après lecture du formulaire d'update", updatedTutorials)
+    this.service.updateStudentTutorial(this.studentId, updatedTutorials)
+    // il faudra prévoir une redirection... 
+    this.router.navigate(['/admin/tutor/myStudentDetails', this.studentId])
   }
 
   getUsers() {
     if (this.userRouterLinks.user == "trainer") {
       alert("C'est un formateur !!!")
     }
+    else if (this.userRouterLinks.user == "tutor") {
+      alert("C'est un tuteur !!!")
+    }
     else if (this.userRouterLinks.user == "admin") {
       alert("C'est un super administrateur !!!")
     }
+
   }
 
 }

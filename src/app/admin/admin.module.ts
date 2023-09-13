@@ -91,7 +91,7 @@ const routesAdmin: Routes = [
       { path: 'updateUser/:id', component: UpdateUserComponent },
       { path: 'students', component: StudentsListComponent },
       { path: 'student/:id', component: StudentDetailsComponent, data: { user: 'admin' } },
-      { path: 'updateStudent/:id', component: UpdateStudentComponent },
+      { path: 'updateStudent/:id/:editKey', component: UpdateStudentComponent, data: { user: 'admin' } },
       { path: 'priorForm', component: PriorFormComponent },
       { path: 'questions', component: QuestionsListComponent },
       { path: 'questionDetails', component: QuestionDetailsComponent },
@@ -115,6 +115,7 @@ const routesAdmin: Routes = [
       { path: 'addStudentEvaluation/:id', component: AddFollowUpComponent, data: { user: 'trainer' } },
       { path: 'addStudentTutorial/:id', component: AddFollowUpComponent, data: { user: 'tutor' } },
       { path: 'updateEvaluation/:id/:evaluationKey', component: UpdateStudentComponent, data: { user: 'trainer' } },
+      { path: 'updateTutorial/:id/:tutorialKey', component: UpdateStudentComponent, data: { user: 'tutor' } },
       { path: 'updateDescription/:id/:role', component: UpdateTradesComponent, data: { user: 'editor' } },
       { path: 'updateTradeImage/:id', component: CoverImageComponent }
 

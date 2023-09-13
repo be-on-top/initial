@@ -145,6 +145,12 @@ export class StudentsService {
     updateDoc($studentRef, evaluations);
   }
 
+  async updateStudentTutorial(id: string, tutorials: {}) {
+    let $studentRef = doc(this.firestore, "students/" + id);
+    console.log("tutorials", tutorials);    
+    updateDoc($studentRef, tutorials);
+  }
+
 
   async getStudentsByParam(uid: string) {
     const myData = query(collection(this.firestore, 'students'), where('id', '==', uid));
