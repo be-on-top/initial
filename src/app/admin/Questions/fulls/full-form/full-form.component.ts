@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterContentInit, Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { EvaluatorsService } from 'src/app/admin/evaluators.service';
@@ -6,6 +6,7 @@ import { QuestionsService } from 'src/app/admin/questions.service';
 // à externaliser dans la mesure du possible à l'avenir :
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { query, Firestore, where, collection, getDocs } from '@angular/fire/firestore';
+import { SettingsService } from 'src/app/admin/settings.service';
 
 @Component({
   selector: 'app-full-form',
@@ -13,7 +14,8 @@ import { query, Firestore, where, collection, getDocs } from '@angular/fire/fire
   styleUrls: ['./full-form.component.css']
 })
 
-export class FullFormComponent {
+export class FullFormComponent implements OnInit, AfterContentInit {
+
   //  pour les données liées à l'évaluateur authentifié
   authId?: any;
   // attention : userData?:any cause erreur en console lorsque le composant est initialisé puisqu'il n'a pas encore eu le temps de récupérer userData
@@ -21,6 +23,9 @@ export class FullFormComponent {
   // obligée de récupérer l'uid de l'évaluateur pour connaitre ses affectations métier
   ui: any = ''
   user?: any;
+  // essai pour connecter le tableau des sigles aux documents de la collection sigles destinée aux paramétrages métier
+  sigleIds: string[] = []
+
   question: string | undefined = "";
   number: number = 0;
   mediaQuestion: any;
@@ -94,16 +99,30 @@ export class FullFormComponent {
 
   selectedSigle: string = ""
 
-  // import de auth pour tester les spécificités de l'évaluateur connecté si il est reconnu
-  // import du service EvaluatorsService pour tester la récupération des affectations métiers spécifiques à l'évaluateur
-  constructor(private service: QuestionsService, private router: Router, private auth: Auth, private evaluatorService: EvaluatorsService, private firestore: Firestore) {
-  }
-
   arrayFilesToUpload: any = []
 
   notations: number[] = [1, 2, 3]
 
+  relatedCompetences: any = []
+
+  // import de auth pour tester les spécificités de l'évaluateur connecté si il est reconnu
+  // import du service EvaluatorsService pour tester la récupération des affectations métiers spécifiques à l'évaluateur
+  // l'import du service: SettingsService est nécessaire si on veut connecter ce composant aux settings métiers de firestore
+  constructor(private service: QuestionsService, private router: Router, private auth: Auth, private evaluatorService: EvaluatorsService, private firestore: Firestore, private settingsService: SettingsService) {
+  }
+
+
+
   ngOnInit(): void {
+
+    // pour commencer à connecter le composant aux métiers tels qu'ils figurent en base
+    this.settingsService.getTrades().subscribe(data => {
+      for (const iterator of data) {
+        console.log(iterator.competences)
+      }
+      console.log("data de getTrades()", data)
+    })
+
 
     // le getQuestion ne doit a priori pas se faire AVANT qu'un SELECT ne soit sélectionné !!!!
     // ou alors, on le récupère PUIS on filtre ultérieurement
@@ -138,6 +157,8 @@ export class FullFormComponent {
         console.log("www", user.email);
         // méthode au top : 
         this.getDocsByParam(this.authId)
+
+
       }
 
       else {
@@ -145,6 +166,17 @@ export class FullFormComponent {
         // ...
       }
     })
+
+    this.fetchSigleIds()
+
+
+
+  }
+
+  ngAfterContentInit(){
+
+
+
   }
 
   async submitForm(form: NgForm) {
@@ -223,11 +255,88 @@ export class FullFormComponent {
     querySnapshot.forEach((doc) => {
       console.log(doc.id, ' => ', doc.data());
       this.userData = doc.data()
-      console.log("this.userData", this.userData);
-    });
+      console.log("this.userData.sigle !!!!!", this.userData.sigle)
+
+      this.getRelatedCompetences()
+      
+      
+    })
+
+  }
+
+  async getRelatedCompetences() {
+    // on peut en  profiter pour boucler sur le tableau userData.sigles, récupérer chaque sigle et retourner les CP concernées dans la collection sigles
+    for (const iterator of this.userData.sigle) {
+      // let additionalCompetences:any
+      this.settingsService.getSigle(iterator).subscribe((data): any => {
+        // console.log('data.competences', data.competences)
+        for (const key in data.competences) {
+          // console.log('data.competences[key]', data.competences[key]);
+          let additionalKeySigle: string = 'competences_' + iterator
+          let additionalKey: string = key
+          let additionalCP: any = data.competences[key]
+
+          this.relatedCompetences[additionalKeySigle] = { ...this.relatedCompetences['competences_' + iterator], ['CP' + additionalKey]: additionalCP }
+          console.log('relatedCompetences !!!!!!', this.relatedCompetences)
+        }
+      })
+
+    }
+
+    console.log('relatedCompetences en dehors de la boucle', this.relatedCompetences)
+    // return this.relatedCompetences
   }
 
 
+
+  // Utilisation de la fonction du service lorsque nécessaire
+  fetchSigleIds() {
+    this.settingsService.getSigleIds()
+      .then((sigleIds) => {
+        this.sigleIds = sigleIds
+        console.log(sigleIds);
+      })
+      .catch((error) => {
+        console.error('Erreur lors de la récupération des IDs de documents :', error);
+      });
+  }
+
+  // convertRelatedCompetencesToArray() {
+  //   return Object.keys(this.relatedCompetences).map(key => this.relatedCompetences[key]);
+  // }
+
+
+  filterRelatedCompetences(sigle: string) {
+    return this.relatedCompetences.filter((comp:any) => comp['competences_' + sigle]);
+  }
+
+  convertRelatedCompetencesToArray(): any[] {
+    const sigles = this.userData.sigle;
+    const result: any[] = [];
+  
+    // Parcourez les sigles et ajoutez les compétences correspondantes au tableau résultat
+    for (const sigle of sigles) {
+      const competencesKey = 'competences_' + sigle;
+      if (this.relatedCompetences.hasOwnProperty(competencesKey)) {
+        const competences = this.relatedCompetences[competencesKey];
+        for (const key in competences) {
+          if (competences.hasOwnProperty(key)) {
+            result.push({ sigle: sigle, competence: key, value: competences[key] });
+          }
+        }
+      }
+    }
+  
+    return result;
+  }
+
+  getKeys(obj: any): string[] {
+    return obj ? Object.keys(obj) : [];
+  }
+
+
+
+  
 
 
 
