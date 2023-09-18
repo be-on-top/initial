@@ -2,10 +2,9 @@
 
     <h3>Votre compte BE-ON-TOP</h3>
 
-    <p class="alert bg-primary text-light p-2 my-3 fs-4 fw-light ">Bonjour {{userData.firstName}}, ceci est votre compte
-        BE-ON-TOP</p>
+    <p class="alert bg-primary text-light p-2 my-3 fs-4 fw-light ">Bonjour {{userData.firstName}}, les données ci-dessous ont été récupérées grâce à vos données d'authentification</p>
 
-    <div class="p-2 fs-3">Les données ci-dessous ont été récupérées grâce à vos données d'authentification</div>
+
 
     <div *ngIf="user" class="alert bg-light p-2">
         Id Utilisateur authentifié sur firebase Auth : {{user | json}}

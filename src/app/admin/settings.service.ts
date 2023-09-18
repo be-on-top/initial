@@ -19,7 +19,10 @@ import {
 })
 export class SettingsService {
 
-  constructor(private firestore: Firestore, private storage:Storage) { }
+
+
+  constructor(private firestore: Firestore, private storage: Storage) {
+  }
 
   async addTrade(trade: Trade) {
 
@@ -29,7 +32,7 @@ export class SettingsService {
     // // les 2 méthodes fonctionnent très bien.
     let $settingsRef = collection(this.firestore, "sigles");
 
-    
+
     // await addDoc($settingsRef, trade).then((response) => {
     //   console.log(response.id);
     // })
@@ -64,20 +67,20 @@ export class SettingsService {
   }
 
   async updateDescription(trade: Partial<Trade>) {
-  
+
     let $settingsRef = collection(this.firestore, "sigles");
     let updateData: Partial<Trade> = {};
-  
+
     if (trade.description !== undefined) {
       updateData.description = trade.description;
     }
-  
-  
+
+
     // ...
-  
+
     await updateDoc(doc($settingsRef, trade.sigle), updateData);
   }
-  
+
 
 
   getTrades() {
@@ -126,7 +129,7 @@ export class SettingsService {
   }
 
   // si finalement, on enregistre les maximums dan un doc dédié de la collection settings
-  getMaximums(){
+  getMaximums() {
     // const settinfsRef = collection(this.firestore, "settings")
     const maximumsDocRef = doc(this.firestore, 'settings/maximums')
     return docData(maximumsDocRef) as Observable<DocumentData>
@@ -142,8 +145,8 @@ export class SettingsService {
     return docData($sigleRef, { idField: 'id' }).pipe(map(trade => trade['denomination']));
   }
 
-  getCPName(tradeId: string, cpId:number): Observable<string> {
-    console.log(cpId)    
+  getCPName(tradeId: string, cpId: number): Observable<string> {
+    console.log(cpId)
     let $sigleRef = doc(this.firestore, "sigles/" + tradeId)
     return docData($sigleRef, { idField: 'id' }).pipe(map(trade => trade['competences'][cpId]))
   }
@@ -157,7 +160,7 @@ export class SettingsService {
 
   // updateTradeImage(tradeId: string, file: File): Promise<string> {
   //   const imageRef = ref(this.storage, 'images/trades/' + tradeId + '.jpeg');
-  
+
   //   return deleteObject(imageRef) // Supprime l'ancienne image
   //     .then(() => {
   //       return uploadBytes(imageRef, file); // Télécharge la nouvelle image
@@ -177,7 +180,7 @@ export class SettingsService {
 
   updateTradeImage(tradeId: string, file: File): Promise<string> {
     const imageRef = ref(this.storage, 'images/trades/' + tradeId + '.jpeg');
-  
+
     // Vérifie d'abord si l'objet existe
     return getMetadata(imageRef)
       .then((metadata) => {
@@ -204,9 +207,25 @@ export class SettingsService {
         throw error; // Propage l'erreur pour une gestion ultérieure dans le composant
       });
   }
-  
-  
-  
+
+
+  getSigleIds() {
+    const siglesCollection = collection(this.firestore, "sigles");
+
+    return getDocs(siglesCollection).then((querySnapshot) => {
+      const sigleIds: any = [];
+      querySnapshot.forEach((doc) => {
+        sigleIds.push(doc.id);
+      });
+      return sigleIds;
+    }).catch((error) => {
+      console.error('Erreur lors de la récupération des IDs de documents :', error);
+      throw error;
+    });
+  }
+
+
+
 
 
 

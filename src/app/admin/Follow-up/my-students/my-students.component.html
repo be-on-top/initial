@@ -26,7 +26,9 @@
                 <div class="col-sm-3 col-6 order-perso2">{{student.firstName}}</div>
                 <div class="col-sm-3 col-6 order-perso4">
                     <button class="btn btn-primary">
-                        <a [routerLink]="['/admin/myStudentDetails', student.id]" class="text-white"><i
+                        <a *ngIf="userRouterLinks.user=='trainer'" [routerLink]="['/admin/myStudentDetails', student.id]" class="text-white"><i
+                                class="bi bi-person-lines-fill"></i>Détails</a>
+                        <a *ngIf="userRouterLinks.user=='tutor'" [routerLink]="['/admin/tutor/myStudentDetails', student.id]" class="text-white"><i
                                 class="bi bi-person-lines-fill"></i>Détails</a>
                     </button>
                 </div>

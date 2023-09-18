@@ -66,15 +66,13 @@
                     studentData?.id ? studentData.id : ''
                   ]" class="text-decoration-none text-dark">
                 <div class="card my-3" (click)="selectTrade(trade.id)">
-                    <div class="card-header text-muted">{{trade.id}} <ng-container
-                            *ngIf="studentData && studentData['quizz_'+trade.sigle]">
-                            - ScoreCounter : {{ studentData['quizz_'+trade.sigle].scoreCounter | json }}
-                        </ng-container></div>
-
+                    <div class="card-header text-muted">
+                        <span class="fw-bold text-capitalize text-dark">{{trade.denomination}} </span>
+                    </div>
                     <div class="card-body">
                         <!-- <p class="card-text"><span class="fw-bold">Son sigle (référence métier) sur firestore : </span> : {{trade.sigle}}</p> -->
                         <div class="card-text"><a [routerLink]="['/trade', trade.sigle]" class="text-decoration-none">
-                            {{(trade.description | slice:0:100 ) + ' ...'| stripHtml }} </a></div>
+                                {{(trade.description | slice:0:100 ) + ' ...'| stripHtml }} </a></div>
                         <!-- si on utilise l'éditeur de texte, pour récupérer le texte tronqué et brut -->
                         <!-- <div class="card-text"><a [routerLink]="['/trade', trade.sigle]" class="text-decoration-none" [innerHTML]="sanitizer.bypassSecurityTrustHtml((trade.description | slice:0:100) +'...')"></a></div> -->
 
@@ -96,7 +94,8 @@
                             *ngIf="studentData && studentData['quizz_'+trade.sigle] && !studentData['quizz_'+trade.sigle].fullResults">
                             <button class="btn btn-transparent"><i class="bi bi-clock-history"></i>
                                 <!-- Reprendre à la question {{studentData.lastIndexQuestion+1}}</button></div> -->
-                                Poursuivre</button></div>
+                                Poursuivre</button>
+                        </div>
 
                         <div class="d-flex justify-content-end"
                             *ngIf="studentData && studentData['quizz_'+trade.sigle] && studentData['quizz_'+trade.sigle].fullResults">
@@ -107,7 +106,11 @@
                         <!-- à tester : (str.length>6)? (str | slice:0:6)+'...':(str) -->
 
                     </div>
-                    <div class="card-footer text-muted">Réf. {{trade.sigle}}</div>
+                    <div class="card-footer text-muted">Réf. {{trade.sigle}}
+                        <ng-container *ngIf="studentData && studentData['quizz_'+trade.sigle]">
+                            - ScoreCounter : {{ studentData['quizz_'+trade.sigle].scoreCounter | json }}
+                        </ng-container>
+                    </div>
                 </div>
             </a>
         </div>

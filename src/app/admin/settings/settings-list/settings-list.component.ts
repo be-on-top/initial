@@ -30,7 +30,7 @@ export class SettingsListComponent implements OnInit {
     this.service.getTrades().subscribe(data => {
       console.log("data de getTrades()", data)
       this.trades = data
-      // return this.allUsers
+
     })
 
     this.service.getLevelsCursors().subscribe(data => {

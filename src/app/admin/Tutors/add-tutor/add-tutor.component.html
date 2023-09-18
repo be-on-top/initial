@@ -3,7 +3,9 @@
     <h3>Ajouter un tuteur à la liste des tuteurs</h3>
     <!-- <app-feedback-messages [feedbackMessages]="feedbackMessages"
         [isSuccessMessage]="isSuccessMessage"></app-feedback-messages> -->
-    <div class="alert alert-info mt-3">Si vous souhaitez ajouter un évaluateur existant à la liste des tuteurs en
+
+        <!-- pas de raison qu'un tuteur puise avoir une double casquette ! C'est un intervenant exterieur -->
+    <!-- <div class="alert alert-info mt-3">Si vous souhaitez ajouter un évaluateur existant à la liste des tuteurs en
         charge du suivi
         tutorial des futurs apprenants, merci de les sélectionner dans la liste suivante</div>
     <form class="form row mx-1" #reg="ngForm" (submit)="addRole(reg)">
@@ -17,9 +19,9 @@
         </div>
         <button type="submit" class="btn btn-primary col-md-6">Les ajouter à la liste</button>
     </form>
-    <hr>
+    <hr> -->
 
-    <div class="alert alert-info">Pour tout nouveau tuteur, procéder normalement</div>
+    <!-- <div class="alert alert-info">Pour tout nouveau tuteur, procéder normalement</div> -->
     <!-- pour les messages de retour/validation des champs du formulaire ou form validation, on utilisera BOOTSTRAP plutôt que des directives structurelles -->
     <form class="form" #f="ngForm" (submit)="addTutor(f)" class="was-validated">
 
@@ -59,8 +61,8 @@
             </div>
         </div>
 
-        <!-- affectation métier -->
-        <label for="sigle" class="form-label mt-3">Affectation métier :</label>
+        <!-- affectation métier : pas de raison d'affecter un métier au  tuteur externe  -->
+        <!-- <label for="sigle" class="form-label mt-3">Affectation métier :</label>
         <select class="form-select" name="sigle" id="sigle" ngModel required #sigle="ngModel"
             (change)="checkIfSelected(sigle.value)" multiple>
             <option value>Selectionner le métier</option>
@@ -68,7 +70,7 @@
             <option value="poser_ite">POSEUR ITE</option>
             <option value="macon_vrd">MACON VRD</option>
             <option value="cl_vul">CLVUL</option>
-        </select>
+        </select> -->
 
         <!-- <label for="details" class="form-label mt-3">Commentaires optionnels</label> -->
         <textarea name="details" id="details" ngModel name="details" cols="100" rows="10" class="form-control mt-3"

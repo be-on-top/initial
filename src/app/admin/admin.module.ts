@@ -107,7 +107,7 @@ const routesAdmin: Routes = [
       { path: 'settings', component: SettingsListComponent },
       { path: 'updateTrades/:id', component: UpdateTradesComponent, data: { user: 'admin' } },
       { path: 'updateSettings', component: UpdateSettingsComponent },
-      { path: 'myStudents', component: MyStudentsComponent},
+      { path: 'myStudents', component: MyStudentsComponent, data: { user: 'trainer' }},
       // { path: 'trainer/myStudents', component: MyStudentsComponent, data: { user: 'trainer' } },
       { path: 'myStudentDetails/:id', component: StudentDetailsComponent, data: { user: 'trainer' } },
       // { path: 'trainer/myStudentDetails/:id', component: StudentDetailsComponent, data: { user: 'trainer' } },
