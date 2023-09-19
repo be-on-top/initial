@@ -35,7 +35,6 @@
             </div>
         </ng-container> -->
 
-
         <ng-container *ngIf="userData.sigle">
             <div *ngFor="let sigle of userData.sigle">
                 {{ sigle }}
@@ -50,16 +49,6 @@
             </div>
         </ng-container>
 
-
-
-
-
-
-
-
-
-
-
     </div>
 
     <h3 class="mb-5">Formulaire de saisie des questions de positionnement
@@ -73,7 +62,7 @@
 
     <!-- pour les messages de retour/validation des champs du formulaire ou form validation, on utilisera BOOTSTRAP plutôt que des directives structurelles -->
     <form class="form" #f="ngForm" class="was-validated" (submit)="submitForm(f)">
-        <div class="form-group row justify-content-between">
+        <div class="form-group row justify-content-between" *ngIf="userData.sigle">
             <div class="col-sm-6 col-md-3 mb-1">
 
                 <!-- 
@@ -90,7 +79,9 @@
                 <!-- à partir du moment, où on affecte des métiers aux évuateurs (donc aux doc de la collection evaluators), l'affichage des options devient conditionnel -->
                 <!-- se rappeler que sigle fait partie d'un tableau côté evaluateur, puisqu'il peut en avoir plusieures. faut donc itérer dans le tableau -->
                 <!-- <div *ngIf="userData"> -->
-                <select class="form-select" name="sigle" id="sigle" ngModel required #sigle="ngModel"
+
+                <!-- 1 Impeccable archive -->
+                <!-- <select class="form-select" name="sigle" id="sigle" ngModel required #sigle="ngModel"
                     (change)="checkIfSelected(sigle.value)">
                     <option value>Selectionner le métier</option>
                     <option *ngFor="let element of userData.sigle" value="{{element}}">
@@ -99,32 +90,35 @@
                         <span *ngIf="element==='macon_vrd'">MACON VRD</span>
                         <span *ngIf="element==='cl_vul'">CL VUL</span>
                     </option>
-                </select>
+                </select> -->
 
-                <!-- juste pour essayer un select sur la base des sigles métiers réellement enregistrés en base -->
-                <select class="form-select mt-5 bg-info" name="sigleId" ngModel required #sigleId="ngModel">
-                    <option value>Selectionner le métier de la collection sigles</option>
-                    <option *ngFor="let element of sigleIds" value="{{element}}">
-                        <span>{{element}}</span>
+                <!-- refacto essai -->
+                <select class="form-select" name="sigle" ngModel required #sigle="ngModel"
+                    (change)="checkIfSelected(sigle.value)">
+                    <option value>Selectionner le métier de la collection sigles affecté à l'évaluateur</option>
+                    <option *ngFor="let element of sigleIds, let item of userData.sigle" value="{{item}}">
+                        <span *ngIf="item===element">{{item}}</span>
                     </option>
                 </select>
 
                 <!-- Pour essayer un select sur la base des sigles affectés à l'évaluateur qui correspondent aux métiers réellement enregistrés en base -->
-                <select class="form-select mt-5 bg-warning" name="sigleId" ngModel required #sigleId="ngModel">
+                <!-- <select class="form-select mt-5 bg-warning" name="sigleId" ngModel required #sigleId="ngModel">
                     <option value>Selectionner le métier de la collection sigles affecté à l'évaluateur</option>
                     <option *ngFor="let element of sigleIds, let sigle of userData.sigle" value="{{element}}">
                         <span *ngIf="sigle===element">{{element}}</span>
                     </option>
-                </select>
+                </select> -->
 
 
                 <!-- </div> -->
                 <!-- <div class="valid-feedback" *ngIf="comment1.valid">Champ correctement renseigné</div> -->
             </div>
             <div class="col-sm-6 col-md-3 mb-1">
-                <select class="form-select" name="competence" id="competence" ngModel required #competence="ngModel">
+                <!-- 2 Impeccable archive -->
+                <!-- <option value=competences_ite.CP1 [disabled]="selectedSigle != 'poser_ite'">CP1 {{competences_ite.CP1}}</option> -->
+
+                <!-- <select class="form-select" name="competence" id="competence" ngModel required #competence="ngModel">
                     <option value>Competence ciblée en fonction du métier</option>
-                    <!-- <option value=competences_ite.CP1 [disabled]="selectedSigle != 'poser_ite'">CP1 {{competences_ite.CP1}}</option> -->
                     <option value="p_ite_CP1" [ngClass]="{'d-none': selectedSigle != 'poser_ite'}">CP1
                         {{competences_ite.CP1}}</option>
                     <option value="p_ite_CP2" [ngClass]="{'d-none': selectedSigle != 'poser_ite'}">CP2
@@ -192,7 +186,25 @@
                         {{competences_vul.CP7}}</option>
                     <option value="cl_vul_CP8" [ngClass]="{'d-none': selectedSigle != 'cl_vul'}">CP8
                         {{competences_vul.CP8}}</option>
-                </select>
+                </select> -->
+                <!-- refacto essai -->
+                <!-- <ng-container *ngIf="userData.sigle"> -->
+                <!-- <div *ngFor="let sigle of userData.sigle"> -->
+
+                <ng-container *ngIf="relatedCompetences">
+                    <select class="form-select" name="competence" id="competence" ngModel required
+                        #competence="ngModel">
+                        <option value>Competence ciblée en fonction du métier</option>
+                        <option
+                            *ngFor="let key of getKeys(relatedCompetences['competences_' + selectedSigle]); let i = index"
+                            [value]="selectedSigle + '_CP' + (i + 1)">
+                            CP{{ i + 1 }}: {{ relatedCompetences['competences_' + selectedSigle][key] }}
+                        </option>
+                    </select>
+                </ng-container>
+                <!-- </div> -->
+                <!-- </ng-container> -->
+
             </div>
 
 
@@ -234,7 +246,7 @@
         <p class="bg-light rounded p-3 fst-italic">Un minimum de 2 options de réponse* est nécessaire à la validation du
             formulaire. Vous pouvez, si vous le souhaitez, ajouter des fichiers média (image, vidéo...) ou commentaires
             spécifiques
-            pour chaque élémenet de réponse </p>
+            pour chaque élément de réponse </p>
         <label for="option1" class="form-label mt-3">Réponse 1 * </label>
         <input type="text" id="option1" ngModel name="option1" class="form-control" #option1="ngModel"
             placeholder="Option de réponse 1" required>
