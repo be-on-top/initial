@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { EvaluatorsService } from 'src/app/admin/evaluators.service';
@@ -14,7 +14,7 @@ import { SettingsService } from 'src/app/admin/settings.service';
   styleUrls: ['./full-form.component.css']
 })
 
-export class FullFormComponent implements OnInit, AfterContentInit {
+export class FullFormComponent implements OnInit {
 
   //  pour les données liées à l'évaluateur authentifié
   authId?: any;
@@ -53,49 +53,49 @@ export class FullFormComponent implements OnInit, AfterContentInit {
   numbers: number[] = []
   registryNumbers: any[] = []
   // isRegistered:boolean = false
-  competences_ite: any = {
-    CP1: "Monter et démonter des échafaudages, fixes de pieds et roulants, et savoir les utiliser",
-    CP2: "Réaliser des travaux de peinture film mince de classe D2 sur des ouvrages neufs ou à rénover, en qualité definition C",
-    CP3: "Mettre en œuvre des revêtements de peinture épais et semi-épais de classe D3 sur des ouvrages neufs ou à rénover, en qualité de finition C",
-    CP4: "Réaliser des travaux extérieurs de peinture sur des supports bois, thermoplastiques et métalliques, neufs ou à rénover, en qualité de finition B",
-    CP5: "Mettre en œuvre des systèmes d'imperméabilité de classes I1 à I4",
-    CP6: "Réaliser l'étanchéité de supports horizontaux de type balcon ou similaire",
-    CP7: "Réaliser une isolation thermique extérieure par collage de panneaux isolants avec une finition enduit mince organique",
-    CP8: "Réaliser une isolation thermique extérieure par calage/chevillage de panneaux isolants avec une finition enduit mince minéral",
-    CP9: "Réaliser une isolation thermique extérieure par calage/chevillage de panneaux isolants avec en finition un enduit hydraulique projeté",
-    CP10: "Entretenir et rénover d'anciens systèmes d'isolation thermique extérieure avec une finition enduit mince"
-  }
+  // competences_ite: any = {
+  //   CP1: "Monter et démonter des échafaudages, fixes de pieds et roulants, et savoir les utiliser",
+  //   CP2: "Réaliser des travaux de peinture film mince de classe D2 sur des ouvrages neufs ou à rénover, en qualité definition C",
+  //   CP3: "Mettre en œuvre des revêtements de peinture épais et semi-épais de classe D3 sur des ouvrages neufs ou à rénover, en qualité de finition C",
+  //   CP4: "Réaliser des travaux extérieurs de peinture sur des supports bois, thermoplastiques et métalliques, neufs ou à rénover, en qualité de finition B",
+  //   CP5: "Mettre en œuvre des systèmes d'imperméabilité de classes I1 à I4",
+  //   CP6: "Réaliser l'étanchéité de supports horizontaux de type balcon ou similaire",
+  //   CP7: "Réaliser une isolation thermique extérieure par collage de panneaux isolants avec une finition enduit mince organique",
+  //   CP8: "Réaliser une isolation thermique extérieure par calage/chevillage de panneaux isolants avec une finition enduit mince minéral",
+  //   CP9: "Réaliser une isolation thermique extérieure par calage/chevillage de panneaux isolants avec en finition un enduit hydraulique projeté",
+  //   CP10: "Entretenir et rénover d'anciens systèmes d'isolation thermique extérieure avec une finition enduit mince"
+  // }
 
-  competences_cdes: any = {
-    CP1: "Conduire en sécurité les chariots de manutention à conducteur porté de la catégorie 1A",
-    CP2: "Préparer et emballer les commandes",
-    CP3: "Charger, décharger les véhicules routiers à partir d'un quai et expédier les marchandises",
-    CP4: "Identifier, signaler et corriger les anomalies dans l'entrepôt",
-  }
+  // competences_cdes: any = {
+  //   CP1: "Conduire en sécurité les chariots de manutention à conducteur porté de la catégorie 1A",
+  //   CP2: "Préparer et emballer les commandes",
+  //   CP3: "Charger, décharger les véhicules routiers à partir d'un quai et expédier les marchandises",
+  //   CP4: "Identifier, signaler et corriger les anomalies dans l'entrepôt",
+  // }
 
-  competences_vrd: any = {
-    CP1: "Installer les dispositifs de sécurité pour chantier de voirie et réseaux",
-    CP2: "Réaliser les implantations secondaires des ouvrages de voirie et de réseaux",
-    CP3: "Construire des petits ouvrages d'aménagement urbain",
-    CP4: "Poser des pavés et des dalles manufacturées",
-    CP5: "Réaliser un dallage béton pour un ouvrage de voirie en aménagement urbain",
-    CP6: "Travailler à proximité des réseaux",
-    CP7: "Mettre en oeuvre des produits manufacturés de type bordures et caniveaux",
-    CP8: "Poser les gaines, fourreaux et les chambres de tirage pour les réseaux courant faible.",
-    CP9: "Poser les gaines et les chambres de tirage pour les réseaux courant fort.",
-    CP10: "Réaliser les branchements particuliers eaux pluviales et leurs raccordements"
-  }
+  // competences_vrd: any = {
+  //   CP1: "Installer les dispositifs de sécurité pour chantier de voirie et réseaux",
+  //   CP2: "Réaliser les implantations secondaires des ouvrages de voirie et de réseaux",
+  //   CP3: "Construire des petits ouvrages d'aménagement urbain",
+  //   CP4: "Poser des pavés et des dalles manufacturées",
+  //   CP5: "Réaliser un dallage béton pour un ouvrage de voirie en aménagement urbain",
+  //   CP6: "Travailler à proximité des réseaux",
+  //   CP7: "Mettre en oeuvre des produits manufacturés de type bordures et caniveaux",
+  //   CP8: "Poser les gaines, fourreaux et les chambres de tirage pour les réseaux courant faible.",
+  //   CP9: "Poser les gaines et les chambres de tirage pour les réseaux courant fort.",
+  //   CP10: "Réaliser les branchements particuliers eaux pluviales et leurs raccordements"
+  // }
 
-  competences_vul: any = {
-    CP1: "Veiller au maintien du bon fonctionnement du véhicule de livraison et à son état général",
-    CP2: "Identifier l'envoi ou les envois et adapter l'organisation de la course et de la tournée en fonction des impératifs",
-    CP3: "Manutentionner la marchandise, charger, décharger le véhicule",
-    CP4: "Conduire et manœuvrer un véhicule utilitaire léger dans le respect des règles de sécurité routière de façon écologique et économique",
-    CP5: "Prendre en compte les spécificités de la course ou de la tournée dans un contexte urbain",
-    CP6: "Assurer la livraison, le dépôt ou l'enlèvement de marchandises dans un contexte commercial",
-    CP7: "Identifier, contrôler et renseigner les supports numériques ou les documents relatifs à l'exercice de l'emploi de conducteur livreur",
-    CP8: "Prévenir les risques liés à l'activité professionnelle et appliquer les procédures."
-  }
+  // competences_vul: any = {
+  //   CP1: "Veiller au maintien du bon fonctionnement du véhicule de livraison et à son état général",
+  //   CP2: "Identifier l'envoi ou les envois et adapter l'organisation de la course et de la tournée en fonction des impératifs",
+  //   CP3: "Manutentionner la marchandise, charger, décharger le véhicule",
+  //   CP4: "Conduire et manœuvrer un véhicule utilitaire léger dans le respect des règles de sécurité routière de façon écologique et économique",
+  //   CP5: "Prendre en compte les spécificités de la course ou de la tournée dans un contexte urbain",
+  //   CP6: "Assurer la livraison, le dépôt ou l'enlèvement de marchandises dans un contexte commercial",
+  //   CP7: "Identifier, contrôler et renseigner les supports numériques ou les documents relatifs à l'exercice de l'emploi de conducteur livreur",
+  //   CP8: "Prévenir les risques liés à l'activité professionnelle et appliquer les procédures."
+  // }
 
   selectedSigle: string = ""
 
@@ -105,13 +105,14 @@ export class FullFormComponent implements OnInit, AfterContentInit {
 
   relatedCompetences: any = []
 
+  // pour ajouter un cas bloquant
+  forbidden:boolean=false
+
   // import de auth pour tester les spécificités de l'évaluateur connecté si il est reconnu
   // import du service EvaluatorsService pour tester la récupération des affectations métiers spécifiques à l'évaluateur
   // l'import du service: SettingsService est nécessaire si on veut connecter ce composant aux settings métiers de firestore
   constructor(private service: QuestionsService, private router: Router, private auth: Auth, private evaluatorService: EvaluatorsService, private firestore: Firestore, private settingsService: SettingsService) {
   }
-
-
 
   ngOnInit(): void {
 
@@ -123,29 +124,6 @@ export class FullFormComponent implements OnInit, AfterContentInit {
       console.log("data de getTrades()", data)
     })
 
-
-    // le getQuestion ne doit a priori pas se faire AVANT qu'un SELECT ne soit sélectionné !!!!
-    // ou alors, on le récupère PUIS on filtre ultérieurement
-
-    // this.service.getQuestions().subscribe(data => {
-    //   // console.log(data);
-    //   // attention : c'est la différence avec prior-form, on ne veut pas afficher les 20 premières questions dans le dénombre
-    //   for (let n of data) {
-    //     n.number > 20 ? this.registryNumbers = [...this.registryNumbers, Number(n.number)] : ""
-    //     // console.log(this.registryNumbers);
-    //     this.numbers = this.numbers.filter(element => {
-    //       return element != n.number
-    //     });
-    //     // console.log("result", this.numbers);
-    //   }
-    //   // return this.registryNumbers
-    // })
-
-    // for (let i = 20; i < 201; i++) {
-    //   this.numbers.push(i)
-    //   console.log(this.numbers);
-
-    // }
 
     onAuthStateChanged(this.auth, (user: any) => {
       if (user) {
@@ -169,31 +147,32 @@ export class FullFormComponent implements OnInit, AfterContentInit {
 
     this.fetchSigleIds()
 
-
-
   }
 
-  ngAfterContentInit(){
 
 
-
-  }
-
-  async submitForm(form: NgForm) {
+  async submitForm(form: NgForm) {    
 
     if (form.value.optScoring3 === null) {
+      form.value.optScoring1 === form.value.optScoring2 ? this.forbidden=true : this.forbidden=false
       delete form.value.optScoring3;
     }
+
     if (form.value.optScoring4 === null) {
+      form.value.optScoring1 === form.value.optScoring2 ? this.forbidden=true : this.forbidden=false
       delete form.value.optScoring4;
     }
 
-    console.log(form.value);
-    this.service.createQuestion(form.value, this.arrayFilesToUpload);
-    // form.reset ne sert que si on continue la saisie.
-    form.reset();
-    this.router.navigate(['/admin/fullList'])
-    // window.location.reload();
+    if (this.forbidden!==true) {          
+          // console.log(form.value);
+          this.service.createQuestion(form.value, this.arrayFilesToUpload);
+          // form.reset ne sert que si on continue la saisie.
+          form.reset();
+          this.router.navigate(['/admin/fullList'])
+          // window.location.reload();
+    } else{
+      alert('les 2 options ne peuvent être vraies, il faut choisir')
+    }
   }
 
 
@@ -228,9 +207,9 @@ export class FullFormComponent implements OnInit, AfterContentInit {
       console.log("datafiltered!!!!!!!!", dataFiltered);
       // attention : c'est la différence avec prior-form, on ne veut pas afficher les 20 premières questions dans le dénombre
       for (let n of dataFiltered) {
-        console.log("n", n.number);
+        // console.log("n.number", n.number);
         this.registryNumbers.push(n.number)
-        console.log("registryNumber", this.registryNumbers);
+        // console.log("registryNumber", this.registryNumbers);
         this.numbers = this.numbers.filter(element => element != n.number)
         // console.log("result", this.numbers);
       }
@@ -332,11 +311,7 @@ export class FullFormComponent implements OnInit, AfterContentInit {
 
   getKeys(obj: any): string[] {
     return obj ? Object.keys(obj) : [];
-  }
-
-
-
-  
+  } 
 
 
 

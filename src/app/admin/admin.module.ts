@@ -102,7 +102,7 @@ const routesAdmin: Routes = [
       { path: 'fullForm', component: FullFormComponent },
       { path: 'fullList', component: FullListComponent },
       { path: 'fullDetails', component: FullDetailsComponent },
-      { path: 'updateFullc', component: UpdateFullComponent },
+      { path: 'updateFull/:id', component: UpdateFullComponent },
       { path: 'addSettings', component: SettingsComponent },
       { path: 'settings', component: SettingsListComponent },
       { path: 'updateTrades/:id', component: UpdateTradesComponent, data: { user: 'admin' } },
