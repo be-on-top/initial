@@ -4,9 +4,10 @@ import { Router } from '@angular/router';
 import { EvaluatorsService } from 'src/app/admin/evaluators.service';
 import { QuestionsService } from 'src/app/admin/questions.service';
 // à externaliser dans la mesure du possible à l'avenir :
-import { Auth, onAuthStateChanged } from '@angular/fire/auth';
-import { query, Firestore, where, collection, getDocs } from '@angular/fire/firestore';
+// import { Auth, onAuthStateChanged } from '@angular/fire/auth';
+// import { query, Firestore, where, collection, getDocs } from '@angular/fire/firestore';
 import { SettingsService } from 'src/app/admin/settings.service';
+import { AuthGuardService } from 'src/app/auth-guard.service';
 
 @Component({
   selector: 'app-full-form',
@@ -106,75 +107,66 @@ export class FullFormComponent implements OnInit {
   relatedCompetences: any = []
 
   // pour ajouter un cas bloquant
-  forbidden:boolean=false
+  forbidden: boolean = false
 
   // import de auth pour tester les spécificités de l'évaluateur connecté si il est reconnu
   // import du service EvaluatorsService pour tester la récupération des affectations métiers spécifiques à l'évaluateur
   // l'import du service: SettingsService est nécessaire si on veut connecter ce composant aux settings métiers de firestore
-  constructor(private service: QuestionsService, private router: Router, private auth: Auth, private evaluatorService: EvaluatorsService, private firestore: Firestore, private settingsService: SettingsService) {
+  constructor(private service: QuestionsService, private router: Router, private authService: AuthGuardService, private evaluatorService: EvaluatorsService, private settingsService: SettingsService) {
   }
 
   ngOnInit(): void {
 
-    // pour commencer à connecter le composant aux métiers tels qu'ils figurent en base
-    this.settingsService.getTrades().subscribe(data => {
-      for (const iterator of data) {
-        console.log(iterator.competences)
-      }
-      console.log("data de getTrades()", data)
-    })
+    // pour commencer à connecter le composant aux métiers tels qu'ils figurent en base (test initial)
+    // this.settingsService.getTrades().subscribe(data => {
+    //   for (const iterator of data) {
+    //     console.log(iterator.competences)
+    //   }
+    //   console.log("data de getTrades()", data)
+    // })
 
 
-    onAuthStateChanged(this.auth, (user: any) => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        this.authId = user.uid
-        this.evaluatorService.getEvaluator(user.uid).subscribe();
-        console.log("dddd", user.uid);
-        console.log("www", user.email);
-        // méthode au top : 
-        this.getDocsByParam(this.authId)
 
+    if (this.authService.user) {
+      this.authId = this.authService.user
+      // alert(this.authId)
+      this.evaluatorService.getEvaluator(this.authId).subscribe(data => {
+        this.userData = data
+        console.log(data)
+        this.getRelatedCompetences()
+      })
+      console.log('new this.userData.sigle', this.userData);
+    }
 
-      }
-
-      else {
-        // User is signed out
-        // ...
-      }
-    })
+    else {
+      alert('user is signed out !!!')
+    }
 
     this.fetchSigleIds()
-
   }
 
-
-
-  async submitForm(form: NgForm) {    
-
+  async submitForm(form: NgForm) {
     if (form.value.optScoring3 === null) {
-      form.value.optScoring1 === form.value.optScoring2 ? this.forbidden=true : this.forbidden=false
+      form.value.optScoring1 === form.value.optScoring2 ? this.forbidden = true : this.forbidden = false
       delete form.value.optScoring3;
     }
 
     if (form.value.optScoring4 === null) {
-      form.value.optScoring1 === form.value.optScoring2 ? this.forbidden=true : this.forbidden=false
+      form.value.optScoring1 === form.value.optScoring2 ? this.forbidden = true : this.forbidden = false
       delete form.value.optScoring4;
     }
 
-    if (this.forbidden!==true) {          
-          // console.log(form.value);
-          this.service.createQuestion(form.value, this.arrayFilesToUpload);
-          // form.reset ne sert que si on continue la saisie.
-          form.reset();
-          this.router.navigate(['/admin/fullList'])
-          // window.location.reload();
-    } else{
+    if (this.forbidden !== true) {
+      // console.log(form.value);
+      this.service.createQuestion(form.value, this.arrayFilesToUpload);
+      // form.reset ne sert que si on continue la saisie.
+      form.reset();
+      this.router.navigate(['/admin/fullList'])
+      // window.location.reload();
+    } else {
       alert('les 2 options ne peuvent être vraies, il faut choisir')
     }
   }
-
 
 
   detectFiles(event: any, fieldName: any) {
@@ -218,33 +210,24 @@ export class FullFormComponent implements OnInit {
   }
 
 
-  // getData() {
-  //   let userKey = this.auth.currentUser?.uid;
-  //   console.log("userKey", userKey);
-  //   this.ui = userKey
-  //   // on a déjà des méthodes héritées de EvaluatorsService permettant de récupérer un document lié à la collection Evaluators d'après son id
-  //   this.evaluatorService.getEvaluator(this.ui)
-  //   console.log(this.user);
+  // top !!!
+  // async getDocsByParam(uid: string) {
+  //   const myData = query(collection(this.firestore, 'evaluators'), where('id', '==', uid));
+  //   const querySnapshot = await getDocs(myData);
+  //   querySnapshot.forEach((doc) => {
+  //     console.log(doc.id, ' => ', doc.data());
+  //     this.userData = doc.data()
+  //     console.log("this.userData.sigle !!!!!", this.userData.sigle)
+
+  //     this.getRelatedCompetences()
+
+
+  //   })
+
   // }
 
-  // top !!!
-  async getDocsByParam(uid: string) {
-    const myData = query(collection(this.firestore, 'evaluators'), where('id', '==', uid));
-    const querySnapshot = await getDocs(myData);
-    querySnapshot.forEach((doc) => {
-      console.log(doc.id, ' => ', doc.data());
-      this.userData = doc.data()
-      console.log("this.userData.sigle !!!!!", this.userData.sigle)
-
-      this.getRelatedCompetences()
-      
-      
-    })
-
-  }
-
   async getRelatedCompetences() {
-    // on peut en  profiter pour boucler sur le tableau userData.sigles, récupérer chaque sigle et retourner les CP concernées dans la collection sigles
+    // on peut boucler sur le tableau userData.sigles, récupérer chaque sigle et retourner les CP concernées dans la collection sigles
     for (const iterator of this.userData.sigle) {
       // let additionalCompetences:any
       this.settingsService.getSigle(iterator).subscribe((data): any => {
@@ -261,7 +244,6 @@ export class FullFormComponent implements OnInit {
       })
 
     }
-
     console.log('relatedCompetences en dehors de la boucle', this.relatedCompetences)
     // return this.relatedCompetences
   }
@@ -286,13 +268,13 @@ export class FullFormComponent implements OnInit {
 
 
   filterRelatedCompetences(sigle: string) {
-    return this.relatedCompetences.filter((comp:any) => comp['competences_' + sigle]);
+    return this.relatedCompetences.filter((comp: any) => comp['competences_' + sigle]);
   }
 
   convertRelatedCompetencesToArray(): any[] {
     const sigles = this.userData.sigle;
     const result: any[] = [];
-  
+
     // Parcourez les sigles et ajoutez les compétences correspondantes au tableau résultat
     for (const sigle of sigles) {
       const competencesKey = 'competences_' + sigle;
@@ -305,13 +287,13 @@ export class FullFormComponent implements OnInit {
         }
       }
     }
-  
+
     return result;
   }
 
   getKeys(obj: any): string[] {
     return obj ? Object.keys(obj) : [];
-  } 
+  }
 
 
 
