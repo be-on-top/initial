@@ -16,24 +16,6 @@ export class UpdateFullComponent {
   questionId: any;
   result: any = {}
 
-
-  // mediaQuestion: any;
-  // mediaOption1: any;
-  // option1: string = "";
-  // optScoring1: boolean = false;
-  // comment1: string = "";
-  // mediaOption2: any;
-  // option2: string = "";
-  // optScoring2: boolean = false;
-  // comment2: string = "";
-  // mediaOption3: any;
-  // optScoring3: boolean = false;
-  // option3: string = "";
-  // comment3: string = "";
-  // mediaOption4: any;
-  // optScoring4: boolean = false;
-  // option4: string = "";
-  // comment4: string = "";
   isVideo?: any;
 
   allMediasQuestions: any = []
