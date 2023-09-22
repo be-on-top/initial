@@ -109,6 +109,9 @@ export class FullFormComponent implements OnInit {
   // pour ajouter un cas bloquant
   forbidden: boolean = false
 
+  // pour savoir si au minimum une image a été rattachée à une réponse
+  isOneMediaOption: boolean = false
+
   // import de auth pour tester les spécificités de l'évaluateur connecté si il est reconnu
   // import du service EvaluatorsService pour tester la récupération des affectations métiers spécifiques à l'évaluateur
   // l'import du service: SettingsService est nécessaire si on veut connecter ce composant aux settings métiers de firestore
@@ -193,31 +196,48 @@ export class FullFormComponent implements OnInit {
   //   // Reste du code pour ajouter ou mettre à jour d'autres fichiers
   // }
 
-
   detectFiles(event: any, fieldName: any) {
     console.log(event.target.files[0].size);
     console.log('fieldName.name', fieldName.name);
-  
+
     // Vérifie la taille du fichier et le type avant de l'ajouter
     if (event.target.files[0].size <= 4000000) {
-      // Vérifiez si le fichier avec le même nom existe déjà dans arrayFilesToUpload
-      const existingFileIndex = this.arrayFilesToUpload.findIndex((item:any) => item[1] === fieldName.name);
-  
+      // Vérifie si le fichier avec le même nom existe déjà dans arrayFilesToUpload
+      const existingFileIndex = this.arrayFilesToUpload.findIndex((item: any) => item[1] === fieldName.name);
+
+
       if (existingFileIndex !== -1) {
         // Si le fichier existe déjà, le supprime
         this.arrayFilesToUpload.splice(existingFileIndex, 1);
         alert('Changement d\'image détecté. Ancien fichier supprimé.');
       }
-  
+
       // Ajoute le nouveau fichier à arrayFilesToUpload
       this.arrayFilesToUpload.push([event.target.files[0], fieldName.name, event.target.files[0].type]);
       console.log("this.arrayFilesToUpload !!!!", this.arrayFilesToUpload);
+      
+      // Si déjà un fichier mediaOption...
+      const existingMediaOption = this.arrayFilesToUpload.findIndex((item: any) => item[1].includes("mediaOption"))
+      existingMediaOption!==-1 ? this.isOneMediaOption = true:this.isOneMediaOption = false;
+      alert(this.isOneMediaOption)
+
     } else {
       // Fichier trop volumineux, affiche une alerte
       alert("Le fichier est trop volumineux (limite : 4 Mo) !");
     }
   }
 
+  resetFileInput(fieldName: string, form: NgForm) {
+    // Réinitialise la valeur du champ de fichier dans le formulaire
+    form.controls[fieldName].reset();
+    // Supprime le fichier de arrayFilesToUpload (si nécessaire)
+    const fileIndex = this.arrayFilesToUpload.findIndex((item:any) => item[1] === fieldName);
+    if (fileIndex !== -1) {
+      this.arrayFilesToUpload.splice(fileIndex, 1);
+    }
+  }
+  
+  
 
 
   checkIfSelected(sigle: any) {

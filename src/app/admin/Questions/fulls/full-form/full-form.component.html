@@ -1,7 +1,7 @@
 <div class="container py-5">
 
     <!-- juste pour essai depuis les métiers réellement en base filtrés selon qu'ils sont ou pas affectés à l'évaluateur authentifié -->
-    <div class="col-sm-6 col-md-3 mb-1">
+    <!-- <div class="col-sm-6 col-md-3 mb-1"> -->
 
         <!-- <ng-container *ngIf="userData.sigle">
                     <div *ngFor="let sigle of userData.sigle">
@@ -35,7 +35,7 @@
             </div>
         </ng-container> -->
 
-        <ng-container *ngIf="userData.sigle">
+        <!-- <ng-container *ngIf="userData.sigle">
             <div *ngFor="let sigle of userData.sigle">
                 {{ sigle }}
                 <div *ngIf="relatedCompetences" class="py-3">
@@ -49,7 +49,7 @@
             </div>
         </ng-container>
 
-    </div>
+    </div> -->
 
     <h3 class="mb-5">Formulaire de saisie des questions de positionnement
         <!-- <span *ngIf="userData.sigle">{{userData.sigle}}</span> -->
@@ -239,9 +239,15 @@
         <div class="invalid-feedback mb-3" *ngIf="question.invalid">Merci de renseigner le libellé obligatoire de la
             question
         </div>
-        <input type="file" accept="image/*, video/*" id="mediaQuestion" ngModel name="mediaQuestion"
-            class="form-control" #mediaQuestion="ngModel" placeholder="Fichier média de votre choix"
-            onchange="console.log(event.target.files)" (change)="detectFiles($event, mediaQuestion )">
+        <!-- pour englober l'ajout et le resest -->
+        <div class="d-flex gap-2 justify-content-between">
+            <input type="file" accept="image/*, video/*" id="mediaQuestion" ngModel name="mediaQuestion"
+                class="form-control w-75" #mediaQuestion="ngModel" placeholder="Fichier média de votre choix"
+                onchange="console.log(event.target.files)" (change)="detectFiles($event, mediaQuestion )">
+            <button type="button" class="btn btn-danger w-25"
+                (click)="resetFileInput('mediaQuestion', f)">Reset</button>
+        </div>
+
         <hr>
         <p class="bg-light rounded p-3 fst-italic">Un minimum de 2 options de réponse* est nécessaire à la validation du
             formulaire. Vous pouvez, si vous le souhaitez, ajouter des fichiers média (image, vidéo...) ou commentaires
@@ -253,8 +259,12 @@
         <div class="valid-feedback mb-3" *ngIf="option1.valid">Champ correctement renseigné</div>
         <div class="invalid-feedback mb-3" *ngIf="option1.invalid">Merci de renseigner le champ réponse 1.</div>
         <label for="mediaOption1" class="form-label mt-3">Pièce jointe si besoin</label>
-        <input type="file" id="mediaOption1" name="mediaOption1" class="form-control" #mediaOption1
-            placeholder="Fichier média de votre choix" (change)="detectFiles($event, mediaOption1)">
+        <!-- pour englober l'ajout et le resest -->
+        <div class="d-flex gap-2 justify-content-between">
+            <input type="file" id="mediaOption1" name="mediaOption1" class="form-control w-75" #mediaOption1
+                placeholder="Fichier média de votre choix" (change)="detectFiles($event, mediaOption1)">
+            <button type="button" class="btn btn-danger w-25" (click)="resetFileInput('mediaOption1', f)">Reset</button>
+        </div>
         <label for="comment1" class="form-label mt-3">Commentaire</label>
         <textarea id="comment1" ngModel name="comment1" class="form-control" #comment1="ngModel"
             placeholder="Commentaire si besoin" cols="30" rows="5"></textarea>
@@ -280,8 +290,12 @@
         <div class="valid-feedback mb-3" *ngIf="option2.valid">Champ correctement renseigné</div>
         <div class="invalid-feedback mb-3" *ngIf="option2.invalid">Merci de renseigner le champ réponse 2.</div>
         <label for="mediaOption2" class="form-label mt-3">Pièce jointe si besoin</label>
-        <input type="file" id="mediaOption2" name="mediaOption2" class="form-control" #mediaOption2
-            placeholder="Fichier média de votre choix" (change)="detectFiles($event, mediaOption2)">
+        <!-- pour englober l'ajout et le resest -->
+        <div class="d-flex gap-2 justify-content-between">
+            <input type="file" id="mediaOption2" name="mediaOption2" class="form-control w-75" #mediaOption2
+                placeholder="Fichier média de votre choix" (change)="detectFiles($event, mediaOption2)">
+            <button type="button" class="btn btn-danger w-25" (click)="resetFileInput('mediaOption2', f)">Reset</button>
+        </div>
         <label for="comment2" class="form-label mt-3">Commentaire</label>
         <textarea id="comment2" ngModel name="comment2" class="form-control" #comment2="ngModel"
             placeholder="Commentaire si besoin" cols="30" rows="5"></textarea>
@@ -307,8 +321,12 @@
         <div class="valid-feedback" *ngIf="option3.valid && f.value.option3!=''">Champ correctement renseigné</div>
         <!-- <div class="invalid-feedback" *ngIf="option3.invalid">Merci de renseigner le champ nom.</div> -->
         <label for="mediaOption3" class="form-label mt-3">Pièce jointe si besoin</label>
-        <input type="file" id="mediaOption3" name="mediaOption3" class="form-control" #mediaOption3
-            placeholder="Fichier média de votre choix" (change)="detectFiles($event, mediaOption3)">
+        <!-- pour englober l'ajout et le resest -->
+        <div class="d-flex gap-2 justify-content-between">
+            <input type="file" id="mediaOption3" name="mediaOption3" class="form-control w-75" #mediaOption3
+                placeholder="Fichier média de votre choix" (change)="detectFiles($event, mediaOption3)">
+            <button type="button" class="btn btn-danger w-25" (click)="resetFileInput('mediaOption3', f)">Reset</button>
+        </div>
         <label for="comment3" class="form-label mt-3">Commentaire</label>
         <textarea id="comment3" ngModel name="comment3" class="form-control" #comment3="ngModel"
             placeholder="Commentaire si besoin" cols="30" rows="5"></textarea>
@@ -334,8 +352,12 @@
         <div class="valid-feedback" *ngIf="option4.valid && f.value.option4!=''">Champ correctement renseigné</div>
         <!-- <div class="invalid-feedback" *ngIf="option4.invalid">Merci de renseigner le champ nom.</div> -->
         <label for="mediaOption4" class="form-label mt-3">Pièce jointe si besoin</label>
-        <input type="file" id="mediaOption4" name="mediaOption4" class="form-control" #mediaOption4
-            placeholder="Fichier média de votre choix" (change)="detectFiles($event, mediaOption4)">
+        <!-- pour englober l'ajout et le resest -->
+        <div class="d-flex gap-2 justify-content-between">
+            <input type="file" id="mediaOption4" name="mediaOption4" class="form-control w-75" #mediaOption4
+                placeholder="Fichier média de votre choix" (change)="detectFiles($event, mediaOption4)">
+            <button type="button" class="btn btn-danger w-25" (click)="resetFileInput('mediaOption4', f)">Reset</button>
+        </div>
         <label for="comment1" class="form-label mt-3">Commentaire</label>
         <textarea id="comment4" ngModel name="comment4" class="form-control" #comment4="ngModel"
             placeholder="Commentaire si besoin" cols="30" rows="5"></textarea>
