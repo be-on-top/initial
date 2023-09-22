@@ -8,9 +8,12 @@ import { QuestionsService } from 'src/app/admin/questions.service';
 
 @Component({
   selector: 'app-update-question',
-  templateUrl: './update-question.component.html',
-  styleUrls: ['./update-question.component.css']
+  // templateUrl: './update-question.component.html',
+  templateUrl: './../../update-form.component.html',
+  // styleUrls: ['./update-question.component.css']
+  styleUrls: ['./../../update-form.component.css']
 })
+
 
 export class UpdateQuestionComponents implements OnInit {
   questionId: any;

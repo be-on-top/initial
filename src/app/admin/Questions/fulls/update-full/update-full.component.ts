@@ -7,9 +7,12 @@ import { EvaluatorsService } from 'src/app/admin/evaluators.service';
 
 @Component({
   selector: 'app-update-full',
-  templateUrl: './update-full.component.html',
-  styleUrls: ['./update-full.component.css']
+  // templateUrl: './update-full.component.html',
+  templateUrl: './../../update-form.component.html',
+  // styleUrls: ['./update-full.component.css']
+  styleUrls: ['./../../update-form.component.css']
 })
+
 export class UpdateFullComponent {
 
   // pour les données liées à la collection questions

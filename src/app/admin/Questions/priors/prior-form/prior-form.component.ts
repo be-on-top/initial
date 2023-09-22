@@ -174,13 +174,26 @@ export class PriorFormComponent implements OnInit {
 
   detectFiles(event: any, fieldName: any) {
     console.log(event.target.files[0].size);
-    // this.totalMediasFiles++;
-    this.arrayFilesToUpload.push([event.target.files[0], fieldName.name, event.target.files[0].type])
-    console.log("this.arrayFilesToUpload", this.arrayFilesToUpload);
-    if (event.target.files[0].size > 13000000) {
-      alert("File is too big!")
+    console.log('fieldName.name', fieldName.name);
+
+    // Vérifie la taille du fichier et le type avant de l'ajouter
+    if (event.target.files[0].size <= 4000000) {
+      // Vérifiez si le fichier avec le même nom existe déjà dans arrayFilesToUpload
+      const existingFileIndex = this.arrayFilesToUpload.findIndex((item: any) => item[1] === fieldName.name);
+
+      if (existingFileIndex !== -1) {
+        // Si le fichier existe déjà, le supprime
+        this.arrayFilesToUpload.splice(existingFileIndex, 1);
+        alert('Changement d\'image détecté. Ancien fichier supprimé.');
+      }
+
+      // Ajoute le nouveau fichier à arrayFilesToUpload
+      this.arrayFilesToUpload.push([event.target.files[0], fieldName.name, event.target.files[0].type]);
+      console.log("this.arrayFilesToUpload !!!!", this.arrayFilesToUpload);
+    } else {
+      // Fichier trop volumineux, affiche une alerte
+      alert("Le fichier est trop volumineux (limite : 4 Mo) !");
     }
-    // this.onUploadFile(event.target.files[0], fieldName.name);
   }
 
   // ne servira plus si on parvient à mettre à jour this.registryNumbers à chaque nouvel enregistrement. *
