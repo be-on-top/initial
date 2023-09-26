@@ -34,8 +34,15 @@ export class UpdateFullComponent {
   numbers: number[] = []
   registryNumbers: any[] = []
 
-  optScoring3: boolean | null = null;
-  optScoring4: boolean | null = null;
+  optScoring3: boolean | null = null
+  optScoring4: boolean | null = null
+
+  // pour forcer le display none de l'aperçu si l'image vient d'être définitivement supprimée
+  isActive: boolean = true
+  isActive1: boolean = true
+  isActive2: boolean = true
+  isActive3: boolean = true
+  isActive4: boolean = true
 
   constructor(private service: QuestionsService, private ac: ActivatedRoute, private router: Router, private evaluatorService: EvaluatorsService
   ) {
@@ -55,9 +62,9 @@ export class UpdateFullComponent {
     this.service.getQuestion(this.questionId).subscribe((data) => {
       console.log("data depuis update-full component !!!!!!!!!!!!!", data);
       this.result = data
-      this.isVideo=data.isVideo
-      data.optScoring3?this.optScoring3=data.optScoring3:'null'
-      data.optScoring4?this.optScoring4=data.optScoring3:'null'
+      this.isVideo = data.isVideo
+      data.optScoring3 ? this.optScoring3 = data.optScoring3 : 'null'
+      data.optScoring4 ? this.optScoring4 = data.optScoring3 : 'null'
     })
 
     this.service.getQuestions().subscribe(data => {
@@ -99,9 +106,9 @@ export class UpdateFullComponent {
     // console.log("form update values", form.value);
     // pour update de la nouvelle image si nouvelle : 
     console.log("video avant passage à service", this.isVideo);
-    let updatedQuestion={isVideo:this.isVideo,...form.value}
+    let updatedQuestion = { isVideo: this.isVideo, ...form.value }
     this.service.updateQuestion(this.questionId, updatedQuestion, this.arrayFilesToUpdate)
-    
+
     this.router.navigate(['/admin/fullList'])
   }
 
@@ -113,7 +120,7 @@ export class UpdateFullComponent {
 
     console.log("Type de fichier!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", event.target.files[0].type);
 
-    event.target.files[0].type==="video/mp4"?this.isVideo=true:this.isVideo=false;
+    event.target.files[0].type === "video/mp4" ? this.isVideo = true : this.isVideo = false;
 
     // https://www.cnetfrance.fr/produits/calculer-le-poids-de-ses-photos-1003101.htm
     if (event.target.files[0].size > 18000000) {
@@ -124,7 +131,7 @@ export class UpdateFullComponent {
     // this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name, event.target.files[0].type])
     // console.log("this.arrayFilesToUpdate !!!!!!!!!", this.arrayFilesToUpdate);
     // console.log(event.target.files[0].size);
-    
+
   }
 
   // fonction en cas d'ajout d'un média sur une réponse initialement sans média
@@ -133,20 +140,56 @@ export class UpdateFullComponent {
     // console.log("Type de fichier", event.target.files[0].type);
     alert("new file")
 
-    event.target.files[0].type==="video/mp4"?this.isVideo=true:this.isVideo=false;
+    event.target.files[0].type === "video/mp4" ? this.isVideo = true : this.isVideo = false;
 
     if (event.target.files[0].size > 18000000) {
       alert("File is too big!")
     }
 
     this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name])
-    
+
   }
 
 
   readFile(fieldName: any) {
     alert("dddddd")
     console.log("ce que je récupère", fieldName);
+  }
+
+  resetFileInput(fieldName: string, form: NgForm, item: string) {
+    // Réinitialise la valeur du champ de fichier dans le formulaire
+    // form.controls[fieldName].reset();
+    // Supprime le fichier de arrayFilesToUpload (si nécessaire)
+    const fileIndex = this.arrayFilesToUpdate.findIndex((item: any) => item[1] === fieldName);
+    if (fileIndex !== -1) {
+      this.arrayFilesToUpdate.splice(fileIndex, 1);
+    }
+    // détection du cas de modification
+    if (item !== '') {
+      this.service.deleteMedia(item)
+      if (fieldName=='mediaQuestion') {
+        this.isActive = false
+      }
+      
+      if(fieldName=='mediaOption1') {
+        this.isActive1 = false
+        
+      }
+
+      if(fieldName=='mediaOption2') {
+        this.isActive2 = false
+        
+      }
+      if(fieldName=='mediaOption3') {
+        this.isActive3 = false        
+      }
+      else {
+        this.isActive4 = false
+        
+      }
+  
+    }
+
   }
 
 }

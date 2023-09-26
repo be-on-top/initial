@@ -229,11 +229,11 @@ export class FullFormComponent implements OnInit {
 
   resetFileInput(fieldName: string, form: NgForm) {
     // Réinitialise la valeur du champ de fichier dans le formulaire
-    form.controls[fieldName].reset();
+    form.controls[fieldName].reset()
     // Supprime le fichier de arrayFilesToUpload (si nécessaire)
-    const fileIndex = this.arrayFilesToUpload.findIndex((item:any) => item[1] === fieldName);
+    const fileIndex = this.arrayFilesToUpload.findIndex((item:any) => item[1] === fieldName)
     if (fileIndex !== -1) {
-      this.arrayFilesToUpload.splice(fileIndex, 1);
+      this.arrayFilesToUpload.splice(fileIndex, 1)
     }
   }
   
