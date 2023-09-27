@@ -26,17 +26,38 @@ export class FullListComponent {
 
   }
 
+  // ngOnInit() {
+  //   this.service.getQuestions().subscribe(data => {
+  //     const allQuestions = data;
+  //     this.questions = allQuestions.filter(q => q.number > 20)
+  //     this.questions.sort(this.compare)
+
+  //     // essai tests détection updated data via service worker
+  //     this.updateClient()
+  //   })
+
+  // }
+
   ngOnInit() {
     this.service.getQuestions().subscribe(data => {
       const allQuestions = data;
-      this.questions = allQuestions.filter(q => q.number > 20)
-      this.questions.sort(this.compare)
+
+      // Filtrez d'abord les questions ayant q.number > 20
+      this.questions = allQuestions.filter(q => q.number > 20);
+
+      // Si sigleIds est défini et non vide, filtre également par sigles
+      if (this.sigleIds && this.sigleIds.length > 0) {
+        this.questions = this.questions.filter(q => this.sigleIds.includes(q.sigle));
+      }
+
+      // Trie les questions par ordre 
+      this.questions.sort(this.compare);
 
       // essai tests détection updated data via service worker
-      this.updateClient()
-    })
-
+      // this.updateClient();
+    });
   }
+
 
   compare(a: any, b: any) {
     if (a.number < b.number) {
