@@ -2,17 +2,29 @@ import { Component } from '@angular/core';
 import { QuestionsService } from 'src/app/admin/questions.service';
 import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
 import { filter, map } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-full-list',
   templateUrl: './full-list.component.html',
   styleUrls: ['./full-list.component.css']
 })
+
 export class FullListComponent {
 
   questions: any[] = []
+  // sigle:string=""
+  sigleIds: string[] = []
 
-  constructor(private service: QuestionsService, private swUpdate: SwUpdate) { }
+
+  constructor(private service: QuestionsService, private swUpdate: SwUpdate, private activatedRoute: ActivatedRoute) {
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.sigleIds = params['sigleIds'];
+      console.log('Sigle IDs:', this.sigleIds);
+    });
+
+
+  }
 
   ngOnInit() {
     this.service.getQuestions().subscribe(data => {
@@ -22,7 +34,6 @@ export class FullListComponent {
 
       // essai tests détection updated data via service worker
       this.updateClient()
-
     })
 
   }
@@ -59,11 +70,12 @@ export class FullListComponent {
       .subscribe((result) => {
         console.log("current", result.current, "available", result.available)
         if (confirm("Une mise à jour est disponible. Souhaitez-vous recharger la page ?")) {
-          this.swUpdate.activateUpdate().then(()=>location.reload())
+          this.swUpdate.activateUpdate().then(() => location.reload())
           // document.location.reload()
-        }})
+        }
+      })
 
-        this.swUpdate.activated.subscribe((event)=>console.log("previous",event.previous, "current", event.current))
+    this.swUpdate.activated.subscribe((event) => console.log("previous", event.previous, "current", event.current))
 
   }
 }

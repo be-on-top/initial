@@ -69,6 +69,8 @@
                                 *ngIf="userRole.includes('evaluator') || userRole.includes('admin')">Liste des questions
                                 sociales</a>
                         </li>
+
+                        <!-- ici, on peut d'ailleurs remarquer que l'ont a déjà affaire à  -->
                         <li><a class="dropdown-item" [routerLink]="['/admin/fullList']"
                                 *ngIf="userRole.includes('evaluator') || userRole.includes('admin')">Liste des questions
                                 de

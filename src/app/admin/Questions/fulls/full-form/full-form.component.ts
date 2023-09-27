@@ -26,6 +26,8 @@ export class FullFormComponent implements OnInit {
   user?: any;
   // essai pour connecter le tableau des sigles aux documents de la collection sigles destinée aux paramétrages métier
   sigleIds: string[] = []
+  // pour passer en paramètre non pas sigleIds mais sa version serialisée
+  sigleIdsString: string = ""
 
   question: string | undefined = "";
   number: number = 0;
@@ -162,10 +164,9 @@ export class FullFormComponent implements OnInit {
     if (this.forbidden !== true) {
       // console.log(form.value);
       this.service.createQuestion(form.value, this.arrayFilesToUpload);
-      // form.reset ne sert que si on continue la saisie.
+      // form.reset ne sert que si on continue la saisie, c'est ce qu'on va finalement faire.
       form.reset();
-      this.router.navigate(['/admin/fullList'])
-      // window.location.reload();
+      // this.router.navigate(['/admin/fullList'])
     } else {
       alert('les 2 options ne peuvent être vraies, il faut choisir')
     }
@@ -215,10 +216,10 @@ export class FullFormComponent implements OnInit {
       // Ajoute le nouveau fichier à arrayFilesToUpload
       this.arrayFilesToUpload.push([event.target.files[0], fieldName.name, event.target.files[0].type]);
       console.log("this.arrayFilesToUpload !!!!", this.arrayFilesToUpload);
-      
+
       // Si déjà un fichier mediaOption...
       const existingMediaOption = this.arrayFilesToUpload.findIndex((item: any) => item[1].includes("mediaOption"))
-      existingMediaOption!==-1 ? this.isOneMediaOption = true:this.isOneMediaOption = false;
+      existingMediaOption !== -1 ? this.isOneMediaOption = true : this.isOneMediaOption = false;
       alert(this.isOneMediaOption)
 
     } else {
@@ -231,13 +232,13 @@ export class FullFormComponent implements OnInit {
     // Réinitialise la valeur du champ de fichier dans le formulaire
     form.controls[fieldName].reset()
     // Supprime le fichier de arrayFilesToUpload (si nécessaire)
-    const fileIndex = this.arrayFilesToUpload.findIndex((item:any) => item[1] === fieldName)
+    const fileIndex = this.arrayFilesToUpload.findIndex((item: any) => item[1] === fieldName)
     if (fileIndex !== -1) {
       this.arrayFilesToUpload.splice(fileIndex, 1)
     }
   }
-  
-  
+
+
 
 
   checkIfSelected(sigle: any) {
