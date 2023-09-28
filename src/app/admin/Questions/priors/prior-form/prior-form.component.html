@@ -9,12 +9,12 @@
         <div class="form-group row justify-content-between" *ngIf="userData.sigle">
             <div class="col-sm-6 col-md-3 mb-1">
                 <select class="form-select" name="sigle" ngModel required #sigle="ngModel"
-                (change)="checkIfSelected(sigle.value)">
-                <option value>Selectionner le métier de la collection sigles affecté à l'évaluateur</option>
-                <option *ngFor="let element of sigleIds, let item of userData.sigle" value="{{item}}">
-                    <span *ngIf="item===element">{{item}}</span>
-                </option>
-            </select>
+                    (change)="checkIfSelected(sigle.value)">
+                    <option value>Selectionner le métier de la collection sigles affecté à l'évaluateur</option>
+                    <option *ngFor="let element of sigleIds, let item of userData.sigle" value="{{item}}">
+                        <span *ngIf="item===element">{{item}}</span>
+                    </option>
+                </select>
             </div>
             <div class="col-sm-6 col-md-3 mb-1">
                 <ng-container *ngIf="relatedCompetences">
@@ -55,7 +55,8 @@
         </div>
         <!-- pour la cosmétique ou ergonomie test sur un input -->
         <div class="input-group custom-file-button">
-            <label class="input-group-text" for="inputGroupFile">Fichier au choix <i class="bi bi-arrow-up-square ms-2"></i></label>
+            <label class="input-group-text" for="inputGroupFile">Fichier au choix <i
+                    class="bi bi-arrow-up-square ms-2"></i></label>
             <input type="file" accept="image/*, video/*" id="mediaQuestion" ngModel name="mediaQuestion"
                 class="form-control" #mediaQuestion="ngModel" placeholder="Fichier média de votre choix"
                 onchange="console.log(event.target.files)" (change)="detectFiles($event, mediaQuestion )">
@@ -139,8 +140,8 @@
                 <!-- <label class="form-check-label" for="radio1"></label> -->
             </div>
             <div class="form-check">
-                <input type="radio" class="form-check-input" name="optScoring3" [value]="false" [(ngModel)]="optScoring3"
-                    [checked]="optScoring3" [required]="f.value.option3!=''">Fausse
+                <input type="radio" class="form-check-input" name="optScoring3" [value]="false"
+                    [(ngModel)]="optScoring3" [checked]="optScoring3" [required]="f.value.option3!=''">Fausse
                 <!-- <label class="form-check-label" for="radio2"></label> -->
             </div>
         </div>
@@ -166,8 +167,8 @@
                 <!-- <label class="form-check-label" for="radio1"></label> -->
             </div>
             <div class="form-check">
-                <input type="radio" class="form-check-input" name="optScoring4" [value]="false" [(ngModel)]="optScoring4"
-                    [checked]="optScoring4" [required]="f.value.option4!=''">Fausse
+                <input type="radio" class="form-check-input" name="optScoring4" [value]="false"
+                    [(ngModel)]="optScoring4" [checked]="optScoring4" [required]="f.value.option4!=''">Fausse
                 <!-- <label class="form-check-label" for="radio2"></label> -->
             </div>
         </div>
@@ -182,5 +183,10 @@
         <button type="submit" id="submit" class="btn btn-primary mt-3"
             [ngClass]="{'disabled':f.invalid}">Ajouter</button>
     </form>
+
+    <button type="submit" id="submit" class="btn btn-primary mt-3">
+        <a class="dropdown-item" [routerLink]="['/admin/questions']" [queryParams]="{ sigleIds: userData.sigle }">Aperçu
+            des questions saisies</a>
+    </button>
 
 </div>

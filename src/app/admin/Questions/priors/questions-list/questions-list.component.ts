@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { QuestionsService } from 'src/app/admin/questions.service';
 
 
@@ -14,7 +15,16 @@ export class QuestionsListComponent implements OnInit {
   // on le prépare à recevoir un terme de recherche
   searchText: string = ''
 
-  constructor(private service: QuestionsService) { }
+  sigleIds: string[] = []
+
+  constructor(private service: QuestionsService, private activatedRoute: ActivatedRoute) {
+
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.sigleIds = params['sigleIds']
+      console.log('Sigle IDs:', this.sigleIds)
+    })
+
+  }
 
   ngOnInit() {
     this.service.getQuestions().subscribe(data => {
@@ -22,6 +32,12 @@ export class QuestionsListComponent implements OnInit {
       console.log("allQuestions", allQuestions);
 
       this.questions = allQuestions.filter(q => q.number < 21)
+
+      // Si sigleIds est défini et non vide, filtre également par sigles
+      if (this.sigleIds && this.sigleIds.length > 0) {
+        this.questions = this.questions.filter(q => this.sigleIds.includes(q.sigle));
+      }
+
       this.questions.sort(this.compare)
     })
   }

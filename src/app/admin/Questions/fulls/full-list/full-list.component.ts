@@ -20,7 +20,7 @@ export class FullListComponent {
   constructor(private service: QuestionsService, private swUpdate: SwUpdate, private activatedRoute: ActivatedRoute) {
     this.activatedRoute.queryParams.subscribe(params => {
       this.sigleIds = params['sigleIds'];
-      console.log('Sigle IDs:', this.sigleIds);
+      console.log('Sigle IDs:', this.sigleIds)
     });
 
 

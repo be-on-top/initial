@@ -26,8 +26,6 @@ export class FullFormComponent implements OnInit {
   user?: any;
   // essai pour connecter le tableau des sigles aux documents de la collection sigles destinée aux paramétrages métier
   sigleIds: string[] = []
-  // pour passer en paramètre non pas sigleIds mais sa version serialisée
-  sigleIdsString: string = ""
 
   question: string | undefined = "";
   number: number = 0;

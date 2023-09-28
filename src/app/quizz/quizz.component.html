@@ -1,6 +1,7 @@
 <div class="container py-5 text-center">
     <h3>Quizz à venir... pour métier {{trade}}</h3>
     <h4 class="fs-6">Id de l'étudiant récupéré : {{studentId}}</h4>
+    <div class="alert alert-danger">fullOptScoring récupéré par le parent{{fullOptScoringTrue}} à comparer à totalAnswersAvailable {{totalAnswersAvailable}} sur la base de {{indexQuestion}}</div>
     <p class="alert bg-dark text-white text-smaller">Tableau des durées depuis la vue format json: {{durations | json}}
     </p>
     <!-- <div class="alert bg-light mt-3 mb-4">
@@ -8,7 +9,7 @@
     </div> -->
     <!-- partie visuelle similaire à la vue de détail des administrateurs (en mode aperçu) qui ici va devenir réactive -->
     <!-- {{questions[0] | json}} -->
-    <div class="alert bg-info text-white text-smaller">Cumul des points récupéré par le parent : {{scoreCounter}}</div>
+    <div class="alert bg-info text-white text-smaller">Cumul des points récupérés par le parent : {{scoreCounter}}</div>
     <!-- etat des compétences en base -->
     <!-- <p>{{indexQuestion}}</p> -->
     <!-- <div class="alert bg-info text-white text-smaller" *ngIf="dataStudent && !dataStudent.studentCompetences">StudentCompetences à rattacher en base : {{studentCompetences | json}}</div> -->

@@ -143,14 +143,14 @@ export class QuizzComponent implements OnInit {
         this.questions[this.indexQuestion].optScoring2 && this.questions[this.indexQuestion].optScoring2 === true ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
         this.questions[this.indexQuestion].optScoring3 && this.questions[this.indexQuestion].optScoring3 === true ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
         this.questions[this.indexQuestion].optScoring4 && this.questions[this.indexQuestion].optScoring4 === true ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
-        console.log("this.fullOptScoringArray", this.fullOptScoringTrue)
+        console.log("this.fullOptScoringArray mis à jour !!!!!", this.fullOptScoringTrue)
 
         // on initialise la valeur réelle de totalAnswersAvailable pour la limite à 2, 3 ou 4 réponses max
         this.questions[this.indexQuestion].option1 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
         this.questions[this.indexQuestion].option2 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
         this.questions[this.indexQuestion].option3 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
         this.questions[this.indexQuestion].option4 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
-        console.log("this.totalAnswersAvailable", this.totalAnswersAvailable)
+        console.log("this.totalAnswersAvailable mis à jour !!!!", this.totalAnswersAvailable)
 
         // Pour connaitre le nombre de points affectés à la question et la refiler à l'instant t au service, 
         // on peut passer par une variable intermédiaire pour plus de lisibilité, mais ce n'est pas impératif
