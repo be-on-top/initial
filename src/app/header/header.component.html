@@ -3,7 +3,7 @@
         <!-- <a class="navbar-brand" [routerLink]="['home', userRole || '']">BE-ON-TOP</a> -->
         <!-- pour éviter les erreurs d'interprétation des segments de chemin -->
         <a class="navbar-brand" [routerLink]="['home']" [queryParams]="{ userRole: userRole }">BE-ON-TOP</a>
-        
+
         <!-- <p class="text-light">{{userRole}} Authentification</p> -->
         <!-- <a class="navbar-brand" [routerLink]="['']">BE-ON-TOP</a> -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
@@ -15,8 +15,10 @@
                     <a class="nav-link" [routerLink]="['socialregistration']">Pré-inscription Formation</a>
                 </li> -->
 
-                <li class="nav-item dropdown"  *ngIf="userUid!==undefined && userUid!=='' && userRole!=='student' && userRole!=='editor'">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" *ngIf="userRole.includes('admin') || userRole.includes('trainer') || userRole.includes('tutor')">Admin</a>
+                <li class="nav-item dropdown"
+                    *ngIf="userUid!==undefined && userUid!=='' && userRole!=='student' && userRole!=='editor'">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        *ngIf="userRole.includes('admin') || userRole.includes('trainer') || userRole.includes('tutor')">Admin</a>
                     <!-- <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Admin</a> -->
                     <ul class="dropdown-menu">
                         <li *ngIf="userRole.includes('admin')"><a class="dropdown-item"
@@ -94,18 +96,22 @@
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" [routerLink]="['login']">Login</a></li>
                         <li><a class="dropdown-item" (click)="logOut()" [routerLink]="['']">Logout</a></li>
-                        <li><a class="dropdown-item" [routerLink]="['register']">Inscription</a></li>
                         <li><a class="dropdown-item" [routerLink]="['account']">Mon compte</a></li>
                     </ul>
                 </li>
 
+                <!-- Inscription lien externe -->
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['socialregistration']" role="button">Inscription Formation</a>
+                </li>
+
                 <!-- pour les accès aux métiers en base -->
                 <li class="nav-item dropdown" *ngIf="trades">
-                    <a class="nav-link dropdown-toggle" href="#" role="button"
-                        data-bs-toggle="dropdown">Nos métiers</a>
-                    <ul class="dropdown-menu">  
-                    
-                        <li *ngFor="let trade of trades"><a class="dropdown-item" [routerLink]="['trade', trade.sigle]">{{trade.denomination}}</a></li>
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Nos métiers</a>
+                    <ul class="dropdown-menu">
+
+                        <li *ngFor="let trade of trades"><a class="dropdown-item"
+                                [routerLink]="['trade', trade.sigle]">{{trade.denomination}}</a></li>
 
                     </ul>
                 </li>
