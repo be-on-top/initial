@@ -52,12 +52,12 @@ export class AccountComponent implements OnInit {
   // et pour VERSION 2 des quizz multiples, on ne peut pas savoir si un quizz est terminé sans interroger tous les quizz, ce qu'on ne veut pas côté template, donc on crée un bolean
   isOneQuizzAchieved: boolean = false;
   // pour les évaluations de l'étudiant si elles existent
-  evaluations:Record<string, Evaluation> = {};
+  evaluations: Record<string, Evaluation> = {};
   // pour le suivi tutorial de l'étudiant si il existe
-  tutorials:Record<string, Evaluation> = {};
+  tutorials: Record<string, Evaluation> = {};
 
 
-  constructor(private auth: Auth, private firestore: Firestore, private authService: AuthService, private studentService: StudentsService, private activatedRoute: ActivatedRoute, private router: Router, private notificationService: PushNotificationService,  public sanitizer: DomSanitizer) {
+  constructor(private auth: Auth, private firestore: Firestore, private authService: AuthService, private studentService: StudentsService, private activatedRoute: ActivatedRoute, private router: Router, private notificationService: PushNotificationService, public sanitizer: DomSanitizer) {
     const messaging = getMessaging();
     onMessage(messaging, (payload) => {
       console.log('Message received. ', payload);
@@ -105,10 +105,10 @@ export class AccountComponent implements OnInit {
           }
 
           // lignes pour récupérer isOneQuizzAchieved
-          const achievedArray:any=[]
-          for (const item of this.tradesEvaluated) {              
-            this.userData[item].fullResults? achievedArray.push(item) : ''
-            achievedArray.length>0? this.isOneQuizzAchieved = true : false            
+          const achievedArray: any = []
+          for (const item of this.tradesEvaluated) {
+            this.userData[item].fullResults ? achievedArray.push(item) : ''
+            achievedArray.length > 0 ? this.isOneQuizzAchieved = true : false
           }
 
           // lignes pour récupérer evaluations
@@ -121,7 +121,7 @@ export class AccountComponent implements OnInit {
             this.tutorials = this.userData.tutorials
           }
 
-          
+
 
 
         })
@@ -231,6 +231,11 @@ export class AccountComponent implements OnInit {
   // Fonction pour obtenir les entrées d'un objet
   objectEntries(obj: any): [string, any][] {
     return Object.entries(obj);
+  }
+
+  // Méthode pour vérifier si tutorials n'est pas vide
+  tutorialsNonVide(): boolean {
+    return Object.keys(this.tutorials).length > 0;
   }
 
 

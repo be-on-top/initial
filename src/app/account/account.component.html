@@ -191,7 +191,7 @@
             </div>
 
             <!-- suivi pédagogique -->
-            <div class="card">
+            <div class="card" *ngIf="isOneQuizzAchieved==true">
                 <div class="card-header bg-dark d-flex justify-content-between">
                     <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseTwo">
                         Votre suivi pédagogique
@@ -233,7 +233,7 @@
             </div>
 
             <!-- suivi entreprise -->
-            <div class="card" *ngIf="tutorials">
+            <div class="card" *ngIf="isOneQuizzAchieved &&  tutorialsNonVide()">
                 <div class="card-header bg-dark d-flex justify-content-between">
                     <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse"
                         href="#collapseTutorials">

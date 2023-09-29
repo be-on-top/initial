@@ -95,7 +95,8 @@
                         data-bs-toggle="dropdown">Authentification</a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" [routerLink]="['login']">Login</a></li>
-                        <li><a class="dropdown-item" (click)="logOut()" [routerLink]="['']">Logout</a></li>
+                        <!-- <li><a class="dropdown-item" (click)="logOut()" [routerLink]="['']">Logout</a></li> -->
+                        <li><a class="dropdown-item" (click)="logOut()">Logout</a></li>
                         <li><a class="dropdown-item" [routerLink]="['account']">Mon compte</a></li>
                     </ul>
                 </li>
@@ -106,7 +107,7 @@
                 </li>
 
                 <!-- pour les accès aux métiers en base -->
-                <li class="nav-item dropdown" *ngIf="trades">
+                <!-- <li class="nav-item dropdown" *ngIf="trades">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Nos métiers</a>
                     <ul class="dropdown-menu">
 
@@ -114,7 +115,7 @@
                                 [routerLink]="['trade', trade.sigle]">{{trade.denomination}}</a></li>
 
                     </ul>
-                </li>
+                </li> -->
             </ul>
         </div>
     </div>
