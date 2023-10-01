@@ -3,6 +3,7 @@ import { QuestionsService } from 'src/app/admin/questions.service';
 import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
 import { filter, map } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-full-list',
@@ -99,6 +100,31 @@ export class FullListComponent {
     this.swUpdate.activated.subscribe((event) => console.log("previous", event.previous, "current", event.current))
 
   }
+
+  // pour filtrer les questions lorsque la sélection dans le menu déroulant change
+  onChange(event: Event) {
+    // Récupère la valeur sélectionnée dans le menu déroulant
+    const selectedValue = (event.target as HTMLSelectElement).value;
+
+    // Appelle la méthode pour filtrer les questions en fonction de la valeur sélectionnée
+    this.getFilteredQuestions(selectedValue).subscribe(filteredQuestions => {
+      // Met à jour la liste de questions du composant avec les questions filtrées
+      this.questions = filteredQuestions;
+    })
+  }
+
+  // Méthode pour filtrer les questions en fonction du sigle fourni en paramètre
+  getFilteredQuestions(sigle: string): Observable<any[]> {
+    // Appelle la méthode du service pour obtenir toutes les questions depuis Firestore
+    return this.service.getQuestions().pipe(
+      // Utilise l'opérateur map pour filtrer les questions en fonction du sigle
+      map(questions => questions.filter(question => question.sigle === sigle))
+    )
+    
+  }
+
+
+
 }
 
 
