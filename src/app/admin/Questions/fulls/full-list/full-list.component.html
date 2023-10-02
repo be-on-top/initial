@@ -1,14 +1,16 @@
 <div class="container py-5">
 
     <h3>Liste des questions de positionnement pour aperçu</h3>
-    <!-- {{sigleIds | json}} -->
+    <div class="alert alter-info">
+        sigleIds = {{sigleIds | json}}
+    </div>
 
     <div *ngIf="sigleIds" class="mx-auto my-5">
         <select name="sigle" class="form-control" (change)="onChange($event)">
             <option *ngFor="let s of sigleIds" [value]="s">{{s}}</option>
-        </select>        
+        </select>
     </div>
-    
+
 
     <div *ngIf="questions">
 

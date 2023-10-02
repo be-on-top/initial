@@ -200,7 +200,7 @@ export class FullFormComponent implements OnInit {
     console.log('fieldName.name', fieldName.name);
 
     // Vérifie la taille du fichier et le type avant de l'ajouter
-    if (event.target.files[0].size <= 4000000) {
+    if (event.target.files[0].size <= 5000000) {
       // Vérifie si le fichier avec le même nom existe déjà dans arrayFilesToUpload
       const existingFileIndex = this.arrayFilesToUpload.findIndex((item: any) => item[1] === fieldName.name);
 
@@ -222,13 +222,13 @@ export class FullFormComponent implements OnInit {
 
     } else {
       // Fichier trop volumineux, affiche une alerte
-      alert("Le fichier est trop volumineux (limite : 4 Mo) !");
+      alert("Le fichier est trop volumineux (limite : 5 Mo) !");
     }
   }
 
   resetFileInput(fieldName: string, form: NgForm) {
     // Réinitialise la valeur du champ de fichier dans le formulaire
-    form.controls[fieldName].reset()
+    // form.controls[fieldName].reset()
     // Supprime le fichier de arrayFilesToUpload (si nécessaire)
     const fileIndex = this.arrayFilesToUpload.findIndex((item: any) => item[1] === fieldName)
     if (fileIndex !== -1) {

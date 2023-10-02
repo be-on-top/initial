@@ -7,7 +7,8 @@ export interface Evaluators {
     email: string;
     created: Date;
     status:boolean;
-    roles:[]
+    roles:[];
+    sigle:string[]
 }
 
 

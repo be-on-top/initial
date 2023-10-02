@@ -4,6 +4,10 @@ import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
 import { filter, map } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+import { AuthGuardService } from 'src/app/auth-guard.service';
+import { EvaluatorsService } from 'src/app/admin/evaluators.service';
+import { Evaluators } from 'src/app/admin/evaluators';
+import { User } from 'firebase/auth';
 
 @Component({
   selector: 'app-full-list',
@@ -18,7 +22,7 @@ export class FullListComponent {
   sigleIds: string[] = []
 
 
-  constructor(private service: QuestionsService, private swUpdate: SwUpdate, private activatedRoute: ActivatedRoute) {
+  constructor(private service: QuestionsService, private swUpdate: SwUpdate, private activatedRoute: ActivatedRoute, private authService: AuthGuardService, private evaluatorService: EvaluatorsService) {
     this.activatedRoute.queryParams.subscribe(params => {
       this.sigleIds = params['sigleIds'];
       console.log('Sigle IDs:', this.sigleIds)
@@ -46,17 +50,25 @@ export class FullListComponent {
       // Filtrez d'abord les questions ayant q.number > 20
       this.questions = allQuestions.filter(q => q.number > 20);
 
+
+
       // Si sigleIds est défini et non vide, filtre également par sigles
       if (this.sigleIds && this.sigleIds.length > 0) {
-        this.questions = this.questions.filter(q => this.sigleIds.includes(q.sigle));
+        this.questions = this.questions.filter(q => this.sigleIds.includes(q.sigle))
+      } else {
+        // Si on accède à la liste sans paramètres, dans ce cas, c'est le(s) sigle(s) rattaché à l'évaluateur qui doit intervenir
+        this.getUserSigles(this.authService.user) 
+        // this.questions = this.questions.filter(q => this.sigleIds.includes(q.sigle))
+        // alert(this.sigleIds)
       }
 
       // Trie les questions par ordre 
-      this.questions.sort(this.compare);
+      this.questions.sort(this.compare)
 
       // essai tests détection updated data via service worker
       // this.updateClient();
-    });
+    })
+
   }
 
 
@@ -113,6 +125,7 @@ export class FullListComponent {
     })
   }
 
+
   // Méthode pour filtrer les questions en fonction du sigle fourni en paramètre
   getFilteredQuestions(sigle: string): Observable<any[]> {
     // Appelle la méthode du service pour obtenir toutes les questions depuis Firestore
@@ -120,8 +133,28 @@ export class FullListComponent {
       // Utilise l'opérateur map pour filtrer les questions en fonction du sigle
       map(questions => questions.filter(question => question.sigle === sigle))
     )
-    
+
   }
+
+  // Méthode pour filtrer les questions en fonction du sigle rattaché à l'utilisateur
+  getUserSigles(uid: string): any {
+    this.evaluatorService.getEvaluator(uid).subscribe(userData => {
+      this.sigleIds = userData.sigle
+
+      this.questions = this.questions.filter(q => this.sigleIds.includes(q.sigle))
+      // // Appelle la méthode du service pour obtenir toutes les questions depuis Firestore
+      // return this.service.getQuestions().pipe(
+      //   // Utilise l'opérateur map pour filtrer les questions en fonction du sigle
+      //   map(questions => questions.filter(question => this.sigleIds.includes(question.sigle)))
+      // )
+
+    })
+
+
+  }
+
+
+
 
 
 
