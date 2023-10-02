@@ -2,6 +2,12 @@
 
     <h3>Liste des questions d'accroche pour aperçu</h3>
 
+    <div *ngIf="sigleIds" class="mx-auto my-5">
+        <select name="sigle" class="form-control" (change)="onChange($event)">
+            <option *ngFor="let s of sigleIds" [value]="s">{{s}}</option>
+        </select>
+    </div>
+
     <div *ngIf="questions">
         <!-- pour opérer un filtre (champ de recherch) sur ce qui vient en dessous -->
         <!-- on introduit un champ de recherche -->
