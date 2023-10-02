@@ -66,7 +66,8 @@ export class FullListComponent {
       this.questions.sort(this.compare)
 
       // essai tests détection updated data via service worker
-      // this.updateClient();
+      // this.updateClient()
+
     })
 
   }
@@ -142,11 +143,6 @@ export class FullListComponent {
       this.sigleIds = userData.sigle
 
       this.questions = this.questions.filter(q => this.sigleIds.includes(q.sigle))
-      // // Appelle la méthode du service pour obtenir toutes les questions depuis Firestore
-      // return this.service.getQuestions().pipe(
-      //   // Utilise l'opérateur map pour filtrer les questions en fonction du sigle
-      //   map(questions => questions.filter(question => this.sigleIds.includes(question.sigle)))
-      // )
 
     })
 
