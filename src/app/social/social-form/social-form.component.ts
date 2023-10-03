@@ -38,12 +38,14 @@ export class SocialFormComponent implements OnInit {
   ngOnInit() {
 
     onAuthStateChanged(this.auth, (user: any) => {
+
       if (user) {
         this.service.getStudentById(user.uid).subscribe(data => {
           console.log("userData from students 0...", data);
           this.userData = data
         })
       }
+      
     })
 
 
@@ -72,8 +74,6 @@ export class SocialFormComponent implements OnInit {
       console.error('Erreur lors de l\'enregistrement des données: ', error)
     }
   }
-
-
 
 
 }

@@ -8,7 +8,8 @@
 
             <div class="card">
                 <div class="card-header bg-dark">
-                    <a class="btn text-light text-capitalize d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#collapseOne">
+                    <a class="btn text-light text-capitalize d-flex justify-content-between align-items-center"
+                        data-bs-toggle="collapse" href="#collapseOne">
                         <span>Votre identité</span><i class="bi bi-person-vcard-fill text-light fs-4"></i>
                     </a>
                 </div>
@@ -92,18 +93,19 @@
 
             <div class="card">
                 <div class="card-header bg-dark">
-                    <a class="collapsed btn text-light text-capitalize d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#collapseTwo">
+                    <a class="collapsed btn text-light text-capitalize d-flex justify-content-between align-items-center"
+                        data-bs-toggle="collapse" href="#collapseTwo">
                         <span>Permis de Conduire</span> <i class="bi bi-sign-turn-left-fill text-light fs-4"></i>
                     </a>
                 </div>
                 <div id="collapseTwo" class="collapse" data-bs-parent="#accordion">
                     <div class="card-body">
                         <!-- début élément de formulaire -->
-                        <div class="form-group row">
-                            <label class="col-md-4 text-decoration-underline pt-3 pb-2">
+                        <div class="form-group row align-items-center">
+                            <label class="col-md-5 text-decoration-underline pt-3 pb-2">
                                 Permis B :
                             </label>
-                            <div class="col-md-9">
+                            <div class="col-md-7">
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" id="permisBOui" name="permisB" ngModel
                                         value="Oui">
@@ -115,12 +117,10 @@
                                     <label class="form-check-label" for="permisBNon">Non</label>
                                 </div>
                             </div>
-                            <label for="permisBEtranger" class="col-md-4 text-decoration-underline pt-3 pb-2">Pour les
-                                publics
-                                étrangers,
-                                Permis B
-                                valide en France :</label>
-                            <div class="col-md-6">
+
+                            <label for="permisBEtranger" class="col-md-5 text-decoration-underline pt-3 pb-2">Pour les
+                                publics étrangers, Permis B valide en France :</label>
+                            <div class="col-md-7">
                                 <div class="form-check form-check-inline">
                                     <input type="radio" name="permisBEtranger" id="permisBEtrangerOui" ngModel
                                         value="oui" class="form-check-input">
@@ -134,10 +134,10 @@
                             </div>
 
                             <label for="autrePermis"
-                                class="col-md-4 control-label text-decoration-underline pt-3 pb-2">Possédez-vous un
+                                class="col-md-5 control-label text-decoration-underline pt-3 pb-2">Possédez-vous un
                                 autre
                                 permis valide ?</label>
-                            <div class="col-md-8">
+                            <div class="col-md-7">
                                 <select name="autrePermis" ngModel class="form-control">
                                     <option value="">Choisir une option</option>
                                     <option value="BE">Permis BE</option>
@@ -154,7 +154,8 @@
 
             <div class="card">
                 <div class="card-header bg-dark">
-                    <a class="collapsed btn text-light text-capitalize d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#collapseThree">
+                    <a class="collapsed btn text-light text-capitalize d-flex justify-content-between align-items-center"
+                        data-bs-toggle="collapse" href="#collapseThree">
                         <span>Nationalité</span> <i class="bi bi-globe-europe-africa text-light fs-4"></i>
                     </a>
                 </div>
@@ -281,8 +282,7 @@
                 <div class="card-header bg-dark">
                     <a class="collapsed btn text-light text-capitalize d-flex justify-content-between align-items-center"
                         data-bs-toggle="collapse" href="#collapseFor">
-                        <span>Votre historique emploi</span> <i
-                            class="bi bi-journal text-light fs-4"></i>
+                        <span>Votre situation actuelle</span> <i class="bi bi-journal text-light fs-4"></i>
                     </a>
                 </div>
 
@@ -298,35 +298,43 @@
                                 <label class="form-check-label">Inscrit à POLE EMPLOI</label>
                             </div>
 
-                            <div *ngIf="inscritPoleEmploi" class="form-group">
+                            <div *ngIf="inscritPoleEmploi" class="form-group mt-3">
                                 <label class="form-check-label" for="numIdentifiantPoleEmploi">Numéro identifiant POLE
                                     EMPLOI:</label>
                                 <input class="form-check-input" type="text" class="form-control"
                                     name="numIdentifiantPoleEmploi" ngModel>
+                                <!-- partie RSA -->
+                                <div class="text-decoration-underline pt-3 pb-2">Etes-vous bénéficiaire des minima
+                                    sociaux
+                                    (RSA)</div>
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label">Oui</label>
+                                        <input class="form-check-input" type="radio"
+                                            name="beneficiaireMinimaSociauxDetail"
+                                            id="beneficiaireMinimaSociauxDetail_oui" ngModel value="oui">
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">Non</label>
+                                        <input class="form-check-input" type="radio"
+                                            name="beneficiaireMinimaSociauxDetail"
+                                            id="beneficiaireMinimaSociauxDetail_non" ngModel value="non">
+                                    </div>
+                                </div>
+                                <!-- fin RSA -->
                             </div>
+                            <hr>
 
                             <!-- <div class="form-group"> -->
-                            <div class="text-decoration-underline pt-3 pb-2">Etes-vous bénéficiaire des minima sociaux
-                                (RSA)</div>
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="form-check">
-                                    <label class="form-check-label">Oui</label>
-                                    <input class="form-check-input" type="radio" name="beneficiaireMinimaSociauxDetail"
-                                        id="beneficiaireMinimaSociauxDetail_oui" ngModel value="oui">
-                                </div>
-                                <div class="form-check">
-                                    <label class="form-check-label">Non</label>
-                                    <input class="form-check-input" type="radio" name="beneficiaireMinimaSociauxDetail"
-                                        id="beneficiaireMinimaSociauxDetail_non" ngModel value="non">
-                                </div>
-                            </div>
+
                             <div class="text-decoration-underline pt-3 pb-2">Salarié en CDI ? </div>
                             <div class="d-flex  align-items-center gap-3">
 
                                 <label for="yearsInCdi" class="form-label">Depuis combien d'années ?</label>
                                 <input type="number" class="form-control" ngModel name="yearsInCdi">
                             </div>
-                            <div class="text-decoration-underline pt-3 pb-2">Pouvez-vous justifier d'une ancienneté de 24 mois en
+                            <div class="text-decoration-underline pt-3 pb-2">Pouvez-vous justifier d'une ancienneté de
+                                24 mois en
                                 qualité de salarié, dont 12 mois dans la même entreprise ?</div>
                             <div class="d-flex  align-items-center gap-3">
                                 <div class="form-check">
@@ -340,6 +348,8 @@
                                         ngModel>
                                 </div>
                             </div>
+
+                            <hr>
 
                             <div class="text-decoration-underline pt-3 pb-2">Salarié en CDD ?</div>
                             <div class="d-sm-flex align-items-center gap-3">
@@ -370,6 +380,8 @@
                                 </div>
                             </div>
 
+                            <hr>
+
                             <div class="text-decoration-underline pt-3 pb-2">Êtes-vous intérimaire ?</div>
                             <div class="d-flex  align-items-center gap-3">
                                 <div class="form-check">
@@ -397,10 +409,8 @@
                                     </div>
                                 </div>
                                 <div class="pt-2">Avez-vous justifié d'une ancienneté de 1600 heures en tant
-                                    qu'intérimaire au cours des
-                                    18
-                                    derniers mois,
-                                    dont 600 heures dans une même entreprise du travail temporaire ?</div>
+                                    qu'intérimaire au cours des 18 derniers mois, dont 600 heures dans une même
+                                    entreprise du travail temporaire ?</div>
                                 <div class="d-flex  align-items-center gap-3">
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="interim_anciennete"
@@ -444,67 +454,77 @@
                                     <label class="form-check-label"> Non</label>
                                 </div>
                             </div>
+
+                            <!-- SI militaire -->
+                            <ng-container *ngIf="myForm.value.militaire==='Oui'">
+                                <div class="form-group">
+                                    <label for="militaire_date_debut" class="pt-2">Date de début de votre reconversion
+                                        :</label>
+                                    <input type="date" class="form-control" name="militaire_date_debut" ngModel>
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-decoration-underline pt-3 pb-2">Avez-vous fait part de votre
+                                        projet à votre Conseiller Mobilité?</label>
+                                    <div class="d-flex  align-items-center gap-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="militaire_conseiller"
+                                                value="Oui" ngModel><label class="form-check-label">
+                                                Oui</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="militaire_conseiller"
+                                                value="Non" ngModel><label class="form-check-label">
+                                                Non</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                            <!-- fin de SI militaire -->
                             <hr>
                             <div class="form-group">
-                                <label for="militaire_date_debut" class="pt-2">Date de début de votre reconversion
-                                    :</label>
-                                <input type="date" class="form-control" name="militaire_date_debut" ngModel>
-                            </div>
-                            <div class="form-group">
-                                <label class="text-decoration-underline pt-3 pb-2">Avez-vous fait part de votre projet à
-                                    votre Conseiller  Mobilité?</label>
+                                <div class="text-decoration-underline pt-3 pb-2">Possédez-vous une reconnaissance
+                                    Travailleur Handicapé?
+                                </div>
                                 <div class="d-flex  align-items-center gap-3">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="militaire_conseiller"
-                                            value="Oui" ngModel><label class="form-check-label">
+                                        <input class="form-check-input" type="radio" name="handicap"
+                                            [(ngModel)]="handicap" value="Oui"><label class="form-check-label">
                                             Oui</label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="militaire_conseiller"
-                                            value="Non" ngModel><label class="form-check-label">
+                                        <input class="form-check-input" type="radio" name="handicap"
+                                            [(ngModel)]="handicap" value="Non"><label class="form-check-label">
                                             Non</label>
                                     </div>
                                 </div>
-                            </div>
-                            <hr>
-                            <div class="form-group">
-                                <label for="autre_situation" class="text-decoration-underline pt-3 pb-2">Êtes-vous dans une autre situation?</label>
-                                <input type="text" class="form-control" name="autre_situation" ngModel placeholder="précisez...">
-                            </div>
-                            <hr>
-                            <div class="text-decoration-underline pt-3 pb-2">Possédez-vous une reconnaissance
-                                Travailleur Handicapé?
-                            </div>
-                            <div class="d-flex  align-items-center gap-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="handicap" [(ngModel)]="handicap"
-                                        value="Oui"><label class="form-check-label"> Oui</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="handicap" [(ngModel)]="handicap"
-                                        value="Non"><label class="form-check-label"> Non</label>
-                                </div>
-                            </div>
-                            <div *ngIf="handicap === 'Oui'">
-                                <div class="text-decoration-underline pt-3 pb-2">Êtes-vous suivi par CAP EMPLOI ?</div>
-                                <div class="d-flex  align-items-center gap-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="suiviCapEmploi" value="Oui"
-                                            ngModel><label class="form-check-label"> Oui</label>
+                                <div *ngIf="handicap === 'Oui'">
+                                    <div class="text-decoration-underline pt-3 pb-2">Êtes-vous suivi par CAP EMPLOI ?
                                     </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="suiviCapEmploi" value="Non"
-                                            ngModel><label class="form-check-label"> Non</label>
+                                    <div class="d-flex  align-items-center gap-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="suiviCapEmploi"
+                                                value="Oui" ngModel><label class="form-check-label"> Oui</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="suiviCapEmploi"
+                                                value="Non" ngModel><label class="form-check-label"> Non</label>
+                                        </div>
                                     </div>
                                 </div>
+                                <hr>
+                                <label for="autre_situation" class="text-decoration-underline pt-3 pb-2">Êtes-vous dans
+                                    une autre situation?</label>
+                                <input type="text" class="form-control" name="autre_situation" ngModel
+                                    placeholder="préciser...">
                             </div>
+
                         </div>
-                        <!-- fin éléments de formulaire -->
+                        <hr>
                     </div>
                 </div>
             </div>
 
-            <!-- 5 ------>
+            <!-------->
             <div class="card">
                 <div class="card-header bg-dark">
                     <a class="collapsed btn text-light text-capitalize d-flex justify-content-between align-items-center"
@@ -517,17 +537,8 @@
                     <div class="card-body">
                         <!-- début éléments de formulaire -->
                         <div class="form-group row">
-                            <label class="col-md-4 text-decoration-underline pt-3 pb-2"
-                                for="formationInitiale">Formation initiale
-                                ?</label>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control" name="formationInitiale" ngModel>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-md-4 text-decoration-underline pt-3 pb-2" for="diplomeNonObtenu">Si le
-                                diplôme n'a pas été
-                                obtenu, indiquer le niveau</label>
+                            <div class="col-md-4 text-decoration-underline pt-3 pb-2" for="formationInitiale">Formation
+                                initiale ?</div>
                             <div class="col-md-8">
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="niveauDiplome" ngModel
@@ -570,366 +581,27 @@
                                         BAC + 3</label>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-4 col-form-label text-right" for="maFiliale">Principale
-                                        filiale</label>
+                                    <label class="col-sm-4 col-form-label text-right mt-3"
+                                        for="principaleFiliere">Principale
+                                        filière ?</label>
                                     <input type="text" class="form-control" name="principaleFiliere" ngModel
                                         placeholder="BTP, santé, métallurgie, transport...">
                                 </div>
                             </div>
                         </div>
                         <hr>
-                        <div class="form-group">
-                            <div class="text-decoration-underline pt-3 pb-2" for="formationContinue">
-                                Avez-vous suivi des formations dans le cadre de formation continue ?</div>
-                        </div>
-
-                        <div class="form-group mx-1 m-md-auto pt-2">
-                            <div class="d-lg-flex gap-3 my-1 justify-content-space-between align-items-center">
-                                <div class="formation">Formation: CACES® 482 : Engins de chantier</div>
-                                <div class="d-sm-flex gap-3 align-items-center">
-                                    <div class="d-flex align-items-center">
-                                        <div class="form-check">
-                                            <label class="form-check-label">Diplôme obtenu</label>
-                                            <input class="form-check-input" type="checkbox" name="reconnaissance482"
-                                                value="CACES® 482" ngModel>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex  align-items-center">
-                                        <label class="pe-2">Niveau</label>
-                                        <input class="form-control" type="text" name="niveau482" ngModel>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="d-lg-flex gap-3 my-1 justify-content-space-between align-items-center">
-                                <div class="formation">Formation: CACES® 484 : Ponts Roulants</div>
-                                <div class="d-sm-flex gap-3">
-                                    <div class="d-flex  align-items-center">
-                                        <div class="form-check">
-                                            <label class="form-check-label">Diplôme obtenu</label>
-                                            <input class="form-check-input" type="checkbox" name="reconnaissance484"
-                                                value="CACES® 484" ngModel>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex  align-items-center">
-                                        <label class="pe-2">Niveau</label>
-                                        <input class="form-control" type="text" name="niveau484" ngModel>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d-lg-flex gap-3 my-1 justify-content-space-between align-items-center">
-                                <div class="formation">Formation: CACES® 485 : chariots gerbeurs</div>
-                                <div class="d-sm-flex gap-3">
-                                    <div class="d-flex  align-items-center">
-                                        <div class="form-check">
-                                            <label class="form-check-label">Diplôme obtenu</label>
-                                            <input class="form-check-input" type="checkbox" name="reconnaissance485"
-                                                value="CACES® 485" ngModel>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex  align-items-center">
-                                        <label class="pe-2">Niveau</label>
-                                        <input class="form-control" type="text" name="niveau485" ngModel>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d-lg-flex gap-3 my-1 justify-content-space-between align-items-center">
-                                <div class="formation">Formation: CACES® 486 : Nacelles</div>
-                                <div class="d-sm-flex gap-3">
-                                    <div class="d-flex  align-items-center">
-                                        <div class="form-check">
-                                            <label class="form-check-label">Diplôme obtenu</label>
-                                            <input class="form-check-input" type="checkbox" name="reconnaissance486"
-                                                value="CACES® 486" ngModel placeholder="niveau">
-                                        </div>
-                                    </div>
-                                    <div class="d-flex  align-items-center">
-                                        <label class="pe-2">Niveau</label>
-                                        <input class="form-control" type="text" name="niveau486" ngModel>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="d-lg-flex gap-3 my-1 justify-content-space-between align-items-center">
-                                <div class="formation">Formation: CACES® 487 : grues à tour</div>
-                                <div class="d-sm-flex gap-3">
-                                    <div class="d-flex  align-items-center">
-                                        <div class="form-check">
-                                            <label class="form-check-label">Diplôme obtenu</label>
-                                            <input class="form-check-input" type="checkbox" name="reconnaissance487"
-                                                value="CACES® 487" ngModel>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex  align-items-center">
-                                        <label class="pe-2">Niveau</label>
-                                        <input class="form-control" type="text" name="niveau487" ngModel>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="d-lg-flex gap-3 my-1 justify-content-space-between align-items-center">
-                                <div class="formation">Formation: CACES® 489 : chariots à conducteur porté</div>
-                                <div class="d-sm-flex gap-3">
-                                    <div class="d-flex  align-items-center">
-                                        <div class="form-check">
-                                            <label class="form-check-label">Diplôme obtenu</label>
-                                            <input class="form-check-input" type="checkbox" name="reconnaissance489"
-                                                value="CACES® 489" ngModel>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex  align-items-center">
-                                        <label class="pe-2">Niveau</label>
-                                        <input class="form-control" type="text" name="niveau489" ngModel>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="d-lg-flex gap-3 my-1 justify-content-space-between align-items-center">
-                                <div class="formation">Formation: CACES® 490 : grues auxiliaires</div>
-                                <div class="d-sm-flex gap-3">
-                                    <div class="d-flex  align-items-center">
-                                        <div class="form-check">
-                                            <label class="form-check-label">Diplôme obtenu</label>
-                                            <input class="form-check-input" type="checkbox" name="reconnaissance490"
-                                                value="CACES® 490" ngModel>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex  align-items-center">
-                                        <label class="pe-2">Niveau</label>
-                                        <input class="form-control" type="text" name="niveau490" ngModel>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="d-lg-flex gap-3 my-1 justify-content-space-between align-items-center">
-                                <div class="formation">Formation: FIMO / FCO</div>
-                                <div class="d-sm-flex gap-3">
-                                    <div class="d-flex  align-items-center">
-                                        <div class="form-check">
-                                            <label class="form-check-label">Diplôme obtenu</label>
-                                            <input class="form-check-input" type="checkbox" name="reconnaissancefimoFco"
-                                                value="FIMO / FCO" ngModel>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex  align-items-center">
-                                        <label class="pe-2">Niveau</label>
-                                        <input class="form-control" type="text" name="niveaufimoFco" ngModel>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="d-lg-flex gap-3 my-1 justify-content-space-between align-items-center">
-                                <div class="formation">Formation: Habilitations Electriques</div>
-                                <div class="d-sm-flex gap-3">
-                                    <div class="d-flex  align-items-center">
-                                        <div class="form-check">
-                                            <label class="form-check-label">Diplôme obtenu</label>
-                                            <input class="form-check-input" type="checkbox" name="reconnaissanceHE"
-                                                value="Habilitations Electriques" ngModel>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex  align-items-center">
-                                        <label class="pe-2">Niveau</label>
-                                        <input class="form-control" type="text" name="niveauHE" ngModel />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="d-lg-flex gap-3 my-1 justify-content-space-between align-items-center">
-                                <div class="formation">Formation: AIPR</div>
-                                <div class="d-sm-flex gap-3">
-                                    <div class="d-flex  align-items-center">
-                                        <div class="form-check">
-                                            <label class="form-check-label">Diplôme obtenu</label>
-                                            <input class="form-check-input" type="checkbox" name="reconnaissanceAIPR"
-                                                value="AIPR" ngModel>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex  align-items-center">
-                                        <label class="pe-2">Niveau</label>
-                                        <input class="form-control" type="text" name="niveauAIPR" ngModel />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="d-lg-flex gap-3 my-1 justify-content-space-between align-items-center">
-                                <div class="formation">Formation: PASI</div>
-                                <div class="d-sm-flex gap-3">
-                                    <div class="d-flex  align-items-center">
-                                        <div class="form-check">
-                                            <label class="form-check-label">Diplôme obtenu</label>
-                                            <input class="form-check-input" type="checkbox" name="reconnaissancePASI"
-                                                value="PASI" ngModel>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex  align-items-center">
-                                        <label class="pe-2">Niveau</label>
-                                        <input class="form-control" type="text" name="niveauPASI" ngModel />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="d-lg-flex gap-3 my-1 justify-content-space-between align-items-center">
-                                <div class="formation">Formation: Travail en hauteur</div>
-                                <div class="d-sm-flex gap-3">
-                                    <div class="d-flex  align-items-center">
-                                        <div class="form-check">
-                                            <label class="form-check-label">Diplôme obtenu</label>
-                                            <input class="form-check-input" type="checkbox" name="reconnaissanceTH"
-                                                value="Travail en hauteur" ngModel>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex  align-items-center">
-                                        <label class="pe-2">Niveau</label>
-                                        <input class="form-control" type="text" name="niveauTH" ngModel />
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="d-lg-flex gap-3 my-1 justify-content-space-between align-items-center">
-                                <div class="formation">Formation: CATEC</div>
-                                <div class="d-sm-flex gap-3">
-                                    <div class="d-flex  align-items-center">
-                                        <div class="form-check">
-                                            <label class="form-check-label">Diplôme obtenu</label>
-                                            <input class="form-check-input" type="checkbox" name="reconnaissanceCatec"
-                                                value="CATEC" ngModel>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex  align-items-center">
-                                        <label class="pe-2">Niveau</label>
-                                        <input class="form-control" type="text" name="niveauCatec" ngModel />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="d-lg-flex gap-3 my-1 justify-content-space-between align-items-center">
-                                <div class="formation">Formation: SST</div>
-                                <div class="d-sm-flex gap-3">
-                                    <div class="d-flex  align-items-center">
-                                        <div class="form-check">
-                                            <label class="form-check-label">Diplôme obtenu</label>
-                                            <input class="form-check-input" type="checkbox" name="reconnaissanceSST"
-                                                value="SST" ngModel>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex  align-items-center">
-                                        <label class="pe-2">Niveau</label>
-                                        <input class="form-control" type="text" name="niveauSST" ngModel />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="d-lg-flex gap-3 my-1 justify-content-space-between align-items-center">
-                                <div class="formation">Formation: Remise à niveau sur les savoirs de base</div>
-                                <div class="d-sm-flex gap-3">
-                                    <div class="d-flex  align-items-center">
-                                        <div class="form-check">
-                                            <label class="form-check-label">Diplôme obtenu</label>
-                                            <input class="form-check-input" type="checkbox" name="reconnaissanceSavoir"
-                                                value="Remise à niveau sur les savoirs de base" ngModel>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex  align-items-center">
-                                        <label class="pe-2">Niveau</label>
-                                        <input class="form-control" type="text" name="niveauSavoir" ngModel />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="d-lg-flex gap-3 my-1 justify-content-space-between align-items-center">
-                                <div class="formation">Formation: FLE (Français Langue Etrangère)</div>
-                                <div class="d-sm-flex gap-3">
-                                    <div class="d-flex  align-items-center">
-                                        <div class="form-check">
-                                            <label class="form-check-label">Diplôme obtenu</label>
-                                            <input class="form-check-input" type="checkbox" name="reconnaissanceFLE"
-                                                value="FLE (Français Langue Etrangère)" ngModel>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex  align-items-center">
-                                        <label class="pe-2">Niveau</label>
-                                        <input class="form-control" type="text" name="niveauFLE" ngModel />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="d-lg-flex gap-3 my-1 justify-content-space-between align-items-center">
-                                <div class="formation">Formation: CLEA</div>
-
-                                <div class="d-sm-flex gap-3">
-                                    <div class="d-flex  align-items-center">
-                                        <div class="form-check">
-                                            <label class="form-check-label">Diplôme obtenu</label>
-                                            <input class="form-check-input" type="checkbox" name="reconnaissanceCLEA"
-                                                value="CLEA" ngModel>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex  align-items-center">
-                                        <label class="pe-2">Niveau</label>
-                                        <input class="form-control" type="text" name="niveauCLEA" ngModel />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="d-lg-flex gap-3 my-1 justify-content-space-between align-items-center">
-                                <div class="formation">Formation: Excel</div>
-
-                                <div class="d-sm-flex gap-3">
-                                    <div class="d-flex  align-items-center">
-                                        <div class="form-check">
-                                            <label class="form-check-label">Diplôme obtenu</label>
-                                            <input class="form-check-input" type="checkbox" name="reconnaissanceExcel"
-                                                value="Excel" ngModel>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex  align-items-center">
-                                        <label class="pe-2">Niveau</label>
-                                        <input class="form-control" type="text" name="niveauExcel" ngModel />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="d-lg-flex gap-3 my-1 justify-content-space-between align-items-center">
-                                <div class="formation">Formation: Word</div>
-                                <div class="d-sm-flex gap-3">
-                                    <div class="d-flex  align-items-center">
-                                        <div class="form-check">
-                                            <label class="form-check-label">Diplôme obtenu</label>
-                                            <input class="form-check-input" type="checkbox" name="reconnaissanceWord"
-                                                value="Word" ngModel>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex  align-items-center">
-                                        <label class="pe-2">Niveau</label>
-                                        <input class="form-control" type="text" name="niveauWord" ngModel />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="d-lg-flex gap-3 my-1 justify-content-space-between align-items-center">
-                                <div class="formation ms-1">Autre - Précisez :</div>
-                                <div class="d-sm-flex gap-3">
-                                    <div class="d-flex  align-items-center">
-                                        <div class="form-check">
-                                            <label class="form-check-label">Diplôme obtenu</label>
-                                            <input class="form-check-input" type="checkbox" name="reconnaissanceAutre"
-                                                value="Autre" ngModel>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex  align-items-center">
-                                        <label class="pe-2">Niveau</label>
-                                        <input class="form-control" type="text" name="niveauAutre" ngModel />
-                                    </div>
-                                </div>
+                        <div class="form-group row align-items-center">
+                            <label for="formationContinue" class="col-md-4 text-decoration-underline pt-3 pb-2">
+                                Formation continue ?</label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="text" name="formationContinue" ngModel
+                                    placeholder="A renseigner si formation continue">
                             </div>
                         </div>
-                        <!-- à vérifier -->
 
+                        <hr>
                         <div class="text-decoration-underline pt-3 pb-2">Avez-vous des demandes de financement pour une
-                            formation en
-                            cours?</div>
+                            formation en cours?</div>
                         <!-- <div class="form-group row"> -->
 
                         <div class="d-flex  align-items-center gap-3">
@@ -972,7 +644,7 @@
                             </div>
 
                             <label class="text-decoration-underline pt-3 pb-2" for="formation">Pour quelle formation ?
-                                :</label>
+                            </label>
                             <input class="form-control" type="text" name="formation" ngModel>
                         </div>
                         <div class="text-decoration-underline pt-3 pb-2">Avez-vous des droits CPF ?</div>
@@ -1002,13 +674,12 @@
                 </div>
             </div>
 
-            <!-- 6 ------------>
+            <!-------------->
             <div class="card">
                 <div class="card-header bg-dark">
                     <a class="collapsed btn text-light text-capitalize d-flex justify-content-between align-items-center"
                         data-bs-toggle="collapse" href="#collapseSix">
-                        <span>Notre accompagnement</span> <i
-                            class="bi bi-people-fill text-light fs-4"></i>
+                        <span>Notre accompagnement</span> <i class="bi bi-people-fill text-light fs-4"></i>
                     </a>
                 </div>
                 <div id="collapseSix" class="collapse" data-bs-parent="#accordion">
@@ -1048,10 +719,10 @@
                                     value="Un Conseiller RSA du Conseil Départemental" ngModel>
                             </div>
                             <div class="form-check">
-                                <label class="form-check-label" for="groupementEmployeurs">Un groupement d'employeurs (GE) ou
-                                    groupement d'employeurs par l'insertion et la qualification (GEIQ)</label>
-                                <input class="form-check-input" type="checkbox" name="groupementEmployeurs"
-                                    value="GEIQ" ngModel>
+                                <label class="form-check-label" for="groupementEmployeurs">Un groupement d'employeurs
+                                    (GE) ou groupement d'employeurs par l'insertion et la qualification (GEIQ)</label>
+                                <input class="form-check-input" type="checkbox" name="groupementEmployeurs" value="GEIQ"
+                                    ngModel>
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label" for="agenceTravailTemporaire">Une agence de travail
@@ -1073,200 +744,198 @@
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label" for="salonFormation">Sur
-                                    un salon, forum de l’emploi et/ou de la formation</label>
+                                    un salon, forum de l'emploi et/ou de la formation</label>
                                 <input class="form-check-input" type="checkbox" name="salonFormation"
-                                    value="Sur un salon, forum de l’emploi et/ou de la formation" ngModel>
+                                    value="Sur un salon, forum de l'emploi et/ou de la formation" ngModel>
                             </div>
                             <div class="form-check">
-                                <label class="form-check-label" for="informationCollective">Lors d’une information
+                                <label class="form-check-label" for="informationCollective">Lors d'une information
                                     collective</label>
                                 <input class="form-check-input" type="checkbox" name="informationCollective"
-                                    value="Lors d’une information collective" ngModel>
+                                    value="Lors d'une information collective" ngModel>
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label" for="autre">Autre</label>
                                 <input class="form-check-input" type="checkbox" name="autre" value="Autre" ngModel>
                             </div>
-                            <input class="form-control" type="text" name="autrePrecisez" ngModel placeholder="Préciser">
+                            <input class="form-control my-2" type="text" name="autrePrecisez" ngModel
+                                placeholder="Préciser">
+                        </div>
+                        <hr>
 
-                        </div>
-                    
-
-                    <div class="text-decoration-underline pt-3 pb-2">Avez-vous déjà une promesse d’embauche, après la
-                        formation
-                        ?</div>
-                    <!-- <div class="form-group"> -->
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="form-check">
-                            <label class="form-check-label">Oui</label>
-                            <input class="form-check-input" type="radio" name="promesseEmbauche" value="Oui"
-                                [(ngModel)]="promesseEmbauche">
-                        </div>
-                        <div class="form-check">
-                            <label class="form-check-label">Non</label>
-                            <input class="form-check-input" type="radio" name="promesseEmbauche" value="Non"
-                                [(ngModel)]="promesseEmbauche">
-                        </div>
-                    </div>
-
-                    <!-- <p class="display-5">{{promesseEmbauche === 'Oui'}}</p> -->
-
-                    <div *ngIf="promesseEmbauche === 'Oui'">
-                        <div class="text-decoration-underline pt-3 pb-2">La durée du contrat de travail proposé suite à
-                            la
-                            formation </div>
-                        <div class="form-check">
-                            <label class="form-check-label" for="dureeContrat">CDD de moins de 6 mois</label>
-                            <input class="form-check-input" type="radio" name="dureeContrat"
-                                value="CDD de moins de 6 mois" ngModel>
-                        </div>
-                        <div class="form-check">
-                            <label class="form-check-label" for="dureeContrat">CDD compris entre 6 et 12 mois</label>
-                            <input class="form-check-input" type="radio" name="dureeContrat"
-                                value="CDD compris entre 6 et 12 mois" ngModel>
-                        </div>
-                        <div class="form-check">
-                            <label class="form-check-label" for="dureeContrat">CDD de 12 mois</label>
-                            <input class="form-check-input" type="radio" name="dureeContrat" value="CDD de 12 mois"
-                                ngModel>
-                        </div>
-                        <div class="form-check">
-                            <label class="form-check-label" for="dureeContrat">CDD de plus de 12 mois</label>
-                            <input class="form-check-input" type="radio" name="dureeContrat"
-                                value="CDD de plus de 12 mois" ngModel>
-                        </div>
-                        <div class="form-check">
-                            <label class="form-check-label" for="dureeContrat">CDI</label>
-                            <input class="form-check-input" type="radio" name="dureeContrat" value="CDI" ngModel>
-                        </div>
-                    </div>
-
-                    <div class="text-decoration-underline pt-3 pb-2">Connaissez-vous le financement de la formation ?
-                    </div>
-                    <div>
-                        <div class="form-check">
-                            <label class="form-check-label" for="financementPreFormation1"> Pôle Emploi (POEI, AFPR…)
-                            </label>
-                            <input class="form-check-input" type="checkbox" name="financementPreFormation1"
-                                value="Pôle Emploi (POEI, AFPR…)" ngModel>
-                        </div>
-                        <div class="form-check">
-                            <label class="form-check-label" for="financementPreFormation2"> Contrat de
-                                professionnalisation
-                            </label>
-                            <input class="form-check-input" type="checkbox" name="financementPreFormation2"
-                                value="Contrat de professionnalisation" ngModel>
-                        </div>
-                        <div class="form-check">
-                            <label class="form-check-label" for="financementPreFormation3"> Contrat d’apprentissage
-                            </label>
-                            <input class="form-check-input" type="checkbox" name="financementPreFormation3"
-                                value="Contrat d’apprentissage" ngModel>
-                        </div>
-                        <div class="form-check">
-                            <label class="form-check-label" for="financementPreFormation4"> Agefiph </label>
-                            <input class="form-check-input" type="checkbox" name="financementPreFormation4"
-                                value="Agefiph" ngModel>
-                        </div>
-                        <div class="form-check">
-                            <label class="form-check-label" for="financementAutre"> Autre</label>
-                            <input class="form-check-input" type="checkbox" name="financementAutre" ngModel>
-                        </div>
-
-                        <div class="text-decoration-underline pt-3 pb-2">Vous n’avez pas encore de promesse d’embauche
-                            après la
-                            formation. Vous recherchez ?</div>
-                        <!-- <div> -->
-                        <div class="form-check">
-                            <label class="form-check-label" for="searchCdi">CDI</label>
-                            <input class="form-check-input" type="checkbox" name="searchCdi" ngModel>
-                        </div>
-                        <div class="form-check">
-                            <label class="form-check-label" for="searchCDD">CDD</label>
-                            <input class="form-check-input" type="checkbox" name="searchPartTime" ngModel>
-                        </div>
-                        <div class="form-check">
-                            <label class="form-check-label" for="searchPartTime">Travail
-                                Temporaire</label>
-                            <input class="form-check-input" type="checkbox" name="searchPartTime" ngModel>
-                        </div>
-                        <div class="form-check">
-                            <label class="form-check-label" for="searchApprenticeship"> Contrat
-                                en
-                                alternance : Contrat d’apprentissage ou contrat de
-                                professionnalisation</label>
-                            <input class="form-check-input" type="checkbox" name="searchApprenticeship" ngModel>
-                        </div>
-
-                    </div>
-                    <div>
-                        <label class="text-decoration-underline pt-3 pb-2 ">Vous recherchez un emploi à :</label>
-                        <div class="d-flex align-items-center gap-5">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="miTemps" value="Mi-temps" ngModel>
-                                <label class="form-check-label" for="miTemps">Mi-temps</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="pleinTemps" value="Plein-temps"
-                                    ngModel>
-                                <label class="form-check-label" for="miTemps">Plein-temps</label>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="text-decoration-underline pt-3 pb-2">Vous souhaitez travailler ou vous êtes
-                                prêts à
-                                travailler:
-                            </div>
-
-                            <div class="form-check">
-                                <label class="form-check-label" for="travailDeJour">En journée</label>
-                                <input class="form-check-input" type="checkbox" name="travailDeJour"
-                                    value="travailDeJour" ngModel>
-                            </div>
-                            <div class="form-check">
-                                <label class="form-check-label" for="travailDeJour">De nuit</label>
-                                <input class="form-check-input" type="checkbox" name="travailDeNuit"
-                                    value="travailDeNuit" ngModel>
-                            </div>
-                            <div class="form-check">
-                                <label class="form-check-label" for="travailHorairesDecales">En horaires décalés (2 x 7
-                                    ou 2 x
-                                    8)</label>
-                                <input class="form-check-input" type="checkbox" name="travailHorairesDecales"
-                                    value="travailHorairesDecales" ngModel>
-                            </div>
-                            <div class="form-check">
-                                <label class="form-check-label" for="travailHorairesDecales">Le
-                                    Week-End</label>
-                                <input class="form-check-input" type="checkbox" name="travailWeekEnd"
-                                    value="travailWeekEnd" ngModel>
-                            </div>
-                        </div>
-
-
-                        <div class="text-decoration-underline pt-3 pb-2">Etes-vous prêt à travailler en extérieur ?
-                        </div>
-                        <div class="d-flex align-items-center gap-5">
+                        <div class="text-decoration-underline pt-3 pb-2">Avez-vous déjà une promesse d'embauche, après
+                            la formation ?</div>
+                        <!-- <div class="form-group"> -->
+                        <div class="d-flex align-items-center gap-3">
                             <div class="form-check">
                                 <label class="form-check-label">Oui</label>
-                                <input class="form-check-input" type="radio" name="travailExterieur" value="oui"
-                                    ngModel>
+                                <input class="form-check-input" type="radio" name="promesseEmbauche" value="Oui"
+                                    [(ngModel)]="promesseEmbauche">
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label">Non</label>
-                                <input class="form-check-input" type="radio" name="travailExterieur" value="non"
-                                    ngModel>
+                                <input class="form-check-input" type="radio" name="promesseEmbauche" value="Non"
+                                    [(ngModel)]="promesseEmbauche">
                             </div>
                         </div>
+
+                        <!-- pour toute la partie subordonnée au Oui -->
+                        <ng-container *ngIf="promesseEmbauche === 'Oui'">
+                            <div class="text-decoration-underline pt-3 pb-2">La durée du contrat de travail proposé
+                                suite à la formation</div>
+                            <div class="form-check">
+                                <label class="form-check-label" for="dureeContrat">CDD de moins de 6 mois</label>
+                                <input class="form-check-input" type="radio" name="dureeContrat"
+                                    value="CDD de moins de 6 mois" ngModel>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label" for="dureeContrat">CDD compris entre 6 et 12
+                                    mois</label>
+                                <input class="form-check-input" type="radio" name="dureeContrat"
+                                    value="CDD compris entre 6 et 12 mois" ngModel>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label" for="dureeContrat">CDD de 12 mois</label>
+                                <input class="form-check-input" type="radio" name="dureeContrat" value="CDD de 12 mois"
+                                    ngModel>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label" for="dureeContrat">CDD de plus de 12 mois</label>
+                                <input class="form-check-input" type="radio" name="dureeContrat"
+                                    value="CDD de plus de 12 mois" ngModel>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label" for="dureeContrat">CDI</label>
+                                <input class="form-check-input" type="radio" name="dureeContrat" value="CDI" ngModel>
+                            </div>
+
+                            <!-- financement -->
+                            <div class="text-decoration-underline pt-3 pb-2">Connaissez-vous le financement de cette
+                                formation
+                                ? </div>
+                            <div>
+                                <div class="form-check">
+                                    <label class="form-check-label" for="financementPreFormation1"> Pôle Emploi (POEI,
+                                        AFPR…)</label>
+                                    <input class="form-check-input" type="checkbox" name="financementPreFormation1"
+                                        value="Pôle Emploi (POEI, AFPR…)" ngModel>
+                                </div>
+                                <div class="form-check">
+                                    <label class="form-check-label" for="financementPreFormation2"> Contrat de
+                                        professionnalisation </label>
+                                    <input class="form-check-input" type="checkbox" name="financementPreFormation2"
+                                        value="Contrat de professionnalisation" ngModel>
+                                </div>
+                                <div class="form-check">
+                                    <label class="form-check-label" for="financementPreFormation3"> Contrat
+                                        d'apprentissage
+                                    </label>
+                                    <input class="form-check-input" type="checkbox" name="financementPreFormation3"
+                                        value="Contrat d'apprentissage" ngModel>
+                                </div>
+                                <div class="form-check">
+                                    <label class="form-check-label" for="financementPreFormation4"> Agefiph </label>
+                                    <input class="form-check-input" type="checkbox" name="financementPreFormation4"
+                                        value="Agefiph" ngModel>
+                                </div>
+                                <div class="form-check">
+                                    <label class="form-check-label" for="financementAutre"> Autre</label>
+                                    <input class="form-check-input" type="checkbox" name="financementAutre" ngModel>
+                                </div>
+                            </div>
+                            <!-- fin financement -->
+                        </ng-container>
+
+                        <!-- vous recherchez --->
+                        <ng-container *ngIf="promesseEmbauche === 'Non'">
+
+                            <div class="text-decoration-underline pt-3 pb-2">Vous recherchez ?</div>
+                            <div class="form-check">
+                                <label class="form-check-label" for="searchCdi">CDI</label>
+                                <input class="form-check-input" type="checkbox" name="searchCdi" ngModel>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label" for="searchCDD">CDD</label>
+                                <input class="form-check-input" type="checkbox" name="searchPartTime" ngModel>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label" for="searchPartTime">Travail
+                                    Temporaire</label>
+                                <input class="form-check-input" type="checkbox" name="searchPartTime" ngModel>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label" for="searchApprenticeship">Alternance (contrat
+                                    d'apprentissage / de professionnalisation)</label>
+                                <input class="form-check-input" type="checkbox" name="searchApprenticeship" ngModel>
+                            </div>
+
+                            <!-- <label class="text-decoration-underline pt-3 pb-2 ">Vous recherchez un emploi à :</label> -->
+                            <div class="d-flex align-items-center gap-5 mt-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="miTemps" value="Mi-temps"
+                                        ngModel>
+                                    <label class="form-check-label" for="miTemps">Du Mi-temps</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="pleinTemps"
+                                        value="Plein-temps" ngModel>
+                                    <label class="form-check-label" for="miTemps">Du Plein-temps</label>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="text-decoration-underline pt-3 pb-2">Vous êtes prêts à travailler:
+                                </div>
+
+                                <div class="form-check">
+                                    <label class="form-check-label" for="travailDeJour">En journée</label>
+                                    <input class="form-check-input" type="checkbox" name="travailDeJour"
+                                        value="travailDeJour" ngModel>
+                                </div>
+                                <div class="form-check">
+                                    <label class="form-check-label" for="travailDeJour">De nuit</label>
+                                    <input class="form-check-input" type="checkbox" name="travailDeNuit"
+                                        value="travailDeNuit" ngModel>
+                                </div>
+                                <div class="form-check">
+                                    <label class="form-check-label" for="travailHorairesDecales">En horaires décalés
+                                        (2x7 ou 2x8)</label>
+                                    <input class="form-check-input" type="checkbox" name="travailHorairesDecales"
+                                        value="travailHorairesDecales" ngModel>
+                                </div>
+                                <div class="form-check">
+                                    <label class="form-check-label" for="travailHorairesDecales">Le
+                                        Week-End</label>
+                                    <input class="form-check-input" type="checkbox" name="travailWeekEnd"
+                                        value="travailWeekEnd" ngModel>
+                                </div>
+                            </div>
+
+
+                            <div class="text-decoration-underline pt-3 pb-2">Etes-vous prêt à travailler en
+                                extérieur ?
+                            </div>
+                            <div class="d-flex align-items-center gap-5">
+                                <div class="form-check">
+                                    <label class="form-check-label">Oui</label>
+                                    <input class="form-check-input" type="radio" name="travailExterieur" value="oui"
+                                        ngModel>
+                                </div>
+                                <div class="form-check">
+                                    <label class="form-check-label">Non</label>
+                                    <input class="form-check-input" type="radio" name="travailExterieur" value="non"
+                                        ngModel>
+                                </div>
+                            </div>
+                        </ng-container>
+
                     </div>
-                </div>
 
                     <!-- fin éléments de formulaire -->
                 </div>
             </div>
         </div>
 
-        <!-- 7  --------------->
+        <!----------------->
 
         <div class="card">
             <div class="card-header bg-dark">
