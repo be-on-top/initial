@@ -22,14 +22,16 @@ export class SocialFormComponent implements OnInit {
   firstName: string = "";
   lastName: string = "";
   email: string = "";
-  champsDesactives: boolean = true;
-  handicap?: string = 'non';
-  pieceIdentiteAJour?: string = 'oui';
-  demandeFinancement?: string = '';
-  promesseEmbauche?: string = '';
-  MoyenDeTransport?: string = '';
-  selectedOrientation?: string = '';
-  renouvellementPIEnCours?: string = 'non';
+  // champsDesactives: boolean = true;
+  handicap: boolean = false;
+  pieceIdentiteAJour: boolean = true;
+  // demandeFinancement?: string = '';
+  demandeFinancement:boolean | undefined;
+  // promesseEmbauche: boolean | null = null;
+  promesseEmbauche: boolean | undefined;
+  MoyenDeTransport?: boolean;
+  // selectedOrientation?: string = '';
+  renouvellementPIEnCours?: boolean = false;
   inscritPoleEmploi: boolean = false;
   numIdentifiantPoleEmploi: string = "";
 
@@ -44,8 +46,7 @@ export class SocialFormComponent implements OnInit {
           console.log("userData from students 0...", data);
           this.userData = data
         })
-      }
-      
+      }      
     })
 
 
@@ -57,6 +58,7 @@ export class SocialFormComponent implements OnInit {
         console.log("Personne n'est authentifié actuellement !");
       }
     })
+
   }
 
 

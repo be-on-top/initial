@@ -20,7 +20,6 @@
                                 Nom : {{lastName}}
                             </label>
                             <div class="col-md-9">
-                                <!-- <input type="text" name="lastName" [(ngModel)]="lastName" [disabled]="champsDesactives" required class="form-control"> -->
                                 <input type="text" name="lastName" [(ngModel)]="userData.lastName" disabled
                                     class="form-control text-light capitalized">
                             </div>
@@ -30,7 +29,6 @@
                                 Prénom : {{firstName}}
                             </label>
                             <div class="col-md-9">
-                                <!-- <input type="text" name="firstName" [(ngModel)]="firstName" [disabled]="champsDesactives" required class="form-control"> -->
                                 <input type="text" name="firstName" [(ngModel)]="userData.firstName" disabled
                                     class="form-control text-light">
                             </div>
@@ -107,14 +105,14 @@
                             </label>
                             <div class="col-md-7">
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" id="permisBOui" name="permisB" ngModel
-                                        value="Oui">
-                                    <label class="form-check-label" for="permisBOui">Oui</label>
+                                    <input class="form-check-input" type="radio" id="permisBoui" name="permisB" ngModel
+                                        value="oui">
+                                    <label class="form-check-label" for="permisBoui">oui</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" id="permisBNon" name="permisB" ngModel
-                                        value="Non">
-                                    <label class="form-check-label" for="permisBNon">Non</label>
+                                    <input class="form-check-input" type="radio" id="permisBnon" name="permisB" ngModel
+                                        value="non">
+                                    <label class="form-check-label" for="permisBnon">non</label>
                                 </div>
                             </div>
 
@@ -122,14 +120,14 @@
                                 publics étrangers, Permis B valide en France :</label>
                             <div class="col-md-7">
                                 <div class="form-check form-check-inline">
-                                    <input type="radio" name="permisBEtranger" id="permisBEtrangerOui" ngModel
+                                    <input type="radio" name="permisBEtranger" id="permisBEtrangeroui" ngModel
                                         value="oui" class="form-check-input">
-                                    <label for="permisBEtrangerOui" class="form-check-label">Oui</label>
+                                    <label for="permisBEtrangeroui" class="form-check-label">oui</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input type="radio" name="permisBEtranger" id="permisBEtrangerNon" ngModel
+                                    <input type="radio" name="permisBEtranger" id="permisBEtrangernon" ngModel
                                         value="non" class="form-check-input">
-                                    <label for="permisBEtrangerNon" class="form-check-label">Non</label>
+                                    <label for="permisBEtrangernon" class="form-check-label">non</label>
                                 </div>
                             </div>
 
@@ -171,50 +169,62 @@
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="nationaliteFrancaise" ngModel
                                         value="oui">
-                                    <label class="form-check-label" for="nationaliteFrancaise_oui">Oui</label>
+                                    <label class="form-check-label" for="nationaliteFrancaise_oui">oui</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="nationaliteFrancaise" ngModel
                                         value="non">
-                                    <label class="form-check-label" for="nationaliteFrancaise_non">Non</label>
+                                    <label class="form-check-label" for="nationaliteFrancaise_non">non</label>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group row" *ngIf="myForm.value.nationaliteFrancaise=='oui'">
-                            <div for="pieceIdentiteAJour" class="col-md-4">
-                                Possédez-vous une pièce d'identité à jour ?
-                            </div>
-                            <div class="col-md-8">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="pieceIdentiteAJour" value="oui">
-                                    <label class="form-check-label" for="pieceIdentiteAJour_oui">Oui</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="pieceIdentiteAJour" ngModel
-                                        value="non">
-                                    <label class="form-check-label" for="pieceIdentiteAJour_non">Non</label>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- si nationalité française -->
+                        <ng-container *ngIf="myForm.value.nationaliteFrancaise=='oui'">
 
-                        <div *ngIf="myForm.value.pieceIdentiteAJour=='non' && myForm.value.nationaliteFrancaise=='oui'"
-                            class="form-group row">
-                            <div class="pt-2 col-md-4">
-                                Votre renouvellement est-il en cours ?
-                            </div>
-                            <div class="col-md-8">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="renouvellementPIEnCours"
-                                        id="renouvellementPIEnCours_oui" ngModel value="oui">
-                                    <label class="form-check-label" for="renouvellementPIEnCours_oui">Oui</label>
+                            <div class="form-group row">
+                                <div for="pieceIdentiteAJour" class="pt-2 col-md-4">
+                                    Possédez-vous une pièce d'identité à jour ?
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="renouvellementPIEnCours"
-                                        id="renouvellementPIEnCours_non" ngModel value="non">
-                                    <label class="form-check-label" for="renouvellementPIEnCours_non">Non</label>
+                                <div class="col-md-8">
+                                    <div class="form-check form-check-inline">
+                                        <!-- c'est un boolean !!!! -->
+                                        <!-- <input class="form-check-input" type="radio" name="pieceIdentiteAJour" value="oui"> -->
+                                        <input class="form-check-input" type="radio" name="pieceIdentiteAJour"
+                                            value=true>
+                                        <label class="form-check-label" for="pieceIdentiteAJour">oui</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <!-- <input class="form-check-input" type="radio" name="pieceIdentiteAJour" ngModel
+                                            value="non"> -->
+                                        <input class="form-check-input" type="radio" name="pieceIdentiteAJour" ngModel
+                                            value=false>
+                                        <label class="form-check-label" for="pieceIdentiteAJour">non</label>
+                                    </div>
                                 </div>
+                                <ng-container *ngIf="!!myForm.value.pieceIdentiteAJour">
+                                    <div class="pt-2 col-md-4">
+                                        Votre renouvellement est-il en cours ?
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="form-check form-check-inline">
+                                            <!-- c'est un boolean, pas un string ! -->
+                                            <!-- <input class="form-check-input" type="radio" name="renouvellementPIEnCours"
+                                                id="renouvellementPIEnCours_oui" ngModel value="oui"> -->
+                                            <input class="form-check-input" type="radio" name="renouvellementPIEnCours"
+                                                id="renouvellementPIEnCours_oui" ngModel value=true>
+                                            <label class="form-check-label" for="renouvellementPIEnCours">oui</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="renouvellementPIEnCours"
+                                                id="renouvellementPIEnCours_non" ngModel value=false>
+                                            <label class="form-check-label" for="renouvellementPIEnCours">non</label>
+                                        </div>
+                                    </div>
+                                </ng-container>
                             </div>
-                        </div>
+
+                        </ng-container>
+                        <!-- fin si française -->
 
                         <!-- attention à ce qu'il ne se retrouve pas inséré dans une autre boucle !!!  -->
                         <!-- <h1>{{myForm.value.nationaliteFrancaise | json}}</h1> -->
@@ -289,13 +299,12 @@
                 <div id="collapseFor" class="collapse" data-bs-parent="#accordion">
                     <div class="card-body">
                         <!-- début éléments de formulaire -->
+                        <!-- Historique Emploi (Votre situation) -->
                         <div class="form-group">
-                            <div class="text-decoration-underline pt-3 pb-2" for="demandeurEmploi">Demandeur
-                                d'Emploi</div>
                             <div class="form-check">
+                                <label class="form-check-label text-decoration-underline">Inscrit à Pôle Emploi</label>
                                 <input class="form-check-input" type="checkbox" name="inscritPoleEmploi"
                                     [(ngModel)]="inscritPoleEmploi" value="oui">
-                                <label class="form-check-label">Inscrit à POLE EMPLOI</label>
                             </div>
 
                             <div *ngIf="inscritPoleEmploi" class="form-group mt-3">
@@ -309,13 +318,13 @@
                                     (RSA)</div>
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="form-check">
-                                        <label class="form-check-label">Oui</label>
+                                        <label class="form-check-label">oui</label>
                                         <input class="form-check-input" type="radio"
                                             name="beneficiaireMinimaSociauxDetail"
                                             id="beneficiaireMinimaSociauxDetail_oui" ngModel value="oui">
                                     </div>
                                     <div class="form-check">
-                                        <label class="form-check-label">Non</label>
+                                        <label class="form-check-label">non</label>
                                         <input class="form-check-input" type="radio"
                                             name="beneficiaireMinimaSociauxDetail"
                                             id="beneficiaireMinimaSociauxDetail_non" ngModel value="non">
@@ -323,163 +332,171 @@
                                 </div>
                                 <!-- fin RSA -->
                             </div>
-                            <hr>
+
 
                             <!-- <div class="form-group"> -->
-
-                            <div class="text-decoration-underline pt-3 pb-2">Salarié en CDI ? </div>
-                            <div class="d-flex  align-items-center gap-3">
-
-                                <label for="yearsInCdi" class="form-label">Depuis combien d'années ?</label>
-                                <input type="number" class="form-control" ngModel name="yearsInCdi">
-                            </div>
-                            <div class="text-decoration-underline pt-3 pb-2">Pouvez-vous justifier d'une ancienneté de
-                                24 mois en
-                                qualité de salarié, dont 12 mois dans la même entreprise ?</div>
-                            <div class="d-flex  align-items-center gap-3">
-                                <div class="form-check">
-                                    <label class="form-check-label">Oui</label>
-                                    <input class="form-check-input" type="radio" name="cdiAnciennete" value="Oui"
-                                        ngModel>
+                            <!-- pour tout ce qu'il faut masquer si Inscrit à Pôle Emploi -->
+                            <ng-container *ngIf="!myForm.value.inscritPoleEmploi">
+                                <hr>
+                                <div class="text-decoration-underline pt-3 pb-2">Salarié en CDI ? </div>
+                                <div class="d-flex  align-items-center gap-3">
+                                    <label for="yearsInCdi" class="form-label">Depuis combien d'années ?</label>
+                                    <input type="number" class="form-control" ngModel name="yearsInCdi">
                                 </div>
-                                <div class="form-check">
-                                    <label class="form-check-label">Non</label>
-                                    <input class="form-check-input" type="radio" name="cdiAnciennete" value="Non"
-                                        ngModel>
-                                </div>
-                            </div>
-
-                            <hr>
-
-                            <div class="text-decoration-underline pt-3 pb-2">Salarié en CDD ?</div>
-                            <div class="d-sm-flex align-items-center gap-3">
-                                <div class="form-group">
-                                    <label class="form-label" for="cddDuration">Durée du contrat (en mois) :</label>
-                                    <input type="number" class="form-control" ngModel name="cddDuration">
-                                </div>
-                                <div class="form-group d-block d-md-inline">
-                                    <label class="form-label">Date de fin du contrat :</label>
-                                    <input type="date" class="form-control" ngModel name="cddEndDate">
-                                </div>
-                            </div>
-
-                            <div class="text-decoration-underline pt-3 pb-2">Pouvez-vous justifier de 24 mois d'activité
-                                professionnelle
-                                dans les 5 dernières années, dont 4
-                                mois en CDD au cours de la dernière année ?</div>
-                            <div class="d-flex  align-items-center gap-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="cddAnciennete" value="Oui"
-                                        ngModel>
-                                    <label class="form-check-label">Oui</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="cddAnciennete" value="Non"
-                                        ngModel>
-                                    <label class="form-check-label"> Non</label>
-                                </div>
-                            </div>
-
-                            <hr>
-
-                            <div class="text-decoration-underline pt-3 pb-2">Êtes-vous intérimaire ?</div>
-                            <div class="d-flex  align-items-center gap-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="interimaire" value="Oui" ngModel>
-                                    <label class="form-check-label">Oui</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="interimaire" value="Non" ngModel>
-                                    <label class="form-check-label">Non</label>
-                                </div>
-                            </div>
-                            <!-- ngIf  interimaire -->
-                            <!-- {{myForm.value.interimaire | json}} -->
-                            <div *ngIf="myForm.value.interimaire==='Oui'">
-
-                                <div class="d-lg-flex gap-3 my-1 gap-5">
-                                    <div class="form-group">
-                                        <label for="interim-mois" class="form-label pt-2">Depuis combien de temps (en
-                                            mois) ?</label>
-                                        <input type="number" class="form-control" name="interim_mois" ngModel>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="interim_date_fin" class="pt-2">Date de fin de contrat :</label>
-                                        <input type="date" class="form-control" name="interim_date_fin" ngModel>
-                                    </div>
-                                </div>
-                                <div class="pt-2">Avez-vous justifié d'une ancienneté de 1600 heures en tant
-                                    qu'intérimaire au cours des 18 derniers mois, dont 600 heures dans une même
-                                    entreprise du travail temporaire ?</div>
+                                <div class="fst-italic pt-3 pb-2">Pouvez-vous justifier d'une ancienneté
+                                    de 24 mois en qualité de salarié, dont 12 mois dans la même entreprise ?</div>
                                 <div class="d-flex  align-items-center gap-3">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="interim_anciennete"
-                                            value="Oui" ngModel>
-                                        <label class="form-check-label"> Oui</label>
+                                        <label class="form-check-label">oui</label>
+                                        <input class="form-check-input" type="radio" name="cdiAnciennete" value="oui"
+                                            ngModel>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="interim_anciennete"
-                                            value="Non" ngModel>
-                                        <label class="form-check-label">Non</label>
+                                        <label class="form-check-label">non</label>
+                                        <input class="form-check-input" type="radio" name="cdiAnciennete" value="non"
+                                            ngModel>
                                     </div>
                                 </div>
 
-                            </div>
+                                <hr>
 
-                            <div class="text-decoration-underline pt-3 pb-2">Êtes-vous étudiant ?</div>
-                            <div class="d-flex  align-items-center gap-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="etudiant" value="Oui" ngModel>
-                                    <label class="form-check-label">Oui</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="etudiant" value="Non"
-                                        ngModel><label class="form-check-label"> Non</label>
+                                <div class="text-decoration-underline pt-3 pb-2">Salarié en CDD ?</div>
+                                <div class="d-sm-flex align-items-center gap-3">
+                                    <div class="form-group">
+                                        <label class="form-label" for="cddDuration">Durée du contrat (en mois) :</label>
+                                        <input type="number" class="form-control" ngModel name="cddDuration">
+                                    </div>
+                                    <div class="form-group d-block d-md-inline">
+                                        <label class="form-label">Date de fin du contrat :</label>
+                                        <input type="date" class="form-control" ngModel name="cddEndDate">
+                                    </div>
                                 </div>
 
-                                <!-- <div class="form-check">
+                                <div class="fst-italic pt-3 pb-2">Pouvez-vous justifier de 24 mois
+                                    d'activité professionnelle dans les 5 dernières années, dont 4 mois en CDD au cours
+                                    de la dernière année ?</div>
+                                <div class="d-flex  align-items-center gap-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="cddAnciennete" value="oui"
+                                            ngModel>
+                                        <label class="form-check-label">oui</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="cddAnciennete" value="non"
+                                            ngModel>
+                                        <label class="form-check-label"> non</label>
+                                    </div>
+                                </div>
+
+                                <hr>
+
+                                <div class="text-decoration-underline pt-3 pb-2">Êtes-vous intérimaire ?</div>
+                                <div class="d-flex  align-items-center gap-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="interimaire" value="oui"
+                                            ngModel>
+                                        <label class="form-check-label">oui</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="interimaire" value="non"
+                                            ngModel>
+                                        <label class="form-check-label">non</label>
+                                    </div>
+                                </div>
+                                <!-- ngIf  interimaire -->
+                                <!-- {{myForm.value.interimaire | json}} -->
+                                <div *ngIf="myForm.value.interimaire==='oui'">
+
+                                    <div class="d-lg-flex gap-3 my-1 gap-5">
+                                        <div class="form-group">
+                                            <label for="interim-mois" class="form-label pt-2">Depuis combien de temps
+                                                (en mois) ?</label>
+                                            <input type="number" class="form-control" name="interim_mois" ngModel>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="interim_date_fin" class="pt-2">Date de fin de contrat :</label>
+                                            <input type="date" class="form-control" name="interim_date_fin" ngModel>
+                                        </div>
+                                    </div>
+                                    <div class="pt-2">Avez-vous justifié d'une ancienneté de 1600 heures en tant
+                                        qu'intérimaire au cours des 18 derniers mois, dont 600 heures dans une même
+                                        entreprise du travail temporaire ?</div>
+                                    <div class="d-flex  align-items-center gap-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="interim_anciennete"
+                                                value="oui" ngModel>
+                                            <label class="form-check-label"> oui</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="interim_anciennete"
+                                                value="non" ngModel>
+                                            <label class="form-check-label">non</label>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="text-decoration-underline pt-3 pb-2">Êtes-vous étudiant ?</div>
+                                <div class="d-flex  align-items-center gap-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="etudiant" value="oui"
+                                            ngModel>
+                                        <label class="form-check-label">oui</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="etudiant" value="non"
+                                            ngModel><label class="form-check-label"> non</label>
+                                    </div>
+
+                                    <!-- <div class="form-check">
                                 <label for="etudiant_date_fin" class="pt-2">Date de fin de votre scolarité :</label>
                                 <input type="date" class="form-control" name="etudiant_date_fin" ngModel>
                             </div> -->
-                            </div>
+                                </div>
 
-                            <div class="text-decoration-underline pt-3 pb-2">Êtes-vous militaire ?</div>
-                            <div class="d-flex  align-items-center gap-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="militaire" value="Oui" ngModel>
-                                    <label class="form-check-label"> Oui</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="militaire" value="Non" ngModel>
-                                    <label class="form-check-label"> Non</label>
-                                </div>
-                            </div>
-
-                            <!-- SI militaire -->
-                            <ng-container *ngIf="myForm.value.militaire==='Oui'">
-                                <div class="form-group">
-                                    <label for="militaire_date_debut" class="pt-2">Date de début de votre reconversion
-                                        :</label>
-                                    <input type="date" class="form-control" name="militaire_date_debut" ngModel>
-                                </div>
-                                <div class="form-group">
-                                    <label class="text-decoration-underline pt-3 pb-2">Avez-vous fait part de votre
-                                        projet à votre Conseiller Mobilité?</label>
-                                    <div class="d-flex  align-items-center gap-3">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="militaire_conseiller"
-                                                value="Oui" ngModel><label class="form-check-label">
-                                                Oui</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="militaire_conseiller"
-                                                value="Non" ngModel><label class="form-check-label">
-                                                Non</label>
-                                        </div>
+                                <div class="text-decoration-underline pt-3 pb-2">Êtes-vous militaire ?</div>
+                                <div class="d-flex  align-items-center gap-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="militaire" value="oui"
+                                            ngModel>
+                                        <label class="form-check-label"> oui</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="militaire" value="non"
+                                            ngModel>
+                                        <label class="form-check-label"> non</label>
                                     </div>
                                 </div>
+
+                                <!-- SI militaire -->
+                                <ng-container *ngIf="myForm.value.militaire==='oui'">
+                                    <div class="form-group">
+                                        <label for="militaire_date_debut" class="pt-2">Date de début de votre
+                                            reconversion
+                                            :</label>
+                                        <input type="date" class="form-control" name="militaire_date_debut" ngModel>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="text-decoration-underline pt-3 pb-2">Avez-vous fait part de votre
+                                            projet à votre Conseiller Mobilité?</label>
+                                        <div class="d-flex  align-items-center gap-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="militaire_conseiller"
+                                                    value="oui" ngModel><label class="form-check-label">
+                                                    oui</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="militaire_conseiller"
+                                                    value="non" ngModel><label class="form-check-label">
+                                                    non</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                                <!-- fin de SI militaire -->
                             </ng-container>
-                            <!-- fin de SI militaire -->
+
+                            <!-- fin de Si PAS Inscrit à Pole Emploi -->
                             <hr>
                             <div class="form-group">
                                 <div class="text-decoration-underline pt-3 pb-2">Possédez-vous une reconnaissance
@@ -488,26 +505,28 @@
                                 <div class="d-flex  align-items-center gap-3">
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="handicap"
-                                            [(ngModel)]="handicap" value="Oui"><label class="form-check-label">
-                                            Oui</label>
+                                            [(ngModel)]="handicap" value="oui"><label class="form-check-label">
+                                            oui</label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="handicap"
-                                            [(ngModel)]="handicap" value="Non"><label class="form-check-label">
-                                            Non</label>
+                                            [(ngModel)]="handicap" value="non"><label class="form-check-label">
+                                            non</label>
                                     </div>
                                 </div>
-                                <div *ngIf="handicap === 'Oui'">
+                                <!-- c'est un boolean !!! -->
+                                <!-- <div *ngIf="handicap === 'oui'"> -->
+                                <div *ngIf="handicap">
                                     <div class="text-decoration-underline pt-3 pb-2">Êtes-vous suivi par CAP EMPLOI ?
                                     </div>
                                     <div class="d-flex  align-items-center gap-3">
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="suiviCapEmploi"
-                                                value="Oui" ngModel><label class="form-check-label"> Oui</label>
+                                                value="oui" ngModel><label class="form-check-label"> oui</label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="suiviCapEmploi"
-                                                value="Non" ngModel><label class="form-check-label"> Non</label>
+                                                value="non" ngModel><label class="form-check-label"> non</label>
                                         </div>
                                     </div>
                                 </div>
@@ -519,6 +538,8 @@
                             </div>
 
                         </div>
+
+                        <!-- fin Historique Emploi -->
                         <hr>
                     </div>
                 </div>
@@ -606,18 +627,18 @@
 
                         <div class="d-flex  align-items-center gap-3">
                             <div class="form-check">
-                                <label class="form-check-label">Oui</label>
-                                <input class="form-check-input" type="radio" name="demandeFinancement" value="Oui"
+                                <label class="form-check-label">oui</label>
+                                <input class="form-check-input" type="radio" name="demandeFinancement" [value]=true
                                     [(ngModel)]="demandeFinancement">
                             </div>
                             <div class="form-check">
-                                <label class="form-check-label">Non</label>
-                                <input class="form-check-input" type="radio" name="demandeFinancement" value="Non"
+                                <label class="form-check-label">non</label>
+                                <input class="form-check-input" type="radio" name="demandeFinancement" [value]=false
                                     [(ngModel)]="demandeFinancement">
                             </div>
                         </div>
 
-                        <div *ngIf="demandeFinancement === 'Oui'">
+                        <div *ngIf="demandeFinancement !== undefined && demandeFinancement">
                             <div class="text-decoration-underline pt-3 pb-2">Choisissez le type de financement :</div>
                             <!-- on reprend tout -->
                             <div class="form-check">
@@ -636,12 +657,12 @@
                                     value="Agefiph" ngModel>
                             </div>
                             <div class="form-check">
-                                <label class="form-check-label">Autre</label>
+                                <label class="form-check-label" for="financementAutre">Autre</label>
                                 <input class="form-check-input" type="checkbox" name="financementAutre" value="autre"
                                     ngModel>
-                                <input class="form-control mt-1" type="text" name="autreFinancement" ngModel
-                                    placeholder="Préciser...">
                             </div>
+                            <input class="form-control mt-1" type="text" name="financementDetails" ngModel
+                                placeholder="Préciser...">
 
                             <label class="text-decoration-underline pt-3 pb-2" for="formation">Pour quelle formation ?
                             </label>
@@ -651,22 +672,22 @@
                         <div class="d-flex  align-items-center gap-3">
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="droitsCPF" value="oui" ngModel>
-                                <label class="form-check-label"> Oui </label>
+                                <label class="form-check-label"> oui </label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="droitsCPF" value="non" ngModel>
-                                <label class="form-check-label"> Non </label>
+                                <label class="form-check-label"> non </label>
                             </div>
                         </div>
                         <div class="text-decoration-underline pt-3 pb-2">Avez-vous créé votre COMPTE CPF ?</div>
                         <div class="d-flex  align-items-center gap-3">
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="compteCPF" value="oui" ngModel>
-                                <label class="form-check-label"> Oui</label>
+                                <label class="form-check-label"> oui</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="compteCPF" value="non" ngModel>
-                                <label class="form-check-label"> Non </label>
+                                <label class="form-check-label"> non </label>
                             </div>
                         </div>
                         <!-- fin éléments de formulaire -->
@@ -768,19 +789,25 @@
                         <!-- <div class="form-group"> -->
                         <div class="d-flex align-items-center gap-3">
                             <div class="form-check">
-                                <label class="form-check-label">Oui</label>
-                                <input class="form-check-input" type="radio" name="promesseEmbauche" value="Oui"
+                                <label class="form-check-label">oui</label>
+                                <!-- c'est un boolean !!! -->
+                                <!-- <input class="form-check-input" type="radio" name="promesseEmbauche" value="oui"
+                                    [(ngModel)]="promesseEmbauche"> -->
+                                <input class="form-check-input" type="radio" name="promesseEmbauche" [value]=true
                                     [(ngModel)]="promesseEmbauche">
                             </div>
                             <div class="form-check">
-                                <label class="form-check-label">Non</label>
-                                <input class="form-check-input" type="radio" name="promesseEmbauche" value="Non"
+                                <label class="form-check-label">non</label>
+                                <input class="form-check-input" type="radio" name="promesseEmbauche" [value]=false
                                     [(ngModel)]="promesseEmbauche">
                             </div>
                         </div>
 
-                        <!-- pour toute la partie subordonnée au Oui -->
-                        <ng-container *ngIf="promesseEmbauche === 'Oui'">
+                        <!-- pour toute la partie subordonnée au oui -->
+                        <!-- <ng-container *ngIf="promesseEmbauche === 'oui'"> -->
+                        Promesse embauche {{promesseEmbauche}}
+                        <div *ngIf="promesseEmbauche !== undefined && promesseEmbauche">
+
                             <div class="text-decoration-underline pt-3 pb-2">La durée du contrat de travail proposé
                                 suite à la formation</div>
                             <div class="form-check">
@@ -811,8 +838,7 @@
 
                             <!-- financement -->
                             <div class="text-decoration-underline pt-3 pb-2">Connaissez-vous le financement de cette
-                                formation
-                                ? </div>
+                                formation ? </div>
                             <div>
                                 <div class="form-check">
                                     <label class="form-check-label" for="financementPreFormation1"> Pôle Emploi (POEI,
@@ -844,11 +870,11 @@
                                 </div>
                             </div>
                             <!-- fin financement -->
-                        </ng-container>
+                        </div>
 
                         <!-- vous recherchez --->
-                        <ng-container *ngIf="promesseEmbauche === 'Non'">
-
+                        <!-- <div *ngIf="promesseEmbauche === false" > -->
+                        <div *ngIf="promesseEmbauche !== undefined && !promesseEmbauche">
                             <div class="text-decoration-underline pt-3 pb-2">Vous recherchez ?</div>
                             <div class="form-check">
                                 <label class="form-check-label" for="searchCdi">CDI</label>
@@ -916,17 +942,17 @@
                             </div>
                             <div class="d-flex align-items-center gap-5">
                                 <div class="form-check">
-                                    <label class="form-check-label">Oui</label>
+                                    <label class="form-check-label">oui</label>
                                     <input class="form-check-input" type="radio" name="travailExterieur" value="oui"
                                         ngModel>
                                 </div>
                                 <div class="form-check">
-                                    <label class="form-check-label">Non</label>
+                                    <label class="form-check-label">non</label>
                                     <input class="form-check-input" type="radio" name="travailExterieur" value="non"
                                         ngModel>
                                 </div>
                             </div>
-                        </ng-container>
+                        </div>
 
                     </div>
 
@@ -952,18 +978,21 @@
                     </div>
                     <div class="d-flex align-items-center gap-5">
                         <div class="form-check">
-                            <label class="form-check-label">Oui</label>
-                            <input class="form-check-input" type="radio" name="MoyenDeTransport" value="Oui"
+                            <label class="form-check-label">oui</label>
+                            <!-- <input class="form-check-input" type="radio" name="MoyenDeTransport" value="oui" -->
+                            <input class="form-check-input" type="radio" name="MoyenDeTransport" value=true
                                 [(ngModel)]="MoyenDeTransport">
                         </div>
                         <div class="form-check">
-                            <label class="form-check-label">Non</label>
-                            <input class="form-check-input" type="radio" name="MoyenDeTransport" value="Non"
+                            <label class="form-check-label">non</label>
+                            <!-- <input class="form-check-input" type="radio" name="MoyenDeTransport" value="non" -->
+                            <input class="form-check-input" type="radio" name="MoyenDeTransport" value=false
                                 [(ngModel)]="MoyenDeTransport">
                         </div>
                     </div>
-
-                    <div *ngIf="MoyenDeTransport === 'Oui'" class="pt-2">
+                    <!-- C'est un boolean !!! -->
+                    <!-- <div *ngIf="MoyenDeTransport === 'oui'" class="pt-2"> -->
+                    <div *ngIf="MoyenDeTransport" class="pt-2">
                         <div class="pt-2">Merci de préciser</div>
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="MoyenDeTransportVoiture" value="voiture"
