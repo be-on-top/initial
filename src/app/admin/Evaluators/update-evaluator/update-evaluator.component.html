@@ -48,7 +48,7 @@
         <h4 *ngIf="evaluator.sigle && evaluator.sigle.length>1">Métiers affectés à l'évaluateur :
             {{evaluator.sigle | json}}</h4>
         <label for="sigle" class="form-label mt-3">Affectation nouveau(x) métier(s) :</label>
-        <select class="form-select" name="sigle" id="sigle" [(ngModel)]="evaluator.sigle" required #sigle="ngModel"
+        <select class="form-select" name="sigle" [(ngModel)]="evaluator.sigle" required #sigle="ngModel"
             (change)="checkIfSelected(sigle.value)" multiple>
             <!-- <option>Selectionner le métier</option> -->
             <option *ngFor="let s of sigleIds" [value]=s>{{s}}</option>

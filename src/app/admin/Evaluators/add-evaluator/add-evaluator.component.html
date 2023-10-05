@@ -11,7 +11,8 @@
         <div class="row">
             <div class="form-group col-md-6">
                 <label for="firstName" class="form-label mt-3">Prénom *</label>
-                <input type="text" id="firstName" ngModel name="firstName" class="form-control" placeholder="Prénom" required>
+                <input type="text" id="firstName" ngModel name="firstName" class="form-control" placeholder="Prénom"
+                    required>
                 <div class="valid-feedback" *ngIf="lastName.valid">Champ correctement renseigné</div>
                 <div class="invalid-feedback" *ngIf="lastName.invalid">Merci de renseigner le champ nom.</div>
             </div>
@@ -31,8 +32,8 @@
                     <span class="input-group-text" id="inputGroupPrepend2">@</span>
                     <input type="email" id="email" ngModel name="email" class="form-control" #email="ngModel"
                         placeholder="Email" required>
-                        <div class="valid-feedback" *ngIf="email.valid">Email Valide </div>
-                        <div class="invalid-feedback" *ngIf="email.invalid">Merci de renseigner le champ email.</div>
+                    <div class="valid-feedback" *ngIf="email.valid">Email Valide </div>
+                    <div class="invalid-feedback" *ngIf="email.invalid">Merci de renseigner le champ email.</div>
                 </div>
             </div>
             <div class="form-group col-md-6">
@@ -43,7 +44,7 @@
         </div>
 
         <!-- affectation métier -->
-        <label for="sigle" class="form-label mt-3">Affectation métier :</label>
+        <!-- <label for="sigle" class="form-label mt-3">Affectation métier :</label>
         <select class="form-select" name="sigle" id="sigle" ngModel required #sigle="ngModel"
             (change)="checkIfSelected(sigle.value)" multiple>
             <option value>Selectionner le métier</option>
@@ -51,6 +52,13 @@
             <option value="poser_ite">POSEUR ITE</option>
             <option value="macon_vrd">MACON VRD</option>
             <option value="cl_vul">CLVUL</option>
+        </select> -->
+        <!-- avec le rattachement des sigles aux settings métier de l'application -->
+        <label for="sigle" class="form-label mt-3">Affectation métier(s) :</label>
+        <select class="form-select" name="sigle" id="sigle" ngModel required #sigle="ngModel"
+            (change)="checkIfSelected(sigle.value)" multiple>
+            <option>Selectionner le métier</option>
+            <option *ngFor="let s of sigleIds" [value]=s>{{s}}</option>
         </select>
 
         <!-- <label for="details" class="form-label mt-3">Commentaires optionnels</label> -->

@@ -1,6 +1,7 @@
 import { Component, ErrorHandler, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EvaluatorsService } from '../../evaluators.service';
+import { SettingsService } from '../../settings.service';
 
 
 
@@ -14,6 +15,8 @@ export class AddEvaluatorComponent implements OnInit {
   firstName: string = "";
   email: string = "";
   selectedSigles: string[] = []
+  // essai pour connecter le tableau des sigles aux documents de la collection sigles destinée aux paramétrages métier
+  sigleIds: string[] = []
 
   feedbackMessages?: any = ""
   isSuccessMessage: boolean = true
@@ -26,9 +29,10 @@ export class AddEvaluatorComponent implements OnInit {
     'auth/invalid-email': 'Aucun enregistrement ne correspond au mail fourni'
   }; // list of firebase error codes to alternate error messages
 
-  constructor(private service: EvaluatorsService, private router: Router) { }
+  constructor(private service: EvaluatorsService, private router: Router, private settingsService:SettingsService) { }
 
   ngOnInit(): void {
+    this.fetchSigleIds()
   }
 
 
@@ -57,7 +61,7 @@ export class AddEvaluatorComponent implements OnInit {
     })
       .catch((error) => {
         this.feedbackMessages = error.message;
-        this.feedbackMessages=this.firebaseErrors[error.code];
+        this.feedbackMessages = this.firebaseErrors[error.code];
         this.isSuccessMessage = false;
         console.log(this.feedbackMessages);
 
@@ -72,7 +76,18 @@ export class AddEvaluatorComponent implements OnInit {
   // pour affecation métier de l'évaluateur
   checkIfSelected(sigle: any) {
     console.log(sigle);
-    this.selectedSigles = [...this.selectedSigles, sigle]
+    this.selectedSigles.push(sigle)
+  }
+
+  fetchSigleIds() {
+    this.settingsService.getSigleIds()
+      .then((sigleIds) => {
+        this.sigleIds = sigleIds
+        alert(sigleIds);
+      })
+      .catch((error) => {
+        console.error('Erreur lors de la récupération des IDs de documents :', error);
+      });
   }
 
 }
