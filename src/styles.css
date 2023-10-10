@@ -35,19 +35,18 @@ h4,
     color: #B2BC00 !important;
 }
 
-.text-choiced {
+/* .text-choiced {
     color:  #8B00BD !important;
-}
+} */
 
 /* .bg-primary{
     background-color: #8B00BD!important;
 } */
 
 .bg-primary {
-    background-color: #8B00BD !important;
+    /* background-color: #8B00BD !important; */
+    background-color: #0E1CE6 !important;
 }
-
-
 
 .btn {
     /* box-shadow: 0 6px 10px rgba(0, 0, 0, .08), 0 0 6px rgba(0, 0, 0, .05); */
@@ -61,14 +60,14 @@ h4,
     box-shadow: 0 10px 20px rgba(0, 0, 0, .12), 0 4px 8px rgba(0, 0, 0, .06);
 }
 
-.bg-test:hover {
+/* .bg-test:hover {
     background-color: #B2BC00 !important;
-}
+} */
 
-.bg-dark,
+/* .bg-dark,
 .navbar-dark {
     background-color: #272A61 !important;
-}
+} */
 
 p.question {
     text-align: center;

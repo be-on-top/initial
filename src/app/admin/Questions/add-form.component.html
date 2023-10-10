@@ -1,57 +1,6 @@
 <div class="container py-5">
 
-    <!-- juste pour essai depuis les métiers réellement en base filtrés selon qu'ils sont ou pas affectés à l'évaluateur authentifié -->
-    <!-- <div class="col-sm-6 col-md-3 mb-1"> -->
-
-    <!-- <ng-container *ngIf="userData.sigle">
-                    <div *ngFor="let sigle of userData.sigle">
-                      {{ sigle }}
-                      <div *ngIf="relatedCompetences">
-                        <p *ngFor="let item of convertRelatedCompetencesToArray()">{{ item | json }}</p>
-                      </div>
-                    </div>
-                  </ng-container> -->
-
-    <!-- <ng-container *ngIf="userData.sigle">
-            <div *ngFor="let sigle of userData.sigle">
-                {{ sigle }}
-                <div *ngIf="relatedCompetences">
-                    <p *ngFor="let key of getKeys(relatedCompetences['competences_' + sigle])">{{ key }}: {{
-                        relatedCompetences['competences_' + sigle][key] }}</p>
-                </div>
-            </div>
-        </ng-container> -->
-
-    <!-- impeccable -->
-    <!-- <ng-container *ngIf="userData.sigle">
-            <div *ngFor="let sigle of userData.sigle">
-                {{ sigle }}
-                <div *ngIf="relatedCompetences">
-                    <ng-container
-                        *ngFor="let key of getKeys(relatedCompetences['competences_' + sigle]); let i = index">
-                        <p>CP{{ i + 1 }}: {{ relatedCompetences['competences_' + sigle][key] }}</p>
-                    </ng-container>
-                </div>
-            </div>
-        </ng-container> -->
-
-    <!-- <ng-container *ngIf="userData.sigle">
-            <div *ngFor="let sigle of userData.sigle">
-                {{ sigle }}
-                <div *ngIf="relatedCompetences" class="py-3">
-                    <select class="form-select">
-                        <option *ngFor="let key of getKeys(relatedCompetences['competences_' + sigle]); let i = index"
-                            [value]="key">
-                            CP{{ i + 1 }}: {{ relatedCompetences['competences_' + sigle][key] }}
-                        </option>
-                    </select>
-                </div>
-            </div>
-        </ng-container>
-
-    </div> -->
-
-    <h3 class="mb-5">Formulaire de saisie des questions de positionnement
+    <h3 class="mb-5">Formulaire de saisie des {{title}}
         <!-- <span *ngIf="userData.sigle">{{userData.sigle}}</span> -->
     </h3>
     <p *ngIf="registryNumbers.length!==0" class="border-dark bg-light rounded p-2" role="alert">Numéros de questions
