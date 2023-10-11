@@ -1,5 +1,7 @@
 <div class="container py-5">
 
+    {{arrayFilesToUpdate | json}}
+
     <h3>Mise à jour de la question {{result.number}} <span class="d-block fs-6 mt-1">id : {{questionId}}</span> </h3>
     <hr>
 
@@ -72,8 +74,9 @@
                     <!-- pour englober cas de modification et de reset sur question -->
                     <div class="alert alert-info">image : modification</div>
                     <div class="d-flex gap-2 justify-content-between">
-                        <input type="file" accept="image/*, video/*" [(ngModel)]="result.mediaQuestion" id="mediaQuestion" name="mediaQuestion"
-                            class="form-control" #mediaQuestion (change)="detectFiles($event, mediaQuestion, item)">
+                        <input type="file" accept="image/*, video/*" [(ngModel)]="result.mediaQuestion"
+                            id="mediaQuestion" name="mediaQuestion" class="form-control" #mediaQuestion
+                            (change)="detectFiles($event, mediaQuestion, item)">
                         <button type="button" class="btn btn-danger w-25"
                             (click)="resetFileInput('mediaQuestion', f, item)">Reset</button>
                     </div>
@@ -111,8 +114,8 @@
                     <!-- <label class="form-label mt-3" for="mediaOption1">Fichier à modifier</label> -->
                     <!-- pour englober la modification et le reset -->
                     <div class="d-flex gap-2 justify-content-between">
-                        <input type="file" id="mediaOption1" [(ngModel)]="result.mediaOption1" name="mediaOption1" class="form-control w-75"
-                            #mediaOption1="ngModel" placeholder="Fichier média de votre choix"
+                        <input type="file" id="mediaOption1" [(ngModel)]="result.mediaOption1" name="mediaOption1"
+                            class="form-control w-75" #mediaOption1="ngModel" placeholder="Fichier média de votre choix"
                             (change)="detectFiles($event, mediaOption1, item)">
                         <button type="button" class="btn btn-danger w-25"
                             (click)="resetFileInput('mediaOption1', f, item)">Reset</button>
@@ -166,8 +169,8 @@
                     <!-- <label class="form-label mt-3" for="mediaOption2">Fichier à modifier</label> -->
                     <!-- pour englober la modification et le reset -->
                     <div class="d-flex gap-2 justify-content-between">
-                        <input type="file" id="mediaOption2" [(ngModel)]="result.mediaOption2" name="mediaOption2" class="form-control w-75"
-                            #mediaOption2="ngModel" placeholder="Fichier média de votre choix"
+                        <input type="file" id="mediaOption2" [(ngModel)]="result.mediaOption2" name="mediaOption2"
+                            class="form-control w-75" #mediaOption2="ngModel" placeholder="Fichier média de votre choix"
                             (change)="detectFiles($event, mediaOption2, item)">
                         <button type="button" class="btn btn-danger w-25"
                             (click)="resetFileInput('mediaOption2', f, item)">Reset</button>
@@ -207,7 +210,7 @@
         <!-- réponse 3 -->
         <label for="option3" class="form-label mt-3">Réponse 3 * </label>
         <input type="text" id="option3" name="option3" [(ngModel)]="result.option3" class="form-control mb-3"
-            #option3="ngModel" placeholder="Option de réponse 3">
+            #option3="ngModel" placeholder="Option de réponse 3" [required]="isRequiredOption3">
         <!-- <div class="valid-feedback" *ngIf="option3.valid">Champ correctement renseigné</div> -->
         <div class="alert alert-danger">result.mediaOption3: {{result.mediaOption3}}</div>
 
@@ -220,8 +223,8 @@
                     <!-- <label class="form-label mt-3" for="mediaOption3">Fichier à modifier</label> -->
                     <!-- pour englober la modification et le reset -->
                     <div class="d-flex gap-2 justify-content-between">
-                        <input type="file" id="mediaOption3" [(ngModel)]="result.mediaOption3" name="mediaOption3" class="form-control w-75"
-                            #mediaOption3="ngModel" placeholder="Fichier média de votre choix"
+                        <input type="file" id="mediaOption3" [(ngModel)]="result.mediaOption3" name="mediaOption3"
+                            class="form-control w-75" #mediaOption3="ngModel" placeholder="Fichier média de votre choix"
                             (change)="detectFiles($event, mediaOption3, item)">
                         <button type="button" class="btn btn-danger w-25"
                             (click)="resetFileInput('mediaOption3', f, item)">Reset</button>
@@ -231,13 +234,14 @@
                 </div>
             </div>
         </div>
-        
+
         <ng-template #createOption3>
-            <div class="alert alert-info">image : ajout</div>
+            <div class="alert alert-info">image : ajout </div>
             <!-- pour englober l'ajout' et le reset -->
             <div class="d-flex gap-2 justify-content-between">
                 <input type="file" accept="image/*, video/*" id="mediaOption3" ngModel name="mediaOption3"
-                    class="form-control w-75" #mediaOption3="ngModel" (change)="detectNewFiles($event, mediaOption3)">
+                    class="form-control w-75" #mediaOption3="ngModel"
+                    (change)="detectNewFiles($event, mediaOption3, 'mediaOption3')">
                 <button type="button" class="btn btn-danger w-25"
                     (click)="resetFileInput('mediaOption3', f, '')">Reset</button>
             </div>
@@ -262,7 +266,7 @@
         <!-- réponse 4 -->
         <label for="option4" class="form-label mt-3">Réponse 4 * </label>
         <input type="text" id="option4" name="option4" [(ngModel)]="result.option4" class="form-control mb-3"
-            #option4="ngModel" placeholder="Option de réponse 4">
+            #option4="ngModel" [required]="isRequiredOption4" placeholder="Option de réponse 4">
         <!-- <div class="valid-feedback" *ngIf="option4.valid">Champ correctement renseigné</div> -->
         <!-- {{allMediasResponses | json}} -->
         <div class="alert alert-danger">result.mediaOption4 : {{result.mediaOption4}}</div>
@@ -275,8 +279,8 @@
                     <!-- <label class="form-label mt-3" for="mediaOption4">Fichier à modifier</label> -->
                     <!-- pour englober la modifiction et le reset -->
                     <div class="d-flex gap-2 justify-content-between">
-                        <input type="file" id="mediaOption4" [(ngModel)]="result.mediaOption4" name="mediaOption4" class="form-control"
-                            #mediaOption4="ngModel" placeholder="Fichier média de votre choix"
+                        <input type="file" id="mediaOption4" [(ngModel)]="result.mediaOption4" name="mediaOption4"
+                            class="form-control" #mediaOption4="ngModel" placeholder="Fichier média de votre choix"
                             (change)="detectFiles($event, mediaOption4, item)">
                         <button type="button" class="btn btn-danger w-25"
                             (click)="resetFileInput('mediaOption4', f, item)">Reset</button>
@@ -291,7 +295,8 @@
             <!-- pour englober l'ajout et le reset -->
             <div class="d-flex gap-2 justify-content-between">
                 <input type="file" accept="image/*, video/*" id="mediaOption4" ngModel name="mediaOption4"
-                    class="form-control w-75" #mediaOption4="ngModel" (change)="detectNewFiles($event, mediaOption4)">
+                    class="form-control w-75" #mediaOption4="ngModel"
+                    (change)="detectNewFiles($event, mediaOption4, 'mediaOption4')">
                 <button type="button" class="btn btn-danger w-25"
                     (click)="resetFileInput('mediaOption4', f, '')">Reset</button>
             </div>

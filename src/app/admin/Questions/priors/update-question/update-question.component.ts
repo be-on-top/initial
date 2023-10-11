@@ -64,6 +64,8 @@ export class UpdateQuestionComponents implements OnInit {
   isActive2: boolean = true
   isActive3: boolean = true
   isActive4: boolean = true
+  isRequiredOption3: boolean = false
+  isRequiredOption4: boolean = false
 
   constructor(private service: QuestionsService, private ac: ActivatedRoute, private router: Router) {
   }
@@ -112,6 +114,7 @@ export class UpdateQuestionComponents implements OnInit {
     if (form.value.optScoring3 === null) {
       delete form.value.optScoring3;
     }
+
     if (form.value.optScoring4 === null) {
       delete form.value.optScoring4;
     }
@@ -127,6 +130,8 @@ export class UpdateQuestionComponents implements OnInit {
 
   //  fonction en cas de modification d'un média existant
   detectFiles(event: any, fieldName: any, item: any = "") {
+    alert(fieldName)
+
     // console.log("fieldName.name", fieldName.name);
     alert(`êtes-vous certain de vouloir remplacer le fichier ${item} ?`)
     this.service.deleteMedia(item)
@@ -150,6 +155,15 @@ export class UpdateQuestionComponents implements OnInit {
   detectNewFiles(event: any, fieldName: any, item: any = "") {
     // console.log("fieldName.name", fieldName.name);
     // console.log("Type de fichier", event.target.files[0].type);
+    // ce n'était pas prévu pour ça mais pour rendre option 2 ou 3 obligatoire si les inputs file associés sont remplis
+    if (item === 'mediaOption3') {
+      this.result.mediaOption3 = event.target.files[0];
+      this.isRequiredOption3 = true;
+    } else if (item === 'mediaOption4') {
+      this.result.mediaOption4 = event.target.files[0];
+      this.isRequiredOption4 = true;
+    }
+
     alert("new file")
 
     event.target.files[0].type === "video/mp4" ? this.isVideo = true : this.isVideo = false;
@@ -170,6 +184,14 @@ export class UpdateQuestionComponents implements OnInit {
 
   resetFileInput(fieldName: string, form: NgForm, item: string) {
     // Réinitialise la valeur du champ de fichier dans le formulaire
+    form.controls[fieldName].setValue('');
+    // Réinitialise la variable isRequiredOptionX correspondante
+    if (fieldName === 'mediaOption3') {
+      this.isRequiredOption3 = false;
+    } else if (fieldName === 'mediaOption4') {
+      this.isRequiredOption4 = false;
+    }
+
     // form.controls[fieldName].reset();
     // Supprime le fichier de arrayFilesToUpload (si nécessaire)
     const fileIndex = this.arrayFilesToUpdate.findIndex((item: any) => item[1] === fieldName);
@@ -179,30 +201,31 @@ export class UpdateQuestionComponents implements OnInit {
     // détection du cas de modification
     if (item !== '') {
       this.service.deleteMedia(item)
-      if (fieldName=='mediaQuestion') {
+      if (fieldName == 'mediaQuestion') {
         this.isActive = false
       }
-      
-      if(fieldName=='mediaOption1') {
+
+      if (fieldName == 'mediaOption1') {
         this.isActive1 = false
-        
       }
 
-      if(fieldName=='mediaOption2') {
+      if (fieldName == 'mediaOption2') {
         this.isActive2 = false
-        
       }
-      if(fieldName=='mediaOption3') {
-        this.isActive3 = false        
+
+      if (fieldName == 'mediaOption3') {
+        this.isActive3 = false
       }
+
       else {
         this.isActive4 = false
-        
+
       }
-  
+
     }
 
   }
 
 
 }
+

@@ -43,3 +43,9 @@ video {
   width: 100%;
   height: auto;
 }
+
+
+/* input.ng-dirty.ng-invalid,
+textarea.ng-dirty.ng-invalid {
+    border-color: red;
+} */
