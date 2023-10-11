@@ -168,11 +168,37 @@ export class UpdateQuestionComponents implements OnInit {
 
     event.target.files[0].type === "video/mp4" ? this.isVideo = true : this.isVideo = false;
 
-    if (event.target.files[0].size > 1800000) {
-      alert("File is too big!")
-    }
+    // if (event.target.files[0].size > 1800000) {
+    //   alert("File is too big!")
+    // }
 
-    this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name])
+    // this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name])
+
+
+      // code de fullForm en ajout simple **************************************************
+      console.log(event.target.files[0].size);
+      console.log('fieldName.name', fieldName.name);
+  
+      // Vérifie la taille du fichier et le type avant de l'ajouter
+      if (event.target.files[0].size <= 5000000) {
+        // Vérifie si le fichier avec le même nom existe déjà dans arrayFilesToUpload
+        const existingFileIndex = this.arrayFilesToUpdate.findIndex((item: any) => item[1] === fieldName.name);
+  
+  
+        if (existingFileIndex !== -1) {
+          // Si le fichier existe déjà, le supprime
+          this.arrayFilesToUpdate.splice(existingFileIndex, 1);
+          alert('Changement d\'image détecté. Ancien fichier supprimé.');
+        }
+  
+        // Ajoute le nouveau fichier à arrayFilesToUpload
+        this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name, event.target.files[0].type]);
+        console.log("this.arrayFilesToUpload !!!!", this.arrayFilesToUpdate);
+  
+      } else {
+        // Fichier trop volumineux, affiche une alerte
+        alert("Le fichier est trop volumineux (limite : 5 Mo) !");
+      }
 
   }
 
