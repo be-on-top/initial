@@ -1,19 +1,18 @@
 <div class="container py-5">
 
     <h3>Liste des questions de positionnement pour aperçu</h3>
-    <div class="alert alter-info">
-        sigleIds = {{sigleIds | json}}
-    </div>
+    
+        <!-- sigleIds = {{sigleIds | json}} -->
 
-    <div *ngIf="sigleIds" class="mx-auto my-5">
-        <select name="sigle" class="form-control" (change)="onChange($event)">
+    <div *ngIf="sigleIds && sigleIds.length>1" class="mx-auto my-5">
+        <select name="sigle" class="form-control bg-light" (change)="onChange($event)">
+            <option >Filtrer en fonction du métier</option>
             <option *ngFor="let s of sigleIds" [value]="s">{{s}}</option>
         </select>
     </div>
 
 
     <div *ngIf="questions">
-
         <!-- pour recracher autant de vues de détails qu'il y a de questions -->
         <div *ngFor="let q of questions">
             <!-- {{q | json}} -->

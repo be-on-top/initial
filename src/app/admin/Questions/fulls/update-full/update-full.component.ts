@@ -88,14 +88,13 @@ export class UpdateFullComponent {
       this.numbers.push(i)
       console.log(this.numbers);
     }
-
   }
 
 
   updateForm(form: NgForm) {
     // on vérifie la validité du formulaire
     if (!form.valid) {
-      console.log('form valid');
+      console.log('form valid')
       return
     }
 
@@ -193,13 +192,10 @@ export class UpdateFullComponent {
   }
 
 
-
-
-
-  readFile(fieldName: any) {
-    alert("dddddd")
-    console.log("ce que je récupère", fieldName);
-  }
+  // readFile(fieldName: any) {
+  //   alert("dddddd")
+  //   console.log("ce que je récupère", fieldName);
+  // }
 
   resetFileInput(fieldName: string, form: NgForm, item: string) {
     form.controls[fieldName].setValue('');

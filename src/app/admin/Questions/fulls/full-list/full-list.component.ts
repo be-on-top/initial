@@ -26,8 +26,7 @@ export class FullListComponent {
     this.activatedRoute.queryParams.subscribe(params => {
       this.sigleIds = params['sigleIds'];
       console.log('Sigle IDs:', this.sigleIds)
-    });
-
+    })
 
   }
 
@@ -57,10 +56,13 @@ export class FullListComponent {
         this.questions = this.questions.filter(q => this.sigleIds.includes(q.sigle))
       } else {
         // Si on accède à la liste sans paramètres, dans ce cas, c'est le(s) sigle(s) rattaché à l'évaluateur qui doit intervenir
-        this.getUserSigles(this.authService.user) 
+        this.getUserSigles(this.authService.user).pipe(map((q:any)=>q.number>20))
+        .subscribe((userData:any)=>this.questions=userData) 
         // this.questions = this.questions.filter(q => this.sigleIds.includes(q.sigle))
         // alert(this.sigleIds)
       }
+
+
 
       // Trie les questions par ordre 
       this.questions.sort(this.compare)
@@ -132,7 +134,7 @@ export class FullListComponent {
     // Appelle la méthode du service pour obtenir toutes les questions depuis Firestore
     return this.service.getQuestions().pipe(
       // Utilise l'opérateur map pour filtrer les questions en fonction du sigle
-      map(questions => questions.filter(question => question.sigle === sigle))
+      map(questions => questions.filter(question => question.sigle === sigle && question.number>20))
     )
 
   }

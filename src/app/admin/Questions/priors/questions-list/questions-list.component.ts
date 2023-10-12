@@ -38,7 +38,6 @@ export class QuestionsListComponent implements OnInit {
 
       this.questions = allQuestions.filter(q => q.number < 21)
 
-
       // Si sigleIds est défini et non vide, filtre également par sigles
       if (this.sigleIds && this.sigleIds.length > 0) {
         this.questions = this.questions.filter(q => this.sigleIds.includes(q.sigle))
