@@ -240,7 +240,7 @@ export class QuestionsService {
     listAll(mediasResponsesRef)
       .then(async response => {
         for (let item of response.items) {
-          console.log("esssai recuperation media by id", item.fullPath.includes(id));
+          // console.log("esssai recuperation media by id", item.fullPath.includes(id));
           // anciennement : 
           // item.fullPath.includes(id) == true ? mediasResponsesById.push(item.fullPath.includes(id)) : ""
           // depuis les mises à jour effectuées sur les questions sociales !!!! 
@@ -250,7 +250,8 @@ export class QuestionsService {
         }
 
       }).catch((error) => {
-        // Uh-oh, an error occurred!
+        console.log('erreur getMediasResponsById', error);
+
       });
 
     return (mediasResponsesById)

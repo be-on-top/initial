@@ -56,12 +56,10 @@ export class FullListComponent {
         this.questions = this.questions.filter(q => this.sigleIds.includes(q.sigle))
       } else {
         // Si on accède à la liste sans paramètres, dans ce cas, c'est le(s) sigle(s) rattaché à l'évaluateur qui doit intervenir
-        this.getUserSigles(this.authService.user).pipe(map((q:any)=>q.number>20))
-        .subscribe((userData:any)=>this.questions=userData) 
+        this.getUserSigles(this.authService.user)
         // this.questions = this.questions.filter(q => this.sigleIds.includes(q.sigle))
         // alert(this.sigleIds)
       }
-
 
 
       // Trie les questions par ordre 
@@ -134,25 +132,32 @@ export class FullListComponent {
     // Appelle la méthode du service pour obtenir toutes les questions depuis Firestore
     return this.service.getQuestions().pipe(
       // Utilise l'opérateur map pour filtrer les questions en fonction du sigle
-      map(questions => questions.filter(question => question.sigle === sigle && question.number>20))
+      map(questions => questions.filter(question => question.sigle === sigle && question.number > 20)
+      // puis chaine avec la méthode pour les sortir par ordre
+      .sort(this.compare))      
     )
-
   }
 
   // Méthode pour filtrer les questions en fonction du sigle rattaché à l'utilisateur
-  getUserSigles(uid: string): any {
+  // getUserSigles(uid: string): any {
+  //   this.evaluatorService.getEvaluator(uid).subscribe(userData => {
+  //     this.sigleIds = userData.sigle
+
+  //     this.questions = this.questions.filter(q => this.sigleIds.includes(q.sigle))
+
+  //   })
+
+
+  // }
+
+
+  getUserSigles(uid: string): void {
     this.evaluatorService.getEvaluator(uid).subscribe(userData => {
-      this.sigleIds = userData.sigle
-
-      this.questions = this.questions.filter(q => this.sigleIds.includes(q.sigle))
-
-    })
-
-
+      this.sigleIds = userData.sigle;
+      this.questions = this.questions.filter(q => q.number > 20 && this.sigleIds.includes(q.sigle));
+      this.questions.sort(this.compare);
+    });
   }
-
-
-
 
 
 
