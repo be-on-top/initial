@@ -35,7 +35,7 @@
                     class="text-success fs-6 bi bi-check-lg"></i></p>
             <div *ngIf="responsesMedias && responsesMedias.length!==0">
                 <div *ngFor="let item of responsesMedias">
-                    <img *ngIf="item.includes(q.id) && item.includes('Option1')" class="img-fluid rounded mb-3"
+                    <img *ngIf="item.includes(q.id) && item.includes('Option1')" class="cover img-fluid rounded mb-3 img-thumbnail"
                         [src]="item">
                 </div>
             </div>
@@ -46,7 +46,7 @@
                     class="text-success fs-6 bi bi-check-lg"></i></p>
             <div *ngIf="responsesMedias">
                 <div *ngFor="let item of responsesMedias">
-                    <img *ngIf="item.includes(q.id) && item.includes('Option2')" class="img-fluid rounded mb-3"
+                    <img *ngIf="item.includes(q.id) && item.includes('Option2')" class="cover img-fluid rounded mb-3 img-thumbnail"
                         [src]="item">
                 </div>
             </div>
@@ -57,7 +57,7 @@
                     class="text-success fs-6 bi bi-check-lg"></i></p>
             <div *ngIf="responsesMedias">
                 <div *ngFor="let item of responsesMedias">
-                    <img *ngIf="item.includes(q.id) && item.includes('Option3')" class="img-fluid rounded mb-3"
+                    <img *ngIf="item.includes(q.id) && item.includes('Option3')" class="cover img-fluid rounded mb-3 img-thumbnail"
                         [src]="item">
                 </div>
             </div>
@@ -67,7 +67,7 @@
                     class="text-success fs-6 bi bi-check-lg"></i></p>
             <div *ngIf="responsesMedias">
                 <div *ngFor="let item of responsesMedias">
-                    <img *ngIf="item.includes(q.id) && item.includes('Option4')" class="img-fluid rounded mb-3"
+                    <img *ngIf="item.includes(q.id) && item.includes('Option4')" class="cover img-fluid rounded mb-3 img-thumbnail"
                         [src]="item">
                 </div>
             </div>

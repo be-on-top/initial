@@ -1,0 +1,15 @@
+@media only screen and (max-width: 575px) {
+    .cover {
+        /* border-color: brown; */
+        height: 300px!important;
+    }
+}
+
+
+.cover {
+    height: 40vw;
+    width: 100%;
+    object-fit: cover;
+}
+
+
