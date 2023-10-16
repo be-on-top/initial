@@ -56,6 +56,7 @@ import { TutorDetailsComponent } from './Tutors/tutor-details/tutor-details.comp
 import { TutorsListComponent } from './Tutors/tutors-list/tutors-list.component';
 import { UpdateTutorComponent } from './Tutors/update-tutor/update-tutor.component';
 import { AddTutorComponent } from './Tutors/add-tutor/add-tutor.component';
+import { DecodeURIPipe } from './Questions/decode-uri.pipe';
 
 
 
@@ -133,6 +134,7 @@ const routesAdmin: Routes = [
 
 @NgModule({
   declarations: [
+    DecodeURIPipe,
     EvaluatorsListComponent,
     AddEvaluatorComponent,
     EvaluatorDetailsComponent,

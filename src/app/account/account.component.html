@@ -2,8 +2,7 @@
 
     <h3>Votre compte BE-ON-TOP</h3>
 
-    <p class="alert bg-primary text-light p-2 my-3 fs-4 fw-light ">Bonjour {{userData.firstName}}, les données ci-dessous ont été récupérées grâce à vos données d'authentification</p>
-
+    <p class="alert bg-success text-light p-2 my-3 fs-4 fw-light ">Bonjour {{userData.firstName}}, les données ci-dessous ont été récupérées grâce à vos données d'authentification</p>
 
 
     <div *ngIf="user" class="alert bg-light p-2">
@@ -144,11 +143,11 @@
                                             <div class="d-flex align-items-center">
                                                 <span class="fw-bold">{{ item[0] }}</span>
                                                 <i class="bi fs-4 bi-arrow-right-short"></i>
-                                                <span>Note obtenue : {{ item[1].notation | json | number:'1.1-1' }}/20 -
-                                                    Durée estimée :{{ item[1].duration }} heures - Coût : {{
-                                                    item[1].cost }} €</span>
+                                                <span>Note obtenue : {{ item[1].notation | json | number:'1.1-1' }}/20.
+                                                    Durée estimée : {{ item[1].duration }}h. Coût : {{
+                                                    item[1].cost }}€</span>
                                             </div>
-                                            <hr *ngIf="!lastResult">
+                                            <!-- <hr *ngIf="!lastResult"> -->
                                         </ng-container>
                                     </div>
                                 </ng-template>

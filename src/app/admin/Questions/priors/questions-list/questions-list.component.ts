@@ -94,15 +94,9 @@ export class QuestionsListComponent implements OnInit {
   getUserSigles(uid: string): any {
     this.evaluatorService.getEvaluator(uid).subscribe(userData => {
       this.sigleIds = userData.sigle
-
       this.questions = this.questions.filter(q => this.sigleIds.includes(q.sigle))
-
     })
 
-
   }
-
-
-
 
 }

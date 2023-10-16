@@ -15,7 +15,7 @@
                     <a class="nav-link" [routerLink]="['socialregistration']">Pré-inscription Formation</a>
                 </li> -->
 
-                <li class="nav-item dropdown"
+                <li class="nav-item dropdown" [routerLinkActive]="['active']"
                     *ngIf="userUid!==undefined && userUid!=='' && userRole!=='student' && userRole!=='editor'">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                         *ngIf="userRole.includes('admin') || userRole.includes('trainer') || userRole.includes('tutor')">Admin</a>
@@ -90,7 +90,7 @@
                 </li>
                 <!-- ajout login global (on aura ultérieurement un public et privé réservé aux contributeurs et évaluateurs...) -->
 
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown" [routerLinkActive]="['active']">
                     <a class="nav-link dropdown-toggle" href="#" role="button"
                         data-bs-toggle="dropdown">Authentification</a>
                     <ul class="dropdown-menu">
@@ -112,7 +112,7 @@
                     </ul>
                 </li> -->
 
-                <li class="nav-item dropdown" *ngIf="trades">
+                <li class="nav-item dropdown" *ngIf="trades" [routerLinkActive]="['active']">
                     <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">Nos métiers</a>
                     <ul class="dropdown-menu">
                         <li *ngFor="let trade of trades">
@@ -120,12 +120,10 @@
                         </li>
                     </ul>
                 </li>
-                
-                
 
 
                 <!-- Inscription lien externe -->
-                <li class="nav-item">
+                <li class="nav-item" [routerLinkActive]="['active']">
                     <a class="nav-link" [routerLink]="['socialregistration']" role="button">Inscription Formation</a>
                 </li>
 

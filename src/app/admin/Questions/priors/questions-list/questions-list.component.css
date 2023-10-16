@@ -19,3 +19,5 @@
     transition: all 2s;
     transition-delay: 1s ;
   }
+
+  $form-select-indicator-color: #0E1CE6;

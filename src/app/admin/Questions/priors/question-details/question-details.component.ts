@@ -26,7 +26,6 @@ export class QuestionDetailsComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.responsesMedias = []
-
   }
 
 }

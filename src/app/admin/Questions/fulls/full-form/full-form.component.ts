@@ -118,6 +118,11 @@ export class FullFormComponent implements OnInit {
       delete form.value.optScoring4;
     }
 
+    if (form.value.option4 && !form.value.option3) {
+      this.forbidden = true;
+      alert('Vous ne pouvez pas enregistrer une réponse 4 sans avoir renseigné correctement la réponse 3');
+    }
+
     if (this.forbidden !== true) {
       // console.log(form.value);
       this.service.createQuestion(form.value, this.arrayFilesToUpload);
@@ -127,6 +132,7 @@ export class FullFormComponent implements OnInit {
     } else {
       alert('les 2 options ne peuvent être vraies, il faut choisir')
     }
+
   }
 
   // marche bien, mais l'ordre des conditions n'est pas cohérent pour bloquer les images dont le poids est excessif

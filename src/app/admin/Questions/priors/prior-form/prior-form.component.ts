@@ -214,6 +214,11 @@ export class PriorFormComponent implements OnInit {
       delete form.value.optScoring4;
     }
 
+    if (form.value.option4 && !form.value.option3) {
+      this.forbidden = true;
+      alert('Vous ne pouvez pas enregistrer une réponse 4 sans avoir renseigné correctement la réponse 3');
+    }
+
     if (this.forbidden !== true) {
       // console.log(form.value);
       this.service.createQuestion(form.value, this.arrayFilesToUpload);

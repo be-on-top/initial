@@ -18,6 +18,8 @@ import { User } from 'firebase/auth';
 export class FullListComponent {
 
   questions: any[] = []
+  // on le prépare à recevoir un terme de recherche
+  searchText: string = ''
   // sigle:string=""
   sigleIds: string[] = []
 
@@ -81,6 +83,12 @@ export class FullListComponent {
       return 1;
     }
     return 0;
+  }
+
+  // pour utiliser le composant de recherche
+  onSearchTextEntered(searchValue: string) {
+    this.searchText = searchValue
+    console.log(this.searchText);
   }
 
 

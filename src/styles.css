@@ -9,6 +9,22 @@
 
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css");
 
+/* juste pour essais */
+
+#grad {
+    background-image: linear-gradient(to right, #272A61, rgb(72, 0, 255));
+}
+
+
+li.nav-item.dropdown.active>a {
+    color: white !important;
+    opacity: 100 ! important;
+    font-weight: 400 !important;
+}
+
+/*  */
+
+
 h2,
 h3,
 h4,
@@ -43,10 +59,13 @@ h4,
     background-color: #8B00BD!important;
 } */
 
+
 .bg-primary {
     /* background-color: #8B00BD !important; */
-    background-color: #0E1CE6 !important;
+    /* background-color: #0E1CE6 !important; */
+    background-image: linear-gradient(to right, rgb(27, 9, 106), rgb(72, 6, 240));
 }
+
 
 .btn {
     /* box-shadow: 0 6px 10px rgba(0, 0, 0, .08), 0 0 6px rgba(0, 0, 0, .05); */
@@ -64,10 +83,12 @@ h4,
     background-color: #B2BC00 !important;
 } */
 
-/* .bg-dark,
+.bg-dark,
 .navbar-dark {
-    background-color: #272A61 !important;
-} */
+    /* background-color: #272A61 !important; */
+    /* background-color:rgb(27, 9, 106)!important; */
+    background-image: linear-gradient(to right, rgb(27, 9, 106), rgb(24, 5, 74));
+}
 
 p.question {
     text-align: center;

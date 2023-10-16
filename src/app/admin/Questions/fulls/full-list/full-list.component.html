@@ -4,20 +4,39 @@
     
         <!-- sigleIds = {{sigleIds | json}} -->
 
-    <div *ngIf="sigleIds && sigleIds.length>1" class="mx-auto my-5">
+    <!-- <div *ngIf="sigleIds && sigleIds.length>1" class="mx-auto my-5">
         <select name="sigle" class="form-control bg-light" (change)="onChange($event)">
             <option >Filtrer en fonction du métier</option>
             <option *ngFor="let s of sigleIds" [value]="s">{{s}}</option>
         </select>
-    </div>
+    </div> -->
 
 
     <div *ngIf="questions">
+                <!-- container pour disposer les 2 : select + search en vis à vis -->
+                <div class="row mx-auto justify-content-between">
+                    <div *ngIf="sigleIds && sigleIds.length>1" class="col-sm-6 my-5">
+                        <select name="sigle" class="form-select text-black-70" (change)="onChange($event)">
+                            <option selected>Filtrer en fonction du métier</option>
+                            <option *ngFor="let s of sigleIds" [value]="s">{{s}}</option>
+                        </select>
+         
+                    </div>
+                    <div class="my-5" [ngClass]="{'col-sm-6':sigleIds.length>1}">
+                    <!-- pour opérer un filtre (champ de recherch) sur ce qui vient en dessous -->
+                    <!-- on introduit un champ de recherche -->
+                         <app-search (searchTextChanged)="onSearchTextEntered($event)" searchText='searchText'></app-search>
+                    </div>
+                </div>
+                <!-- fin du container -->
         <!-- pour recracher autant de vues de détails qu'il y a de questions -->
         <div *ngFor="let q of questions">
             <!-- {{q | json}} -->
+                        <!-- ... et les filtrer si besoin -->
+                        <div
+                        *ngIf="searchText==='' || q.question.toUpperCase().includes(searchText) || q.question.toLowerCase().includes(searchText) || q.competence.toLowerCase().includes(searchText) || q.number.includes(searchText)">
             <app-full-details [q]="q"></app-full-details>
-            <!-- début de la question -->
+        </div>
         </div>
     </div>
 </div>
