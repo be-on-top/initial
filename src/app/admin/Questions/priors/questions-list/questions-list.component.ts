@@ -34,7 +34,7 @@ export class QuestionsListComponent implements OnInit {
   ngOnInit() {
     this.service.getQuestions().subscribe(data => {
       let allQuestions = data;
-      console.log("allQuestions", allQuestions);
+      console.log("allQuestions", allQuestions)
 
       this.questions = allQuestions.filter(q => q.number < 21)
 
@@ -48,7 +48,7 @@ export class QuestionsListComponent implements OnInit {
 
       // Si sigleIds est défini et non vide, filtre également par sigles
       if (this.sigleIds && this.sigleIds.length > 0) {
-        this.questions = this.questions.filter(q => this.sigleIds.includes(q.sigle));
+        this.questions = this.questions.filter(q => this.sigleIds.includes(q.sigle))
       }
       this.questions.sort(this.compare)
     })
@@ -85,9 +85,10 @@ export class QuestionsListComponent implements OnInit {
     // Appelle la méthode du service pour obtenir toutes les questions depuis Firestore
     return this.service.getQuestions().pipe(
       // Utilise l'opérateur map pour filtrer les questions en fonction du sigle
-      map(questions => questions.filter(question => question.sigle === sigle))
+      map(questions => questions.filter(question => question.sigle === sigle && question.number < 21)
+      // puis chaine avec la méthode pour les sortir par ordre
+      .sort(this.compare))      
     )
-
   }
 
   // Méthode pour filtrer les questions en fonction du sigle rattaché à l'utilisateur

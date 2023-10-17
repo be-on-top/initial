@@ -19,8 +19,7 @@
                         <select name="sigle" class="form-select text-black-70" (change)="onChange($event)">
                             <option selected>Filtrer en fonction du métier</option>
                             <option *ngFor="let s of sigleIds" [value]="s">{{s}}</option>
-                        </select>
-         
+                        </select>         
                     </div>
                     <div class="my-5" [ngClass]="{'col-sm-6':sigleIds.length>1}">
                     <!-- pour opérer un filtre (champ de recherch) sur ce qui vient en dessous -->

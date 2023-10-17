@@ -49,9 +49,7 @@ export class FullListComponent {
       const allQuestions = data;
 
       // Filtrez d'abord les questions ayant q.number > 20
-      this.questions = allQuestions.filter(q => q.number > 20);
-
-
+      this.questions = allQuestions.filter(q => q.number > 20)
 
       // Si sigleIds est défini et non vide, filtre également par sigles
       if (this.sigleIds && this.sigleIds.length > 0) {
@@ -119,7 +117,6 @@ export class FullListComponent {
       })
 
     this.swUpdate.activated.subscribe((event) => console.log("previous", event.previous, "current", event.current))
-
   }
 
   // pour filtrer les questions lorsque la sélection dans le menu déroulant change

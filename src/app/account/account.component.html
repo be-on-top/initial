@@ -92,16 +92,15 @@
 
             </div>
 
+            <!-- anciennement positionnement > vos QCM(s) -->
             <div class="card">
                 <div class="card-header bg-dark d-flex justify-content-between">
-                    <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseThree">
-                        Votre positionnement
+                    <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseThreea">
+                        Vos QCM(s)
                     </a><i class="bi bi-bar-chart-steps fs-4 text-light"></i>
                 </div>
-                <div id="collapseThree" class="collapse" data-bs-parent="#accordion">
+                <div id="collapseThreea" class="collapse" data-bs-parent="#accordion">
                     <div class="card-body">
-
-                        <!-- {{tradesEvaluated}} -->
 
                         <!-- nouveauté pour multi quizz VERSION 2 -->
 
@@ -134,8 +133,6 @@
                                     <p class="card-text fw-bold d-flex align-items-center">QCM de positionnement terminé
                                         <i class="bi fs-4 bi-check-lg ms-3"></i>
                                     </p>
-                                    <p class="card-text fw-bold text-decoration-underline">Votre estimation
-                                        personnalisée :</p>
                                     <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
                                     <div class="card-text mb-0"
                                         *ngFor="let result of userData[trade].fullResults | keyvalue, let lastResult=last">
@@ -143,11 +140,8 @@
                                             <div class="d-flex align-items-center">
                                                 <span class="fw-bold">{{ item[0] }}</span>
                                                 <i class="bi fs-4 bi-arrow-right-short"></i>
-                                                <span>Note obtenue : {{ item[1].notation | json | number:'1.1-1' }}/20.
-                                                    Durée estimée : {{ item[1].duration }}h. Coût : {{
-                                                    item[1].cost }}€</span>
+                                                <span>Note obtenue : {{ item[1].notation | json | number:'1.1-1' }}/20.</span>
                                             </div>
-                                            <!-- <hr *ngIf="!lastResult"> -->
                                         </ng-container>
                                     </div>
                                 </ng-template>
@@ -155,9 +149,7 @@
                                 <!-- Affichez le hr sauf dans la dernière itération -->
                                 <hr *ngIf="!last">
                             </div>
-
                             <!-- fin boucle supplémentaire pour ngFor avec les options de multi-quizz -->
-
                         </div>
 
                         <ng-template #none> <span>Aucun QCM en cours</span>
@@ -165,6 +157,51 @@
                     </div>
                 </div>
             </div>
+            <!-- fin vos QCM -->
+            <!-- estimation seule -->
+            <div class="card">
+                <div class="card-header bg-dark d-flex justify-content-between">
+                    <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseThreeb">
+                        Vos Estimations personnalisées
+                    </a><i class="bi bi-card-list fs-4 text-light"></i>
+                </div>
+                <div id="collapseThreeb" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        <!-- nouveauté pour multi quizz VERSION 2 -->
+
+                        <div *ngIf="userData && tradesEvaluated.length>0">
+                            <!-- comme on ne questionnera plus tradeEvaluated mais tradesEvaluated [], on va devoir, avant d'inspecter la suite des ngIf, avoir une boucle ngFor pour voir métier après métier...  -->
+                            <!-- attention, compte tenu de la manière dont tradesEvaluated a été généré, trade ici, c'est une chaine de caractère type quizz_sigle -->
+                            <div *ngFor="let trade of tradesEvaluated, let last=last">
+                          
+                          <div class="mb-3" *ngIf="userData[trade].fullResults">
+                            <p class="card-text">Métier concerné : <span class="fw-bold">{{trade}}</span></p>
+                                    <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
+                                    <div class="card-text mb-0"
+                                        *ngFor="let result of userData[trade].fullResults | keyvalue, let lastEstimate=last">
+                                        <ng-container *ngFor="let item of objectEntries(result.value)">
+                                            <div class="d-flex align-items-center">
+                                                <span class="fw-bold">{{ item[0] }}</span>
+                                                <i class="bi fs-4 bi-arrow-right-short"></i>
+                                                <span>Durée estimée : {{ item[1].duration }}h. Coût : {{
+                                                    item[1].cost }}€</span>
+                                            </div>
+                                            
+                                        </ng-container>
+                                        <hr *ngIf="lastEstimate">
+                                    </div>
+                                </div>
+
+                                <!-- Affichez le hr sauf dans la dernière itération -->
+                                <!-- <hr *ngIf="!last"> -->
+                            </div>
+                            <!-- fin boucle supplémentaire pour ngFor avec les options de multi-quizz -->
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- fin estimation seule -->
 
             <!-- bouton d'accès au formulaire de préinscription administrative -->
             <div class="card" *ngIf="isOneQuizzAchieved==true">
@@ -244,8 +281,7 @@
                         <div class="rounded p-2">
                             <ul class="list-group">
                                 <!-- <li class="list-group-item"><span class="fw-bolder">Son id sur firestore :</span>  {{userData.id}}</li> -->
-                                <li class="list-group-item"><span class="fw-bolder">Votre tuteur en entreprise
-                                        :</span>
+                                <li class="list-group-item"><span class="fw-bolder">Votre tuteur en entreprise :</span>
                                     {{userData.tutor}}</li>
                                 <!-- si y a déjà des enregistrements datés des évaluations de suivi pédagogique, on bouclera dessus -->
 
@@ -261,7 +297,6 @@
                                     </ng-container>
                                     <!-- {{userData.evaluations | json}} -->
                                 </li>
-
                             </ul>
                         </div>
                     </div>
