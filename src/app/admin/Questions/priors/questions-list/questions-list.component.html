@@ -10,15 +10,14 @@
 
     <div *ngIf="questions">
         <!-- container pour disposer les 2 : select + search en vis à vis -->
-        <div class="row mx-auto justify-content-between">
-            <div *ngIf="sigleIds && sigleIds.length>1" class="col-sm-6 my-5">
+        <div class="row mx-auto justify-content-between my-5">
+            <div *ngIf="sigleIds && sigleIds.length>1" class="col-sm-6 mb-2">
                 <select name="sigle" class="form-select text-black-70" (change)="onChange($event)">
                     <option selected>Filtrer en fonction du métier</option>
                     <option *ngFor="let s of sigleIds" [value]="s">{{s}}</option>
-                </select>
- 
+                </select> 
             </div>
-            <div class="my-5" [ngClass]="{'col-sm-6':sigleIds.length>1}">
+            <div [ngClass]="{'col-sm-6':sigleIds.length>1}">
             <!-- pour opérer un filtre (champ de recherch) sur ce qui vient en dessous -->
             <!-- on introduit un champ de recherche -->
                  <app-search (searchTextChanged)="onSearchTextEntered($event)" searchText='searchText'></app-search>

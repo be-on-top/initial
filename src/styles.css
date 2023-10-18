@@ -11,6 +11,10 @@
 
 /* juste pour essais */
 
+body {
+    font-family: 'Plus Jakarta Sans';
+}
+
 #grad {
     background-image: linear-gradient(to right, #272A61, rgb(72, 0, 255));
 }

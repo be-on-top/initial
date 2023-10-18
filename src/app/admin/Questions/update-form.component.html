@@ -1,6 +1,6 @@
 <div class="container py-5">
 
-    {{arrayFilesToUpdate | json}}
+    <!-- {{arrayFilesToUpdate | json}} -->
 
     <h3>Mise à jour de la question {{result.number}} <span class="d-block fs-6 mt-1">id : {{questionId}}</span> </h3>
     <hr>
@@ -49,7 +49,7 @@
             </div>
         </div>
 
-        <div class="alert alert-danger">allMediasResponses : {{allMediasResponses | json}}</div>
+        <!-- <div class="alert alert-danger">allMediasResponses : {{allMediasResponses | json}}</div> -->
 
         <label for="question" class="form-label mt-3">Question</label>
         <input type="text" id="question" [(ngModel)]="result.question" name="question" class="form-control"

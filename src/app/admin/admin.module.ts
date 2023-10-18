@@ -69,7 +69,7 @@ const routesAdmin: Routes = [
       { path: 'evaluators', component: UsersListComponent, data: { user: 'evaluator' } },
       { path: 'addEvaluator', component: AddEvaluatorComponent },
       { path: 'evaluator/:id', component: EvaluatorDetailsComponent },
-      { path: 'updateEvaluator/:id', component: UpdateEvaluatorComponent },
+      { path: 'updateEvaluator/:id', component: UpdateEvaluatorComponent, data: { user: 'evaluator' } },
       // essai mutualisation des vues pour la liste des formateurs + trainers
       // { path: 'trainers', component: TrainersListComponent },
       { path: 'trainers', component: UsersListComponent, data: { user: 'trainer' } },

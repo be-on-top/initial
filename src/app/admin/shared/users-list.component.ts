@@ -19,11 +19,13 @@ export class UsersListComponent {
   searchText: string = ''
 
   userRouterLinks: any;
+  title?: string
 
   // vous pouvez injecter le service ActivatedRoute pour accéder aux paramètres de route et déterminer quelle méthode doit être utilisée
   constructor(private router: Router, private sTrainer: TrainersService, private sEditor: UsersService, private sEvaluator: EvaluatorsService, private sTutor: TutorsService, private activatedRoute: ActivatedRoute) {
     this.userRouterLinks = this.activatedRoute.snapshot.data;
-    console.log("user to edit", this.userRouterLinks);
+    // console.log("user to edit", this.userRouterLinks);
+
   }
 
 
@@ -36,35 +38,39 @@ export class UsersListComponent {
 
     // on voit qu'on peut boucler sur la même data pour aller chercher dans des tables (collections) différentes le résultat de allUsers pour le repasser à la vue ! 
     // ça fonctionne plutôt bien donc. mais je préfère quand même à ce stade avoir un composant par catégorie d'utilisateur... 
-    
+
     if (this.userRouterLinks.user == "trainer") {
+      this.title = "Formateurs"
       this.sTrainer.getTrainers().subscribe(data => {
         console.log("data de getTrainers()", data)
         this.allUsers = data
         return this.allUsers
       })
     } else if (this.userRouterLinks.user == "evaluator") {
+      this.title = "Evaluateurs"
       this.sEvaluator.getEvaluators().subscribe(data => {
         console.log("data de getTrainers()", data)
         this.allUsers = data
         return this.allUsers
       })
     } else if (this.userRouterLinks.user == "editor") {
+      this.title = "Contributeur"
       this.sEditor.getUsers().subscribe(data => {
         console.log("data de getTrainers()", data)
         this.allUsers = data
         return this.allUsers
       })
     } else if (this.userRouterLinks.user == "tutor") {
+      this.title = "Tuteur"
       this.sTutor.getTutors().subscribe(data => {
         console.log("data de getTutors()", data)
         this.allUsers = data
         return this.allUsers
       })
-      
-  }
 
-}
+    }
+
+  }
 
   deleteUser(trainerid: string) {
     console.log(trainerid);
