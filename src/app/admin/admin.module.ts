@@ -57,6 +57,10 @@ import { TutorsListComponent } from './Tutors/tutors-list/tutors-list.component'
 import { UpdateTutorComponent } from './Tutors/update-tutor/update-tutor.component';
 import { AddTutorComponent } from './Tutors/add-tutor/add-tutor.component';
 import { DecodeURIPipe } from './Questions/decode-uri.pipe';
+import { AddExternalComponent } from './External/add-external/add-external.component';
+import { ExternalDetailsComponent } from './External/external-details/external-details.component';
+import { UpdateExternalComponent } from './External/update-external/update-external.component';
+import { HomeComponent } from '../home/home.component';
 
 
 
@@ -118,17 +122,21 @@ const routesAdmin: Routes = [
       { path: 'updateEvaluation/:id/:evaluationKey', component: UpdateStudentComponent, data: { user: 'trainer' } },
       { path: 'updateTutorial/:id/:tutorialKey', component: UpdateStudentComponent, data: { user: 'tutor' } },
       { path: 'updateDescription/:id/:role', component: UpdateTradesComponent, data: { user: 'editor' } },
-      { path: 'updateTradeImage/:id', component: CoverImageComponent }
-
+      { path: 'updateTradeImage/:id', component: CoverImageComponent },
+      // pour anticiper sur la création des utilisateurs externes
+      
+      { path: 'addExternal', component: AddExternalComponent, data: { user: 'external' } },
+      { path: 'externals', component: UsersListComponent, data: { user: 'external' } },
+      { path: 'external/:id', component: ExternalDetailsComponent, data: { user: 'external' } },
+      { path: 'updateExternal/:id', component: UpdateExternalComponent },
     ],
     // canActivate: [AuthGuardService]
     canActivate: [AuthGuardService, RoleGuardGuard], data: {
       expectedRoles: ['evaluator', 'admin', 'trainer', 'tutor', 'editor']
     }
   },
-
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent }
+  // { path: 'login', component: LoginComponent },
+  // { path: 'register', component: RegisterComponent }
 
 ];
 
@@ -138,7 +146,7 @@ const routesAdmin: Routes = [
     EvaluatorsListComponent,
     AddEvaluatorComponent,
     EvaluatorDetailsComponent,
-    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent, UpdateSocialComponent, SocialDetailsComponent, FullFormComponent, FullListComponent, FullDetailsComponent, UpdateFullComponent, LoginComponent, SearchComponent, StudentDetailsComponent, StudentsListComponent, UpdateStudentComponent, FeedbackMessagesComponent, AddTrainerComponent, TrainersListComponent, TrainerDetailsComponent, UpdateTrainerComponent, UsersListComponent, SettingsComponent, AddUserComponent, UserDetailsComponent, UpdateUserComponent, UpdateSettingsComponent, UpdateTradesComponent, MyStudentsComponent, AddFollowUpComponent, TooltipComponent, CoverImageComponent, TutorDetailsComponent, TutorsListComponent, UpdateTutorComponent, AddTutorComponent
+    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent, UpdateSocialComponent, SocialDetailsComponent, FullFormComponent, FullListComponent, FullDetailsComponent, UpdateFullComponent, LoginComponent, SearchComponent, StudentDetailsComponent, StudentsListComponent, UpdateStudentComponent, FeedbackMessagesComponent, AddTrainerComponent, TrainersListComponent, TrainerDetailsComponent, UpdateTrainerComponent, UsersListComponent, SettingsComponent, AddUserComponent, UserDetailsComponent, UpdateUserComponent, UpdateSettingsComponent, UpdateTradesComponent, MyStudentsComponent, AddFollowUpComponent, TooltipComponent, CoverImageComponent, TutorDetailsComponent, TutorsListComponent, UpdateTutorComponent, AddTutorComponent, AddExternalComponent, ExternalDetailsComponent, UpdateExternalComponent
   ],
   imports: [
     BrowserModule,
@@ -154,8 +162,6 @@ const routesAdmin: Routes = [
     TooltipComponent,
     CoverImageComponent
   ]
-
-
 })
 
 export class AdminModule { }

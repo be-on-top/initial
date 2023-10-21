@@ -36,6 +36,7 @@ import { TooltipComponent } from './tooltip/tooltip.component';
 import { KeysPipe } from './quizz/keys.pipe';
 import { TradeDetailsComponent } from './trades/trade-details/trade-details.component';
 import { StripHtmlPipe } from './strip-html.pipe';
+import { AuthGuardService } from './auth-guard.service';
 
 // import { getMessaging } from 'firebase/messaging';
 
@@ -77,7 +78,7 @@ import { StripHtmlPipe } from './strip-html.pipe';
       registrationStrategy: 'registerWhenStable:30000'
     })
   ],
-  providers: [],
+  providers: [AuthGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

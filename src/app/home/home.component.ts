@@ -60,7 +60,7 @@ export class HomeComponent implements OnInit {
   // ne sert pas et ne doit pas avoir à être nécessaire. 
   // lastIndexQuestion: number = 0
 
-  userRole:string=""
+  userRole: string = ""
 
   constructor(private notificationService: PushNotificationService, private auth: Auth, private authService: AuthService, private studentService: StudentsService, private ac: ActivatedRoute, private router: Router, readonly swPush: SwPush, private settingsService: SettingsService) {
     // pour savoir si l'utilisateur est éditeur sans interroger firestore, on peut (?) récupérer userRole livré en paramètre de route
@@ -72,7 +72,7 @@ export class HomeComponent implements OnInit {
 
     // console.log("this.ac.snapshot.params", this.ac.snapshot.params !== null)
     // console.log("this.ac.snapshot.params['userRole']", this.ac.snapshot.params["userRole"])
-    this.userRole= this.ac.snapshot.params["userRole"]
+    this.userRole = this.ac.snapshot.params["userRole"]
   }
 
 
@@ -119,34 +119,45 @@ export class HomeComponent implements OnInit {
         // console.log("student uid récupération", this.studentData.id);
         // console.log("student Email récupération", this.studentData.email);
         // console.log("data", this.studentData.scoreCounter);
+
+        // transfert logique
+        // getUserId ne sert à priori à rien si on peut récupérer l'id grâce à this.auth.currentUser !!!
+        this.authService.getUserId();
+        // retourne this.ui tout de suite après la connexion. undefined plus tard, donc ne convient pas...
+        // console.log("log de ui", this.ui);
+        // tests ok pour information, mais ne semble pas être très utile 
+        this.authService.getToken()?.then(res => console.log("token authentification depuis authService", res.token))
+        // fonctionne parfaitement !!!!!!!!!!!!!!!!!!
+        this.authService.authStatusListener()
+
+        // to check User offline status
+        // basic method : OK
+        if (!navigator.onLine) {
+          // ici, en lançant l'application avec ng serve, on l rend accessible au navigateur sans passer par le service worker (?)
+          alert('merci de vérifier votre connexion internet !!!');
+          // alert('please check your internet connection');
+        }
+
+        // eventListener
+        addEventListener('offline', e => {
+          this.offline = true
+        })
+
+        addEventListener('online', e => {
+          this.offline = false
+        })
+      }
+
+      // pour le cas où non authentifié
+      else {
+        // L'utilisateur n'est pas authentifié
+        alert("Utilisateur non authentifié");
+        // Rediriger vers la page de connexion si nécessaire
+        // this.router.navigate(['/login']);
       }
     })
 
-    // getUserId ne sert à priori à rien si on peut récupérer l'id grâce à this.auth.currentUser !!!
-    this.authService.getUserId();
-    // retourne this.ui tout de suite après la connexion. undefined plus tard, donc ne convient pas...
-    // console.log("log de ui", this.ui);
-    // tests ok pour information, mais ne semble pas être très utile 
-    this.authService.getToken()?.then(res => console.log("token authentification depuis authService", res.token))
-    // fonctionne parfaitement !!!!!!!!!!!!!!!!!!
-    this.authService.authStatusListener()
 
-    // to check User offline status
-    // basic method : OK
-    // if (!navigator.onLine) {
-    //   // ici, en lançant l'application avec ng serve, on l rend accessible au navigateur sans passer par le service worker (?)
-    //   alert('merci de vérifier votre connexion internet !!!');
-    //   // alert('please check your internet connection');
-    // }
-
-    // eventListener
-    addEventListener('offline', e => {
-      this.offline = true
-    })
-
-    addEventListener('online', e => {
-      this.offline = false
-    })
 
     // pour récupérer les métiers (sigles) enregistrés en base qui détermineront les différentes zones éditioriales
     this.settingsService.getTrades().subscribe(data => {

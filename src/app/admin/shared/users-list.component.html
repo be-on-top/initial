@@ -29,6 +29,7 @@
                     <a *ngIf="userRouterLinks.user==='tutor'" [routerLink]="['/admin/tutor', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
                     <a *ngIf="userRouterLinks.user==='evaluator'" [routerLink]="['/admin/evaluator', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
                     <a *ngIf="userRouterLinks.user==='editor'" [routerLink]="['/admin/user', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
+                    <a *ngIf="userRouterLinks.user==='external'" [routerLink]="['/admin/external', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
                 </button></div>
             </div>
         </div>
@@ -40,6 +41,7 @@
                 <a *ngIf="userRouterLinks.user==='tutor'" [routerLink]="['/admin/addTutor']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a>
                 <a *ngIf="userRouterLinks.user==='evaluator'" [routerLink]="['/admin/addEvaluator']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a>
                 <a *ngIf="userRouterLinks.user==='editor'" [routerLink]="['/admin/addUser']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a>
+                <a *ngIf="userRouterLinks.user==='external'" [routerLink]="['/admin/addExternal']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a>
             </button></div>
         </div>
 

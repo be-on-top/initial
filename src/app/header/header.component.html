@@ -2,7 +2,8 @@
     <div class="container mx-auto">
         <!-- <a class="navbar-brand" [routerLink]="['home', userRole || '']">BE-ON-TOP</a> -->
         <!-- pour éviter les erreurs d'interprétation des segments de chemin -->
-        <a class="navbar-brand" [routerLink]="['home']" [queryParams]="{ userRole: userRole }">BE-ON-TOP</a>
+        <!-- <a class="navbar-brand" [routerLink]="['home']" [queryParams]="{ userRole: userRole }">BE-ON-TOP</a> -->
+        <a class="navbar-brand" [routerLink]="['']" [queryParams]="{ userRole: userRole }">BE-ON-TOP</a>
 
         <!-- <p class="text-light">{{userRole}} Authentification</p> -->
         <!-- <a class="navbar-brand" [routerLink]="['']">BE-ON-TOP</a> -->
@@ -34,10 +35,12 @@
                         <li><a class="dropdown-item" [routerLink]="['/admin/trainers']"
                                 *ngIf="userRole.includes('admin')">Gestion des formateurs</a></li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/tutors']"
-                                *ngIf="userRole.includes('admin')">Gestion des Tuteurs</a></li>
+                                *ngIf="userRole.includes('admin')">Gestion des tuteurs</a></li>
                         <!-- pour mémo, pour l'instant on utilise le simple contributeur comme utilisateur générique -->
                         <li><a class="dropdown-item" [routerLink]="['/admin/users']"
                                 *ngIf="userRole.includes('admin')">Gestion des contributeurs</a></li>
+                        <li><a class="dropdown-item" [routerLink]="['/admin/externals']"
+                                *ngIf="userRole.includes('admin')">Gestion des observateurs</a></li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/students']"
                                 *ngIf="userRole.includes('admin')">Gestion des candidats</a></li>
                         <li *ngIf="userRole.includes('admin') || userRole.includes('evaluators')">
@@ -121,12 +124,10 @@
                     </ul>
                 </li>
 
-
                 <!-- Inscription lien externe -->
                 <li class="nav-item" [routerLinkActive]="['active']">
                     <a class="nav-link" [routerLink]="['socialregistration']" role="button">Inscription Formation</a>
                 </li>
-
 
             </ul>
         </div>
