@@ -45,6 +45,12 @@ export class StudentDetailsComponent {
   // en modularisant la logique d'affichage de l'info-bulle
   moreInfo: string = ''; // pour définir une propriété très générique
 
+  // c'est totalement dingue, mais on ne peut pas se référer à Object directement dans un template angular
+  // donc si je veux un affichage conditionné côté template, me faut une méthode pour vérifier si evaluations n'est pas vide
+  nonVide(variable:any): boolean {
+    return Object.keys(variable).length > 0;
+  }
+
   constructor(
     private service: StudentsService,
     private route: ActivatedRoute,
@@ -89,7 +95,7 @@ export class StudentDetailsComponent {
 
         }
 
-      if (this.student.tutorials) {this.tutorials = this.student.tutorials;console.log("this.tutorials", this.tutorials);        }
+        if (this.student.tutorials) { this.tutorials = this.student.tutorials; console.log("this.tutorials", this.tutorials); }
 
       }
 
