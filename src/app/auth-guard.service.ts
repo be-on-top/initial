@@ -30,25 +30,43 @@ export class AuthGuardService implements CanActivate {
     //   }
     // })
 
-    this.user = this.auth.currentUser?.uid
+  //   this.user = this.auth.currentUser?.uid
+  //   const allowedRoutes: string[] = ['home', '', 'quizz', 'trade']; // Liste des routes autorisées sans authentification
+  //   const routePath: string = state.url.replace('/', ''); // Obtenez le chemin de la route sans le slash initial
+  
+  //   if (allowedRoutes.includes(routePath)) {
+  //     alert("c'est public")
+  //     return true; // Autoriser l'accès aux routes spécifiées sans authentification
+  //   }
+  
+  //   // Vérifier si l'utilisateur est authentifié
+  //   if (this.user!=="") {
+  //     return true; // Laisser l'accès à la route si l'utilisateur est authentifié
+  //   } else {
+  //     alert(this.user)
+  //     // Rediriger vers la page de connexion si l'utilisateur n'est pas authentifié
+  //     this.router.navigate(['/login']);
+  //     return false;
+  //   }
+  // }
 
-    const allowedRoutes: string[] = ['home', '', 'quizz', 'trade']; // Liste des routes autorisées sans authentification
-    const routePath: string = state.url.replace('/', ''); // Obtenez le chemin de la route sans le slash initial
-  
-    if (allowedRoutes.includes(routePath)) {
-      alert("c'est public")
-      return true; // Autoriser l'accès aux routes spécifiées sans authentification
+  onAuthStateChanged(this.auth, (user: any) => {
+    if (user) {
+      // User is signed in, see docs for a list of available properties
+      // https://firebase.google.com/docs/reference/js/firebase.User
+      this.user = user.uid
     }
-  
-    // Vérifier si l'utilisateur est authentifié
-    if (this.user!=="") {
-      return true; // Laisser l'accès à la route si l'utilisateur est authentifié
-    } else {
-      // Rediriger vers la page de connexion si l'utilisateur n'est pas authentifié
-      this.router.navigate(['/login']);
-      return false;
-    }
+  })
+
+  if (this.user) {
+    alert('salut user')
+    return true
+  } else {
+    this.router.navigate(['/login'])
+    return false
   }
+
+}
 
 }
 

@@ -9,26 +9,36 @@ import { LoginComponent } from './admin/login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthGuardService } from './auth-guard.service';
 
-const routes: Routes = [
-  { path: 'home', component: HomeComponent, pathMatch: 'full', canActivate: [AuthGuardService] },
-  // Route par défaut pour la page d'accueil (peut-être redirigée vers une autre route si nécessaire)
+// const routes: Routes = [
+//   { path: 'home', component: HomeComponent, pathMatch: 'full', canActivate: [AuthGuardService] },
+//   // Route par défaut pour la page d'accueil (peut-être redirigée vers une autre route si nécessaire)
 
-  { path: 'register', component: RegisterComponent },
-  // Routes pour les fonctionnalités d'administration (AdminModule gère l'authentification)
-  { path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule) },
-  // Routes pour les autres fonctionnalités publiques (pas besoin de protection ici)
-  { path: 'account', component: AccountComponent },
-  { path: 'socialregistration', component: AdminForm },
-  { path: 'quizz/:id/:indexQuestion/:scoreCounter/:hasStartedEvaluation/:studentId', component: QuizzComponent },
-  { path: 'trade/:id', component: TradeDetailsComponent },
-  { path: 'home/:userRole', component: HomeComponent, pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
+//   { path: 'register', component: RegisterComponent },
+//   // Routes pour les fonctionnalités d'administration (AdminModule gère l'authentification)
+//   // { path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule) },
+//   // Routes pour les autres fonctionnalités publiques (pas besoin de protection ici)
+//   { path: 'account', component: AccountComponent },
+//   { path: 'socialregistration', component: AdminForm },
+//   { path: 'quizz/:id/:indexQuestion/:scoreCounter/:hasStartedEvaluation/:studentId', component: QuizzComponent },
+//   { path: 'trade/:id', component: TradeDetailsComponent },
+//   { path: 'home/:userRole', component: HomeComponent, pathMatch: 'full' },
+//   { path: 'login', component: LoginComponent },
 
-    // La route par défaut pour la page d'accueil (peut-être redirigée vers une autre route si nécessaire)
-    { path: '', redirectTo: 'home', pathMatch: 'full' },
+//     // La route par défaut pour la page d'accueil (peut-être redirigée vers une autre route si nécessaire)
+//     { path: '', redirectTo: 'home', pathMatch: 'full' },
   
-    // Redirection des routes inconnues vers la page d'accueil
-    { path: '**', redirectTo: 'home' }
+//     // Redirection des routes inconnues vers la page d'accueil
+//     { path: '**', redirectTo: 'home' }
+// ];
+const routes: Routes = [
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent },
+  { path: 'home/:userRole', component: HomeComponent, pathMatch: 'full' },
+  { path: 'admin', redirectTo: 'dashboard', pathMatch: 'full' },
+  { path: 'account', component: AccountComponent },
+  { path: 'socialregistration', component: AdminForm},
+  { path: 'quizz/:id/:indexQuestion/:scoreCounter/:hasStartedEvaluation/:studentId', component: QuizzComponent},
+  { path: 'trade/:id', component: TradeDetailsComponent}
 ];
 
 

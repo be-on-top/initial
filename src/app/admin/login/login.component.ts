@@ -60,7 +60,7 @@ export class LoginComponent {
         // this.isAuthentificated = true;
         // console.log("isAuthenticated", this.isAuthentificated);
         setTimeout(() => {
-          this.router.navigate([''])
+          this.router.navigate(['home'])
         }, 2000)
         // this.router.navigate(['']);
       })
@@ -78,7 +78,7 @@ export class LoginComponent {
     this.service.loginWithGoogle()
       .then(response => {
         console.log(response);
-        this.router.navigate(['']);
+        this.router.navigate(['home']);
       })
       .catch(error => console.log(error))
   }
@@ -95,7 +95,7 @@ export class LoginComponent {
   logOut(){
     this.service.logout()
     alert("Déconnection ok")
-    this.router.navigate(['']);
+    this.router.navigate(['home']);
 
   } 
 

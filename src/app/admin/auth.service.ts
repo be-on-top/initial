@@ -51,7 +51,7 @@ export class AuthService {
       else {
         this.authStatusSub.next(null);
         console.log('User is logged out');
-        this.router.navigate(['/login'])
+        this.router.navigate(['/home'])
         status = ""
       }
     })

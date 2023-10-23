@@ -1,1 +1,43 @@
-<p>external-details works!</p>
+<div class="container py-5">
+
+    <h3 class="mb-3">Détails de l'observateur</h3>
+
+    <div *ngIf="external">
+
+        <div class="card">
+            <div class="card-header text-muted">id : {{external.id}}</div>
+            <div class="card-body">
+                <!-- <h4 class="card-title">id : {{external.id}}</h4> -->
+                <p class="card-text"><span class="fw-bold">Nom</span> : {{external.lastname}}<br>
+                    <span class="fw-bold">Prénom</span> : {{external.firstname}}<br>
+                    <span class="fw-bold">Email</span> : <a href="#" class="card-link">{{external.email}}</a><br>
+                    <span *ngIf="external.cp" class="d-block"><span class="fw-bold">CP</span> : {{external.cp}}</span>
+                    <span *ngIf="external.details" class="d-block"><span class="fw-bold">Détails</span> : {{external.details}}</span>
+                    <span *ngIf="external.trainer" class="d-block"><span class="fw-bold">Formateur</span> : {{external.trainer}}</span>
+                </p>
+                <hr>
+                <p> <span *ngIf="external.status; else checkbox">Status : actif</span>
+                    <ng-template #checkbox> Status : inactif</ng-template>
+                </p>
+                <ng-template #checkbox> Status : inactif</ng-template>
+            </div>
+            <div class="card-footer text-muted">
+                <span *ngIf="external.created">Date de création : {{external.created | date:'dd/MM/yyyy' }}</span><br>
+            </div>
+        </div>
+        <div class="d-flex my-5 justify-content-end gap-5">
+
+            <a class="btn btn-primary text-white retourList" routerLink="/admin/externals">Retour à la liste</a>
+
+            <button class="btn btn-warning">
+                <a class="text-white" routerLink="/admin/updateExternal/{{external.id}}">Modifier</a>
+            </button>
+
+            <button class="btn btn-danger">
+                <a class="text-white" (click)="delete(external)">Supprimer</a>
+            </button>
+
+        </div>
+    </div>
+
+</div>

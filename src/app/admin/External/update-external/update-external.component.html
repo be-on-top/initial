@@ -1,1 +1,68 @@
-<p>update-external works!</p>
+<div class="container py-5">
+
+    <h3>Mise à jour d'un observateur</h3>
+    <!-- {{user | json}} -->
+
+    <form class="form" #f="ngForm" (submit)="updateUser(f)" class="was-validated">
+
+        <input type="text" id="created" [(ngModel)]="user.created" name="created" class="form-control invisible"
+            placeholder="Date de création : non modifiable">
+        <input type="text" id="id" [(ngModel)]="user.id" name="id" class="form-control"
+            placeholder="id d'authentification : non modifiable" class="form-control text-white" disabled>
+
+        <label for="firstName" class="form-label mt-3">Prénom</label>
+        <input type="text" id="firstName" [(ngModel)]="user.firstName" name="firstName" class="form-control"
+            placeholder="Prénom">
+
+        <label for="lastName" class="form-label mt-3">Nom *</label>
+        <input type="text" id="lastName" [(ngModel)]="user.lastName" name="lastName" class="form-control"
+            #lastName="ngModel" placeholder="Nom" required>
+        <div class="valid-feedback" *ngIf="lastName.valid">Champ correctement renseigné</div>
+        <div class="invalid-feedback" *ngIf="lastName.invalid">Merci de renseigner le champ nom.</div>
+
+        <label for="email" class="form-label mt-3">Email *</label>
+        <div class="input-group">
+            <span class="input-group-text" id="inputGroupPrepend2">@</span>
+            <input type="email" id="email" [(ngModel)]="user.email" name="email" class="form-control"
+                #email="ngModel" placeholder="Email" required>
+        </div>
+        <div class="valid-feedback" *ngIf="email.valid">Email Valide </div>
+        <div class="invalid-feedback" *ngIf="email.invalid">Merci de renseigner le champ email.</div>
+
+        <label for="cp" class="form-label mt-3">CP</label>
+        <input type="text" id="cp" [(ngModel)]="user.cp" name="cp" class="form-control"
+            placeholder="Code Postal Optionnel...">
+
+        <!-- Tooggle Swith for user status -->
+        <div class="form-check form-switch my-3">
+            <input class="form-check-input" type="checkbox" id="status" name="status" value="true"
+                [(checked)]="user.status" [(ngModel)]="user.status">
+            <label class="form-check-label" for="status">Status de l'utilisateur :
+                <span *ngIf="user.status; else elseBlock" class="fw-bold">Actif</span>
+                <ng-template #elseBlock> <span class="fw-bold">Inactif</span></ng-template>
+            </label>
+        </div>
+
+        <!-- modification des sigles métiers : pas d'affectation métier pour le tuteur externe -->
+<!-- 
+        <label for="sigle" class="form-label mt-3">Affectation métier :</label>
+        <select class="form-select" name="sigle" id="sigle" [ngModel]="user.sigle" required #sigle="ngModel"
+            (change)="checkIfSelected(sigle.value)" multiple>
+            <option value>Selectionner le métier</option>
+            <option value="prepa_cdes">PREPA CDES</option>
+            <option value="poser_ite">POSEUR ITE</option>
+            <option value="macon_vrd">MACON VRD</option>
+            <option value="cl_vul">CLVUL</option>
+        </select> -->
+
+        <!-- <label for="email" class="form-label mt-3">Commentaires optionnels</label> -->
+        <textarea name="details" id="details" [(ngModel)]="user.details" name="details" cols="100" rows="10"
+            class="form-control mt-3" #details="ngModel" [ngClass]="{'.is-valid':details.value && details.touched}"
+            placeholder="Commentaires optionnels...">Détails / Remarques & Objectifs...</textarea>
+        <button type="submit" id="submit" class="btn btn-primary mt-3"
+            [ngClass]="{'disabled':f.invalid}">Valider</button>
+    </form>
+
+
+</div>
+

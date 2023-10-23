@@ -158,7 +158,6 @@ export class HomeComponent implements OnInit {
     })
 
 
-
     // pour récupérer les métiers (sigles) enregistrés en base qui détermineront les différentes zones éditioriales
     this.settingsService.getTrades().subscribe(data => {
 

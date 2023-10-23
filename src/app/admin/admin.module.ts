@@ -94,7 +94,7 @@ const routesAdmin: Routes = [
       { path: 'addUser', component: AddUserComponent },
       { path: 'user/:id', component: UserDetailsComponent },
       { path: 'updateUser/:id', component: UpdateUserComponent },
-      { path: 'students', component: StudentsListComponent },
+      { path: 'students', component: StudentsListComponent, data: { user: 'admin' } },
       { path: 'student/:id', component: StudentDetailsComponent, data: { user: 'admin' } },
       { path: 'updateStudent/:id/:editKey', component: UpdateStudentComponent, data: { user: 'admin' } },
       { path: 'priorForm', component: PriorFormComponent },
@@ -129,14 +129,15 @@ const routesAdmin: Routes = [
       { path: 'externals', component: UsersListComponent, data: { user: 'external' } },
       { path: 'external/:id', component: ExternalDetailsComponent, data: { user: 'external' } },
       { path: 'updateExternal/:id', component: UpdateExternalComponent },
+      { path: 'externalStudentsList', component: StudentsListComponent, data: {user: 'external'} }
     ],
     // canActivate: [AuthGuardService]
     canActivate: [AuthGuardService, RoleGuardGuard], data: {
-      expectedRoles: ['evaluator', 'admin', 'trainer', 'tutor', 'editor']
+      expectedRoles: ['evaluator', 'admin', 'trainer', 'tutor', 'editor', 'external']
     }
   },
-  // { path: 'login', component: LoginComponent },
-  // { path: 'register', component: RegisterComponent }
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent }
 
 ];
 

@@ -19,7 +19,7 @@
                 <li class="nav-item dropdown" [routerLinkActive]="['active']"
                     *ngIf="userUid!==undefined && userUid!=='' && userRole!=='student' && userRole!=='editor'">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                        *ngIf="userRole.includes('admin') || userRole.includes('trainer') || userRole.includes('tutor')">Admin</a>
+                        *ngIf="userRole.includes('admin') || userRole.includes('trainer') || userRole.includes('tutor') || userRole.includes('external')">Admin</a>
                     <!-- <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Admin</a> -->
                     <ul class="dropdown-menu">
                         <li *ngIf="userRole.includes('admin')"><a class="dropdown-item"
@@ -43,6 +43,10 @@
                                 *ngIf="userRole.includes('admin')">Gestion des observateurs</a></li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/students']"
                                 *ngIf="userRole.includes('admin')">Gestion des candidats</a></li>
+                        <!-- liste étudiants  pour observateurs -->
+                        <li><a class="dropdown-item" [routerLink]="['/admin/externalStudentsList']"
+                                *ngIf="userRole.includes('external')">Annuaire candidats</a></li>
+
                         <li *ngIf="userRole.includes('admin') || userRole.includes('evaluators')">
                             <hr>
                         </li>

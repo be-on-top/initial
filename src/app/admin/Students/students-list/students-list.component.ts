@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { StudentsService } from '../../students.service';
 import { Student } from '../student';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-students-list',
@@ -10,7 +11,12 @@ import { Student } from '../student';
 export class StudentsListComponent implements OnInit {
 
   allStudents: any[] = [];
-  constructor(private service: StudentsService) { }
+  // pour différencier la vue si user external
+  userRouterLinks: any;
+
+  constructor(private service: StudentsService, private activatedRoute:ActivatedRoute) {
+    this.userRouterLinks = this.activatedRoute.snapshot.data;
+   }
 
   ngOnInit() {
     this.getStudents();
