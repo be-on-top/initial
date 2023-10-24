@@ -129,7 +129,8 @@ const routesAdmin: Routes = [
       { path: 'externals', component: UsersListComponent, data: { user: 'external' } },
       { path: 'external/:id', component: ExternalDetailsComponent, data: { user: 'external' } },
       { path: 'updateExternal/:id', component: UpdateExternalComponent },
-      { path: 'externalStudentsList', component: StudentsListComponent, data: {user: 'external'} }
+      { path: 'externalStudentsList', component: StudentsListComponent, data: {user: 'external'} },
+      { path: 'externalStudentDetails/:id', component: StudentDetailsComponent, data: {user: 'external'} }
     ],
     // canActivate: [AuthGuardService]
     canActivate: [AuthGuardService, RoleGuardGuard], data: {
