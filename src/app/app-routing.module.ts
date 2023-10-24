@@ -5,8 +5,8 @@ import { AccountComponent } from './account/account.component';
 import { QuizzComponent } from './quizz/quizz.component';
 import { SocialFormComponent as AdminForm } from './social/social-form/social-form.component';
 import { TradeDetailsComponent } from './trades/trade-details/trade-details.component';
-import { LoginComponent } from './admin/login/login.component';
-import { RegisterComponent } from './register/register.component';
+// import { LoginComponent } from './admin/login/login.component';
+// import { RegisterComponent } from './register/register.component';
 import { AuthGuardService } from './auth-guard.service';
 
 // const routes: Routes = [
