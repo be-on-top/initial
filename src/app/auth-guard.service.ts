@@ -63,10 +63,11 @@ export class AuthGuardService implements CanActivate {
       alert('salut user')
       return true
     } else {
-      const message = 'Vous devez être authentifié pour accéder à ce lien. Voulez-vous être redirigé vers la page de connexion ?';
-      if (this.dialogService.confirm(message)) {
-        this.router.navigate(['/login']);
-      }
+      // const message = 'Vous devez être authentifié pour accéder à ce lien. Voulez-vous être redirigé vers la page de connexion ?';
+      // if (this.dialogService.confirm(message)) {
+      //   this.router.navigate(['/login']);
+      // }
+      this.router.navigate(['/login']);
       return false;
     }
   }

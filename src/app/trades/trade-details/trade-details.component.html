@@ -6,7 +6,7 @@
             Sigle référence : {{tradeData.sigle}}.
                 <br>Nombre de compétences à valider : {{tradeData.competences.length}}.
                 <br>Durée max de la formation : {{firstValuesSum}} heures
-                <p  class="badge bg-dark mt-2 small">Pour vérification du rôle récupéré : {{userRole}}</p>
+                <p  class="rounded bg-dark p-2 mt-2 small">Pour vérification du rôle récupéré : {{userRole}}</p>
         </div>
         <!-- il faut différencier le cas d'un userRole=none...  -->
         <div *ngIf="userRole==='none' else switch" class="col-md-6 text-white mt-md-5">

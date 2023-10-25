@@ -37,6 +37,7 @@ import { KeysPipe } from './quizz/keys.pipe';
 import { TradeDetailsComponent } from './trades/trade-details/trade-details.component';
 import { StripHtmlPipe } from './strip-html.pipe';
 import { AuthGuardService } from './auth-guard.service';
+import { FooterComponent } from './footer/footer/footer.component';
 
 // import { getMessaging } from 'firebase/messaging';
 
@@ -58,6 +59,7 @@ import { AuthGuardService } from './auth-guard.service';
     KeysPipe,
     TradeDetailsComponent,
     StripHtmlPipe,
+    FooterComponent,
     // TooltipComponent
   ],
   imports: [
