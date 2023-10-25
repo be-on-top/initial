@@ -1,6 +1,6 @@
 <div class="container py-5">
 
-    <h3>Home Page</h3>
+    <!-- <h3>Home Page</h3> -->
 
     <!-- tests OK à voir pour campagnes notification -->
     <!-- <div class="alert bg-warning p-5" *ngIf="offline">Attention, vous êtes actuellement hor ligne</div>
@@ -15,12 +15,15 @@
     </div> -->
     <!-- fin tests de notification desktop -->
 
-    <p class="alert bg-success p-2 mt-3 fs-5">Sert pour le moment à tester l'authentification utilisateur, la
-        récupération des sigles métiers pour boucler dessus et afficher chaque zone. Zones qui seront éditables pour le
-        seul utilisateur ayant le role d'éditeur !!</p>
+    <div class="alert bg-primary alert-dismissible text-white mb-4 fade show">
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+        Ce conteneur peut servir à <strong>énoncer la mission de l'application</strong>. Devrait être dans ce cas très synthétique. Evaluez-vous,  positionnez-vous, intégrez sans tarder la formation dont vous avez toujours rêver... 3 lignes max pour ne pas déborder sur l'aperçu des métiers. On peut le fermer. 
+      </div>
 
-    <!-- <div class="p-2 display-5">Données récupérées non pas grâce à un paramètre de route mais grâce aux données
-        d'authentification de l'utilisateur</div> -->
+    <!-- <p class="alert bg-success p-2 mt-3 fs-5">Sert pour le moment à tester l'authentification utilisateur, la
+        récupération des sigles métiers pour boucler dessus et afficher chaque zone. Zones qui seront éditables pour le
+        seul utilisateur ayant le role d'éditeur !!</p> -->
+
 
     <!-- test ok -->
     <!-- <div *ngIf="user" class="alert bg-light p-2">
