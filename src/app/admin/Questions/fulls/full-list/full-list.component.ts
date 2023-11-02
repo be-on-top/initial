@@ -61,6 +61,11 @@ export class FullListComponent {
         // alert(this.sigleIds)
       }
 
+      // Si sigleIds est défini et non vide, filtre également par sigles
+      if (this.sigleIds && this.sigleIds.length > 1) {
+        this.questions = this.questions.filter(q => this.sigleIds.includes(q.sigle))
+      }
+
 
       // Trie les questions par ordre 
       this.questions.sort(this.compare)
@@ -138,8 +143,8 @@ export class FullListComponent {
     return this.service.getQuestions().pipe(
       // Utilise l'opérateur map pour filtrer les questions en fonction du sigle
       map(questions => questions.filter(question => question.sigle === sigle && question.number > 20)
-      // puis chaine avec la méthode pour les sortir par ordre
-      .sort(this.compare))      
+        // puis chaine avec la méthode pour les sortir par ordre
+        .sort(this.compare))
     )
   }
 

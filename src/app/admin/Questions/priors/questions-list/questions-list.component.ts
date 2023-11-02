@@ -34,7 +34,7 @@ export class QuestionsListComponent implements OnInit {
   ngOnInit() {
     this.service.getQuestions().subscribe(data => {
       let allQuestions = data;
-      console.log("allQuestions", allQuestions)
+      // console.log("allQuestions", allQuestions)
 
       this.questions = allQuestions.filter(q => q.number < 21)
 
@@ -47,7 +47,7 @@ export class QuestionsListComponent implements OnInit {
       }
 
       // Si sigleIds est défini et non vide, filtre également par sigles
-      if (this.sigleIds && this.sigleIds.length > 0) {
+      if (this.sigleIds && this.sigleIds.length > 1) {
         this.questions = this.questions.filter(q => this.sigleIds.includes(q.sigle))
       }
       this.questions.sort(this.compare)

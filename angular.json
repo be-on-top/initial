@@ -39,7 +39,7 @@
             "ngswConfigPath": "ngsw-config.json"
           },
           "configurations": {
-            "production": {
+            "production": {                    
               "budgets": [
                 {
                   "type": "initial",
@@ -113,8 +113,8 @@
             "prerender": false,
             "ssr": false,
             "browserTarget": "my-first-project:build:production",
-            "firebaseProject": "pwa-be-on-top",
-            "firebaseHostingSite": "pwa-be-on-top"
+            "firebaseProject": "be-on-top-beta",
+            "firebaseHostingSite": "be-on-top-beta"
           }
         }
       }

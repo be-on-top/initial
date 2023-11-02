@@ -115,7 +115,7 @@ export class UpdateFullComponent {
   }
 
   //  fonction en cas de modification d'un média existant
-  detectFiles(event: any, fieldName: any, item: any = "") {
+  detectFiles(event: any, fieldName: any, item: any = "", f:NgForm) {
     // console.log("fieldName.name", fieldName.name);
     alert(`êtes-vous certain de vouloir remplacer le fichier ${item} ?`)
     this.service.deleteMedia(item)
@@ -130,6 +130,19 @@ export class UpdateFullComponent {
     }
 
     this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name])
+    alert(fieldName.name)
+    if (fieldName.name = 'mediaQuestion') {
+      this.result.mediaQuestion = event.target.files[0].name
+    } else if (fieldName.name = 'mediaOption1') {
+      this.result.mediaOption1 = event.target.files[0].name
+    } else if (fieldName.name = 'mediaOption2') {
+      this.result.mediaOption2 = event.target.files[0].name
+    } else if (fieldName.name = 'mediaOption3') {
+      this.result.mediaOption3 = event.target.files[0].name
+    } else if (fieldName.name = 'mediaOption4') {
+      this.result.mediaOption4 = event.target.files[0].name
+    }
+
     // this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name, event.target.files[0].type])
     // console.log("this.arrayFilesToUpdate !!!!!!!!!", this.arrayFilesToUpdate);
     // console.log(event.target.files[0].size);
@@ -140,14 +153,14 @@ export class UpdateFullComponent {
   detectNewFiles(event: any, fieldName: any, item: any = "") {
     // console.log("fieldName.name", fieldName.name);
     // console.log("Type de fichier", event.target.files[0].type);
-        // ce n'était pas prévu pour ça mais pour rendre option 2 ou 3 obligatoire si les inputs file associés sont remplis
-        if (item === 'mediaOption3') {
-          this.result.mediaOption3 = event.target.files[0];
-          this.isRequiredOption3 = true;
-        } else if (item === 'mediaOption4') {
-          this.result.mediaOption4 = event.target.files[0];
-          this.isRequiredOption4 = true;
-        }
+    // ce n'était pas prévu pour ça mais pour rendre option 2 ou 3 obligatoire si les inputs file associés sont remplis
+    if (item === 'mediaOption3') {
+      this.result.mediaOption3 = event.target.files[0];
+      this.isRequiredOption3 = true;
+    } else if (item === 'mediaOption4') {
+      this.result.mediaOption4 = event.target.files[0];
+      this.isRequiredOption4 = true;
+    }
 
     alert("new file")
 
@@ -214,29 +227,33 @@ export class UpdateFullComponent {
     // détection du cas de modification
     if (item !== '') {
       this.service.deleteMedia(item)
-      if (fieldName=='mediaQuestion') {
+      if (fieldName == 'mediaQuestion') {
         this.isActive = false
       }
-      
-      if(fieldName=='mediaOption1') {
+
+      if (fieldName == 'mediaOption1') {
         this.isActive1 = false
-        
+
       }
 
-      if(fieldName=='mediaOption2') {
+      if (fieldName == 'mediaOption2') {
         this.isActive2 = false
-        
+
       }
-      if(fieldName=='mediaOption3') {
-        this.isActive3 = false        
+      if (fieldName == 'mediaOption3') {
+        this.isActive3 = false
       }
       else {
         this.isActive4 = false
-        
+
       }
-  
+
     }
 
+  }
+
+  lookForKeyContent(array: any, string: string) {
+    return array.filter((item: any) => item.includes(string))
   }
 
 }

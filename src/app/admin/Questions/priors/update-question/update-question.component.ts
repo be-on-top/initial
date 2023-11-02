@@ -252,6 +252,10 @@ export class UpdateQuestionComponents implements OnInit {
 
   }
 
+  lookForKeyContent(array:any, string:string){
+    return array.filter((item:any)=>item.includes(string))
+  }
+
 
 }
 

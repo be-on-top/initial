@@ -1,14 +1,14 @@
 {
   "targets": {
-    "pwa-be-on-top": {
+      "be-on-top-beta": {
       "hosting": {
         "my-first-project": [
-          "pwa-be-on-top"
+          "be-on-top-beta"
         ]
       }
     }
   },
   "projects": {
-    "default": "pwa-be-on-top"
+    "default": "be-on-top-beta"
   }
 }

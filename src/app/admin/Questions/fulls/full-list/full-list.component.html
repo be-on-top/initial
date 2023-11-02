@@ -21,7 +21,7 @@
                             <option *ngFor="let s of sigleIds" [value]="s">{{s}}</option>
                         </select>         
                     </div>
-                    <div [ngClass]="{'col-sm-6 mx-0':sigleIds.length>1}">
+                    <div [ngClass]="{'col-sm-6 mx-0':sigleIds && sigleIds.length>1}">
                     <!-- pour opérer un filtre (champ de recherch) sur ce qui vient en dessous -->
                     <!-- on introduit un champ de recherche -->
                          <app-search (searchTextChanged)="onSearchTextEntered($event)" searchText='searchText'></app-search>
