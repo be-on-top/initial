@@ -15,12 +15,12 @@
                 <select name="sigle" class="form-select text-black-70" (change)="onChange($event)">
                     <option selected>Filtrer en fonction du métier</option>
                     <option *ngFor="let s of sigleIds" [value]="s">{{s}}</option>
-                </select> 
+                </select>
             </div>
             <div [ngClass]="{'col-sm-6':sigleIds && sigleIds.length>1}">
-            <!-- pour opérer un filtre (champ de recherch) sur ce qui vient en dessous -->
-            <!-- on introduit un champ de recherche -->
-                 <app-search (searchTextChanged)="onSearchTextEntered($event)" searchText='searchText'></app-search>
+                <!-- pour opérer un filtre (champ de recherch) sur ce qui vient en dessous -->
+                <!-- on introduit un champ de recherche -->
+                <app-search (searchTextChanged)="onSearchTextEntered($event)" searchText='searchText'></app-search>
             </div>
         </div>
         <!-- fin du container -->
@@ -29,8 +29,7 @@
         <!-- pour recracher autant de vues de détails qu'il y a de questions... -->
         <div *ngFor="let q of questions"> <!-- {{q | json}} -->
             <!-- ... et les filtrer si besoin -->
-            <div
-                *ngIf="searchText==='' || q.question.toUpperCase().includes(searchText) || q.question.toLowerCase().includes(searchText) || q.competence.toLowerCase().includes(searchText)  || q.number.includes(searchText)">
+            <div *ngIf="searchText==='' || q.question.toUpperCase().includes(searchText) || q.question.toLowerCase().includes(searchText) || q.competence.toLowerCase().includes(searchText) || (q.number && q.number.toString().includes(searchText)) ">
                 <app-question-details [q]="q"></app-question-details>
             </div>
         </div>

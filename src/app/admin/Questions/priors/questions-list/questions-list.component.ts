@@ -50,13 +50,25 @@ export class QuestionsListComponent implements OnInit {
       if (this.sigleIds && this.sigleIds.length > 1) {
         this.questions = this.questions.filter(q => this.sigleIds.includes(q.sigle))
       }
+
+      // Trie les questions par ordre 
       this.questions.sort(this.compare)
     })
 
   }
 
+  // compare(a: any, b: any) {
+  //   return a.number - b.number;
+  // }
+
   compare(a: any, b: any) {
-    return a.number - b.number;
+    if (a.number < b.number) {
+      return -1;
+    }
+    if (a.number > b.number) {
+      return 1;
+    }
+    return 0;
   }
 
 
@@ -86,18 +98,25 @@ export class QuestionsListComponent implements OnInit {
     return this.service.getQuestions().pipe(
       // Utilise l'opérateur map pour filtrer les questions en fonction du sigle
       map(questions => questions.filter(question => question.sigle === sigle && question.number < 21)
-      // puis chaine avec la méthode pour les sortir par ordre
-      .sort(this.compare))      
+        // puis chaine avec la méthode pour les sortir par ordre
+        .sort(this.compare))
     )
   }
 
   // Méthode pour filtrer les questions en fonction du sigle rattaché à l'utilisateur
-  getUserSigles(uid: string): any {
-    this.evaluatorService.getEvaluator(uid).subscribe(userData => {
-      this.sigleIds = userData.sigle
-      this.questions = this.questions.filter(q => this.sigleIds.includes(q.sigle))
-    })
+  // getUserSigles(uid: string): any {
+  //   this.evaluatorService.getEvaluator(uid).subscribe(userData => {
+  //     this.sigleIds = userData.sigle
+  //     this.questions = this.questions.filter(q => this.sigleIds.includes(q.sigle))
+  //   })
+  // }
 
+  getUserSigles(uid: string): void {
+    this.evaluatorService.getEvaluator(uid).subscribe(userData => {
+      this.sigleIds = userData.sigle;
+      this.questions = this.questions.filter(q => q.number < 21 && this.sigleIds.includes(q.sigle));
+      this.questions.sort(this.compare);
+    });
   }
 
 }

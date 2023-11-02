@@ -77,8 +77,8 @@
                     <!-- pour englober cas de modification et de reset sur question -->
                     <div class="alert alert-info">image : modification</div>
                     <div class="d-flex gap-2 justify-content-between">
-                        <input type="text" [(ngModel)]="result.mediaQuestion"
-                            name="mediaQuestion" class="disabled" #mediaQuestion>
+                        <input type="text" [ngModel]="result.mediaQuestion"
+                            name="mediaQuestion" class="disabled invisible" #mediaQuestion>
                         <input type="file" accept="image/*, video/*" 
                             class="form-control" 
                             (change)="detectFiles($event, mediaQuestion, item)">
@@ -119,8 +119,8 @@
                     <!-- <label class="form-label mt-3" for="mediaOption1">Fichier à modifier</label> -->
                     <!-- pour englober la modification et le reset -->
                     <div class="d-flex gap-2 justify-content-between">
-                        <input type="text" [(ngModel)]="result.mediaOption1"
-                        name="mediaOption1" class="disabled w-100" #mediaOption1>
+                        <input type="text" [ngModel]="result.mediaOption1"
+                        name="mediaOption1" class="disabled invisible" #mediaOption1>
                         <input type="file" class="form-control w-75" placeholder="Fichier média de votre choix"
                             (change)="detectFiles($event, mediaOption1, item)">
                         <button type="button" class="btn btn-danger w-25"
@@ -175,8 +175,8 @@
                     <!-- <label class="form-label mt-3" for="mediaOption2">Fichier à modifier</label> -->
                     <!-- pour englober la modification et le reset -->
                     <div class="d-flex gap-2 justify-content-between">
-                        <input type="text" [(ngModel)]="result.mediaOption2"
-                        name="mediaOption2" class="disabled w-100" #mediaOption2>                        
+                        <input type="text" [ngModel]="result.mediaOption2"
+                        name="mediaOption2" class="disabled invisible" #mediaOption2>                        
                         <input type="file"  class="form-control w-75" placeholder="Fichier média de votre choix"
                             (change)="detectFiles($event, mediaOption2, item)">
                         <button type="button" class="btn btn-danger w-25"
@@ -230,8 +230,8 @@
                     <!-- <label class="form-label mt-3" for="mediaOption3">Fichier à modifier</label> -->
                     <!-- pour englober la modification et le reset -->
                     <div class="d-flex gap-2 justify-content-between">
-                        <input type="text" [(ngModel)]="result.mediaOption3"
-                        name="mediaOption3" class="disabled w-100" #mediaOption3>   
+                        <input type="text" [ngModel]="result.mediaOption3"
+                        name="mediaOption3" class="disabled invisible" #mediaOption3>   
                         <input type="file" class="form-control w-75" placeholder="Fichier média de votre choix"
                             (change)="detectFiles($event, mediaOption3, item)">
                         <button type="button" class="btn btn-danger w-25"
@@ -287,8 +287,8 @@
                     <!-- <label class="form-label mt-3" for="mediaOption4">Fichier à modifier</label> -->
                     <!-- pour englober la modifiction et le reset -->
                     <div class="d-flex gap-2 justify-content-between">
-                        <input type="text" [(ngModel)]="result.mediaOption4"
-                        name="mediaOption4" class="disabled w-100" #mediaOption4>   
+                        <input type="text" [ngModel]="result.mediaOption4"
+                        name="mediaOption4" class="disabled invisible" #mediaOption4>   
                         <input type="file" class="form-control" placeholder="Fichier média de votre choix"
                             (change)="detectFiles($event, mediaOption4, item)">
                         <button type="button" class="btn btn-danger w-25"

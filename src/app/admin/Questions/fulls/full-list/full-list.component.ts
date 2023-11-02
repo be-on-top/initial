@@ -66,7 +66,6 @@ export class FullListComponent {
         this.questions = this.questions.filter(q => this.sigleIds.includes(q.sigle))
       }
 
-
       // Trie les questions par ordre 
       this.questions.sort(this.compare)
 
@@ -160,7 +159,7 @@ export class FullListComponent {
 
   // }
 
-
+  // Méthode pour filtrer les questions en fonction du sigle rattaché à l'utilisateur
   getUserSigles(uid: string): void {
     this.evaluatorService.getEvaluator(uid).subscribe(userData => {
       this.sigleIds = userData.sigle;

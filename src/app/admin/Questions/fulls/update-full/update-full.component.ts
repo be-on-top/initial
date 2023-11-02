@@ -115,7 +115,7 @@ export class UpdateFullComponent {
   }
 
   //  fonction en cas de modification d'un média existant
-  detectFiles(event: any, fieldName: any, item: any = "", f:NgForm) {
+  detectFiles(event: any, fieldName: any, item: any = "") {
     // console.log("fieldName.name", fieldName.name);
     alert(`êtes-vous certain de vouloir remplacer le fichier ${item} ?`)
     this.service.deleteMedia(item)
@@ -130,17 +130,18 @@ export class UpdateFullComponent {
     }
 
     this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name])
-    alert(fieldName.name)
-    if (fieldName.name = 'mediaQuestion') {
-      this.result.mediaQuestion = event.target.files[0].name
-    } else if (fieldName.name = 'mediaOption1') {
-      this.result.mediaOption1 = event.target.files[0].name
-    } else if (fieldName.name = 'mediaOption2') {
-      this.result.mediaOption2 = event.target.files[0].name
-    } else if (fieldName.name = 'mediaOption3') {
-      this.result.mediaOption3 = event.target.files[0].name
-    } else if (fieldName.name = 'mediaOption4') {
-      this.result.mediaOption4 = event.target.files[0].name
+    // alert(fieldName.name)
+    // Vérifiez le nom du champ et mettez à jour le bon champ de résultat en conséquence
+    if (fieldName.name === 'mediaQuestion') {
+      this.result.mediaQuestion = event.target.files[0].name;
+    } else if (fieldName.name === 'mediaOption1') {
+      this.result.mediaOption1 = event.target.files[0].name;
+    } else if (fieldName.name === 'mediaOption2') {
+      this.result.mediaOption2 = event.target.files[0].name;
+    } else if (fieldName.name === 'mediaOption3') {
+      this.result.mediaOption3 = event.target.files[0].name;
+    } else if (fieldName.name === 'mediaOption4') {
+      this.result.mediaOption4 = event.target.files[0].name;
     }
 
     // this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name, event.target.files[0].type])
@@ -254,6 +255,10 @@ export class UpdateFullComponent {
 
   lookForKeyContent(array: any, string: string) {
     return array.filter((item: any) => item.includes(string))
+  }
+
+  onMediaOption1Change(newMediaOption1Value: string) {
+    this.result.mediaOption1 = newMediaOption1Value;
   }
 
 }
