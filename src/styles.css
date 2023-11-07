@@ -20,6 +20,10 @@ body {
     font-size: 16px;
 }
 
+.first-word {
+    color: rgb(115, 110, 128) !important;
+}
+
 #grad {
     background-image: linear-gradient(to right, #272A61, rgb(72, 0, 255));
 }
@@ -135,6 +139,12 @@ p.question {
 
 
 
+/* @media screen and (max-width: 750px) {
+
+    .image-container, .home{
+        height: 40vw;
+    }
+} */
 
 /* added to avoid container reduced on landscape screen under 992px */
 
@@ -153,7 +163,7 @@ p.question {
 
     .fs-6,
     .fs-6 span {
-        font-size: 0.8rem !important;
+        font-size: 1rem !important;
 
     }
 
@@ -200,3 +210,4 @@ p.question {
         display: none ! important;
     }
 }
+

@@ -18,7 +18,9 @@
     <!-- test alert-dismissible for mission -->
     <div class="alert bg-primary alert-dismissible text-white mb-4 fade show">
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
-        Ce conteneur peut servir à <strong>énoncer la mission de l'application</strong>. Devrait être dans ce cas très synthétique. Evaluez-vous,  positionnez-vous, intégrez sans tarder la formation dont vous avez toujours rêver... 3 lignes max pour ne pas déborder sur l'aperçu des métiers. On peut le fermer. 
+        Ce conteneur peut servir à <strong>énoncer la mission de l'application</strong>. Devrait être dans ce cas très
+        synthétique. Evaluez-vous, positionnez-vous, intégrez sans tarder la formation dont vous avez toujours rêver...
+        3 lignes max pour ne pas déborder sur l'aperçu des métiers. On peut le fermer.
     </div>
     <!-- fin test alert-dismissible -->
 
@@ -62,18 +64,14 @@
         Id Utilisateur authentifié sur firebase Auth : {{user | json}}
     </div> -->
 
-    <div *ngIf="studentData" class="rounded bg-light p-2">
+    <!-- <div *ngIf="studentData" class="rounded bg-light p-2 mb-2">
         <ul class="list-group">
-            <!-- <li class="list-group-item">Son id sur firestore : {{studentData.id}}</li>
-            <li class="list-group-item">Son email sur firestore : {{studentData.email}}</li>
-            <li class="list-group-item">Son status sur firestore : {{studentData.status}}</li> -->
             <li class="list-group-item">Son prénom sur firestore : {{studentData.firstName}}</li>
             <li class="list-group-item">Son nom sur firestore : {{studentData.lastName}}</li>
-            <!-- <li class="list-group-item">Date d'enregistrement sur firestore : {{studentData.created | date:'dd/MM/yyyy'}}</li> -->
             <li *ngIf="studentData.scoreCounter" class="list-group-item">Votre score pour le moment:
                 {{studentData.scoreCounter}}</li>
         </ul>
-    </div>
+    </div> -->
 
     <div *ngIf="tradesData" class="rounded bg-light row column-gap-1">
 
@@ -93,9 +91,10 @@
 
             <!-- <a [routerLink]="['/quizz/',  trade.sigle, studentData && studentData['quizz_'+trade.sigle] && studentData['quizz_'+trade.sigle].lastIndexQuestion?(studentData['quizz_'+trade.sigle].lastIndexQuestion | number)+1:0, studentData && studentData['quizz_'+trade.sigle] && studentData['quizz_'+trade.sigle].scoreCounter?studentData['quizz_'+trade.sigle].scoreCounter:0, studentData && studentData['quizz_'+trade.sigle]?true:false, studentData && studentData.id?studentData.id:'']" class="text-decoration-none text-dark"> -->
             <div class="card my-3" (click)="selectTrade(trade.id)">
-                <div class="card-header">
-                    <span class="fw-bold text-capitalize text-dark">{{trade.denomination}} </span>
-                </div>
+                <div class="card-header text-capitalize">
+                    <h2 class="h5 text-start ps-2" [innerHTML]="trade.denomination | firstWord"></h2>
+                  </div>
+                                  
                 <div class="card-body">
                     <a [routerLink]="[
                                 '/quizz/',
@@ -105,37 +104,51 @@
                                 studentData?.id ? studentData.id : ''
                               ]" class="text-decoration-none text-dark">
                         <!-- <p class="card-text"><span class="fw-bold">Son sigle (référence métier) sur firestore : </span> : {{trade.sigle}}</p> -->
-                        <div class="card-text"><a [routerLink]="['/trade', trade.sigle]" class="text-decoration-none">
+                        <!-- <img class="img-fluid rounded" [src]="trade.imageUrl" *ngIf="trade.imageUrl"> -->
+                        <!-- <img class="img-fluid" [src]="trade.imageUrl || defaultImageUrl" *ngIf="trade.imageUrl"> -->
+                        <div class="image-container rounded mb-1 ">
+                            <img class="img-fluid rounded home" [src]="trade.imageUrl" *ngIf="trade.imageUrl">
+                        </div>
+
+                        <div class="card-text smaller"><a [routerLink]="['/trade', trade.sigle]"
+                                class="text-decoration-none">
                                 {{(trade.description | slice:0:100 ) + ' ...'| stripHtml }} </a></div>
                         <!-- si on utilise l'éditeur de texte, pour récupérer le texte tronqué et brut -->
                         <!-- <div class="card-text"><a [routerLink]="['/trade', trade.sigle]" class="text-decoration-none" [innerHTML]="sanitizer.bypassSecurityTrustHtml((trade.description | slice:0:100) +'...')"></a></div> -->
 
-                        <div *ngIf="isEditor" class="d-flex justify-content-end"><button class="btn btn-transparent"><i
-                                    class="bi bi-pencil-square"></i>
-                                Editer</button></div>
+                        <div *ngIf="isEditor" class="d-flex justify-content-end">
+                            <hr>
+                            <button class="btn btn-transparent"><i class="bi bi-pencil-square"></i>
+                                Editer</button>
 
-                        <!-- <div class="d-flex justify-content-end"><button class="btn btn-transparent"><i
-                                    class="bi bi-clock-history"></i>
-                                Démarrer l'évaluation</button></div> -->
+                        </div>
+
+
+
                         <!-- pour switcher d'un intitulé à un autre selon que studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle -->
 
-                        <div class="d-flex justify-content-end"
-                            *ngIf="(studentData && !studentData['quizz_'+trade.sigle])"><button
-                                class="btn btn-transparent"><i class="bi bi-clock"></i>
-                                Démarrer votre évaluation</button></div>
+                        <ng-container *ngIf="studentData">
+                            <hr>
+                            <div class="d-flex justify-content-end"
+                                *ngIf="(studentData && !studentData['quizz_'+trade.sigle])">
+                                <button class="btn btn-transparent"><i class="bi bi-clock"></i>
+                                    Démarrer votre évaluation</button>
+                            </div>
 
-                        <div class="d-flex justify-content-end"
-                            *ngIf="studentData && studentData['quizz_'+trade.sigle] && !studentData['quizz_'+trade.sigle].fullResults">
-                            <button class="btn btn-transparent"><i class="bi bi-clock-history"></i>
-                                <!-- Reprendre à la question {{studentData.lastIndexQuestion+1}}</button></div> -->
-                                Poursuivre</button>
-                        </div>
+                            <div class="d-flex justify-content-end"
+                                *ngIf="studentData && studentData['quizz_'+trade.sigle] && !studentData['quizz_'+trade.sigle].fullResults">
 
-                        <div class="d-flex justify-content-end"
-                            *ngIf="studentData && studentData['quizz_'+trade.sigle] && studentData['quizz_'+trade.sigle].fullResults">
-                            <button class="btn btn-transparent"><i class="bi bi-check-square-fill"></i>
-                                Votre évaluation est terminée</button>
-                        </div>
+                                <button class="btn btn-transparent"><i class="bi bi-clock-history"></i>
+                                    <!-- Reprendre à la question {{studentData.lastIndexQuestion+1}}</button></div> -->
+                                    Poursuivre</button>
+                            </div>
+
+                            <div class="d-flex justify-content-end"
+                                *ngIf="studentData && studentData['quizz_'+trade.sigle] && studentData['quizz_'+trade.sigle].fullResults">
+                                <button class="btn btn-transparent"><i class="bi bi-check-square-fill"></i>
+                                    Votre évaluation est terminée</button>
+                            </div>
+                        </ng-container>
 
                         <!-- à tester : (str.length>6)? (str | slice:0:6)+'...':(str) -->
 

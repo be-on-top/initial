@@ -38,6 +38,7 @@ import { TradeDetailsComponent } from './trades/trade-details/trade-details.comp
 import { StripHtmlPipe } from './strip-html.pipe';
 import { AuthGuardService } from './auth-guard.service';
 import { FooterComponent } from './footer/footer/footer.component';
+import { FirstWordPipe } from './first-word.pipe';
 
 // import { getMessaging } from 'firebase/messaging';
 
@@ -60,6 +61,7 @@ import { FooterComponent } from './footer/footer/footer.component';
     TradeDetailsComponent,
     StripHtmlPipe,
     FooterComponent,
+    FirstWordPipe,
     // TooltipComponent
   ],
   imports: [

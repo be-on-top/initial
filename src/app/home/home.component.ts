@@ -62,6 +62,10 @@ export class HomeComponent implements OnInit {
 
   userRole: string = ""
 
+  // pour charger l'image associée si image
+  // imageUrl: string = ''; // Pour stocker l'URL de l'image
+  // defaultImageUrl: string = 'https://dalmont.staticlbi.com/original/images/biens/2/8efa48ae0918f1e8a89684a39abdbdf7/photo_5432049cf11f3071651cb2c30317bd5e.jpg';
+
   constructor(private notificationService: PushNotificationService, private auth: Auth, private authService: AuthService, private studentService: StudentsService, private ac: ActivatedRoute, private router: Router, readonly swPush: SwPush, private settingsService: SettingsService) {
     // pour savoir si l'utilisateur est éditeur sans interroger firestore, on peut (?) récupérer userRole livré en paramètre de route
     // this.ac.snapshot.params["userRole"]="editor"?this.isEditor=true:""
@@ -160,12 +164,28 @@ export class HomeComponent implements OnInit {
 
     // pour récupérer les métiers (sigles) enregistrés en base qui détermineront les différentes zones éditioriales
     this.settingsService.getTrades().subscribe(data => {
+      this.tradesData = data;
+      console.log("this.tradesData", this.tradesData);
+    
+      // Charge les images pour chaque métier
+      this.tradesData.forEach((trade: any) => {
+        this.settingsService.loadImage(trade.id)
+          .then((url: string) => {
+            trade.imageUrl = url; // Met à jour l'URL de l'image si elle est trouvée
+          })
+          .catch((error) => {
+            if (error.code === 'storage/object-not-found') {
+              trade.imageUrl = 'https://dalmont.staticlbi.com/original/images/biens/2/8efa48ae0918f1e8a89684a39abdbdf7/photo_5432049cf11f3071651cb2c30317bd5e.jpg'; // Définir l'URL par défaut en cas d'erreur 404
+            } else {
+              console.error('Erreur lors du chargement de l\'image pour le métier ' + trade.id, error);
+            }
+          })
+      })
+    })   
+    
 
-      this.tradesData = data,
-        console.log("this.tradesData", this.tradesData);
-
-    })
   }
+
 
   selectTrade(id: string) {
 
@@ -175,6 +195,20 @@ export class HomeComponent implements OnInit {
   navigateToQuizz(trade: string, indexedQuestion: number = 0, score: number = 0) {
     this.studentData.tradeEvaluated && this.studentData.tradeEvaluated == trade ? this.router.navigate(['/quizz', trade, indexedQuestion, score]) : this.router.navigate(['/quizz', trade, 0, 0])
   }
+
+
+  handleImageError(trade: any) {
+    trade.imageUrl = 'https://dalmont.staticlbi.com/original/images/biens/2/8efa48ae0918f1e8a89684a39abdbdf7/photo_5432049cf11f3071651cb2c30317bd5e.jpg';
+  }
+  
+  wrapFirstWord(text: string): string {
+    const words = text.split(' ');
+    if (words.length > 1) {
+      words[0] = `<span class="first-word">${words[0]}</span>`;
+    }
+    return words.join(' ');
+  }
+  
 
 
 }

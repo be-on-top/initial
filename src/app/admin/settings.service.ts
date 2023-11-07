@@ -156,6 +156,25 @@ export class SettingsService {
     const imageRef = ref(this.storage, 'images/trades/' + tradeId + '.jpeg');
     return getDownloadURL(imageRef)
   }
+ 
+  // tentative de modification suite à la tentative de boucler sur trades depuis homeComponent
+  // loadImage(tradeId: string): Promise<string | null> {
+  //   const imageRef = ref(this.storage, 'images/trades/' + tradeId + '.jpeg');
+    
+  //   // Vérifie si l'image existe avant de récupérer l'URL
+  //   return getDownloadURL(imageRef)
+  //   .then((url: string) => {
+  //     return url; // Retourne l'URL si l'image est trouvée
+  //   })
+  //   .catch((error) => {
+  //     if (error.code === 'storage/object-not-found') {
+  //       return null; // Retourne null si l'image n'est pas trouvée
+  //     } else {
+  //       throw error; // Relance l'erreur pour d'autres erreurs inattendues
+  //     }
+  //   });
+
+  // }
 
 
   // updateTradeImage(tradeId: string, file: File): Promise<string> {
