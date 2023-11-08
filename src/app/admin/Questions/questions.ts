@@ -1,6 +1,7 @@
 export interface Questions {
 
     id: string;
+    comment: string;
     comment1: string;
     comment2: string;
     comment3: string;

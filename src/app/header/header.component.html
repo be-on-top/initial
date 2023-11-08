@@ -95,29 +95,7 @@
                         </li>
                     </ul>
                 </li>
-                <!-- ajout login global (on aura ultérieurement un public et privé réservé aux contributeurs et évaluateurs...) -->
 
-                <li class="nav-item dropdown" [routerLinkActive]="['active']">
-                    <a class="nav-link dropdown-toggle" href="#" role="button"
-                        data-bs-toggle="dropdown">Authentification</a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" [routerLink]="['login']">Login</a></li>
-                        <!-- <li><a class="dropdown-item" (click)="logOut()" [routerLink]="['']">Logout</a></li> -->
-                        <li><a class="dropdown-item" (click)="logOut()">Logout</a></li>
-                        <li><a class="dropdown-item" [routerLink]="['account']">Mon compte</a></li>
-                        <li><a class="dropdown-item" [routerLink]="['register']">Inscription</a></li>
-                    </ul>
-                </li>
-
-                <!-- pour les accès aux métiers en base -->
-                <!-- <li class="nav-item dropdown" *ngIf="trades">
-                    <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">Nos métiers</a>
-                    <ul class="dropdown-menu">
-                        <li *ngFor="let trade of trades">
-                            <a class="dropdown-item" [routerLink]="['/trade', trade.sigle]" routerLinkActive="active">{{trade.denomination}}</a>
-                        </li>
-                    </ul>
-                </li> -->
 
                 <li class="nav-item dropdown" *ngIf="trades" [routerLinkActive]="['active']">
                     <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">Nos métiers</a>
@@ -128,10 +106,23 @@
                     </ul>
                 </li>
 
-                <!-- Inscription lien externe -->
-                <li class="nav-item" [routerLinkActive]="['active']">
-                    <a class="nav-link" [routerLink]="['socialregistration']" role="button">Inscription Formation</a>
+                <!-- ajout login global (on aura ultérieurement un public et privé réservé aux contributeurs et évaluateurs...) -->
+                <li class="nav-item dropdown" [routerLinkActive]="['active']">
+                    <a class="nav-link dropdown-toggle" href="#" role="button"
+                        data-bs-toggle="dropdown">Authentification <i class="bi bi-person-fill-gear mx-2"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" [routerLink]="['login']">Login</a></li>
+                        <!-- <li><a class="dropdown-item" (click)="logOut()" [routerLink]="['']">Logout</a></li> -->
+                        <li><a class="dropdown-item" (click)="logOut()">Logout</a></li>
+                        <li><a class="dropdown-item" [routerLink]="['account']">Mon compte</a></li>
+                        <li><a class="dropdown-item" [routerLink]="['register']">Inscription</a></li>
+                    </ul>
                 </li>
+
+                <!-- Inscription lien externe sans condition pour tester en local -->
+                <!-- <li class="nav-item" [routerLinkActive]="['active']">
+                    <a class="nav-link" [routerLink]="['socialregistration']" role="button">Inscription Formation</a>
+                </li> -->
 
             </ul>
         </div>
