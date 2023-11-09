@@ -41,11 +41,11 @@ a .btn.btn-transparent:hover {
     display: inline-block;
     width: 100%;
     /* Ajuste automatiquement la largeur en fonction de la hauteur */
-    height: 20vw;
+    /* height: 20vw; */
     /* Définit la hauteur en fonction de 30% de la largeur de la fenêtre */
 }
 
-.image-container::before {
+/* .image-container::before {
     content: "";
     position: absolute;
     border-radius: 5px;
@@ -55,10 +55,8 @@ a .btn.btn-transparent:hover {
     left: 0;
     background-color: rgb(6, 6, 245);
     opacity: 0.4;
-    /* Opacité de 50% */
     z-index: 1;
-    /* Placez le pseudo-élément au-dessus de l'image */
-}
+} */
 
 .image-container img {
     z-index: 2;

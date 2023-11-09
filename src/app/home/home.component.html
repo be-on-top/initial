@@ -1,6 +1,6 @@
 <div class="container py-5">
 
-    <h3>Home Page</h3>
+    <!-- <h3>Home Page</h3> -->
 
     <!-- tests OK à voir pour campagnes notification -->
     <!-- <div class="alert bg-warning p-5" *ngIf="offline">Attention, vous êtes actuellement hor ligne</div>
@@ -107,7 +107,7 @@
                         <!-- <img class="img-fluid rounded" [src]="trade.imageUrl" *ngIf="trade.imageUrl"> -->
                         <!-- <img class="img-fluid" [src]="trade.imageUrl || defaultImageUrl" *ngIf="trade.imageUrl"> -->
                         <div class="image-container rounded mb-1 ">
-                            <img class="img-fluid rounded home" [src]="trade.imageUrl" *ngIf="trade.imageUrl">
+                            <img class="img-fluid rounded" [src]="trade.imageUrl" *ngIf="trade.imageUrl">
                         </div>
 
                         <div class="card-text smaller"><a [routerLink]="['/trade', trade.sigle]"
