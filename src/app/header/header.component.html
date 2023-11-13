@@ -19,7 +19,7 @@
                 <li class="nav-item dropdown" [routerLinkActive]="['active']"
                     *ngIf="userUid!==undefined && userUid!=='' && userRole!=='student' && userRole!=='editor'">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                        *ngIf="userRole.includes('admin') || userRole.includes('trainer') || userRole.includes('tutor') || userRole.includes('external')">Admin</a>
+                        *ngIf="userRole.includes('admin') || userRole.includes('evaluator') || userRole.includes('trainer') || userRole.includes('tutor') || userRole.includes('external')">Admin</a>
                     <!-- <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Admin</a> -->
                     <ul class="dropdown-menu">
                         <li *ngIf="userRole.includes('admin')"><a class="dropdown-item"
@@ -111,11 +111,11 @@
                     <a class="nav-link dropdown-toggle" href="#" role="button"
                         data-bs-toggle="dropdown">Authentification <i class="bi bi-person-fill-gear mx-2"></i></a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" [routerLink]="['login']">Login</a></li>
+                        <li *ngIf="!userRole"><a class="dropdown-item" [routerLink]="['login']">Login</a></li>
                         <!-- <li><a class="dropdown-item" (click)="logOut()" [routerLink]="['']">Logout</a></li> -->
                         <li><a class="dropdown-item" (click)="logOut()">Logout</a></li>
-                        <li><a class="dropdown-item" [routerLink]="['account']">Mon compte</a></li>
-                        <li><a class="dropdown-item" [routerLink]="['register']">Inscription</a></li>
+                        <li *ngIf="!userRole.includes('evaluator')"><a class="dropdown-item" [routerLink]="['account']">Mon compte</a></li>
+                        <li *ngIf="!userRole.includes('evaluator')"><a class="dropdown-item" [routerLink]="['register']">Inscription</a></li>
                     </ul>
                 </li>
 

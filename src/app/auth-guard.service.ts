@@ -3,7 +3,6 @@ import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from './admin/auth.service';
-import { DialogService } from './dialog/dialog.service';
 
 
 // A route can have more than one canActivate guard.
@@ -17,65 +16,68 @@ import { DialogService } from './dialog/dialog.service';
 export class AuthGuardService implements CanActivate {
   user?: any;
 
-  constructor(private authService: AuthService, private router: Router, private auth: Auth, private dialogService: DialogService) {
+  // je ne devrais pas avoir à me faire importer onAuthStateChanged et auth ...
+
+  constructor(private authService: AuthService, private router: Router, private auth: Auth) {
+
   }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    alert('AuthGuardService canActivate called');
+  // canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+  //   onAuthStateChanged(this.auth, (user: any) => {
+  //     if (user) {
+  //       // User is signed in, see docs for a list of available properties
+  //       // https://firebase.google.com/docs/reference/js/firebase.User
+  //       this.user = user.uid
+  //     }
+  //   })
 
-    // onAuthStateChanged(this.auth, (user: any) => {
-    //   if (user) {
-    // User is signed in, see docs for a list of available properties
-    // https://firebase.google.com/docs/reference/js/firebase.User
-    // this.user = this.auth.currentUser?.uid
-    //   }
-    // })
+  //   if (this.user) {
+  //     alert('salut user')
+  //     return true
+  //   } else {
+  //     this.router.navigate(['/login'])
+  //     return false
+  //   }
 
-    //   this.user = this.auth.currentUser?.uid
-    //   const allowedRoutes: string[] = ['home', '', 'quizz', 'trade']; // Liste des routes autorisées sans authentification
-    //   const routePath: string = state.url.replace('/', ''); // Obtenez le chemin de la route sans le slash initial
+  // }
 
-    //   if (allowedRoutes.includes(routePath)) {
-    //     alert("c'est public")
-    //     return true; // Autoriser l'accès aux routes spécifiées sans authentification
-    //   }
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      onAuthStateChanged(this.auth, (user: any) => {
+        if (user) {
+          // User is signed in, see docs for a list of available properties
+          // https://firebase.google.com/docs/reference/js/firebase.User
+          this.user = user.uid;
+  
+          // Ajouter une condition pour vérifier si la route nécessite une authentification
+          if (route.data['requiresAuth'] !== false) {
+            // Si l'utilisateur est authentifié et la route nécessite une authentification,
+            // laisser la navigation continuer
+            resolve(true);
+          } else {
+            // Si la route ne nécessite pas d'authentification, laissez la navigation continuer
+            resolve(true);
+          }
+        } else {
+          // Si l'utilisateur n'est pas authentifié et la route nécessite une authentification,
+          // effectuer la redirection vers la page de connexion
+          if (route.data['requiresAuth'] !== false) {
+            this.router.navigate(['/login']);
+            resolve(false);
+          } else {
+            // Si la route ne nécessite pas d'authentification, laisser la navigation continuer
+            resolve(true);
+          }
+        }
+      });
+    });
 
-    //   // Vérifier si l'utilisateur est authentifié
-    //   if (this.user!=="") {
-    //     return true; // Laisser l'accès à la route si l'utilisateur est authentifié
-    //   } else {
-    //     alert(this.user)
-    //     // Rediriger vers la page de connexion si l'utilisateur n'est pas authentifié
-    //     this.router.navigate(['/login']);
-    //     return false;
-    //   }
-    // }
-
-    onAuthStateChanged(this.auth, (user: any) => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        this.user = user.uid
-      }
-    })
-
-    if (this.user) {
-      alert('salut user')
-      return true
-    } else {
-      // const message = 'Vous devez être authentifié pour accéder à ce lien. Voulez-vous être redirigé vers la page de connexion ?';
-      // if (this.dialogService.confirm(message)) {
-      //   this.router.navigate(['/login']);
-      // }
-      this.router.navigate(['/login']);
-      return false;
-    }
   }
+ 
+  
+  
+  
 
 }
-
-
-
-
 
 

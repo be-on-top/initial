@@ -75,20 +75,20 @@ export class PriorFormComponent implements OnInit {
 
   ngOnInit(): void {
 
-    if (this.authService.user) {
+    // if (this.authService.user) {
       this.authId = this.authService.user
       // alert(this.authId)
-      this.evaluatorService.getEvaluator(this.authId).subscribe(data => {
+      this.evaluatorService.getEvaluator(this.authService.user).subscribe(data => {
         this.userData = data
         console.log(data)
         this.getRelatedCompetences()
       })
       console.log('new this.userData.sigle', this.userData);
-    }
+    // }
 
-    else {
-      alert('user is signed out !!!')
-    }
+    // else {
+    //   alert('user is signed out !!!')
+    // }
 
   }
 
