@@ -55,18 +55,15 @@
                                 questions d'accroche</a>
                         </li>
                         <li>
-                            <!-- <a class="dropdown-item" [routerLink]="['/admin/socialForm']"[ngClass]="{'d-none':userRole!=='evaluator' && userRole!=='admin'}">Saisie des questions sociales</a> -->
-                        <li>
-                            <!-- puisque evaluator est aussi susceptiblle d'etre trainer l'attribution des roles est maintenant enregistrée dans un array -->
-                            <!-- <a class="dropdown-item" [routerLink]="['/admin/socialForm']" *ngIf="userRole==='evaluator' || userRole==='admin' ">Saisie des questions sociales</a> -->
-                            <a class="dropdown-item" [routerLink]="['/admin/socialForm']"
-                                *ngIf="userRole.includes('evaluator') || userRole.includes('admin')">Saisie des
-                                questions sociales</a>
-                        </li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/fullForm']"
                                 *ngIf="userRole.includes('evaluator') || userRole.includes('admin')">Saisie des
                                 questions de
                                 positionnement</a></li>
+                        <li>
+                            <a class="dropdown-item text-muted fst-italic" [routerLink]="['/admin/socialForm']"
+                                *ngIf="userRole.includes('evaluator') || userRole.includes('admin')">Saisie des questions type soft
+                                skills</a>
+                        </li>
                         <li *ngIf="userRole.includes('evaluator') || userRole.includes('admin')">
                             <hr>
                         </li>
@@ -74,16 +71,15 @@
                                 *ngIf="userRole.includes('evaluator') || userRole.includes('admin')">Liste des questions
                                 d'accroche</a>
                         </li>
-                        <li><a class="dropdown-item" [routerLink]="['/admin/socials']"
-                                *ngIf="userRole.includes('evaluator') || userRole.includes('admin')">Liste des questions
-                                sociales</a>
-                        </li>
-
                         <!-- ici, on peut d'ailleurs remarquer que l'ont a déjà affaire à  -->
                         <li><a class="dropdown-item" [routerLink]="['/admin/fullList']"
                                 *ngIf="userRole.includes('evaluator') || userRole.includes('admin')">Liste des questions
                                 de
                                 positionnement</a></li>
+                        <li><a class="dropdown-item text-light text-muted fst-italic" [routerLink]="['/admin/socials']"
+                                *ngIf="userRole.includes('evaluator') || userRole.includes('admin')">Liste des questions
+                                type soft skills</a>
+                        </li>
                         <li *ngIf="userRole.includes('admin')">
                             <hr>
                         </li>
@@ -114,8 +110,10 @@
                         <li *ngIf="!userRole"><a class="dropdown-item" [routerLink]="['login']">Login</a></li>
                         <!-- <li><a class="dropdown-item" (click)="logOut()" [routerLink]="['']">Logout</a></li> -->
                         <li><a class="dropdown-item" (click)="logOut()">Logout</a></li>
-                        <li *ngIf="!userRole.includes('evaluator')"><a class="dropdown-item" [routerLink]="['account']">Mon compte</a></li>
-                        <li *ngIf="!userRole.includes('evaluator')"><a class="dropdown-item" [routerLink]="['register']">Inscription</a></li>
+                        <li *ngIf="!userRole.includes('evaluator')"><a class="dropdown-item"
+                                [routerLink]="['account']">Mon compte</a></li>
+                        <li *ngIf="!userRole.includes('evaluator')"><a class="dropdown-item"
+                                [routerLink]="['register']">Inscription</a></li>
                     </ul>
                 </li>
 

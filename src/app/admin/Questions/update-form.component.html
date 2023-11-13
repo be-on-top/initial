@@ -1,9 +1,8 @@
 <div class="container py-5">
 
     <!-- {{arrayFilesToUpdate | json}} -->
-    {{allMediasResponses | json}}
-
-    all mediaQuestions :{{allMediasQuestions | json}}
+    <!-- {{allMediasResponses | json}}
+    all mediaQuestions :{{allMediasQuestions | json}} -->
 
     <h3 *ngIf="result">Mise à jour de la question {{result.number}} <span class="d-block fs-6 mt-1">id : {{questionId}}</span> </h3>
     <hr>
@@ -109,7 +108,7 @@
         <input type="text" id="option1" name="option1" [(ngModel)]="result.option1" class="form-control"
             #option1="ngModel" placeholder="Option de réponse 1" required>
         <div class="valid-feedback" *ngIf="option1.valid">Champ correctement renseigné</div>
-        <div class="alert alert-danger">result.mediaOption1: {{result.mediaOption1}}</div>
+        <!-- <div class="alert alert-danger">result.mediaOption1: {{result.mediaOption1}}</div> -->
         <div
             *ngIf="allMediasResponses && allMediasResponses.length!==0 && lookForKeyContent(allMediasResponses, 'mediaOption1').length!==0 && isActive1===true, else createOption1">
             <div class="alert alert-info">image : modification</div>
@@ -126,8 +125,8 @@
                         <button type="button" class="btn btn-danger w-25"
                             (click)="resetFileInput('mediaOption1', f, item)">Reset</button>
                     </div>
-                    <div class="bg-light rounded p-3 fst-italic mt-2 smaller overflow-wrap">Nom du fichier en base à modifier:
-                        {{item | decodeURIComponent}}</div>
+                    <!-- <div class="bg-light rounded p-3 fst-italic mt-2 smaller overflow-wrap">Nom du fichier en base à modifier:
+                        {{item | decodeURIComponent}}</div> -->
                 </div>
             </div>
         </div>
@@ -163,7 +162,7 @@
         <input type="text" id="option2" name="option2" [(ngModel)]="result.option2" class="form-control"
             #option2="ngModel" placeholder="Option de réponse 2" required>
         <div class="valid-feedback mb-2" *ngIf="option2.valid">Champ correctement renseigné</div>
-        <div class="alert alert-danger">result.mediaOption2: {{result.mediaOption2}}</div>
+        <!-- <div class="alert alert-danger">result.mediaOption2: {{result.mediaOption2}}</div> -->
 
         <div
             *ngIf="allMediasResponses && allMediasResponses.length!==0 && lookForKeyContent(allMediasResponses, 'mediaOption2').length!==0 && isActive2===true, else createOption2">
@@ -182,8 +181,8 @@
                         <button type="button" class="btn btn-danger w-25"
                             (click)="resetFileInput('mediaOption2', f, item)">Reset</button>
                     </div>
-                    <div class="bg-light rounded p-3 fst-italic mt-2 smaller overflow-wrap">Nom du fichier en base à modifier:
-                        {{item | decodeURIComponent}}</div>
+                    <!-- <div class="bg-light rounded p-3 fst-italic mt-2 smaller overflow-wrap">Nom du fichier en base à modifier:
+                        {{item | decodeURIComponent}}</div> -->
                 </div>
             </div>
         </div>
@@ -219,7 +218,7 @@
         <input type="text" id="option3" name="option3" [(ngModel)]="result.option3" class="form-control mb-3"
             #option3="ngModel" placeholder="Option de réponse 3" [required]="isRequiredOption3">
         <!-- <div class="valid-feedback" *ngIf="option3.valid">Champ correctement renseigné</div> -->
-        <div class="alert alert-danger">result.mediaOption3: {{result.mediaOption3}}</div>
+        <!-- <div class="alert alert-danger">result.mediaOption3: {{result.mediaOption3}}</div> -->
 
         <div
             *ngIf="allMediasResponses && allMediasResponses.length!==0 && lookForKeyContent(allMediasResponses, 'mediaOption3').length!==0 && isActive3===true,  else createOption3">
@@ -237,8 +236,8 @@
                         <button type="button" class="btn btn-danger w-25"
                             (click)="resetFileInput('mediaOption3', f, item)">Reset</button>
                     </div>
-                    <div class="bg-light rounded p-3 fst-italic mt-2 smaller overflow-wrap">Nom du fichier en base à modifier:
-                        {{item | decodeURIComponent}}</div>
+                    <!-- <div class="bg-light rounded p-3 fst-italic mt-2 smaller overflow-wrap">Nom du fichier en base à modifier:
+                        {{item | decodeURIComponent}}</div> -->
                 </div>
             </div>
         </div>
@@ -277,7 +276,7 @@
             #option4="ngModel" [required]="isRequiredOption4" placeholder="Option de réponse 4">
         <!-- <div class="valid-feedback" *ngIf="option4.valid">Champ correctement renseigné</div> -->
         <!-- {{allMediasResponses | json}} -->
-        <div class="alert alert-danger">result.mediaOption4 : {{result.mediaOption4}}</div>
+        <!-- <div class="alert alert-danger">result.mediaOption4 : {{result.mediaOption4}}</div> -->
         <div
             *ngIf="allMediasResponses && allMediasResponses.length!==0 && lookForKeyContent(allMediasResponses, 'mediaOption4').length!==0 && isActive4===true, else createOption4">
             <div class="alert alert-info">image : modification</div>
@@ -294,8 +293,8 @@
                         <button type="button" class="btn btn-danger w-25"
                             (click)="resetFileInput('mediaOption4', f, item)">Reset</button>
                     </div>
-                    <div class="bg-light rounded p-3 fst-italic mt-2 smaller overflow-wrap">Nom du fichier en base à modifier:
-                        {{item | decodeURIComponent}}</div>
+                    <!-- <div class="bg-light rounded p-3 fst-italic mt-2 smaller overflow-wrap">Nom du fichier en base à modifier:
+                        {{item | decodeURIComponent}}</div> -->
                 </div>
             </div>
         </div>
