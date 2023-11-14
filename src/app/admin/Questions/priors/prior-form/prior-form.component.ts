@@ -225,6 +225,8 @@ export class PriorFormComponent implements OnInit {
       // form.reset ne sert que si on continue la saisie, c'est ce qu'on va finalement faire.
       form.reset();
       // this.router.navigate(['/admin/fullList'])
+      // et éventuellement
+      
     } else {
       alert('les 2 options ne peuvent être vraies, il faut choisir')
     }

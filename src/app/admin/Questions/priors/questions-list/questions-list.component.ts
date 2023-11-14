@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from 'src/app/admin/auth.service';
 import { AuthGuardService } from 'src/app/auth-guard.service';
+import { Questions } from '../../questions';
 
 
 
@@ -17,7 +18,7 @@ import { AuthGuardService } from 'src/app/auth-guard.service';
 
 export class QuestionsListComponent implements OnInit {
 
-  questions: any[] = []
+  questions: Questions[] = []
   // on le prépare à recevoir un terme de recherche
   searchText: string = ''
 
@@ -61,11 +62,24 @@ export class QuestionsListComponent implements OnInit {
   //   return a.number - b.number;
   // }
 
+  // compare(a: any, b: any) {
+  //   if (a.number < b.number) {
+  //     return -1;
+  //   }
+  //   if (a.number > b.number) {
+  //     return 1;
+  //   }
+  //   return 0;
+  // }
+
   compare(a: any, b: any) {
-    if (a.number < b.number) {
+    const numA = typeof a.number === 'number' ? a.number : parseInt(a.number as string, 10);
+    const numB = typeof b.number === 'number' ? b.number : parseInt(b.number as string, 10);
+  
+    if (numA < numB) {
       return -1;
     }
-    if (a.number > b.number) {
+    if (numA > numB) {
       return 1;
     }
     return 0;

@@ -8,6 +8,7 @@ import { AuthGuardService } from 'src/app/auth-guard.service';
 import { EvaluatorsService } from 'src/app/admin/evaluators.service';
 import { Evaluators } from 'src/app/admin/evaluators';
 import { User } from 'firebase/auth';
+import { Questions } from '../../questions';
 
 @Component({
   selector: 'app-full-list',
@@ -17,7 +18,7 @@ import { User } from 'firebase/auth';
 
 export class FullListComponent {
 
-  questions: any[] = []
+  questions: Questions[] = []
   // on le prépare à recevoir un terme de recherche
   searchText: string = ''
   // sigle:string=""
@@ -77,11 +78,25 @@ export class FullListComponent {
   }
 
 
+  // compare(a: any, b: any) {
+  //   if (a.number < b.number) {
+  //     return -1;
+  //   }
+  //   if (a.number > b.number) {
+  //     return 1;
+  //   }
+  //   return 0;
+  // }
+
+  
   compare(a: any, b: any) {
-    if (a.number < b.number) {
+    const numA = typeof a.number === 'number' ? a.number : parseInt(a.number as string, 10);
+    const numB = typeof b.number === 'number' ? b.number : parseInt(b.number as string, 10);
+  
+    if (numA < numB) {
       return -1;
     }
-    if (a.number > b.number) {
+    if (numA > numB) {
       return 1;
     }
     return 0;

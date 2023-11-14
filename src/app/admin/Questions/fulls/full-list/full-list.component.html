@@ -32,7 +32,7 @@
         <div *ngFor="let q of questions">
             <!-- {{q | json}} -->
                         <!-- ... et les filtrer si besoin -->
-                        <div *ngIf="searchText==='' || q.question.toUpperCase().includes(searchText) || q.question.toLowerCase().includes(searchText) || q.competence.toLowerCase().includes(searchText) || q.number.includes(searchText)">
+                        <div *ngIf="searchText==='' || q.question.toUpperCase().includes(searchText) || q.question.toLowerCase().includes(searchText) || q.competence.toLowerCase().includes(searchText) || q.number.toString().includes(searchText)">
             <app-full-details [q]="q"></app-full-details>
         </div>
         </div>
