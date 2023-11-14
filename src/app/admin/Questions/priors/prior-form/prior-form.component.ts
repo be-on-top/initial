@@ -92,138 +92,16 @@ export class PriorFormComponent implements OnInit {
 
   }
 
-  // async submitForm(form: NgForm) {
-  //   if (form.value.optScoring3 === null) {
-  //     form.value.optScoring1 === form.value.optScoring2 ? this.forbidden = true : this.forbidden = false
-  //     delete form.value.optScoring3;
-  //   }
-
-  //   if (form.value.optScoring4 === null) {
-  //     form.value.optScoring1 === form.value.optScoring2 ? this.forbidden = true : this.forbidden = false
-  //     delete form.value.optScoring4;
-  //   }
-
-  //   if (this.forbidden !== true) {
-
-  //     console.log(form.value);
-  //     this.service.createQuestion(form.value, this.arrayFilesToUpload);
-  //     form.reset();
-  //     // this.router.navigate(['/admin/questions'])
-
-  //   } else {
-  //     alert('les 2 options ne peuvent être vraies, il faut choisir')
-  //   }
-  // }
-
-  // detectFiles(event: any, fieldName: any) {
-  //   console.log(event.target.files[0].size);
-  //   console.log('fieldName.name', fieldName.name);
-
-  //   // Vérifie la taille du fichier et le type avant de l'ajouter
-  //   if (event.target.files[0].size <= 4000000) {
-  //     // Vérifiez si le fichier avec le même nom existe déjà dans arrayFilesToUpload
-  //     const existingFileIndex = this.arrayFilesToUpload.findIndex((item: any) => item[1] === fieldName.name);
-
-  //     if (existingFileIndex !== -1) {
-  //       // Si le fichier existe déjà, le supprime
-  //       this.arrayFilesToUpload.splice(existingFileIndex, 1);
-  //       alert('Changement d\'image détecté. Ancien fichier supprimé.');
-  //     }
-
-  //     // Ajoute le nouveau fichier à arrayFilesToUpload
-  //     this.arrayFilesToUpload.push([event.target.files[0], fieldName.name, event.target.files[0].type]);
-  //     console.log("this.arrayFilesToUpload !!!!", this.arrayFilesToUpload);
-  //   } else {
-  //     // Fichier trop volumineux, affiche une alerte
-  //     alert("Le fichier est trop volumineux (limite : 4 Mo) !");
-  //   }
-  // }
-
-  // // ne servira plus si on parvient à mettre à jour this.registryNumbers à chaque nouvel enregistrement. *
-  // checkIfRegistered(n: any) {
-  //   console.log(n)
-  //   // this.registryNumbers.includes(n)?this.isRegistered==true:this.isRegistered==false)
-  // }
-
-  // checkIfSelected(sigle: any) {
-  //   console.log(sigle);
-  //   this.selectedSigle = sigle
-  //   this.numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-
-  //   // c'est l'endroit pour transvaser le getQuestion() avec comme filtre préalable et additionnel : sigle.value
-
-  //   this.service.getQuestions().subscribe(data => {
-
-  //     const dataFiltered = data.filter(redutedData => {
-  //       return redutedData.sigle == this.selectedSigle
-  //     });
-
-  //     console.log("datafiltered", dataFiltered);
-
-  //     for (let n of dataFiltered) {
-  //       console.log("n", n.number);
-  //       this.numbers = this.numbers.filter(element => element != n.number)
-  //     }
-
-  //   })
-  // }
-
-  // resetFileInput(fieldName: string, form: NgForm) {
-  //   // Réinitialise la valeur du champ de fichier dans le formulaire
-  //   form.controls[fieldName].setValue('');
-  //   // Supprime le fichier de arrayFilesToUpload (si nécessaire)
-  //   const fileIndex = this.arrayFilesToUpload.findIndex((item: any) => item[1] === fieldName)
-  //   if (fileIndex !== -1) {
-  //     this.arrayFilesToUpload.splice(fileIndex, 1)
-  //   }
-  // }
-
-  // async getRelatedCompetences() {
-  //   // on peut boucler sur le tableau userData.sigles, récupérer chaque sigle et retourner les CP concernées dans la collection sigles
-  //   for (const iterator of this.userData.sigle) {
-  //     // let additionalCompetences:any
-  //     this.settingsService.getSigle(iterator).subscribe((data): any => {
-  //       // console.log('data.competences', data.competences)
-  //       for (const key in data.competences) {
-  //         // console.log('data.competences[key]', data.competences[key]);
-  //         let additionalKeySigle: string = 'competences_' + iterator
-  //         let additionalKey: string = key
-  //         let additionalCP: any = data.competences[key]
-
-  //         this.relatedCompetences[additionalKeySigle] = { ...this.relatedCompetences['competences_' + iterator], ['CP' + additionalKey]: additionalCP }
-  //         console.log('relatedCompetences !!!!!!', this.relatedCompetences)
-  //       }
-  //     })
-
-  //   }
-  //   console.log('relatedCompetences en dehors de la boucle', this.relatedCompetences)
-  //   // return this.relatedCompetences
-  // }
-
-
-  // copie depuis fullForm
 
   async submitForm(form: NgForm) {
-    if (form.value.optScoring3 === null) {
-      form.value.optScoring1 === form.value.optScoring2 ? this.forbidden = true : this.forbidden = false
-      delete form.value.optScoring3;
-    }
 
-    if (form.value.optScoring4 === null) {
-      form.value.optScoring1 === form.value.optScoring2 ? this.forbidden = true : this.forbidden = false
-      delete form.value.optScoring4;
-    }
+    form.value.optScoring1 === form.value.optScoring2 && !form.value.option3 ? (this.forbidden = true, alert('Les 2 réponses ne peuvent être toutes les 2 vraies ou fausses si aucune réponse 3 et 4. Il faut choisir')) : this.forbidden = false
 
-    if (form.value.option4 && !form.value.option3) {
-      this.forbidden = true;
-      alert('Vous ne pouvez pas enregistrer une réponse 4 sans avoir renseigné correctement la réponse 3');
-    }
+    form.value.optScoring3 === null ? delete form.value.optScoring3 : ''
 
-    // pour éviter que optScoring2 et 3 soient identiques alors qu'il n'existe ni option3 ni option4
-    if (!form.value.option3 && !form.value.option4 && (form.value.optScoring1 === form.value.optScoring2)) {
-      this.forbidden = true;
-      alert('Les 2 réponses ne peuvent être toute les 2 vraies ou toute les 2 fausses si aucune réponse 3 ou 4, il faut choisir');
-    }
+    form.value.optScoring4 === null ? delete form.value.optScoring4 : ''
+
+    form.value.option4 && !form.value.option3 ? (this.forbidden = true, alert('Vous ne pouvez pas enregistrer une réponse 4 sans avoir renseigné correctement la réponse 3')) : ''
 
     if (this.forbidden !== true) {
       // console.log(form.value);
@@ -232,18 +110,14 @@ export class PriorFormComponent implements OnInit {
       // Stockez la valeur du select avant de réinitialiser le formulaire
       this.selectedSigle = form.value.sigle;
 
-      // Mise à jour local de registryNumbers
-      this.registryNumbers.push(form.value.number);
-      alert(this.registryNumbers)
-
       // Réinitialisez tous les champs du formulaire, sauf le champ "sigle"
       form.reset({ sigle: this.selectedSigle });
 
+      // Mise à jour local de registryNumbers
+      this.checkIfSelected(this.selectedSigle);
+
     }
 
-    // else {
-    //   alert('les 2 options ne peuvent être vraies, il faut choisir')
-    // }
   }
 
   detectFiles(event: any, fieldName: any) {
@@ -308,6 +182,8 @@ export class PriorFormComponent implements OnInit {
       for (let n of dataFiltered) {
         // console.log("n.number", n.number);
         this.registryNumbers.push(n.number)
+        // Triez les numéros dans l'ordre croissant
+        this.registryNumbers.sort((a, b) => a - b);
         // console.log("registryNumber", this.registryNumbers);
         this.numbers = this.numbers.filter(element => element != n.number)
         // console.log("result", this.numbers);
@@ -316,22 +192,6 @@ export class PriorFormComponent implements OnInit {
     })
   }
 
-
-  // top !!!
-  // async getDocsByParam(uid: string) {
-  //   const myData = query(collection(this.firestore, 'evaluators'), where('id', '==', uid));
-  //   const querySnapshot = await getDocs(myData);
-  //   querySnapshot.forEach((doc) => {
-  //     console.log(doc.id, ' => ', doc.data());
-  //     this.userData = doc.data()
-  //     console.log("this.userData.sigle !!!!!", this.userData.sigle)
-
-  //     this.getRelatedCompetences()
-
-
-  //   })
-
-  // }
 
   async getRelatedCompetences() {
     // on peut boucler sur le tableau userData.sigles, récupérer chaque sigle et retourner les CP concernées dans la collection sigles

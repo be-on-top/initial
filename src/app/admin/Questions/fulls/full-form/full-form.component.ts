@@ -18,7 +18,7 @@ import { AuthGuardService } from 'src/app/auth-guard.service';
 })
 
 export class FullFormComponent implements OnInit {
-  title: string = "de positionnement"
+  title: string = "questions de positionnement"
 
   //  pour les données liées à l'évaluateur authentifié
   authId?: any;
@@ -80,15 +80,6 @@ export class FullFormComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // pour commencer à connecter le composant aux métiers tels qu'ils figurent en base (test initial)
-    // this.settingsService.getTrades().subscribe(data => {
-    //   for (const iterator of data) {
-    //     console.log(iterator.competences)
-    //   }
-    //   console.log("data de getTrades()", data)
-    // })
-
-
     if (this.authService.user) {
       this.authId = this.authService.user
       // alert(this.authId)
@@ -108,31 +99,18 @@ export class FullFormComponent implements OnInit {
   }
 
   async submitForm(form: NgForm) {
-    if (form.value.optScoring3 === null) {
-      form.value.optScoring1 === form.value.optScoring2 ? this.forbidden = true : this.forbidden = false
-      delete form.value.optScoring3;
-    }
 
-    if (form.value.optScoring4 === null) {
-      form.value.optScoring1 === form.value.optScoring2 ? this.forbidden = true : this.forbidden = false
-      delete form.value.optScoring4;
-    }
+    form.value.optScoring1 === form.value.optScoring2 && !form.value.option3 ? (this.forbidden = true, alert('Les 2 réponses ne peuvent être toutes les 2 vraies ou fausses si aucune réponse 3 et 4. Il faut choisir')) : this.forbidden = false
 
-    if (form.value.option4 && !form.value.option3) {
-      this.forbidden = true;
-      alert('Vous ne pouvez pas enregistrer une réponse 4 sans avoir renseigné correctement la réponse 3');
-    }
+    form.value.optScoring3 === null ? delete form.value.optScoring3 : ''
 
-    // pour éviter que optScoring2 et 3 soient identiques alors qu'il n'existe ni option3 ni option4
-    if (!form.value.option3 && !form.value.option4 && (form.value.optScoring1 === form.value.optScoring2)) {
-      this.forbidden = true;
-      alert('Les 2 réponses ne peuvent être toute les 2 vraies ou toute les 2 fausses si aucune réponse 3 ou 4, il faut choisir');
-    }
+    form.value.optScoring4 === null ? delete form.value.optScoring4 : ''
+
+    form.value.option4 && !form.value.option3 ? (this.forbidden = true, alert('Vous ne pouvez pas enregistrer une réponse 4 sans avoir renseigné correctement la réponse 3')) : ''
 
     if (this.forbidden !== true) {
       // console.log(form.value);
       this.service.createQuestion(form.value, this.arrayFilesToUpload);
-      // form.reset ne sert que si on continue la saisie, ce qu'on a finalement décidé de faire.
 
       // Stockez la valeur du select avant de réinitialiser le formulaire
       this.selectedSigle = form.value.sigle;
@@ -140,13 +118,13 @@ export class FullFormComponent implements OnInit {
       // Réinitialisez tous les champs du formulaire, sauf le champ "sigle"
       form.reset({ sigle: this.selectedSigle });
 
+      // Mise à jour local de registryNumbers
+      this.checkIfSelected(this.selectedSigle);
+
     }
 
-    // else {
-    //   alert('les 2 options ne peuvent être vraies, il faut choisir')
-    // }
-
   }
+
 
   detectFiles(event: any, fieldName: any) {
     console.log(event.target.files[0].size);
@@ -216,7 +194,8 @@ export class FullFormComponent implements OnInit {
       for (let n of dataFiltered) {
         // console.log("n.number", n.number);
         this.registryNumbers.push(n.number)
-        // console.log("registryNumber", this.registryNumbers);
+        // Triez les numéros dans l'ordre croissant
+        this.registryNumbers.sort((a, b) => a - b);
         this.numbers = this.numbers.filter(element => element != n.number)
         // console.log("result", this.numbers);
       }
@@ -224,22 +203,6 @@ export class FullFormComponent implements OnInit {
     })
   }
 
-
-  // top !!!
-  // async getDocsByParam(uid: string) {
-  //   const myData = query(collection(this.firestore, 'evaluators'), where('id', '==', uid));
-  //   const querySnapshot = await getDocs(myData);
-  //   querySnapshot.forEach((doc) => {
-  //     console.log(doc.id, ' => ', doc.data());
-  //     this.userData = doc.data()
-  //     console.log("this.userData.sigle !!!!!", this.userData.sigle)
-
-  //     this.getRelatedCompetences()
-
-
-  //   })
-
-  // }
 
   async getRelatedCompetences() {
     // on peut boucler sur le tableau userData.sigles, récupérer chaque sigle et retourner les CP concernées dans la collection sigles
