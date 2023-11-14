@@ -3,9 +3,9 @@
     <h3 class="mb-5">Formulaire de saisie des {{title}}
         <!-- <span *ngIf="userData.sigle">{{userData.sigle}}</span> -->
     </h3>
-    <p *ngIf="registryNumbers.length!==0" class="border-dark bg-light rounded p-2" role="alert">Numéros de questions
+    <!-- <p *ngIf="registryNumbers.length!==0" class="border-dark bg-light rounded p-2" role="alert">Numéros de questions
         déjà enregistrées :
-        {{registryNumbers}}</p>
+        {{registryNumbers}}</p> -->
     <!-- {{userData.sigle.includes('prepa_cdes')}}
     {{userData.sigle}} -->
 
@@ -15,7 +15,7 @@
             <div class="col-sm-6 col-md-3 mb-1">
 
                 <!-- refacto essai -->
-                <select class="form-select" name="sigle" ngModel required #sigle="ngModel"
+                <select class="form-select" name="sigle" [(ngModel)]="selectedSigle" required #sigle="ngModel"
                     (change)="checkIfSelected(sigle.value)">
                     <option value>Selectionner le métier de la collection sigles affecté à l'évaluateur</option>
                     <option *ngFor="let element of sigleIds, let item of userData.sigle" value="{{item}}">

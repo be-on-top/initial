@@ -123,42 +123,30 @@ export class FullFormComponent implements OnInit {
       alert('Vous ne pouvez pas enregistrer une réponse 4 sans avoir renseigné correctement la réponse 3');
     }
 
+    // pour éviter que optScoring2 et 3 soient identiques alors qu'il n'existe ni option3 ni option4
+    if (!form.value.option3 && !form.value.option4 && (form.value.optScoring1 === form.value.optScoring2)) {
+      this.forbidden = true;
+      alert('Les 2 réponses ne peuvent être toute les 2 vraies ou toute les 2 fausses si aucune réponse 3 ou 4, il faut choisir');
+    }
+
     if (this.forbidden !== true) {
       // console.log(form.value);
       this.service.createQuestion(form.value, this.arrayFilesToUpload);
-      // form.reset ne sert que si on continue la saisie, c'est ce qu'on va finalement faire.
-      form.reset();
-      // this.router.navigate(['/admin/fullList'])
-    } else {
-      alert('les 2 options ne peuvent être vraies, il faut choisir')
+      // form.reset ne sert que si on continue la saisie, ce qu'on a finalement décidé de faire.
+
+      // Stockez la valeur du select avant de réinitialiser le formulaire
+      this.selectedSigle = form.value.sigle;
+
+      // Réinitialisez tous les champs du formulaire, sauf le champ "sigle"
+      form.reset({ sigle: this.selectedSigle });
+
     }
 
+    // else {
+    //   alert('les 2 options ne peuvent être vraies, il faut choisir')
+    // }
+
   }
-
-  // marche bien, mais l'ordre des conditions n'est pas cohérent pour bloquer les images dont le poids est excessif
-  // detectFiles(event: any, fieldName: any) {
-  //   console.log(event.target.files[0].size);
-  //   console.log('fieldName.name', fieldName.name);
-
-  //   // Vérifie d'abord si un fichier avec le même fieldName.name existe déjà
-  //   const existingFileIndex = this.arrayFilesToUpload.findIndex((fileData: any) => fileData[1] === fieldName.name);
-
-  //   if (existingFileIndex !== -1) {
-  //     alert('Changement d\'image détecté');
-  //     // Remplace le fichier existant par le nouveau fichier
-  //     this.arrayFilesToUpload[existingFileIndex] = [event.target.files[0], fieldName.name, event.target.files[0].type];
-  //   } else {
-  //     // Ajoute le nouveau fichier s'il n'existe pas déjà
-  //     this.arrayFilesToUpload.push([event.target.files[0], fieldName.name, event.target.files[0].type]);
-  //     console.log("this.arrayFilesToUpload !!!!", this.arrayFilesToUpload);
-
-  //     if (event.target.files[0].size > 13000000) {
-  //       alert("File is too big!")
-  //     }
-  //   }
-
-  //   // Reste du code pour ajouter ou mettre à jour d'autres fichiers
-  // }
 
   detectFiles(event: any, fieldName: any) {
     console.log(event.target.files[0].size);
@@ -212,7 +200,7 @@ export class FullFormComponent implements OnInit {
     this.selectedSigle = sigle
 
     // Attention : à chaque changement de selected, on doit tout réinitialiser : 
-    for (let i = 20; i < 201; i++) { this.numbers.push(i) }
+    for (let i = 21; i < 201; i++) { this.numbers.push(i) }
     this.registryNumbers = []
     // fin réinitialisation !!!!! 
 
