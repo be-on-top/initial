@@ -130,7 +130,7 @@ export class UpdateQuestionComponents implements OnInit {
 
   //  fonction en cas de modification d'un média existant
   detectFiles(event: any, fieldName: any, item: any = "") {
-    alert(fieldName)
+    // alert(fieldName)
 
     // console.log("fieldName.name", fieldName.name);
     alert(`êtes-vous certain de vouloir remplacer le fichier ${item} ?`)

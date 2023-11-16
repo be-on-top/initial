@@ -1,9 +1,10 @@
-<nav class="navbar navbar-expand-md bg-dark navbar-dark mb-md-2 sticky-top">
+<nav class="navbar navbar-expand-md navbar-dark mb-md-2 sticky-top">
     <div class="container mx-auto">
         <!-- <a class="navbar-brand" [routerLink]="['home', userRole || '']">BE-ON-TOP</a> -->
         <!-- pour éviter les erreurs d'interprétation des segments de chemin -->
         <!-- <a class="navbar-brand" [routerLink]="['home']" [queryParams]="{ userRole: userRole }">BE-ON-TOP</a> -->
-        <a class="navbar-brand" [routerLink]="['']" [queryParams]="{ userRole: userRole }">BE-ON-TOP</a>
+        <a class="navbar-brand" [routerLink]="['']" [queryParams]="{ userRole: userRole }">
+            <img  src="./assets/BE-ON-TOP_picto_LOGO.svg"  class="logo">BE-ON-TOP</a>
 
         <!-- <p class="text-light">{{userRole}} Authentification</p> -->
         <!-- <a class="navbar-brand" [routerLink]="['']">BE-ON-TOP</a> -->
@@ -11,7 +12,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav ms-auto">
                 <!-- <li class="nav-item">
                     <a class="nav-link" [routerLink]="['socialregistration']">Pré-inscription Formation</a>
                 </li> -->

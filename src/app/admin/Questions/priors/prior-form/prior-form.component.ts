@@ -107,11 +107,12 @@ export class PriorFormComponent implements OnInit {
       // console.log(form.value);
       this.service.createQuestion(form.value, this.arrayFilesToUpload);
 
-      // Stockez la valeur du select avant de réinitialiser le formulaire
-      this.selectedSigle = form.value.sigle;
+      // // Stockez la valeur du select avant de réinitialiser le formulaire
+      // this.selectedSigle = form.value.sigle;
 
-      // Réinitialisez tous les champs du formulaire, sauf le champ "sigle"
-      form.reset({ sigle: this.selectedSigle });
+      // // Réinitialisez tous les champs du formulaire, sauf le champ "sigle" n'est pas souhaitable !!!
+      // form.reset({ sigle: this.selectedSigle });
+      form.reset();
 
       // Mise à jour local de registryNumbers
       this.checkIfSelected(this.selectedSigle);
@@ -133,7 +134,7 @@ export class PriorFormComponent implements OnInit {
       if (existingFileIndex !== -1) {
         // Si le fichier existe déjà, le supprime
         this.arrayFilesToUpload.splice(existingFileIndex, 1);
-        alert('Changement d\'image détecté. Ancien fichier supprimé.');
+        // alert('Changement d\'image détecté. Ancien fichier supprimé.');
       }
 
       // Ajoute le nouveau fichier à arrayFilesToUpload
@@ -143,7 +144,7 @@ export class PriorFormComponent implements OnInit {
       // Si déjà un fichier mediaOption...
       const existingMediaOption = this.arrayFilesToUpload.findIndex((item: any) => item[1].includes("mediaOption"))
       existingMediaOption !== -1 ? this.isOneMediaOption = true : this.isOneMediaOption = false;
-      alert(this.isOneMediaOption)
+      // alert(this.isOneMediaOption)
 
     } else {
       // Fichier trop volumineux, affiche une alerte
