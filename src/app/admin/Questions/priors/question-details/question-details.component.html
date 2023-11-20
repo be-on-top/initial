@@ -25,11 +25,10 @@
     <!-- fin de la question -->
 
     <!-- début des réponses -->
-    <div class="p-3 row justify-content-between align-items-end mb-3 rounded bg-light w-100">
+    <div class="p-3 row justify-content-between align-items-start mb-3 rounded bg-light w-100">
 
         <div class="col-sm-6 rounded" [ngClass]="{'text-success':q.optScoring1===true}">
-            <p class="text-center fs-5">R1 : {{q.option1}} <i *ngIf="q.optScoring1===true"
-                    class="text-success fs-6 bi bi-check-lg"></i></p>
+            <p class="text-center fs-5">R1 : {{q.option1}}</p>
                     <!-- {{responsesMedias.length}}
                     {{responsesMedias}} -->
             <div *ngIf="responsesMedias && responsesMedias.length!==0">
@@ -43,8 +42,7 @@
             <!-- si pas d'images -->
         </div>
         <div class="col-sm-6 rounded" [ngClass]="{'text-success':q.optScoring2===true}">
-            <p class="text-center fs-5">R2 : {{q.option2}} <i *ngIf="q.optScoring2===true"
-                    class="text-success fs-6 bi bi-check-lg"></i></p>
+            <p class="text-center fs-5">R2 : {{q.option2}}</p>
             <div *ngIf="responsesMedias">
                 <div *ngFor="let item of responsesMedias">
                     <img *ngIf="item.includes(q.id) && item.includes('Option2')" class="cover img-fluid rounded mb-3 img-thumbnail"
@@ -54,8 +52,7 @@
         </div>
         <!-- à partir d'ici, les options Réponse 3 et Réponse 4 n'étant pas obligatoires, faut qu'on s'assure qu'elles existent -->
         <div class="col-sm-6 rounded" *ngIf="q.option3" [ngClass]="{'text-success':q.optScoring3===true}">
-            <p class="text-center fs-5">R3 : {{q.option3}} <i *ngIf="q.optScoring3===true"
-                    class="text-success fs-6 bi bi-check-lg"></i></p>
+            <p class="text-center fs-5">R3 : {{q.option3}}</p>
             <div *ngIf="responsesMedias">
                 <div *ngFor="let item of responsesMedias">
                     <img *ngIf="item.includes(q.id) && item.includes('Option3')" class="cover img-fluid rounded mb-3 img-thumbnail"
@@ -64,8 +61,7 @@
             </div>
         </div>
         <div class="col-sm-6 rounded" *ngIf="q.option4" [ngClass]="{'text-success':q.optScoring4===true}">
-            <p class="text-center fs-5">R4 : {{q.option4}} <i *ngIf="q.optScoring4===true"
-                    class="text-success fs-6 bi bi-check-lg"></i></p>
+            <p class="text-center fs-5">R4 : {{q.option4}} </p>
             <div *ngIf="responsesMedias">
                 <div *ngFor="let item of responsesMedias">
                     <img *ngIf="item.includes(q.id) && item.includes('Option4')" class="cover img-fluid rounded mb-3 img-thumbnail"

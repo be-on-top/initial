@@ -5,7 +5,7 @@
     all mediaQuestions :{{allMediasQuestions | json}} -->
 
     <h3 *ngIf="result">Mise à jour de la question {{result.number}} <span class="d-block fs-6 mt-1">id : {{questionId}}</span> </h3>
-    <hr>
+    <!-- <hr> -->
 
     <form class="form" #f="ngForm" (submit)="updateForm(f)" class="was-validated">
         <div class="form-group row justify-content-between">
@@ -26,7 +26,7 @@
             </div>
 
             <!-- rappel du nombre de point attribué ou score associé -->
-            <div class="col-md-3 d-flex mb-1" *ngIf="result.notation">
+            <div class="col-md-3 d-sm-flex mb-1" *ngIf="result.notation">
                 <select class="form-select" name="notation" id="notation" [(ngModel)]="result.notation" required
                     #notation="ngModel">
                     <option *ngFor="let notation of notations" value="{{notation}}">Points attribués: {{notation}}PNTS
@@ -74,14 +74,14 @@
                             [src]="item"></ng-template>
 
                     <!-- pour englober cas de modification et de reset sur question -->
-                    <div class="alert alert-info">image : modification</div>
-                    <div class="d-flex gap-2 justify-content-between">
+                    <div class="alert alert-info text-light py-2 mt-2">image : modification</div>
+                    <div class="d-sm-flex gap-2 justify-content-between">
                         <input type="text" [ngModel]="result.mediaQuestion"
                             name="mediaQuestion" class="disabled invisible" #mediaQuestion>
                         <input type="file" accept="image/*, video/*" 
-                            class="form-control" 
+                            class="form-control w-75" 
                             (change)="detectFiles($event, mediaQuestion, item)">
-                        <button type="button" class="btn btn-danger w-25"
+                        <button type="button" class="btn btn-danger w-25 mt-3 mt-sm-0"
                             (click)="resetFileInput('mediaQuestion', f, item)">Reset</button>
                     </div>
                 </div>
@@ -90,12 +90,12 @@
 
         <div *ngIf="!allMediasQuestions || allMediasQuestions.length===0 || isActive==false">
             <!-- pour englober cas d'ajout et de reset sur question -->
-            <div class="alert alert-info">image : ajout</div>
-            <div class="d-flex gap-2 justify-content-between">
+            <div class="alert alert-info text-light py-2 mt-2">image : ajout</div>
+            <div class="d-sm-flex gap-2 justify-content-between">
                 <input type="file" accept="image/*, video/*" id="mediaQuestion" ngModel name="mediaQuestion"
-                    class="form-control" #mediaQuestion="ngModel" placeholder="Fichier média actuel"
+                    class="form-control w-75" #mediaQuestion="ngModel" placeholder="Fichier média actuel"
                     (change)="detectNewFiles($event, mediaQuestion)">
-                <button type="button" class="btn btn-danger w-25"
+                <button type="button" class="btn btn-danger w-25 mt-3 mt-sm-0"
                     (click)="resetFileInput('mediaQuestion', f, '')">Reset</button>
             </div>
         </div>
@@ -111,18 +111,18 @@
         <!-- <div class="alert alert-danger">result.mediaOption1: {{result.mediaOption1}}</div> -->
         <div
             *ngIf="allMediasResponses && allMediasResponses.length!==0 && lookForKeyContent(allMediasResponses, 'mediaOption1').length!==0 && isActive1===true, else createOption1">
-            <div class="alert alert-info">image : modification</div>
+            <div class="alert alert-info text-light py-2 mt-2">image : modification</div>
             <div *ngFor="let item of allMediasResponses">
                 <div *ngIf="item.includes('Option1')" class="w-100 bg-secondary p-2 rounded">
                     <img class="img-fluid mb-2 w-100" [src]="item">
                     <!-- <label class="form-label mt-3" for="mediaOption1">Fichier à modifier</label> -->
                     <!-- pour englober la modification et le reset -->
-                    <div class="d-flex gap-2 justify-content-between">
+                    <div class="d-sm-flex gap-2 justify-content-between">
                         <input type="text" [ngModel]="result.mediaOption1"
                         name="mediaOption1" class="disabled invisible" #mediaOption1>
                         <input type="file" class="form-control w-75" placeholder="Fichier média de votre choix"
                             (change)="detectFiles($event, mediaOption1, item)">
-                        <button type="button" class="btn btn-danger w-25"
+                        <button type="button" class="btn btn-danger w-25 mt-3 mt-sm-0"
                             (click)="resetFileInput('mediaOption1', f, item)">Reset</button>
                     </div>
                     <!-- <div class="bg-light rounded p-3 fst-italic mt-2 smaller overflow-wrap">Nom du fichier en base à modifier:
@@ -131,12 +131,12 @@
             </div>
         </div>
         <ng-template #createOption1>
-            <div class="alert alert-info">image : ajout</div>
+            <div class="alert alert-info text-light py-2 mt-2">image : ajout</div>
             <!-- pour englober l'ajout et le reset -->
-            <div class="d-flex gap-2 justify-content-between">
+            <div class="d-sm-flex gap-2 justify-content-between">
                 <input type="file" accept="image/*, video/*" id="mediaOption1" ngModel name="mediaOption1"
                     class="form-control w-75" #mediaOption1="ngModel" (change)="detectNewFiles($event, mediaOption1)">
-                <button type="button" class="btn btn-danger w-25"
+                <button type="button" class="btn btn-danger w-25 mt-3 mt-sm-0"
                     (click)="resetFileInput('mediaOption1', f, '')">Reset</button>
             </div>
         </ng-template>
@@ -144,7 +144,7 @@
         <label for="comment1" class="form-label mt-3">Commentaire</label>
         <textarea id="comment1" [(ngModel)]="result.comment1" name="comment1" class="form-control" #comment1="ngModel"
             placeholder="Commentaire si besoin" cols="30" rows="5"></textarea>
-        <div class="form-group d-flex gap-5 mt-3">
+        <div class="form-group d-sm-flex gap-5 mt-3">
             <div class="form-check">
                 <input type="radio" class="form-check-input" name="optScoring1" [value]="true"
                     [(ngModel)]="result.optScoring1" [checked]="result.optScoring1" required>Vraie
@@ -166,19 +166,19 @@
 
         <div
             *ngIf="allMediasResponses && allMediasResponses.length!==0 && lookForKeyContent(allMediasResponses, 'mediaOption2').length!==0 && isActive2===true, else createOption2">
-            <div class="alert alert-info">image : modification</div>
+            <div class="alert alert-info text-light py-2 mt-2">image : modification</div>
 
             <div *ngFor="let item of allMediasResponses">
                 <div *ngIf="item.includes('Option2')" class="w-100 bg-secondary p-2 rounded">
                     <img class="img-fluid mb-2 w-100" [src]="item">
                     <!-- <label class="form-label mt-3" for="mediaOption2">Fichier à modifier</label> -->
                     <!-- pour englober la modification et le reset -->
-                    <div class="d-flex gap-2 justify-content-between">
+                    <div class="d-sm-flex gap-2 justify-content-between">
                         <input type="text" [ngModel]="result.mediaOption2"
                         name="mediaOption2" class="disabled invisible" #mediaOption2>                        
                         <input type="file"  class="form-control w-75" placeholder="Fichier média de votre choix"
                             (change)="detectFiles($event, mediaOption2, item)">
-                        <button type="button" class="btn btn-danger w-25"
+                        <button type="button" class="btn btn-danger w-25 mt-3 mt-sm-0"
                             (click)="resetFileInput('mediaOption2', f, item)">Reset</button>
                     </div>
                     <!-- <div class="bg-light rounded p-3 fst-italic mt-2 smaller overflow-wrap">Nom du fichier en base à modifier:
@@ -188,12 +188,12 @@
         </div>
 
         <ng-template #createOption2>
-            <div class="alert alert-info">image : ajout</div>
+            <div class="alert alert-info text-light py-2 mt-2">image : ajout</div>
             <!-- pour englober l'ajout et le reset -->
-            <div class="d-flex gap-2 justify-content-between">
+            <div class="d-sm-flex gap-2 justify-content-between">
                 <input type="file" accept="image/*, video/*" id="mediaOption2" ngModel name="mediaOption2"
                     class="form-control w-75" #mediaOption2="ngModel" (change)="detectNewFiles($event, mediaOption2)">
-                <button type="button" class="btn btn-danger w-25"
+                <button type="button" class="btn btn-danger w-25 mt-3 mt-sm-0"
                     (click)="resetFileInput('mediaOption2', f, '')">Reset</button>
             </div>
         </ng-template>
@@ -201,7 +201,7 @@
         <label for="comment2" class="form-label mt-3">Commentaire</label>
         <textarea id="comment2" [(ngModel)]="result.comment2" name="comment2" class="form-control" #comment2="ngModel"
             placeholder="Commentaire si besoin" cols="30" rows="5"></textarea>
-        <div class="form-group d-flex gap-5 mt-3">
+        <div class="form-group d-sm-flex gap-5 mt-3">
             <div class="form-check">
                 <input type="radio" class="form-check-input" name="optScoring2" [value]="true"
                     [(ngModel)]="result.optScoring2" [checked]="result.optScoring2" required>Vraie
@@ -222,18 +222,18 @@
 
         <div
             *ngIf="allMediasResponses && allMediasResponses.length!==0 && lookForKeyContent(allMediasResponses, 'mediaOption3').length!==0 && isActive3===true,  else createOption3">
-            <div class="alert alert-info">image : modification</div>
+            <div class="alert alert-info text-light py-2 mt-2">image : modification</div>
             <div *ngFor="let item of allMediasResponses">
                 <div *ngIf="item.includes('Option3')" class="w-100 bg-secondary p-2 rounded">
                     <img class="img-fluid mb-2 w-100" [src]="item">
                     <!-- <label class="form-label mt-3" for="mediaOption3">Fichier à modifier</label> -->
                     <!-- pour englober la modification et le reset -->
-                    <div class="d-flex gap-2 justify-content-between">
+                    <div class="d-sm-flex gap-2 justify-content-between">
                         <input type="text" [ngModel]="result.mediaOption3"
                         name="mediaOption3" class="disabled invisible" #mediaOption3>   
                         <input type="file" class="form-control w-75" placeholder="Fichier média de votre choix"
                             (change)="detectFiles($event, mediaOption3, item)">
-                        <button type="button" class="btn btn-danger w-25"
+                        <button type="button" class="btn btn-danger w-25 mt-3 mt-sm-0"
                             (click)="resetFileInput('mediaOption3', f, item)">Reset</button>
                     </div>
                     <!-- <div class="bg-light rounded p-3 fst-italic mt-2 smaller overflow-wrap">Nom du fichier en base à modifier:
@@ -243,13 +243,13 @@
         </div>
 
         <ng-template #createOption3>
-            <div class="alert alert-info">image : ajout </div>
+            <div class="alert alert-info text-light py-2 mt-2">image : ajout </div>
             <!-- pour englober l'ajout' et le reset -->
-            <div class="d-flex gap-2 justify-content-between">
+            <div class="d-sm-flex gap-2 justify-content-between">
                 <input type="file" accept="image/*, video/*" id="mediaOption3" ngModel name="mediaOption3"
                     class="form-control w-75" #mediaOption3="ngModel"
                     (change)="detectNewFiles($event, mediaOption3, 'mediaOption3')">
-                <button type="button" class="btn btn-danger w-25"
+                <button type="button" class="btn btn-danger w-25 mt-3 mt-sm-0"
                     (click)="resetFileInput('mediaOption3', f, '')">Reset</button>
             </div>
         </ng-template>
@@ -257,7 +257,7 @@
         <label for="comment3" class="form-label mt-3">Commentaire</label>
         <textarea id="comment3" [(ngModel)]="result.comment3" name="comment3" class="form-control" #comment3="ngModel"
             placeholder="Commentaire si besoin" cols="30" rows="5"></textarea>
-        <div class="form-group d-flex gap-5 mt-3">
+        <div class="form-group d-sm-flex gap-5 mt-3">
             <div class="form-check">
                 <input type="radio" class="form-check-input" name="optScoring3" [value]="true" [(ngModel)]="optScoring3"
                     [checked]="result.optScoring3">Vraie
@@ -279,18 +279,18 @@
         <!-- <div class="alert alert-danger">result.mediaOption4 : {{result.mediaOption4}}</div> -->
         <div
             *ngIf="allMediasResponses && allMediasResponses.length!==0 && lookForKeyContent(allMediasResponses, 'mediaOption4').length!==0 && isActive4===true, else createOption4">
-            <div class="alert alert-info">image : modification</div>
+            <div class="alert alert-info text-light py-2 mt-2">image : modification</div>
             <div *ngFor="let item of allMediasResponses">
                 <div *ngIf="item.includes('Option4')" class="w-100 bg-secondary p-2 rounded">
                     <img class="img-fluid mb-2 w-100" [src]="item">
                     <!-- <label class="form-label mt-3" for="mediaOption4">Fichier à modifier</label> -->
                     <!-- pour englober la modifiction et le reset -->
-                    <div class="d-flex gap-2 justify-content-between">
+                    <div class="d-sm-flex gap-2 justify-content-between">
                         <input type="text" [ngModel]="result.mediaOption4"
                         name="mediaOption4" class="disabled invisible" #mediaOption4>   
                         <input type="file" class="form-control" placeholder="Fichier média de votre choix"
                             (change)="detectFiles($event, mediaOption4, item)">
-                        <button type="button" class="btn btn-danger w-25"
+                        <button type="button" class="btn btn-danger w-25 mt-3 mt-sm-0"
                             (click)="resetFileInput('mediaOption4', f, item)">Reset</button>
                     </div>
                     <!-- <div class="bg-light rounded p-3 fst-italic mt-2 smaller overflow-wrap">Nom du fichier en base à modifier:
@@ -299,13 +299,13 @@
             </div>
         </div>
         <ng-template #createOption4>
-            <div class="alert alert-info">image : ajout</div>
+            <div class="alert alert-info text-light py-2 mt-2">image : ajout</div>
             <!-- pour englober l'ajout et le reset -->
-            <div class="d-flex gap-2 justify-content-between">
+            <div class="d-sm-flex gap-2 justify-content-between">
                 <input type="file" accept="image/*, video/*" id="mediaOption4" ngModel name="mediaOption4"
                     class="form-control w-75" #mediaOption4="ngModel"
                     (change)="detectNewFiles($event, mediaOption4, 'mediaOption4')">
-                <button type="button" class="btn btn-danger w-25"
+                <button type="button" class="btn btn-danger w-25 mt-3 mt-sm-0"
                     (click)="resetFileInput('mediaOption4', f, '')">Reset</button>
             </div>
         </ng-template>
@@ -313,7 +313,7 @@
         <label for="comment4" class="form-label mt-3">Commentaire</label>
         <textarea id="comment4" [(ngModel)]="result.comment4" name="comment4" class="form-control" #comment4="ngModel"
             placeholder="Commentaire si besoin" cols="30" rows="5"></textarea>
-        <div class="form-group d-flex gap-5 mt-3">
+        <div class="form-group d-sm-flex gap-5 mt-3">
             <div class="form-check">
                 <input type="radio" class="form-check-input" name="optScoring4" [value]="true" [(ngModel)]="optScoring4"
                     [checked]="result.optScoring4">Vraie

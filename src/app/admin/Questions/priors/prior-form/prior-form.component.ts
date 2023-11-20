@@ -82,6 +82,7 @@ export class PriorFormComponent implements OnInit {
       this.userData = data
       console.log(data)
       this.getRelatedCompetences()
+
     })
     console.log('new this.userData.sigle', this.userData);
     // }
@@ -108,11 +109,11 @@ export class PriorFormComponent implements OnInit {
       this.service.createQuestion(form.value, this.arrayFilesToUpload);
 
       // // Stockez la valeur du select avant de réinitialiser le formulaire
-      // this.selectedSigle = form.value.sigle;
+      this.selectedSigle = form.value.sigle;
 
-      // // Réinitialisez tous les champs du formulaire, sauf le champ "sigle" n'est pas souhaitable !!!
-      // form.reset({ sigle: this.selectedSigle });
-      form.reset();
+      // // Réinitialisez tous les champs du formulaire, sauf le champ "sigle" faisable mais est-ce souhaitable ??!!!
+      form.reset({ sigle: this.selectedSigle });
+      // form.reset();
 
       // Mise à jour local de registryNumbers
       this.checkIfSelected(this.selectedSigle);
