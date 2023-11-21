@@ -6,7 +6,7 @@
     </p>
     <p class="fs-6 mb-0 text-center"><span class="fw-bold">Métier:</span> {{q.sigle}}. <span class="fw-bold">CP:</span>
         {{q.competence}}. <span class="fw-bold">PNTS:</span>
-        +{{q.notation}}.  </p>
+        +{{q.notation}}.</p>
     <p class="fs-6 text-center"><span class="fw-bold">Id:</span>
         {{q.id}} - <a class="fw-bold text-decoration-none" [routerLink]="['/admin/updateFull', q.id]">Modifier</a></p>
 
@@ -29,7 +29,6 @@
 
     <!-- début des réponses -->
     <div class="p-3 pt-sm-4 row justify-content-between align-items-start mb-3 rounded bg-light w-100 border-bottom border-top">
-
         <div class="pt-3 pt-sm-0 col-sm-6 rounded" [ngClass]="{'text-success':q.optScoring1===true}">
             <p class="text-center fs-5">R1 : {{q.option1}}</p>
             <div *ngIf="responsesMedias && responsesMedias.length!==0">
