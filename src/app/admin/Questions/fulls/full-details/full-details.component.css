@@ -3,6 +3,7 @@
         /* border-color: brown; */
         max-height: 300px!important;
     }
+
 }
 
 @media only screen and (min-width: 575px) {
@@ -15,10 +16,6 @@
     .cover {
         max-height: 380px!important;
     }
-}
-
-.fs-5{
-    font-size: 1.25rem!important;
 }
 
 
