@@ -11,6 +11,11 @@
     position: relative;
     overflow: hidden;
     /* Empêche le débordement de l'élément */
+    background-color: transparent;
+}
+
+.btn.btn-transparent{
+    min-height: 50px;
 }
 
 .text-choiced::after {
@@ -19,14 +24,18 @@
     bottom: 0;
     left: 0;
     width: 0;
-    height: 1px;
-    background-color: #8B00BD;
+    height: 2px;
+    background-color:  #fcb311;
     animation: stretchWidth 0.3s ease forwards;
 }
 
 /* .text-choiced i::after {
     display: none;
 } */
+
+i.text-choiced{
+    color:  #fcb311;
+}
 
 i.text-choiced::after {
     display: none;

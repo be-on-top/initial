@@ -168,7 +168,7 @@ export class StudentsService {
 
     let $studentRef = doc(this.firestore, "students/" + id)
 
-    alert(hasStartedEvaluation)
+    // alert(hasStartedEvaluation)
 
     if (hasStartedEvaluation === true) {
       // alert('hasStartedEvaluation ! ')
@@ -198,7 +198,7 @@ export class StudentsService {
 
       })
 
-      let updatedStudent: any = { scoreCounter: scoreCounter, lastIndexQuestion: indexQuestion, tradeEvaluated: trade, studentCompetences: updatedTableauObjets }
+      let updatedStudent: any = { scoreCounter: scoreCounter, lastIndexQuestion: Number(indexQuestion), tradeEvaluated: trade, studentCompetences: updatedTableauObjets }
       console.log('scoreCounter normalement sans sigle!!!!!!!!!!!!!!!!!!!', scoreCounter);
 
       console.log('updateStudent tel que service est prêt à updater!!!!!!!!!!', updatedStudent);

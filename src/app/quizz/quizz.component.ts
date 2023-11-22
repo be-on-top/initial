@@ -146,11 +146,23 @@ export class QuizzComponent implements OnInit {
         console.log("this.fullOptScoringArray mis à jour !!!!!", this.fullOptScoringTrue)
 
         // on initialise la valeur réelle de totalAnswersAvailable pour la limite à 2, 3 ou 4 réponses max
-        this.questions[this.indexQuestion].option1 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
-        this.questions[this.indexQuestion].option2 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
-        this.questions[this.indexQuestion].option3 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
-        this.questions[this.indexQuestion].option4 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
-        console.log("this.totalAnswersAvailable mis à jour !!!!", this.totalAnswersAvailable)
+        if (!this.isNullOrEmpty(this.questions[this.indexQuestion].option1)) {
+          this.totalAnswersAvailable += 1;
+        }
+
+        if (!this.isNullOrEmpty(this.questions[this.indexQuestion].option2)) {
+          this.totalAnswersAvailable += 1;
+        }
+
+        if (!this.isNullOrEmpty(this.questions[this.indexQuestion].option3)) {
+          this.totalAnswersAvailable += 1;
+        }
+
+        if (!this.isNullOrEmpty(this.questions[this.indexQuestion].option4)) {
+          this.totalAnswersAvailable += 1;
+        }
+
+        console.log("this.totalAnswersAvailable mis à jour !!!!", this.totalAnswersAvailable);
 
         // Pour connaitre le nombre de points affectés à la question et la refiler à l'instant t au service, 
         // on peut passer par une variable intermédiaire pour plus de lisibilité, mais ce n'est pas impératif
@@ -313,11 +325,28 @@ export class QuizzComponent implements OnInit {
     console.log("this.fullOptScoringArray", this.fullOptScoringTrue)
 
     // on initialise la valeur réelle de totalAnswersAvailable pour la limite à 2, 3 ou 4 réponses max
-    this.questions[this.indexQuestion].option1 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
-    this.questions[this.indexQuestion].option2 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
-    this.questions[this.indexQuestion].option3 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
-    this.questions[this.indexQuestion].option4 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
-    console.log("this.totalAnswersAvailable", this.totalAnswersAvailable)
+    // this.questions[this.indexQuestion].option1 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
+    // this.questions[this.indexQuestion].option2 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
+    // this.questions[this.indexQuestion].option3 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
+    // this.questions[this.indexQuestion].option4 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
+    // même logique qu'à l'initialisation du composant (si quelqu'un commence ou poursuit le QUIZZ, ce qui est différent ici...)
+    if (!this.isNullOrEmpty(this.questions[this.indexQuestion].option1)) {
+      this.totalAnswersAvailable += 1;
+    }
+
+    if (!this.isNullOrEmpty(this.questions[this.indexQuestion].option2)) {
+      this.totalAnswersAvailable += 1;
+    }
+
+    if (!this.isNullOrEmpty(this.questions[this.indexQuestion].option3)) {
+      this.totalAnswersAvailable += 1;
+    }
+
+    if (!this.isNullOrEmpty(this.questions[this.indexQuestion].option4)) {
+      this.totalAnswersAvailable += 1;
+    }
+
+    console.log("this.totalAnswersAvailable mis à jour !!!!", this.totalAnswersAvailable);
 
   }
 
@@ -415,7 +444,7 @@ export class QuizzComponent implements OnInit {
     // this.levelsArray = this.dataStudent.studentCompetences.map((obj: any) => {
     this.levelsArray = this.realEvaluations.map((obj: any) => {
       console.log("curseurs", this.firstCursor, this.secondCursor);
-      
+
       const newObj: any = {};
       for (let prop in obj) {
         if (obj.hasOwnProperty(prop)) {
@@ -600,6 +629,16 @@ export class QuizzComponent implements OnInit {
     }
     return of(text); // Retourner un observable avec la valeur actuelle si la clé n'est pas trouvée
   }
+
+
+  // Fonction pour vérifier si la valeur est nulle ou une chaîne vide
+  isNullOrEmpty = (value: string | null): boolean => {
+    return value === null || value.trim() === '';
+  };
+
+  // isNullOrEmpty = (value: string | null | undefined): boolean => {
+  //   return value === null || value === undefined || value.trim() === '';
+  // };
 
 
 

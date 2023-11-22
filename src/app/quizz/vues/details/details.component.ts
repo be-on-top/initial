@@ -136,8 +136,6 @@ export class DetailsComponent implements OnInit {
       this.isIncremented = false
       // on décrémente le nombre de bonnes réponses données
       this.fullGoodAnswersClicked--
-      console.log('fullGoodAnswersClicked', this.fullGoodAnswersClicked);
-
 
       console.log("this.fullGoodAnswersClicked", this.fullGoodAnswersClicked);
       this.counter = Number(this.counter) - Number(this.q.notation)

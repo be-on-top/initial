@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
 
-  /* @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;1,200&display=swap'); */
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;1,200&display=swap'); */
 
 
 /* You can add global styles to this file, and also import other style files */
@@ -94,9 +94,6 @@ h4,
     margin-right: 1rem;
 }
 
-.responses{
-    border-color: #fcb311!important;
-}
 
 .bg-success,
 .success {
@@ -134,9 +131,43 @@ input:checked,
 /* fin */
 
 
+.card-header{
+    color: #82BC00 !important;
+}
+
 .bg-primary {
     background-color: #0062fe;
-    /* background-image: linear-gradient(to right, rgb(27, 9, 106), rgb(72, 6, 240)); */
+    /* background-image: linear-gradient(to right, rgb(27, 9, 106),  #0062fe); */
+}
+
+hr {
+    height: 2px;
+    /* background-color: #0062fe; */
+    background-image: linear-gradient(to right, #0062fe, #82BC00);
+}
+
+
+  .gradient-overlay::before {
+    content: ""; /* Obligatoire pour que la pseudo-classe soit générée */
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to right, #0062fe, #82BC00);
+    background-clip: text;
+    color: transparent;
+    z-index: -1; /* Pour placer la pseudo-classe en arrière-plan */
+}
+
+
+
+
+
+.bg-warning,
+.btn-warning,
+.alert-warning {
+    background-color: #fcb311;
 }
 
 
@@ -161,6 +192,7 @@ input:checked,
     /* background-color: #272A61 !important; */
     /* background-color:rgb(27, 9, 106)!important; */
     background-image: linear-gradient(to right, rgb(27, 9, 106), rgb(24, 5, 74));
+    /* background-color: #2B2B2B !important; */
 }
 
 .bg-info,
@@ -232,7 +264,7 @@ p.question {
     .fs-6,
     .fs-6 span {
         width: 90%;
-        font-size: 0.8rem!important;
+        font-size: 0.8rem !important;
     }
 
     p {

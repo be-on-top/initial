@@ -1,5 +1,5 @@
 <div class="container py-5 text-center">
-    <h3>Quizz à venir... pour métier {{trade}}</h3>
+    <h3>Quizz pour métier {{trade}}</h3>
     <h4 class="fs-6">Id de l'étudiant récupéré : {{studentId}}</h4>
     <div class="alert alert-danger">fullOptScoring récupéré par le parent{{fullOptScoringTrue}} à comparer à totalAnswersAvailable {{totalAnswersAvailable}} sur la base de {{indexQuestion}}</div>
     <p class="alert bg-dark text-white text-smaller">Tableau des durées depuis la vue format json: {{durations | json}}
@@ -12,10 +12,7 @@
     <div class="alert bg-info text-white text-smaller">Cumul des points récupérés par le parent : {{scoreCounter}}</div>
     <!-- etat des compétences en base -->
     <!-- <p>{{indexQuestion}}</p> -->
-    <!-- <div class="alert bg-info text-white text-smaller" *ngIf="dataStudent && !dataStudent.studentCompetences">StudentCompetences à rattacher en base : {{studentCompetences | json}}</div> -->
-    <!-- <div class="alert bg-info text-white text-smaller" *ngIf="dataStudent.studentCompetences">StudentCompetences récupéré en base : {{studentCompetences | json}}</div> -->
-    <!-- <div class="alert bg-info text-white text-smaller" *ngIf="dataStudent.studentCompetences">StudentCompetences récupéré en base : </div> -->
-
+    <div class="alert bg-info text-white text-smaller" *ngIf="dataStudent && !dataStudent.studentCompetences">StudentCompetences à rattacher en base : {{studentCompetences | json}}</div>
     <div *ngIf="dataStudent && dataStudent.studentCompetences" class="mb-3">
         <div *ngFor="let objet of dataStudent.studentCompetences">
             <div *ngFor="let item of objet | keyvalue"><span class="fw-bold">Points affectés à {{ item.key }}:</span> {{
@@ -25,8 +22,7 @@
     </div>
 
     <!-- a commencé l'évaluation -->
-    <!-- <div class="alert bg-info text-white text-smaller">hasStartedEvaluation : {{hasStartedEvaluation}}</div> -->
-
+    <div class="alert bg-info text-white text-smaller">hasStartedEvaluation : {{hasStartedEvaluation}}</div>
 
     <!-- on veut juste la première de la liste initiale -->
     <div *ngIf="questions[indexQuestion]">
