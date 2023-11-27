@@ -1,7 +1,8 @@
 <div class="container py-5 text-center">
     <h3>Quizz pour métier {{trade}}</h3>
     <h4 class="fs-6">Id de l'étudiant récupéré : {{studentId}}</h4>
-    <div class="alert alert-danger">fullOptScoring récupéré par le parent{{fullOptScoringTrue}} à comparer à totalAnswersAvailable {{totalAnswersAvailable}} sur la base de {{indexQuestion}}</div>
+    <div class="alert alert-danger">fullOptScoring récupéré par le parent{{fullOptScoringTrue}} à comparer à
+        totalAnswersAvailable {{totalAnswersAvailable}} sur la base de {{indexQuestion}}</div>
     <p class="alert bg-dark text-white text-smaller">Tableau des durées depuis la vue format json: {{durations | json}}
     </p>
     <!-- <div class="alert bg-light mt-3 mb-4">
@@ -12,7 +13,8 @@
     <div class="alert bg-info text-white text-smaller">Cumul des points récupérés par le parent : {{scoreCounter}}</div>
     <!-- etat des compétences en base -->
     <!-- <p>{{indexQuestion}}</p> -->
-    <div class="alert bg-info text-white text-smaller" *ngIf="dataStudent && !dataStudent.studentCompetences">StudentCompetences à rattacher en base : {{studentCompetences | json}}</div>
+    <div class="alert bg-info text-white text-smaller" *ngIf="dataStudent && !dataStudent.studentCompetences">
+        StudentCompetences à rattacher en base : {{studentCompetences | json}}</div>
     <div *ngIf="dataStudent && dataStudent.studentCompetences" class="mb-3">
         <div *ngFor="let objet of dataStudent.studentCompetences">
             <div *ngFor="let item of objet | keyvalue"><span class="fw-bold">Points affectés à {{ item.key }}:</span> {{
@@ -63,12 +65,10 @@
 
     <hr>
 
-
+    <!-- partie positionnement principale mais sera amenée à disparaitre -->
     <button (click)="setLevel()" class="btn bg-warning m-md-auto text-light  fs-4"><i
-            class="me-3 bi bi-bar-chart-steps text-light"></i>Votre positionnement</button>
+            class="me-3 bi bi-bar-chart-steps text-light"></i>Voir positionnement (disparaitra)</button>
     <!-- <div *ngIf="levelsArray && levelsArray.length>0">{{levelsArray | json}}</div> -->
-
-
     <!-- notes réelles sur 20 -->
     <!-- <div *ngIf="realEvaluations && realEvaluations.length>0" class="mt-3">
         <div *ngFor="let result of realEvaluations">
@@ -79,14 +79,12 @@
     <div *ngIf="realEvaluations && realEvaluations.length > 0" class="mt-3">
         <div *ngFor="let result of realEvaluations">
             <div *ngFor="let key of result | keys">
-                <span class="fw-bold">Note pour <app-tooltip [text]="key" [info]="moreInfo" (mouseenter)="updateMoreInfo(key)"></app-tooltip></span>
-                {{ result[key] | number:'1.1-1' }} /20       
+                <span class="fw-bold">Note pour <app-tooltip [text]="key" [info]="moreInfo"
+                        (mouseenter)="updateMoreInfo(key)"></app-tooltip></span>
+                {{ result[key] | number:'1.1-1' }} /20
             </div>
         </div>
     </div>
-    
-
-
     <!-- fourchette -->
     <div *ngIf="levelsArray && levelsArray.length>0">
         <div *ngFor="let objet of levelsArray">
@@ -97,19 +95,68 @@
 
     <hr>
 
-    <button (click)="generateFullResults()" class="btn bg-warning m-md-auto text-light  fs-4"><i
-            class="me-3 bi bi-bar-chart-steps text-light"></i>Votre devis</button>
-    <!-- <div *ngIf="levelsArray && levelsArray.length>0">{{levelsArray | json}}</div> -->
+    <!-- modale rapatriement -->
 
-    <div *ngIf="fullResults && fullResults.length>0" class="mt-3">
-        <div *ngFor="let item of durationsByLevels | keyvalue">
-            <span class="fw-bold">Durée de la formation pour {{ item.key }}:</span> {{ item.value }} heures
+    <!-- option édition avec modale -->
+    <!-- <button class="btn bg-dark mt-3 text-light" data-bs-toggle="modal" data-bs-target="#myModal">
+                            <i class="bi bi-pencil-square text-light p-0"></i>Modifier
+                        </button>
+                        <div class="modal" id="myModal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Modification</h4>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <app-update-account class="modal-body" [student]="userData"></app-update-account>
+                                </div>
+                            </div>
+                        </div> -->
+    <!-- fin de l'option édition avec modale -->
+
+
+
+    <!-- fin -->
+
+    <button data-bs-toggle="modal" data-bs-target="#myModal" (click)="generateFullResults()"
+        class="btn bg-warning m-md-auto text-light fs-4"><i class="me-3 bi bi-bar-chart-steps text-light"></i>Votre
+        devis</button>
+    <!-- <div *ngIf="levelsArray && levelsArray.length>0">{{levelsArray | json}}</div> -->
+    <div class="modal fade" id="myModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-light position-relative">
+                    <h3>Votre devis personnalisé</h3>
+                    <!-- <button type="button" class="btn-close position-absolute end-5" data-bs-dismiss="modal"></button> -->
+                </div>
+                <!-- contenu de la modale -->
+
+                <div class="modal-body">
+                    <p class="alert bg-primary text-light p-2 m-3 fw-light ">Bravo, vous êtes parvenu au terme du
+                        questionnaire. En fonction des résultats enregistrés, nous sommes en mesure de vous fournir une
+                        estimation détaillée en coût et durée.</p>
+
+                    <div *ngIf="fullResults && fullResults.length>0" class="mt-3">
+                        <div *ngFor="let item of durationsByLevels | keyvalue">
+                            <span class="text-success">Durée de la formation pour {{ item.key }}:</span> {{ item.value
+                            }} heures
+                        </div>
+                        <div *ngFor="let item of estimatedCPCost | keyvalue">
+                            <span class="text-success">Coût individualisé pour {{ item.key | slice:16 }}:</span> {{
+                            item.value }}
+                            euros
+                        </div>
+                        <hr>
+                        <span class="fw-bold">Coût total de la formation {{ totalCost }} euros</span>
+                    </div>
+                </div>
+
+                <div class="modal-footer bg-light justify-content-center">
+                    <button type="button" class="btn bg-dark text-light" data-bs-dismiss="modal">Fermer</button>
+                    <button type="button" class="btn btn-primary">Tous les résulats sur votre compte</button>
+                </div>
+            </div>
         </div>
-        <div *ngFor="let item of estimatedCPCost | keyvalue">
-            <span class="fw-bold">Coût individualisé pour {{ item.key | slice:16 }}:</span> {{ item.value }} euros
-        </div>
-        <hr>
-        <span class="fw-bold">Coût total de la formation {{ totalCost }} euros</span>
     </div>
 
 

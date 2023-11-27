@@ -25,7 +25,7 @@
     left: 0;
     width: 0;
     height: 2px;
-    background-color:  #fcb311;
+    background-color:  #82BC00;
     animation: stretchWidth 0.3s ease forwards;
 }
 
@@ -34,7 +34,7 @@
 } */
 
 i.text-choiced{
-    color:  #fcb311;
+    color:#82BC00;
 }
 
 i.text-choiced::after {

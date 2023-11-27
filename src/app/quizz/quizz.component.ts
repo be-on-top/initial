@@ -176,10 +176,8 @@ export class QuizzComponent implements OnInit {
         // fin du décompte de la longueur de this.questons
 
       } else {
-
         console.log('plus aucun id ne correspond au paramètre')
         // alert('plus aucun id ne correspond au paramètre')
-
       }
 
       // Pour générer le tableau de compétences dans le compte utilisateur si il n'y en a  pas
@@ -207,27 +205,47 @@ export class QuizzComponent implements OnInit {
 
     })
 
+    // this.studentService.getStudentById(this.studentId).subscribe((data) => {
+    //   this.dataStudent = data
+    //   // on ne peut plus faire référence à this.dataStudent.studentCompetences si multiple quizz VERSION 2
+    //   // this.dataStudent.studentCompetences ? this.studentCompetences = this.dataStudent.studentCompetences : ''
+    //   const quizzKey: string = 'quizz_' + this.trade
+    //   console.log('quizzKey!!!!!!!!!!!!!!!!!!!!', quizzKey);
+    //   console.log('this.dataStudent', this.dataStudent);
+    //   this.hasStartedEvaluation == true && this.dataStudent[quizzKey] && this.dataStudent[quizzKey].studentCompetences ? this.studentCompetences = this.dataStudent[quizzKey].studentCompetences : '';
+    //   this.dataStudent && this.dataStudent[quizzKey] ? console.log('this.dataStudent[quizzKey]', this.dataStudent[quizzKey]) : console.log("pas encore généré");
+    //   console.log('this.studentCompetences tel que récupéré en base dans ngOnInit', this.studentCompetences);
+
+    // })
+
+    // pour vérifier au préalable qu'on accède bien à dataStudent
     this.studentService.getStudentById(this.studentId).subscribe((data) => {
-      this.dataStudent = data
-      // on ne peut plus faire référence à this.dataStudent.studentCompetences si multiple quizz VERSION 2
-      // this.dataStudent.studentCompetences ? this.studentCompetences = this.dataStudent.studentCompetences : ''
+      this.dataStudent = data;
+      const quizzKey: string = 'quizz_' + this.trade;
+      // console.log('quizzKey!!!!!!!!!!!!!!!!!!!!', quizzKey);
+      // console.log('this.dataStudent', this.dataStudent);
 
-      const quizzKey: string = 'quizz_' + this.trade
-      console.log('quizzKey!!!!!!!!!!!!!!!!!!!!', quizzKey);
+      // S'assure que dataStudent[quizzKey] et dataStudent[quizzKey].studentCompetences sont définis
+      if (this.hasStartedEvaluation && this.dataStudent[quizzKey] && this.dataStudent[quizzKey].studentCompetences) {
+        this.studentCompetences = this.dataStudent[quizzKey].studentCompetences
+      } else {
+        // Gérer le cas où les propriétés ne sont pas définies
+        // console.warn('Les propriétés attendues ne sont pas définies dans dataStudent.')
+        console.log('Les propriétés attendues ne sont pas définies dans dataStudent.')
+      }
 
+      // Vérifie si dataStudent[quizzKey] est défini
+      if (this.dataStudent && this.dataStudent[quizzKey]) {
+        console.log('this.dataStudent[quizzKey]', this.dataStudent[quizzKey])
+      } else {
+        console.log("pas encore généré")
+      }
 
-      // ici, il est bon
-      console.log('this.dataStudent', this.dataStudent);
-
-      this.hasStartedEvaluation == true && this.dataStudent[quizzKey] && this.dataStudent[quizzKey].studentCompetences ? this.studentCompetences = this.dataStudent[quizzKey].studentCompetences : '';
-      this.dataStudent && this.dataStudent[quizzKey] ? console.log('this.dataStudent[quizzKey]', this.dataStudent[quizzKey]) : console.log("pas encore généré");
       console.log('this.studentCompetences tel que récupéré en base dans ngOnInit', this.studentCompetences);
-
     })
 
-    // faut tester la récupération des curseurs en base si besoin
-    // this.firstCursor = this.cursors[0]
-    // this.secondCursor = this.cursors[1]
+    // fin
+
     this.getCursors()
 
     // this.settingsService.getDurationsBySigle(this.trade).then((data)=>console.log('duration récupéré', data))
@@ -286,9 +304,6 @@ export class QuizzComponent implements OnInit {
     this.indexQuestion = Number(indexQuestion) + 1
     // alert(this.indexQuestion)
 
-    // pour qu'on ne se retrouve pas en console avec un can not read id parce qu'il n'y en a plus
-    // on peut rajouter ATTENTION !!!!! 
-    // pour qu'on ne se retrouve pas en console avec un can not read id parce qu'il n'y en a plus
     // on peut rajouter ATTENTION !!!!! 
     if (this.indexQuestion < this.questions.length) {
 
@@ -297,10 +312,12 @@ export class QuizzComponent implements OnInit {
 
       // fin de la vérification de l'existence d'un index correspondant à indexQuestion
 
-      console.log('  this.denominatorsCompetences!!!!!!!!!!!!!!!!!!!!!!!!!', this.denominatorsCompetences);
+      console.log('  this.denominatorsCompetences!', this.denominatorsCompetences);
 
     } else {
+
       console.log('indexQuestion ne correspond plus à aucune question identifiable');
+      this.setLevel()
       // alert('indexQuestion ne correspond plus à aucune question identifiable')
     }
 
@@ -324,12 +341,6 @@ export class QuizzComponent implements OnInit {
     this.questions[this.indexQuestion].optScoring4 && this.questions[this.indexQuestion].optScoring4 === true ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
     console.log("this.fullOptScoringArray", this.fullOptScoringTrue)
 
-    // on initialise la valeur réelle de totalAnswersAvailable pour la limite à 2, 3 ou 4 réponses max
-    // this.questions[this.indexQuestion].option1 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
-    // this.questions[this.indexQuestion].option2 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
-    // this.questions[this.indexQuestion].option3 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
-    // this.questions[this.indexQuestion].option4 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
-    // même logique qu'à l'initialisation du composant (si quelqu'un commence ou poursuit le QUIZZ, ce qui est différent ici...)
     if (!this.isNullOrEmpty(this.questions[this.indexQuestion].option1)) {
       this.totalAnswersAvailable += 1;
     }
@@ -431,9 +442,7 @@ export class QuizzComponent implements OnInit {
   }
 
 
-
   async setLevel() {
-
     // ne sera appeler qu'à ce moment !!!!!!
     // const realEvaluations: Denominator[] = this.convertirNoteSurVingt();
     // si on veut l'afficher à l'utilisateur
@@ -460,8 +469,6 @@ export class QuizzComponent implements OnInit {
             levelValue = 2;
           }
           newObj[levelProp] = levelValue;
-
-
 
           // this.displayDuration(levelValue, this.actualCompetence)
 
@@ -567,25 +574,41 @@ export class QuizzComponent implements OnInit {
 
   }
 
+  // getCursors() {
+
+  //   this.settingsService.getLevelsCursors().subscribe((data) => {
+  //     console.log(data);
+  //     this.cursors = data
+
+  //     this.firstCursor = data['firstCursor']
+  //     this.secondCursor = data['secondCursor']
+
+  //     console.log(this.firstCursor);
+  //     console.log(this.secondCursor);
+
+  //   })
+
+  // }
+
   getCursors() {
-
     this.settingsService.getLevelsCursors().subscribe((data) => {
-      // plus besoin d'indexer data[0] une fois qu'on a un doc cursors et un objet à lire
-      // console.log("data!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", data);
+      // Vérifie si data est défini et s'il a les propriétés attendues
+      if (data && 'firstCursor' in data && 'secondCursor' in data) {
+        console.log(data);
 
+        this.cursors = data;
+        this.firstCursor = data['firstCursor'];
+        this.secondCursor = data['secondCursor'];
 
-      console.log(data);
-      this.cursors = data
-
-      this.firstCursor = data['firstCursor']
-      this.secondCursor = data['secondCursor']
-
-      console.log(this.firstCursor);
-      console.log(this.secondCursor);
-
-    })
-
+        console.log(this.firstCursor);
+        console.log(this.secondCursor);
+      } else {
+        // Gérer le cas où les propriétés ne sont pas définies
+        console.error('Les propriétés attendues ne sont pas définies dans data.');
+      }
+    });
   }
+
 
 
 

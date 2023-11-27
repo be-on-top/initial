@@ -20,7 +20,7 @@
 body {
     font-family: 'Plus Jakarta Sans';
     /* font-family: 'Poppins', sans-serif; */
-    font-size: 16px;
+    /* font-size: 16px; */
 }
 
 .first-word {
@@ -76,7 +76,7 @@ h4,
 
 .fs-5 {
     font-size: 1.10rem !important;
-    line-height: 1.10rem;
+    line-height: 1.20rem;
 }
 
 .fs-6,
@@ -131,9 +131,9 @@ input:checked,
 /* fin */
 
 
-.card-header{
+/* .card-header{
     color: #82BC00 !important;
-}
+} */
 
 .bg-primary {
     background-color: #0062fe;
@@ -141,28 +141,16 @@ input:checked,
 }
 
 hr {
-    height: 2px;
-    /* background-color: #0062fe; */
     background-image: linear-gradient(to right, #0062fe, #82BC00);
 }
 
-
-  .gradient-overlay::before {
-    content: ""; /* Obligatoire pour que la pseudo-classe soit générée */
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(to right, #0062fe, #82BC00);
-    background-clip: text;
-    color: transparent;
-    z-index: -1; /* Pour placer la pseudo-classe en arrière-plan */
+.border-success{
+    border-color:#82BC00
 }
 
-
-
-
+.modal .fw-bold, .modal .text-success{
+    color: #82BC00;
+}
 
 .bg-warning,
 .btn-warning,
@@ -187,11 +175,23 @@ hr {
     background-color: #B2BC00 !important;
 } */
 
+.text-dark, .card-header, .card-body .text-dark>*{
+    color:#031C44 
+}
+
+
+/* .card-header.bg-dark{
+    
+
+} */
+
+
 .bg-dark,
 .navbar-dark {
-    /* background-color: #272A61 !important; */
+    /* background-color: #041f4a !important; */
+    background-color: #031C44 !important;
     /* background-color:rgb(27, 9, 106)!important; */
-    background-image: linear-gradient(to right, rgb(27, 9, 106), rgb(24, 5, 74));
+    /* background-image: linear-gradient(to right, rgb(27, 9, 106), rgb(24, 5, 74)); */
     /* background-color: #2B2B2B !important; */
 }
 
@@ -272,7 +272,7 @@ p.question {
     }
 
     .fs-5 {
-        font-size: 1.1rem !important;
+        font-size: 0.9rem !important;
     }
 
     button.btn,

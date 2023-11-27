@@ -16,7 +16,7 @@
     <!-- fin tests de notification desktop -->
 
     <!-- test alert-dismissible for mission -->
-    <div class="alert bg-primary alert-dismissible text-white mb-4 fade show">
+    <div class="alert p-4 bg-primary alert-dismissible text-white mb-4 fade show">
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
         Ce conteneur peut servir à <strong>énoncer la mission de l'application</strong>. Devrait être dans ce cas très
         synthétique. Evaluez-vous, positionnez-vous, intégrez sans tarder la formation dont vous avez toujours rêver...
@@ -92,7 +92,9 @@
             <!-- <a [routerLink]="['/quizz/',  trade.sigle, studentData && studentData['quizz_'+trade.sigle] && studentData['quizz_'+trade.sigle].lastIndexQuestion?(studentData['quizz_'+trade.sigle].lastIndexQuestion | number)+1:0, studentData && studentData['quizz_'+trade.sigle] && studentData['quizz_'+trade.sigle].scoreCounter?studentData['quizz_'+trade.sigle].scoreCounter:0, studentData && studentData['quizz_'+trade.sigle]?true:false, studentData && studentData.id?studentData.id:'']" class="text-decoration-none text-dark"> -->
             <div class="card my-3" (click)="selectTrade(trade.id)">
                 <div class="card-header text-capitalize">
-                    <h2 class="h5 text-start ps-2" [innerHTML]="trade.denomination | firstWord"></h2>
+                    <!-- essai à conserver !!! -->
+                    <!-- <h2 class="h5 text-start ps-2" [innerHTML]="trade.denomination | firstWord"></h2> -->
+                    <h2 class="h5 text-start ps-2" [innerHTML]="trade.denomination"></h2>
                 </div>
 
                 <div class="card-body">
