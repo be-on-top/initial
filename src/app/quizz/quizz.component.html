@@ -13,10 +13,12 @@
     <div class="alert bg-info text-white text-smaller">Cumul des points récupérés par le parent : {{scoreCounter}}</div>
     <!-- etat des compétences en base -->
     <!-- <p>{{indexQuestion}}</p> -->
-    <div class="alert bg-info text-white text-smaller" *ngIf="dataStudent && !dataStudent.studentCompetences">
+    <div class="alert bg-info text-white text-smaller"
+        *ngIf="!hasStartedEvaluation && dataStudent && !studentCompetences">
         StudentCompetences à rattacher en base : {{studentCompetences | json}}</div>
-    <div *ngIf="dataStudent && dataStudent.studentCompetences" class="mb-3">
-        <div *ngFor="let objet of dataStudent.studentCompetences">
+    <!-- ne  pas supprimer les lignes ci-dessous : impeccables -->
+    <div *ngIf="hasStartedEvaluation && dataStudent && studentCompetences" class="mb-3">
+        <div *ngFor="let objet of studentCompetences">
             <div *ngFor="let item of objet | keyvalue"><span class="fw-bold">Points affectés à {{ item.key }}:</span> {{
                 item.value }}
                 PNTS</div>
@@ -45,7 +47,7 @@
         [disabled]="isCompleted==false || indexQuestion==3" (click)="next(indexQuestion)">Question suivante</button> -->
     <button *ngIf="indexQuestion<questions.length; else elseBlock" class="btn btn-primary m-auto"
         [disabled]="isCompleted==false || fullAnswersClicked===0 || indexQuestion==questions.length"
-        (click)="next(indexQuestion)">Question suivante</button>
+        (click)="next(indexQuestion,  questions[indexQuestion].competence)">Question suivante</button>
     <ng-template #elseBlock> <button class="btn btn-primary m-md-auto"><i class="bi bi-check text-light"></i>QCM
             d'accroche terminé !</button>
     </ng-template>
@@ -67,15 +69,8 @@
 
     <!-- partie positionnement principale mais sera amenée à disparaitre -->
     <button (click)="setLevel()" class="btn bg-warning m-md-auto text-light  fs-4"><i
-            class="me-3 bi bi-bar-chart-steps text-light"></i>Voir positionnement (disparaitra)</button>
-    <!-- <div *ngIf="levelsArray && levelsArray.length>0">{{levelsArray | json}}</div> -->
-    <!-- notes réelles sur 20 -->
-    <!-- <div *ngIf="realEvaluations && realEvaluations.length>0" class="mt-3">
-        <div *ngFor="let result of realEvaluations">
-            <div *ngFor="let item of result | keyvalue"> <span class="fw-bold">Note pour {{ item.key }} </span> {{
-                item.value | number:'1.1-1' }} /20 </div>
-        </div>
-    </div> -->
+            class="me-3 bi bi-bar-chart-steps text-light"></i>Votre positionnement (disparaitra)</button>
+
     <div *ngIf="realEvaluations && realEvaluations.length > 0" class="mt-3">
         <div *ngFor="let result of realEvaluations">
             <div *ngFor="let key of result | keys">
@@ -94,28 +89,6 @@
     </div>
 
     <hr>
-
-    <!-- modale rapatriement -->
-
-    <!-- option édition avec modale -->
-    <!-- <button class="btn bg-dark mt-3 text-light" data-bs-toggle="modal" data-bs-target="#myModal">
-                            <i class="bi bi-pencil-square text-light p-0"></i>Modifier
-                        </button>
-                        <div class="modal" id="myModal">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h4 class="modal-title">Modification</h4>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                    </div>
-                                    <app-update-account class="modal-body" [student]="userData"></app-update-account>
-                                </div>
-                            </div>
-                        </div> -->
-    <!-- fin de l'option édition avec modale -->
-
-
-
     <!-- fin -->
 
     <button data-bs-toggle="modal" data-bs-target="#myModal" (click)="generateFullResults()"

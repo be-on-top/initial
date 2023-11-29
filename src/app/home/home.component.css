@@ -3,6 +3,10 @@ a .btn.btn-transparent:hover {
     color: #82BC00;
 }
 
+a .btn.btn-transparent {
+    border: 0;
+}
+
 .text-muted {
     font-size: 0.7rem;
 }

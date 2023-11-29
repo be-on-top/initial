@@ -79,11 +79,11 @@ export class DetailsComponent implements OnInit {
   }
 
   choice(optScoring: any) {
-    alert("on est dans choice")
+    // alert("on est dans choice")
     // on incrémente le nombre total de réponses cliquées (ou cochées)
     this.fullAnswersClicked++
 
-    alert(`est-ce une option à score : ${optScoring}`)
+    // alert(`est-ce une option à score : ${optScoring}`)
 
     // this.isIncremented = false
     // this.isDecremented = false
@@ -111,9 +111,9 @@ export class DetailsComponent implements OnInit {
       this.isDecremented = false
     }
     
-    this.fullAnswersClicked >= this.totalAnswersAvailable ? (alert("Vous ne pouvez pas cocher toutes les réponses. Il faut faire une sélection"),
-      this.fullAnswersClicked = 0, this.fullGoodAnswersClicked = 0, this.counter -= Number(this.q.notation), this.isDecremented = true, this.resetToggledStates()) : this.isDecremented = false
-
+    // this.fullAnswersClicked >= this.totalAnswersAvailable ? (alert("Vous ne pouvez pas cocher toutes les réponses. Il faut faire une sélection"),
+    //   this.fullAnswersClicked = 0, this.fullGoodAnswersClicked = 0, this.counter -= Number(this.q.notation), this.isDecremented = true, this.resetToggledStates()) : this.isDecremented = false
+this.isDecremented=false
 
     // on fait remonter l'information : une réponse a bien été cliquée (au minimum), ce qui en soit suffit pour pouvoir passer à la suivante ! 
     this.isCompleted = true

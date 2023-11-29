@@ -78,6 +78,9 @@ export class QuizzComponent implements OnInit {
   // moreInfo?: Observable<string | null>
   moreInfo: string | null = null;
 
+  // isIncremented: boolean = false
+  // isDecremented: boolean = false
+
 
 
   constructor(
@@ -225,23 +228,13 @@ export class QuizzComponent implements OnInit {
       // console.log('quizzKey!!!!!!!!!!!!!!!!!!!!', quizzKey);
       // console.log('this.dataStudent', this.dataStudent);
 
-      // S'assure que dataStudent[quizzKey] et dataStudent[quizzKey].studentCompetences sont définis
-      if (this.hasStartedEvaluation && this.dataStudent[quizzKey] && this.dataStudent[quizzKey].studentCompetences) {
-        this.studentCompetences = this.dataStudent[quizzKey].studentCompetences
-      } else {
-        // Gérer le cas où les propriétés ne sont pas définies
-        // console.warn('Les propriétés attendues ne sont pas définies dans dataStudent.')
-        console.log('Les propriétés attendues ne sont pas définies dans dataStudent.')
-      }
+      // ici, il est bon
+      // console.log('this.dataStudent', this.dataStudent);
 
-      // Vérifie si dataStudent[quizzKey] est défini
-      if (this.dataStudent && this.dataStudent[quizzKey]) {
-        console.log('this.dataStudent[quizzKey]', this.dataStudent[quizzKey])
-      } else {
-        console.log("pas encore généré")
-      }
+      this.hasStartedEvaluation == true && this.dataStudent[quizzKey] && this.dataStudent[quizzKey].studentCompetences ? this.studentCompetences = this.dataStudent[quizzKey].studentCompetences : '';
+      this.dataStudent && this.dataStudent[quizzKey] ? console.log('this.dataStudent[quizzKey]', this.dataStudent[quizzKey]) : console.log("pas encore généré");
+      // console.log('this.studentCompetences tel que récupéré en base dans ngOnInit', this.studentCompetences);
 
-      console.log('this.studentCompetences tel que récupéré en base dans ngOnInit', this.studentCompetences);
     })
 
     // fin
@@ -292,17 +285,21 @@ export class QuizzComponent implements OnInit {
     // this.setLevel() 
 
   }
+// pour déléguer à next la gestion sensible du cas où fullAnswersClicked est supérieur ou égal à totalAnswersAvailable, je récupère un paramètre additionnel
+  next(indexQuestion: number, evaluatedCompetence: string) {
+    // alert(this.totalAnswersAvailable)
+    // alert(evaluatedCompetence)
 
-  next(indexQuestion: number) {
-
-    // fonctionne bien dans l'hyothèse où on n'utilise pas generateFullDenominatorsCompetences
-    // this.incrementDenominatorsCompetences(this.denominatorsCompetences, this.actualCompetence, this.numberOfPoints)
-    // console.log('denominatorsCompetences dans next après execution fonction', this.denominatorsCompetences);
-
-    // Appel de la méthode "reset" du composant enfant
-    this.childComponent.reset();
-    this.indexQuestion = Number(indexQuestion) + 1
-    // alert(this.indexQuestion)
+    if (this.fullAnswersClicked >= this.totalAnswersAvailable) {
+      alert("Vous ne pouvez pas cocher toutes les réponses. Il faut faire une sélection"),
+        this.scoreCounter -= Number(this.numberOfPoints),
+        this.studentService.updateStudentScore(this.studentId, this.scoreCounter, this.indexQuestion, this.trade, this.hasStartedEvaluation, this.studentCompetences, evaluatedCompetence, this.numberOfPoints, false, true)
+    } 
+    
+      // Appel de la méthode "reset" du composant enfant
+      this.childComponent.reset();
+      this.indexQuestion = Number(indexQuestion) + 1
+      // alert(this.indexQuestion)
 
     // on peut rajouter ATTENTION !!!!! 
     if (this.indexQuestion < this.questions.length) {
@@ -310,15 +307,12 @@ export class QuizzComponent implements OnInit {
       // pour mettre à jour les points à attribuer à la question une fois l'index incrémenté
       this.questions[this.indexQuestion].notation ? this.numberOfPoints = this.questions[this.indexQuestion].notation : ''
 
-      // fin de la vérification de l'existence d'un index correspondant à indexQuestion
-
       console.log('  this.denominatorsCompetences!', this.denominatorsCompetences);
 
     } else {
 
       console.log('indexQuestion ne correspond plus à aucune question identifiable');
       this.setLevel()
-      // alert('indexQuestion ne correspond plus à aucune question identifiable')
     }
 
     // pour rappeler la liste des medias 
@@ -332,7 +326,6 @@ export class QuizzComponent implements OnInit {
     this.fullOptScoringTrue = 0
     this.totalAnswersAvailable = 0
     this.resetChildCounter()
-
 
     // on initialise la valeur réelle de fullOptScoringArray pour avoir un point de comparaison
     this.questions[this.indexQuestion].optScoring1 && this.questions[this.indexQuestion].optScoring1 === true ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
@@ -358,7 +351,6 @@ export class QuizzComponent implements OnInit {
     }
 
     console.log("this.totalAnswersAvailable mis à jour !!!!", this.totalAnswersAvailable);
-
   }
 
 
@@ -389,7 +381,6 @@ export class QuizzComponent implements OnInit {
 
 
   incrementDenominatorsCompetences(tableau: Denominator[], competence: string, points: number): void {
-
     tableau.forEach((objet: Denominator) => {
       Object.keys(objet).forEach((clé: string) => {
         if (clé === competence) {
