@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { onAuthStateChanged } from 'firebase/auth';
 import { QuestionsService } from '../admin/questions.service';
 import { SettingsService } from '../admin/settings.service';
@@ -90,7 +90,9 @@ export class QuizzComponent implements OnInit {
     // private settingService: SettingsService, 
     private studentService: StudentsService,
     // pour tester la récupération des curseurs
-    private settingsService: SettingsService) {
+    private settingsService: SettingsService,
+    private router: Router
+    ) {
     // this.trade = this.ac.snapshot.params["id"]
     // this.indexQuestion = this.ac.snapshot.params["indexQuestion"]
     // this.scoreCounter = this.ac.snapshot.params["scoreCounter"]
@@ -654,6 +656,14 @@ export class QuizzComponent implements OnInit {
   //   return value === null || value === undefined || value.trim() === '';
   // };
 
+  redirectToAccount() {
+    // Fermez la modale en utilisant Bootstrap
+    // const myModal = document.getElementById('myModal');
+    // myModal?.dispatchEvent(new Event('hidden.bs.modal'));
+
+    // Redirigez vers la page "account"
+    this.router.navigate(['/account']);
+  }
 
 
 

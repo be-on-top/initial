@@ -1,0 +1,17 @@
+.bg-success{
+    background-color: #82BC00;
+}
+
+button.btn.btn-primary:disabled{
+    background-color:#0061febb;
+
+    /* opacity: 60!important; */
+}
+
+.display-6{
+    font-size: 1.5rem;
+}
+
+.fw-bold{
+    font-weight: 500;
+}
