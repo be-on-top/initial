@@ -234,8 +234,13 @@ export class AccountComponent implements OnInit {
   }
 
   // Méthode pour vérifier si tutorials n'est pas vide
-  tutorialsNonVide(): boolean {
+  tutorialsNotEmpty(): boolean {
     return Object.keys(this.tutorials).length > 0;
+  }
+
+  // Méthode pour vérifier si evaluations n'est pas vide
+  evaluationsNotEmpty(): boolean {
+    return Object.keys(this.evaluations).length > 0;
   }
 
 

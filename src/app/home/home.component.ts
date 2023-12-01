@@ -57,9 +57,11 @@ export class HomeComponent implements OnInit {
 
   isEditor: boolean = false
   hasStartedEvaluation: boolean = false
-  // ne sert pas et ne doit pas avoir à être nécessaire. 
-  // lastIndexQuestion: number = 0
 
+  // et pour VERSION 2 des quizz multiples, on ne peut pas savoir si un quizz est terminé sans interroger tous les quizz, ce qu'on ne veut pas côté template, donc on crée un bolean
+  isOneQuizzAchieved: boolean = false;
+
+  // ne sert pas et ne doit pas avoir à être nécessaire. 
   userRole: string = ""
 
   // pour charger l'image associée si image
@@ -115,9 +117,11 @@ export class HomeComponent implements OnInit {
         // https://firebase.google.com/docs/reference/js/firebase.User
         this.user = user.uid
         this.studentService.getStudentById(user.uid).subscribe((data) => this.studentData = data)
-        this.studentData && this.studentData.scoreCounter ? this.hasStartedEvaluation == true : ""
+        // this.studentData && this.studentData.scoreCounter ? this.hasStartedEvaluation == true : ""
+
         // ne sert et ne doit pas avoir à être nécessaire... c'est qu'il y aurait un problème de typage
         // this.studentData.lastIndexQuestion?this.lastIndexQuestion==Number(this.studentData.lastIndexQuestion):""
+
 
         // récupération OK 
         // console.log("student uid récupération", this.studentData.id);
@@ -166,7 +170,7 @@ export class HomeComponent implements OnInit {
     this.settingsService.getTrades().subscribe(data => {
       this.tradesData = data;
       console.log("this.tradesData", this.tradesData);
-    
+
       // Charge les images pour chaque métier
       this.tradesData.forEach((trade: any) => {
         this.settingsService.loadImage(trade.id)
@@ -181,8 +185,8 @@ export class HomeComponent implements OnInit {
             }
           })
       })
-    })   
-    
+    })
+
 
   }
 
@@ -200,7 +204,7 @@ export class HomeComponent implements OnInit {
   handleImageError(trade: any) {
     trade.imageUrl = 'https://dalmont.staticlbi.com/original/images/biens/2/8efa48ae0918f1e8a89684a39abdbdf7/photo_5432049cf11f3071651cb2c30317bd5e.jpg';
   }
-  
+
   wrapFirstWord(text: string): string {
     const words = text.split(' ');
     if (words.length > 1) {
@@ -208,7 +212,28 @@ export class HomeComponent implements OnInit {
     }
     return words.join(' ');
   }
-  
 
+
+  redirectToAccount() {
+    // Fermez la modale en utilisant Bootstrap
+    // const myModal = document.getElementById('myModal');
+    // myModal?.dispatchEvent(new Event('hidden.bs.modal'));
+
+    // Redirigez vers la page "account"
+    this.router.navigate(['/account']);
+  }
+
+
+  checkQuizzCondition(trade:any) {
+    if (this.studentData && this.studentData['quizz_' + trade.sigle] && this.studentData['quizz_' + trade.sigle].fullResults) {
+      this.setOneQuizzAchieved();
+      return true;
+    }
+    return false;
+  }
+  
+  setOneQuizzAchieved() {
+    this.isOneQuizzAchieved = true;
+  }
 
 }

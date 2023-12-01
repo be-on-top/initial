@@ -1,10 +1,22 @@
 a .btn.btn-transparent:hover {
     box-shadow: none !important;
     color: #82BC00;
+    transform: scale(1.05);
 }
 
-a .btn.btn-transparent {
+/* a .btn.btn-transparent {
     border: 0;
+    font-size: 1.5rem;
+} */
+
+.alert-light{
+    border:1px #82BC00 solid;
+    font-weight:400 ;
+}
+
+button.btn-transparent {
+    border: 0;
+    font-size: 1rem !important;
 }
 
 .text-muted {
@@ -20,6 +32,10 @@ a .btn.btn-transparent {
 .card:hover {
     transform: scale(1.05);
     box-shadow: 0 10px 20px rgba(0, 0, 0, .12), 0 4px 8px rgba(0, 0, 0, .06);
+}
+
+hr{
+    color: #82BC00;
 }
 
 /* a button.btn.btn-transparent:hover {

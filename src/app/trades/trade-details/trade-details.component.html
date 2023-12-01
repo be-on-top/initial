@@ -36,6 +36,7 @@
                         <!-- ScoreCounter : {{ studentData['quizz_'+this.tradeData.sigle].scoreCounter | json }} -->
                         <!-- pour switcher d'un intitulé à un autre selon que studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle -->
                         <div class="d-flex justify-content-md-end" *ngIf="hasStartedEvaluation==false, else none">
+                            
                             <button class="btn btn-transparent ps-0"><i class="bi bi-clock"></i>
                                 Démarrer votre évaluation</button>
                         </div>
@@ -47,17 +48,22 @@
                                     <!-- Reprendre à la question {{studentData.lastIndexQuestion+1}}</button></div> -->
                                     Poursuivre</button></div>
 
-                            <div class="d-flex justify-content-md-end"
+                            <!-- <div class="d-flex justify-content-md-end"
                                 *ngIf="studentData['quizz_'+this.tradeData.sigle].fullResults"><button
                                     class="btn btn-transparent ps-0"><i class="bi bi-check-square-fill"></i>
                                     Votre évaluation est terminée</button>
-                            </div>
+                            </div> -->
                         </ng-template>
 
                     </ng-container>
 
                     <!-- ---------------- -->
                 </a>
+                <div class="d-flex justify-content-md-end"
+                *ngIf="studentData && studentData['quizz_'+this.tradeData.sigle].fullResults"><div
+                    class="btn btn-transparent ps-0 text-light"><i class="bi bi-check-square-fill"></i>
+                    Votre évaluation est terminée</div>
+            </div>
             </div>
         </ng-template>
 

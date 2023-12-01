@@ -107,6 +107,7 @@ export class QuizzComponent implements OnInit {
     this.hasStartedEvaluation = this.ac.snapshot.params['hasStartedEvaluation'] === 'true'
     this.studentId = this.ac.snapshot.params["studentId"]
 
+
     // onAuthStateChanged(this.auth, (user: any) => {
     //   if (user) {
     //     this.uid = user.uid
@@ -232,11 +233,8 @@ export class QuizzComponent implements OnInit {
 
       // ici, il est bon
       // console.log('this.dataStudent', this.dataStudent);
-
       this.hasStartedEvaluation == true && this.dataStudent[quizzKey] && this.dataStudent[quizzKey].studentCompetences ? this.studentCompetences = this.dataStudent[quizzKey].studentCompetences : '';
       this.dataStudent && this.dataStudent[quizzKey] ? console.log('this.dataStudent[quizzKey]', this.dataStudent[quizzKey]) : console.log("pas encore généré");
-      // console.log('this.studentCompetences tel que récupéré en base dans ngOnInit', this.studentCompetences);
-
     })
 
     // fin
@@ -246,6 +244,8 @@ export class QuizzComponent implements OnInit {
     // this.settingsService.getDurationsBySigle(this.trade).then((data)=>console.log('duration récupéré', data))
 
     this.getDurations(this.trade)
+
+    
 
 
   }
@@ -293,7 +293,7 @@ export class QuizzComponent implements OnInit {
     // alert(evaluatedCompetence)
 
     if (this.fullAnswersClicked >= this.totalAnswersAvailable) {
-      alert("Vous ne pouvez pas cocher toutes les réponses. Il faut faire une sélection"),
+      // alert("Vous ne pouvez pas cocher toutes les réponses. Il faut faire une sélection"),
         this.scoreCounter -= Number(this.numberOfPoints),
         this.studentService.updateStudentScore(this.studentId, this.scoreCounter, this.indexQuestion, this.trade, this.hasStartedEvaluation, this.studentCompetences, evaluatedCompetence, this.numberOfPoints, false, true)
     } 
@@ -305,6 +305,7 @@ export class QuizzComponent implements OnInit {
 
     // on peut rajouter ATTENTION !!!!! 
     if (this.indexQuestion < this.questions.length) {
+      
 
       // pour mettre à jour les points à attribuer à la question une fois l'index incrémenté
       this.questions[this.indexQuestion].notation ? this.numberOfPoints = this.questions[this.indexQuestion].notation : ''
@@ -479,8 +480,6 @@ export class QuizzComponent implements OnInit {
 
     // // Appelez la fonction pour générer fullResults
     await this.generateFullResults()
-
-
   }
 
 

@@ -31,10 +31,31 @@ body {
     background-image: linear-gradient(to right, #272A61, rgb(72, 0, 255));
 }
 
+.disabled{
+    color: rgba(19, 0, 63, 0.6)! important;
+}
+
+li.nav-item.dropdown>a {
+    color: white !important;
+    opacity: 80 ! important;
+}
 
 li.nav-item.dropdown.active>a {
     color: white !important;
     opacity: 100 ! important;
+}
+
+li.nav-item.dropdown.active>a::before, h3::before {
+    content: "";
+    position: absolute;
+    bottom: 0rem;
+    height: 2px;
+}
+
+li.nav-item.dropdown.active>a::before{
+    width: 80%;
+    /* background-color: #fcb311 !important; */
+    background-color:#B2BC00 !important;
 }
 
 
@@ -97,11 +118,13 @@ h4,
 
 .bg-success, .btn-success, 
 .success {
-    background-color: #82BC00 !important;
+    background-color: #82BC00 !important;  
+    opacity: 100 !important;
 }
 
-.text-success {
+.text-success, .text-success i {
     color: #82BC00 !important;
+    opacity: 100 !important;
 }
 
 /* remontées des validations côté composant */
@@ -113,9 +136,9 @@ h4,
     /* background-position:center center; */
 }
 
-input:checked,
-.bg-success {
+input:checked {
     background-color: #82BC00 !important;
+    opacity: 100!important;
 }
 
 
@@ -158,9 +181,8 @@ hr {
     background-color: #fcb311;
 }
 
-
+/* 
 .btn {
-    /* box-shadow: 0 6px 10px rgba(0, 0, 0, .08), 0 0 6px rgba(0, 0, 0, .05); */
     transition: .3s transform cubic-bezier(.155, 1.105, .295, 1.12), .3s box-shadow, .3s -webkit-transform cubic-bezier(.155, 1.105, .295, 1.12);
     cursor: pointer;
 }
@@ -169,20 +191,17 @@ hr {
 .btn:hover {
     transform: scale(1.05);
     box-shadow: 0 10px 20px rgba(0, 0, 0, .12), 0 4px 8px rgba(0, 0, 0, .06);
-}
+} */
 
 /* .bg-test:hover {
     background-color: #B2BC00 !important;
 } */
 
-.text-dark, .card-header, .card-body .text-dark>*{
-    color:#031C44 
-}
 
 
 /* .card-header.bg-dark{
     
-
+    
 } */
 
 /* pour tenter une option light de  la navbar */
@@ -194,13 +213,23 @@ nav{
     box-shadow: 0 10px 20px rgba(0, 0, 0, .12), 0 4px 8px rgba(0, 0, 0, .06);
 }
 
+.text-dark, .card-header, .card-body, .alert-light, .text-dark>*{
+    color:#031C44
+    /* color:#00358A */
+}
+
+.card-body button.btn-transparent a{
+    /* color:#00358A */
+    color:#031C44
+}
+
 .bg-dark,
 .navbar-dark {
     /* background-color: #041f4a !important; */
-    /* background-color: #031C44 !important; */
+    background-color: #031C44 !important;
     /* background-color: #0315B2 !important; */
    /* background-color: #051282 !important; */
-   background-color: #00358A !important;
+   /* background-color: #00358A !important; */
    
     /* background-color:rgb(72, 72, 78) !important; */
     

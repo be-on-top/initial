@@ -1,12 +1,11 @@
 /* pour les cas où le bouton se retrouve en d-flex et puisque cette zone a un background de couleur */
 .d-flex button {
   color: white;
-  font-size: 1rem;
+  font-size: 1.08rem;
 }
 
 .d-flex button:hover {
-  background-color: white;
-  color: black;
+  transform: scale(1.05);
 }
 
 /* pour les cas où le bouton est un btn-primary et puisque je veux tenter de l'assombrir au survolbub */
@@ -14,8 +13,10 @@
 
 button.btn.btn-primary:hover {
   background-color: none;
+  transform: scale(1.05);
 
 }
+
 
 /* button.btn.btn-primary:hover {
     filter: brightness(85%);

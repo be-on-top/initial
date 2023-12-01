@@ -159,7 +159,7 @@
             </div>
             <!-- fin vos QCM -->
             <!-- estimation seule -->
-            <div class="card">
+            <div class="card" *ngIf="isOneQuizzAchieved">
                 <div class="card-header bg-dark d-flex justify-content-between">
                     <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseThreeb">
                         Estimations personnalisées
@@ -227,7 +227,7 @@
             </div>
 
             <!-- suivi pédagogique -->
-            <div class="card" *ngIf="isOneQuizzAchieved==true">
+            <div class="card" *ngIf="isOneQuizzAchieved==true && evaluationsNotEmpty()">
                 <div class="card-header bg-dark d-flex justify-content-between">
                     <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseTwo">
                         Votre suivi pédagogique
@@ -269,7 +269,7 @@
             </div>
 
             <!-- suivi entreprise -->
-            <div class="card" *ngIf="isOneQuizzAchieved &&  tutorialsNonVide()">
+            <div class="card" *ngIf="isOneQuizzAchieved &&  tutorialsNotEmpty()">
                 <div class="card-header bg-dark d-flex justify-content-between">
                     <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse"
                         href="#collapseTutorials">
@@ -308,4 +308,6 @@
         <!-- fin collapse -->
         <button type="submit" class="btn btn-primary mt-4" (click)="notifyMe()">Accepter les
             notifications</button>
+
+            
     </div>

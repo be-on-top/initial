@@ -16,12 +16,18 @@
     <!-- fin tests de notification desktop -->
 
     <!-- test alert-dismissible for mission -->
-    <div class="alert p-4 bg-primary alert-dismissible text-white mb-4 fade show">
+
+    <div *ngIf="!isOneQuizzAchieved" class="alert p-4 bg-primary alert-dismissible text-white mb-4 fade show">
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
         Ce conteneur peut servir à <strong>énoncer la mission de l'application</strong>. Devrait être dans ce cas très
         synthétique. Evaluez-vous, positionnez-vous, intégrez sans tarder la formation dont vous avez toujours rêver...
         3 lignes max pour ne pas déborder sur l'aperçu des métiers. On peut le fermer.
     </div>
+    <div *ngIf="isOneQuizzAchieved" class="alert alert-light p-4 alert-dismissible mb-4 fade show disabled">
+        <!-- <button type="button" class="btn-close btn-close-light" data-bs-dismiss="alert"></button> -->
+        <button type="button" class="btn-close btn-close" data-bs-dismiss="alert"></button>
+        Retrouvez tous vos résultats et vos estimations personnalisées depuis votre compte personnel. Vous pourrez aussi dès maintenant finaliser votre inscription administrative </div>
+    
     <!-- fin test alert-dismissible -->
 
     <!-- Carousel -->
@@ -122,40 +128,50 @@
 
                     <!-- pour switcher d'un intitulé à un autre selon que studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle -->
 
-                    <a [routerLink]="[
-                                '/quizz/',
-                                trade.sigle,studentData?.['quizz_'+trade.sigle]?((studentData?.['quizz_'+trade.sigle]?.lastIndexQuestion) + 1 | number):0,
-                                ((studentData?.['quizz_'+trade.sigle]?.scoreCounter || 0 | number)),
-                                studentData?.['quizz_'+trade.sigle] ? true : false,
-                                studentData?.id ? studentData.id : ''
-                              ]" class="text-decoration-none text-dark">
 
-                        <ng-container *ngIf="studentData">
-                            <hr>
+                    <ng-container *ngIf="studentData">
+                        <hr>
+                        <a [routerLink]="[
+                    '/quizz/',
+                    trade.sigle,studentData?.['quizz_'+trade.sigle]?((studentData?.['quizz_'+trade.sigle]?.lastIndexQuestion) + 1 | number):0,
+                    ((studentData?.['quizz_'+trade.sigle]?.scoreCounter || 0 | number)),
+                    studentData?.['quizz_'+trade.sigle] ? true : false,
+                    studentData?.id ? studentData.id : ''
+                  ]" class="text-decoration-none text-dark">
                             <div class="d-flex justify-content-end"
                                 *ngIf="(studentData && !studentData['quizz_'+trade.sigle])">
-                                <button class="btn btn-transparent"><i class="bi bi-clock"></i>
+                                <button class="btn btn-transparent"><i class="bi bi-clock-fill"></i>
                                     Démarrer votre évaluation</button>
                             </div>
 
                             <div class="d-flex justify-content-end"
                                 *ngIf="studentData && studentData['quizz_'+trade.sigle] && !studentData['quizz_'+trade.sigle].fullResults">
 
-                                <button class="btn btn-transparent"><i class="bi bi-clock-history"></i>
+                                <button class="btn btn-transparent"><i class="bi bi-clock-history fw-bold"></i>
                                     <!-- Reprendre à la question {{studentData.lastIndexQuestion+1}}</button></div> -->
                                     Poursuivre</button>
                             </div>
+                        </a>
 
-                            <div class="d-flex justify-content-end"
-                                *ngIf="studentData && studentData['quizz_'+trade.sigle] && studentData['quizz_'+trade.sigle].fullResults">
-                                <button class="btn btn-transparent"><i class="bi bi-check-square-fill"></i>
-                                    Votre évaluation est terminée</button>
+                        <!-- <div class="d-flex justify-content-end"
+                            *ngIf="studentData && studentData['quizz_'+trade.sigle] && studentData['quizz_'+trade.sigle].fullResults">
+                            <div class="btn btn-transparent">
+                                <i class="bi bi-check-square-fill text-success"></i>
+                                Votre évaluation est terminée
                             </div>
-                        </ng-container>
+                        </div> -->
+                        <div class="d-flex justify-content-end" *ngIf="checkQuizzCondition(trade)">
+                            <div class="btn btn-transparent border-0">
+                                <i class="bi bi-check-square-fill text-success"></i>
+                                <span class="disabled">Votre évaluation est terminée</span>
+                            </div>
+                        </div>
+                  
+                    </ng-container>
 
-                        <!-- à tester : (str.length>6)? (str | slice:0:6)+'...':(str) -->
+                    <!-- à tester : (str.length>6)? (str | slice:0:6)+'...':(str) -->
 
-                    </a>
+
                 </div>
                 <div class="card-footer text-muted">Réf. {{trade.sigle}}
                     <ng-container *ngIf="studentData && studentData['quizz_'+trade.sigle]">
