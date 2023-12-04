@@ -87,6 +87,8 @@ export class StudentsService {
     return docData(studentRef) as Observable<Student>;
   }
 
+
+
   async deleteStudent(student: Student): Promise<void> {
     // try {
     //   if (this.auth.currentUser) {

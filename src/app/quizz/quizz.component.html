@@ -1,4 +1,5 @@
 <div class="container py-5 text-center">
+
     <h3>Quizz pour métier {{trade}}</h3>
     <!-- <h4 class="fs-6">Id de l'étudiant récupéré : {{studentId}}</h4>
     <div class="alert alert-danger">fullOptScoring récupéré par le parent{{fullOptScoringTrue}} à comparer à
@@ -41,7 +42,7 @@
         [disabled]="isCompleted==false || fullAnswersClicked===0 || indexQuestion==questions.length"
         (click)="next(indexQuestion,  questions[indexQuestion].competence)">Question suivante</button>
     <ng-template #elseBlock>
-        <p class="alert bg-success text-light p-3 m-3 display-6">{{dataStudent.firstName}} Bravo ! Vous êtes parvenu au
+        <p class="alert bg-success text-light p-3 m-3 display-6" *ngIf="dataStudent">{{dataStudent.firstName}} Bravo ! Vous êtes parvenu au
             terme du
             questionnaire.</p>
         <button class="btn btn-primary m-md-auto" disabled><i class="bi bi-check text-light"></i>QCM

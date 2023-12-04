@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Auth } from '@angular/fire/auth';
-import { ActivatedRoute, Router } from '@angular/router';
-import { onAuthStateChanged } from 'firebase/auth';
+import { Component, OnInit, ViewChild} from '@angular/core';
+// import { Auth } from '@angular/fire/auth';
+import { ActivatedRoute, Router, NavigationEnd} from '@angular/router';
+
+// import { onAuthStateChanged } from 'firebase/auth';
 import { QuestionsService } from '../admin/questions.service';
 import { SettingsService } from '../admin/settings.service';
 import { DetailsComponent } from './vues/details/details.component';
@@ -16,7 +17,7 @@ import { Observable, of } from 'rxjs';
   templateUrl: './quizz.component.html',
   styleUrls: ['./quizz.component.css']
 })
-export class QuizzComponent implements OnInit {
+export class QuizzComponent implements OnInit{
   @ViewChild(DetailsComponent) childComponent!: DetailsComponent;
   // doit récupérer via le paramètre de route l'id relative au métier
   trade: any = ""
@@ -81,6 +82,9 @@ export class QuizzComponent implements OnInit {
   // isIncremented: boolean = false
   // isDecremented: boolean = false
 
+  studentData?: any;
+  isIndexValable: boolean = true;
+
 
 
   constructor(
@@ -92,7 +96,7 @@ export class QuizzComponent implements OnInit {
     // pour tester la récupération des curseurs
     private settingsService: SettingsService,
     private router: Router
-    ) {
+  ) {
     // this.trade = this.ac.snapshot.params["id"]
     // this.indexQuestion = this.ac.snapshot.params["indexQuestion"]
     // this.scoreCounter = this.ac.snapshot.params["scoreCounter"]
@@ -101,11 +105,50 @@ export class QuizzComponent implements OnInit {
 
   ngOnInit() {
 
-    this.trade = this.ac.snapshot.params["id"]
-    this.indexQuestion = this.ac.snapshot.params["indexQuestion"]
-    this.scoreCounter = this.ac.snapshot.params["scoreCounter"]
-    this.hasStartedEvaluation = this.ac.snapshot.params['hasStartedEvaluation'] === 'true'
-    this.studentId = this.ac.snapshot.params["studentId"]
+    // this.checkIndexValidity(this.ac.snapshot.params["indexQuestion"])
+    // this.studentService.getStudentById(this.studentId).subscribe((data) => {
+    //   this.studentData = data
+
+    //   const realIndexFromDatabase = this.studentData['quizz_' + this.trade].lastIndexQuestion
+    //   alert(realIndexFromDatabase)
+
+    //   if (this.ac.snapshot.params["indexQuestion"] < realIndexFromDatabase) { this.redirectToRealUrl(realIndexFromDatabase) } 
+    //   else {
+    
+    // }
+    // })
+
+
+    // this.trade = this.ac.snapshot.params["id"]
+    // this.indexQuestion = this.ac.snapshot.params["indexQuestion"]
+    // this.scoreCounter = this.ac.snapshot.params["scoreCounter"]
+    // this.hasStartedEvaluation = this.ac.snapshot.params['hasStartedEvaluation'] === 'true'
+    // this.studentId = this.ac.snapshot.params["studentId"]
+    this.ac.params.subscribe(params => {
+      console.log('URL Parameters:', params); // Vérifions les paramètres de l'URL
+    
+      this.trade = params["id"];
+      this.indexQuestion = params["indexQuestion"];
+      this.scoreCounter = params["scoreCounter"];
+      this.hasStartedEvaluation = params['hasStartedEvaluation'] === 'true';
+      this.studentId = params["studentId"];
+    
+      console.log('Current Index Question:', this.indexQuestion); // Vérifions la valeur actuelle de indexQuestion
+    
+      this.studentService.getStudentById(this.studentId).subscribe((data) => {
+        this.studentData = data;
+        const realIndexFromDatabase = this.studentData['quizz_' + this.trade].lastIndexQuestion;
+        console.log('Real Index from Database:', realIndexFromDatabase);
+    
+        if (this.indexQuestion < realIndexFromDatabase) { 
+          console.log('Redirecting...'); // Vérifions si la redirection est censée se produire
+          this.router.navigate(['/quizz', this.trade, realIndexFromDatabase + 1, this.scoreCounter, true, this.studentId]);
+        }
+      });
+    });
+    
+  
+
 
 
     // onAuthStateChanged(this.auth, (user: any) => {
@@ -208,7 +251,6 @@ export class QuizzComponent implements OnInit {
 
       this.resultingDurationsByCompetences = this.competences.map((item: number) => ({ [item]: 0 }));
 
-
     })
 
     // this.studentService.getStudentById(this.studentId).subscribe((data) => {
@@ -245,10 +287,24 @@ export class QuizzComponent implements OnInit {
 
     this.getDurations(this.trade)
 
-    
+    // this.router.events.subscribe(event => {
+    //   if (event instanceof NavigationEnd) {
+    //     // L'URL a changé, vous pouvez effectuer des actions ici
+    //     alert(this.router.url);
+    //     const realIndexFromDatabase = this.studentData['quizz_' + this.trade].lastIndexQuestion
+    //     this.router.navigate([
+    //       '/quizz/',
+    //       this.trade,realIndexFromDatabase + 1,this.studentData?.['quizz_'+this.trade.sigle]?.scoreCounter,
+    //       true,this.studentId
+    //     ]);
+        
+    //   }
+    // });
+  
 
 
   }
+
 
   compare(a: any, b: any) {
     return a.number - b.number;
@@ -287,25 +343,29 @@ export class QuizzComponent implements OnInit {
     // this.setLevel() 
 
   }
-// pour déléguer à next la gestion sensible du cas où fullAnswersClicked est supérieur ou égal à totalAnswersAvailable, je récupère un paramètre additionnel
+  // pour déléguer à next la gestion sensible du cas où fullAnswersClicked est supérieur ou égal à totalAnswersAvailable, je récupère un paramètre additionnel
   next(indexQuestion: number, evaluatedCompetence: string) {
     // alert(this.totalAnswersAvailable)
     // alert(evaluatedCompetence)
 
+
     if (this.fullAnswersClicked >= this.totalAnswersAvailable) {
       // alert("Vous ne pouvez pas cocher toutes les réponses. Il faut faire une sélection"),
-        this.scoreCounter -= Number(this.numberOfPoints),
+      this.scoreCounter -= Number(this.numberOfPoints),
         this.studentService.updateStudentScore(this.studentId, this.scoreCounter, this.indexQuestion, this.trade, this.hasStartedEvaluation, this.studentCompetences, evaluatedCompetence, this.numberOfPoints, false, true)
-    } 
-    
-      // Appel de la méthode "reset" du composant enfant
-      this.childComponent.reset();
-      this.indexQuestion = Number(indexQuestion) + 1
-      // alert(this.indexQuestion)
+    }
+
+    // Appel de la méthode "reset" du composant enfant
+    this.childComponent.reset();
+    this.indexQuestion = Number(indexQuestion) + 1
+    // alert(this.indexQuestion)
+    this.updateUrl(this.indexQuestion, this.scoreCounter);
+
+
 
     // on peut rajouter ATTENTION !!!!! 
     if (this.indexQuestion < this.questions.length) {
-      
+
 
       // pour mettre à jour les points à attribuer à la question une fois l'index incrémenté
       this.questions[this.indexQuestion].notation ? this.numberOfPoints = this.questions[this.indexQuestion].notation : ''
@@ -357,6 +417,13 @@ export class QuizzComponent implements OnInit {
   }
 
 
+  updateUrl(indexQuestion: number, scoreCounter: number) {
+    const updatedUrl = ['/quizz', this.trade, indexQuestion, scoreCounter, this.hasStartedEvaluation.toString(), this.studentId];
+    this.router.navigate(updatedUrl);
+    console.log("URL mise à jour :", this.router.url);
+  }
+
+
   resetChildCounter() {
     // Réinitialisation du compteur dans le composant enfant
     // this.childComponent.counter = 0
@@ -396,8 +463,6 @@ export class QuizzComponent implements OnInit {
 
     console.log('denominatorsCompetences', tableau);
   }
-
-
 
   convertirNoteSurVingt() {
     // avec les multiples quizz, ce n'est plus possible
@@ -472,12 +537,6 @@ export class QuizzComponent implements OnInit {
     });
 
     console.log("this.levelsArray)", this.levelsArray);
-    // this.displayDuration(this.durations, this.levelsArray)
-
-    // // et là on peut essayer d'enregistrer
-    // // let fullResults = this.studentService.setFullResults(this.durationsByLevels, this.estimatedCPCost)
-    // // this.studentService.updateFullResults(this.studentId, fullResults)
-
     // // Appelez la fonction pour générer fullResults
     await this.generateFullResults()
   }
@@ -502,9 +561,6 @@ export class QuizzComponent implements OnInit {
               console.log(`data.costsdata.costs["cost_CP${level}"]`, data.costs[`cost_CP${level}`])
               this.cpCostByHour = data.costs[`cost_CP${level}`]
               this.estimatedCPCost[`individual_cost_CP${level}`] = data.costs[`cost_CP${level}`]
-              // // et là le moreInfo qu'on souhaite récupérer
-              // this.moreInfo=data.competences[`${level-1}`]
-              // console.log(this.moreInfo);
               console.log("this.moreInfo", this.moreInfo);
 
 
@@ -521,11 +577,6 @@ export class QuizzComponent implements OnInit {
           this.settingsService.getSigle(this.trade).subscribe((data: Trade) => {
             this.cpCostByHour = data.costs[`cost_CP${level}`];
             this.estimatedCPCost[`individual_cost_CP${level}`] *= value;
-
-            // et là le moreInfo qu'on souhaite récupérer
-            // this.moreInfo = data.competences[`${level - 1}`]
-            // console.log(this.moreInfo);
-
             console.log('this.estimatedCPCost', this.estimatedCPCost);
           });
 
@@ -602,8 +653,6 @@ export class QuizzComponent implements OnInit {
   }
 
 
-
-
   sumCosts(fullResults: { [key: string]: { duration: number; cost: number } }[]): number {
     let totalCost = 0;
 
@@ -642,6 +691,7 @@ export class QuizzComponent implements OnInit {
       console.log("infoKey", infoKey);
       return this.settingsService.getCPName(this.trade, infoKey)
     }
+
     return of(text); // Retourner un observable avec la valeur actuelle si la clé n'est pas trouvée
   }
 
@@ -651,21 +701,27 @@ export class QuizzComponent implements OnInit {
     return value === null || value.trim() === '';
   };
 
-  // isNullOrEmpty = (value: string | null | undefined): boolean => {
-  //   return value === null || value === undefined || value.trim() === '';
-  // };
-
   redirectToAccount() {
-    // Fermez la modale en utilisant Bootstrap
-    // const myModal = document.getElementById('myModal');
-    // myModal?.dispatchEvent(new Event('hidden.bs.modal'));
-
-    // Redirigez vers la page "account"
     this.router.navigate(['/account']);
   }
 
+  checkIndexValidity(param:number) {
+    this.studentService.getStudentById(this.studentId).subscribe((data) => {
+      this.studentData = data
 
+      const realIndexFromDatabase = this.studentData['quizz_' + this.trade].lastIndexQuestion
+      alert(realIndexFromDatabase)
 
+      if (param <= realIndexFromDatabase) { this.redirectToRealUrl(realIndexFromDatabase) } else { alert("ok") }
+    })}
+
+  redirectToRealUrl(realIndexFromDatabase:number) {
+    this.router.navigate([
+                    '/quizz/',
+                    this.trade,realIndexFromDatabase + 1,this.studentData?.['quizz_'+this.trade.sigle]?.scoreCounter,
+                    true,this.studentId
+                  ]);
+  }
 
 
 }

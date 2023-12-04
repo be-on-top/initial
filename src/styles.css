@@ -31,9 +31,7 @@ body {
     background-image: linear-gradient(to right, #272A61, rgb(72, 0, 255));
 }
 
-.disabled{
-    color: rgba(19, 0, 63, 0.6)! important;
-}
+
 
 li.nav-item.dropdown>a {
     color: white !important;
@@ -164,7 +162,7 @@ input:checked {
 }
 
 hr {
-    background-image: linear-gradient(to right, #0062fe, #82BC00);
+   opacity: 100!important;
 }
 
 .border-success{
