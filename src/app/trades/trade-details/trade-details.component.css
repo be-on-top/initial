@@ -12,9 +12,13 @@
 
 
 button.btn.btn-primary:hover {
-  background-color: none;
+  /* background-color: none; */
   transform: scale(1.05);
 
+}
+button.btn-primary:hover {
+  background-color: #0152d4 !important;
+  /* background-image: linear-gradient(to right, rgb(27, 9, 106),  #0062fe); */
 }
 
 
@@ -24,12 +28,10 @@ button.btn.btn-primary:hover {
 
 
 /* Appliquer un effet de foncement en ajustant les couleurs au survol */
-.btn.btn-darken-on-hover:hover {
+/* .btn.btn-darken-on-hover:hover {
   background-color: darken(#007bff, 10%);
-  /* Foncer la couleur d'arrière-plan */
   color: lighten(#fff, 10%);
-  /* Éclaircir la couleur de texte */
-}
+} */
 
 .cover {
   height: 40vw;

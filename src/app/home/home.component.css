@@ -1,3 +1,8 @@
+.d-inline.h5 {
+    font-size: 1rem;
+
+}
+
 a .btn.btn-transparent:hover {
     box-shadow: none !important;
     color: #82BC00;
@@ -27,6 +32,10 @@ button.btn-transparent {
     /* box-shadow: 0 6px 10px rgba(0, 0, 0, .08), 0 0 6px rgba(0, 0, 0, .05); */
     transition: .3s transform cubic-bezier(.155, 1.105, .295, 1.12), .3s box-shadow, .3s -webkit-transform cubic-bezier(.155, 1.105, .295, 1.12);
     cursor: pointer;
+}
+
+.card-text a{
+    font-size: 1rem !important;
 }
 
 .card:hover {

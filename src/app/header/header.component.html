@@ -1,5 +1,5 @@
-<nav class="navbar navbar-expand-md navbar-dark mb-md-2 sticky-top">
-<!-- <nav class="navbar navbar-expand-md navbar-light bg-light mb-md-2 sticky-top"> -->
+<!-- <nav class="navbar navbar-expand-md navbar-dark mb-md-2 sticky-top"> -->
+<nav class="navbar navbar-expand-md navbar-light bg-light mb-md-2 sticky-top">
     <div class="container mx-auto">
         <!-- <a class="navbar-brand" [routerLink]="['home', userRole || '']">BE-ON-TOP</a> -->
         <!-- pour éviter les erreurs d'interprétation des segments de chemin -->
@@ -112,7 +112,7 @@
                         <li *ngIf="!userRole"><a class="dropdown-item" [routerLink]="['login']">Login</a></li>
                         <!-- <li><a class="dropdown-item" (click)="logOut()" [routerLink]="['']">Logout</a></li> -->
                         <li><a class="dropdown-item" (click)="logOut()">Logout</a></li>
-                        <li *ngIf="!userRole.includes('evaluator')"><a class="dropdown-item"
+                        <li *ngIf="!userRole.includes('evaluator') && !userRole.includes('editor')"><a class="dropdown-item"
                                 [routerLink]="['account']">Mon compte</a></li>
                         <li *ngIf="!userRole.includes('evaluator')"><a class="dropdown-item"
                                 [routerLink]="['register']">Inscription</a></li>

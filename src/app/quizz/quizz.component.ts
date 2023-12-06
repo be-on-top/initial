@@ -119,33 +119,33 @@ export class QuizzComponent implements OnInit{
     // })
 
 
-    // this.trade = this.ac.snapshot.params["id"]
-    // this.indexQuestion = this.ac.snapshot.params["indexQuestion"]
-    // this.scoreCounter = this.ac.snapshot.params["scoreCounter"]
-    // this.hasStartedEvaluation = this.ac.snapshot.params['hasStartedEvaluation'] === 'true'
-    // this.studentId = this.ac.snapshot.params["studentId"]
-    this.ac.params.subscribe(params => {
-      console.log('URL Parameters:', params); // Vérifions les paramètres de l'URL
+    this.trade = this.ac.snapshot.params["id"]
+    this.indexQuestion = this.ac.snapshot.params["indexQuestion"]
+    this.scoreCounter = this.ac.snapshot.params["scoreCounter"]
+    this.hasStartedEvaluation = this.ac.snapshot.params['hasStartedEvaluation'] === 'true'
+    this.studentId = this.ac.snapshot.params["studentId"]
+    // this.ac.params.subscribe(params => {
+    //   console.log('URL Parameters:', params); // Vérifions les paramètres de l'URL
     
-      this.trade = params["id"];
-      this.indexQuestion = params["indexQuestion"];
-      this.scoreCounter = params["scoreCounter"];
-      this.hasStartedEvaluation = params['hasStartedEvaluation'] === 'true';
-      this.studentId = params["studentId"];
+    //   this.trade = params["id"];
+    //   this.indexQuestion = params["indexQuestion"];
+    //   this.scoreCounter = params["scoreCounter"];
+    //   this.hasStartedEvaluation = params['hasStartedEvaluation'] === 'true';
+    //   this.studentId = params["studentId"];
     
-      console.log('Current Index Question:', this.indexQuestion); // Vérifions la valeur actuelle de indexQuestion
+    //   console.log('Current Index Question:', this.indexQuestion); // Vérifions la valeur actuelle de indexQuestion
     
-      this.studentService.getStudentById(this.studentId).subscribe((data) => {
-        this.studentData = data;
-        const realIndexFromDatabase = this.studentData['quizz_' + this.trade].lastIndexQuestion;
-        console.log('Real Index from Database:', realIndexFromDatabase);
+    //   this.studentService.getStudentById(this.studentId).subscribe((data) => {
+    //     this.studentData = data;
+    //     const realIndexFromDatabase = this.studentData['quizz_' + this.trade].lastIndexQuestion;
+    //     console.log('Real Index from Database:', realIndexFromDatabase);
     
-        if (this.indexQuestion < realIndexFromDatabase) { 
-          console.log('Redirecting...'); // Vérifions si la redirection est censée se produire
-          this.router.navigate(['/quizz', this.trade, realIndexFromDatabase + 1, this.scoreCounter, true, this.studentId]);
-        }
-      });
-    });
+    //     if (this.indexQuestion <= realIndexFromDatabase) { 
+    //       console.log('Redirecting...'); // Vérifions si la redirection est censée se produire
+    //       this.router.navigate(['/quizz', this.trade, realIndexFromDatabase + 1, this.scoreCounter, true, this.studentId]);
+    //     }
+    //   });
+    // });
     
   
 
@@ -337,7 +337,7 @@ export class QuizzComponent implements OnInit{
     // quoi que puisque on a une affectation conditionnée dans ngOnInit, ça fera probablement double emploi !!!!!
     // this.studentCompetences = this.dataStudent.studentCompetences
     const quizzKey: string = 'quizz_' + this.trade
-    this.studentCompetences = this.dataStudent[quizzKey].studentCompetences
+    this.studentCompetences = this.dataStudent[quizzKey]?.studentCompetences
 
     // une fois qu'il a fait tout ça,  on va tester le retour de levelsArray
     // this.setLevel() 
@@ -710,7 +710,8 @@ export class QuizzComponent implements OnInit{
       this.studentData = data
 
       const realIndexFromDatabase = this.studentData['quizz_' + this.trade].lastIndexQuestion
-      alert(realIndexFromDatabase)
+      
+      // alert(realIndexFromDatabase)
 
       if (param <= realIndexFromDatabase) { this.redirectToRealUrl(realIndexFromDatabase) } else { alert("ok") }
     })}
@@ -725,7 +726,3 @@ export class QuizzComponent implements OnInit{
 
 
 }
-
-
-
-

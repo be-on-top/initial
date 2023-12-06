@@ -19,9 +19,8 @@
 
     <div *ngIf="!isOneQuizzAchieved" class="alert p-4 bg-primary alert-dismissible text-white mb-4 fade show">
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
-        Ce conteneur peut servir à <strong>énoncer la mission de l'application</strong>. Devrait être dans ce cas très
-        synthétique. Evaluez-vous, positionnez-vous, intégrez sans tarder la formation dont vous avez toujours rêver...
-        3 lignes max pour ne pas déborder sur l'aperçu des métiers. On peut le fermer.
+        <span class="d-inline h5">Evaluez-vous </span>
+        pour <span class="d-inline h5">intégrer sans délai</span> un <h1 class="d-inline h5">parcours de formation personnalisé</h1> grâce à nos <h2 class="d-inline h5">questionnaires ciblés</h2> et <span class="d-inline h5">vous hisser aux portes</span> du métier qui vous va !
     </div>
     <div *ngIf="isOneQuizzAchieved" class="alert alert-light p-4 alert-dismissible mb-4 fade show">
         <!-- <button type="button" class="btn-close btn-close-light" data-bs-dismiss="alert"></button> -->
@@ -114,9 +113,9 @@
                         </a>
                     </div>
 
-                    <div class="card-text smaller"><a [routerLink]="['/trade', trade.sigle]"
+                    <div class="card-text"><a [routerLink]="['/trade', trade.sigle]"
                             class="text-decoration-none">
-                            {{(trade.description | slice:0:100 ) + ' ...'| stripHtml }} </a></div>
+                            {{(trade.description | slice:0:200 ) + ' ...'| stripHtml }} </a></div>
                     <!-- si on utilise l'éditeur de texte, pour récupérer le texte tronqué et brut -->
                     <!-- <div class="card-text"><a [routerLink]="['/trade', trade.sigle]" class="text-decoration-none" [innerHTML]="sanitizer.bypassSecurityTrustHtml((trade.description | slice:0:100) +'...')"></a></div> -->
 
@@ -141,7 +140,7 @@
                   ]" class="text-decoration-none text-dark">
                             <div class="d-flex justify-content-end"
                                 *ngIf="(studentData && !studentData['quizz_'+trade.sigle])">
-                                <button class="btn btn-transparent"><i class="bi bi-clock-fill"></i>
+                                <button class="btn btn-transparent"><i class="bi bi-clock-fill text-success"></i>
                                     Démarrer votre évaluation</button>
                             </div>
 

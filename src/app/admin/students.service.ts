@@ -166,7 +166,7 @@ export class StudentsService {
   }
 
   updateStudentScore(id: string, scoreCounter: number, indexQuestion: number, trade: string, hasStartedEvaluation: boolean, studentCompetences: any, evaluatedCompetence: string, numberOfPoints: number, isIncremented: boolean, isDecremented: boolean) {
-    alert(scoreCounter)
+    // alert(scoreCounter)
 
     let $studentRef = doc(this.firestore, "students/" + id)
 

@@ -30,7 +30,7 @@
     <div id="accordion">
 
         <div class="card" *ngIf="userData">
-            <div class="card-header bg-dark d-flex justify-content-between">
+            <div class="card-header bg-primary d-flex justify-content-between">
                 <a class="btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseOne">
                     Vos données personnelles
                 </a><i class="bi bi-person-fill fs-4 text-light"></i>
@@ -56,9 +56,9 @@
 
                         <!-- option avec déroulé -->
                         <div class="d-flex gap-1">
-                            <button class="btn bg-dark mt-3 text-light" data-bs-toggle="collapse"
+                            <button class="btn btn-success mt-3" data-bs-toggle="collapse"
                                 data-bs-target="#demo">
-                                <i class="bi bi-pencil-square text-light p-0"></i><span
+                                <i class="bi bi-pencil-square p-0"></i><span
                                     (click)="toogleText()">{{editButtonLabel}}</span>
                             </button>
                             <!-- ajout d'un bouton supprimer -->
@@ -71,7 +71,7 @@
                         </div>
 
                         <!-- option édition avec modale -->
-                        <!-- <button class="btn bg-dark mt-3 text-light" data-bs-toggle="modal" data-bs-target="#myModal">
+                        <!-- <button class="btn bg-success mt-3 text-light" data-bs-toggle="modal" data-bs-target="#myModal">
                             <i class="bi bi-pencil-square text-light p-0"></i>Modifier
                         </button>
                         <div class="modal" id="myModal">
@@ -94,7 +94,7 @@
 
             <!-- anciennement positionnement > vos QCM(s) -->
             <div class="card">
-                <div class="card-header bg-dark d-flex justify-content-between">
+                <div class="card-header bg-primary d-flex justify-content-between">
                     <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseThreea">
                         Vos QCM(s)
                     </a><i class="bi bi-bar-chart-steps fs-4 text-light"></i>
@@ -118,7 +118,7 @@
                                             Questions</span>
                                     </p>
 
-                                    <button class="btn bg-primary pe-5 d-flex align-items-center"><a class="text-light"
+                                    <button class="btn bg-success pe-5 d-flex align-items-center"><a class="text-light"
                                             [routerLink]="['/quizz/', trade.slice(6), userData[trade].lastIndexQuestion +1 | number, userData[trade].scoreCounter,true, user]"><i
                                                 class="bi fs-5 bi-clock-history"></i>
                                             Poursuivre</a>
@@ -160,7 +160,7 @@
             <!-- fin vos QCM -->
             <!-- estimation seule -->
             <div class="card" *ngIf="isOneQuizzAchieved">
-                <div class="card-header bg-dark d-flex justify-content-between">
+                <div class="card-header bg-primary d-flex justify-content-between">
                     <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseThreeb">
                         Estimations personnalisées
                     </a><i class="bi bi-card-list fs-4 text-light"></i>
@@ -205,7 +205,7 @@
 
             <!-- bouton d'accès au formulaire de préinscription administrative -->
             <div class="card" *ngIf="isOneQuizzAchieved==true">
-                <div class="card-header bg-dark d-flex justify-content-between">
+                <div class="card-header bg-primary d-flex justify-content-between">
                     <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseFor">
                         Inscription Formation
                     </a><i class="bi bi-info-square-fill fs-4 text-light"></i>
@@ -219,7 +219,7 @@
                             prise en
                             charge, nous vous invitons à remplir le formulaire ci-dessous...
                         </p>
-                        <button class="btn bg-primary"><a class="text-light" [routerLink]="['/socialregistration']">
+                        <button class="btn bg-success"><a class="text-light" [routerLink]="['/socialregistration']">
                                 Formulaire de pré-inscription</a>
                         </button>
                     </div>
@@ -228,7 +228,7 @@
 
             <!-- suivi pédagogique -->
             <div class="card" *ngIf="isOneQuizzAchieved==true && evaluationsNotEmpty()">
-                <div class="card-header bg-dark d-flex justify-content-between">
+                <div class="card-header bg-primary d-flex justify-content-between">
                     <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseTwo">
                         Votre suivi pédagogique
                     </a><i class="bi bi-clipboard-data-fill fs-4 text-light"></i>
@@ -270,7 +270,7 @@
 
             <!-- suivi entreprise -->
             <div class="card" *ngIf="isOneQuizzAchieved &&  tutorialsNotEmpty()">
-                <div class="card-header bg-dark d-flex justify-content-between">
+                <div class="card-header bg-primary d-flex justify-content-between">
                     <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse"
                         href="#collapseTutorials">
                         Votre suivi entreprise
@@ -306,7 +306,7 @@
         </div>
 
         <!-- fin collapse -->
-        <button type="submit" class="btn btn-primary mt-4" (click)="notifyMe()">Accepter les
+        <button type="submit" class="btn btn-success mt-4" (click)="notifyMe()">Accepter les
             notifications</button>
 
             

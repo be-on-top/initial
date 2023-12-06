@@ -121,9 +121,6 @@ export class AccountComponent implements OnInit {
             this.tutorials = this.userData.tutorials
           }
 
-
-
-
         })
         // y a juste que je n'arrive pas à me la faire livrer par le service !!!
         // this.studentService.getDocsByParam(this.user)

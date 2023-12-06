@@ -125,7 +125,7 @@ export class DetailsComponent implements OnInit {
 
   unchoice(optScoring: any) {
 
-    alert(`est-ce que on vient de désélectionner une option à score : ${optScoring}`)
+    // alert(`est-ce que on vient de désélectionner une option à score : ${optScoring}`)
     this.fullAnswersClicked--
     console.log('fullAnswersClicked', this.fullAnswersClicked)
 

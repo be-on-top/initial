@@ -64,7 +64,7 @@
             <!-- {{allMediasQuestions | json}} -->
             <div class="bg-light rounded rounded mb-3" *ngFor="let item of allMediasQuestions">
                 <!-- {{mediaQuestion | json}} -->
-                <div class="w-100 bg-secondary p-2 rounded">
+                <div class="w-100 bg-light p-2 rounded">
                     <!-- si fichier de type video / sinon utiliser le template pour l'image  -->
                     <video *ngIf="result.isVideo==true; else image" class="video">
                         <source [src]="item" type="video/mp4">
@@ -113,7 +113,7 @@
             *ngIf="allMediasResponses && allMediasResponses.length!==0 && lookForKeyContent(allMediasResponses, 'mediaOption1').length!==0 && isActive1===true, else createOption1">
             <div class="alert alert-info text-light py-2 mt-2">image : modification</div>
             <div *ngFor="let item of allMediasResponses">
-                <div *ngIf="item.includes('Option1')" class="w-100 bg-secondary p-2 rounded">
+                <div *ngIf="item.includes('Option1')" class="w-100 bg-light p-2 rounded">
                     <img class="img-fluid mb-2 w-100" [src]="item">
                     <!-- <label class="form-label mt-3" for="mediaOption1">Fichier à modifier</label> -->
                     <!-- pour englober la modification et le reset -->
@@ -169,7 +169,7 @@
             <div class="alert alert-info text-light py-2 mt-2">image : modification</div>
 
             <div *ngFor="let item of allMediasResponses">
-                <div *ngIf="item.includes('Option2')" class="w-100 bg-secondary p-2 rounded">
+                <div *ngIf="item.includes('Option2')" class="w-100 bg-light p-2 rounded">
                     <img class="img-fluid mb-2 w-100" [src]="item">
                     <!-- <label class="form-label mt-3" for="mediaOption2">Fichier à modifier</label> -->
                     <!-- pour englober la modification et le reset -->
@@ -224,7 +224,7 @@
             *ngIf="allMediasResponses && allMediasResponses.length!==0 && lookForKeyContent(allMediasResponses, 'mediaOption3').length!==0 && isActive3===true,  else createOption3">
             <div class="alert alert-info text-light py-2 mt-2">image : modification</div>
             <div *ngFor="let item of allMediasResponses">
-                <div *ngIf="item.includes('Option3')" class="w-100 bg-secondary p-2 rounded">
+                <div *ngIf="item.includes('Option3')" class="w-100 bg-light p-2 rounded">
                     <img class="img-fluid mb-2 w-100" [src]="item">
                     <!-- <label class="form-label mt-3" for="mediaOption3">Fichier à modifier</label> -->
                     <!-- pour englober la modification et le reset -->
@@ -281,7 +281,7 @@
             *ngIf="allMediasResponses && allMediasResponses.length!==0 && lookForKeyContent(allMediasResponses, 'mediaOption4').length!==0 && isActive4===true, else createOption4">
             <div class="alert alert-info text-light py-2 mt-2">image : modification</div>
             <div *ngFor="let item of allMediasResponses">
-                <div *ngIf="item.includes('Option4')" class="w-100 bg-secondary p-2 rounded">
+                <div *ngIf="item.includes('Option4')" class="w-100 bg-light p-2 rounded">
                     <img class="img-fluid mb-2 w-100" [src]="item">
                     <!-- <label class="form-label mt-3" for="mediaOption4">Fichier à modifier</label> -->
                     <!-- pour englober la modifiction et le reset -->
