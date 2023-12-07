@@ -1,3 +1,9 @@
+.alert.bg-light{
+    border:1px #82BC00 solid;
+    font-weight:400 ;
+    font-size: 1rem;
+}
+
 .bg-success{
     background-color: #82BC00;
 }

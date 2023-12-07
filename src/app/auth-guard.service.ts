@@ -55,7 +55,7 @@ export class AuthGuardService implements CanActivate {
             // laisser la navigation continuer
             resolve(true);
           } else {
-            // Si la route ne nécessite pas d'authentification, laissez la navigation continuer
+            // Si la route ne nécessite pas d'authentification, laisser la navigation continuer
             resolve(true);
           }
         } else {

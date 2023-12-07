@@ -159,7 +159,7 @@ export class HomeComponent implements OnInit {
       // pour le cas où non authentifié
       else {
         // L'utilisateur n'est pas authentifié
-        alert("Utilisateur non authentifié");
+        console.log("Utilisateur non authentifié");
         // Rediriger vers la page de connexion si nécessaire
         // this.router.navigate(['/login']);
       }
