@@ -109,7 +109,20 @@ export class AccountComponent implements OnInit {
           for (const item of this.tradesEvaluated) {
             this.userData[item].fullResults ? achievedArray.push(item) : ''
             achievedArray.length > 0 ? this.isOneQuizzAchieved = true : false
+
           }
+
+          for (const item of this.tradesEvaluated) {
+            if (this.userData[item].fullResults) {
+              this.userData[item].fullResults.sort((a: any, b: any) => {
+                const keyA = Object.keys(a)[0];
+                const keyB = Object.keys(b)[0];
+                
+                return keyA.localeCompare(keyB);
+              });
+            }
+          }
+
 
           // lignes pour récupérer evaluations
           if (this.userData.evaluations) {
