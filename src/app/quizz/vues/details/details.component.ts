@@ -43,9 +43,9 @@ export class DetailsComponent implements OnInit {
   // @Output() hasBeenUpdated: EventEmitter<number> = new EventEmitter<number>();
   @Output() hasBeenUpdated: EventEmitter<{ counter: number, evaluatedCompetence: string, isIncremented: boolean, isDecremented: boolean, fullAnswersClicked: number }> = new EventEmitter<{ counter: number, evaluatedCompetence: string, isIncremented: boolean, isDecremented: boolean, fullAnswersClicked: number }>();
 
-  constructor() {
-    // this.fullAnswersClicked=0
-  }
+
+isLoading=true
+
 
   ngOnInit() {
     // console.log("this.fullOptScoringArray initial", this.fullOptScoringTrue)

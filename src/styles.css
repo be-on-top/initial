@@ -55,9 +55,39 @@ li.nav-item.dropdown.active>a::before {
     width: 80%;
     /* background-color: #fcb311 !important; */
     background-color: #B2BC00 !important;
-    opacity: 100;
+    opacity: 100 ! important;
 }
 
+.trade h2{
+    text-align: left;
+    position: relative;
+}
+
+
+/* .trade h2::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    background-color: #82BC00 !important;
+} */
+
+
+.trade p {
+    margin-top: 0.8rem;
+    padding-top: 0;
+    padding-left:0.5rem;
+    font-size: 1rem;
+    border-left:2px #82BC00 solid
+}
+
+.trade strong{
+    font-weight: 600;
+    /* font-size: 1.4rem; */
+    letter-spacing: 0.15rem;
+}
 
 h3::before {
     content: "";
@@ -372,6 +402,10 @@ p.question {
         margin-bottom: 0.5rem;
     }
 
+    .trade > p{
+        font-size: 1em !important;
+    }
+
 
 }
 
@@ -390,5 +424,7 @@ p.question {
         font-size: 1rem ! important;
 
     }
+
+
 
 }

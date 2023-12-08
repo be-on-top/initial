@@ -5,6 +5,14 @@
     <h2>total de réponses disponibles{{totalAnswersAvailable | json}}</h2>
     <h3>fullAnswersClicked === this.totalAnswersAvailable : {{fullAnswersClicked === this.totalAnswersAvailable | json}}</h3> -->
 
+    <div *ngIf="questionsMedias.lenght==0 || questionsMedias.lenght==1" class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+        <div class="spinner-border text-primary" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+
+      <!-- {{questionsMedias.length | json}} -->
+
     <!-- <p class="fs-5">Cette question peut vous rapporter <i class="bi bi-{{q.notation}}-square-fill fs-5"></i> PNTS</p> -->
     <p class="fs-6 mb-3"><span class="fw-bold">Compétence évaluée :</span>
         {{q.competence}} - <span class="fw-bold"> QUESTION à + {{q.notation}} PNTS</span> - <span class="fw-bold">CUMUL

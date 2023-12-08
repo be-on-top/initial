@@ -236,4 +236,32 @@ export class HomeComponent implements OnInit {
     this.isOneQuizzAchieved = true;
   }
 
+  // truncateText(text: string, maxWords: number): string {
+  //   const words = text.split(' ');
+  //   if (words.length > maxWords) {
+  //     return words.slice(0, maxWords).join(' ');
+  //   }
+  //   return text;
+  // }
+
+  truncateText(text: string, limit: number): string {
+    if (!text || text.length <= limit) {
+      return text;
+    }
+
+    const words = text.split(' ');
+    let truncatedText = '';
+
+    for (const word of words) {
+      if ((truncatedText + word).length <= limit) {
+        truncatedText += word + ' ';
+      } else {
+        break;
+      }
+    }
+
+    return truncatedText.trim() + '...';
+  }
+
+
 }

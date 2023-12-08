@@ -27,7 +27,7 @@ export class QuizzComponent implements OnInit{
   uid: string = ""
   // doit récupérer les questions (préalables et de positionnement) via le service dédié (questionsService) pour le métier visé
   questions: Questions[] = []
-  questionsMedias: any = []
+  questionsMedias: string[] = ['1','2']
   responsesMedias: any = []
   // pour passer de l'une à l'autre, faut qu'on ait un indexQuestion qui soit susceptible de s'incrémenter
   indexQuestion: number = 0

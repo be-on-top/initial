@@ -85,7 +85,7 @@
             <!-- si on utilise l'éditeur de texte -->
             <!-- <div [ngClass]="{'col-lg-6 mt-3':imageUrl!=''}" [innerHTML]="sanitizer.bypassSecurityTrustHtml(tradeData.description)">
             </div> -->
-            <div class="p-2" [innerHTML]="sanitizer.bypassSecurityTrustHtml(tradeData.description)">
+            <div class="p-2 trade" [innerHTML]="sanitizer.bypassSecurityTrustHtml(tradeData.description)">
             </div>
             <!-- et pour avoir accès au lien d'édition -->
             <div *ngIf="userRole=='editor'" class="d-flex justify-content-end text mt-3">
