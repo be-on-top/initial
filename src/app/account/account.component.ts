@@ -74,6 +74,7 @@ export class AccountComponent implements OnInit {
 
   trades: { [key: string]: string[] } = {};
 
+
   constructor(private auth: Auth, private firestore: Firestore, private authService: AuthService, private studentService: StudentsService, private activatedRoute: ActivatedRoute, private router: Router, private notificationService: PushNotificationService, public sanitizer: DomSanitizer, private settingsService: SettingsService) {
     const messaging = getMessaging();
     onMessage(messaging, (payload) => {
@@ -84,14 +85,6 @@ export class AccountComponent implements OnInit {
 
 
   ngOnInit(): void {
-
-    //  this.settingsService.getTrades().subscribe((data:any)=>{
-    //   this.tradeIds=data
-    //   console.log("this.tradeIds", this.tradeIds);
-
-    //  })
-
-
 
     // https://firebase.google.com/docs/cloud-messaging/js/receive?hl=fr
     // Gérer les messages lorsque l'application Web est au premier plan (l'utilisateur consulte actuellement notre page Web)
@@ -126,141 +119,18 @@ export class AccountComponent implements OnInit {
             }
           }
 
+          // console.log("this.tradesEvaluated after loop:", this.tradesEvaluated);
           console.log("this.tradesEvaluated after loop:", this.tradesEvaluated);
-          // this.tradesEvaluated.forEach(tradeId => {
-          //   console.log('Current tradeId:', tradeId); // Ajoutez cette ligne
-          //   this.settingsService.getCompetences(tradeId).subscribe(competences => {
-          //     // Ajoutez les compétences dans le tableau trades
-          //     this.trades.push(`${tradeId}: ${competences.join(', ')}`);
-
-          //     // Loguez les compétences dans la console
-          //     console.log(`${tradeId}:`, competences);
-          //   });
-          // });
-          onAuthStateChanged(this.auth, (user: any) => {
-            // impeccable
-            // console.log("this.user dispensé par onAuthStateChanged", this.auth.currentUser);
-            if (user) {
-              // User is signed in, see docs for a list of available properties
-              // https://firebase.google.com/docs/reference/js/firebase.User
-              this.user = user.uid
-
-
-              this.studentService.getStudentById(user.uid).subscribe(data => {
-                console.log("userData from students 0...", data);
-                this.userData = data
-                this.lastIndex = Number(this.userData.lastIndexQuestion)
-                // this.userData.fullResults ? this.fullResults = this.userData.fullResults : []
-
-
-                for (const key in this.userData) {
-                  console.log('key', key.includes('quizz'));
-
-                  if (key.includes('quizz')) {
-                    this.tradesEvaluated.push(key);
-                  }
-                }
-
-                // console.log("this.tradesEvaluated after loop:", this.tradesEvaluated);
-                console.log("this.tradesEvaluated after loop:", this.tradesEvaluated);
-                this.tradesEvaluated.forEach(tradeId => {
-                  console.log('Current tradeId:', tradeId);
-                  this.settingsService.getCompetences(tradeId).subscribe(competences => {
-                    // Ajoutez les compétences dans l'objet trades
-                    this.trades[tradeId] = competences;
-                
-                    // Loguez les compétences dans la console
-                    console.log(`${tradeId}:`, competences);
-                  });
-                });
-
-                // this.tradesEvaluated.forEach(tradeId => {
-                //   console.log('Current tradeId:', tradeId); // Ajoutez cette ligne
-                //   this.settingsService.getCompetences(tradeId).subscribe(competences => {
-                //     // Ajoutez les compétences dans le tableau trades
-                //     this.trades.push({ [tradeId]: competences });
-                
-                //     // Loguez les compétences dans la console
-                //     console.log(`${tradeId}:`, competences);
-                //   });
-                // });
-
-                
-                // this.tradesEvaluated.forEach(tradeId => {
-                //   console.log('Current tradeId:', tradeId); // Ajoutez cette ligne
-                //   this.settingsService.getCompetences(tradeId).subscribe(competences => {
-                //     // Ajoutez les compétences dans le tableau trades
-                //     // this.trades.push(`${tradeId}: ${competences.join(', ')}`);
-                //     this.trades.push({ tradeId, competences });
-
-
-                //     // Loguez les compétences dans la console
-                //     console.log(`${tradeId}:`, competences);
-                //   });
-                // });
-
-                // this.tradesEvaluated.forEach(tradeId => {
-                //   this.settingsService.getCompetences(tradeId).subscribe(competences => {
-                //     // Ajoutez les compétences dans le tableau trades
-                //     const tradeEntry = `${tradeId}: ${competences.join(', ')}`;
-
-                //     this.trades.push(tradeEntry);
-
-                //     // Loguez les compétences dans la console
-                //     console.log(`${tradeId}:`, competences);
-
-                //     // Reformatez trades en tant qu'objet avec les noms de trades et les compétences associées
-                //     const [tradeName, competencesString] = tradeEntry.split(':');
-                //     const competencesArray = competencesString.split(',').map(comp => comp.trim());
-                //     this.formattedTrades[tradeName.trim()] = competencesArray;
-
-                //     // Maintenant formattedTrades est un objet avec les noms de trades et les compétences associées
-                //     console.log(this.formattedTrades);
-                //   });
-                // });
-
-                // lignes pour récupérer isOneQuizzAchieved
-                const achievedArray: any = []
-                for (const item of this.tradesEvaluated) {
-                  this.userData[item].fullResults ? achievedArray.push(item) : ''
-                  achievedArray.length > 0 ? this.isOneQuizzAchieved = true : false
-
-                }
-
-                for (const item of this.tradesEvaluated) {
-                  if (this.userData[item].fullResults) {
-                    this.userData[item].fullResults.sort((a: any, b: any) => {
-                      const keyA = Object.keys(a)[0];
-                      const keyB = Object.keys(b)[0];
-
-                      return keyA.localeCompare(keyB);
-                    });
-                  }
-                }
-
-
-                // lignes pour récupérer evaluations
-                if (this.userData.evaluations) {
-                  this.evaluations = this.userData.evaluations
-                }
-
-                // lignes pour récupérer le suivi tutorial
-                if (this.userData.tutorials) {
-                  this.tutorials = this.userData.tutorials
-                }
-
-              })
-              // y a juste que je n'arrive pas à me la faire livrer par le service !!!
-              // this.studentService.getDocsByParam(this.user)
-            }
-          })
-
-          this.authService.getToken()?.then(res => console.log("token authentification depuis authService", res.token))
-
-
-          console.log('this.tradesEvaluated', this.tradesEvaluated);
-          console.log('type of tradesEvaluated', typeof (this.tradesEvaluated));
-          // this.tradesEvaluated
+          this.tradesEvaluated.forEach(tradeId => {
+            console.log('Current tradeId:', tradeId);
+            this.settingsService.getCompetences(tradeId).subscribe(competences => {
+              // Ajoutez les compétences dans l'objet trades
+              this.trades[tradeId] = competences;
+          
+              // Loguez les compétences dans la console
+              console.log(`${tradeId}:`, competences);
+            });
+          });
 
           // lignes pour récupérer isOneQuizzAchieved
           const achievedArray: any = []
@@ -306,50 +176,9 @@ export class AccountComponent implements OnInit {
     // this.tradesEvaluated
 
 
-
-
-    // const tradesArray: string[] = this.tradesEvaluated as string[];
-    // this.tradesEvaluated.forEach(tradeId => {
-    //   console.log('Current tradeId:', tradeId); // Ajoutez cette ligne
-    //   this.settingsService.getCompetences(tradeId).subscribe(competences => {
-    //     // Ajoutez les compétences dans le tableau trades
-    //     this.trades.push(`${tradeId}: ${competences.join(', ')}`);
-
-    //     // Loguez les compétences dans la console
-    //     console.log(`${tradeId}:`, competences);
-    //   });
-    // });
-
   }
 
-  // const observables = this.tradesEvaluated.map((tradeId:any) =>
-  //   this.settingsService.getCompetences(tradeId).pipe(
-  //     tap(competences => console.log(`${tradeId} competences:`, competences))
-  //   )
-  // );
-
-  // forkJoin(observables)
-  //   .subscribe({
-  //     next: (results: any) => {
-  //       const competencesArray = results as string[][]; // Convertir les résultats en tableau de compétences
-  //       console.log('competencesArray:', competencesArray);
-
-  //       this.tradesEvaluated.forEach((tradeId:any, index:any) => {
-  //         const competences = competencesArray[index];
-  //         console.log(`${tradeId}:`, competences);
-
-  //         this.trades.push(`${tradeId}: ${competences.join(', ')}`);
-  //       });
-  //     },
-  //     error: (error: any) => {
-  //       console.error('Error fetching competences:', error);
-  //     },
-  //     complete: () => {
-  //       console.log('Competences fetching completed.');
-  //     }
-  //   });
-  // }
-
+ 
   onClick() {
     this.authService.logout()
       .then(() => {

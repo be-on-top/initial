@@ -137,9 +137,15 @@
                                 <p class="card-text fw-bold d-flex align-items-center">QCM de positionnement terminé
                                     <i class="bi fs-4 bi-check-lg ms-3"></i>
                                 </p>
+                                <!-- pour les compétences solution option 1 -->
+                                <div class="fs-6" *ngFor="let competence of trades[trade], let j = index">
+                                    <span class="fw-bold">CP{{ j + 1 }}</span> : <em class="text-primary ">{{ competence
+                                        }}</em>
+                                </div>
                                 <!-- pour les compétences -->
                                 <div class="fs-6" *ngFor="let competence of trades[trade], let j = index">
-                                    <span class="fw-bold">CP{{ j + 1 }}</span> : <em class="text-primary ">{{ competence }}</em>
+                                    <span class="fw-bold">CP{{ j + 1 }}</span> : <em class="text-primary ">{{ competence
+                                        }}</em>
                                 </div>
                                 <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
                                 <div class="mt-2">
@@ -155,13 +161,34 @@
                                         </ng-container>
                                     </div>
                                 </div>
-
-
-
-
-
-
                             </ng-template>
+
+                            <!-- pour compétences option 2 alternative pour tout le ng-template -->
+                            <!-- <ng-template #done class="mb-3">
+                                <p class="card-text fw-bold d-flex align-items-center">QCM de positionnement terminé
+                                    <i class="bi fs-4 bi-check-lg ms-3"></i>
+                                </p>
+                                <div class="fs-6" *ngFor="let competence of trades[trade], let j = index">
+                                    <span class="fw-bold">CP{{ j + 1 }}</span> : <em class="text-primary ">{{ competence
+                                        }}</em>
+                                </div>
+                                <div class="mt-2">
+                                    <div class="card-text mb-0"
+                                        *ngFor="let result of userData[trade].fullResults | keyvalue, let lastResult=last, let i = index">
+
+                                        <ng-container *ngFor="let item of objectEntries(result.value)">
+                                            <div class="d-flex align-items-center p-0 m-0">
+                                                <span class="fw-bold">{{ item[0] }}</span>
+                                                <i class="bi fs-4 bi-arrow-right-short"></i>
+                                                <span>Note obtenue : {{ item[1].notation | json | number:'1.1-1'
+                                                    }}/20.</span>
+                                            </div>
+                                                     <em
+                                                     class="text-primary fs-6">{{trades[trade][i]}}</em>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </ng-template> -->
 
                             <!-- Affichez le hr sauf dans la dernière itération -->
                             <hr *ngIf="!last">
