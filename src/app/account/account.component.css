@@ -5,3 +5,13 @@ p.card-text{
 .perso{
     background-color: #82BC00 !important;
 }
+
+.cp{
+    border-color: #82BC00 !important;
+}
+
+.text-success{
+    color: #0062fe;
+    opacity: 60!important;
+
+}

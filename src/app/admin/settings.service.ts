@@ -88,6 +88,24 @@ export class SettingsService {
     return collectionData(tradesRef, { idField: "id" }) as Observable<Trade[]>;
   }
 
+    getCompetences(tradeId: string): Observable<string[]> {
+      const sigle = tradeId.replace('quizz_', ''); // Pour obtenir la clé correcte dans la collection sigles
+      const sigleRef = doc(this.firestore, 'sigles', sigle);
+  
+      return docData(sigleRef).pipe(
+        // Mappez le résultat pour obtenir directement le tableau de compétences
+        // Assurez-vous d'ajuster cette partie en fonction de la structure réelle de vos données
+        // Si vos compétences sont stockées différemment, ajustez le map en conséquence.
+        map((data: any) => (data && data['competences']) ? data['competences'] : [])
+      );
+    }
+
+  // getCPName(tradeId: string, cpId: number): Observable<string> {
+  //   console.log(cpId)
+  //   let $sigleRef = doc(this.firestore, "sigles/" + tradeId)
+  //   return docData($sigleRef, { idField: 'id' }).pipe(map(trade => trade['competences'][cpId]))
+  // }
+
   async getDurationsBySigle(sigle: string) {
     const sigleRef = doc(this.firestore, 'sigles', sigle);
     const sigleSnapshot = await getDoc(sigleRef);

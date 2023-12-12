@@ -2,9 +2,10 @@
 
     <h3>Votre compte BE-ON-TOP</h3>
 
-    <p class="alert bg-primary text-light p-2 my-3 fs-4 fw-light ">Bonjour {{userData.firstName}}, les données ci-dessous ont été récupérées grâce à vos données d'authentification</p>
+    <p class="alert bg-primary text-light p-2 my-3 fs-4 fw-light ">Bonjour {{userData.firstName}}, les données
+        ci-dessous ont été récupérées grâce à vos données d'authentification</p>
 
-<!-- 
+    <!-- 
     <div *ngIf="user" class="alert bg-light p-2">
         Id Utilisateur authentifié sur firebase Auth : {{user | json}}
     </div> -->
@@ -56,8 +57,7 @@
 
                         <!-- option avec déroulé -->
                         <div class="d-flex gap-1">
-                            <button class="btn btn-success mt-3" data-bs-toggle="collapse"
-                                data-bs-target="#demo">
+                            <button class="btn btn-success mt-3" data-bs-toggle="collapse" data-bs-target="#demo">
                                 <i class="bi bi-pencil-square p-0"></i><span
                                     (click)="toogleText()">{{editButtonLabel}}</span>
                             </button>
@@ -95,7 +95,8 @@
             <!-- anciennement positionnement > vos QCM(s) -->
             <div class="card">
                 <div class="card-header bg-primary d-flex justify-content-between">
-                    <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseThreea">
+                    <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse"
+                        href="#collapseThreea">
                         Vos QCM(s) & Résultats
                     </a><i class="bi bi-bar-chart-steps fs-4 text-light"></i>
                 </div>
@@ -104,210 +105,225 @@
 
                         <!-- nouveauté pour multi quizz VERSION 2 -->
 
-                        <div *ngIf="userData && tradesEvaluated.length>0; else none">
-                            <!-- comme on ne questionnera plus tradeEvaluated mais tradesEvaluated [], on va devoir, avant d'inspecter la suite des ngIf, avoir une boucle ngFor pour voir métier après métier...  -->
-                            <!-- attention, compte tenu de la manière dont tradesEvaluated a été généré, trade ici, c'est une chaine de caractère type quizz_sigle -->
-                            <div *ngFor="let trade of tradesEvaluated, let last=last">
-                                <!-- {{userData | json}} {{userData[trade].fullResults | json}} -->
-                                <p class="card-text">Métier concerné : <span class="fw-bold">{{trade}}</span></p>
-                                <!-- Partie 1 si QCM en cours -->
-                                <!-- <div *ngIf="userData.lastIndexQuestions[trade]<2, else done"> -->
-                                <div *ngIf="!userData[trade].fullResults, else done">
-                                    <p class="card-text">Vous avez répondu à
-                                        <span class="fw-bold">{{userData[trade].lastIndexQuestion +1 | number}}
-                                            Questions</span>
-                                    </p>
 
-                                    <button class="btn bg-success pe-5 d-flex align-items-center"><a class="text-light"
-                                            [routerLink]="['/quizz/', trade.slice(6), userData[trade].lastIndexQuestion +1 | number, userData[trade].scoreCounter,true, user]"><i
-                                                class="bi fs-5 bi-clock-history"></i>
-                                            Poursuivre</a>
-                                    </button>
 
-                                </div>
 
-                                <!-- Partie 2 si QCM terminé -->
-                                <!-- Il semble que la directive keyvalue provoque des problèmes lorsqu'elle est utilisée dans une boucle *ngFor. 
+                        <!-- comme on ne questionnera plus tradeEvaluated mais tradesEvaluated [], on va devoir, avant d'inspecter la suite des ngIf, avoir une boucle ngFor pour voir métier après métier...  -->
+                        <!-- attention, compte tenu de la manière dont tradesEvaluated a été généré, trade ici, c'est une chaine de caractère type quizz_sigle -->
+                        <div *ngFor="let trade of tradesEvaluated, let last=last">
+
+                            <!-- {{userData | json}} {{userData[trade].fullResults | json}} -->
+                            <p class="card-text">Métier concerné : <span class="fw-bold">{{trade}}</span></p>
+                            <!-- Partie 1 si QCM en cours -->
+                            <!-- <div *ngIf="userData.lastIndexQuestions[trade]<2, else done"> -->
+                            <div *ngIf="!userData[trade].fullResults, else done">
+                                <p class="card-text">Vous avez répondu à
+                                    <span class="fw-bold">{{userData[trade].lastIndexQuestion +1 | number}}
+                                        Questions</span>
+                                </p>
+
+                                <button class="btn bg-success pe-5 d-flex align-items-center"><a class="text-light"
+                                        [routerLink]="['/quizz/', trade.slice(6), userData[trade].lastIndexQuestion +1 | number, userData[trade].scoreCounter,true, user]"><i
+                                            class="bi fs-5 bi-clock-history"></i>
+                                        Poursuivre</a>
+                                </button>
+
+                            </div>
+
+                            <!-- Partie 2 si QCM terminé -->
+                            <!-- Il semble que la directive keyvalue provoque des problèmes lorsqu'elle est utilisée dans une boucle *ngFor. 
                                     Pour contourner ce problème, on peut utiliser la fonction créée Object.entries() pour obtenir les clés et valeurs de result.value. -->
-                                <ng-template #done class="mb-3">
-                                    <p class="card-text fw-bold d-flex align-items-center">QCM de positionnement terminé
-                                        <i class="bi fs-4 bi-check-lg ms-3"></i>
-                                    </p>
-                                    <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
+                            <ng-template #done class="mb-3">
+                                <p class="card-text fw-bold d-flex align-items-center">QCM de positionnement terminé
+                                    <i class="bi fs-4 bi-check-lg ms-3"></i>
+                                </p>
+                                <!-- pour les compétences -->
+                                <div class="fs-6" *ngFor="let competence of trades[trade], let j = index">
+                                    <span class="fw-bold">CP{{ j + 1 }}</span> : <em class="text-primary ">{{ competence }}</em>
+                                </div>
+                                <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
+                                <div class="mt-2">
                                     <div class="card-text mb-0"
                                         *ngFor="let result of userData[trade].fullResults | keyvalue, let lastResult=last">
                                         <ng-container *ngFor="let item of objectEntries(result.value)">
                                             <div class="d-flex align-items-center">
                                                 <span class="fw-bold">{{ item[0] }}</span>
                                                 <i class="bi fs-4 bi-arrow-right-short"></i>
-                                                <span>Note obtenue : {{ item[1].notation | json | number:'1.1-1' }}/20.</span>
+                                                <span>Note obtenue : {{ item[1].notation | json | number:'1.1-1'
+                                                    }}/20.</span>
                                             </div>
                                         </ng-container>
-                                    </div>
-                                </ng-template>
-
-                                <!-- Affichez le hr sauf dans la dernière itération -->
-                                <hr *ngIf="!last">
-                            </div>
-                            <!-- fin boucle supplémentaire pour ngFor avec les options de multi-quizz -->
-                        </div>
-
-                        <ng-template #none> <span>Aucun QCM en cours</span>
-                        </ng-template>
-                    </div>
-                </div>
-            </div>
-            <!-- fin vos QCM -->
-            <!-- estimation seule -->
-            <div class="card" *ngIf="isOneQuizzAchieved">
-                <div class="card-header bg-primary d-flex justify-content-between">
-                    <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseThreeb">
-                        Estimations personnalisées
-                    </a><i class="bi bi-card-list fs-4 text-light"></i>
-                </div>
-                <div id="collapseThreeb" class="collapse" data-bs-parent="#accordion">
-                    <div class="card-body">
-                        <!-- nouveauté pour multi quizz VERSION 2 -->
-
-                        <div *ngIf="userData && tradesEvaluated.length>0">
-                            <!-- comme on ne questionnera plus tradeEvaluated mais tradesEvaluated [], on va devoir, avant d'inspecter la suite des ngIf, avoir une boucle ngFor pour voir métier après métier...  -->
-                            <!-- attention, compte tenu de la manière dont tradesEvaluated a été généré, trade ici, c'est une chaine de caractère type quizz_sigle -->
-                            <div *ngFor="let trade of tradesEvaluated, let last=last">
-                          
-                          <div class="mb-3" *ngIf="userData[trade].fullResults">
-                            <p class="card-text">Métier concerné : <span class="fw-bold">{{trade}}</span></p>
-                                    <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
-                                    <div class="card-text mb-0"
-                                        *ngFor="let result of userData[trade].fullResults | keyvalue, let lastEstimate=last">
-                                        <ng-container *ngFor="let item of objectEntries(result.value)">
-                                            <div class="d-flex align-items-center">
-                                                <span class="fw-bold">{{ item[0] }}</span>
-                                                <i class="bi fs-4 bi-arrow-right-short"></i>
-                                                <span>Durée estimée : {{ item[1].duration }}h. Coût : {{
-                                                    item[1].cost }}€</span>
-                                            </div>
-                                            
-                                        </ng-container>
-                                        <hr *ngIf="lastEstimate">
                                     </div>
                                 </div>
 
-                                <!-- Affichez le hr sauf dans la dernière itération -->
-                                <!-- <hr *ngIf="!last"> -->
-                            </div>
-                            <!-- fin boucle supplémentaire pour ngFor avec les options de multi-quizz -->
+
+
+
+
+
+                            </ng-template>
+
+                            <!-- Affichez le hr sauf dans la dernière itération -->
+                            <hr *ngIf="!last">
                         </div>
-
+                        <!-- fin boucle supplémentaire pour ngFor avec les options de multi-quizz -->
                     </div>
+
+                    <ng-template #none> <span>Aucun QCM en cours</span>
+                    </ng-template>
                 </div>
             </div>
-            <!-- fin estimation seule -->
-
-            <!-- bouton d'accès au formulaire de préinscription administrative -->
-            <div class="card" *ngIf="isOneQuizzAchieved==true">
-                <div class="card-header bg-primary d-flex justify-content-between">
-                    <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseFor">
-                        Inscription Formation
-                    </a><i class="bi bi-info-square-fill fs-4 text-light"></i>
-                </div>
-                <div id="collapseFor" class="collapse" data-bs-parent="#accordion">
-                    <div class="card-body">
-                        <p class="card-text" *ngIf="userData.scoreCounter">Félicitation ! Vous êtes parvenu(e) à la fin
-                            du questionnaire de positionnement.
-                        </p>
-                        <p class="card-text" *ngIf="userData.scoreCounter">Pour faciliter votre inscription et votre
-                            prise en
-                            charge, nous vous invitons à remplir le formulaire ci-dessous...
-                        </p>
-                        <button class="btn bg-success"><a class="text-light" [routerLink]="['/socialregistration']">
-                                Formulaire de pré-inscription</a>
-                        </button>
-                    </div>
-                </div>
+        </div>
+        <!-- fin vos QCM -->
+        <!-- estimation seule -->
+        <div class="card" *ngIf="isOneQuizzAchieved">
+            <div class="card-header bg-primary d-flex justify-content-between">
+                <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseThreeb">
+                    Estimations personnalisées
+                </a><i class="bi bi-card-list fs-4 text-light"></i>
             </div>
+            <div id="collapseThreeb" class="collapse" data-bs-parent="#accordion">
+                <div class="card-body">
+                    <!-- nouveauté pour multi quizz VERSION 2 -->
 
-            <!-- suivi pédagogique -->
-            <div class="card" *ngIf="isOneQuizzAchieved==true && evaluationsNotEmpty()">
-                <div class="card-header bg-primary d-flex justify-content-between">
-                    <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseTwo">
-                        Votre suivi pédagogique
-                    </a><i class="bi bi-clipboard-data-fill fs-4 text-light"></i>
-                </div>
-                <div id="collapseTwo" class="collapse" data-bs-parent="#accordion">
-                    <div class="card-body">
-                        <div class="rounded p-2">
-                            <ul class="list-group">
-                                <!-- <li class="list-group-item"><span class="fw-bolder">Son id sur firestore :</span>  {{userData.id}}</li> -->
-                                <li class="list-group-item"><span class="fw-bolder">Votre formateur référent
-                                        :</span>
-                                    {{userData.trainer}}</li>
-                                <!-- si y a déjà des enregistrements datés des évaluations de suivi pédagogique, on bouclera dessus -->
-                                <ng-container *ngIf="evaluations; else noEvaluation">
-                                    <li class="list-group-item">
-                                        <ng-container *ngFor="let evaluation of evaluations | keyvalue">
-                                            <p><span class="fw-bold">Objet : </span>{{evaluation.value.subject}}</p>
-                                            <!-- <p>{{evaluation.value.details}}</p> -->
-                                            <div class="card-text"
-                                                [innerHTML]="sanitizer.bypassSecurityTrustHtml(evaluation.value.details)">
-                                            </div>
+                    <div *ngIf="userData && tradesEvaluated.length>0">
+                        <!-- comme on ne questionnera plus tradeEvaluated mais tradesEvaluated [], on va devoir, avant d'inspecter la suite des ngIf, avoir une boucle ngFor pour voir métier après métier...  -->
+                        <!-- attention, compte tenu de la manière dont tradesEvaluated a été généré, trade ici, c'est une chaine de caractère type quizz_sigle -->
+                        <div *ngFor="let trade of tradesEvaluated, let last=last">
 
-                                            <p><span class="fw-bold">Date : </span>{{evaluation.value.date}}</p>
-                                        </ng-container>
-                                        <!-- {{userData.evaluations | json}} -->
-                                    </li>
-                                </ng-container>
-                                <!-- si aucune évaluation de suivi jusqu'ici, on le mentionne -->
-                                <ng-template #noEvaluation>
-                                    <li class="list-group-item">
-                                        <span class="fw-bolder">Pas de suivi consultable pour le moment</span>
-                                    </li>
-                                </ng-template>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- suivi entreprise -->
-            <div class="card" *ngIf="isOneQuizzAchieved &&  tutorialsNotEmpty()">
-                <div class="card-header bg-primary d-flex justify-content-between">
-                    <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse"
-                        href="#collapseTutorials">
-                        Votre suivi entreprise
-                    </a><i class="bi bi-activity fs-4 text-light"></i>
-                </div>
-                <div id="collapseTutorials" class="collapse" data-bs-parent="#accordion">
-                    <div class="card-body">
-                        <div class="rounded p-2">
-                            <ul class="list-group">
-                                <!-- <li class="list-group-item"><span class="fw-bolder">Son id sur firestore :</span>  {{userData.id}}</li> -->
-                                <li class="list-group-item"><span class="fw-bolder">Votre tuteur en entreprise :</span>
-                                    {{userData.tutor}}</li>
-                                <!-- si y a déjà des enregistrements datés des évaluations de suivi pédagogique, on bouclera dessus -->
-
-                                <li class="list-group-item">
-                                    <ng-container *ngFor="let tutorial of tutorials | keyvalue">
-                                        <p><span class="fw-bold">Objet : </span>{{tutorial.value.subject}}</p>
-                                        <!-- <p>{{evaluation.value.details}}</p> -->
-                                        <div class="card-text"
-                                            [innerHTML]="sanitizer.bypassSecurityTrustHtml(tutorial.value.details)">
+                            <div class="mb-3" *ngIf="userData[trade].fullResults">
+                                <p class="card-text">Métier concerné : <span class="fw-bold">{{trade}}</span></p>
+                                <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
+                                <div class="card-text mb-0"
+                                    *ngFor="let result of userData[trade].fullResults | keyvalue, let lastEstimate=last">
+                                    <ng-container *ngFor="let item of objectEntries(result.value)">
+                                        <div class="d-flex align-items-center">
+                                            <span class="fw-bold">{{ item[0] }}</span>
+                                            <i class="bi fs-4 bi-arrow-right-short"></i>
+                                            <span>Durée estimée : {{ item[1].duration }}h. Coût : {{
+                                                item[1].cost }}€</span>
                                         </div>
 
-                                        <p><span class="fw-bold">Date : </span>{{tutorial.value.date}}</p>
+                                    </ng-container>
+                                    <hr *ngIf="lastEstimate">
+                                </div>
+                            </div>
+
+                            <!-- Affichez le hr sauf dans la dernière itération -->
+                            <!-- <hr *ngIf="!last"> -->
+                        </div>
+                        <!-- fin boucle supplémentaire pour ngFor avec les options de multi-quizz -->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- fin estimation seule -->
+
+        <!-- bouton d'accès au formulaire de préinscription administrative -->
+        <div class="card" *ngIf="isOneQuizzAchieved==true">
+            <div class="card-header bg-primary d-flex justify-content-between">
+                <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseFor">
+                    Inscription Formation
+                </a><i class="bi bi-info-square-fill fs-4 text-light"></i>
+            </div>
+            <div id="collapseFor" class="collapse" data-bs-parent="#accordion">
+                <div class="card-body">
+                    <p class="card-text" *ngIf="userData.scoreCounter">Félicitation ! Vous êtes parvenu(e) à la fin
+                        du questionnaire de positionnement.
+                    </p>
+                    <p class="card-text" *ngIf="userData.scoreCounter">Pour faciliter votre inscription et votre
+                        prise en
+                        charge, nous vous invitons à remplir le formulaire ci-dessous...
+                    </p>
+                    <button class="btn bg-success"><a class="text-light" [routerLink]="['/socialregistration']">
+                            Formulaire de pré-inscription</a>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- suivi pédagogique -->
+        <div class="card" *ngIf="isOneQuizzAchieved==true && evaluationsNotEmpty()">
+            <div class="card-header bg-primary d-flex justify-content-between">
+                <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseTwo">
+                    Votre suivi pédagogique
+                </a><i class="bi bi-clipboard-data-fill fs-4 text-light"></i>
+            </div>
+            <div id="collapseTwo" class="collapse" data-bs-parent="#accordion">
+                <div class="card-body">
+                    <div class="rounded p-2">
+                        <ul class="list-group">
+                            <!-- <li class="list-group-item"><span class="fw-bolder">Son id sur firestore :</span>  {{userData.id}}</li> -->
+                            <li class="list-group-item"><span class="fw-bolder">Votre formateur référent
+                                    :</span>
+                                {{userData.trainer}}</li>
+                            <!-- si y a déjà des enregistrements datés des évaluations de suivi pédagogique, on bouclera dessus -->
+                            <ng-container *ngIf="evaluations; else noEvaluation">
+                                <li class="list-group-item">
+                                    <ng-container *ngFor="let evaluation of evaluations | keyvalue">
+                                        <p><span class="fw-bold">Objet : </span>{{evaluation.value.subject}}</p>
+                                        <!-- <p>{{evaluation.value.details}}</p> -->
+                                        <div class="card-text"
+                                            [innerHTML]="sanitizer.bypassSecurityTrustHtml(evaluation.value.details)">
+                                        </div>
+
+                                        <p><span class="fw-bold">Date : </span>{{evaluation.value.date}}</p>
                                     </ng-container>
                                     <!-- {{userData.evaluations | json}} -->
                                 </li>
-                            </ul>
-                        </div>
+                            </ng-container>
+                            <!-- si aucune évaluation de suivi jusqu'ici, on le mentionne -->
+                            <ng-template #noEvaluation>
+                                <li class="list-group-item">
+                                    <span class="fw-bolder">Pas de suivi consultable pour le moment</span>
+                                </li>
+                            </ng-template>
+                        </ul>
                     </div>
                 </div>
             </div>
-
         </div>
 
-        <!-- fin collapse -->
-        <button type="submit" class="btn btn-success mt-4" (click)="notifyMe()">Accepter les
-            notifications</button>
+        <!-- suivi entreprise -->
+        <div class="card" *ngIf="isOneQuizzAchieved &&  tutorialsNotEmpty()">
+            <div class="card-header bg-primary d-flex justify-content-between">
+                <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseTutorials">
+                    Votre suivi entreprise
+                </a><i class="bi bi-activity fs-4 text-light"></i>
+            </div>
+            <div id="collapseTutorials" class="collapse" data-bs-parent="#accordion">
+                <div class="card-body">
+                    <div class="rounded p-2">
+                        <ul class="list-group">
+                            <!-- <li class="list-group-item"><span class="fw-bolder">Son id sur firestore :</span>  {{userData.id}}</li> -->
+                            <li class="list-group-item"><span class="fw-bolder">Votre tuteur en entreprise :</span>
+                                {{userData.tutor}}</li>
+                            <!-- si y a déjà des enregistrements datés des évaluations de suivi pédagogique, on bouclera dessus -->
 
-            
+                            <li class="list-group-item">
+                                <ng-container *ngFor="let tutorial of tutorials | keyvalue">
+                                    <p><span class="fw-bold">Objet : </span>{{tutorial.value.subject}}</p>
+                                    <!-- <p>{{evaluation.value.details}}</p> -->
+                                    <div class="card-text"
+                                        [innerHTML]="sanitizer.bypassSecurityTrustHtml(tutorial.value.details)">
+                                    </div>
+
+                                    <p><span class="fw-bold">Date : </span>{{tutorial.value.date}}</p>
+                                </ng-container>
+                                <!-- {{userData.evaluations | json}} -->
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
+
+    <!-- fin collapse -->
+    <button type="submit" class="btn btn-success mt-4" (click)="notifyMe()">Accepter les
+        notifications</button>
+
+
+</div>
