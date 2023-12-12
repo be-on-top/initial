@@ -83,100 +83,75 @@ export class AccountComponent implements OnInit {
     });
   }
 
-
   ngOnInit(): void {
-
-    // https://firebase.google.com/docs/cloud-messaging/js/receive?hl=fr
-    // Gérer les messages lorsque l'application Web est au premier plan (l'utilisateur consulte actuellement notre page Web)
-    // const messaging = getMessaging();
-    // onMessage(messaging, (payload) => {
-    //   console.log('Message received. ', payload);
-    //   // ...
-    // });
-
-
     onAuthStateChanged(this.auth, (user: any) => {
-      // impeccable
-      // console.log("this.user dispensé par onAuthStateChanged", this.auth.currentUser);
       if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        this.user = user.uid
-
-
+        this.user = user.uid;
+  
         this.studentService.getStudentById(user.uid).subscribe(data => {
           console.log("userData from students 0...", data);
-          this.userData = data
-          this.lastIndex = Number(this.userData.lastIndexQuestion)
-          // this.userData.fullResults ? this.fullResults = this.userData.fullResults : []
-
-
+          this.userData = data;
+          this.lastIndex = Number(this.userData.lastIndexQuestion);
+  
+          // Logique pour obtenir tradesEvaluated
           for (const key in this.userData) {
             console.log('key', key.includes('quizz'));
-
+  
             if (key.includes('quizz')) {
               this.tradesEvaluated.push(key);
             }
           }
-
-          // console.log("this.tradesEvaluated after loop:", this.tradesEvaluated);
+  
           console.log("this.tradesEvaluated after loop:", this.tradesEvaluated);
+  
+          // Logique pour obtenir les compétences pour chaque tradeId
           this.tradesEvaluated.forEach(tradeId => {
-            console.log('Current tradeId:', tradeId);
             this.settingsService.getCompetences(tradeId).subscribe(competences => {
-              // Ajoutez les compétences dans l'objet trades
-              this.trades[tradeId] = competences;
-          
-              // Loguez les compétences dans la console
-              console.log(`${tradeId}:`, competences);
+                // Ajoutez les compétences dans l'objet trades
+                this.trades[tradeId] = competences;
+                // Loguez les compétences dans la console
+                console.log(`${tradeId}:`, competences);
             });
-          });
-
-          // lignes pour récupérer isOneQuizzAchieved
-          const achievedArray: any = []
+        });
+        
+  
+          // Logique pour récupérer isOneQuizzAchieved
+          const achievedArray: any = [];
           for (const item of this.tradesEvaluated) {
-            this.userData[item].fullResults ? achievedArray.push(item) : ''
-            achievedArray.length > 0 ? this.isOneQuizzAchieved = true : false
-
+            this.userData[item].fullResults ? achievedArray.push(item) : '';
+            achievedArray.length > 0 ? this.isOneQuizzAchieved = true : false;
           }
-
+  
+          // Logique pour trier les résultats
           for (const item of this.tradesEvaluated) {
             if (this.userData[item].fullResults) {
               this.userData[item].fullResults.sort((a: any, b: any) => {
                 const keyA = Object.keys(a)[0];
                 const keyB = Object.keys(b)[0];
-
                 return keyA.localeCompare(keyB);
               });
             }
           }
-
-
-          // lignes pour récupérer evaluations
+  
+          // Logique pour récupérer evaluations
           if (this.userData.evaluations) {
-            this.evaluations = this.userData.evaluations
+            this.evaluations = this.userData.evaluations;
           }
-
-          // lignes pour récupérer le suivi tutorial
+  
+          // Logique pour récupérer le suivi tutorial
           if (this.userData.tutorials) {
-            this.tutorials = this.userData.tutorials
+            this.tutorials = this.userData.tutorials;
           }
-
-        })
-        // y a juste que je n'arrive pas à me la faire livrer par le service !!!
-        // this.studentService.getDocsByParam(this.user)
+        });
       }
-    })
-
-    this.authService.getToken()?.then(res => console.log("token authentification depuis authService", res.token))
-
-
+    });
+  
+    this.authService.getToken()?.then(res => console.log("token authentification depuis authService", res.token));
+  
     console.log('this.tradesEvaluated', this.tradesEvaluated);
     console.log('type of tradesEvaluated', typeof (this.tradesEvaluated));
-    // this.tradesEvaluated
-
-
   }
+  
 
  
   onClick() {
