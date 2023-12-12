@@ -133,16 +133,15 @@
                             <!-- Partie 2 si QCM terminé -->
                             <!-- Il semble que la directive keyvalue provoque des problèmes lorsqu'elle est utilisée dans une boucle *ngFor. 
                                     Pour contourner ce problème, on peut utiliser la fonction créée Object.entries() pour obtenir les clés et valeurs de result.value. -->
-                            <ng-template #done class="mb-3">
+                            <!-- pour afficher les competence option1 -->
+                            <!-- <ng-template #done class="mb-3">
                                 <p class="card-text fw-bold d-flex align-items-center">QCM de positionnement terminé
                                     <i class="bi fs-4 bi-check-lg ms-3"></i>
                                 </p>
-                                <!-- pour les compétences solution option 1 -->
                                 <div class="fs-6" *ngFor="let competence of trades[trade], let j = index">
                                     <span class="fw-bold">CP{{ j + 1 }}</span> : <em class="text-primary ">{{ competence
                                         }}</em>
                                 </div>
-                                <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
                                 <div class="mt-2">
                                     <div class="card-text mb-0"
                                         *ngFor="let result of userData[trade].fullResults | keyvalue, let lastResult=last">
@@ -156,17 +155,13 @@
                                         </ng-container>
                                     </div>
                                 </div>
-                            </ng-template>
+                            </ng-template> -->
 
                             <!-- pour compétences option 2 alternative pour tout le ng-template -->
-                            <!-- <ng-template #done class="mb-3">
+                            <ng-template #done class="mb-3">
                                 <p class="card-text fw-bold d-flex align-items-center">QCM de positionnement terminé
                                     <i class="bi fs-4 bi-check-lg ms-3"></i>
                                 </p>
-                                <div class="fs-6" *ngFor="let competence of trades[trade], let j = index">
-                                    <span class="fw-bold">CP{{ j + 1 }}</span> : <em class="text-primary ">{{ competence
-                                        }}</em>
-                                </div>
                                 <div class="mt-2">
                                     <div class="card-text mb-0"
                                         *ngFor="let result of userData[trade].fullResults | keyvalue, let lastResult=last, let i = index">
@@ -183,7 +178,7 @@
                                         </ng-container>
                                     </div>
                                 </div>
-                            </ng-template> -->
+                            </ng-template>
 
                             <!-- Affichez le hr sauf dans la dernière itération -->
                             <hr *ngIf="!last">
