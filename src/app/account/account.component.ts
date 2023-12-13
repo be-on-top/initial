@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 // je ne vois pas l'utilité de cette méthode pour le moment, donc on désactive !!!!
 // import { loggedIn } from '@angular/fire/auth-guard';
@@ -17,14 +17,15 @@ import { getMessaging, getToken, onMessage } from "@angular/fire/messaging";
 import { PushNotificationService } from '../push-notification.service';
 import { Evaluation } from '../admin/evaluation';
 import { SettingsService } from '../admin/settings.service';
-import { Observable, forkJoin, combineLatest, concatMap, toArray, tap } from 'rxjs';
+import { Observable, forkJoin, combineLatest, concatMap, toArray, tap, takeUntil, Subject } from 'rxjs';
+
 
 @Component({
   selector: 'app-home',
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.css']
 })
-export class AccountComponent implements OnInit {
+export class AccountComponent implements OnInit, OnDestroy {
   user?: any;
   // sub: Subscription;
   uid = '';
@@ -74,6 +75,8 @@ export class AccountComponent implements OnInit {
 
   trades: { [key: string]: string[] } = {};
 
+  private destroy$ = new Subject<void>();
+
 
   constructor(private auth: Auth, private firestore: Firestore, private authService: AuthService, private studentService: StudentsService, private activatedRoute: ActivatedRoute, private router: Router, private notificationService: PushNotificationService, public sanitizer: DomSanitizer, private settingsService: SettingsService) {
     const messaging = getMessaging();
@@ -88,7 +91,9 @@ export class AccountComponent implements OnInit {
       if (user) {
         this.user = user.uid;
   
-        this.studentService.getStudentById(user.uid).subscribe(data => {
+        this.studentService.getStudentById(user.uid)
+        .pipe(takeUntil(this.destroy$)) // Utilisation de takeUntil ici
+        .subscribe(data => {
           console.log("userData from students 0...", data);
           this.userData = data;
           this.lastIndex = Number(this.userData.lastIndexQuestion);
@@ -150,6 +155,12 @@ export class AccountComponent implements OnInit {
   
     console.log('this.tradesEvaluated', this.tradesEvaluated);
     console.log('type of tradesEvaluated', typeof (this.tradesEvaluated));
+  }
+
+  ngOnDestroy() {
+    // Détruit le composant
+    this.destroy$.next();
+    this.destroy$.complete();
   }
   
 
