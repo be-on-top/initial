@@ -17,7 +17,7 @@ import { getMessaging, getToken, onMessage } from "@angular/fire/messaging";
 import { PushNotificationService } from '../push-notification.service';
 import { Evaluation } from '../admin/evaluation';
 import { SettingsService } from '../admin/settings.service';
-import { Observable, forkJoin, combineLatest, concatMap, toArray, tap, takeUntil, Subject } from 'rxjs';
+import { Observable, forkJoin, combineLatest, concatMap, toArray, tap, takeUntil, Subject, take } from 'rxjs';
 
 
 @Component({
@@ -92,7 +92,9 @@ export class AccountComponent implements OnInit, OnDestroy {
         this.user = user.uid;
   
         this.studentService.getStudentById(user.uid)
-        .pipe(takeUntil(this.destroy$)) // Utilisation de takeUntil ici
+        .pipe(
+          take(1),
+          takeUntil(this.destroy$)) // Utilisation de takeUntil ici
         .subscribe(data => {
           console.log("userData from students 0...", data);
           this.userData = data;
