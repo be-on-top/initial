@@ -37,7 +37,7 @@ export class AccountComponent implements OnInit, OnDestroy {
   student: any
   userData: any = {};
   // evaluatorData?: any;
-  studentData?: any;
+  // studentData?: any;
   // pour afficher le formulaire d'édition
   editMode: boolean = false
 
@@ -79,11 +79,11 @@ export class AccountComponent implements OnInit, OnDestroy {
 
 
   constructor(private auth: Auth, private firestore: Firestore, private authService: AuthService, private studentService: StudentsService, private activatedRoute: ActivatedRoute, private router: Router, private notificationService: PushNotificationService, public sanitizer: DomSanitizer, private settingsService: SettingsService) {
-    const messaging = getMessaging();
-    onMessage(messaging, (payload) => {
-      console.log('Message received. ', payload);
-      // ...
-    });
+    // const messaging = getMessaging();
+    // onMessage(messaging, (payload) => {
+    //   console.log('Message received. ', payload);
+    //   // ...
+    // });
   }
 
   ngOnInit(): void {
@@ -176,45 +176,45 @@ export class AccountComponent implements OnInit, OnDestroy {
   }
 
 
-  notifyMe() {
-    // alert("coucou")
+  // notifyMe() {
+  //   // alert("coucou")
 
-    if (!("Notification" in window)) {
-      // Check if the browser supports notifications
-      alert("This browser does not support desktop notification");
-    } else if (Notification.permission === "granted") {
-      // Check whether notification permissions have already been granted 
-      // if so, create a notification
-      const notification = new Notification("Coucou, vous avez déjà demandé à être notifié. Votre demande a été prise en compte !!! ");
-      alert(`Notification permission OK : already registered`);
+  //   if (!("Notification" in window)) {
+  //     // Check if the browser supports notifications
+  //     alert("This browser does not support desktop notification");
+  //   } else if (Notification.permission === "granted") {
+  //     // Check whether notification permissions have already been granted 
+  //     // if so, create a notification
+  //     const notification = new Notification("Coucou, vous avez déjà demandé à être notifié. Votre demande a été prise en compte !!! ");
+  //     alert(`Notification permission OK : already registered`);
 
-      // c'est là qu'on peut mettre à jour registrationTokens
-      getToken(getMessaging(), { vapidKey: "BOLK9wQoeo2ycP0yK1yTLQG8DlIYM1GnRLe09u3tdnCERUSOwW7iv_QV671oU8Xa4njllE64DbVvHPnrzsgRdpc" })
-        .then((value) => {
-          const newToken: string = value;
-          this.notificationService.registerToken(newToken, this.userData.id)
-        })
+  //     // c'est là qu'on peut mettre à jour registrationTokens
+  //     getToken(getMessaging(), { vapidKey: "BOLK9wQoeo2ycP0yK1yTLQG8DlIYM1GnRLe09u3tdnCERUSOwW7iv_QV671oU8Xa4njllE64DbVvHPnrzsgRdpc" })
+  //       .then((value) => {
+  //         const newToken: string = value;
+  //         this.notificationService.registerToken(newToken, this.userData.id)
+  //       })
 
-      // …
-    } else if (Notification.permission !== "denied") {
-      // We need to ask the user for permission
-      alert('notification request for push notification')
-      Notification.requestPermission().then((permission) => {
-        // If the user accepts, let's create a notification
-        if (permission === "granted") {
-          alert("nouveau !!!!")
-          const notification = new Notification("Coucou, vous venez de demander à être notifié !!! ");
-          // c'est là qu'on peut mettre à jour registrationTokens
-          getToken(getMessaging(), { vapidKey: "BOLK9wQoeo2ycP0yK1yTLQG8DlIYM1GnRLe09u3tdnCERUSOwW7iv_QV671oU8Xa4njllE64DbVvHPnrzsgRdpc" })
-            .then((value) => {
-              const newToken: string = value;
-              console.log(newToken);
-              this.notificationService.registerToken(newToken, this.userData.id)
-            });
-        }
-      });
-    }
-  }
+  //     // …
+  //   } else if (Notification.permission !== "denied") {
+  //     // We need to ask the user for permission
+  //     alert('notification request for push notification')
+  //     Notification.requestPermission().then((permission) => {
+  //       // If the user accepts, let's create a notification
+  //       if (permission === "granted") {
+  //         alert("nouveau !!!!")
+  //         const notification = new Notification("Coucou, vous venez de demander à être notifié !!! ");
+  //         // c'est là qu'on peut mettre à jour registrationTokens
+  //         getToken(getMessaging(), { vapidKey: "BOLK9wQoeo2ycP0yK1yTLQG8DlIYM1GnRLe09u3tdnCERUSOwW7iv_QV671oU8Xa4njllE64DbVvHPnrzsgRdpc" })
+  //           .then((value) => {
+  //             const newToken: string = value;
+  //             console.log(newToken);
+  //             this.notificationService.registerToken(newToken, this.userData.id)
+  //           });
+  //       }
+  //     });
+  //   }
+  // }
 
   focus() {
     let myDoc: any = document.querySelector("#demo");

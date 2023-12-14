@@ -118,6 +118,8 @@ export class PriorFormComponent implements OnInit {
       // Mise à jour local de registryNumbers
       this.checkIfSelected(this.selectedSigle);
 
+      this.arrayFilesToUpload=[]
+
     }
 
   }

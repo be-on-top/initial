@@ -123,6 +123,8 @@ export class FullFormComponent implements OnInit {
       // Mise à jour local de registryNumbers
       this.checkIfSelected(this.selectedSigle);
 
+      this.arrayFilesToUpload=[]
+
     }
 
   }
