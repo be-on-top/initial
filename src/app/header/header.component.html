@@ -21,18 +21,9 @@
         </button> -->
         <button class="navbar-toggler" style="border-width: 0;" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar" (click)="toggleMenu()">
             <span class="navbar-toggler-icon" [ngClass]="{'closed-menu': isMenuOpen}"></span>
-        </button>
+        </button>  
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <div class="collapse navbar-collapse" id="collapsibleNavbar" #collapsibleNavbar>
             <ul class="navbar-nav ms-auto pt-4 pt-md-0">
                 <!-- <li class="nav-item">
                     <a class="nav-link" [routerLink]="['socialregistration']">Pré-inscription Formation</a>
@@ -120,7 +111,7 @@
                     <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">Nos métiers</a>
                     <ul class="dropdown-menu">
                         <li *ngFor="let trade of trades">
-                            <a class="dropdown-item" [routerLink]="['/trade', trade.sigle]">{{trade.denomination}}</a>
+                            <a class="dropdown-item" (click)="closeNavbar()" [routerLink]="['/trade', trade.sigle]">{{trade.denomination}}</a>
                         </li>
                     </ul>
                 </li>

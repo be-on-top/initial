@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit } from '@angular/core';
+import { Component, ElementRef, Renderer2, ViewChild, OnInit } from '@angular/core';
 import { AuthService } from '../admin/auth.service';
 import { onAuthStateChanged } from 'firebase/auth';
 import { Auth, reload } from '@angular/fire/auth';
@@ -7,6 +7,8 @@ import { Observable } from 'rxjs'
 import { Trade } from '../admin/trade';
 import { SettingsService } from '../admin/settings.service';
 import { Router } from '@angular/router';
+
+
 
 @Component({
   selector: 'app-header',
@@ -19,9 +21,12 @@ export class HeaderComponent implements OnInit {
   trades?: any
 
   isMenuOpen = false;
+  isNavbarOpen = false;
 
 
-  constructor(private authService: AuthService, private auth: Auth, private firestore: Firestore, private tradeService: SettingsService, private router: Router) {
+  @ViewChild('collapsibleNavbar') collapsibleNavbar!: ElementRef;
+
+  constructor(private renderer: Renderer2, private authService: AuthService, private auth: Auth, private firestore: Firestore, private tradeService: SettingsService, private router: Router) {
     // this.userUid=this.authService.getUserId()
   }
 
@@ -93,6 +98,15 @@ export class HeaderComponent implements OnInit {
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
   }
+
+  closeNavbar() {
+    // Fermez la navbar en utilisant la référence obtenue via ViewChild
+    this.collapsibleNavbar.nativeElement.classList.remove('show');
+    this.isMenuOpen = !this.isMenuOpen;
+  
+  }
+
+
 
 
 }
