@@ -6,6 +6,7 @@ import { Firestore, docData, doc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs'
 import { Trade } from '../admin/trade';
 import { SettingsService } from '../admin/settings.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -16,7 +17,11 @@ export class HeaderComponent implements OnInit {
   userUid?: any
   userRole: string = ""
   trades?: any
-  constructor(private authService: AuthService, private auth: Auth, private firestore: Firestore, private tradeService: SettingsService) {
+
+  isMenuOpen = false;
+
+
+  constructor(private authService: AuthService, private auth: Auth, private firestore: Firestore, private tradeService: SettingsService, private router: Router) {
     // this.userUid=this.authService.getUserId()
   }
 
@@ -65,6 +70,36 @@ export class HeaderComponent implements OnInit {
     window.location.reload();
   }
 
+  navigateTo(route: string) {
+    this.router.navigate([route]);
+  }
+
+  // toggleMenu() {
+  //   this.isMenuOpen = !this.isMenuOpen;
+  // }
+
+  // toggleMenu() {
+  //   this.isMenuOpen = !this.isMenuOpen;
+
+  //   // Ajoutez un délai pour cacher l'icône burger après l'ouverture du menu
+  //   if (this.isMenuOpen) {
+  //       this.hideBurgerIcon = true;
+  //       setTimeout(() => {
+  //           this.hideBurgerIcon = false;
+  //       }, 500);
+  //   }
+
+
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
 
 
 }
+
+
+
+
+
+
+

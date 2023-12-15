@@ -9,9 +9,29 @@
 
         <!-- <p class="text-light">{{userRole}} Authentification</p> -->
         <!-- <a class="navbar-brand" [routerLink]="['']">BE-ON-TOP</a> -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+        <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
+        </button> -->
+        <!-- <button class="navbar-toggler navbar-toggler-auto-collapse" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button> -->
+        <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar" (click)="toggleMenu()">
+            <span *ngIf="!isMenuOpen" class="navbar-toggler-icon">&#9776;</span>
+            <span *ngIf="isMenuOpen" class="navbar-toggler-icon">&#10006;</span>
+        </button> -->
+        <button class="navbar-toggler" style="border-width: 0;" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar" (click)="toggleMenu()">
+            <span class="navbar-toggler-icon" [ngClass]="{'closed-menu': isMenuOpen}"></span>
         </button>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="navbar-nav ms-auto pt-4 pt-md-0">
                 <!-- <li class="nav-item">
@@ -25,7 +45,8 @@
                     <!-- <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Admin</a> -->
                     <ul class="dropdown-menu">
                         <li *ngIf="userRole.includes('admin')"><a class="dropdown-item"
-                                [routerLink]="['/admin/settings']">Paramètres</a>
+                            (click)="navigateTo('/admin/settings')">Paramètres</a>
+                               
                         </li>
 
                         <li *ngIf="userRole.includes('admin')">
@@ -52,7 +73,7 @@
                         <li *ngIf="userRole.includes('admin') || userRole.includes('evaluators')">
                             <hr>
                         </li>
-                        <li><a class="dropdown-item" [routerLink]="['/admin/priorForm']"
+                        <li><a class="dropdown-item" (click)="navigateTo('/admin/priorForm')"
                                 *ngIf="userRole.includes('evaluator') || userRole.includes('admin')">Saisie des
                                 questions d'accroche</a>
                         </li>

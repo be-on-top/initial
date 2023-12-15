@@ -342,6 +342,37 @@ p.question {
     backface-visibility: hidden;
 }
 
+/* Pour masquer l'icône "hamburger" par défaut de Bootstrap */
+.navbar-toggler-icon {
+    background-image: none;
+    border-color: #82BC00;
+
+}
+
+.navbar-toggler {
+    background-image: none;
+}
+
+/* Pour afficher votre propre icône */
+.navbar-toggler-icon::before {
+    content: '\2630';
+    /* Code Unicode pour l'icône "hamburger" (trois lignes) */
+    color: #000;
+    /* Couleur de l'icône "hamburger" */
+}
+
+/* Ajouter une classe spécifique pour l'icône "croix" lorsque le menu est fermé */
+.navbar-toggler-icon.closed-menu::before {
+    content: '\2716';
+    /* Code Unicode pour l'icône "croix" (X) */
+}
+
+/* pour virer les bordures du bouton */
+/* .navbar-toggler {
+    text-decoration: none !important;
+    border: none;
+} */
+
 
 
 /* @media screen and (max-width: 750px) {

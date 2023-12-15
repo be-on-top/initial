@@ -1,4 +1,13 @@
-.logo{
+.navbar-toggler:focus,
+.navbar-toggler:active,
+.navbar-toggler-icon:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+
+
+.logo {
     /* width: 100%; */
     /* height: 100%; */
     max-height: 50px;
@@ -9,12 +18,10 @@
 
 @media screen and (max-width=750px) {
 
-    .logo{
+    .logo {
         max-height: 8vw;
         margin-right: 8px;
     }
 
-    
+
 }
-
-
