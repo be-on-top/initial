@@ -6,6 +6,11 @@
 }
 
 
+.navbar-collapse {
+    transition :all 0.3s ease;
+    /* Ajoutez une transition pour la propriété "height" */
+}
+
 
 .logo {
     /* width: 100%; */

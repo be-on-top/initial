@@ -356,15 +356,19 @@ p.question {
 /* Pour afficher votre propre icône */
 .navbar-toggler-icon::before {
     content: '\2630';
-    /* Code Unicode pour l'icône "hamburger" (trois lignes) */
-    color: #000;
-    /* Couleur de l'icône "hamburger" */
+    font-size: 1.6rem;
+    width: 60px;
+    height: 4px;
 }
 
 /* Ajouter une classe spécifique pour l'icône "croix" lorsque le menu est fermé */
 .navbar-toggler-icon.closed-menu::before {
-    content: '\2716';
-    /* Code Unicode pour l'icône "croix" (X) */
+    display: inline-block;
+    content: "\2715";
+    font-size: 1.5rem; 
+    color: #82BC00;
+    width: 30px;
+    height: 4px;
 }
 
 /* pour virer les bordures du bouton */
@@ -372,8 +376,6 @@ p.question {
     text-decoration: none !important;
     border: none;
 } */
-
-
 
 /* @media screen and (max-width: 750px) {
 

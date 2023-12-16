@@ -100,13 +100,13 @@ export class HeaderComponent implements OnInit {
   }
 
   closeNavbar() {
+
     // Fermez la navbar en utilisant la référence obtenue via ViewChild
-    this.collapsibleNavbar.nativeElement.classList.remove('show');
-    this.isMenuOpen = !this.isMenuOpen;
-  
+    setTimeout(() => {
+      this.collapsibleNavbar.nativeElement.classList.remove('show');
+      this.isMenuOpen = !this.isMenuOpen;
+    }, 300)
   }
-
-
 
 
 }
