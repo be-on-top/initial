@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/admin/auth.service';
 import { SettingsService } from 'src/app/admin/settings.service';
 import { StudentsService } from 'src/app/admin/students.service';
 import { Trade } from 'src/app/admin/trade';
+import { Location } from '@angular/common';
 
 
 @Component({
@@ -32,7 +33,7 @@ export class TradeDetailsComponent implements OnInit {
   imageUrl: string = ''; // Pour stocker l'URL de l'image
 
 
-  constructor(private service: SettingsService, private ac: ActivatedRoute, private auth: Auth, private authService: AuthService, private studentService: StudentsService, private firestore: Firestore, public sanitizer: DomSanitizer) {
+  constructor(private service: SettingsService, private ac: ActivatedRoute, private auth: Auth, private authService: AuthService, private studentService: StudentsService, private firestore: Firestore, public sanitizer: DomSanitizer, private location: Location) {
 
   }
 
@@ -133,6 +134,12 @@ export class TradeDetailsComponent implements OnInit {
     return docData($roleRef) as Observable<any>;
 
   }
+
+  backToPrevious() {
+    this.location.back();
+  }
+
+
 
 
 
