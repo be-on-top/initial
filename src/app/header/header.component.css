@@ -35,7 +35,7 @@
     display: inline-block;
     content: "\2715";
     font-size: 1.5rem; 
-    color: #82BC00;
+    /* color: #82BC00; */
     width: 30px;
     height: 4px;
 }

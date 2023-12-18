@@ -49,13 +49,24 @@ h3::before {
     position: absolute;
     bottom: 0rem;
     height: 2px;
+    /* background-color: #B2BC00 !important; */
 }
 
-li.nav-item.dropdown.active>a::before {
+/* li.nav-item.dropdown.active a::before {
     width: 80%;
-    /* background-color: #fcb311 !important; */
     background-color: #B2BC00 !important;
     opacity: 100 ! important;
+} */
+
+
+li.nav-item.dropdown.active a {
+    opacity: 1 !important; /* Opacité complète pour le texte */
+}
+
+li.nav-item.dropdown.active a::before {
+    width: 80%;
+    background-color: #82BC00 !important;
+    opacity: 1 !important; /* Opacité complète pour le soulignement */
 }
 
 .trade h2{
@@ -75,7 +86,7 @@ li.nav-item.dropdown.active>a::before {
 } */
 
 
-.trade p {
+.trade p, .trade div div {
     margin-top: 0.8rem;
     padding-top: 0;
     padding-left:0.5rem;
@@ -267,6 +278,10 @@ nav.navbar.navbar-light a {
     opacity: 100;
 }
 
+/* a.nav-link.dropdown-toggle::before{
+    background-color: #82BC00 ! important;
+} */
+
 nav {
     box-shadow: 0 10px 20px rgba(0, 0, 0, .12), 0 4px 8px rgba(0, 0, 0, .06);
 }
@@ -383,14 +398,12 @@ p.question {
         /* background-color: #B2BC00; */
         max-width: 100% !important;
     }
-
 }
 
 
 /* @media only screen and (max-width: 768px) { */
 
 @media only screen and (max-width: 576px) {
-
 
     .fs-6,
     .fs-6 span {
@@ -449,7 +462,5 @@ p.question {
         font-size: 1rem ! important;
 
     }
-
-
 
 }

@@ -39,6 +39,7 @@ import { StripHtmlPipe } from './strip-html.pipe';
 import { AuthGuardService } from './auth-guard.service';
 import { FooterComponent } from './footer/footer/footer.component';
 import { FirstWordPipe } from './first-word.pipe';
+import { InstallButtonComponent } from './install-button/install-button.component';
 
 // import { getMessaging } from 'firebase/messaging';
 
@@ -62,6 +63,7 @@ import { FirstWordPipe } from './first-word.pipe';
     StripHtmlPipe,
     FooterComponent,
     FirstWordPipe,
+    InstallButtonComponent,
     // TooltipComponent
   ],
   imports: [

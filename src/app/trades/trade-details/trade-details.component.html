@@ -16,8 +16,8 @@
             </p>
         </div>
         <!-- il faut différencier le cas d'un userRole=none...  -->
-        <div *ngIf="userRole==='none' else switch" class="col-md-5 text-white mt-md-5">
-            <p>Afin de commencer un QCM, merci de <a [routerLink]="[
+        <div *ngIf="userRole==='none' else switch" class="col-md-5 text-white mt-md-5 ">
+            <p class="text-md-left">Afin de commencer un QCM, merci de <a [routerLink]="[
                 '/login']" class="text-white fw-bold">vous authentifier</a> ou <a [routerLink]="[
                 '/register']" class="text-white fw-bold">vous enregister</a></p>
 
