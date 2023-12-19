@@ -15,7 +15,7 @@ export class SocialFormComponent implements OnInit {
   // authId?: any;
   // userData?: any;
   userData: any = {};
-  uid:string=""
+  uid: string = ""
   // @Input() firstName: string;
   // @Input() lastName: string;
   // @Input() email: string;
@@ -26,10 +26,10 @@ export class SocialFormComponent implements OnInit {
   handicap: boolean = false;
   pieceIdentiteAJour: boolean = true;
   // demandeFinancement?: string = '';
-  demandeFinancement:boolean | undefined;
+  demandeFinancement: boolean | undefined;
   // promesseEmbauche: boolean | null = null;
   promesseEmbauche: boolean | undefined;
-  MoyenDeTransport?: boolean;
+  MoyenDeTransport: boolean | undefined;
   // selectedOrientation?: string = '';
   renouvellementPIEnCours?: boolean = false;
   inscritPoleEmploi: boolean = false;
@@ -46,7 +46,7 @@ export class SocialFormComponent implements OnInit {
           console.log("userData from students 0...", data);
           this.userData = data
         })
-      }      
+      }
     })
 
 
@@ -66,15 +66,28 @@ export class SocialFormComponent implements OnInit {
     console.log("form value", form.value);
 
     // const socialFormData = form.value; 
+    // if (form.value.MoyenDeTransport !== undefined) 
+
+    // Cloner les données du formulaire pour éviter de modifier directement form.value
+    const socialFormData = { ...form.value };
+
+    // Nettoyer l'objet des champs undefined
+    Object.keys(socialFormData).forEach(key => socialFormData[key] === undefined && delete socialFormData[key]);
 
     try {
-      let enrollRef = collection(this.firestore, "SocialForm")
-      setDoc(doc(enrollRef, this.uid), form.value)
-      form.reset()
-      this.router.navigate(['/'])
+      let enrollRef = collection(this.firestore, "SocialForm");
+      await setDoc(doc(enrollRef, this.uid), socialFormData);
+      // pour l'étudiant concerné
+      let studentRef = collection(this.firestore, "students");
+      // Mise à jour du document dans la collection "students"
+      await setDoc(doc(studentRef, this.uid), { isSocialFormSent: true }, { merge: true });
+      form.reset();
+      this.router.navigate(['/']);
     } catch (error) {
-      console.error('Erreur lors de l\'enregistrement des données: ', error)
+      console.error('Erreur lors de l\'enregistrement des données: ', error);
     }
+
+
   }
 
 
