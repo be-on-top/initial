@@ -77,6 +77,8 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
+  isSocialFormSent:boolean=false
+
 
   constructor(private auth: Auth, private firestore: Firestore, private authService: AuthService, private studentService: StudentsService, private activatedRoute: ActivatedRoute, private router: Router, private notificationService: PushNotificationService, public sanitizer: DomSanitizer, private settingsService: SettingsService) {
     // const messaging = getMessaging();

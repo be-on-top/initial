@@ -24,10 +24,10 @@
         <!-- Vous pourrez aussi dès maintenant finaliser votre inscription administrative -->
         Retrouvez <span class="fw-bold">tous vos résultats</span> et <span class="fw-bold">vos estimations personnalisées</span> depuis <a [routerLink]="['/account']" class="text-decoration-none"> votre compte personnel</a>.</div>
         <ng-template #none>
-            <div #note class="alert p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show">
+            <div class="alert p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show">
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
-                <span class="d-inline h5">Evaluez-vous </span> grâce à des <h2 class="d-inline h5">questionnaires ciblés </h2> 
-                et<span class="d-inline h5"> intégrez sans délai</span> un <h1 class="d-inline h5">parcours de formation personnalisé</h1> pour <span class="d-inline h5">vous hisser aux portes</span> du métier de votre choix
+                <span class="d-inline h5">Testez-vous </span> grâce à nos <h2 class="d-inline h5">questionnaires ciblés </h2> 
+                et<span class="d-inline h5"> intégrez sans attendre</span> une <h1 class="d-inline h5">formation personnalisée</h1> pour <span class="d-inline h5">vous hisser aux portes</span> du métier de votre choix
             </div>
         </ng-template>
     
@@ -169,8 +169,7 @@
                                 <i class="bi bi-check-square-fill text-success"></i>
                                 Votre évaluation est terminée
                             </div>
-                        </div>
-                  
+                        </div>                  
                     </ng-container>
 
                     <!-- à tester : (str.length>6)? (str | slice:0:6)+'...':(str) -->
@@ -185,7 +184,5 @@
             </div>
         </div>
     </div>
-
-    <app-install-button></app-install-button>
 
 </div>

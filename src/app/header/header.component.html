@@ -123,10 +123,10 @@
                     <ul class="dropdown-menu">
                         <li *ngIf="!userRole"><a class="dropdown-item" [routerLink]="['login']">Login</a></li>
                         <!-- <li><a class="dropdown-item" (click)="logOut()" [routerLink]="['']">Logout</a></li> -->
-                        <li><a class="dropdown-item" (click)="logOut()">Logout</a></li>
-                        <li *ngIf="!userRole.includes('evaluator') && !userRole.includes('editor')"><a class="dropdown-item"
+                        <li *ngIf="userRole || userRole!=''"><a class="dropdown-item" (click)="logOut()">Logout</a></li>
+                        <li *ngIf="userRole && userRole!='' && !userRole.includes('evaluator') && !userRole.includes('editor')"><a class="dropdown-item"
                                 [routerLink]="['account']">Mon compte</a></li>
-                        <li *ngIf="!userRole.includes('evaluator')"><a class="dropdown-item"
+                        <li *ngIf="!userRole || userRole==''"><a class="dropdown-item"
                                 [routerLink]="['register']">Inscription</a></li>
                     </ul>
                 </li>

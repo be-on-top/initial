@@ -2,7 +2,17 @@
 
     <h3>Votre compte BE-ON-TOP</h3>
 
-    <p class="alert bg-primary text-light p-2 my-3 fs-4 fw-light ">Bonjour {{userData.firstName}}, bienvenue dans votre espace personnel. Au fur à mesure de vos interactions, celui-ci vous permettra de suivre les résultats de vos QCMS, vos estimations chiffrées et vos différentes évaluations...</p>
+    <p class="alert bg-primary text-light p-2 my-3 fs-4 fw-light ">Bonjour et bienvenue {{userData.firstName}}.</p>
+
+    <div *ngIf="!isOneQuizzAchieved" class="alert alert-light p-4 alert-dismissible mb-4 fade show">
+        <button type="button" class="btn-close btn-close" data-bs-dismiss="alert"></button>
+        <span> Au fur à mesure de vos interactions, vous pourrez suivre ci-dessous les résultats de
+            vos QCMS, vos estimations chiffrées et les évaluations de vos professeurs</span>...
+    </div>
+    <div *ngIf="isOneQuizzAchieved" class="alert alert-light p-4 alert-dismissible mb-4 fade show">
+        <button type="button" class="btn-close btn-close" data-bs-dismiss="alert"></button>
+        <span> Tous vos résultats et estimations chiffrées sont disponibles ci-dessous. L'incription formation peut désormais commencer !</span>
+    </div>
 
     <!-- 
     <div *ngIf="user" class="alert bg-light p-2">
@@ -172,8 +182,8 @@
                                                 <span>Note obtenue : {{ item[1].notation | json | number:'1.1-1'
                                                     }}/20.</span>
                                             </div>
-                                                     <em *ngIf="trades[trade]"
-                                                     class="text-primary fs-6">{{trades[trade][i]}}</em>
+                                            <em *ngIf="trades[trade]"
+                                                class="text-primary fs-6">{{trades[trade][i]}}</em>
                                         </ng-container>
                                     </div>
                                 </div>
@@ -216,11 +226,11 @@
                                         <div class="d-flex align-items-center">
                                             <span class="fw-bold">{{ item[0] }}</span>
                                             <i class="bi fs-4 bi-arrow-right-short"></i>
-                                            <span class="fw-bolder">Durée estimée :</span> {{ item[1].duration }}h. <span class="fw-bolder">Coût :</span> {{
-                                                item[1].cost }}€
+                                            <span class="fw-bolder">Durée estimée :</span> {{ item[1].duration }}h.
+                                            <span class="fw-bolder">Coût :</span> {{
+                                            item[1].cost }}€
                                         </div>
-                                        <em *ngIf="trades[trade]"
-                                        class="text-primary fs-6">{{trades[trade][i]}}</em>
+                                        <em *ngIf="trades[trade]" class="text-primary fs-6">{{trades[trade][i]}}</em>
 
                                     </ng-container>
                                     <hr *ngIf="lastEstimate">

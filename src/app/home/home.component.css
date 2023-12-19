@@ -14,10 +14,6 @@ a .btn.btn-transparent:hover {
     font-size: 1.5rem;
 } */
 
-.alert-light{
-    border:1px #82BC00 solid;
-    font-weight:400 ;
-}
 
 button.btn-transparent {
     border: 0;

@@ -188,6 +188,11 @@ h4,
     transition: .5s ease;
 }
 
+.alert-light{
+    border:1px #82BC00 solid;
+    font-weight:400 ;
+}
+
 .text-success,
 .text-success i {
     color: #82BC00 !important;
