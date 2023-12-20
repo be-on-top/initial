@@ -90,5 +90,17 @@ export class SocialFormComponent implements OnInit {
 
   }
 
+  async onInputChange(fieldName: string, value: any) {
+    try {
+      let enrollRef = collection(this.firestore, "SocialForm");
+  
+      // Enregistrement des données dans la collection "SocialForm"
+      await setDoc(doc(enrollRef, this.uid), { [fieldName]: value }, { merge: true });
+  
+    } catch (error) {
+      console.error('Erreur lors de l\'enregistrement des données: ', error);
+    }
+  }
+
 
 }
