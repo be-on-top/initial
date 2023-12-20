@@ -1,5 +1,5 @@
 import { query } from '@angular/animations';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,  Directive, HostListener,  } from '@angular/core';
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { Firestore, addDoc, collection, doc, getDocs, setDoc, where } from '@angular/fire/firestore';
 import { NgForm } from '@angular/forms';
@@ -11,6 +11,8 @@ import { StudentsService } from 'src/app/admin/students.service';
   templateUrl: './social-form.component.html',
   styleUrls: ['./social-form.component.css']
 })
+
+
 export class SocialFormComponent implements OnInit {
   // authId?: any;
   // userData?: any;
@@ -24,16 +26,17 @@ export class SocialFormComponent implements OnInit {
   email: string = "";
   // champsDesactives: boolean = true;
   handicap: boolean = false;
-  pieceIdentiteAJour: boolean = true;
+  // pieceIdentiteAJour: boolean = true;
   // demandeFinancement?: string = '';
   demandeFinancement: boolean | undefined;
   // promesseEmbauche: boolean | null = null;
   promesseEmbauche: boolean | undefined;
   MoyenDeTransport: boolean | undefined;
   // selectedOrientation?: string = '';
-  renouvellementPIEnCours?: boolean = false;
+  // renouvellementPIEnCours: boolean = false;
   inscritPoleEmploi: boolean = false;
   numIdentifiantPoleEmploi: string = "";
+  nationaliteFrancaise:boolean | undefined;
 
   constructor(private router: Router, private service: StudentsService, private auth: Auth, private firestore: Firestore) { }
 
