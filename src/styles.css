@@ -72,6 +72,8 @@ li.nav-item.dropdown.active a::before {
 .trade h2{
     text-align: left;
     position: relative;
+    margin-top:30px;
+    margin-bottom:30px;
 }
 
 
@@ -86,18 +88,28 @@ li.nav-item.dropdown.active a::before {
 } */
 
 
-.trade p, .trade div div {
-    margin-top: 0.8rem;
-    padding-top: 0;
-    padding-left:0.5rem;
+.trade p, .trade div {
+    margin: 0;
+    padding-bottom: 0.6rem;
+    /* padding-top: 0.6rem; */
+    padding-left:0.6rem;
     font-size: 1rem;
     border-left:2px #82BC00 solid
+}
+
+.trade ul {
+    margin-top:0;
+    margin-bottom:0;
+    padding-top:0.6rem;
+    padding-bottom:0.6rem;
+    border-left:2px #82BC00 solid;
 }
 
 .trade strong{
     font-weight: 600;
     /* font-size: 1.4rem; */
-    letter-spacing: 0.15rem;
+    /* letter-spacing: 0.15rem; */
+    font-size:1.05rem
 }
 
 

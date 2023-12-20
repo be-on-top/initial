@@ -2,16 +2,20 @@
 
     <h3>Votre compte BE-ON-TOP</h3>
 
-    <p class="alert bg-primary text-light p-2 my-3 fs-4 fw-light ">Bonjour et bienvenue {{userData.firstName}}.</p>
+    <p class="alert bg-primary text-light p-2 my-3 fs-4 fw-light ">Bonjour et bienvenue <span class="text-capitalize">{{userData.firstName}}</span></p>
 
     <div *ngIf="!isOneQuizzAchieved" class="alert alert-light p-4 alert-dismissible mb-4 fade show">
         <button type="button" class="btn-close btn-close" data-bs-dismiss="alert"></button>
         <span> Au fur à mesure de vos interactions, vous pourrez suivre ci-dessous les résultats de
             vos QCMS, vos estimations chiffrées et les évaluations de vos professeurs</span>...
     </div>
-    <div *ngIf="isOneQuizzAchieved" class="alert alert-light p-4 alert-dismissible mb-4 fade show">
+    <div *ngIf="isOneQuizzAchieved && !userData.isSocialFormSent" class="alert alert-light p-4 alert-dismissible mb-4 fade show">
         <button type="button" class="btn-close btn-close" data-bs-dismiss="alert"></button>
         <span> Tous vos résultats et estimations chiffrées sont disponibles ci-dessous. L'incription formation peut désormais commencer !</span>
+    </div>
+    <div *ngIf="userData && userData.isSocialFormSent" class="alert alert-light p-4 alert-dismissible mb-4 fade show">
+        <button type="button" class="btn-close btn-close" data-bs-dismiss="alert"></button>
+        <span> Nous avons bien reçu votre formulaire. Un conseiller référent va prendre contact avec vous. </span>
     </div>
 
     <!-- 

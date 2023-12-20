@@ -94,7 +94,7 @@
       <!-- <div [ngClass]="{'hidden-class': userRouterLinks && userRouterLinks.user === 'editor'}"> -->
       <!-- ajout partie édition du seul champ description qui sera accessible à un éditeur -->
       <label for="description" class="form-label my-3" [ngClass]="{'alert bg-warning p-3 mb-2':userRouterLinks.user=='admin'}">Description textuelle à la charge du contributeur</label>
-      <editor [init]="{ toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | heading' }" [id]="'description'" [(ngModel)]="trade.description"
+      <editor [init]="{  plugins: ['lists'], toolbar: 'undo redo | formatselect | bold italic | bullist numlist outdent indent | heading' }" [id]="'description'" [(ngModel)]="trade.description"
         name="description"></editor>
 
       </div>
