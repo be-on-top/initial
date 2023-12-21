@@ -1,9 +1,10 @@
 import { query } from '@angular/animations';
-import { Component, OnInit,  Directive, HostListener,  } from '@angular/core';
+import { Component, OnInit, Directive, HostListener, } from '@angular/core';
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
-import { Firestore, addDoc, collection, doc, getDocs, setDoc, where } from '@angular/fire/firestore';
+import { DocumentSnapshot, Firestore, addDoc, collection, doc, docData, getDocs, setDoc, where } from '@angular/fire/firestore';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { getDoc } from 'firebase/firestore';
 import { StudentsService } from 'src/app/admin/students.service';
 
 @Component({
@@ -26,41 +27,46 @@ export class SocialFormComponent implements OnInit {
   email: string = "";
   // champsDesactives: boolean = true;
   handicap: boolean = false;
-  // pieceIdentiteAJour: boolean = true;
+  pieceIdentiteAJour: boolean = true;
   // demandeFinancement?: string = '';
   demandeFinancement: boolean | undefined;
-  // promesseEmbauche: boolean | null = null;
-  promesseEmbauche: boolean | undefined;
-  MoyenDeTransport: boolean | undefined;
+  promesseEmbauche: boolean | null = null;
+  // MoyenDeTransport: boolean | undefined;
+  // MoyenDeTransport: boolean | undefined;
   // selectedOrientation?: string = '';
   // renouvellementPIEnCours: boolean = false;
   inscritPoleEmploi: boolean = false;
   numIdentifiantPoleEmploi: string = "";
-  nationaliteFrancaise:boolean | undefined;
+  // nationaliteFrancaise: boolean =true;
+  socialData: any = {};
+
+
 
   constructor(private router: Router, private service: StudentsService, private auth: Auth, private firestore: Firestore) { }
 
-  ngOnInit() {
 
-    onAuthStateChanged(this.auth, (user: any) => {
-
-      if (user) {
-        this.service.getStudentById(user.uid).subscribe(data => {
-          console.log("userData from students 0...", data);
-          this.userData = data
-        })
-      }
-    })
-
+  async ngOnInit() {
 
     onAuthStateChanged(this.auth, (user: any) => {
       if (user) {
         this.uid = user.uid
+        // on récupère la data de l'utilisateur
+        this.service.getStudentById(user.uid).subscribe(data => {
+          console.log("userData from students 0...", data);
+          this.userData = data
+        })
+        // on récupère la data de la collection SocialForm
+        const docRef = doc(this.firestore, 'SocialForm', user.uid);
+
+        docData(docRef).subscribe((data: any) => {
+          this.socialData = data;
+        });
       }
       else {
         console.log("Personne n'est authentifié actuellement !");
       }
     })
+
 
   }
 
@@ -96,10 +102,10 @@ export class SocialFormComponent implements OnInit {
   async onInputChange(fieldName: string, value: any) {
     try {
       let enrollRef = collection(this.firestore, "SocialForm");
-  
+
       // Enregistrement des données dans la collection "SocialForm"
       await setDoc(doc(enrollRef, this.uid), { [fieldName]: value }, { merge: true });
-  
+
     } catch (error) {
       console.error('Erreur lors de l\'enregistrement des données: ', error);
     }
