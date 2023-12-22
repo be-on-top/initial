@@ -25,7 +25,8 @@ export class LoginComponent {
     'auth/user-not-found': 'Aucun utilisateur ne correspond à cet email',
     'auth/email-already-in-use': 'Cet email est déjà utilisé pour un autre compte',
     'auth/wrong-password' : 'Le mot de passe est incorrect',
-    'auth/invalid-email' : 'Aucun enregistrement ne correspond au mail fourni'
+    'auth/invalid-email' : 'Aucun enregistrement ne correspond au mail fourni',
+    'auth/invalid-login-credentials' : 'Identifiants de connexion invalides. Veuillez vérifier votre e-mail et votre mot de passe'
   }; // list of firebase error codes to alternate error messages
 
   // je voudrais me faire importer onAuthStateChanged qui est une méthode de auth depuis le service. A faire plus tard
@@ -67,8 +68,8 @@ export class LoginComponent {
       .catch(error => {
         // this.firebaseErrors[error.code] || error.message,
         console.log(error)
-        // this.feedbackMessages=error.code;
-        this.feedbackMessages=this.firebaseErrors[error.code];
+        this.feedbackMessages=error;
+        // this.feedbackMessages=this.firebaseErrors[error.code];
         this.isSuccessMessage=false;
         // mise à jour variables à passer à feedbackMessags component      
       });

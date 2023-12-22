@@ -34,7 +34,7 @@ export class RegisterComponent {
     }
 
     console.log("form registration", form.value);
-    this.service.createStudent(form.value).then((userCredential) => {
+    this.service.register(form.value).then((userCredential) => {
       // Signed in 
       const user = userCredential;
       this.feedbackMessages = `Enregistrement OK`;

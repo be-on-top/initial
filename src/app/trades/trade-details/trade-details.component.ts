@@ -28,6 +28,7 @@ export class TradeDetailsComponent implements OnInit {
   studentId?: string
   studentData?: Student
   hasStartedEvaluation: boolean = false
+  isEvaluationCompleted:boolean= false
   userRole: string = ""
   // pour charger l'image associée si image
   imageUrl: string = ''; // Pour stocker l'URL de l'image
@@ -71,8 +72,10 @@ export class TradeDetailsComponent implements OnInit {
           this.studentService.getStudentById(user.uid).subscribe((data) => {
             this.studentData = data
             // alert(JSON.stringify(this.studentData!['quizz_' + this.tradeId].scoreCounter))
-            this.studentData && this.studentData!['quizz_' + this.tradeId] ? this.hasStartedEvaluation = true : ""
+            this.studentData && this.studentData!['quizz_' + this.tradeId] ? this.hasStartedEvaluation = true : this.hasStartedEvaluation = false;
             console.log('this.hasStartedEvaluation', this.hasStartedEvaluation);
+            this.studentData && this.studentData['quizz_'+this.tradeData.sigle].fullResults?this.isEvaluationCompleted=true:this.isEvaluationCompleted=false;
+
           })
 
           // quant à savoir qui est qui et quel est son rôle

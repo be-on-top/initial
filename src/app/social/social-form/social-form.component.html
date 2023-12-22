@@ -1,4 +1,8 @@
 <div class="container py-5">
+    <!-- Et du coup, tous les simples ngModel parce qu'on n'a pas besoin d'autre chose que ngModel pour enregistrer un formulaire en bonne et due forme, RIEN D'AUTRE vont devoir pour pouvoir être récupérés en base en l'état de la saisie être remplacés par du two way binding genre : [(ngModel)]="socialData.permisB"
+ 
+Tests OK. Sur une  partie. A finir. 
+  -->
 
     <h3 class="text-capitalize">Pré-inscription Formation {{userData.firstName}} {{userData.lastName}}</h3>
     <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)" class="mt-3">

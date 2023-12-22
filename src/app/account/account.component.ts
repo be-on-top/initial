@@ -45,7 +45,7 @@ export class AccountComponent implements OnInit, OnDestroy {
   editButtonLabel: string = "Modifier"
 
   // on n'a plus besoin de s'y référer dès qu'on traite de quizz multiples comme ici dans la V2
-  lastIndex: number = 0
+  // lastIndex: number = 0
 
   // pour afficher si on garde cette option fullResuls à l'utilisateur
   fullResults: { [key: string]: { duration: number; cost: number } }[] = [];
@@ -79,6 +79,8 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   isSocialFormSent:boolean=false
 
+  hasStartedEvaluation:boolean=false
+
 
   constructor(private auth: Auth, private firestore: Firestore, private authService: AuthService, private studentService: StudentsService, private activatedRoute: ActivatedRoute, private router: Router, private notificationService: PushNotificationService, public sanitizer: DomSanitizer, private settingsService: SettingsService) {
     // const messaging = getMessaging();
@@ -100,13 +102,15 @@ export class AccountComponent implements OnInit, OnDestroy {
         .subscribe(data => {
           console.log("userData from students 0...", data);
           this.userData = data;
-          this.lastIndex = Number(this.userData.lastIndexQuestion);
+          // this.lastIndex = Number(this.userData.lastIndexQuestion);
   
           // Logique pour obtenir tradesEvaluated
           for (const key in this.userData) {
             console.log('key', key.includes('quizz'));
   
             if (key.includes('quizz')) {
+              // on peut rajouter hasStartedEvaluation pour conditionner l'affichage de l'onglet QCMS et résulats
+              this.hasStartedEvaluation=true;
               this.tradesEvaluated.push(key);
             }
           }
@@ -252,7 +256,8 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   delete() {
     /* console.log("data à supprimer", userData);   */
-    // this.studentService.deleteAccount();
+    this.studentService.deleteAccount();
+    alert('Compte utilisateur supprimé')
   }
 
   // pour utiliser le composant de recherche

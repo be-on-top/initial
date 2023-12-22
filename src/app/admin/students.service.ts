@@ -76,6 +76,24 @@ export class StudentsService {
     setDoc(doc($rolesRef, newStudent.id), { role: 'student' })
   }
 
+  async register(student: any) {
+    alert(student.studentPw)
+    let newStudent = { created: Date.now(), status: true, trainer: "Attribué ultérieurement", ...student };
+
+    // enregistrement en base dans fireAuth d'une part : 
+    const result = await createUserWithEmailAndPassword(this.auth, student.email, student.studentPw);
+
+    if (result && result.user) {
+      newStudent.id = result.user.uid
+    }
+
+
+    let studentsRef = collection(this.firestore, "students");
+    setDoc(doc(studentsRef, newStudent.id), newStudent)
+      let $rolesRef = collection(this.firestore, "roles");
+    setDoc(doc($rolesRef, newStudent.id), { role: 'student' })
+  }
+
 
   getStudents() {
     const studentsRef = collection(this.firestore, "students");

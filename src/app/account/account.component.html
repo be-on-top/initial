@@ -11,11 +11,11 @@
     </div>
     <div *ngIf="isOneQuizzAchieved && !userData.isSocialFormSent" class="alert alert-light p-4 alert-dismissible mb-4 fade show">
         <button type="button" class="btn-close btn-close" data-bs-dismiss="alert"></button>
-        <span> Tous vos résultats et estimations chiffrées sont disponibles ci-dessous. L'incription formation peut désormais commencer !</span>
+        <span> Tous vos résultats et estimations chiffrées sont disponibles ci-dessous. L'incription  formation peut également désormais commencer !</span>
     </div>
     <div *ngIf="userData && userData.isSocialFormSent" class="alert alert-light p-4 alert-dismissible mb-4 fade show">
         <button type="button" class="btn-close btn-close" data-bs-dismiss="alert"></button>
-        <span> Nous avons bien reçu votre formulaire. Un conseiller référent va prendre contact avec vous. </span>
+        <span> Merci d'avoir pris le temps de remplir le formulaire d'inscription à nos formations. Un conseiller référent va prendre contact avec vous. </span>
     </div>
 
     <!-- 
@@ -106,7 +106,7 @@
             </div>
 
             <!-- anciennement positionnement > vos QCM(s) -->
-            <div class="card">
+            <div class="card" *ngIf="hasStartedEvaluation">
                 <div class="card-header bg-primary d-flex justify-content-between">
                     <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse"
                         href="#collapseThreea">
@@ -246,7 +246,6 @@
                         </div>
                         <!-- fin boucle supplémentaire pour ngFor avec les options de multi-quizz -->
                     </div>
-
                 </div>
             </div>
         </div>

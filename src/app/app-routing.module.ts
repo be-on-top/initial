@@ -35,7 +35,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'home/:userRole', component: HomeComponent, pathMatch: 'full' },
   { path: 'admin', redirectTo: 'dashboard', pathMatch: 'full' },
-  { path: 'account', component: AccountComponent },
+  { path: 'account', component: AccountComponent, canActivate: [AuthGuardService] },
   { path: 'socialregistration', component: AdminForm},
   { path: 'quizz/:id/:indexQuestion/:scoreCounter/:hasStartedEvaluation/:studentId', component: QuizzComponent, canActivate: [AuthGuardService]},
   { path: 'trade/:id', component: TradeDetailsComponent}

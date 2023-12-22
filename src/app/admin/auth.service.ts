@@ -45,7 +45,7 @@ export class AuthService {
         this.authStatusSub.next(credential);
         console.log('User is logged in with credential', credential.uid);
         status = credential.uid
-        
+
         return status
       }
       else {
@@ -60,19 +60,57 @@ export class AuthService {
 
 
 
-  login({ email, password }: any) {
-    this.loggedIn = true;
-    return signInWithEmailAndPassword(this.auth, email, password);
+  // async login({ email, password }: any) {
+  //   this.loggedIn = true;
+  //   return signInWithEmailAndPassword(this.auth, email, password);
+  // }
+
+    async login({ email, password }: any) {
+
+
+      const result = await signInWithEmailAndPassword(this.auth, email, password);
+      console.log("User signed in successfully:", result.user.uid);
+      return result
+   
   }
+
 
   loginWithGoogle() {
     return signInWithPopup(this.auth, new GoogleAuthProvider());
   }
 
+  
+
+
+  // logout() {
+  //   this.loggedIn = false;
+  //   return signOut(this.auth);    
+  // }
+
   logout() {
     this.loggedIn = false;
-    return signOut(this.auth);
+    return signOut(this.auth)
+      .then(() => {
+        // Déconnexion réussie
+      })
+      .catch(error => {
+        console.error('Error during logout:', error);
+      });
   }
+
+  // logout() {
+  //   return signOut(this.auth)
+  //     .then(() => {
+  //       this.loggedIn = false;
+  //       this.router.navigate(['/home']);
+  //     })
+  //     .catch(error => {
+  //       console.error('Error during logout:', error);
+  //     });
+  // }
+
+
+  
 
 
   passwordReset(email: string) {
