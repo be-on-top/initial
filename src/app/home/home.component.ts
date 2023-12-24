@@ -9,11 +9,11 @@ import { onAuthStateChanged } from '@angular/fire/auth';
 
 // c'est maintenant le service qui régale !!!
 // import { getMessaging, onMessage, getToken } from "@angular/fire/messaging";
-import { PushNotificationService } from '../push-notification.service';
-import { SwPush } from '@angular/service-worker';
-// import { getMessaging } from '@angular/fire/messaging';
 
-// import { getMessaging } from "firebase/messaging/sw";
+// import { PushNotificationService } from '../push-notification.service';
+import { SwPush } from '@angular/service-worker';
+
+import { getMessaging } from "firebase/messaging/sw";
 // import { onBackgroundMessage } from "firebase/messaging/sw";
 // import { getToken } from 'firebase/messaging';
 import { SettingsService } from '../admin/settings.service';
@@ -68,7 +68,15 @@ export class HomeComponent implements OnInit {
   // imageUrl: string = ''; // Pour stocker l'URL de l'image
   // defaultImageUrl: string = 'https://dalmont.staticlbi.com/original/images/biens/2/8efa48ae0918f1e8a89684a39abdbdf7/photo_5432049cf11f3071651cb2c30317bd5e.jpg';
 
-  constructor(private notificationService: PushNotificationService, private auth: Auth, private authService: AuthService, private studentService: StudentsService, private ac: ActivatedRoute, private router: Router, readonly swPush: SwPush, private settingsService: SettingsService) {
+  constructor(
+    // private notificationService: PushNotificationService, 
+    private auth: Auth, 
+    private authService: AuthService, 
+    private studentService: StudentsService, 
+    private ac: ActivatedRoute, 
+    private router: Router, 
+    private swPush: SwPush, 
+    private settingsService: SettingsService) {
     // pour savoir si l'utilisateur est éditeur sans interroger firestore, on peut (?) récupérer userRole livré en paramètre de route
     // this.ac.snapshot.params["userRole"]="editor"?this.isEditor=true:""
 
@@ -84,31 +92,31 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     // à externaliser
-    // const messaging = getMessaging()
+    const messaging = getMessaging()
     // fonctionne parfaitement, mais on va utiliser le service dédié qui maintenant sait comment opérer !!!!
-    // getToken(messaging, { vapidKey: "BOLK9wQoeo2ycP0yK1yTLQG8DlIYM1GnRLe09u3tdnCERUSOwW7iv_QV671oU8Xa4njllE64DbVvHPnrzsgRdpc" }).then((currentToken) => {
-    this.notificationService.requestPermission().then((currentToken) => {
+ 
+    // getToken(messaging, { vapidKey: "BOLK9wQoeo2ycP0yK1yTLQG8DlIYM1GnRLe09u3tdnCERUSOwW7iv_QV671oU8Xa4njllE64DbVvHPnrzsgRdpc" }).then((currentToken) => { 
+    // this.notificationService.requestPermission().then((currentToken) => {
+    //   if (currentToken) {        
+    //     console.log('currentToken !!!!!!', currentToken); // Send the token to your server and update the UI if necessary       
+    //     this.notificationService.receiveMessage().subscribe(data => this.newNotification = data.notification)
+    //     console.log("this.newNotification !!!!!! ", this.newNotification); // tests ok : impeccable !!!
 
-      if (currentToken) {
-        // Send the token to your server and update the UI if necessary 
-        console.log('currentToken !!!!!!', currentToken);
+    //     // ... 
 
-        // tests ok : impeccable !!!
-        this.notificationService.receiveMessage().subscribe(data => this.newNotification = data.notification)
-        console.log("this.newNotification !!!!!! ", this.newNotification);
+    //   } else {
+    //     // Show permission request UI 
+    //     console.log('No registration token available. Request permission to generate one.');
+    //     // ... inclure le notifyMe ici éventuellement, avec une popUp si besoin
 
-        // ... 
+    //   }
 
-      } else {
-        // Show permission request UI 
-        console.log('No registration token available. Request permission to generate one.');
-        // ... inclure le notifyMe ici éventuellement, avec une popUp si besoin
+    // }).catch((err) => {
+    //   console.log('An error occurred while retrieving token. ', err);
+    // })
 
-      }
 
-    }).catch((err) => {
-      console.log('An error occurred while retrieving token. ', err);
-    })
+
 
 
     onAuthStateChanged(this.auth, (user: any) => {
