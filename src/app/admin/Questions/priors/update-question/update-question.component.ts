@@ -82,7 +82,7 @@ export class UpdateQuestionComponents implements OnInit {
       this.isVideo = data.isVideo
       console.log('status de la video', this.isVideo);
       data.optScoring3 ? this.optScoring3 = data.optScoring3 : 'null'
-      data.optScoring4 ? this.optScoring4 = data.optScoring3 : 'null'
+      data.optScoring4 ? this.optScoring4 = data.optScoring4 : 'null'
 
     })
 

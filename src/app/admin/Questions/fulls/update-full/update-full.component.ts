@@ -67,7 +67,7 @@ export class UpdateFullComponent {
       this.result = data
       this.isVideo = data.isVideo
       data.optScoring3 ? this.optScoring3 = data.optScoring3 : 'null'
-      data.optScoring4 ? this.optScoring4 = data.optScoring3 : 'null'
+      data.optScoring4 ? this.optScoring4 = data.optScoring4 : 'null'
     })
 
     this.service.getQuestions().subscribe(data => {

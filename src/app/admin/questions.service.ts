@@ -245,7 +245,6 @@ export class QuestionsService {
           // depuis les mises à jour effectuées sur les questions sociales !!!! 
           item.fullPath.includes(id) == true ? mediasResponsesById.push(await getDownloadURL(item)) : ""
           // console.log("mediaResponsesById", mediasResponsesById);
-
         }
 
       }).catch((error) => {
