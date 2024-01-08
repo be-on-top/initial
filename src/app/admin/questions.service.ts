@@ -31,7 +31,7 @@ export class QuestionsService {
   }
 
 
-  async createQuestion(question: any, allFilesToUplad: [], isVideo: boolean = false) {
+  async createQuestion(question: any, allFilesToUplad: [], isVideo: boolean) {
 
     // let newQuestion if mediasAttached;
     if (question.mediaQuestion) {
@@ -40,7 +40,7 @@ export class QuestionsService {
       // c'est là qu'on peut intégrer une différence selon le type de fichier détecté
       // console.log(Object.values(allFilesToUplad)[0][2]);
       if (Object.values(allFilesToUplad)[0][2] == "video/mp4") {
-        // this.isVideo = true;
+        // isVideo = true;
         // console.log(this.isVideo);
       }
 
@@ -207,7 +207,6 @@ export class QuestionsService {
     console.log("question ou les valeurs du formulaire augmentées de isVideo avant setDoc", question);
     let $questionRef = doc(this.firestore, "questions/" + id);
     setDoc($questionRef, question).then(response => console.log(response))
-
 
     for (let myFile of allFilesToUpdate) {
       this.uploadFiles(myFile[0], myFile[1], id)

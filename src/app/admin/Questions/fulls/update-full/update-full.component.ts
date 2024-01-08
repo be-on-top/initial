@@ -125,7 +125,8 @@ export class UpdateFullComponent {
     event.target.files[0].type === "video/mp4" ? this.isVideo = true : this.isVideo = false;
 
     // https://www.cnetfrance.fr/produits/calculer-le-poids-de-ses-photos-1003101.htm
-    if (event.target.files[0].size > 18000000) {
+    // if (event.target.files[0].size > 18000000) {
+    if (event.target.files[0].size > 1000000000) {
       alert("File is too big!")
     }
 
@@ -178,7 +179,8 @@ export class UpdateFullComponent {
     console.log('fieldName.name', fieldName.name);
 
     // Vérifie la taille du fichier et le type avant de l'ajouter
-    if (event.target.files[0].size <= 5000000) {
+    // if (event.target.files[0].size <= 5000000) {
+    if (event.target.files[0].size <= 1000000000) {
       // Vérifie si le fichier avec le même nom existe déjà dans arrayFilesToUpload
       const existingFileIndex = this.arrayFilesToUpdate.findIndex((item: any) => item[1] === fieldName.name);
 

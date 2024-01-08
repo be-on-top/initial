@@ -71,6 +71,7 @@ export class FullFormComponent implements OnInit {
 
   // pour savoir si au minimum une image a été rattachée à une réponse
   isOneMediaOption: boolean = false
+  isVideo: boolean = false
 
   // import de auth pour tester les spécificités de l'évaluateur connecté si il est reconnu
   // import du service EvaluatorsService pour tester la récupération des affectations métiers spécifiques à l'évaluateur
@@ -111,7 +112,7 @@ export class FullFormComponent implements OnInit {
 
     if (this.forbidden !== true) {
       // console.log(form.value);
-      this.service.createQuestion(form.value, this.arrayFilesToUpload);
+      this.service.createQuestion(form.value, this.arrayFilesToUpload, this.isVideo);
 
       // // Stockez la valeur du select avant de réinitialiser le formulaire
       this.selectedSigle = form.value.sigle;
@@ -133,13 +134,14 @@ export class FullFormComponent implements OnInit {
   detectFiles(event: any, fieldName: any) {
     console.log(event.target.files[0].size);
     console.log('fieldName.name', fieldName.name);
-
-    // Vérifie la taille du fichier et le type avant de l'ajouter
+    alert(event.target.files[0].type)
+    // première boucle si fichier image
+    if (event.target.files[0].type.startsWith('image/')) {
+      this.isVideo=false;
+      // Vérifie la taille du fichier et le type avant de l'ajouter
     if (event.target.files[0].size <= 5000000) {
       // Vérifie si le fichier avec le même nom existe déjà dans arrayFilesToUpload
       const existingFileIndex = this.arrayFilesToUpload.findIndex((item: any) => item[1] === fieldName.name);
-
-
       if (existingFileIndex !== -1) {
         // Si le fichier existe déjà, le supprime
         this.arrayFilesToUpload.splice(existingFileIndex, 1);
@@ -164,6 +166,35 @@ export class FullFormComponent implements OnInit {
       // Fichier trop volumineux, affiche une alerte
       alert("Le fichier est trop volumineux (limite : 5 Mo) !");
     }
+      
+    } else if(event.target.files[0].type.startsWith('video/')) {
+      this.isVideo=true;
+      if (event.target.files[0].size <= 1000000000) {
+          // Vérifie si le fichier avec le même nom existe déjà dans arrayFilesToUpload
+          const existingFileIndex = this.arrayFilesToUpload.findIndex((item: any) => item[1] === fieldName.name);
+          if (existingFileIndex !== -1) {
+            // Si le fichier existe déjà, le supprime
+            this.arrayFilesToUpload.splice(existingFileIndex, 1);
+            // alert('Changement de video détecté. Ancien fichier supprimé.');
+          }
+    
+          // Ajoute le nouveau fichier à arrayFilesToUpload
+          this.arrayFilesToUpload.push([event.target.files[0], fieldName.name, event.target.files[0].type]);
+          console.log("this.arrayFilesToUpload !!!!", this.arrayFilesToUpload);
+    
+          // // Si déjà un fichier mediaOption...
+          const existingMediaOption = this.arrayFilesToUpload.findIndex((item: any) => item[1].includes("mediaOption"))
+          existingMediaOption !== -1 ? this.isOneMediaOption = true : this.isOneMediaOption = false;
+          // alert(this.isOneMediaOption)
+    
+        } else {
+          // Fichier trop volumineux, affiche une alerte
+          alert("Le fichier est trop volumineux (limite : 100 Mo) !");
+        }
+      
+    }
+
+    
   }
 
   resetFileInput(fieldName: string, form: NgForm) {
