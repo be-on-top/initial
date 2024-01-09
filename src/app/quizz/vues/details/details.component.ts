@@ -1,5 +1,5 @@
 import { NumberFormatStyle } from '@angular/common';
-import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit, ElementRef, Renderer2, ViewChild, HostListener } from '@angular/core';
 // import { Firestore, collection, orderBy, startAt, startAfter, query, where, limit } from '@angular/fire/firestore';
 // import { QuestionsService } from 'src/app/admin/questions.service';
 
@@ -44,35 +44,19 @@ export class DetailsComponent implements OnInit {
   @Output() hasBeenUpdated: EventEmitter<{ counter: number, evaluatedCompetence: string, isIncremented: boolean, isDecremented: boolean, fullAnswersClicked: number }> = new EventEmitter<{ counter: number, evaluatedCompetence: string, isIncremented: boolean, isDecremented: boolean, fullAnswersClicked: number }>();
 
 
-isLoading=true
+  isLoading = true
+
+  // pour zoomer image sur mobile
+  @ViewChild('imageElement') imageElement?: ElementRef;
+  constructor(private renderer: Renderer2) {}
+
+  
+
 
 
   ngOnInit() {
-    // console.log("this.fullOptScoringArray initial", this.fullOptScoringTrue)
-    // console.log("this.totalAnswersAvailable initial", this.totalAnswersAvailable)
-    // console.log("this.fullAnswersClicked initial", this.fullAnswersClicked)
-    // console.log("this.fullGoodAnswersClicked: initial", this.fullGoodAnswersClicked)
-
-    // // on initialise la valeur réelle de fullOptScoringArray pour avoir un point de comparaison
-    // this.q.optScoring1 === 'true' ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
-    // this.q.optScoring2 === 'true' ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
-    // this.q.optScoring3 === 'true' ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
-    // this.q.optScoring4 === 'true' ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
-    // console.log("this.fullOptScoringArray", this.fullOptScoringTrue)
-
-    // // on initialise la valeur réelle de totalAnswersAvailable pour la limite à 2, 3 ou 4 réponses max
-    // this.q.optScoring1 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
-    // this.q.optScoring2 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
-    // this.q.optScoring3 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
-    // this.q.optScoring4 !== '' ? this.totalAnswersAvailable = Number(this.totalAnswersAvailable) + 1 : ""
-    // console.log("this.totalAnswersAvailable", this.totalAnswersAvailable)
-
   }
 
-
-  // ngAfterViewInit() {
-  //   alert("julie")
-  // }
 
   ngOnDestroy(): void {
     this.responsesMedias = []
@@ -179,6 +163,33 @@ isLoading=true
   resetToggledStates() {
     for (let key in this.toggledStates) {
       this.toggledStates[key] = false;
+    }
+  }
+
+  // Fonction pour gérer le toucher et appliquer/retirer le zoom
+  handleTouch() {
+    const imageElement = this.imageElement;
+ 
+    if (imageElement && imageElement.nativeElement) {
+      const image = imageElement.nativeElement;
+ 
+      // Ajoute ou retire la classe "zoomed" selon l'état actuel
+      this.renderer.addClass(image, 'zoomed');
+    }
+  }
+ 
+  // Fonction pour retirer la classe "zoomed" lorsque l'utilisateur clique ailleurs
+  @HostListener('document:click', ['$event'])
+  handleDocumentClick(event: Event) {
+    const imageElement = this.imageElement;
+ 
+    if (imageElement && imageElement.nativeElement) {
+      const image = imageElement.nativeElement;
+ 
+      // Vérifie si l'élément cliqué n'est pas l'élément de l'image
+      if (!image.contains(event.target as Node)) {
+        this.renderer.removeClass(image, 'zoomed');
+      }
     }
   }
 

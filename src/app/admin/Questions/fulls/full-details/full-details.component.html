@@ -15,13 +15,13 @@
         <div class="bg-light rounded rounded mb-3" *ngFor="let item of questionsMedias">
             <!-- item : {{item}} -->
             <div class="w-100 bg-primary p-2 rounded">
-                {{q.isVideo==true}}
+                <!-- {{q.isVideo==true}} -->
                 <!-- si fichier de type video / sinon utiliser le template pour l'image  -->
                 <video *ngIf="q.isVideo==true; else image" class="video img-fluid" controls>
                     <source [src]="item" type="video/mp4">
                     Your browser does not support HTML video.
                 </video>
-                <ng-template #image><img class="img-fluid bg-light" [src]="item"></ng-template>
+                <ng-template #image><img class="img-fluid bg-light image-zoomable" [src]="item"></ng-template>
             </div>
         </div>
     </div>

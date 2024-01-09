@@ -51,3 +51,23 @@ i.text-choiced::after {
         width: 100%;
     }
 }
+
+/* à tester pour zoom sur image question au touché de l'écran */
+
+.image-zoomable {
+    max-width: 100%;
+    height: auto;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .zoomed {
+    transform: scale(1.5);
+  }
+
+  .image-container {
+    max-width: 100%; /* Ajustez selon vos besoins */
+    overflow: hidden;
+    position: relative;
+  }
+  
