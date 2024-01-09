@@ -166,31 +166,47 @@ export class DetailsComponent implements OnInit {
     }
   }
 
-  // Fonction pour gérer le toucher et appliquer/retirer le zoom
-  handleTouch() {
-    const imageElement = this.imageElement;
- 
-    if (imageElement && imageElement.nativeElement) {
-      const image = imageElement.nativeElement;
- 
-      // Ajoute ou retire la classe "zoomed" selon l'état actuel
-      this.renderer.addClass(image, 'zoomed');
+
+    private isZoomed = false; 
+
+  
+    handleTouch() {
+      const imageElement = this.imageElement;
+  
+      if (imageElement && imageElement.nativeElement) {
+        const image = imageElement.nativeElement;
+  
+        // Inverse l'état de zoom
+        this.isZoomed = !this.isZoomed;
+  
+        // Ajoute ou retire la classe "zoomed" selon l'état actuel
+        if (this.isZoomed) {
+          this.renderer.addClass(image, 'zoomed');
+        } else {
+          this.renderer.removeClass(image, 'zoomed');
+        }
+      }
     }
-  }
- 
-  // Fonction pour retirer la classe "zoomed" lorsque l'utilisateur clique ailleurs
-  @HostListener('document:click', ['$event'])
-  handleDocumentClick(event: Event) {
-    const imageElement = this.imageElement;
- 
-    if (imageElement && imageElement.nativeElement) {
-      const image = imageElement.nativeElement;
- 
-      // Vérifie si l'élément cliqué n'est pas l'élément de l'image
-      if (!image.contains(event.target as Node)) {
-        this.renderer.removeClass(image, 'zoomed');
+  
+    @HostListener('document:click', ['$event'])
+    handleDocumentClick(event: Event) {
+      const imageElement = this.imageElement;
+  
+      if (imageElement && imageElement.nativeElement) {
+        const image = imageElement.nativeElement;
+  
+        // Vérifie si l'élément cliqué est l'élément de l'image
+        const isClickOnImage = image.contains(event.target as Node);
+  
+        // Si le clic n'est pas sur l'image et l'image est zoomée, réinitialise
+        if (!isClickOnImage && this.isZoomed) {
+          this.isZoomed = false;
+          this.renderer.removeClass(image, 'zoomed');
+        }
       }
     }
   }
 
-}
+  
+
+
