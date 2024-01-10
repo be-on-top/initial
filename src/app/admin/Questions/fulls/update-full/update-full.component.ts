@@ -66,8 +66,8 @@ export class UpdateFullComponent {
       console.log("data depuis update-full component !!!!!!!!!!!!!", data);
       this.result = data
       this.isVideo = data.isVideo
-      data.optScoring3 ? this.optScoring3 = data.optScoring3 : 'null'
-      data.optScoring4 ? this.optScoring4 = data.optScoring4 : 'null'
+      // data.optScoring3 ? this.optScoring3 = data.optScoring3 : 'null'
+      // data.optScoring4 ? this.optScoring4 = data.optScoring4 : 'null'
     })
 
     this.service.getQuestions().subscribe(data => {
@@ -98,11 +98,22 @@ export class UpdateFullComponent {
       return
     }
 
-    if (form.value.optScoring3 === null) {
-      delete form.value.optScoring3;
+    // Vérifier si optScoring3 ou 4 est défini
+    if (form.value.optScoring4 === undefined) {
+      // Si non défini, définir la valeur à null
+      form.value.optScoring4 = null;
     }
-    if (form.value.optScoring4 === null) {
-      delete form.value.optScoring4;
+    if (form.value.optScoring3 === undefined) {
+      // Si non défini, définir la valeur à null
+      form.value.optScoring3 = null;
+    }
+
+    // Vérifier si option3 ou 4 n'a pas été vidé
+    if (form.value.option4 === undefined || form.value.option4 === '') {
+      form.value.optScoring4 = null;
+    }
+    if (form.value.optScoring3 === undefined || form.value.option3 === '') {
+      form.value.optScoring3 = null;
     }
 
     // console.log("form update values", form.value);

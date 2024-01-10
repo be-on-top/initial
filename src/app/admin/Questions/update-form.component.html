@@ -260,12 +260,12 @@
         <div class="form-group d-sm-flex gap-5 mt-3">
             <div class="form-check">
                 <input type="radio" class="form-check-input" name="optScoring3" [value]="true" [(ngModel)]="result.optScoring3"
-                    [checked]="result.optScoring3">Vraie
+                    [checked]="result.optScoring3 && f.value.option3!=''" [required]="f.value.option3!=undefined">Vraie
                 <!-- <label class="form-check-label" for="radio3"></label> -->
             </div>
             <div class="form-check">
                 <input type="radio" class="form-check-input" name="optScoring3" [value]="false"
-                    [(ngModel)]="result.optScoring3" [checked]="result.optScoring3">Fausse
+                    [(ngModel)]="result.optScoring3" [checked]="result.optScoring3 && f.value.option3!=''" [required]="f.value.option3!=undefined">Fausse
             </div>
             
         </div>
@@ -317,12 +317,12 @@
         <div class="form-group d-sm-flex gap-5 mt-3">
             <div class="form-check">
                 <input type="radio" class="form-check-input" name="optScoring4" [value]="true" [(ngModel)]="result.optScoring4"
-                    [checked]="result.optScoring4">Vraie
+                    [checked]="result.optScoring4 && f.value.option4!=''" [required]="f.value.option4!=undefined">Vraie
                 <!-- <label class="form-check-label" for="radio4"></label> -->
             </div>
             <div class="form-check">
                 <input type="radio" class="form-check-input" name="optScoring4" [value]="false"
-                    [(ngModel)]="result.optScoring4" [checked]="result.optScoring4">Fausse
+                    [(ngModel)]="result.optScoring4" [checked]="result.optScoring4 && f.value.option4!=''" [required]="f.value.option4!=undefined">Fausse
             </div>
         </div>
 

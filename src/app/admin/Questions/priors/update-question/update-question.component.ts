@@ -81,9 +81,6 @@ export class UpdateQuestionComponents implements OnInit {
       this.result = data
       this.isVideo = data.isVideo
       console.log('status de la video', this.isVideo);
-      data.optScoring3 ? this.optScoring3 = data.optScoring3 : 'null'
-      data.optScoring4 ? this.optScoring4 = data.optScoring4 : 'null'
-
     })
 
     // pour permettre de permutter le numéro de la question
@@ -101,22 +98,31 @@ export class UpdateQuestionComponents implements OnInit {
       // return this.registryNumbers
     })
 
-
   }
 
   updateForm(form: NgForm) {
     // on vérifie la validité du formulaire
     if (!form.valid) {
-      console.log('form valid');
+      console.log('form invalid');
       return
     }
 
-    if (form.value.optScoring3 === null) {
-      delete form.value.optScoring3;
+    // Vérifier si optScoring3 ou 4 est défini
+    if (form.value.optScoring4 === undefined) {
+      // Si non défini, définir la valeur à null
+      form.value.optScoring4 = null;
+    }
+    if (form.value.optScoring3 === undefined) {
+      // Si non défini, définir la valeur à null
+      form.value.optScoring3 = null;
     }
 
-    if (form.value.optScoring4 === null) {
-      delete form.value.optScoring4;
+    // Vérifier si option3 ou 4 n'a pas été vidé
+    if (form.value.option4 === undefined || form.value.option4 === '') {
+      form.value.optScoring4 = null;
+    }
+    if (form.value.optScoring3 === undefined || form.value.option3 === '') {
+      form.value.optScoring3 = null;
     }
 
     // console.log("form update values", form.value);
@@ -140,12 +146,13 @@ export class UpdateQuestionComponents implements OnInit {
 
     event.target.files[0].type === "video/mp4" ? this.isVideo = true : this.isVideo = false;
 
-    if (event.target.files[0].size > 1800000) {
+    // if (event.target.files[0].size > 1800000) {
+    if (event.target.files[0].size > 100000000) {
       alert("File is too big!")
     }
 
     this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name])
-    
+
     // Vérifiez le nom du champ et mettez à jour le bon champ de résultat en conséquence
     if (fieldName.name === 'mediaQuestion') {
       this.result.mediaQuestion = event.target.files[0].name;
@@ -185,30 +192,30 @@ export class UpdateQuestionComponents implements OnInit {
     // this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name])
 
 
-      // code de fullForm en ajout simple **************************************************
-      console.log(event.target.files[0].size);
-      console.log('fieldName.name', fieldName.name);
-  
-      // Vérifie la taille du fichier et le type avant de l'ajouter
-      if (event.target.files[0].size <= 5000000) {
-        // Vérifie si le fichier avec le même nom existe déjà dans arrayFilesToUpload
-        const existingFileIndex = this.arrayFilesToUpdate.findIndex((item: any) => item[1] === fieldName.name);
-  
-  
-        if (existingFileIndex !== -1) {
-          // Si le fichier existe déjà, le supprime
-          this.arrayFilesToUpdate.splice(existingFileIndex, 1);
-          alert('Changement d\'image détecté. Ancien fichier supprimé.');
-        }
-  
-        // Ajoute le nouveau fichier à arrayFilesToUpload
-        this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name, event.target.files[0].type]);
-        console.log("this.arrayFilesToUpload !!!!", this.arrayFilesToUpdate);
-  
-      } else {
-        // Fichier trop volumineux, affiche une alerte
-        alert("Le fichier est trop volumineux (limite : 5 Mo) !");
+    // code de fullForm en ajout simple **************************************************
+    console.log(event.target.files[0].size);
+    console.log('fieldName.name', fieldName.name);
+
+    // Vérifie la taille du fichier et le type avant de l'ajouter
+    if (event.target.files[0].size <= 5000000) {
+      // Vérifie si le fichier avec le même nom existe déjà dans arrayFilesToUpload
+      const existingFileIndex = this.arrayFilesToUpdate.findIndex((item: any) => item[1] === fieldName.name);
+
+
+      if (existingFileIndex !== -1) {
+        // Si le fichier existe déjà, le supprime
+        this.arrayFilesToUpdate.splice(existingFileIndex, 1);
+        alert('Changement d\'image détecté. Ancien fichier supprimé.');
       }
+
+      // Ajoute le nouveau fichier à arrayFilesToUpload
+      this.arrayFilesToUpdate.push([event.target.files[0], fieldName.name, event.target.files[0].type]);
+      console.log("this.arrayFilesToUpload !!!!", this.arrayFilesToUpdate);
+
+    } else {
+      // Fichier trop volumineux, affiche une alerte
+      alert("Le fichier est trop volumineux (limite : 5 Mo) !");
+    }
 
   }
 
@@ -262,8 +269,8 @@ export class UpdateQuestionComponents implements OnInit {
 
   }
 
-  lookForKeyContent(array:any, string:string){
-    return array.filter((item:any)=>item.includes(string))
+  lookForKeyContent(array: any, string: string) {
+    return array.filter((item: any) => item.includes(string))
   }
 
   onMediaOption1Change(newMediaOption1Value: string) {
