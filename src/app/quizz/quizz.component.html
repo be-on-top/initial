@@ -17,10 +17,8 @@
                 item.value }}
                 PNTS</div>
         </div>
-    </div> -->
-
-    <!-- a commencé l'évaluation -->
-    <!-- <div class="alert bg-info text-white text-smaller">hasStartedEvaluation : {{hasStartedEvaluation}}</div> -->
+    </div>
+    <div class="alert bg-info text-white text-smaller">hasStartedEvaluation : {{hasStartedEvaluation}}</div> -->
 
 
 
@@ -34,6 +32,7 @@
         </div>
         
         <div>
+            <a name="next"></a>
             <app-details (resetCounter)="resetChildCounter()" [q]="questions[indexQuestion]"
                 [questionsMedias]="questionsMedias" [responsesMedias]="responsesMedias"
                 (hasBeenClicked)="answered($event)" [fullGoodAnswersClicked]="fullGoodAnswersClicked"
@@ -63,7 +62,7 @@
         </p>
 
         <button data-bs-toggle="modal" data-bs-target="#myModal" (click)="generateFullResults()"
-            class="btn bg-primary m-md-auto text-light fs-4"><i class="me-3 bi bi-bar-chart-steps text-light"></i>Votre
+            class="btn bg-primary m-md-auto text-light fs-4"><i class="me-3 bi bi-arrow-right-circle-fill text-light"></i>Votre
             parcours personnalisé</button>
     </ng-template>
 

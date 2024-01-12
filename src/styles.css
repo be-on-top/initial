@@ -60,20 +60,22 @@ h3::before {
 
 
 li.nav-item.dropdown.active a {
-    opacity: 1 !important; /* Opacité complète pour le texte */
+    opacity: 1 !important;
+    /* Opacité complète pour le texte */
 }
 
 li.nav-item.dropdown.active a::before {
     width: 80%;
     background-color: #82BC00 !important;
-    opacity: 1 !important; /* Opacité complète pour le soulignement */
+    opacity: 1 !important;
+    /* Opacité complète pour le soulignement */
 }
 
-.trade h2{
+.trade h2 {
     text-align: left;
     position: relative;
-    margin-top:30px;
-    margin-bottom:30px;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
 
@@ -88,28 +90,29 @@ li.nav-item.dropdown.active a::before {
 } */
 
 
-.trade p, .trade div {
+.trade p,
+.trade div {
     margin: 0;
     padding-bottom: 0.6rem;
     /* padding-top: 0.6rem; */
-    padding-left:0.6rem;
+    padding-left: 0.6rem;
     font-size: 1rem;
-    border-left:2px #82BC00 solid
+    border-left: 2px #82BC00 solid
 }
 
 .trade ul {
-    margin-top:0;
-    margin-bottom:0;
-    padding-top:0.6rem;
-    padding-bottom:0.6rem;
-    border-left:2px #82BC00 solid;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+    border-left: 2px #82BC00 solid;
 }
 
-.trade strong{
+.trade strong {
     font-weight: 600;
     /* font-size: 1.4rem; */
     /* letter-spacing: 0.15rem; */
-    font-size:1.05rem
+    font-size: 1.05rem
 }
 
 
@@ -200,9 +203,9 @@ h4,
     transition: .5s ease;
 }
 
-.alert-light{
-    border:1px #82BC00 solid;
-    font-weight:400 ;
+.alert-light {
+    border: 1px #82BC00 solid;
+    font-weight: 400;
 }
 
 .text-success,
@@ -242,7 +245,8 @@ input:checked {
     color: #82BC00 !important;
 } */
 
-.bg-primary, .btn-primary {
+.bg-primary,
+.btn-primary {
     background-color: #0062fe !important;
     /* background-image: linear-gradient(to right, rgb(27, 9, 106),  #0062fe); */
 }
@@ -364,7 +368,7 @@ p.question {
     cursor: pointer;
 }
 
-.choice:hover img {
+/* .choice:hover img {
     opacity: 0.3;
 }
 
@@ -373,7 +377,7 @@ p.question {
     max-height: 350px;
     transition: .5s ease;
     backface-visibility: hidden;
-}
+} */
 
 /* Pour masquer l'icône "hamburger" par défaut de Bootstrap */
 /* .navbar-toggler-icon {
@@ -458,7 +462,7 @@ p.question {
         margin-bottom: 0.5rem;
     }
 
-    .trade > p{
+    .trade>p {
         font-size: 1em !important;
     }
 
@@ -476,9 +480,20 @@ p.question {
         display: none ! important;
     }
 
-    .btn.btn-transparent.text-center.fs-5{
+    .btn.btn-transparent.text-center.fs-5 {
         font-size: 1rem ! important;
-
     }
 
+}
+
+/* Media query pour les écrans de 430px et plus pour la classe col-sm-6 */
+@media only screen and (min-width: 430px) and (max-width:575px) {
+    .col-sm-6 {
+        width: 50%;
+        padding: 2px;
+    }
+
+    i.text-choiced.fs-5 {
+        display: none;
+    }
 }

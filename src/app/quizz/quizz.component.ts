@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 // import { Auth } from '@angular/fire/auth';
-import { ActivatedRoute, Router, NavigationEnd} from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 
 // import { onAuthStateChanged } from 'firebase/auth';
 import { QuestionsService } from '../admin/questions.service';
@@ -17,7 +17,7 @@ import { Observable, of } from 'rxjs';
   templateUrl: './quizz.component.html',
   styleUrls: ['./quizz.component.css']
 })
-export class QuizzComponent implements OnInit{
+export class QuizzComponent implements OnInit {
   @ViewChild(DetailsComponent) childComponent!: DetailsComponent;
   // doit récupérer via le paramètre de route l'id relative au métier
   trade: any = ""
@@ -27,7 +27,7 @@ export class QuizzComponent implements OnInit{
   uid: string = ""
   // doit récupérer les questions (préalables et de positionnement) via le service dédié (questionsService) pour le métier visé
   questions: Questions[] = []
-  questionsMedias: string[] = ['1','2']
+  questionsMedias: string[] = ['1', '2']
   responsesMedias: any = []
   // pour passer de l'une à l'autre, faut qu'on ait un indexQuestion qui soit susceptible de s'incrémenter
   indexQuestion: number = 0
@@ -85,6 +85,9 @@ export class QuizzComponent implements OnInit{
   studentData?: any;
   isIndexValable: boolean = true;
 
+  // Définissez la hauteur de votre menu fixe
+  menuHeight = 100; // Remplacez cela par la hauteur réelle de votre menu fixe
+  mobileBreakpoint = 575; // Remplacez cela par la largeur de la fenêtre à partir de laquelle vous considérez que c'est un téléphone mobile
 
 
   constructor(
@@ -95,7 +98,8 @@ export class QuizzComponent implements OnInit{
     private studentService: StudentsService,
     // pour tester la récupération des curseurs
     private settingsService: SettingsService,
-    private router: Router
+    private router: Router,
+    private el: ElementRef
   ) {
     // this.trade = this.ac.snapshot.params["id"]
     // this.indexQuestion = this.ac.snapshot.params["indexQuestion"]
@@ -114,7 +118,7 @@ export class QuizzComponent implements OnInit{
 
     //   if (this.ac.snapshot.params["indexQuestion"] < realIndexFromDatabase) { this.redirectToRealUrl(realIndexFromDatabase) } 
     //   else {
-    
+
     // }
     // })
 
@@ -124,41 +128,6 @@ export class QuizzComponent implements OnInit{
     this.scoreCounter = this.ac.snapshot.params["scoreCounter"]
     this.hasStartedEvaluation = this.ac.snapshot.params['hasStartedEvaluation'] === 'true'
     this.studentId = this.ac.snapshot.params["studentId"]
-    // this.ac.params.subscribe(params => {
-    //   console.log('URL Parameters:', params); // Vérifions les paramètres de l'URL
-    
-    //   this.trade = params["id"];
-    //   this.indexQuestion = params["indexQuestion"];
-    //   this.scoreCounter = params["scoreCounter"];
-    //   this.hasStartedEvaluation = params['hasStartedEvaluation'] === 'true';
-    //   this.studentId = params["studentId"];
-    
-    //   console.log('Current Index Question:', this.indexQuestion); // Vérifions la valeur actuelle de indexQuestion
-    
-    //   this.studentService.getStudentById(this.studentId).subscribe((data) => {
-    //     this.studentData = data;
-    //     const realIndexFromDatabase = this.studentData['quizz_' + this.trade].lastIndexQuestion;
-    //     console.log('Real Index from Database:', realIndexFromDatabase);
-    
-    //     if (this.indexQuestion <= realIndexFromDatabase) { 
-    //       console.log('Redirecting...'); // Vérifions si la redirection est censée se produire
-    //       this.router.navigate(['/quizz', this.trade, realIndexFromDatabase + 1, this.scoreCounter, true, this.studentId]);
-    //     }
-    //   });
-    // });
-    
-  
-
-
-
-    // onAuthStateChanged(this.auth, (user: any) => {
-    //   if (user) {
-    //     this.uid = user.uid
-    //   }
-    //   else {
-    //     console.log("Personne n'est authentifié actuellement !");
-    //   }
-    // })
 
 
     // pour recevoir la liste des questions relatives au métier
@@ -233,6 +202,7 @@ export class QuizzComponent implements OnInit{
       console.log('this.questions', this.questions);
       console.log('this.questions.length', this.questions.length);
 
+
       this.questions.forEach(value => {
         this.competences.push(value.competence)
       }
@@ -253,18 +223,6 @@ export class QuizzComponent implements OnInit{
 
     })
 
-    // this.studentService.getStudentById(this.studentId).subscribe((data) => {
-    //   this.dataStudent = data
-    //   // on ne peut plus faire référence à this.dataStudent.studentCompetences si multiple quizz VERSION 2
-    //   // this.dataStudent.studentCompetences ? this.studentCompetences = this.dataStudent.studentCompetences : ''
-    //   const quizzKey: string = 'quizz_' + this.trade
-    //   console.log('quizzKey!!!!!!!!!!!!!!!!!!!!', quizzKey);
-    //   console.log('this.dataStudent', this.dataStudent);
-    //   this.hasStartedEvaluation == true && this.dataStudent[quizzKey] && this.dataStudent[quizzKey].studentCompetences ? this.studentCompetences = this.dataStudent[quizzKey].studentCompetences : '';
-    //   this.dataStudent && this.dataStudent[quizzKey] ? console.log('this.dataStudent[quizzKey]', this.dataStudent[quizzKey]) : console.log("pas encore généré");
-    //   console.log('this.studentCompetences tel que récupéré en base dans ngOnInit', this.studentCompetences);
-
-    // })
 
     // pour vérifier au préalable qu'on accède bien à dataStudent
     this.studentService.getStudentById(this.studentId).subscribe((data) => {
@@ -275,7 +233,7 @@ export class QuizzComponent implements OnInit{
 
       // ici, il est bon
       // console.log('this.dataStudent', this.dataStudent);
-      this.hasStartedEvaluation == true && this.dataStudent[quizzKey] && this.dataStudent[quizzKey].studentCompetences ? this.studentCompetences = this.dataStudent[quizzKey].studentCompetences : '';
+      this.hasStartedEvaluation === true && this.dataStudent[quizzKey] && this.dataStudent[quizzKey].studentCompetences ? this.studentCompetences = this.dataStudent[quizzKey].studentCompetences : '';
       this.dataStudent && this.dataStudent[quizzKey] ? console.log('this.dataStudent[quizzKey]', this.dataStudent[quizzKey]) : console.log("pas encore généré");
     })
 
@@ -297,10 +255,9 @@ export class QuizzComponent implements OnInit{
     //       this.trade,realIndexFromDatabase + 1,this.studentData?.['quizz_'+this.trade.sigle]?.scoreCounter,
     //       true,this.studentId
     //     ]);
-        
+
     //   }
-    // });
-  
+    // }); 
 
 
   }
@@ -414,6 +371,21 @@ export class QuizzComponent implements OnInit{
     }
 
     console.log("this.totalAnswersAvailable mis à jour !!!!", this.totalAnswersAvailable);
+
+
+
+    const isMobile = window.innerWidth <= this.mobileBreakpoint;
+
+    if (isMobile) {
+      const nextAnchor = this.el.nativeElement.querySelector('a[name="next"]');
+      if (nextAnchor) {
+        const offset = nextAnchor.offsetTop - this.menuHeight;
+        window.scrollTo({ top: offset, behavior: 'smooth' });
+      }
+    }
+
+
+
   }
 
 
@@ -563,7 +535,6 @@ export class QuizzComponent implements OnInit{
               this.estimatedCPCost[`individual_cost_CP${level}`] = data.costs[`cost_CP${level}`]
               console.log("this.moreInfo", this.moreInfo);
 
-
             })
             console.log("le coût horaire de la compétence", this.cpCostByHour)
             break; // Sort de la boucle une fois la correspondance trouvée
@@ -705,24 +676,24 @@ export class QuizzComponent implements OnInit{
     this.router.navigate(['/account']);
   }
 
-  checkIndexValidity(param:number) {
+  checkIndexValidity(param: number) {
     this.studentService.getStudentById(this.studentId).subscribe((data) => {
       this.studentData = data
 
       const realIndexFromDatabase = this.studentData['quizz_' + this.trade].lastIndexQuestion
-      
+
       // alert(realIndexFromDatabase)
 
       if (param <= realIndexFromDatabase) { this.redirectToRealUrl(realIndexFromDatabase) } else { alert("ok") }
-    })}
-
-  redirectToRealUrl(realIndexFromDatabase:number) {
-    this.router.navigate([
-                    '/quizz/',
-                    this.trade,realIndexFromDatabase + 1,this.studentData?.['quizz_'+this.trade.sigle]?.scoreCounter,
-                    true,this.studentId
-                  ]);
+    })
   }
 
+  redirectToRealUrl(realIndexFromDatabase: number) {
+    this.router.navigate([
+      '/quizz/',
+      this.trade, realIndexFromDatabase + 1, this.studentData?.['quizz_' + this.trade.sigle]?.scoreCounter,
+      true, this.studentId
+    ]);
+  }
 
 }
