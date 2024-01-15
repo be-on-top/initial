@@ -89,7 +89,7 @@ export class QuizzComponent implements OnInit {
   menuHeight = 100; // Remplacez cela par la hauteur réelle de votre menu fixe
   mobileBreakpoint = 575; // Remplacez cela par la largeur de la fenêtre à partir de laquelle vous considérez que c'est un téléphone mobile
 
-
+  title: string = ""
   constructor(
     private ac: ActivatedRoute,
     // private auth: Auth, 
@@ -211,8 +211,11 @@ export class QuizzComponent implements OnInit {
       this.competences = [...new Set(this.competences)];
       console.log("this.competences!!!!!!!!!!!!!!", this.competences);
 
-      this.studentCompetences = this.competences.map((item: number) => ({ [item]: 0 }));
-      console.log(this.studentCompetences);
+      if (this.indexQuestion == 0 && this.scoreCounter == 0) {
+        this.studentCompetences = this.competences.map((item: number) => ({ [item]: 0 }));
+        console.log(this.studentCompetences);
+      }
+
 
       // et dans l'hypothèse où denominatorsCompetences est incrémenté par le biais de next()
       // et dans l'hypothèse où on peut l'initier dans ngOnInit sans l'écrasesr à chaque fois... 
@@ -220,6 +223,20 @@ export class QuizzComponent implements OnInit {
       this.generateFullDenominatorsCompetences(this.competences)
 
       this.resultingDurationsByCompetences = this.competences.map((item: number) => ({ [item]: 0 }));
+
+      // pour traiter en dur la dénomination 
+      if (this.trade == "cl_vul") {
+        this.title = "Chauffeur Livreur VUL"
+
+      } else if (this.trade == "prepa_cdes") {
+        this.title = "Préparateur de Commandes"
+
+      } else if (this.trade == "poseur_ite") {
+        this.title = "Poseur ITE"
+      }
+      else if (this.trade == "mac_vrd") {
+        this.title = "Maçon VRD"
+      }
 
     })
 

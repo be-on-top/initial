@@ -91,9 +91,11 @@ export class RegisterComponent {
 
   showPassword: boolean = false;
 
-  // toggleDisplayPassword(event:any) {
-  //   this.showPassword = !this.showPassword;
-  // }
+  toggleDisplayPassword() {
+    this.showPassword = !this.showPassword;
+  }
+
+
 
   // validateField(textInput: any) {
   //   if (textInput.invalid) {
