@@ -24,12 +24,14 @@ export class DetailsComponent implements OnInit {
   @Input() fullGoodAnswersClicked: any
   @Input() fullAnswersClicked: any
   @Output() resetFullAnswersClicked = new EventEmitter<void>();
+  
   // fullAnswersClicked:number
 
   @Input() q: any
   @Input() questionsMedias: any
   @Input() responsesMedias: any
   @Input() studentCompetences: any
+  @Input() totalQuestions: any
   // @Input() hasStartedEvaluation: any
   // pour prévenir le parent qu'au minimum un clic a été détecté donc une réponse donnée (quelle que soit sa valeur)
   isCompleted: boolean = false
