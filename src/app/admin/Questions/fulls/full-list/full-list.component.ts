@@ -72,6 +72,7 @@ export class FullListComponent {
 
       // essai tests détection updated data via service worker
       // this.updateClient()
+      this.checkForUpdates()
 
     })
 
@@ -109,33 +110,14 @@ export class FullListComponent {
   }
 
 
-  // we also create a method that will inform the browser about the update
-  // reloadCache() {
-  updateClient() {
-    if (!this.swUpdate.isEnabled) {
-      console.log("swUpdate not available");
-      return
-    }
-
-    // we will subscribe to the available observable
-    this.swUpdate.versionUpdates.pipe(
-      filter((evt): evt is VersionReadyEvent => evt.type === 'VERSION_READY'),
-      map(evt => ({
-        type: 'UPDATE_AVAILABLE',
-        current: evt.currentVersion,
-        available: evt.latestVersion,
-      })))
-      // pour simplement comparer la version actuelle et la version disponible 
-      // .subscribe((result)=>console.log("current",result.current, "available", result.available))
-      .subscribe((result) => {
-        console.log("current", result.current, "available", result.available)
+  checkForUpdates() {
+    if (this.swUpdate.isEnabled) {
+      this.swUpdate.available.subscribe(() => {
         if (confirm("Une mise à jour est disponible. Souhaitez-vous recharger la page ?")) {
-          this.swUpdate.activateUpdate().then(() => location.reload())
-          // document.location.reload()
+          this.swUpdate.activateUpdate().then(() => document.location.reload());
         }
-      })
-
-    this.swUpdate.activated.subscribe((event) => console.log("previous", event.previous, "current", event.current))
+      });
+    }
   }
 
   // pour filtrer les questions lorsque la sélection dans le menu déroulant change
