@@ -11,6 +11,7 @@ import { Denominator } from './denominator';
 import { Questions } from '../admin/Questions/questions';
 import { Trade } from '../admin/trade';
 import { Observable, of } from 'rxjs';
+import { UpdateService } from '../update.service';
 
 @Component({
   selector: 'app-quizz',
@@ -102,29 +103,15 @@ export class QuizzComponent implements OnInit {
     // pour tester la récupération des curseurs
     private settingsService: SettingsService,
     private router: Router,
-    private el: ElementRef
+    private el: ElementRef,
+    private updateService: UpdateService
   ) {
-    // this.trade = this.ac.snapshot.params["id"]
-    // this.indexQuestion = this.ac.snapshot.params["indexQuestion"]
-    // this.scoreCounter = this.ac.snapshot.params["scoreCounter"]
-    // this.hasStartedEvaluation = this.ac.snapshot.params['hasStartedEvaluation']
+
   }
 
   ngOnInit() {
-
-    // this.checkIndexValidity(this.ac.snapshot.params["indexQuestion"])
-    // this.studentService.getStudentById(this.studentId).subscribe((data) => {
-    //   this.studentData = data
-
-    //   const realIndexFromDatabase = this.studentData['quizz_' + this.trade].lastIndexQuestion
-    //   alert(realIndexFromDatabase)
-
-    //   if (this.ac.snapshot.params["indexQuestion"] < realIndexFromDatabase) { this.redirectToRealUrl(realIndexFromDatabase) } 
-    //   else {
-
-    // }
-    // })
-
+    // pour tenter de détecter des updates côté template
+    this.updateService.checkForUpdates();
 
     this.trade = this.ac.snapshot.params["id"]
     this.indexQuestion = this.ac.snapshot.params["indexQuestion"]
@@ -261,7 +248,6 @@ export class QuizzComponent implements OnInit {
       // console.log('this.dataStudent', this.dataStudent);
       this.hasStartedEvaluation === true && this.dataStudent[quizzKey] && this.dataStudent[quizzKey].studentCompetences ? this.studentCompetences = this.dataStudent[quizzKey].studentCompetences : '';
       this.dataStudent && this.dataStudent[quizzKey] ? console.log('this.dataStudent[quizzKey]', this.dataStudent[quizzKey]) : console.log("pas encore généré");
-
     
     })
 
