@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 // import { Auth } from '@angular/fire/auth';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 
@@ -91,6 +91,8 @@ export class QuizzComponent implements OnInit {
 
   title: string = ""
   totalQuestions:number=100
+
+  @ViewChild('myModal') myModal!: ElementRef;
   constructor(
     private ac: ActivatedRoute,
     // private auth: Auth, 
@@ -141,7 +143,7 @@ export class QuizzComponent implements OnInit {
       this.questions = allQuestions.filter(q => q.number < 100 && q.sigle == this.trade)
       this.questions.sort(this.compare)
       // pour déterminer le nombre total (réel) de questions
-      this.totalQuestions=this.questions.length
+      this.totalQuestions=this.questions.length+1
 
       // pour qu'on ne se retrouve pas en console avec un can not read id parce qu'il n'y en a plus
       // on peut rajouter ATTENTION !!!!! 
@@ -219,6 +221,10 @@ export class QuizzComponent implements OnInit {
         console.log(this.studentCompetences);
       }
 
+      if (this.hasStartedEvaluation==false && this.indexQuestion == 0) {
+        this.openModal();
+      }
+
 
       // et dans l'hypothèse où denominatorsCompetences est incrémenté par le biais de next()
       // et dans l'hypothèse où on peut l'initier dans ngOnInit sans l'écrasesr à chaque fois... 
@@ -255,6 +261,8 @@ export class QuizzComponent implements OnInit {
       // console.log('this.dataStudent', this.dataStudent);
       this.hasStartedEvaluation === true && this.dataStudent[quizzKey] && this.dataStudent[quizzKey].studentCompetences ? this.studentCompetences = this.dataStudent[quizzKey].studentCompetences : '';
       this.dataStudent && this.dataStudent[quizzKey] ? console.log('this.dataStudent[quizzKey]', this.dataStudent[quizzKey]) : console.log("pas encore généré");
+
+    
     })
 
     // fin
@@ -278,6 +286,7 @@ export class QuizzComponent implements OnInit {
 
     //   }
     // }); 
+
 
 
   }
@@ -714,6 +723,44 @@ export class QuizzComponent implements OnInit {
       this.trade, realIndexFromDatabase + 1, this.studentData?.['quizz_' + this.trade.sigle]?.scoreCounter,
       true, this.studentId
     ]);
+  }
+
+  openModal() {
+    const modalElement = this.myModal.nativeElement;
+
+    // Ouvrir la modal
+    modalElement.classList.add('show');
+    modalElement.style.display = 'block';
+
+    // Ajouter un écouteur d'événements pour détecter la fermeture de la modal
+    modalElement.addEventListener('click', (event:any) => {
+      if (event.target === modalElement) {
+        this.hideModal();
+      }
+    });
+
+    // Ajouter un écouteur d'événements pour le bouton de fermeture
+    const closeButton = modalElement.querySelector('.btn-close', '.btn');
+    if (closeButton) {
+      closeButton.addEventListener('click', () => {
+        this.hideModal();
+      });
+    }
+  }
+
+  hideModal() {
+    const modalElement = this.myModal.nativeElement;
+
+    // Fermer la modal
+    modalElement.classList.remove('show');
+    modalElement.style.display = 'none';
+
+    // Retirer les écouteurs d'événements pour éviter les fuites de mémoire
+    modalElement.removeEventListener('click', this.hideModal);
+    const closeButton = modalElement.querySelector('.btn-close');
+    if (closeButton) {
+      closeButton.removeEventListener('click', this.hideModal);
+    }
   }
 
 }
