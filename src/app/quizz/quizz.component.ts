@@ -208,9 +208,10 @@ export class QuizzComponent implements OnInit {
         console.log(this.studentCompetences);
       }
 
-      if (this.hasStartedEvaluation==false && this.indexQuestion == 0) {
-        this.openModal();
-      }
+      // si OPTION MODALE conservée !!!!!!
+      // if (this.hasStartedEvaluation==false && this.indexQuestion == 0) {
+      //   this.openModal();
+      // }
 
 
       // et dans l'hypothèse où denominatorsCompetences est incrémenté par le biais de next()
@@ -711,28 +712,28 @@ export class QuizzComponent implements OnInit {
     ]);
   }
 
-  openModal() {
-    const modalElement = this.myModal.nativeElement;
+  // openModal() {
+  //   const modalElement = this.myModal.nativeElement;
 
-    // Ouvrir la modal
-    modalElement.classList.add('show');
-    modalElement.style.display = 'block';
+  //   // Ouvrir la modal
+  //   modalElement.classList.add('show');
+  //   modalElement.style.display = 'block';
 
-    // Ajouter un écouteur d'événements pour détecter la fermeture de la modal
-    modalElement.addEventListener('click', (event:any) => {
-      if (event.target === modalElement) {
-        this.hideModal();
-      }
-    });
+  //   // Ajouter un écouteur d'événements pour détecter la fermeture de la modal
+  //   modalElement.addEventListener('click', (event:any) => {
+  //     if (event.target === modalElement) {
+  //       this.hideModal();
+  //     }
+  //   });
 
-    // Ajouter un écouteur d'événements pour le bouton de fermeture
-    const closeButton = modalElement.querySelector('.btn-close', '.btn');
-    if (closeButton) {
-      closeButton.addEventListener('click', () => {
-        this.hideModal();
-      });
-    }
-  }
+  //   // Ajouter un écouteur d'événements pour le bouton de fermeture
+  //   const closeButton = modalElement.querySelector('.btn-close', '.btn');
+  //   if (closeButton) {
+  //     closeButton.addEventListener('click', () => {
+  //       this.hideModal();
+  //     });
+  //   }
+  // }
 
   hideModal() {
     const modalElement = this.myModal.nativeElement;

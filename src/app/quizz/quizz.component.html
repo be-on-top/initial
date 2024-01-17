@@ -3,15 +3,11 @@
     <!-- <h3>Quizz pour métier {{trade}}</h3> -->
 
     <h3>Quizz {{title}}</h3>
-<!-- Le contenu du composant -->
-<!-- Le contenu du composant -->
-<!-- Le contenu du composant -->
-<!-- Le contenu du composant -->
-<div #myModal class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+
+    <!-- <div #myModal class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
   data-bs-backdrop="static" data-bs-keyboard="false">
   <div class="modal-dialog">
     <div class="modal-content">
-      <!-- Contenu de votre modal -->
       <div class="modal-header bg-warning">
         <h5 class="modal-title text-light" id="exampleModalLabel">Attention</h5>
         <button type="button" class="btn-close text-primary" aria-label="Fermer"></button>
@@ -21,18 +17,17 @@
         <strong>vous proposer une formation individualisée et modulaire</strong>. Une ou plusieurs réponses peuvent donc être sélectionnées. <br>Composé de
         <strong>{{totalQuestions}} questions</strong>, vous pouvez à tout moment <strong>l'interrompre et le
             reprendre</strong> depuis la page d'accueil, la page métier ou votre compte utilisateur
-        <!-- Contenu de votre modal -->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal" (click)="hideModal()">J'ai compris</button>
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
 
 
-  
+
     <!-- <h4 class="fs-6">Id de l'étudiant récupéré : {{studentId}}</h4>
     <div class="alert alert-danger">fullOptScoring récupéré par le parent{{fullOptScoringTrue}} à comparer à
         totalAnswersAvailable {{totalAnswersAvailable}} sur la base de {{indexQuestion}}</div>
@@ -58,13 +53,15 @@
     <!-- on veut juste la première de la liste initiale -->
     <div *ngIf="questions[indexQuestion]">
 
-        <!-- <div *ngIf="!hasStartedEvaluation" class="alert bg-light p-4 pe-5 alert-dismissible mb-4 fade show">
-            <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="alert"></button>
-            Ce <strong>questionnaire à choix multiples</strong> va nous permettre d'évaluer vos connaissances pour
-            <strong>vous proposer une formation individualisée et modulaire</strong>. Composé de
-            <strong>{{totalQuestions}} questions</strong>, vous pouvez à tout moment <strong>l'interrompre et le
-                reprendre</strong> depuis la page d'accueil, la page métier ou votre compte utilisateur
-        </div> -->
+        <div *ngIf="!hasStartedEvaluation" class="alert bg-light p-4 pe-5 alert-dismissible mb-4 fade show">
+            <!-- <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="alert"></button> -->
+            Ce <strong>questionnaire à choix multiples</strong> va nous permettre d'évaluer vos
+            connaissances pour <strong>vous proposer une formation individualisée et modulaire</strong>. Une ou plusieurs
+            réponses peuvent donc être sélectionnées.<br><br>Composé de <strong>{{totalQuestions}} questions</strong>, vous pouvez à tout moment <strong>l'interrompre
+                et le reprendre</strong> depuis la page d'accueil, la page métier ou votre compte utilisateur. <br>
+
+            <button type="button" class="btn btn-primary mt-3" data-bs-dismiss="alert">J'ai lu et compris</button>
+        </div>
 
         <div>
             <a name="next"></a>
