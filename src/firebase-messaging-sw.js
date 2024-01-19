@@ -1,6 +1,11 @@
 // importScripts("https://www.gstatic.com/firebasejs/7.23.0/firebase-app.js");
-importScripts("https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js");
-importScripts("https://www.gstatic.com/firebasejs/9.16.0/firebase-messaging.js");
+importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js');
+importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js');
+
+// importScripts('https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js');
+// importScripts('https://www.gstatic.com/firebasejs/9.16.0/firebase-messaging.js');
+
+
 // import { onBackgroundMessage } from "firebase/messaging/sw";
 
 
@@ -40,9 +45,26 @@ const messaging = firebase.messaging();
 
 // });
 
-navigator.serviceWorker.ready.then((reg) => {
-  reg.pushManager.getSubscription().then((subscription) => {
-    const options = subscription.options;
-    console.log(options.applicationServerKey); // the public key
-  });
+
+
+self.addEventListener('install', (event) => {
+  console.log('Service Worker install event:', event);
+  self.skipWaiting();
 });
+
+self.addEventListener('activate', (event) => {
+  console.log('Service Worker activate event:', event);
+});
+
+self.addEventListener('push', (event) => {
+  console.log('Push notification received:', event);
+  const options = {
+    body: event.data.text(),
+  };
+  event.waitUntil(
+    self.registration.showNotification('Push Notification', options)
+  );
+});
+
+
+

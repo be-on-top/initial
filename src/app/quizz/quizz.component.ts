@@ -334,11 +334,8 @@ export class QuizzComponent implements OnInit {
     // alert(this.indexQuestion)
     this.updateUrl(this.indexQuestion, this.scoreCounter);
 
-
-
     // on peut rajouter ATTENTION !!!!! 
     if (this.indexQuestion < this.questions.length) {
-
 
       // pour mettre à jour les points à attribuer à la question une fois l'index incrémenté
       this.questions[this.indexQuestion].notation ? this.numberOfPoints = this.questions[this.indexQuestion].notation : ''
@@ -400,8 +397,6 @@ export class QuizzComponent implements OnInit {
       }
     }
 
-
-
   }
 
 
@@ -457,7 +452,6 @@ export class QuizzComponent implements OnInit {
     // const resultQuizz = this.dataStudent.studentCompetences
     const quizzKey: string = 'quizz_' + this.trade
     const resultQuizz = this.dataStudent[quizzKey].studentCompetences
-
 
     const denominatorsQuizz = this.denominatorsCompetences
 
@@ -603,22 +597,6 @@ export class QuizzComponent implements OnInit {
     this.totalCost = this.sumCosts(this.fullResults)
 
   }
-
-  // getCursors() {
-
-  //   this.settingsService.getLevelsCursors().subscribe((data) => {
-  //     console.log(data);
-  //     this.cursors = data
-
-  //     this.firstCursor = data['firstCursor']
-  //     this.secondCursor = data['secondCursor']
-
-  //     console.log(this.firstCursor);
-  //     console.log(this.secondCursor);
-
-  //   })
-
-  // }
 
   getCursors() {
     this.settingsService.getLevelsCursors().subscribe((data) => {

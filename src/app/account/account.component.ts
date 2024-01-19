@@ -88,7 +88,8 @@ export class AccountComponent implements OnInit, OnDestroy {
     //   console.log('Message received. ', payload);
     //   // ...
     // });
-  }
+
+     }
 
   ngOnInit(): void {
     onAuthStateChanged(this.auth, (user: any) => {
@@ -159,7 +160,7 @@ export class AccountComponent implements OnInit, OnDestroy {
       }
     });
   
-    this.authService.getToken()?.then(res => console.log("token authentification depuis authService", res.token));
+    // this.authService.getToken()?.then(res => console.log("token authentification depuis authService", res.token));
   
     console.log('this.tradesEvaluated', this.tradesEvaluated);
     console.log('type of tradesEvaluated', typeof (this.tradesEvaluated));
@@ -181,47 +182,31 @@ export class AccountComponent implements OnInit, OnDestroy {
   }
 
 
-  notifyMe() {
-    // alert("coucou")
-
+  async notifyMe() {
     if (!("Notification" in window)) {
-      // Check if the browser supports notifications
-      alert("This browser does not support desktop notification");
-    } else if (Notification.permission === "granted") {
-      // Check whether notification permissions have already been granted 
-      // if so, create a notification
-      const notification = new Notification("Coucou, vous avez déjà demandé à être notifié. Votre demande a été prise en compte !!! ");
-      alert(`Notification permission OK : already registered`);
-
-      // c'est là qu'on peut mettre à jour registrationTokens
-      getToken(getMessaging(), { vapidKey: "BOLK9wQoeo2ycP0yK1yTLQG8DlIYM1GnRLe09u3tdnCERUSOwW7iv_QV671oU8Xa4njllE64DbVvHPnrzsgRdpc" })
-        .then((value) => {
-          const newToken: string = value;
-          this.notificationService.registerToken(newToken, this.userData.id)
-        })
-
-      // …
-    } else if (Notification.permission !== "denied") {
-      // We need to ask the user for permission
-      alert('notification request for push notification')
-      Notification.requestPermission().then((permission) => {
-        // If the user accepts, let's create a notification
-        if (permission === "granted") {
-          alert("nouveau !!!!")
-          const notification = new Notification("Coucou, vous venez de demander à être notifié !!! ");
-          // c'est là qu'on peut mettre à jour registrationTokens
-          // getToken(getMessaging(), { vapidKey: "BOLK9wQoeo2ycP0yK1yTLQG8DlIYM1GnRLe09u3tdnCERUSOwW7iv_QV671oU8Xa4njllE64DbVvHPnrzsgRdpc" })
-          // getToken(getMessaging(), { vapidKey: "BEn4zG9T1fs775MxiLxeRFLfrjGPF2S77S45zuwartHVGRkYD_7W8rmIeRDgF0wKdVoc12ePGUx0FnuXvmx79Tggz_QME" })
-          getToken(getMessaging(), { vapidKey: "BEn4zG9T1fs775MxiLxeRFLfrjGPF2S77S45zuwartHVGRkYD" })
-            .then((value) => {
-              const newToken: string = value;
-              console.log(newToken);
-              this.notificationService.registerToken(newToken, this.userData.id)
-            });
-        }
-      });
+      console.log("This browser does not support desktop notification");
+      return;
+    }
+  
+    try {
+      const permission = await Notification.requestPermission();
+  
+      if (permission === "granted") {
+        const notification = new Notification("Coucou, vous venez de demander à être notifié !!! ");
+        const messaging = getMessaging();
+        
+        const token = await getToken(messaging, { vapidKey: "BIh4nZeNhn8JfEciZJvgFL96Qd7uVzfZTmaoUp2RFb65SA2Lk2jvujAtmEkttGR5OtyTRIj2_FS49k5mPLl6HsM" });
+        
+        console.log(token);
+        this.notificationService.registerToken(token, this.userData.id);
+      } else {
+        console.log("Notification permission denied");
+      }
+    } catch (error) {
+      console.error("Error during notification setup:", error);
     }
   }
+  
 
   // alternative pour externaliser essai
   // onNotifyClick() {

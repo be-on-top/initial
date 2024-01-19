@@ -55,15 +55,14 @@
                     <div class="rounded p-2" id="actual" #actual>
                         <ul class="list-group">
                             <!-- <li class="list-group-item"><span class="fw-bolder">Son id sur firestore :</span>  {{userData.id}}</li> -->
-                            <li class="list-group-item"><span class="fw-bolder">Votre email sur firestore :</span>
+                            <li class="list-group-item"><span class="fw-bolder">Email :</span>
                                 {{userData.email}}</li>
                             <!-- <li class="list-group-item"><span class="fw-bolder">Votre status sur firestore :</span> {{userData.status}}</li> -->
-                            <li class="list-group-item"><span class="fw-bolder">Prénom sur firestore :</span>
+                            <li class="list-group-item"><span class="fw-bolder">Prénom :</span>
                                 {{userData.firstName}}</li>
-                            <li class="list-group-item"><span class="fw-bolder">Nom sur firestore :</span>
+                            <li class="list-group-item"><span class="fw-bolder">Nom :</span>
                                 {{userData.lastName}}</li>
-                            <li class="list-group-item"><span class="fw-bolder">Date d'enregistrement sur firestore
-                                    :</span> {{userData.created | date:'dd/MM/yyyy' }}</li>
+                            <li class="list-group-item"><span class="fw-bolder">Date d'enregistrement :</span> {{userData.created | date:'dd/MM/yyyy' }}</li>
                             <!-- <li *ngIf="userData.sigle" class="list-group-item">Sigle métier si existant:
                                 {{userData.sigle}}</li> -->
                         </ul>
@@ -82,23 +81,6 @@
                         <div id="demo" class="collapse">
                             <app-update-account [student]="userData"></app-update-account>
                         </div>
-
-                        <!-- option édition avec modale -->
-                        <!-- <button class="btn bg-success mt-3 text-light" data-bs-toggle="modal" data-bs-target="#myModal">
-                            <i class="bi bi-pencil-square text-light p-0"></i>Modifier
-                        </button>
-                        <div class="modal" id="myModal">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h4 class="modal-title">Modification</h4>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                    </div>
-                                    <app-update-account class="modal-body" [student]="userData"></app-update-account>
-                                </div>
-                            </div>
-                        </div> -->
-                        <!-- fin de l'option édition avec modale -->
                     </div>
 
                 </div>
@@ -115,11 +97,6 @@
                 </div>
                 <div id="collapseThreea" class="collapse" data-bs-parent="#accordion">
                     <div class="card-body">
-
-                        <!-- nouveauté pour multi quizz VERSION 2 -->
-
-
-
 
                         <!-- comme on ne questionnera plus tradeEvaluated mais tradesEvaluated [], on va devoir, avant d'inspecter la suite des ngIf, avoir une boucle ngFor pour voir métier après métier...  -->
                         <!-- attention, compte tenu de la manière dont tradesEvaluated a été généré, trade ici, c'est une chaine de caractère type quizz_sigle -->
@@ -142,33 +119,6 @@
                                 </button>
 
                             </div>
-
-                            <!-- Partie 2 si QCM terminé -->
-                            <!-- Il semble que la directive keyvalue provoque des problèmes lorsqu'elle est utilisée dans une boucle *ngFor. 
-                                    Pour contourner ce problème, on peut utiliser la fonction créée Object.entries() pour obtenir les clés et valeurs de result.value. -->
-                            <!-- pour afficher les competence option1 -->
-                            <!-- <ng-template #done class="mb-3">
-                                <p class="card-text fw-bold d-flex align-items-center">QCM de positionnement terminé
-                                    <i class="bi fs-4 bi-check-lg ms-3"></i>
-                                </p>
-                                <div class="fs-6" *ngFor="let competence of trades[trade], let j = index">
-                                    <span class="fw-bold">CP{{ j + 1 }}</span> : <em class="text-primary ">{{ competence
-                                        }}</em>
-                                </div>
-                                <div class="mt-2">
-                                    <div class="card-text mb-0"
-                                        *ngFor="let result of userData[trade].fullResults | keyvalue, let lastResult=last">
-                                        <ng-container *ngFor="let item of objectEntries(result.value)">
-                                            <div class="d-flex align-items-center">
-                                                <span class="fw-bold">{{ item[0] }}</span>
-                                                <i class="bi fs-4 bi-arrow-right-short"></i>
-                                                <span>Note obtenue : {{ item[1].notation | json | number:'1.1-1'
-                                                    }}/20.</span>
-                                            </div>
-                                        </ng-container>
-                                    </div>
-                                </div>
-                            </ng-template> -->
 
                             <!-- pour compétences option 2 alternative pour tout le ng-template -->
                             <ng-template #done class="mb-3">
