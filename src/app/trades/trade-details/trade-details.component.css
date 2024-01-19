@@ -16,6 +16,7 @@ button.btn.btn-primary:hover {
   transform: scale(1.05);
 
 }
+
 button.btn-primary:hover {
   background-color: #0152d4 !important;
   /* background-image: linear-gradient(to right, rgb(27, 9, 106),  #0062fe); */
@@ -37,4 +38,20 @@ button.btn-primary:hover {
   height: 40vw;
   width: 100%;
   object-fit: cover;
+}
+
+@media only screen and (max-width:575px) {
+
+  .btn.btn-transparent {
+    font-size: 1rem ! important;
+    /* text-decoration: underline; */
+    border: 1px solid white;
+  }
+
+  .btn.btn-transparent i {
+    margin-left: 1rem;
+
+  }
+
+
 }
