@@ -113,7 +113,7 @@ export class QuizzComponent implements OnInit {
 
   ngOnInit() {
     // pour tenter de détecter des updates côté template
-    this.updateService.checkForUpdates();
+    // this.updateService.checkForUpdates();
 
     this.trade = this.ac.snapshot.params["id"]
     this.indexQuestion = this.ac.snapshot.params["indexQuestion"]

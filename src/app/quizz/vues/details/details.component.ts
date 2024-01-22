@@ -52,13 +52,8 @@ export class DetailsComponent implements OnInit {
   @ViewChild('imageElement') imageElement?: ElementRef;
   constructor(private renderer: Renderer2) {}
 
-  
-
-
-
   ngOnInit() {
   }
-
 
   ngOnDestroy(): void {
     this.responsesMedias = []
