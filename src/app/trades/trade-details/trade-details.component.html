@@ -4,10 +4,10 @@
     <div class="p-4 bg-primary text-white rounded row fade show mx-1">
         <div class="col-md-7">
             <h1>{{tradeData.denomination}}</h1>
-            <p class="fs-5">
-                Référence : {{tradeData.sigle}}.
-                <br>Nombre de compétences à valider : {{tradeData.competences.length}}.
-                <br>Durée max de la formation : {{firstValuesSum}} heures
+            <p class="fs-5 mt-3">
+                Réf.: {{tradeData.sigle}}.
+                <br>Nombre de compétences à valider: {{tradeData.competences.length}}.
+                <br>Durée maximale: {{firstValuesSum}} heures.
                 <!-- <p class="rounded bg-dark p-2 mt-2 small">Pour vérification du rôle récupéré : {{userRole}}</p> -->
                 <br>
                 <span class="d-block mt-2" (click)="backToPrevious()">
@@ -40,7 +40,7 @@
                         <!-- pour switcher d'un intitulé à un autre selon que studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle -->
                         <div class="d-flex justify-content-md-end" *ngIf="hasStartedEvaluation==false, else none">
                             <button class="btn btn-transparent ps-0"><i class="bi bi-clock"></i>
-                                Démarrer votre évaluation</button>
+                                Démarrer le questionnaire</button>
                         </div>
                         <ng-template #none>
                             <div class="d-flex justify-content-md-end"
@@ -62,7 +62,7 @@
                 </a>
                 <div class="d-flex justify-content-md-end"
                     *ngIf="isEvaluationCompleted">
-                    <div class="btn btn-transparent ps-0 text-light"><i class="bi bi-check-square-fill"></i>
+                    <div class="btn btn-transparent border-0 ps-0 text-light"><i class="bi bi-check-square-fill"></i>
                         Votre évaluation est terminée</div>
                 </div>
             </div>

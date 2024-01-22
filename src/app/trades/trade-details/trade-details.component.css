@@ -49,9 +49,13 @@ button.btn-primary:hover {
   }
 
   .btn.btn-transparent i {
-    margin-left: 1rem;
+    margin-left: 8px;
+    margin-right: 8px;
 
   }
 
+  .btn.btn-transparent.border-0{
+    border: 0;
+  }
 
 }

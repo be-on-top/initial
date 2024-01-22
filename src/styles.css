@@ -468,6 +468,10 @@ p.question {
 
     h2.h3{font-size: 1.2rem !important;}
 
+    li.nav-item.dropdown.active a::before {
+        width: 100%;
+    }
+
 
 }
 

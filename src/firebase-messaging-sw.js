@@ -49,6 +49,7 @@ const messaging = firebase.messaging();
 
 self.addEventListener('install', (event) => {
   console.log('Service Worker install event:', event);
+  alert('Service Worker Install event !!!!')
   self.skipWaiting();
 });
 

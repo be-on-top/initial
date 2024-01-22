@@ -1,6 +1,7 @@
-<!-- install-button.component.html -->
 <div class="container py-5">
-
-    <button class="btn btn-success mt-5" *ngIf="isWeb && deferredPrompt" (click)="installPWA()"><i
-            class="bi bi-arrow-bar-down"></i>Installer l'application</button>
+  <button class="btn btn-success mt-5" *ngIf="isWeb && !isSafari && deferredPrompt" (click)="installPWA()">
+    <i class="bi bi-arrow-bar-down"></i> Installer l'application
+  </button>
 </div>
+
+  

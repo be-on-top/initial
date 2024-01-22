@@ -92,6 +92,8 @@ export class QuizzComponent implements OnInit {
 
   title: string = ""
   totalQuestions:number=100
+  hasReaden:boolean = false
+
 
   @ViewChild('myModal') myModal!: ElementRef;
   constructor(
@@ -726,6 +728,10 @@ export class QuizzComponent implements OnInit {
     if (closeButton) {
       closeButton.removeEventListener('click', this.hideModal);
     }
+  }
+
+  readen(){
+    this.hasReaden=true;
   }
 
 }

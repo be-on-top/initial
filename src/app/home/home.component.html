@@ -1,4 +1,4 @@
-<div class="container py-5">
+<div class="container pt-5">
 
     <!-- <h3>Home Page</h3> -->
 
@@ -26,8 +26,8 @@
         <ng-template #none>
             <div class="alert p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show">
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
-                <span class="d-inline h5">Testez-vous </span> grâce à nos <h2 class="d-inline h5">questionnaires ciblés </h2> 
-                et<span class="d-inline h5"> intégrez sans attendre</span> une <h1 class="d-inline h5">formation personnalisée</h1> pour <span class="d-inline h5">vous hisser aux portes</span> du métier de votre choix
+                <span class="d-inline h5">Testez-vous </span> grâce à des <h2 class="d-inline h5">questionnaires métiers</h2> 
+                et<span class="d-inline h5"> commencez sans attendre</span> une <h1 class="d-inline h5">formation personnalisée</h1> pour <span class="d-inline h5">vous hisser aux portes</span> du métier de votre choix
             </div>
         </ng-template>
     
@@ -62,41 +62,9 @@
     <!-- fin du caroussel -->
 
 
-
-    <!-- <p class="alert bg-success p-2 mt-3 fs-5">Sert pour le moment à tester l'authentification utilisateur, la
-        récupération des sigles métiers pour boucler dessus et afficher chaque zone. Zones qui seront éditables pour le
-        seul utilisateur ayant le role d'éditeur !!</p> -->
-
-
-    <!-- test ok -->
-    <!-- <div *ngIf="user" class="alert bg-light p-2">
-        Id Utilisateur authentifié sur firebase Auth : {{user | json}}
-    </div> -->
-
-    <!-- <div *ngIf="studentData" class="rounded bg-light p-2 mb-2">
-        <ul class="list-group">
-            <li class="list-group-item">Son prénom sur firestore : {{studentData.firstName}}</li>
-            <li class="list-group-item">Son nom sur firestore : {{studentData.lastName}}</li>
-            <li *ngIf="studentData.scoreCounter" class="list-group-item">Votre score pour le moment:
-                {{studentData.scoreCounter}}</li>
-        </ul>
-    </div> -->
-
     <div *ngIf="tradesData" class="rounded bg-light row column-gap-1">
 
-        <!-- <ng-container *ngFor="let trade of tradesData">
-           
-            <div *ngIf="studentData && studentData['quizz_'+trade.sigle]">
-             ce que je récupère :  {{ studentData['quizz_'+trade.sigle].lastIndexQuestion | json }}
-            </div>
-          </ng-container> -->
-
         <div class="col-md-6" *ngFor="let trade of tradesData">
-            <!-- <a [routerLink]="['/quizz/',  trade.sigle]" class="text-decoration-none text-dark"> -->
-            <!-- <a [routerLink]="['/quizz/',  trade.sigle, studentData && studentData['quizz_' + trade].lastIndexQuestion?studentData['quizz_' + trade].lastIndexQuestion+1:0, studentData && studentData['quizz_' + trade].scoreCounter?studentData['quizz_' + trade].scoreCounter:0, studentData && studentData['quizz_' + trade]?true:false, studentData && studentData.id?studentData.id:'']"
-                class="text-decoration-none text-dark"> -->
-
-
 
             <!-- <a [routerLink]="['/quizz/',  trade.sigle, studentData && studentData['quizz_'+trade.sigle] && studentData['quizz_'+trade.sigle].lastIndexQuestion?(studentData['quizz_'+trade.sigle].lastIndexQuestion | number)+1:0, studentData && studentData['quizz_'+trade.sigle] && studentData['quizz_'+trade.sigle].scoreCounter?studentData['quizz_'+trade.sigle].scoreCounter:0, studentData && studentData['quizz_'+trade.sigle]?true:false, studentData && studentData.id?studentData.id:'']" class="text-decoration-none text-dark"> -->
             <div class="card my-3" (click)="selectTrade(trade.id)">
@@ -156,13 +124,6 @@
                             </div>
                         </a>
 
-                        <!-- <div class="d-flex justify-content-end"
-                            *ngIf="studentData && studentData['quizz_'+trade.sigle] && studentData['quizz_'+trade.sigle].fullResults">
-                            <div class="btn btn-transparent">
-                                <i class="bi bi-check-square-fill text-success"></i>
-                                Votre évaluation est terminée
-                            </div>
-                        </div> -->
                         <div class="d-flex justify-content-end" *ngIf="checkQuizzCondition(trade)">
                             <div class="btn btn-transparent border-0">
                                 <i class="bi bi-check-square-fill text-success"></i>
@@ -171,17 +132,13 @@
                         </div>                  
                     </ng-container>
 
-                    <!-- à tester : (str.length>6)? (str | slice:0:6)+'...':(str) -->
-
-
                 </div>
-                <div class="card-footer text-muted">Réf. {{trade.sigle}}
+                <div class="card-footer text-muted">Réf.: {{trade.sigle}}
                     <ng-container *ngIf="studentData && studentData['quizz_'+trade.sigle]">
-                        - ScoreCounter : {{ studentData['quizz_'+trade.sigle].scoreCounter | json }}
+                        - Score: {{ studentData['quizz_'+trade.sigle].scoreCounter | json }} PNTS
                     </ng-container>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
