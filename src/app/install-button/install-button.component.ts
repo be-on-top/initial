@@ -11,6 +11,7 @@ export class InstallButtonComponent {
   deferredPrompt: any;
   isWeb: boolean = false;
   isSafari: boolean = false;
+  isMobileSafari: boolean = false;  // Ajout de la détection pour Safari mobile
 
   constructor(
     private ngZone: NgZone,
@@ -20,7 +21,8 @@ export class InstallButtonComponent {
   ngOnInit() {
     this.isWeb = isPlatformBrowser(this.platformId);
     this.isSafari = this.detectSafari();
-    
+    this.isMobileSafari = this.detectMobileSafari();  // Appel de la nouvelle fonction
+
     if (this.isWeb && !this.isSafari) {
       window.addEventListener('beforeinstallprompt', (event: any) => {
         this.ngZone.run(() => {
@@ -32,6 +34,10 @@ export class InstallButtonComponent {
 
   detectSafari(): boolean {
     return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+  }
+
+  detectMobileSafari(): boolean {
+    return this.isSafari && /(iPhone|iPod|iPad)/i.test(navigator.userAgent);
   }
 
   installPWA() {

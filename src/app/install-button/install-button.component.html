@@ -1,7 +1,20 @@
 <div class="container py-5">
-  <button class="btn btn-success mt-5" *ngIf="isWeb && !isSafari && deferredPrompt" (click)="installPWA()">
-    <i class="bi bi-arrow-bar-down"></i> Installer l'application
-  </button>
-</div>
+  <ng-container *ngIf="isWeb && deferredPrompt && !isSafari">
+    <!-- Bouton d'installation pour les navigateurs autres que Safari -->
+    <button class="btn btn-success mt-5" (click)="installPWA()">
+      <i class="bi bi-arrow-bar-down"></i>Installer l'application
+    </button>
+  </ng-container>
 
+  <ng-container *ngIf="isWeb && isSafari && isMobileSafari">
+    <!-- Message spécifique pour Safari sur mobile/tablette -->
+    <p>Vous pouvez installer cette application en l'ajoutant à l'écran d'accueil de votre iPhone ou iPad. Appuyez sur l'icône de partage, puis sélectionnez "Ajouter à l'écran d'accueil".</p>
+  </ng-container>
   
+  <ng-container *ngIf="isWeb && isSafari && !isMobileSafari">
+    <!-- Message spécifique pour Safari sur ordinateur Mac -->
+    <p>Vous pouvez installer cette application manuellement sur votre ordinateur Mac.</p>
+  </ng-container>
+  
+
+</div>
