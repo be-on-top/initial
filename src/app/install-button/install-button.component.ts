@@ -20,16 +20,16 @@ export class InstallButtonComponent {
 
   ngOnInit() {
     this.isWeb = isPlatformBrowser(this.platformId);
+        // if (this.isWeb && !this.isSafari) {
+          if (this.isWeb) {
+            window.addEventListener('beforeinstallprompt', (event: any) => {
+              this.ngZone.run(() => {
+                this.deferredPrompt = event;
+              });
+            });
+          }
     this.isSafari = this.detectSafari();
     this.isMobileSafari = this.detectMobileSafari();  // Appel de la nouvelle fonction
-
-    if (this.isWeb && !this.isSafari) {
-      window.addEventListener('beforeinstallprompt', (event: any) => {
-        this.ngZone.run(() => {
-          this.deferredPrompt = event;
-        });
-      });
-    }
   }
 
   detectSafari(): boolean {
