@@ -730,8 +730,8 @@ export class QuizzComponent implements OnInit {
     }
   }
 
-  // readen(){
-  //   this.hasReaden=true;
-  // }
+  readen(){
+    this.hasReaden=true;
+  }
 
 }

@@ -185,8 +185,6 @@ export class AccountComponent implements OnInit, OnDestroy {
   }
 
 
-
-
   // Méthode pour demander la permission de notification
   async requestNotificationPermission() {
     if (!("Notification" in window)) {
@@ -232,21 +230,41 @@ export class AccountComponent implements OnInit, OnDestroy {
     } catch (error) {
       console.error("Error during notification setup:", error);
     }
+
+    this.notifyMeWithTitleAndBody('Votre Actualité', `Bravo ${this.userData.firstName}, vous êtes dans les starting-blocks ! ` );
   }
 
 
-  // alternative pour externaliser essai
-  // onNotifyClick() {
-  //   this.notificationService.requestPermissionAndRegisterToken( this.userData.id).then(
-  //     (token) => {
-  //       console.log(`Token obtenu : ${token}`);
-  //       // Faites ce que vous devez faire avec le token si nécessaire
-  //     },
-  //     (error) => {
-  //       console.error(`Erreur lors de la demande de permission : ${error}`);
-  //     }
-  //   );
-  // }
+  async notifyMeWithTitleAndBody(title: string, body: string) {
+    // Vérifier si la permission est déjà accordée
+    // if (Notification.permission !== 'granted') {
+    //   await this.requestNotificationPermission();
+    // }
+  
+    try {
+      const options = {
+        body: body,
+        icon: 'https://be-on-top-beta.web.app/assets/BE-ON-TOP_picto_LOGO.svg', // Remplacez par l'URL de l'icône que vous souhaitez afficher
+        // image: 'https://firebasestorage.googleapis.com/v0/b/be-on-top-beta.appspot.com/o/images%2Ftrades%2Fcl_vul.jpeg?alt=media&token=d49e9dea-f9d3-43d8-8b2f-52e71ad792c3',
+      };
+  
+      // Afficher la notification avec les options
+      const registration = await navigator.serviceWorker.getRegistration();
+      if (registration) {
+        registration.showNotification(title, options);
+      }
+  
+      const messaging = getMessaging();
+  
+      const token = await getToken(messaging, { vapidKey: "BIh4nZeNhn8JfEciZJvgFL96Qd7uVzfZTmaoUp2RFb65SA2Lk2jvujAtmEkttGR5OtyTRIj2_FS49k5mPLl6HsM" });
+  
+      console.log(token);
+      this.notificationService.registerToken(token, this.userData.id);
+    } catch (error) {
+      console.error("Error during notification setup:", error);
+    }
+  }
+  
 
   focus() {
     let myDoc: any = document.querySelector("#demo");
@@ -289,7 +307,6 @@ export class AccountComponent implements OnInit, OnDestroy {
   // pour utiliser le composant de recherche
   onValidFeedback(feedbackMessages: string) {
     this.feedbackMessages = feedbackMessages
-
   }
 
 

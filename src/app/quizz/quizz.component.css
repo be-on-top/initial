@@ -26,3 +26,12 @@ button.btn.btn-primary:disabled {
     background: rgba(0, 0, 0, 0.5);
     /* Opacité de fond, ajustez selon vos préférences */
 }
+
+/* 
+.visible {
+  visibility: visible !important;
+} */
+
+.invisible {
+  visibility: hidden !important;
+}

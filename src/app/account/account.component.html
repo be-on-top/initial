@@ -9,13 +9,13 @@
         <span> Au fur à mesure de vos interactions, vous pourrez suivre ci-dessous les résultats de
             vos QCMS, vos estimations chiffrées et les évaluations de vos professeurs</span>...
     </div>
-    <div *ngIf="isOneQuizzAchieved && !userData.isSocialFormSent" class="alert alert-light p-4 alert-dismissible mb-4 fade show">
+    <div *ngIf="isOneQuizzAchieved && !userData.isSocialFormSent" class="alert alert-light p-4 alert-dismissible mb-4 fade show pe-5">
         <button type="button" class="btn-close btn-close" data-bs-dismiss="alert"></button>
-        <span> Tous vos résultats et estimations chiffrées sont disponibles ci-dessous. L'incription  formation peut également désormais commencer !</span>
+        <span> Tous vos résultats et estimations chiffrées sont disponibles ci-dessous. L'incription formation peut également commencer !</span>
     </div>
     <div *ngIf="userData && userData.isSocialFormSent" class="alert alert-light p-4 alert-dismissible mb-4 fade show">
         <button type="button" class="btn-close btn-close" data-bs-dismiss="alert"></button>
-        <span> Merci d'avoir pris le temps de remplir le formulaire d'inscription à nos formations. Un conseiller référent va prendre contact avec vous. </span>
+        <span> Merci d'avoir pris le temps de remplir le formulaire d'inscription à nos formations. Un conseiller référent va prendre contact avec vous.</span>
     </div>
 
     <!-- 
