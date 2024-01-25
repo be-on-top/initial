@@ -11,7 +11,7 @@ import { Denominator } from './denominator';
 import { Questions } from '../admin/Questions/questions';
 import { Trade } from '../admin/trade';
 import { Observable, of } from 'rxjs';
-import { UpdateService } from '../update.service';
+// import { UpdateService } from '../update.service';
 
 @Component({
   selector: 'app-quizz',
@@ -106,7 +106,7 @@ export class QuizzComponent implements OnInit {
     private settingsService: SettingsService,
     private router: Router,
     private el: ElementRef,
-    private updateService: UpdateService
+    // private updateService: UpdateService
   ) {
 
   }
@@ -730,8 +730,8 @@ export class QuizzComponent implements OnInit {
     }
   }
 
-  readen(){
-    this.hasReaden=true;
-  }
+  // readen(){
+  //   this.hasReaden=true;
+  // }
 
 }

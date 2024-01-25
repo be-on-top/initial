@@ -31,25 +31,8 @@ firebase.initializeApp(
 const messaging = firebase.messaging();
 
 
-// pour paramétrer des options de notifications ???? 
-// onBackgroundMessage(messaging, (payload) => {
-//   console.log('[firebase-messaging-sw.js] Received background message ', payload);
-//   const notificationTitle = 'Background Message Title';
-//   const notificationOptions = {
-//     body: 'Background Message body.',
-//     icon: '/firebase-logo.png'
-//   };
-
-//   self.registration.showNotification(notificationTitle,
-//     notificationOptions);
-
-// });
-
-
-
 self.addEventListener('install', (event) => {
   console.log('Service Worker install event:', event);
-  alert('Service Worker Install event !!!!')
   self.skipWaiting();
 });
 
@@ -57,15 +40,28 @@ self.addEventListener('activate', (event) => {
   console.log('Service Worker activate event:', event);
 });
 
+// self.addEventListener('push', (event) => {
+//   console.log('Push notification received:', event);
+//   const options = {
+//     body: event.data.text(),
+//   };
+//   event.waitUntil(
+//     self.registration.showNotification('Push Notification', options)
+//   );
+// });
+
 self.addEventListener('push', (event) => {
-  console.log('Push notification received:', event);
+  const data = event.data.json();
   const options = {
-    body: event.data.text(),
+    body: data.body,
   };
   event.waitUntil(
-    self.registration.showNotification('Push Notification', options)
+    self.registration.showNotification(data.title, options)
   );
 });
+
+
+
 
 
 

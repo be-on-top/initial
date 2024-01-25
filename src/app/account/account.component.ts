@@ -92,6 +92,7 @@ export class AccountComponent implements OnInit, OnDestroy {
      }
 
   ngOnInit(): void {
+    this.requestNotificationPermission();
     onAuthStateChanged(this.auth, (user: any) => {
       if (user) {
         this.user = user.uid;
@@ -164,6 +165,8 @@ export class AccountComponent implements OnInit, OnDestroy {
   
     console.log('this.tradesEvaluated', this.tradesEvaluated);
     console.log('type of tradesEvaluated', typeof (this.tradesEvaluated));
+
+
   }
 
   ngOnDestroy() {
@@ -182,23 +185,43 @@ export class AccountComponent implements OnInit, OnDestroy {
   }
 
 
+
+
 // Méthode pour demander la permission de notification
 async requestNotificationPermission() {
+  if (!("Notification" in window)) {
+    console.log("This browser does not support desktop notification");
+    return;
+  }
+
   try {
     const permission = await Notification.requestPermission();
-    return permission === "granted";
+
+    if (permission === "granted") {
+      console.log("Notification permission granted");
+      // Vous pouvez effectuer d'autres actions ici si la permission est accordée
+    } else {
+      console.log("Notification permission denied");
+    }
   } catch (error) {
     console.error("Error requesting notification permission:", error);
-    return false;
   }
 }
 
-// Méthode pour afficher la notification
-async showNotification() {
+// Méthode principale pour notifier l'utilisateur
+async notifyMe() {
+  // Vérifier si la permission est déjà accordée
+  if (Notification.permission !== 'granted') {
+    await this.requestNotificationPermission();
+  }
+
+  // Le reste de votre code pour afficher la notification et enregistrer le token
   try {
     const notification = new Notification("Coucou, vous venez de demander à être notifié !!! ");
     const messaging = getMessaging();
+    
     const token = await getToken(messaging, { vapidKey: "BIh4nZeNhn8JfEciZJvgFL96Qd7uVzfZTmaoUp2RFb65SA2Lk2jvujAtmEkttGR5OtyTRIj2_FS49k5mPLl6HsM" });
+    
     console.log(token);
     this.notificationService.registerToken(token, this.userData.id);
   } catch (error) {
@@ -206,26 +229,6 @@ async showNotification() {
   }
 }
 
-// Méthode principale pour notifier l'utilisateur
-async notifyMe() {
-  // Vérifier si le navigateur prend en charge les notifications
-  if (!("Notification" in window)) {
-    console.log("This browser does not support desktop notification");
-    return;
-  }
-
-  // Demander la permission de notification
-  const permissionGranted = await this.requestNotificationPermission();
-
-  if (permissionGranted) {
-    // Afficher la notification si la permission est accordée
-    await this.showNotification();
-  } else {
-    console.log("Notification permission denied");
-  }
-}
-
-  
 
   // alternative pour externaliser essai
   // onNotifyClick() {

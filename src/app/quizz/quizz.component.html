@@ -23,18 +23,21 @@
     </div>
     <div class="alert bg-info text-white text-smaller">hasStartedEvaluation : {{hasStartedEvaluation}}</div> -->
 
-    <div *ngIf="!hasStartedEvaluation && !hasReaden" class="alert bg-light p-4 pe-5 alert-dismissible mb-4 fade show">
+    <!-- <div *ngIf="!hasStartedEvaluation && !hasReaden" class="alert bg-light p-4 pe-5 alert-dismissible mb-4 fade show"> -->
+    <div *ngIf="!hasStartedEvaluation" class="alert bg-light p-4 pe-5 alert-dismissible mb-4 fade show">
         <!-- <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="alert"></button> -->
         Ce <strong>questionnaire est un questionnaire à choix multiples</strong>. <strong>Une ou plusieurs
         réponses peuvent donc être sélectionnées</strong>.<br><br>Composé de <strong>{{totalQuestions}} questions</strong>, vous pouvez à tout moment <strong>l'interrompre
             et le reprendre</strong> depuis la page d'accueil, la page métier ou votre compte utilisateur. <br>
 
-        <button type="button" class="btn btn-primary mt-3" data-bs-dismiss="alert" (click)="readen()">J'ai lu et compris</button>
+        <!-- <button type="button" class="btn btn-primary mt-3" data-bs-dismiss="alert" (click)="readen()">J'ai lu et compris</button> -->
+        <button type="button" class="btn btn-primary mt-3" data-bs-dismiss="alert">J'ai lu et compris</button>
     </div>
 
 
     <!-- on veut juste la première de la liste initiale -->
-    <div *ngIf="questions[indexQuestion]" [ngClass]="{'d-none':indexQuestion==0 && hasReaden==false}">
+    <!-- <div *ngIf="questions[indexQuestion]" [ngClass]="{'d-none':indexQuestion==0 && hasReaden==false}"> -->
+    <div *ngIf="questions[indexQuestion]">
 
         <div>
             <a name="next"></a>
@@ -52,7 +55,8 @@
     <!-- le < 3 ne vallait qu'en mode test !!!!!!!! -->
     <!-- <button *ngIf="indexQuestion<3; else elseBlock" class="btn btn-primary m-auto"
         [disabled]="isCompleted==false || indexQuestion==3" (click)="next(indexQuestion)">Question suivante</button> -->
-    <button *ngIf="indexQuestion<questions.length; else elseBlock" class="btn btn-primary m-auto" [ngClass]="{'d-none':indexQuestion==0 && hasReaden==false}"
+    <!-- <button *ngIf="indexQuestion<questions.length; else elseBlock" class="btn btn-primary m-auto" [ngClass]="{'d-none':indexQuestion==0 && hasReaden==false}" -->
+    <button *ngIf="indexQuestion<questions.length; else elseBlock" class="btn btn-primary m-auto"
         [disabled]="isCompleted==false || fullAnswersClicked===0 || indexQuestion==questions.length"
         (click)="next(indexQuestion,  questions[indexQuestion].competence)">Question suivante</button>
     <ng-template #elseBlock>
@@ -63,13 +67,13 @@
         <button class="btn btn-primary m-md-auto" disabled><i class="bi bi-check text-light"></i>QCM
             d'accroche terminé !</button>
         <!-- on peut essayer d'englober ici le text de fin de QUIZZ -->
-        <p class="alert bg-primary display-6 text-light p-3 m-3 w-75 mx-auto">
+        <p class="alert bg-light display-6 text-dark p-3 m-3 w-75 mx-auto">
             En fonction des résultats enregistrés, nous sommes en mesure de vous fournir une
             estimation personnalisée de votre parcours de formation.
         </p>
-
-        <button data-bs-toggle="modal" data-bs-target="#myModal" (click)="hideModal()"
-            class="btn bg-primary m-md-auto text-light fs-4"><i
+<!-- fullResults : {{fullResults.length}} -->
+        <button *ngIf="fullResults.length==0" data-bs-toggle="modal" data-bs-target="#myModal" (click)="generateFullResults()"
+            class="btn bg-primary m-md-auto text-light fs-5"><i
                 class="me-3 bi bi-arrow-right-circle-fill text-light"></i>Votre
             parcours personnalisé</button>
     </ng-template>
@@ -148,11 +152,10 @@
                 </div>
 
                 <div class="modal-footer bg-light justify-content-center">
-                    <button type="button" class="btn bg-dark text-light" data-bs-dismiss="modal">Fermer</button>
+                    <!-- <button type="button" class="btn bg-dark text-light" data-bs-dismiss="modal">Fermer</button> -->
                     <!-- attention à fermer la modale et rediriger vers le lien -->
                     <button data-bs-dismiss="modal" type="button" class="btn btn-primary"
                         (click)="redirectToAccount()">Tous les résulats sur votre compte</button>
-
                 </div>
             </div>
         </div>
