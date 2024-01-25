@@ -77,9 +77,9 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  isSocialFormSent:boolean=false
+  isSocialFormSent: boolean = false
 
-  hasStartedEvaluation:boolean=false
+  hasStartedEvaluation: boolean = false
 
 
   constructor(private auth: Auth, private firestore: Firestore, private authService: AuthService, private studentService: StudentsService, private activatedRoute: ActivatedRoute, private router: Router, private notificationService: PushNotificationService, public sanitizer: DomSanitizer, private settingsService: SettingsService) {
@@ -89,80 +89,80 @@ export class AccountComponent implements OnInit, OnDestroy {
     //   // ...
     // });
 
-     }
+  }
 
   ngOnInit(): void {
     this.requestNotificationPermission();
     onAuthStateChanged(this.auth, (user: any) => {
       if (user) {
         this.user = user.uid;
-  
+
         this.studentService.getStudentById(user.uid)
-        .pipe(
-          take(1),
-          takeUntil(this.destroy$)) // Utilisation de takeUntil ici
-        .subscribe(data => {
-          console.log("userData from students 0...", data);
-          this.userData = data;
-          // this.lastIndex = Number(this.userData.lastIndexQuestion);
-  
-          // Logique pour obtenir tradesEvaluated
-          for (const key in this.userData) {
-            console.log('key', key.includes('quizz'));
-  
-            if (key.includes('quizz')) {
-              // on peut rajouter hasStartedEvaluation pour conditionner l'affichage de l'onglet QCMS et résulats
-              this.hasStartedEvaluation=true;
-              this.tradesEvaluated.push(key);
+          .pipe(
+            take(1),
+            takeUntil(this.destroy$)) // Utilisation de takeUntil ici
+          .subscribe(data => {
+            console.log("userData from students 0...", data);
+            this.userData = data;
+            // this.lastIndex = Number(this.userData.lastIndexQuestion);
+
+            // Logique pour obtenir tradesEvaluated
+            for (const key in this.userData) {
+              console.log('key', key.includes('quizz'));
+
+              if (key.includes('quizz')) {
+                // on peut rajouter hasStartedEvaluation pour conditionner l'affichage de l'onglet QCMS et résulats
+                this.hasStartedEvaluation = true;
+                this.tradesEvaluated.push(key);
+              }
             }
-          }
-  
-          console.log("this.tradesEvaluated after loop:", this.tradesEvaluated);
-  
-          // Logique pour obtenir les compétences pour chaque tradeId
-          this.tradesEvaluated.forEach(tradeId => {
-            this.settingsService.getCompetences(tradeId).subscribe(competences => {
+
+            console.log("this.tradesEvaluated after loop:", this.tradesEvaluated);
+
+            // Logique pour obtenir les compétences pour chaque tradeId
+            this.tradesEvaluated.forEach(tradeId => {
+              this.settingsService.getCompetences(tradeId).subscribe(competences => {
                 // Ajoutez les compétences dans l'objet trades
                 this.trades[tradeId] = competences;
                 // Loguez les compétences dans la console
                 console.log(`${tradeId}:`, competences);
-            });
-        });
-        
-  
-          // Logique pour récupérer isOneQuizzAchieved
-          const achievedArray: any = [];
-          for (const item of this.tradesEvaluated) {
-            this.userData[item].fullResults ? achievedArray.push(item) : '';
-            achievedArray.length > 0 ? this.isOneQuizzAchieved = true : false;
-          }
-  
-          // Logique pour trier les résultats
-          for (const item of this.tradesEvaluated) {
-            if (this.userData[item].fullResults) {
-              this.userData[item].fullResults.sort((a: any, b: any) => {
-                const keyA = Object.keys(a)[0];
-                const keyB = Object.keys(b)[0];
-                return keyA.localeCompare(keyB);
               });
+            });
+
+
+            // Logique pour récupérer isOneQuizzAchieved
+            const achievedArray: any = [];
+            for (const item of this.tradesEvaluated) {
+              this.userData[item].fullResults ? achievedArray.push(item) : '';
+              achievedArray.length > 0 ? this.isOneQuizzAchieved = true : false;
             }
-          }
-  
-          // Logique pour récupérer evaluations
-          if (this.userData.evaluations) {
-            this.evaluations = this.userData.evaluations;
-          }
-  
-          // Logique pour récupérer le suivi tutorial
-          if (this.userData.tutorials) {
-            this.tutorials = this.userData.tutorials;
-          }
-        });
+
+            // Logique pour trier les résultats
+            for (const item of this.tradesEvaluated) {
+              if (this.userData[item].fullResults) {
+                this.userData[item].fullResults.sort((a: any, b: any) => {
+                  const keyA = Object.keys(a)[0];
+                  const keyB = Object.keys(b)[0];
+                  return keyA.localeCompare(keyB);
+                });
+              }
+            }
+
+            // Logique pour récupérer evaluations
+            if (this.userData.evaluations) {
+              this.evaluations = this.userData.evaluations;
+            }
+
+            // Logique pour récupérer le suivi tutorial
+            if (this.userData.tutorials) {
+              this.tutorials = this.userData.tutorials;
+            }
+          });
       }
     });
-  
+
     // this.authService.getToken()?.then(res => console.log("token authentification depuis authService", res.token));
-  
+
     console.log('this.tradesEvaluated', this.tradesEvaluated);
     console.log('type of tradesEvaluated', typeof (this.tradesEvaluated));
 
@@ -173,9 +173,9 @@ export class AccountComponent implements OnInit, OnDestroy {
     // Détruit le composant
     this.destroy$.next();
     this.destroy$.complete();
-  }  
+  }
 
- 
+
   onClick() {
     this.authService.logout()
       .then(() => {
@@ -187,47 +187,52 @@ export class AccountComponent implements OnInit, OnDestroy {
 
 
 
-// Méthode pour demander la permission de notification
-async requestNotificationPermission() {
-  if (!("Notification" in window)) {
-    console.log("This browser does not support desktop notification");
-    return;
-  }
-
-  try {
-    const permission = await Notification.requestPermission();
-
-    if (permission === "granted") {
-      console.log("Notification permission granted");
-      // Vous pouvez effectuer d'autres actions ici si la permission est accordée
-    } else {
-      console.log("Notification permission denied");
+  // Méthode pour demander la permission de notification
+  async requestNotificationPermission() {
+    if (!("Notification" in window)) {
+      console.log("This browser does not support desktop notification");
+      return;
     }
-  } catch (error) {
-    console.error("Error requesting notification permission:", error);
-  }
-}
 
-// Méthode principale pour notifier l'utilisateur
-async notifyMe() {
-  // Vérifier si la permission est déjà accordée
-  if (Notification.permission !== 'granted') {
-    await this.requestNotificationPermission();
+    try {
+      const permission = await Notification.requestPermission();
+
+      if (permission === "granted") {
+        console.log("Notification permission granted");
+        // Vous pouvez effectuer d'autres actions ici si la permission est accordée
+      } else {
+        console.log("Notification permission denied");
+      }
+    } catch (error) {
+      console.error("Error requesting notification permission:", error);
+    }
   }
 
-  // Le reste de votre code pour afficher la notification et enregistrer le token
-  try {
-    const notification = new Notification("Coucou, vous venez de demander à être notifié !!! ");
-    const messaging = getMessaging();
-    
-    const token = await getToken(messaging, { vapidKey: "BIh4nZeNhn8JfEciZJvgFL96Qd7uVzfZTmaoUp2RFb65SA2Lk2jvujAtmEkttGR5OtyTRIj2_FS49k5mPLl6HsM" });
-    
-    console.log(token);
-    this.notificationService.registerToken(token, this.userData.id);
-  } catch (error) {
-    console.error("Error during notification setup:", error);
+  // Méthode principale pour notifier l'utilisateur
+  async notifyMe() {
+    // Vérifier si la permission est déjà accordée
+    if (Notification.permission !== 'granted') {
+      await this.requestNotificationPermission();
+    }
+
+    // Le reste de votre code pour afficher la notification et enregistrer le token
+    try {
+      // const notification = new Notification("Coucou, vous venez de demander à être notifié !!! ");
+      const registration = await navigator.serviceWorker.getRegistration();
+      if (registration) {
+        registration.showNotification("Vous venez de demander à être notifié !");
+      }
+
+      const messaging = getMessaging();
+
+      const token = await getToken(messaging, { vapidKey: "BIh4nZeNhn8JfEciZJvgFL96Qd7uVzfZTmaoUp2RFb65SA2Lk2jvujAtmEkttGR5OtyTRIj2_FS49k5mPLl6HsM" });
+
+      console.log(token);
+      this.notificationService.registerToken(token, this.userData.id);
+    } catch (error) {
+      console.error("Error during notification setup:", error);
+    }
   }
-}
 
 
   // alternative pour externaliser essai
