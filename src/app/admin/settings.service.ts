@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Firestore, collection, collectionData, docData, setDoc, addDoc, query, doc, where, getDocs, DocumentData, getDoc, updateDoc } from '@angular/fire/firestore';
 // import { NgForm } from '@angular/forms';
-import { Observable, map } from 'rxjs';
+import { Observable, map, of, tap } from 'rxjs';
 import { Trade } from './trade';
 import { Settings } from './settings';
 // à externaliser vers un service
@@ -100,6 +100,27 @@ export class SettingsService {
       );
     }
 
+    getDenomination(quizzKey: string): Observable<string | null> {
+      console.log('Entrée dans getDenomination avec quizzKey :', quizzKey);
+
+      if (!quizzKey) {
+        // Gérer le cas où quizzKey est undefined
+        return of(null);
+      }
+    
+      // const sigle = quizzKey.replace('quizz_', '');
+      const sigleRef = doc(this.firestore, 'sigles', quizzKey);
+    
+      return docData(sigleRef).pipe(
+        tap(data => console.log('data de sigles', data)),  // Ajoutez cette ligne pour afficher les données dans la console
+        map((data: any) => (data && data['denomination']) ? data['denomination'] : null)
+      );
+    }
+    
+    
+    
+
+
   // getCPName(tradeId: string, cpId: number): Observable<string> {
   //   console.log(cpId)
   //   let $sigleRef = doc(this.firestore, "sigles/" + tradeId)
@@ -162,6 +183,8 @@ export class SettingsService {
     let $sigleRef = doc(this.firestore, "sigles/" + tradeId);
     return docData($sigleRef, { idField: 'id' }).pipe(map(trade => trade['denomination']));
   }
+
+ 
 
   getCPName(tradeId: string, cpId: number): Observable<string> {
     console.log(cpId)

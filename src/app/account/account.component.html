@@ -103,7 +103,8 @@
                         <div *ngFor="let trade of tradesEvaluated, let last=last">
 
                             <!-- {{userData | json}} {{userData[trade].fullResults | json}} -->
-                            <p class="card-text">Métier concerné : <span class="fw-bold">{{trade}}</span></p>
+                            <!-- <p class="card-text">Métier concerné : <span class="fw-bold">{{trade}}</span></p> -->
+                            <p class="card-text">Métier concerné : <span class="fw-bold">{{ getDenomination(trade) | async }}</span></p>
                             <!-- Partie 1 si QCM en cours -->
                             <!-- <div *ngIf="userData.lastIndexQuestions[trade]<2, else done"> -->
                             <div *ngIf="!userData[trade].fullResults, else done">
@@ -172,7 +173,9 @@
                         <div *ngFor="let trade of tradesEvaluated, let last=last">
 
                             <div class="mb-3" *ngIf="userData[trade].fullResults">
-                                <p class="card-text">Métier concerné : <span class="fw-bold">{{trade}}</span></p>
+                                <!-- <p class="card-text">Métier concerné : <span class="fw-bold">{{trade}}</span></p> -->
+                                <p class="card-text">Métier concerné : <span class="fw-bold">{{ getDenomination(trade) | async }}</span></p>
+
                                 <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
                                 <div class="card-text mb-0"
                                     *ngFor="let result of userData[trade].fullResults | keyvalue, let lastEstimate=last, let i = index">

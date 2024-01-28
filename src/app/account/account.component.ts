@@ -17,7 +17,7 @@ import { getMessaging, getToken, onMessage } from "@angular/fire/messaging";
 import { PushNotificationService } from '../push-notification.service';
 import { Evaluation } from '../admin/evaluation';
 import { SettingsService } from '../admin/settings.service';
-import { Observable, forkJoin, combineLatest, concatMap, toArray, tap, takeUntil, Subject, take } from 'rxjs';
+import { Observable, forkJoin, combineLatest, concatMap, toArray, tap, takeUntil, Subject, take, of } from 'rxjs';
 
 
 @Component({
@@ -81,6 +81,7 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   hasStartedEvaluation: boolean = false
 
+  denominationsMap: Map<string, Observable<string>> = new Map();
 
   constructor(private auth: Auth, private firestore: Firestore, private authService: AuthService, private studentService: StudentsService, private activatedRoute: ActivatedRoute, private router: Router, private notificationService: PushNotificationService, public sanitizer: DomSanitizer, private settingsService: SettingsService) {
     // const messaging = getMessaging();
@@ -129,7 +130,6 @@ export class AccountComponent implements OnInit, OnDestroy {
               });
             });
 
-
             // Logique pour récupérer isOneQuizzAchieved
             const achievedArray: any = [];
             for (const item of this.tradesEvaluated) {
@@ -165,7 +165,6 @@ export class AccountComponent implements OnInit, OnDestroy {
 
     console.log('this.tradesEvaluated', this.tradesEvaluated);
     console.log('type of tradesEvaluated', typeof (this.tradesEvaluated));
-
 
   }
 
@@ -231,7 +230,7 @@ export class AccountComponent implements OnInit, OnDestroy {
       console.error("Error during notification setup:", error);
     }
 
-    this.notifyMeWithTitleAndBody('Votre Actualité', `Bravo ${this.userData.firstName}, vous êtes dans les starting-blocks ! ` );
+    this.notifyMeWithTitleAndBody('Votre Actualité', `Bravo ${this.userData.firstName}, vous êtes dans les starting-blocks ! `);
   }
 
 
@@ -240,31 +239,31 @@ export class AccountComponent implements OnInit, OnDestroy {
     // if (Notification.permission !== 'granted') {
     //   await this.requestNotificationPermission();
     // }
-  
+
     try {
       const options = {
         body: body,
         icon: 'https://be-on-top-beta.web.app/assets/BE-ON-TOP_picto_LOGO.svg', // Remplacez par l'URL de l'icône que vous souhaitez afficher
         // image: 'https://firebasestorage.googleapis.com/v0/b/be-on-top-beta.appspot.com/o/images%2Ftrades%2Fcl_vul.jpeg?alt=media&token=d49e9dea-f9d3-43d8-8b2f-52e71ad792c3',
       };
-  
+
       // Afficher la notification avec les options
       const registration = await navigator.serviceWorker.getRegistration();
       if (registration) {
         registration.showNotification(title, options);
       }
-  
+
       const messaging = getMessaging();
-  
+
       const token = await getToken(messaging, { vapidKey: "BIh4nZeNhn8JfEciZJvgFL96Qd7uVzfZTmaoUp2RFb65SA2Lk2jvujAtmEkttGR5OtyTRIj2_FS49k5mPLl6HsM" });
-  
+
       console.log(token);
       this.notificationService.registerToken(token, this.userData.id);
     } catch (error) {
       console.error("Error during notification setup:", error);
     }
   }
-  
+
 
   focus() {
     let myDoc: any = document.querySelector("#demo");
@@ -324,6 +323,17 @@ export class AccountComponent implements OnInit, OnDestroy {
   evaluationsNotEmpty(): boolean {
     return Object.keys(this.evaluations).length > 0;
   }
+  // Méthode pour récupérer la dénomination du métier côté composant
+  denominationMap: Map<string, Observable<string | null>> = new Map();
+
+  getDenomination(trade: string): Observable<string | null> {
+    const sigle = trade.replace('quizz_', '');
+    if (!this.denominationMap.has(trade)) {
+      this.denominationMap.set(trade, this.settingsService.getDenomination(sigle));
+    }
+    return this.denominationMap.get(trade) || of(null);
+  }
+
 
 
 }

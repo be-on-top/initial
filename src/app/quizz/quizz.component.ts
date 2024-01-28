@@ -11,6 +11,8 @@ import { Denominator } from './denominator';
 import { Questions } from '../admin/Questions/questions';
 import { Trade } from '../admin/trade';
 import { Observable, of } from 'rxjs';
+import { PushNotificationService } from '../push-notification.service';
+import { getMessaging, getToken } from "@angular/fire/messaging";
 // import { UpdateService } from '../update.service';
 
 @Component({
@@ -91,8 +93,8 @@ export class QuizzComponent implements OnInit {
   mobileBreakpoint = 575; // Remplacez cela par la largeur de la fenêtre à partir de laquelle vous considérez que c'est un téléphone mobile
 
   title: string = ""
-  totalQuestions:number=100
-  hasReaden:boolean = false
+  totalQuestions: number = 100
+  hasReaden: boolean = false
 
 
   @ViewChild('myModal') myModal!: ElementRef;
@@ -106,6 +108,7 @@ export class QuizzComponent implements OnInit {
     private settingsService: SettingsService,
     private router: Router,
     private el: ElementRef,
+    private notificationService: PushNotificationService
     // private updateService: UpdateService
   ) {
 
@@ -132,7 +135,7 @@ export class QuizzComponent implements OnInit {
       this.questions = allQuestions.filter(q => q.number < 100 && q.sigle == this.trade)
       this.questions.sort(this.compare)
       // pour déterminer le nombre total (réel) de questions
-      this.totalQuestions=this.questions.length+1
+      this.totalQuestions = this.questions.length + 1
 
       // pour qu'on ne se retrouve pas en console avec un can not read id parce qu'il n'y en a plus
       // on peut rajouter ATTENTION !!!!! 
@@ -251,7 +254,7 @@ export class QuizzComponent implements OnInit {
       // console.log('this.dataStudent', this.dataStudent);
       this.hasStartedEvaluation === true && this.dataStudent[quizzKey] && this.dataStudent[quizzKey].studentCompetences ? this.studentCompetences = this.dataStudent[quizzKey].studentCompetences : '';
       this.dataStudent && this.dataStudent[quizzKey] ? console.log('this.dataStudent[quizzKey]', this.dataStudent[quizzKey]) : console.log("pas encore généré");
-    
+
     })
 
     // fin
@@ -587,7 +590,6 @@ export class QuizzComponent implements OnInit {
     console.log("this.levelsArray dans generateFullResults", this.levelsArray);
 
 
-
     // Appelez la fonction setFullResults pour générer le tableau fullResults
     this.fullResults = await this.studentService.setFullResults(durationsByLevels, estimatedCPCost, this.realEvaluations);
 
@@ -597,6 +599,7 @@ export class QuizzComponent implements OnInit {
     this.studentService.updateFullResults(this.studentId, this.fullResults, this.trade)
 
     this.totalCost = this.sumCosts(this.fullResults)
+
 
   }
 
@@ -668,8 +671,11 @@ export class QuizzComponent implements OnInit {
     return value === null || value.trim() === '';
   };
 
-  redirectToAccount() {
+  redirectToAccount() {    
+    this.notifyMeWithTitleAndBody('Votre Actualité', `Bravo, vous êtes au top ! Retrouvez tous vos résultats et vos estimations personnalisées dans votre compte personnel ` );
+
     this.router.navigate(['/account']);
+
   }
 
   checkIndexValidity(param: number) {
@@ -730,8 +736,59 @@ export class QuizzComponent implements OnInit {
     }
   }
 
-  readen(){
-    this.hasReaden=true;
+  readen() {
+    this.hasReaden = true;
   }
+
+
+  // à tester 
+
+  async notifyMeWithTitleAndBody(title: string, body: string) {
+    // Vérifier si la permission est déjà accordée
+    if (Notification.permission !== 'granted') {
+      await this.requestNotificationPermission();
+    }
+
+    try {
+      const options = {
+        body: body,
+        icon: 'url_de_l_icone', // Remplacez par l'URL de l'icône que vous souhaitez afficher
+        image: 'url_de_l_image', // Ajoutez une image si nécessaire
+      };
+
+      // Afficher la notification avec les options
+      const registration = await navigator.serviceWorker.getRegistration();
+      // alert(registration)
+      if (registration) {
+        registration.showNotification(title, options);
+      }
+
+    } catch (error) {
+      console.error("Error during notification setup:", error);
+    }
+
+  }
+
+  // Méthode pour demander la permission de notification
+  async requestNotificationPermission() {
+    if (!("Notification" in window)) {
+      console.log("This browser does not support desktop notification");
+      return;
+    }
+
+    try {
+      const permission = await Notification.requestPermission();
+
+      if (permission === "granted") {
+        console.log("Notification permission granted");
+        // Vous pouvez effectuer d'autres actions ici si la permission est accordée...
+      } else {
+        console.log("Notification permission denied");
+      }
+    } catch (error) {
+      console.error("Error requesting notification permission:", error);
+    }
+  }
+
 
 }

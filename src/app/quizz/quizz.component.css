@@ -34,4 +34,6 @@ button.btn.btn-primary:disabled {
 
 .invisible {
   visibility: hidden !important;
+  max-height: 10px ! important;
+  overflow: hidden;
 }

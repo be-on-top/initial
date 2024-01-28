@@ -54,7 +54,7 @@ i.text-choiced::after {
 
 /* à tester pour zoom sur image question au touché de l'écran */
 
-.image-zoomable {
+/* .image-zoomable {
     max-width: 100%;
     height: auto;
     transition: transform 0.3s ease;
@@ -66,8 +66,8 @@ i.text-choiced::after {
   }
 
   .image-container {
-    max-width: 100%; /* Ajustez selon vos besoins */
+    max-width: 100%;
     overflow: hidden;
     position: relative;
-  }
+  } */
   
