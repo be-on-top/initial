@@ -83,6 +83,8 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   denominationsMap: Map<string, Observable<string>> = new Map();
 
+  public notificationPermissionGranted = false;
+
   constructor(private auth: Auth, private firestore: Firestore, private authService: AuthService, private studentService: StudentsService, private activatedRoute: ActivatedRoute, private router: Router, private notificationService: PushNotificationService, public sanitizer: DomSanitizer, private settingsService: SettingsService) {
     // const messaging = getMessaging();
     // onMessage(messaging, (payload) => {
@@ -93,7 +95,7 @@ export class AccountComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.requestNotificationPermission();
+    // this.requestNotificationPermission();
     onAuthStateChanged(this.auth, (user: any) => {
       if (user) {
         this.user = user.uid;
@@ -165,6 +167,9 @@ export class AccountComponent implements OnInit, OnDestroy {
 
     console.log('this.tradesEvaluated', this.tradesEvaluated);
     console.log('type of tradesEvaluated', typeof (this.tradesEvaluated));
+    if (Notification.permission === 'granted') {
+      this.notificationPermissionGranted=true
+    }
 
   }
 
@@ -212,33 +217,36 @@ export class AccountComponent implements OnInit, OnDestroy {
       await this.requestNotificationPermission();
     }
 
-    // Le reste de votre code pour afficher la notification et enregistrer le token
-    try {
-      // const notification = new Notification("Coucou, vous venez de demander à être notifié !!! ");
-      const registration = await navigator.serviceWorker.getRegistration();
-      if (registration) {
-        registration.showNotification("Vous venez de demander à être notifié !");
+      // Le reste de votre code pour afficher la notification et enregistrer le token
+      try {
+        // const notification = new Notification("Coucou, vous venez de demander à être notifié !!! ");
+        const registration = await navigator.serviceWorker.getRegistration();
+        if (registration) {
+          registration.showNotification("Vous venez de demander à être notifié !");
+        }
+
+        const messaging = getMessaging();
+
+        const token = await getToken(messaging, { vapidKey: "BIh4nZeNhn8JfEciZJvgFL96Qd7uVzfZTmaoUp2RFb65SA2Lk2jvujAtmEkttGR5OtyTRIj2_FS49k5mPLl6HsM" });
+
+        console.log(token);
+        this.notificationService.registerToken(token, this.userData.id);
+      } catch (error) {
+        console.error("Error during notification setup:", error);
       }
 
-      const messaging = getMessaging();
+      this.notifyMeWithTitleAndBody('Votre Actualité', `Bravo ${this.userData.firstName}, vous êtes dans les starting-blocks ! `);
 
-      const token = await getToken(messaging, { vapidKey: "BIh4nZeNhn8JfEciZJvgFL96Qd7uVzfZTmaoUp2RFb65SA2Lk2jvujAtmEkttGR5OtyTRIj2_FS49k5mPLl6HsM" });
 
-      console.log(token);
-      this.notificationService.registerToken(token, this.userData.id);
-    } catch (error) {
-      console.error("Error during notification setup:", error);
-    }
+      // mise à jour la variable pour indiquer que l'autorisation a été accordée
+      this.notificationPermissionGranted = true;
 
-    this.notifyMeWithTitleAndBody('Votre Actualité', `Bravo ${this.userData.firstName}, vous êtes dans les starting-blocks ! `);
+      // this.studentService.setRequestNotification(this.userData.id)
+
   }
 
 
   async notifyMeWithTitleAndBody(title: string, body: string) {
-    // Vérifier si la permission est déjà accordée
-    // if (Notification.permission !== 'granted') {
-    //   await this.requestNotificationPermission();
-    // }
 
     try {
       const options = {

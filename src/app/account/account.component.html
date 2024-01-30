@@ -2,20 +2,24 @@
 
     <h3>Votre compte BE-ON-TOP</h3>
 
-    <p class="alert bg-primary text-light p-2 my-3 fs-4 fw-light ">Bonjour et bienvenue <span class="text-capitalize">{{userData.firstName}}</span></p>
+    <p class="alert bg-primary text-light p-2 my-3 fs-4 fw-light ">Bonjour et bienvenue <span
+            class="text-capitalize">{{userData.firstName}}</span></p>
 
     <div *ngIf="!isOneQuizzAchieved" class="alert alert-light p-4 alert-dismissible mb-4 fade show">
         <button type="button" class="btn-close btn-close" data-bs-dismiss="alert"></button>
         <span> Au fur à mesure de vos interactions, vous pourrez suivre ci-dessous les résultats de
             vos QCMS, vos estimations chiffrées et les évaluations de vos professeurs</span>...
     </div>
-    <div *ngIf="isOneQuizzAchieved && !userData.isSocialFormSent" class="alert alert-light p-4 alert-dismissible mb-4 fade show pe-5">
+    <div *ngIf="isOneQuizzAchieved && !userData.isSocialFormSent"
+        class="alert alert-light p-4 alert-dismissible mb-4 fade show pe-5">
         <button type="button" class="btn-close btn-close" data-bs-dismiss="alert"></button>
-        <span> Tous vos résultats et estimations chiffrées sont disponibles ci-dessous. L'incription formation peut également commencer !</span>
+        <span> Tous vos résultats et estimations chiffrées sont disponibles ci-dessous. L'incription formation peut
+            également commencer !</span>
     </div>
     <div *ngIf="userData && userData.isSocialFormSent" class="alert alert-light p-4 alert-dismissible mb-4 fade show">
         <button type="button" class="btn-close btn-close" data-bs-dismiss="alert"></button>
-        <span> Merci d'avoir pris le temps de remplir le formulaire d'inscription à nos formations. Un conseiller référent va prendre contact avec vous.</span>
+        <span> Merci d'avoir pris le temps de remplir le formulaire d'inscription à nos formations. Un conseiller
+            référent va prendre contact avec vous.</span>
     </div>
 
     <!-- 
@@ -62,7 +66,8 @@
                                 {{userData.firstName}}</li>
                             <li class="list-group-item"><span class="fw-bolder">Nom :</span>
                                 {{userData.lastName}}</li>
-                            <li class="list-group-item"><span class="fw-bolder">Date d'enregistrement :</span> {{userData.created | date:'dd/MM/yyyy' }}</li>
+                            <li class="list-group-item"><span class="fw-bolder">Date d'enregistrement :</span>
+                                {{userData.created | date:'dd/MM/yyyy' }}</li>
                             <!-- <li *ngIf="userData.sigle" class="list-group-item">Sigle métier si existant:
                                 {{userData.sigle}}</li> -->
                         </ul>
@@ -104,7 +109,8 @@
 
                             <!-- {{userData | json}} {{userData[trade].fullResults | json}} -->
                             <!-- <p class="card-text">Métier concerné : <span class="fw-bold">{{trade}}</span></p> -->
-                            <p class="card-text">Métier concerné : <span class="fw-bold">{{ getDenomination(trade) | async }}</span></p>
+                            <p class="card-text">Métier concerné : <span class="fw-bold">{{ getDenomination(trade) |
+                                    async }}</span></p>
                             <!-- Partie 1 si QCM en cours -->
                             <!-- <div *ngIf="userData.lastIndexQuestions[trade]<2, else done"> -->
                             <div *ngIf="!userData[trade].fullResults, else done">
@@ -174,7 +180,8 @@
 
                             <div class="mb-3" *ngIf="userData[trade].fullResults">
                                 <!-- <p class="card-text">Métier concerné : <span class="fw-bold">{{trade}}</span></p> -->
-                                <p class="card-text">Métier concerné : <span class="fw-bold">{{ getDenomination(trade) | async }}</span></p>
+                                <p class="card-text">Métier concerné : <span class="fw-bold">{{ getDenomination(trade) |
+                                        async }}</span></p>
 
                                 <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
                                 <div class="card-text mb-0"
@@ -306,8 +313,12 @@
     </div>
 
     <!-- fin collapse -->
-    <button type="submit" class="btn btn-success mt-4" (click)="notifyMe()">Accepter les
-        notifications</button>
+    <!-- <button type="submit" class="btn btn-success mt-4" (click)="notifyMe()">Accepter les
+        notifications</button> -->
+
+    <button type="submit" class="btn btn-success mt-4" (click)="notifyMe()" *ngIf="!notificationPermissionGranted">
+        Accepter les notifications
+    </button>
 
 
 </div>
