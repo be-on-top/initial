@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 // import { NgForm } from '@angular/forms';
 import { Auth, createUserWithEmailAndPassword } from "@angular/fire/auth";
-import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc, updateDoc, query, getDocs, where } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc, updateDoc, query, getDocs, where, getDoc } from '@angular/fire/firestore';
 // import { FirebaseApp } from '@angular/fire/app';
 import { Observable } from 'rxjs';
 // import { switchMap, tap } from 'rxjs/operators';
@@ -361,6 +361,21 @@ export class StudentsService {
     const studentRef = doc(this.firestore, "students/" + id)
     setDoc(studentRef, tutorial, { merge: true })
   }
+
+  // fonctionne très bien conserver
+  // async getUserToken(studentId: string) {
+  //   const tokenRef = doc(this.firestore, 'tokens', studentId);
+  //   const tokenSnapshot = await getDoc(tokenRef);
+  
+  //   if (tokenSnapshot.exists()) {
+  //     const tokenData = tokenSnapshot.data()?.['key'];
+  //     console.log('tokenData', tokenData);
+      
+  //     return tokenData;
+  //   }
+  
+  //   return null;
+  // }
 
 
 }

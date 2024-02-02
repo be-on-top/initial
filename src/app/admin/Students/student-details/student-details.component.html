@@ -32,7 +32,8 @@
         </div>
 
         <!-- zone dédiée à l'administrateur en charge de la gestion des comptes - à désactiver si role trainer -->
-        <div class="d-flex my-5 justify-content-end gap-5" *ngIf="userRouterLinks.user!=='trainer' && userRouterLinks.user!=='external'&& userRouterLinks.user!=='tutor'  ">
+        <div class="d-flex my-5 justify-content-end gap-5"
+            *ngIf="userRouterLinks.user!=='trainer' && userRouterLinks.user!=='external'&& userRouterLinks.user!=='tutor'  ">
             <a class="btn btn-primary text-white retourList" routerLink="/admin/students">Retour à la liste</a>
             <button class="btn btn-warning">
                 <a class="text-white" routerLink="/admin/updateStudent/{{student.id}}">Modifier</a>
@@ -218,5 +219,10 @@
         </ng-container>
 
     </div>
+
+    <a class="btn btn-primary text-white retourList" [routerLink]="['/admin/myStudents']"
+        *ngIf="userRouterLinks.user=='trainer'">Retour à la liste</a>
+    <a class="btn btn-primary text-white retourList" [routerLink]="['/admin/tutor/myStudents']"
+        *ngIf="userRouterLinks.user=='tutor'">Retour à la liste</a>
 
 </div>

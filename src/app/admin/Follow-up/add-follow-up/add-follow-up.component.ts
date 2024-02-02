@@ -37,7 +37,7 @@ export class AddFollowUpComponent implements AfterViewInit {
   // si on opte pour une méthode commune : 
   addFollowUp(studentId: string, evaluation: NgForm) {
     console.log(evaluation.value.date)
-    this.userRouterLinks=='tutor'?this.addTutorial(studentId,evaluation):this.addTutorial(studentId, evaluation)
+    this.userRouterLinks=='tutor'?this.addTutorial(studentId,evaluation):this.addEvaluation(studentId, evaluation)
   }
 
   addEvaluation(studentId: string, evaluation: NgForm) {

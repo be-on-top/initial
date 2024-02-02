@@ -2,7 +2,7 @@
     <!-- {{userRouterLinks}} -->
 
     <h3 *ngIf="userRouterLinks=='tutor', else evaluation">Ajouter un suivi tutorial (d'entreprise)</h3>
-        <app-feedback-messages [feedbackMessages]="feedbackMessages"
+    <app-feedback-messages [feedbackMessages]="feedbackMessages"
         [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
     <ng-template #evaluation>
         <h3 *ngIf="userRouterLinks=='tutor', else evaluation">Ajouter une évaluation pédagogique</h3>
@@ -10,8 +10,7 @@
     <!-- <app-feedback-messages [feedbackMessages]="feedbackMessages" [isSuccessMessage]="isSuccessMessage"></app-feedback-messages> -->
 
     <!-- pour les messages de retour/validation des champs du formulaire ou form validation, on utilisera BOOTSTRAP plutôt que des directives structurelles -->
-    <form class="form" #f="ngForm" (submit)="addFollowUp(studentId, f)"
-        class="was-validated">
+    <form class="form" #f="ngForm" (submit)="addFollowUp(studentId, f)" class="was-validated">
 
         <!-- attention à virer les fonctions pour l'exercice sur (change) et (input) !!!!!! -->
 
@@ -42,9 +41,10 @@
             <!-- version sans TinyMCE -->
             <!-- <textarea name="details" id="details" cols="50" rows="30" ngModel name="details" class="form-control" #details="ngModel"
                 placeholder="Saisissez l'évaluation reçue en présentiel" required></textarea> -->
-            <editor [init]="{ plugins: 'link image', toolbar: 'undo redo | bold italic | link image' }" [id]="'details'"
-                ngModel name="details" #details="ngModel" placeholder="Saisissez l'évaluation"
-                required>
+
+            <editor apiKey="ahl0yg86w69zh9viflcvku8m2k333o942kc9fpttussom153"
+                [init]="{ plugins: 'link image', toolbar: 'undo redo | bold italic | link image' }" [id]="'details'"
+                ngModel name="details" #details="ngModel" placeholder="Saisissez l'évaluation" required>
             </editor>
             <div class="valid-feedback" *ngIf="details.valid">Evaluation correctement renseignée</div>
             <div class="invalid-feedback" *ngIf="details.invalid">Merci de saisir votre évaluation</div>
@@ -53,6 +53,7 @@
         <button type="submit" id="submit" class="btn btn-primary mt-3"
             [ngClass]="{'disabled':f.invalid}">Ajouter</button>
     </form>
+    
 
 
 </div>
