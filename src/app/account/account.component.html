@@ -7,8 +7,7 @@
 
     <div *ngIf="!isOneQuizzAchieved" class="alert alert-light p-4 alert-dismissible mb-4 fade show">
         <button type="button" class="btn-close btn-close" data-bs-dismiss="alert"></button>
-        <span> Au fur à mesure de vos interactions, vous pourrez suivre ci-dessous les résultats de
-            vos QCMS, vos estimations chiffrées et les évaluations de vos professeurs</span>...
+        <span> Au fur à mesure de vos interactions, vous pourrez suivre ci-dessous les résultas des questionnaires d'évaluation, vos estimations chiffrées et les évaluations de vos professeurs</span>...
     </div>
     <div *ngIf="isOneQuizzAchieved && !userData.isSocialFormSent"
         class="alert alert-light p-4 alert-dismissible mb-4 fade show pe-5">
@@ -97,7 +96,7 @@
                 <div class="card-header bg-primary d-flex justify-content-between">
                     <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse"
                         href="#collapseThreea">
-                        Vos QCM(s) & Résultats
+                        Vos Questionnaires(s) & Résultats
                     </a><i class="bi bi-bar-chart-steps fs-4 text-light"></i>
                 </div>
                 <div id="collapseThreea" class="collapse" data-bs-parent="#accordion">
@@ -129,7 +128,7 @@
 
                             <!-- pour compétences option 2 alternative pour tout le ng-template -->
                             <ng-template #done class="mb-3">
-                                <p class="card-text fw-bold d-flex align-items-center">QCM de positionnement terminé
+                                <p class="card-text fw-bold d-flex align-items-center">Questionnaire de positionnement terminé
                                     <i class="bi fs-4 bi-check-lg ms-3"></i>
                                 </p>
                                 <div class="mt-2">
@@ -156,7 +155,7 @@
                         <!-- fin boucle supplémentaire pour ngFor avec les options de multi-quizz -->
                     </div>
 
-                    <ng-template #none> <span>Aucun QCM en cours</span>
+                    <ng-template #none> <span>Aucun Questionnaire en cours</span>
                     </ng-template>
                 </div>
             </div>

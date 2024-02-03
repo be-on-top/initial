@@ -126,12 +126,27 @@ export class StudentDetailsComponent {
     }
   }
 
-  getTradeDetails(trade: string) {
-    if (this.student && this.student[trade]) {
-      return this.student[trade] as QuizDetails;
-    }
-    return null;
+
+
+  // Ajoutez une propriété pour stocker le nom du métier sans le préfixe
+tradeWithoutQuizzPrefix: string = '';
+
+// Ajoutez une méthode pour retirer le préfixe "quizz_"
+removeQuizzPrefix(str: string): string {
+  return str.replace('quizz_', ''); // Utilisez la méthode replace pour retirer le préfixe
+}
+
+getTradeDetails(trade: string) {
+  if (this.student && this.student[trade]) {
+      console.log('this.student[trade]', this.student[trade]['fullResults']);
+      const relatedResults=this.student[trade]['fullResults']
+      this.updateTotalCost(relatedResults)
+      this.tradeWithoutQuizzPrefix = this.removeQuizzPrefix(trade);
+    return this.student[trade] as QuizDetails;
   }
+  return null;
+}
+
 
 
   // La méthode replace renvoie une nouvelle chaîne avec les modifications, mais elle ne modifie pas la chaîne originale !!!!
@@ -154,6 +169,29 @@ export class StudentDetailsComponent {
   resetTradeName() {
     this.tradeName = "";
   }
+
+  // Dans votre composant
+totalCost: number = 0;
+totalTime: number = 0;
+
+// Fonction pour mettre à jour le total
+updateTotalCost(relatedResults:any): void {
+  this.totalCost = 0;
+  this.totalTime = 0;
+  
+  // Vérifiez si fullResults existe et n'est pas vide
+
+    for (const result of relatedResults) {
+      for (const key in result) {
+        if (result.hasOwnProperty(key)) {
+          this.totalCost += result[key].cost;
+          this.totalTime += result[key].duration;
+        }
+      }
+    }
+
+}
+
 
 
 }
