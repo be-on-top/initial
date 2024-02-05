@@ -156,7 +156,7 @@
 
         <!-- affichage des évaluations -->
         <!-- <ng-container *ngIf="student && evaluations"> -->
-        <ng-container *ngIf="student && nonVide(evaluations)">
+        <ng-container *ngIf="student && evaluationsNotEmpty()">
             <h3 class="mt-3"><i class="bi bi-clipboard-data-fill fs-3 me-3 me-sm-5">
                 </i>Ses évaluations de suivi pédagogique </h3>
             <div *ngFor="let evaluation of evaluations | keyvalue">
@@ -191,7 +191,7 @@
 
         <!-- affichage du  suivi entreprise (tutorials) -->
 
-        <ng-container *ngIf="student && nonVide(tutorials)">
+        <ng-container *ngIf="student && tutorialsNotEmpty()">
             <h3 class="mt-3"><i class="bi bi-clipboard-data-fill fs-3 me-3 me-sm-5"></i>Son suivi en entreprise</h3>
 
             <div *ngFor="let tutorial of tutorials | keyvalue">

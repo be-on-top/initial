@@ -47,9 +47,7 @@ export class StudentDetailsComponent {
 
   // c'est totalement dingue, mais on ne peut pas se référer à Object directement dans un template angular
   // donc si je veux un affichage conditionné côté template, me faut une méthode pour vérifier si evaluations n'est pas vide
-  nonVide(variable:any): boolean {
-    return Object.keys(variable).length > 0;
-  }
+
 
   constructor(
     private service: StudentsService,
@@ -129,23 +127,23 @@ export class StudentDetailsComponent {
 
 
   // Ajoutez une propriété pour stocker le nom du métier sans le préfixe
-tradeWithoutQuizzPrefix: string = '';
+  tradeWithoutQuizzPrefix: string = '';
 
-// Ajoutez une méthode pour retirer le préfixe "quizz_"
-removeQuizzPrefix(str: string): string {
-  return str.replace('quizz_', ''); // Utilisez la méthode replace pour retirer le préfixe
-}
+  // Ajoutez une méthode pour retirer le préfixe "quizz_"
+  removeQuizzPrefix(str: string): string {
+    return str.replace('quizz_', ''); // Utilisez la méthode replace pour retirer le préfixe
+  }
 
-getTradeDetails(trade: string) {
-  if (this.student && this.student[trade]) {
+  getTradeDetails(trade: string) {
+    if (this.student && this.student[trade]) {
       console.log('this.student[trade]', this.student[trade]['fullResults']);
-      const relatedResults=this.student[trade]['fullResults']
+      const relatedResults = this.student[trade]['fullResults']
       this.updateTotalCost(relatedResults)
       this.tradeWithoutQuizzPrefix = this.removeQuizzPrefix(trade);
-    return this.student[trade] as QuizDetails;
+      return this.student[trade] as QuizDetails;
+    }
+    return null;
   }
-  return null;
-}
 
 
 
@@ -171,15 +169,15 @@ getTradeDetails(trade: string) {
   }
 
   // Dans votre composant
-totalCost: number = 0;
-totalTime: number = 0;
+  totalCost: number = 0;
+  totalTime: number = 0;
 
-// Fonction pour mettre à jour le total
-updateTotalCost(relatedResults:any): void {
-  this.totalCost = 0;
-  this.totalTime = 0;
-  
-  // Vérifiez si fullResults existe et n'est pas vide
+  // Fonction pour mettre à jour le total
+  updateTotalCost(relatedResults: any): void {
+    this.totalCost = 0;
+    this.totalTime = 0;
+
+    // Vérifiez si fullResults existe et n'est pas vide
 
     for (const result of relatedResults) {
       for (const key in result) {
@@ -190,7 +188,20 @@ updateTotalCost(relatedResults:any): void {
       }
     }
 
-}
+  }
+
+  nonVide(variable: any): boolean {
+    return Object.keys(variable).length > 0;
+  }
+
+  // Méthode pour vérifier si tutorials n'est pas vide
+  tutorialsNotEmpty(): boolean {
+    return Object.keys(this.tutorials).length > 0;
+  }
+
+  evaluationsNotEmpty(): boolean {
+    return Object.keys(this.evaluations).length > 0;
+  }
 
 
 
