@@ -26,21 +26,26 @@
                 <div class="col-sm-3 col-6 order-perso2">{{student.firstName}}</div>
                 <div class="col-sm-3 col-6 order-perso4">
                     <button class="btn btn-primary">
-                        <a *ngIf="userRouterLinks.user=='trainer'" [routerLink]="['/admin/myStudentDetails', student.id]" class="text-white"><i
+                        <a *ngIf="userRouterLinks.user=='trainer'"
+                            [routerLink]="['/admin/myStudentDetails', student.id]" class="text-white"><i
                                 class="bi bi-person-lines-fill"></i>Détails</a>
-                        <a *ngIf="userRouterLinks.user=='tutor'" [routerLink]="['/admin/tutor/myStudentDetails', student.id]" class="text-white"><i
+                        <a *ngIf="userRouterLinks.user=='tutor'"
+                            [routerLink]="['/admin/tutor/myStudentDetails', student.id]" class="text-white"><i
                                 class="bi bi-person-lines-fill"></i>Détails</a>
                     </button>
                 </div>
                 <div class="col-sm-3 col-6">
                     <button class="btn btn-danger">
-                        <a *ngIf="userRouterLinks.user=='tutor', else evaluation"
-                            [routerLink]="['/admin/addStudentTutorial', student.id]" class="text-white"><i
+                        <a *ngIf="userRouterLinks.user=='tutor'"
+                            [routerLink]="['/admin/addStudentTutorial', student.id]" class="text-white"
+                            [queryParams]="{ trades: userTrades ? userTrades.join(',') : '' }"><i
                                 class="bi bi-pen"></i>Ajouter un suivi tutorial</a>
-                        <ng-template #evaluation>
-                            <a [routerLink]="['/admin/addStudentEvaluation', student.id]" class="text-white"><i
-                                    class="bi bi-pen"></i>Ajouter une évaluation pédagogique</a>
-                        </ng-template>
+
+                        <a *ngIf="userRouterLinks.user=='trainer'"
+                            [routerLink]="['/admin/addStudentEvaluation', student.id]" class="text-white"
+                            [queryParams]="{ trades: userTrades ? userTrades.join(',') : '' }"><i
+                                class="bi bi-pen"></i>Ajouter une évaluation pédagogique</a>
+
                     </button>
                 </div>
             </div>

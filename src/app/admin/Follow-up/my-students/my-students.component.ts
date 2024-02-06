@@ -19,6 +19,7 @@ export class MyStudentsComponent implements OnInit {
   userLastName: string = ""
   // essai pour différencier le tuteur du formateur
   userRouterLinks: any
+  userTrades: string[] = [];
 
   constructor(private service: StudentsService, private auth: Auth, private trainerService: TrainersService, private tutorService: TutorsService, private route: ActivatedRoute) {
     this.userRouterLinks = this.route.snapshot.data;
@@ -45,6 +46,8 @@ export class MyStudentsComponent implements OnInit {
             console.log("userData from myStudents 0...", data)
             console.log("userData lastName from myStudents...", data.lastName)
             this.userLastName = data.lastName
+            this.userTrades= data.sigle
+            console.log('trades récupérés pour tutor', this.userTrades= data.sigle);
 
             // et maintenant qu'on a le lastName
             this.service.getStudents().subscribe(students => {
@@ -60,7 +63,8 @@ export class MyStudentsComponent implements OnInit {
 
         }
 
-        else {
+        if (this.userRouterLinks.user == 'trainer'){
+          alert("c'est un trainer ! ")
 
           // pour récupérer le nom de l'utilisateur authentifié, mais faudra changer ça :
           this.trainerService.getTrainer(user.uid).subscribe(data => {
@@ -70,6 +74,9 @@ export class MyStudentsComponent implements OnInit {
               console.log("userData from myStudents 0...", data)
               console.log("userData lastName from myStudents...", data.lastName)
               this.userLastName = data.lastName
+              this.userTrades= data.sigle
+              console.log('trades récupérés pour trainer', this.userTrades= data.sigle);
+              
 
               // et maintenant qu'on a le lastName
               this.service.getStudents().subscribe(students => {
