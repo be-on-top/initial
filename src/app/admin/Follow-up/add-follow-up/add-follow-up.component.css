@@ -1,0 +1,12 @@
+.was-validated .form-control:valid, .form-control.is-valid, .was-validated .form-select:valid  {
+    background-image: none;
+    /* background-position:center center; */
+  }
+
+  .form-check-input .danger:checked{
+    background-color: red;
+  }
+
+  .form-check-input .danger input[type="checkbox"]:checked {
+    background-color: red!important;
+  }

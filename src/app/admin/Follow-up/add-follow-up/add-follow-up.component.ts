@@ -2,6 +2,7 @@ import { AfterViewInit, Component, OnInit, } from '@angular/core';
 import { StudentsService } from '../../students.service';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SettingsService } from '../../settings.service';
 
 @Component({
   selector: 'app-add-follow-up',
@@ -28,8 +29,16 @@ export class AddFollowUpComponent implements OnInit {
   }; // list of firebase error codes to alternate error messages
 
   receivedTrades: string[] = [];
+  selectedSigle: string = ""
+  relatedCompetences: any = []
+  levels: string[] = ['débutant', 'intermédiaire', 'avancé', 'maîtrise']
+  fullName:string=""
 
-  constructor(private service: StudentsService, private activatedRoute: ActivatedRoute, private router: Router) {
+  constructor(
+    private service: StudentsService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private settingsService: SettingsService) {
     this.studentId = this.activatedRoute.snapshot.params['id']
     this.userRouterLinks = this.activatedRoute.snapshot.data['user']
   }
@@ -37,6 +46,11 @@ export class AddFollowUpComponent implements OnInit {
   ngOnInit(): void {
     this.receivedTrades = this.activatedRoute.snapshot.queryParams['trades'] ? this.activatedRoute.snapshot.queryParams['trades'].split(',') : [];
     console.log('trades récupéré en paramètres de route', this.receivedTrades);
+
+    // on appelle la méthode qui va nous permettre de récupérer les compétences 
+    this.getRelatedCompetences()
+    this.service.getStudentById(this.studentId).subscribe((data:any)=>this.fullName=`${data.firstName} ${data.lastName} `
+    )
 
 
   }
@@ -73,7 +87,6 @@ export class AddFollowUpComponent implements OnInit {
     // redirige vers la vue de détail 
     // this.router.navigate(['/admin/trainers']);
 
-
   }
 
   addTutorial(studentId: string, tutorial: NgForm) {
@@ -95,21 +108,51 @@ export class AddFollowUpComponent implements OnInit {
         this.feedbackMessages = error.message;
         // this.feedbackMessages = this.firebaseErrors[error.code];
         this.isSuccessMessage = false;
-        console.log(this.feedbackMessages);
-
-        // ..};
+        console.log(this.feedbackMessages)
       })
   }
 
   // ngAfterViewInit() {
-    
+
   //   this.tinymce.init({
   //     selector: '#editor', // L'ID de l'élément textarea
   //     plugins: ['link', 'table', 'image'], // Plugins que vous souhaitez activer
   //     toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | table image', // Barre d'outils de l'éditeur
   //   });
 
-    
+
   // }
+
+  checkIfSelected(sigle: any) {
+    console.log(sigle);
+    this.selectedSigle = sigle
+  }
+
+  getKeys(obj: any): string[] {
+    return obj ? Object.keys(obj) : [];
+  }
+
+  async getRelatedCompetences() {
+    // on peut boucler sur le tableau reçu en paramètre, récupérer chaque sigle et retourner les CP concernées dans la collection sigles
+    for (const iterator of this.receivedTrades) {
+      // let additionalCompetences:any
+      this.settingsService.getSigle(iterator).subscribe((data): any => {
+        // console.log('data.competences', data.competences)
+        for (const key in data.competences) {
+          // console.log('data.competences[key]', data.competences[key]);
+          let additionalKeySigle: string = 'competences_' + iterator
+          let additionalKey: string = key
+          let additionalCP: any = data.competences[key]
+
+          this.relatedCompetences[additionalKeySigle] = { ...this.relatedCompetences['competences_' + iterator], ['CP' + additionalKey]: additionalCP }
+          console.log('relatedCompetences renvoyées par le service setting !!!!!!', this.relatedCompetences)
+        }
+      })
+
+    }
+    console.log('relatedCompetences en dehors de la boucle', this.relatedCompetences)
+    // return this.relatedCompetences
+  }
+
 
 }

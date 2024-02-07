@@ -1,11 +1,11 @@
 <div class="container py-5">
     <!-- {{userRouterLinks}} -->
 
-    <h3 *ngIf="userRouterLinks=='tutor', else evaluation">Ajouter un suivi tutorial (d'entreprise)</h3>
+    <h3 *ngIf="userRouterLinks=='tutor', else evaluation">Nouveau suivi tutorial pour {{fullName}}</h3>
     <app-feedback-messages [feedbackMessages]="feedbackMessages"
         [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
     <ng-template #evaluation>
-        <h3 *ngIf="userRouterLinks=='trainer', else evaluation">Ajouter une évaluation pédagogique</h3>
+        <h3 *ngIf="userRouterLinks=='trainer', else evaluation">Nouvelle évaluation pédagogique pour {{fullName}}</h3>
     </ng-template>
     <!-- <app-feedback-messages [feedbackMessages]="feedbackMessages" [isSuccessMessage]="isSuccessMessage"></app-feedback-messages> -->
 
@@ -13,16 +13,48 @@
     <form class="form" #f="ngForm" (submit)="addFollowUp(studentId, f)" class="was-validated">
 
         <!-- attention à virer les fonctions pour l'exercice sur (change) et (input) !!!!!! -->
+        <!-- premières tentatives pour sélectionner les métiers depuis userTrades -->
+        <div class="row mb-1">
+            <div class="form-group col-sm-4">
+                <select class="form-select" name="sigle" ngModel required #sigle="ngModel"
+                    (change)="checkIfSelected(sigle.value)">
+                    <option value>Métier</option>
+                    <option *ngFor="let item of receivedTrades" value="{{item}}">
+                        {{item}}
+                    </option>
+                </select>
+            </div>
+            <div class="form-group col-sm-4">
+                <ng-container *ngIf="relatedCompetences">
+                    <select class="form-select" name="competence" id="competence" ngModel required
+                        #competence="ngModel">
+                        <option value>Competence métier à évaluer</option>
+                        <option
+                            *ngFor="let key of getKeys(relatedCompetences['competences_' + selectedSigle]); let i = index"
+                            [value]="selectedSigle + '_CP' + (i + 1)">
+                            CP{{ i + 1 }}: {{ relatedCompetences['competences_' + selectedSigle][key] }}
+                        </option>
+                    </select>
+                </ng-container>
+            </div>
+            <div class="form-group col-sm-4">
+                <select class="form-select" name="level" id="level" ngModel required #level="ngModel">
+                    <option value>Niveau</option>
+                    <option *ngFor="let level of levels" value="{{level}}">{{level}}</option>
+                </select>
+            </div>
+        </div>
+
 
         <div class="row">
-            <div class="form-group col-md-6">
-                <label for="subject" class="form-label mt-3">Sujet *</label>
+            <!-- <div class="form-group col-md-6">
+                <label for="subject" class="form-label mt-3">Titre *</label>
                 <input type="text" ngModel name="subject" class="form-control" #subject="ngModel" required>
                 <div class="valid-feedback" *ngIf="subject.valid">Champ correctement renseigné</div>
                 <div class="invalid-feedback" *ngIf="subject.invalid">Merci de renseigner le sujet de l'évaluation.
                 </div>
-            </div>
-            <div class="form-group  col-md-6">
+            </div> -->
+            <div class="form-group col-sm-4">
                 <label for="date" class="form-label mt-3">Date *</label>
                 <input type="date" name="date" ngModel name="date" class="form-control" #date="ngModel"
                     placeholder="Saisissez l'évaluation reçue en présentiel" required>
@@ -53,7 +85,7 @@
         <button type="submit" id="submit" class="btn btn-primary mt-3"
             [ngClass]="{'disabled':f.invalid}">Ajouter</button>
     </form>
-    
+
 
 
 </div>
