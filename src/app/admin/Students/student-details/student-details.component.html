@@ -156,12 +156,10 @@
         </div>
 
         <!-- spécifiquement, pour la visualiser son inscription -->
-        <ng-container *ngIf="userRouterLinks.user=='admin'">            
+        <ng-container *ngIf="userRouterLinks.user=='admin'">
             Test vue admin !!!!!!!!!!!! <br>
-            <div *ngIf="subscriptions.length!==0">
-                <strong>Formation métier suivie :</strong>{{subscriptions}}
-            </div>
-            
+            <!-- Exemple -->
+            <div *ngFor="let subscription of subscriptions">{{ subscription }}</div>
         </ng-container>
 
 

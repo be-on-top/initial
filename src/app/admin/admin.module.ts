@@ -61,9 +61,6 @@ import { AddExternalComponent } from './External/add-external/add-external.compo
 import { ExternalDetailsComponent } from './External/external-details/external-details.component';
 import { UpdateExternalComponent } from './External/update-external/update-external.component';
 import { HomeComponent } from '../home/home.component';
-// import { SocialFormComponent as ExternalSocialFormComponent } from '../social/social-form/social-form.component';
-
-
 
 
 
@@ -99,8 +96,7 @@ const routesAdmin: Routes = [
       { path: 'updateUser/:id', component: UpdateUserComponent },
       { path: 'students', component: StudentsListComponent, data: { user: 'admin' } },
       { path: 'student/:id', component: StudentDetailsComponent, data: { user: 'admin' } },
-      // { path: 'updateStudent/:id/:editKey', component: UpdateStudentComponent, data: { user: 'admin' } },
-      { path: 'updateStudent/:id', component: UpdateStudentComponent, data: { user: 'admin' } },
+      { path: 'updateStudent/:id/:editKey', component: UpdateStudentComponent, data: { user: 'admin' } },
       { path: 'priorForm', component: PriorFormComponent },
       { path: 'questions', component: QuestionsListComponent },
       { path: 'questionDetails', component: QuestionDetailsComponent },
@@ -121,8 +117,8 @@ const routesAdmin: Routes = [
       { path: 'myStudentDetails/:id', component: StudentDetailsComponent, data: { user: 'trainer' } },
       // { path: 'trainer/myStudentDetails/:id', component: StudentDetailsComponent, data: { user: 'trainer' } },
       { path: 'tutor/myStudentDetails/:id', component: StudentDetailsComponent, data: { user: 'tutor' } },
-      { path: 'addStudentEvaluation/:id', component: AddFollowUpComponent, data: { user: 'trainer' } },
-      { path: 'addStudentTutorial/:id', component: AddFollowUpComponent, data: { user: 'tutor' } },
+      { path: 'addStudentEvaluation/:id/:trades?', component: AddFollowUpComponent, data: { user: 'trainer' } },
+      { path: 'addStudentTutorial/:id/:trades?', component: AddFollowUpComponent, data: { user: 'tutor' } },
       { path: 'updateEvaluation/:id/:evaluationKey', component: UpdateStudentComponent, data: { user: 'trainer' } },
       { path: 'updateTutorial/:id/:tutorialKey', component: UpdateStudentComponent, data: { user: 'tutor' } },
       { path: 'updateDescription/:id/:role', component: UpdateTradesComponent, data: { user: 'editor' } },
@@ -152,47 +148,7 @@ const routesAdmin: Routes = [
     EvaluatorsListComponent,
     AddEvaluatorComponent,
     EvaluatorDetailsComponent,
-    UpdateEvaluatorComponent, 
-    PriorFormComponent, 
-    QuestionDetailsComponent, 
-    QuestionsListComponent, 
-    UpdateQuestionComponents, 
-    SocialFormComponent, 
-    SocialsListComponent, 
-    UpdateSocialComponent, 
-    SocialDetailsComponent, 
-    FullFormComponent, 
-    FullListComponent, 
-    FullDetailsComponent, 
-    UpdateFullComponent, 
-    LoginComponent, 
-    SearchComponent, 
-    StudentDetailsComponent, 
-    StudentsListComponent, 
-    UpdateStudentComponent, 
-    FeedbackMessagesComponent, 
-    AddTrainerComponent, 
-    TrainersListComponent, 
-    TrainerDetailsComponent,
-    UpdateTrainerComponent,
-    UsersListComponent,
-    SettingsComponent,
-    AddUserComponent,
-    UserDetailsComponent,
-    UpdateUserComponent,
-    UpdateSettingsComponent,
-    UpdateTradesComponent,
-    MyStudentsComponent,
-    AddFollowUpComponent,
-    TooltipComponent,
-    CoverImageComponent,
-    TutorDetailsComponent,
-    TutorsListComponent,
-    UpdateTutorComponent,
-    AddTutorComponent,
-    AddExternalComponent,
-    ExternalDetailsComponent,
-    UpdateExternalComponent
+    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent, UpdateSocialComponent, SocialDetailsComponent, FullFormComponent, FullListComponent, FullDetailsComponent, UpdateFullComponent, LoginComponent, SearchComponent, StudentDetailsComponent, StudentsListComponent, UpdateStudentComponent, FeedbackMessagesComponent, AddTrainerComponent, TrainersListComponent, TrainerDetailsComponent, UpdateTrainerComponent, UsersListComponent, SettingsComponent, AddUserComponent, UserDetailsComponent, UpdateUserComponent, UpdateSettingsComponent, UpdateTradesComponent, MyStudentsComponent, AddFollowUpComponent, TooltipComponent, CoverImageComponent, TutorDetailsComponent, TutorsListComponent, UpdateTutorComponent, AddTutorComponent, AddExternalComponent, ExternalDetailsComponent, UpdateExternalComponent
   ],
   imports: [
     BrowserModule,
