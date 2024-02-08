@@ -18,6 +18,7 @@ export interface Student {
     tutor?: string;
     anpe?: boolean;
     tradesEvaluated?: string[];
+    subscriptions?:[]
      // Index signature
      [key: string]: any; // Index signature for dynamic properties
 }

@@ -56,6 +56,25 @@
                 [ngClass]="{'disabled':f.invalid || userRouterLinks.user=='trainer'}">Valider</button>
         </form>
 
+        <!-- spécifiquement, pour la validation de son inscription -->
+        <ng-container *ngIf="userRouterLinks.user=='admin'">
+            <div class="mb-5">
+                <h3>Inscription Formation</h3>
+    
+                <form class="form mb-5" #subscription="ngForm" (submit)="subscribeStudent(subscription)" class="was-validated">
+                    <select class="form-select" name="sigle" ngModel required #sigle="ngModel">
+                        <option value>Selectionner le métier rattaché à l'inscription</option>
+                        <option *ngFor="let element of sigleIds" value="{{element}}">
+                      {{element}}
+                        </option>
+                    </select>
+                    <button type="submit" id="submit" class="btn btn-primary mt-3"
+                        [ngClass]="{'disabled':subscription.invalid}">Valider</button>
+                </form>
+            </div>
+
+        </ng-container>
+
         <!-- spécifiquement, pour la saisie des évaluations de suivi -->
         <ng-container *ngIf="userRouterLinks.user=='trainer'">
             <h3>Mise à jour de ses évaluations de suivi</h3>

@@ -377,5 +377,13 @@ export class StudentsService {
   //   return null;
   // }
 
+  async activateSubscription(id:string, sigle:string){
+    const studentRef = doc(this.firestore, "students/" + id)
+    const updateStudent = {
+      subscriptions: [sigle]
+    }
+    setDoc(studentRef, updateStudent, { merge: true })
+  }
+
 
 }

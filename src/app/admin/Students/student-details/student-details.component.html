@@ -102,7 +102,8 @@
                         <!-- Il semble que la directive keyvalue provoque des problèmes lorsqu'elle est utilisée dans une boucle *ngFor. 
                             Pour contourner ce problème, on peut utiliser la fonction créée Object.entries() pour obtenir les clés et valeurs de result.value. -->
                         <ng-template #done class="mb-3">
-                            <p class="alert bg-success text-light mt-2 d-flex justify-content-between py-2">Questionnaire de
+                            <p class="alert bg-success text-light mt-2 d-flex justify-content-between py-2">
+                                Questionnaire de
                                 positionnement terminé pour {{ tradeWithoutQuizzPrefix }} <i
                                     class="bi bi-arrow-down-square-fill ms-auto"></i></p>
 
@@ -135,7 +136,8 @@
                                         </ng-container>
                                     </p>
                                     <hr>
-                                    <p><span class="fw-bold">Total</span> : {{totalTime}} heures de formation pour {{totalCost}}€</p>
+                                    <p><span class="fw-bold">Total</span> : {{totalTime}} heures de formation pour
+                                        {{totalCost}}€</p>
                                 </div>
 
                             </div>
@@ -152,6 +154,15 @@
                 </ng-template>
             </div>
         </div>
+
+        <!-- spécifiquement, pour la visualiser son inscription -->
+        <ng-container *ngIf="userRouterLinks.user=='admin'">            
+            Test vue admin !!!!!!!!!!!! <br>
+            <div *ngIf="subscriptions.length!==0">
+                <strong>Formation métier suivie :</strong>{{subscriptions}}
+            </div>
+            
+        </ng-container>
 
 
         <!-- affichage des évaluations -->

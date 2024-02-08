@@ -3,6 +3,7 @@ import { StudentsService } from '../../students.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { Evaluation } from '../../evaluation';
+import { SettingsService } from '../../settings.service';
 // import { AnimationKeyframesSequenceMetadata } from '@angular/animations';
 
 @Component({
@@ -24,14 +25,17 @@ export class UpdateStudentComponent implements OnInit {
   tutorialToUpdate: Evaluation = { details: '', subject: '', date: '' }
   tutorialKey: string = ""
 
+  // essai pour connecter le tableau des sigles aux documents de la collection sigles destinée aux paramétrages métier
+  sigleIds: string[] = []
 
-  constructor(private service: StudentsService, private ac: ActivatedRoute, private router: Router) {
+
+  constructor(private service: StudentsService, private ac: ActivatedRoute, private router: Router, private settingsService: SettingsService) {
     this.userRouterLinks = this.ac.snapshot.data;
   }
 
   ngOnInit(): void {
     this.studentId = this.ac.snapshot.params["id"]
-    this.ac.snapshot.params["evaluationKey"]? this.evaluationKey = this.ac.snapshot.params["evaluationKey"] : this.evaluationKey = this.ac.snapshot.params["editKey"]
+    this.ac.snapshot.params["evaluationKey"] ? this.evaluationKey = this.ac.snapshot.params["evaluationKey"] : this.evaluationKey = this.ac.snapshot.params["editKey"]
     this.ac.snapshot.params["tutorialKey"] ? this.tutorialKey = this.ac.snapshot.params["tutorialKey"] : this.tutorialKey = this.ac.snapshot.params["editKey"]
 
     console.log("voici l'ID", this.studentId)
@@ -54,6 +58,7 @@ export class UpdateStudentComponent implements OnInit {
     })
 
     this.getUsers()
+    this.fetchSigleIds()
 
   }
 
@@ -111,6 +116,26 @@ export class UpdateStudentComponent implements OnInit {
     else if (this.userRouterLinks.user == "admin") {
       alert("C'est un super administrateur !!!")
     }
+
+  }
+
+
+
+  // Utilisation de la fonction du service lorsque nécessaire
+  fetchSigleIds() {
+    this.settingsService.getSigleIds()
+      .then((sigleIds) => {
+        this.sigleIds = sigleIds
+        console.log(sigleIds);
+      })
+      .catch((error) => {
+        console.error('Erreur lors de la récupération des IDs de documents :', error);
+      });
+  }
+
+  subscribeStudent(subscribeStudent: NgForm) {
+    // console.log('subscribeStudent.value.sigle', subscribeStudent.value.sigle);
+    this.service.activateSubscription(this.studentId, subscribeStudent.value.sigle)
 
   }
 

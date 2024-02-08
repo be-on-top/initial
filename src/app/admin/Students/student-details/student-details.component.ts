@@ -10,6 +10,7 @@ import { Evaluation } from '../../evaluation';
 import { QuizDetails } from '../../quizzDetails';
 import { SettingsService } from '../../settings.service';
 
+
 @Component({
   selector: 'app-student-details',
   templateUrl: './student-details.component.html',
@@ -48,6 +49,7 @@ export class StudentDetailsComponent {
   // c'est totalement dingue, mais on ne peut pas se référer à Object directement dans un template angular
   // donc si je veux un affichage conditionné côté template, me faut une méthode pour vérifier si evaluations n'est pas vide
 
+  subscriptions?: any
 
   constructor(
     private service: StudentsService,
@@ -73,6 +75,8 @@ export class StudentDetailsComponent {
     this.service.getStudentById(studentId).subscribe(student => {
       this.student = student
       /* console.log(studentId); */
+      this.subscriptions = this.student.subscriptions
+      console.log('3333333333333333', this.student);
 
       // Utilisation d'un Set pour stocker les tradesEvaluated uniques
       const tradesEvaluatedSet = new Set<string>();
@@ -100,6 +104,8 @@ export class StudentDetailsComponent {
       // Convertir le Set en tableau avec l'opérateur spread (...)
       this.tradesEvaluated = [...tradesEvaluatedSet]
       console.log('tradesEvaluated construit avec getStudentDetails dans studentDetailsComponent', this.tradesEvaluated)
+
+      
 
     })
 
