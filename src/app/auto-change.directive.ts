@@ -22,13 +22,13 @@
 // Directives
 // Directive
 import { Directive, ElementRef, HostListener } from '@angular/core';
-import { SocialFormComponent } from './social/social-form/social-form.component';
+import { StudentFormComponent } from './studentForm/student-form.component';
 
 @Directive({
   selector: '[appAutoChange]'
 })
 export class AutoChangeDirective {
-  constructor(private el: ElementRef, private component: SocialFormComponent) { }
+  constructor(private el: ElementRef, private component: StudentFormComponent) { }
 
   @HostListener('change', ['$event.target.value'])
   onChange(value: any) {

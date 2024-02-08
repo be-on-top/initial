@@ -9,12 +9,12 @@ import { StudentsService } from 'src/app/admin/students.service';
 
 @Component({
   selector: 'app-social-form',
-  templateUrl: './social-form.component.html',
-  styleUrls: ['./social-form.component.css']
+  templateUrl: './student-form.component.html',
+  styleUrls: ['./student-form.component.css']
 })
 
 
-export class SocialFormComponent implements OnInit {
+export class StudentFormComponent implements OnInit {
   // authId?: any;
   // userData?: any;
   userData: any = {};
