@@ -15,4 +15,6 @@ export class SearchComponent {
     this.searchTextChanged.emit(this.enteredSearchValue)
   }
 
+
+
 }
