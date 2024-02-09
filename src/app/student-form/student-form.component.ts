@@ -8,7 +8,7 @@ import { getDoc } from 'firebase/firestore';
 import { StudentsService } from 'src/app/admin/students.service';
 
 @Component({
-  selector: 'app-social-form',
+  selector: 'app-student-form',
   templateUrl: './student-form.component.html',
   styleUrls: ['./student-form.component.css']
 })

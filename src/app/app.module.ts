@@ -29,7 +29,7 @@ import { AccountComponent } from './account/account.component';
 // pour appliquer à la lettre la division des tâches. ceci ne me semble pourtant pas très pertinent ici. 
 import { UpdateAccountComponent } from './account/update-account/update-account.component';
 import { QuizzComponent } from './quizz/quizz.component';
-import { StudentFormComponent } from './studentForm/student-form.component';
+import { StudentFormComponent } from './student-form/student-form.component';
 import { DetailsComponent } from './quizz/vues/details/details.component';
 import { SettingsListComponent } from './admin/settings/settings-list/settings-list.component';
 import { TooltipComponent } from './tooltip/tooltip.component';

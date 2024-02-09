@@ -22,7 +22,7 @@
 // Directives
 // Directive
 import { Directive, ElementRef, HostListener } from '@angular/core';
-import { StudentFormComponent } from './studentForm/student-form.component';
+import { StudentFormComponent } from './student-form/student-form.component';
 
 @Directive({
   selector: '[appAutoChange]'
