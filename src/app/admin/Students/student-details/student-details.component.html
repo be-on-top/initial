@@ -108,39 +108,29 @@
                                     class="bi bi-arrow-down-square-fill ms-auto"></i></p>
 
                             <!-- on peut les mettre en vis à vis pour les grands écrans -->
-                            <div class="row">
 
-                                <div class="col-md-6">
-                                    <p class="card-text fw-bold mb-0">Résultats obtenus<i
-                                            class="bi bi-pie-chart-fill ms-3"></i></p>
                                     <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
-                                    <p class="card-text mb-0 d-flex align-items-center"
-                                        *ngFor="let result of getTradeDetails(trade)?.fullResults | keyvalue">
+                                    <div class="card-text mb-0 align-items-center"
+                                        *ngFor="let result of getTradeDetails(trade)?.fullResults  | keyvalue, let i=index ">
                                         <ng-container *ngFor="let item of objectEntries(result.value)">
-                                            <span class="fw-bold">{{ item[0] }} : </span>
-                                            <i class="bi fs-4 bi-arrow-right-short"></i>
-                                            <span>{{ item[1].notation | json| number:'1.1-1' }}/20</span>
+                                            <div><span class="fw-bold">{{item[0] }}: </span> <span *ngIf="trades[trade]">{{trades[trade][i]}}</span></div>                                                
+                                            <div class="mb-2">
+                                                <div class="d-sm-inline">
+                                                    <span class="fw-bold">Note: </span>
+                                                    <span>{{ item[1].notation | json| number:'1.1-1' }}/20 </span>
+                                                </div>
+                                                <div class="d-sm-inline">
+                                                    <!-- on réintègre la deuxième colonne -->
+                                                    <span class="fw-bold">Durée: </span>
+                                                    {{ item[1].duration }} heures <span class="fw-bold">Coût</span> : {{ item[1].cost }}€
+                                                </div>
+                                            </div>
                                         </ng-container>
-                                    </p>
-                                </div>
+                                    </div>
 
-                                <div class="col-md-6">
-                                    <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
-                                    <p class="card-text fw-bold mb-0">Estimation personnalisée</p>
-                                    <p class="card-text mb-0 d-flex align-items-center"
-                                        *ngFor="let result of getTradeDetails(trade)?.fullResults | keyvalue">
-                                        <ng-container *ngFor="let item of objectEntries(result.value)">
-                                            <span class="fw-bold">{{ item[0] }}</span>
-                                            <i class="bi fs-4 bi-arrow-right-short"></i>
-                                            <span>{{ item[1].duration }} heures - Coût : {{ item[1].cost }}€</span>
-                                        </ng-container>
-                                    </p>
                                     <hr>
                                     <p><span class="fw-bold">Total</span> : {{totalTime}} heures de formation pour
                                         {{totalCost}}€</p>
-                                </div>
-
-                            </div>
 
                         </ng-template>
 

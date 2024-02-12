@@ -9,6 +9,7 @@ import { Student } from '../student';
 import { Evaluation } from '../../evaluation';
 import { QuizDetails } from '../../quizzDetails';
 import { SettingsService } from '../../settings.service';
+import { Observable, forkJoin, map } from 'rxjs';
 
 
 @Component({
@@ -50,6 +51,8 @@ export class StudentDetailsComponent {
   // donc si je veux un affichage conditionné côté template, me faut une méthode pour vérifier si evaluations n'est pas vide
 
   subscriptions?: any
+
+  trades: { [key: string]: string[] } = {};
 
   constructor(
     private service: StudentsService,
@@ -100,14 +103,37 @@ export class StudentDetailsComponent {
         if (this.student.tutorials) { this.tutorials = this.student.tutorials; console.log("this.tutorials", this.tutorials); }
 
       }
-
+      
+      
       // Convertir le Set en tableau avec l'opérateur spread (...)
       this.tradesEvaluated = [...tradesEvaluatedSet]
       console.log('tradesEvaluated construit avec getStudentDetails dans studentDetailsComponent', this.tradesEvaluated)
-
       
+      // Logique pour obtenir les compétences pour chaque tradeId
+      this.tradesEvaluated.forEach(tradeId => {
+       this.settingsService.getCompetences(tradeId).subscribe(competences => {
+         // Ajoutez les compétences dans l'objet trades
+         this.trades[tradeId] = competences;
+         // Loguez les compétences dans la console
+         console.log(`${tradeId}:`, competences);
+       });
+     });
+
+     // Logique pour trier les résultats
+    for (const item of this.tradesEvaluated) {
+      if (this.student[item].fullResults) {
+        this.student[item].fullResults.sort((a: any, b: any) => {
+          const keyA = Object.keys(a)[0];
+          const keyB = Object.keys(b)[0];
+          return keyA.localeCompare(keyB);
+        });
+      }
+    }
+
 
     })
+
+    
 
   }
 
@@ -146,6 +172,7 @@ export class StudentDetailsComponent {
       const relatedResults = this.student[trade]['fullResults']
       this.updateTotalCost(relatedResults)
       this.tradeWithoutQuizzPrefix = this.removeQuizzPrefix(trade);
+      this.getTradeName(trade)
       return this.student[trade] as QuizDetails;
     }
     return null;
@@ -153,13 +180,19 @@ export class StudentDetailsComponent {
 
 
 
-  // La méthode replace renvoie une nouvelle chaîne avec les modifications, mais elle ne modifie pas la chaîne originale !!!!
-  getTradeName(tradeId: string) {
-    const cleanedTradeId = tradeId.replace('quizz_', '');
-    this.settingsService.getTradeName(cleanedTradeId).subscribe(data => {
-      this.tradeName = data;
-    });
-  }
+// Fonction pour récupérer les noms des métiers en parallèle
+getTradeNames(tradeIds: string[]): Observable<string[]> {
+  const observables = tradeIds.map(tradeId => this.getTradeName(tradeId));
+  return forkJoin(observables);
+}
+
+// Fonction pour obtenir le nom d'un métier
+getTradeName(tradeId: string): Observable<string> {
+  const cleanedTradeId = tradeId.replace('quizz_', '');
+  return this.settingsService.getTradeName(cleanedTradeId).pipe(
+    map(data => this.tradeName = data)
+  );
+}
 
   // pour modulariser la méthode de récupération de l'info-bulle avec des termes génériques
   getMoreInfo(tradeId: string) {
@@ -207,6 +240,16 @@ export class StudentDetailsComponent {
 
   evaluationsNotEmpty(): boolean {
     return Object.keys(this.evaluations).length > 0;
+  }
+
+  getCpName(tradId:string, cpIndex:any){
+    // const trade=tradId.replace('quizz','')
+    const cp=Number(cpIndex.replace('quizz_CP',''))
+    return cp
+    // console.log('cp',cp);
+    // console.log('trade',trade);
+
+    // this.settingsService.getCPName(trade,cp)
   }
 
 
