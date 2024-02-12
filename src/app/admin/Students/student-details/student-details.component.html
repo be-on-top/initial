@@ -161,8 +161,27 @@
                 </i>Ses évaluations de suivi pédagogique </h3>
             <div *ngFor="let evaluation of evaluations | keyvalue">
                 <div class="card my-5">
+                    <div class="card-header" *ngIf="evaluation.value.competence && evaluation.value.level">
+                        {{ evaluation.value.competence }}   {{ evaluation.value.level }}
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input level1" type="checkbox" id="inlineCheckbox1" value="option1" disabled>
+                            <label class="form-check-label" for="inlineCheckbox1">1</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input level2" type="checkbox" id="inlineCheckbox2" value="option2" disabled>
+                            <label class="form-check-label" for="inlineCheckbox2">2</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input level3" type="checkbox" id="inlineCheckbox3" value="option3" disabled>
+                            <label class="form-check-label" for="inlineCheckbox3">3</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input level4" type="checkbox" id="inlineCheckbox3" value="option4" disabled>
+                            <label class="form-check-label" for="inlineCheckbox3">4</label>
+                          </div>
+                    </div>
                     <div class="card-body">
-                        <p class="card-text"><span class="fw-bold">Sujet</span>: {{ evaluation.value.subject }}</p>
+                        <p class="card-text" *ngIf="evaluation.value.subject"><span class="fw-bold">Sujet</span>: {{ evaluation.value.subject }}</p>
                         <!-- version sans recours à TinyMCE donc sans balise html enregistrées en base -->
                         <!-- <p class="card-text"><span class="fw-bold">Détails</span>: {{ evaluation.value.details }}</p> -->
                         <!-- version avec filtre de rendu de balises HTML enregistrées en base -->

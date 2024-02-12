@@ -42,3 +42,19 @@
   opacity: 1;
   visibility: visible;
 }
+
+.form-check-input.level1{
+  background-color: rgb(232, 231, 231);
+}
+.form-check-input.level2{
+  background-color: yellow;
+}
+.form-check-input.level3{
+  background-color:#82BC00;
+}
+.form-check-input.level4{
+  background-color: #0062fe;
+}
+.form-check-input:disabled{
+  opacity: 80;
+}
