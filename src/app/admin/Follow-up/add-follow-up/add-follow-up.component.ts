@@ -31,7 +31,7 @@ export class AddFollowUpComponent implements OnInit {
   receivedTrades: string[] = [];
   selectedSigle: string = ""
   relatedCompetences: any = []
-  levels: string[] = ['débutant', 'intermédiaire', 'avancé', 'maîtrise']
+  levels: string[] = ['beginner', 'intermediate', 'advance', 'pro']
   fullName:string=""
 
   constructor(

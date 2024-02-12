@@ -162,21 +162,21 @@
             <div *ngFor="let evaluation of evaluations | keyvalue">
                 <div class="card my-5">
                     <div class="card-header" *ngIf="evaluation.value.competence && evaluation.value.level">
-                        {{ evaluation.value.competence }}   {{ evaluation.value.level }}
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input level1" type="checkbox" id="inlineCheckbox1" value="option1" disabled>
+                        {{ evaluation.value.competence }} 
+                        <div class="form-check form-check-inline ms-2">
+                            <input class="form-check-input" [ngClass]="{'level1':evaluation.value.level=='beginner'}" type="checkbox" id="inlineCheckbox1" value="option1" disabled>
                             <label class="form-check-label" for="inlineCheckbox1">1</label>
                           </div>
                           <div class="form-check form-check-inline">
-                            <input class="form-check-input level2" type="checkbox" id="inlineCheckbox2" value="option2" disabled>
+                            <input class="form-check-input" [ngClass]="{'level2':evaluation.value.level=='intermediate'}" type="checkbox" id="inlineCheckbox2" value="option2" disabled>
                             <label class="form-check-label" for="inlineCheckbox2">2</label>
                           </div>
                           <div class="form-check form-check-inline">
-                            <input class="form-check-input level3" type="checkbox" id="inlineCheckbox3" value="option3" disabled>
+                            <input class="form-check-input" [ngClass]="{'level3':evaluation.value.level=='advance'}" type="checkbox" id="inlineCheckbox3" value="option3" disabled>
                             <label class="form-check-label" for="inlineCheckbox3">3</label>
                           </div>
                           <div class="form-check form-check-inline">
-                            <input class="form-check-input level4" type="checkbox" id="inlineCheckbox3" value="option4" disabled>
+                            <input class="form-check-input" [ngClass]="{'level4':evaluation.value.level=='pro'}" type="checkbox" id="inlineCheckbox3" value="option4" disabled>
                             <label class="form-check-label" for="inlineCheckbox3">4</label>
                           </div>
                     </div>
