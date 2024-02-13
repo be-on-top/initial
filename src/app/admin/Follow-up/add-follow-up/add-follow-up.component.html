@@ -38,9 +38,14 @@
                 </ng-container>
             </div>
             <div class="form-group col-sm-4">
-                <select class="form-select" name="level" id="level" ngModel required #level="ngModel">
+                <!-- {{userRouterLinks=='tutor' | json}} !!!!!! -->
+                <select *ngIf="userRouterLinks=='trainer'" class="form-select" name="level" id="level" ngModel required #level="ngModel">
                     <option value>Niveau</option>
                     <option *ngFor="let level of levels" value="{{level}}">{{level}}</option>
+                </select>
+                <select *ngIf="userRouterLinks=='tutor'" class="form-select" name="level" id="level" ngModel required #level="ngModel">
+                    <option value>Niveau</option>
+                    <option value="pro">Acquise</option>
                 </select>
             </div>
         </div>

@@ -18,12 +18,12 @@ export class UpdateStudentComponent implements OnInit {
   student: any = {}
   // selectedSigles: string[] = []
   // et dans l'hypothèse où le formateur utilise ce même composant pour mettre à jour son évaluation
-  evaluationToUpdate: Evaluation = {sigle:'', competence:'', level:'', details: '', subject: '', date: '' }
+  evaluationToUpdate: Evaluation = { sigle: '', competence: '', level: '', details: '', subject: '', date: '' }
   evaluationKey: string = ""
   userRouterLinks: any
 
   // je rajoute (tout en maintenant là aussi le typage qui est rigoureusement le même)
-  tutorialToUpdate: Evaluation = { details: '', subject: '', date: '' }
+  tutorialToUpdate: Evaluation = { sigle: '', competence: '', level: '', details: '', subject: '', date: '' }
   tutorialKey: string = ""
 
   // essai pour connecter le tableau des sigles aux documents de la collection sigles destinée aux paramétrages métier
@@ -88,7 +88,7 @@ export class UpdateStudentComponent implements OnInit {
     // pour actualiser la date à l'update
     const currentDate: string = formatDate(new Date(), 'yyyy-MM-dd', 'en');
     // updatedEvaluations.evaluations[this.evaluationKey]=form.value
-    updatedEvaluations.evaluations[this.evaluationKey] = {"sigle":this.evaluationToUpdate.sigle, "competence":this.evaluationToUpdate.competence ,"level":form.value.level, "date": currentDate, "details": form.value.details, "subject": form.value.subject }
+    updatedEvaluations.evaluations[this.evaluationKey] = { "sigle": this.evaluationToUpdate.sigle, "competence": this.evaluationToUpdate.competence, "level": form.value.level, "date": currentDate, "details": form.value.details, "subject": form.value.subject }
     console.log("this.student.evaluations après lecture du formulaire d'update", updatedEvaluations)
 
     this.service.updateStudentEvaluation(this.studentId, updatedEvaluations)
@@ -103,9 +103,11 @@ export class UpdateStudentComponent implements OnInit {
     }
     /* console.log("form update values", form.value); */
     const updatedTutorials: any = { tutorials: { ...this.student.tutorials } }
+    // pour actualiser la date à l'update
+    const currentDate: string = formatDate(new Date(), 'yyyy-MM-dd', 'en');
     // updatedEvaluations.evaluations[this.evaluationKey]=form.value
-    updatedTutorials.tutorials[this.tutorialKey] = { "date": this.student.tutorials[this.tutorialKey].date, "details": form.value.details, "subject": form.value.subject }
-    console.log("this.student.evaluations après lecture du formulaire d'update", updatedTutorials)
+    updatedTutorials.tutorials[this.tutorialKey] = { "sigle": this.tutorialToUpdate.sigle, "competence": this.tutorialToUpdate.competence, "level": form.value.level, "date": currentDate, "details": form.value.details, "subject": form.value.subject }
+    console.log("this.student.tutorial après lecture du formulaire d'update", updatedTutorials)
     this.service.updateStudentTutorial(this.studentId, updatedTutorials)
     // il faudra prévoir une redirection... 
     this.router.navigate(['/admin/tutor/myStudentDetails', this.studentId])
