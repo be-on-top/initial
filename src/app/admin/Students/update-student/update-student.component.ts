@@ -17,7 +17,7 @@ export class UpdateStudentComponent implements OnInit {
   student: any = {}
   // selectedSigles: string[] = []
   // et dans l'hypothèse où le formateur utilise ce même composant pour mettre à jour son évaluation
-  evaluationToUpdate: Evaluation = { details: '', subject: '', date: '' }
+  evaluationToUpdate: Evaluation = {sigle:'', competence:'', level:'', details: '', subject: '', date: '' }
   evaluationKey: string = ""
   userRouterLinks: any
 
@@ -27,6 +27,8 @@ export class UpdateStudentComponent implements OnInit {
 
   // essai pour connecter le tableau des sigles aux documents de la collection sigles destinée aux paramétrages métier
   sigleIds: string[] = []
+
+  levels: string[] = ['beginner', 'intermediate', 'advance', 'pro']
 
 
   constructor(private service: StudentsService, private ac: ActivatedRoute, private router: Router, private settingsService: SettingsService) {
@@ -83,7 +85,7 @@ export class UpdateStudentComponent implements OnInit {
     /* console.log("form update values", form.value); */
     const updatedEvaluations: any = { evaluations: { ...this.student.evaluations } }
     // updatedEvaluations.evaluations[this.evaluationKey]=form.value
-    updatedEvaluations.evaluations[this.evaluationKey] = { "date": this.student.evaluations[this.evaluationKey].date, "details": form.value.details, "subject": form.value.subject }
+    updatedEvaluations.evaluations[this.evaluationKey] = {"sigle":this.evaluationToUpdate.sigle, "competence":this.evaluationToUpdate.competence ,"level":form.value.level, "date": this.student.evaluations[this.evaluationKey].date, "details": form.value.details, "subject": form.value.subject }
     console.log("this.student.evaluations après lecture du formulaire d'update", updatedEvaluations)
 
     this.service.updateStudentEvaluation(this.studentId, updatedEvaluations)

@@ -60,12 +60,13 @@
         <ng-container *ngIf="userRouterLinks.user=='admin'">
             <div class="mb-5">
                 <h3>Inscription Formation</h3>
-    
-                <form class="form mb-5" #subscription="ngForm" (submit)="subscribeStudent(subscription)" class="was-validated">
+
+                <form class="form mb-5" #subscription="ngForm" (submit)="subscribeStudent(subscription)"
+                    class="was-validated">
                     <select class="form-select" name="sigle" ngModel required #sigle="ngModel">
                         <option value>Selectionner le métier rattaché à l'inscription</option>
                         <option *ngFor="let element of sigleIds" value="{{element}}">
-                      {{element}}
+                            {{element}}
                         </option>
                     </select>
                     <button type="submit" id="submit" class="btn btn-primary mt-3"
@@ -80,6 +81,15 @@
             <h3>Mise à jour de ses évaluations de suivi</h3>
 
             <form class="form" #followUp="ngForm" (submit)="updateStudentEvaluation(followUp)" class="was-validated">
+                <!-- ajout pour les niveaux -->
+                <div class="form-group col-sm-4">
+                    <select class="form-select" name="level" id="level" [ngModel]="evaluationToUpdate.level" required
+                        #level="ngModel">
+                        <option value>Niveau</option>
+                        <option *ngFor="let level of levels" value="{{level}}">{{level}}</option>
+                    </select>
+                </div>
+                <!-- ----------------- -->
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="subject" class="form-label mt-3">Sujet *</label>
@@ -98,13 +108,13 @@
                     </div> -->
                 </div>
                 <div class="form-group">
-                    <label for="details" class="form-label mt-3">Details *</label>
+                    <label for="details" class="form-label mt-3">Details</label>
                     <!-- Si on utilise TinyCME comme éditeur de texte pour enrichir la propriété details -->
                     <!-- <textarea name="details" id="" cols="50" rows="30" [ngModel]="evaluationToUpdate.details" name="details" class="form-control"
                         #details="ngModel" placeholder="Saisissez l'évaluation reçue en présentiel" required></textarea> -->
                     <editor [init]="{ plugins: 'link image', toolbar: 'undo redo | bold italic | link image' }"
                         [id]="'details'" [ngModel]="evaluationToUpdate.details" name="details"
-                        placeholder="Saisissez l'évaluation reçue en présentiel" required></editor>
+                        placeholder="Saisissez l'évaluation reçue en présentiel"></editor>
                     <div class="valid-feedback" *ngIf="details.valid">Evaluation correctement renseignée</div>
                     <div class="invalid-feedback" *ngIf="details.invalid">Merci de saisir votre évaluation de suivi
                     </div>
@@ -123,6 +133,7 @@
 
             <form class="form" #followUpTutorial="ngForm" (submit)="updateStudentTutorial(followUpTutorial)"
                 class="was-validated">
+
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="subject" class="form-label mt-3">Sujet *</label>

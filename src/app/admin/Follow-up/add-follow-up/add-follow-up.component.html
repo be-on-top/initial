@@ -47,13 +47,13 @@
 
 
         <div class="row">
-            <!-- <div class="form-group col-md-6">
+            <div class="form-group col-md-6">
                 <label for="subject" class="form-label mt-3">Titre *</label>
                 <input type="text" ngModel name="subject" class="form-control" #subject="ngModel" required>
                 <div class="valid-feedback" *ngIf="subject.valid">Champ correctement renseigné</div>
                 <div class="invalid-feedback" *ngIf="subject.invalid">Merci de renseigner le sujet de l'évaluation.
                 </div>
-            </div> -->
+            </div>
             <div class="form-group col-sm-4">
                 <label for="date" class="form-label mt-3">Date *</label>
                 <input type="date" name="date" ngModel name="date" class="form-control" #date="ngModel"
@@ -64,7 +64,7 @@
         </div>
 
         <div class="form-group">
-            <label for="details" class="form-label mt-3">Details *</label>
+            <label for="details" class="form-label mt-3">Details</label>
             <!-- pour éditeur de text (?) -->
             <!-- <editor
                 [init]="{ plugins: 'link image', toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | link image' }">
@@ -76,7 +76,7 @@
 
             <editor apiKey="ahl0yg86w69zh9viflcvku8m2k333o942kc9fpttussom153"
                 [init]="{ plugins: 'link image', toolbar: 'undo redo | bold italic | link image' }" [id]="'details'"
-                ngModel name="details" #details="ngModel" placeholder="Saisissez l'évaluation" required>
+                ngModel name="details" #details="ngModel" placeholder="Saisissez l'évaluation">
             </editor>
             <div class="valid-feedback" *ngIf="details.valid">Evaluation correctement renseignée</div>
             <div class="invalid-feedback" *ngIf="details.invalid">Merci de saisir votre évaluation</div>
