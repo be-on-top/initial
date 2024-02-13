@@ -4,22 +4,27 @@
     <h3 *ngIf="userRouterLinks=='tutor', else evaluation">Nouveau suivi tutorial pour {{fullName}}</h3>
     <app-feedback-messages [feedbackMessages]="feedbackMessages"
         [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
+    <div *ngIf="!isRealStudent" class="alert alert-danger p-4 mb-4 fade show pe-5">
+        <span> Vous ne pouvez pas saisir une évaluation pour un étudiant dont l'inscription à la formation n'a pas
+            encore été validée</span>
+    </div>
     <ng-template #evaluation>
+
         <h3 *ngIf="userRouterLinks=='trainer', else evaluation">Nouvelle évaluation pédagogique pour {{fullName}}</h3>
     </ng-template>
     <!-- <app-feedback-messages [feedbackMessages]="feedbackMessages" [isSuccessMessage]="isSuccessMessage"></app-feedback-messages> -->
 
     <!-- pour les messages de retour/validation des champs du formulaire ou form validation, on utilisera BOOTSTRAP plutôt que des directives structurelles -->
-    <form class="form" #f="ngForm" (submit)="addFollowUp(studentId, f)" class="was-validated">
+    <form class="form" #f="ngForm" (submit)="addFollowUp(studentId, f)" class="was-validated" disabled>
 
         <!-- attention à virer les fonctions pour l'exercice sur (change) et (input) !!!!!! -->
         <!-- premières tentatives pour sélectionner les métiers depuis userTrades -->
         <div class="row mb-1">
             <div class="form-group col-sm-4">
                 <select class="form-select" name="sigle" ngModel required #sigle="ngModel"
-                    (change)="checkIfSelected(sigle.value)">
+                    (change)="checkIfSelected(sigle.value)" [disabled]="!isRealStudent">
                     <option value>Métier</option>
-                    <option *ngFor="let item of receivedTrades" value="{{item}}">
+                    <option *ngFor="let item of receivedTrades" value="{{item}}" >
                         {{item}}
                     </option>
                 </select>
@@ -27,7 +32,7 @@
             <div class="form-group col-sm-4">
                 <ng-container *ngIf="relatedCompetences">
                     <select class="form-select" name="competence" id="competence" ngModel required
-                        #competence="ngModel">
+                        #competence="ngModel" [disabled]="!isRealStudent">
                         <option value>Competence métier à évaluer</option>
                         <option
                             *ngFor="let key of getKeys(relatedCompetences['competences_' + selectedSigle]); let i = index"
@@ -39,11 +44,13 @@
             </div>
             <div class="form-group col-sm-4">
                 <!-- {{userRouterLinks=='tutor' | json}} !!!!!! -->
-                <select *ngIf="userRouterLinks=='trainer'" class="form-select" name="level" id="level" ngModel required #level="ngModel">
+                <select *ngIf="userRouterLinks=='trainer'" class="form-select" name="level" id="level" ngModel required
+                    #level="ngModel" [disabled]="!isRealStudent">
                     <option value>Niveau</option>
                     <option *ngFor="let level of levels" value="{{level}}">{{level}}</option>
                 </select>
-                <select *ngIf="userRouterLinks=='tutor'" class="form-select" name="level" id="level" ngModel required #level="ngModel">
+                <select *ngIf="userRouterLinks=='tutor'" class="form-select" name="level" id="level" ngModel required
+                    #level="ngModel">
                     <option value>Niveau</option>
                     <option value="pro">Acquise</option>
                 </select>
@@ -54,7 +61,7 @@
         <div class="row">
             <div class="form-group col-md-6">
                 <label for="subject" class="form-label mt-3">Titre *</label>
-                <input type="text" ngModel name="subject" class="form-control" #subject="ngModel" required>
+                <input type="text" placeholder="Pour plus de lisibilité, merci de renseigner" ngModel name="subject" class="form-control" #subject="ngModel" required [disabled]="!isRealStudent">
                 <div class="valid-feedback" *ngIf="subject.valid">Champ correctement renseigné</div>
                 <div class="invalid-feedback" *ngIf="subject.invalid">Merci de renseigner le sujet de l'évaluation.
                 </div>

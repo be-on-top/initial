@@ -35,6 +35,7 @@ export class AddFollowUpComponent implements OnInit {
   fullName: string = ""
   // si trades devait se baser à terme sur subscriptions
   subscriptions?: any
+  isRealStudent: boolean = false
 
   constructor(
     private service: StudentsService,
@@ -47,24 +48,22 @@ export class AddFollowUpComponent implements OnInit {
 
   ngOnInit(): void {
     // this.receivedTrades = this.activatedRoute.snapshot.queryParams['trades'] ? this.activatedRoute.snapshot.queryParams['trades'].split(',') : [];
-
     console.log('trades récupéré en paramètres de route', this.receivedTrades);
 
     // on appelle la méthode qui va nous permettre de récupérer les compétences 
     this.getRelatedCompetences()
     this.service.getStudentById(this.studentId).subscribe((data: any) => {
       this.fullName = `${data.firstName} ${data.lastName}`
-      this.subscriptions= Object.values(data.subscriptions)
-      
-    console.log('tableau des inscriptions', this.subscriptions);
-    this.receivedTrades = this.activatedRoute.snapshot.queryParams['trades'] ? this.activatedRoute.snapshot.queryParams['trades'].split(',') : [this.subscriptions];
+      data.subscriptions?this.subscriptions = Object.values(data.subscriptions):''
+      data.subscriptions?this.isRealStudent = true:''
+
+      console.log('tableau des inscriptions', this.subscriptions);
+      this.receivedTrades = this.activatedRoute.snapshot.queryParams['trades'] ? this.activatedRoute.snapshot.queryParams['trades'].split(',') : [this.subscriptions];
 
     })
 
-    
 
-
-
+  
 
   }
 

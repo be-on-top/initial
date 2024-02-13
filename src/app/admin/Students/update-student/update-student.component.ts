@@ -31,7 +31,6 @@ export class UpdateStudentComponent implements OnInit {
 
   levels: string[] = ['beginner', 'intermediate', 'advance', 'pro']
 
-
   constructor(private service: StudentsService, private ac: ActivatedRoute, private router: Router, private settingsService: SettingsService) {
     this.userRouterLinks = this.ac.snapshot.data;
   }
