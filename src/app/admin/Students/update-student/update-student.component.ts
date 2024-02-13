@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { Evaluation } from '../../evaluation';
 import { SettingsService } from '../../settings.service';
+import { formatDate } from '@angular/common';
 // import { AnimationKeyframesSequenceMetadata } from '@angular/animations';
 
 @Component({
@@ -84,8 +85,10 @@ export class UpdateStudentComponent implements OnInit {
     }
     /* console.log("form update values", form.value); */
     const updatedEvaluations: any = { evaluations: { ...this.student.evaluations } }
+    // pour actualiser la date à l'update
+    const currentDate: string = formatDate(new Date(), 'yyyy-MM-dd', 'en');
     // updatedEvaluations.evaluations[this.evaluationKey]=form.value
-    updatedEvaluations.evaluations[this.evaluationKey] = {"sigle":this.evaluationToUpdate.sigle, "competence":this.evaluationToUpdate.competence ,"level":form.value.level, "date": this.student.evaluations[this.evaluationKey].date, "details": form.value.details, "subject": form.value.subject }
+    updatedEvaluations.evaluations[this.evaluationKey] = {"sigle":this.evaluationToUpdate.sigle, "competence":this.evaluationToUpdate.competence ,"level":form.value.level, "date": currentDate, "details": form.value.details, "subject": form.value.subject }
     console.log("this.student.evaluations après lecture du formulaire d'update", updatedEvaluations)
 
     this.service.updateStudentEvaluation(this.studentId, updatedEvaluations)
