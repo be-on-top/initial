@@ -1,18 +1,61 @@
-p.card-text{
+p.card-text {
     font-size: 1rem !important;
 }
 
-.perso{
+.perso {
     background-color: #82BC00 !important;
 }
 
 
-.text-success{
+.text-success {
     color: #0062fe;
-    opacity: 60!important;
+    opacity: 60 !important;
 
 }
 
-.text-primary.fs-6.p-0{
+.text-primary.fs-6.p-0 {
     line-height: 0;
 }
+
+.form-check-input.level1 {
+    background-color: rgb(232, 231, 231);
+}
+
+.form-check-input.level2 {
+    background-color: yellow;
+}
+
+.form-check-input.level3 {
+    background-color: #82BC00;
+}
+
+.form-check-input.level4 {
+    background-color: #0062fe;
+}
+
+.form-check-input:disabled {
+    opacity: 80;
+}
+
+.level1, .level2, .level3, .level4{
+    font-weight: 500!important;
+    font-size: 1rem;
+    text-transform: capitalize;
+}
+
+.level1 {
+    color: rgb(232, 231, 231);
+}
+
+.level2 {
+    color: yellow;
+}
+
+.level3 {
+    color: #82BC00;
+}
+
+.level4 {
+    color: #0062fe;
+}
+

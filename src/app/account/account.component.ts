@@ -83,6 +83,9 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   denominationsMap: Map<string, Observable<string>> = new Map();
 
+  cpEvaluated:string=""
+  getCpNameCalled: boolean = false;
+
   public notificationPermissionGranted = false;
 
   constructor(private auth: Auth, private firestore: Firestore, private authService: AuthService, private studentService: StudentsService, private activatedRoute: ActivatedRoute, private router: Router, private notificationService: PushNotificationService, public sanitizer: DomSanitizer, private settingsService: SettingsService) {
@@ -342,6 +345,17 @@ export class AccountComponent implements OnInit, OnDestroy {
     return this.denominationMap.get(trade) || of(null);
   }
 
+  // Méthode pour récupérer la dénomination d'une compétence quand on n'a pas besoin de boucler !
 
+  getCpName(element: string): void {
+    const sigle = element.slice(0, -4);
+    const cp = Number(element.slice(-1));
+
+    this.settingsService.getCPName(sigle, cp).subscribe(data => {
+      console.log(data);
+      this.cpEvaluated = data;
+      this.getCpNameCalled = true;
+    })
+  }
 
 }

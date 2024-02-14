@@ -7,7 +7,8 @@
 
     <div *ngIf="!isOneQuizzAchieved" class="alert alert-light p-4 alert-dismissible mb-4 fade show">
         <button type="button" class="btn-close btn-close" data-bs-dismiss="alert"></button>
-        <span> Au fur à mesure de vos interactions, vous pourrez suivre ci-dessous les résultas des questionnaires d'évaluation, vos estimations chiffrées et les évaluations de vos professeurs</span>...
+        <span> Au fur à mesure de vos interactions, vous pourrez suivre ci-dessous les résultas des questionnaires
+            d'évaluation, vos estimations chiffrées et les évaluations de vos professeurs</span>...
     </div>
     <div *ngIf="isOneQuizzAchieved && !userData.isSocialFormSent"
         class="alert alert-light p-4 alert-dismissible mb-4 fade show pe-5">
@@ -128,7 +129,8 @@
 
                             <!-- pour compétences option 2 alternative pour tout le ng-template -->
                             <ng-template #done class="mb-3">
-                                <p class="card-text fw-bold d-flex align-items-center">Questionnaire de positionnement terminé
+                                <p class="card-text fw-bold d-flex align-items-center">Questionnaire de positionnement
+                                    terminé
                                     <i class="bi fs-4 bi-check-lg ms-3"></i>
                                 </p>
                                 <div class="mt-2">
@@ -250,18 +252,81 @@
                                 {{userData.trainer}}</li>
                             <!-- si y a déjà des enregistrements datés des évaluations de suivi pédagogique, on bouclera dessus -->
                             <ng-container *ngIf="evaluations; else noEvaluation">
-                                <li class="list-group-item">
-                                    <ng-container *ngFor="let evaluation of evaluations | keyvalue">
-                                        <p><span class="fw-bold">Objet : </span>{{evaluation.value.subject}}</p>
-                                        <!-- <p>{{evaluation.value.details}}</p> -->
-                                        <div class="card-text"
-                                            [innerHTML]="sanitizer.bypassSecurityTrustHtml(evaluation.value.details)">
-                                        </div>
 
-                                        <p><span class="fw-bold">Date : </span>{{evaluation.value.date}}</p>
-                                    </ng-container>
-                                    <!-- {{userData.evaluations | json}} -->
-                                </li>
+
+                                <ng-container *ngFor="let evaluation of evaluations | keyvalue">
+                                    <!-- partie additionnelle pour les niveaux si compétence -->
+                                    <div class="card rounded-0 mb-2 ">
+                                        <ng-container *ngIf="evaluation.value.competence">
+                                            <div class="card-header">
+                                                <!-- <span class="text-primary">
+                                                    {{ evaluation.value.competence }}
+                                                </span> -->
+                                                <div class="form-check form-check-inline ms-2">
+                                                    <input class="form-check-input"
+                                                        [ngClass]="{'level1':evaluation.value.level=='beginner'}"
+                                                        type="checkbox" id="inlineCheckbox1" value="option1" disabled>
+                                                    <label class="form-check-label" for="inlineCheckbox1">1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input"
+                                                        [ngClass]="{'level2':evaluation.value.level=='intermediate'}"
+                                                        type="checkbox" id="inlineCheckbox2" value="option2" disabled>
+                                                    <label class="form-check-label" for="inlineCheckbox2">2</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input"
+                                                        [ngClass]="{'level3':evaluation.value.level=='advance'}"
+                                                        type="checkbox" id="inlineCheckbox3" value="option3" disabled>
+                                                    <label class="form-check-label" for="inlineCheckbox3">3</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input"
+                                                        [ngClass]="{'level4':evaluation.value.level=='pro'}"
+                                                        type="checkbox" id="inlineCheckbox3" value="option4" disabled>
+                                                    <label class="form-check-label" for="inlineCheckbox3">4</label>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                        <!--  -->
+                                        <div class="card-body">
+                                            <ng-container *ngIf="evaluation.value.competence">
+                                                <p *ngIf="!getCpNameCalled" class="card-text text-primary">{{
+                                                    getCpName(evaluation.value.competence) }} ( {{
+                                                    evaluation.value.competence }}) </p>
+                                                <p *ngIf="getCpNameCalled && cpEvaluated"
+                                                    class="card-text text-primary">{{
+                                                    cpEvaluated }} ({{ evaluation.value.competence }})</p>
+                                            </ng-container>
+                                            <p class="card-text"><span class="fw-bold">Objet :
+                                                </span>{{evaluation.value.subject}}</p>
+                                            <!-- <p>{{evaluation.value.details}}</p> -->
+                                            <div class="card-text"
+                                                [innerHTML]="sanitizer.bypassSecurityTrustHtml(evaluation.value.details)">
+                                            </div>
+                                        </div>
+                                        <div class="card-footer d-flex justify-content-between">
+                                            <p><span class="fw-bold">Date : </span>{{evaluation.value.date}}</p>
+                                            <p [ngClass]="{
+                                                'level1': evaluation.value.level === 'beginner',
+                                                'level2': evaluation.value.level === 'intermediate',
+                                                'level3': evaluation.value.level === 'advance',
+                                                'level4': evaluation.value.level === 'pro'
+                                              }">
+                                              <ng-container *ngIf="evaluation.value.level === 'beginner'"> Débutant
+                                              </ng-container>
+                                              <ng-container *ngIf="evaluation.value.level === 'intermediate'"> Intermédiaire
+                                              </ng-container>
+                                              <ng-container *ngIf="evaluation.value.level === 'advance'"> Avancé
+                                              </ng-container>
+                                              <ng-container *ngIf="evaluation.value.level === 'pro'"> Acquise
+                                              </ng-container>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                                <!-- {{userData.evaluations | json}} -->
+
                             </ng-container>
                             <!-- si aucune évaluation de suivi jusqu'ici, on le mentionne -->
                             <ng-template #noEvaluation>

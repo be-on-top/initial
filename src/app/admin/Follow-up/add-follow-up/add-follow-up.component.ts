@@ -33,8 +33,8 @@ export class AddFollowUpComponent implements OnInit {
   relatedCompetences: any = []
   levels: string[] = ['beginner', 'intermediate', 'advance', 'pro']
   fullName: string = ""
-  // si trades devait se baser à terme sur subscriptions
-  subscriptions?: any
+  // si trades devait se baser à terme sur subscriptions exclusivement, on peut se passer de :
+  // subscriptions?: any
   isRealStudent: boolean = false
 
   constructor(
@@ -50,20 +50,22 @@ export class AddFollowUpComponent implements OnInit {
     // this.receivedTrades = this.activatedRoute.snapshot.queryParams['trades'] ? this.activatedRoute.snapshot.queryParams['trades'].split(',') : [];
     console.log('trades récupéré en paramètres de route', this.receivedTrades);
 
-    // on appelle la méthode qui va nous permettre de récupérer les compétences 
-    this.getRelatedCompetences()
+
     this.service.getStudentById(this.studentId).subscribe((data: any) => {
       this.fullName = `${data.firstName} ${data.lastName}`
-      data.subscriptions?this.subscriptions = Object.values(data.subscriptions):''
-      data.subscriptions?this.isRealStudent = true:''
+      // data.subscriptions?this.subscriptions = Object.values(data.subscriptions):''
+      data.subscriptions ? this.receivedTrades = Object.values(data.subscriptions) : ''
+      data.subscriptions ? this.isRealStudent = true : ''
 
-      console.log('tableau des inscriptions', this.subscriptions);
-      this.receivedTrades = this.activatedRoute.snapshot.queryParams['trades'] ? this.activatedRoute.snapshot.queryParams['trades'].split(',') : [this.subscriptions];
+      console.log('tableau des inscriptions', this.receivedTrades);
+      // this.receivedTrades = this.activatedRoute.snapshot.queryParams['trades'] ? this.activatedRoute.snapshot.queryParams['trades'].split(',') : [this.subscriptions];
+      // on appelle la méthode qui va nous permettre de récupérer les compétences 
+      this.getRelatedCompetences()
 
     })
 
 
-  
+
 
   }
 
@@ -149,7 +151,7 @@ export class AddFollowUpComponent implements OnInit {
     for (const iterator of this.receivedTrades) {
       // let additionalCompetences:any
       this.settingsService.getSigle(iterator).subscribe((data): any => {
-        // console.log('data.competences', data.competences)
+        console.log('data.competences', data.competences)
         for (const key in data.competences) {
           // console.log('data.competences[key]', data.competences[key]);
           let additionalKeySigle: string = 'competences_' + iterator
