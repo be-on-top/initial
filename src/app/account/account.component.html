@@ -10,16 +10,19 @@
         <span> Au fur à mesure de vos interactions, vous pourrez suivre ci-dessous les résultas des questionnaires
             d'évaluation, vos estimations chiffrées et les évaluations de vos professeurs</span>...
     </div>
-    <div *ngIf="isOneQuizzAchieved && !userData.isSocialFormSent"
+    <div *ngIf="isOneQuizzAchieved && !userData.isSocialFormSent && !userData.subscriptions"
         class="alert alert-light p-4 alert-dismissible mb-4 fade show pe-5">
-        <button type="button" class="btn-close btn-close" data-bs-dismiss="alert"></button>
+        <button type="button" class="btn-close btn-close mt-2" data-bs-dismiss="alert"></button>
         <span> Tous vos résultats et estimations chiffrées sont disponibles ci-dessous. L'incription formation peut
             également commencer !</span>
     </div>
-    <div *ngIf="userData && userData.isSocialFormSent" class="alert alert-light p-4 alert-dismissible mb-4 fade show">
+    <div *ngIf="userData && userData.isSocialFormSent && !userData.subscriptions " class="alert alert-light p-4 alert-dismissible mb-4 fade show">
         <button type="button" class="btn-close btn-close" data-bs-dismiss="alert"></button>
         <span> Merci d'avoir pris le temps de remplir le formulaire d'inscription à nos formations. Un conseiller
             référent va prendre contact avec vous.</span>
+    </div>
+    <div *ngIf="userData && userData.isSocialFormSent && userData.subscriptions " class="alert alert-light p-4 mb-4 fade show">
+        <span> Votre inscription est confirmée !</span>
     </div>
 
     <!-- 
@@ -221,16 +224,17 @@
             </div>
             <div id="collapseFor" class="collapse" data-bs-parent="#accordion">
                 <div class="card-body">
-                    <p class="card-text" *ngIf="userData.scoreCounter">Félicitation ! Vous êtes parvenu(e) à la fin
-                        du questionnaire de positionnement.
-                    </p>
-                    <p class="card-text" *ngIf="userData.scoreCounter">Pour faciliter votre inscription et votre
+                    <p class="card-text" *ngIf="!userData.subscriptions">Pour faciliter votre inscription et votre
                         prise en
                         charge, nous vous invitons à remplir le formulaire ci-dessous...
                     </p>
-                    <button class="btn bg-success"><a class="text-light" [routerLink]="['/socialregistration']">
+                    <div class="card-text" *ngIf="userData.subscriptions">Inscription confirmée pour :
+                        <p class="card-text d-inline" *ngFor="let subscription of userData.subscriptions">{{subscription}}</p>
+                    </div>
+                    <button class="btn bg-success" disabled="userData.subscriptions" [ngClass]="{'disabled':userData.subscriptions}"><a class="text-light" [routerLink]="['/socialregistration']">
                             Formulaire de pré-inscription</a>
                     </button>
+
                 </div>
             </div>
         </div>

@@ -37,8 +37,11 @@ p.card-text {
     opacity: 80;
 }
 
-.level1, .level2, .level3, .level4{
-    font-weight: 500!important;
+.level1,
+.level2,
+.level3,
+.level4 {
+    font-weight: 500 !important;
     font-size: 1rem;
     text-transform: capitalize;
 }
@@ -59,3 +62,9 @@ p.card-text {
     color: #0062fe;
 }
 
+button:disabled,
+.btn.btn-success.disabled {
+    margin-top: 2rem;
+    border: 0;
+    opacity: 50%!important;
+}
