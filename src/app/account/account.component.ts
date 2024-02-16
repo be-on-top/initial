@@ -347,15 +347,21 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   // Méthode pour récupérer la dénomination d'une compétence quand on n'a pas besoin de boucler !
 
-  getCpName(element: string): void {
-    const sigle = element.slice(0, -4);
-    const cp = Number(element.slice(-1));
+  // getCpName(element: string): void {
+  //   const sigle = element.slice(0, -4);
+  //   const cp = Number(element.slice(-1));
 
-    this.settingsService.getCPName(sigle, cp).subscribe(data => {
-      console.log(data);
-      this.cpEvaluated = data;
-      this.getCpNameCalled = true;
-    })
+  //   this.settingsService.getCPName(sigle, cp).subscribe(data => {
+  //     console.log(data);
+  //     this.cpEvaluated = data;
+  //     this.getCpNameCalled = true;
+  //   })
+  // }
+
+  getCpIndex(element: string):number{
+    const cp = Number(element.slice(-1))
+    return cp-1
+
   }
 
 }

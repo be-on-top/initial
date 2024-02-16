@@ -17,21 +17,21 @@ p.card-text {
     line-height: 0;
 }
 
-.form-check-input.level1 {
-    background-color: rgb(232, 231, 231);
-}
-
-.form-check-input.level2 {
-    background-color: yellow;
-}
-
-.form-check-input.level3 {
-    background-color: #82BC00;
-}
-
-.form-check-input.level4 {
+.form-check-input.level1{
+    background-color: #E21937;
+  }
+  .form-check-input.level2{
+    background-color: #fcb311;
+  }
+  .form-check-input.level3{
+    background-color:#82BC00;
+  }
+  .form-check-input.level4{
     background-color: #0062fe;
-}
+  }
+  .form-check-input:disabled{
+    opacity: 80;
+  }
 
 .form-check-input:disabled {
     opacity: 80;
@@ -47,20 +47,22 @@ p.card-text {
 }
 
 .level1 {
-    color: rgb(232, 231, 231);
-}
-
-.level2 {
-    color: yellow;
-}
-
-.level3 {
-    color: #82BC00;
-}
-
-.level4 {
-    color: #0062fe;
-}
+    border-bottom: 1px solid #E21937;
+  
+  }
+  
+  .level2 {
+    border-bottom: 1px solid #fcb311;
+  }
+  
+  .level3 {
+    border-bottom: 1px solid #82BC00;
+  
+  }
+  
+  .level4 {
+    border-bottom: 1px solid #0062fe;
+  }
 
 button:disabled,
 .btn.btn-success.disabled {

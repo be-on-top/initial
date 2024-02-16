@@ -263,16 +263,16 @@ export class StudentDetailsComponent {
   //   return this.settingsService.getCPName(sigle, cp);
   // }
 
-  getCpNameFromEval(element: string): void {
-    const sigle = element.slice(0, -4);
-    const cp = Number(element.slice(-1));
+  // getCpNameFromEval(element: string): void {
+  //   const sigle = element.slice(0, -4);
+  //   const cp = Number(element.slice(-1));
  
-    this.settingsService.getCPName(sigle, cp).subscribe(data => {
-      console.log(data);
-      this.cpEvaluated = data;
-      this.getCpNameCalled = true;
-    })
-  }
+  //   this.settingsService.getCPName(sigle, cp).subscribe(data => {
+  //     console.log(data);
+  //     this.cpEvaluated = data;
+  //     this.getCpNameCalled = true;
+  //   })
+  // }
 
   getCpIndex(element: string):number{
     const cp = Number(element.slice(-1))
