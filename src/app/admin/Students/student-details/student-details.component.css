@@ -44,10 +44,10 @@
 }
 
 .form-check-input.level1{
-  background-color: rgb(232, 231, 231);
+  background-color: #E21937;
 }
 .form-check-input.level2{
-  background-color: yellow;
+  background-color: #fcb311;
 }
 .form-check-input.level3{
   background-color:#82BC00;
@@ -58,3 +58,31 @@
 .form-check-input:disabled{
   opacity: 80;
 }
+
+.level1,
+.level2,
+.level3,
+.level4 {
+    font-weight: 500 !important;
+    font-size: smaller;
+    text-transform: capitalize;
+}
+
+.level1 {
+  border-bottom: 1px solid #E21937;
+
+}
+
+.level2 {
+  border-bottom: 1px solid #fcb311;
+}
+
+.level3 {
+  border-bottom: 1px solid #82BC00;
+
+}
+
+.level4 {
+  border-bottom: 1px solid #0062fe;
+}
+

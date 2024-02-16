@@ -53,6 +53,10 @@ export class StudentDetailsComponent {
   subscriptions?: any
 
   trades: { [key: string]: string[] } = {};
+  // pour les compétences évaluées
+
+  cpEvaluated:string=""
+  getCpNameCalled: boolean = false;
 
   constructor(
     private service: StudentsService,
@@ -103,37 +107,37 @@ export class StudentDetailsComponent {
         if (this.student.tutorials) { this.tutorials = this.student.tutorials; console.log("this.tutorials", this.tutorials); }
 
       }
-      
-      
+
+
       // Convertir le Set en tableau avec l'opérateur spread (...)
       this.tradesEvaluated = [...tradesEvaluatedSet]
       console.log('tradesEvaluated construit avec getStudentDetails dans studentDetailsComponent', this.tradesEvaluated)
-      
+
       // Logique pour obtenir les compétences pour chaque tradeId
       this.tradesEvaluated.forEach(tradeId => {
-       this.settingsService.getCompetences(tradeId).subscribe(competences => {
-         // Ajoutez les compétences dans l'objet trades
-         this.trades[tradeId] = competences;
-         // Loguez les compétences dans la console
-         console.log(`${tradeId}:`, competences);
-       });
-     });
-
-     // Logique pour trier les résultats
-    for (const item of this.tradesEvaluated) {
-      if (this.student[item].fullResults) {
-        this.student[item].fullResults.sort((a: any, b: any) => {
-          const keyA = Object.keys(a)[0];
-          const keyB = Object.keys(b)[0];
-          return keyA.localeCompare(keyB);
+        this.settingsService.getCompetences(tradeId).subscribe(competences => {
+          // Ajoutez les compétences dans l'objet trades
+          this.trades[tradeId] = competences;
+          // Loguez les compétences dans la console
+          console.log(`${tradeId}:`, competences);
         });
+      });
+
+      // Logique pour trier les résultats
+      for (const item of this.tradesEvaluated) {
+        if (this.student[item].fullResults) {
+          this.student[item].fullResults.sort((a: any, b: any) => {
+            const keyA = Object.keys(a)[0];
+            const keyB = Object.keys(b)[0];
+            return keyA.localeCompare(keyB);
+          });
+        }
       }
-    }
 
 
     })
 
-    
+
 
   }
 
@@ -180,19 +184,19 @@ export class StudentDetailsComponent {
 
 
 
-// Fonction pour récupérer les noms des métiers en parallèle
-getTradeNames(tradeIds: string[]): Observable<string[]> {
-  const observables = tradeIds.map(tradeId => this.getTradeName(tradeId));
-  return forkJoin(observables);
-}
+  // Fonction pour récupérer les noms des métiers en parallèle
+  getTradeNames(tradeIds: string[]): Observable<string[]> {
+    const observables = tradeIds.map(tradeId => this.getTradeName(tradeId));
+    return forkJoin(observables);
+  }
 
-// Fonction pour obtenir le nom d'un métier
-getTradeName(tradeId: string): Observable<string> {
-  const cleanedTradeId = tradeId.replace('quizz_', '');
-  return this.settingsService.getTradeName(cleanedTradeId).pipe(
-    map(data => this.tradeName = data)
-  );
-}
+  // Fonction pour obtenir le nom d'un métier
+  getTradeName(tradeId: string): Observable<string> {
+    const cleanedTradeId = tradeId.replace('quizz_', '');
+    return this.settingsService.getTradeName(cleanedTradeId).pipe(
+      map(data => this.tradeName = data)
+    );
+  }
 
   // pour modulariser la méthode de récupération de l'info-bulle avec des termes génériques
   getMoreInfo(tradeId: string) {
@@ -242,9 +246,9 @@ getTradeName(tradeId: string): Observable<string> {
     return Object.keys(this.evaluations).length > 0;
   }
 
-  getCpName(tradId:string, cpIndex:any){
+  getCpName(tradId: string, cpIndex: any) {
     // const trade=tradId.replace('quizz','')
-    const cp=Number(cpIndex.replace('quizz_CP',''))
+    const cp = Number(cpIndex.replace('quizz_CP', ''))
     return cp
     // console.log('cp',cp);
     // console.log('trade',trade);
@@ -252,6 +256,30 @@ getTradeName(tradeId: string): Observable<string> {
     // this.settingsService.getCPName(trade,cp)
   }
 
+  // getCpNameFromEval(element: string): Observable<any> {
+  //   const sigle = element.slice(0, -4);
+  //   const cp = Number(element.slice(-1));
 
+  //   return this.settingsService.getCPName(sigle, cp);
+  // }
+
+  getCpNameFromEval(element: string): void {
+    const sigle = element.slice(0, -4);
+    const cp = Number(element.slice(-1));
+ 
+    this.settingsService.getCPName(sigle, cp).subscribe(data => {
+      console.log(data);
+      this.cpEvaluated = data;
+      this.getCpNameCalled = true;
+    })
+  }
+
+  getCpIndex(element: string):number{
+    const cp = Number(element.slice(-1))
+    return cp-1
+
+  }
+    
+  
 
 }
