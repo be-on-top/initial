@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { StudentsService } from '../../students.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
@@ -31,7 +31,7 @@ export class UpdateStudentComponent implements OnInit {
 
   levels: string[] = ['beginner', 'intermediate', 'advance', 'pro']
 
-  constructor(private service: StudentsService, private ac: ActivatedRoute, private router: Router, private settingsService: SettingsService) {
+   constructor(private service: StudentsService, private ac: ActivatedRoute, private router: Router, private settingsService: SettingsService) {
     this.userRouterLinks = this.ac.snapshot.data;
   }
 

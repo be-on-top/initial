@@ -72,6 +72,8 @@
                     <button type="submit" id="submit" class="btn btn-primary mt-3"
                         [ngClass]="{'disabled':subscription.invalid}">Valider</button>
                 </form>
+                <!-- test intégration comme composant enfant du formulaire désormais déclaré dans admin.module -->
+                <app-student-form [studentData]="student"></app-student-form>
             </div>
 
         </ng-container>
@@ -167,7 +169,6 @@
                     [ngClass]="{'disabled':followUpTutorial.invalid}">Valider</button>
             </form>
         </ng-container>
-
 
     </div>
 </div>

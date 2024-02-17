@@ -61,7 +61,7 @@ import { AddExternalComponent } from './External/add-external/add-external.compo
 import { ExternalDetailsComponent } from './External/external-details/external-details.component';
 import { UpdateExternalComponent } from './External/update-external/update-external.component';
 import { HomeComponent } from '../home/home.component';
-
+import { StudentFormComponent } from '../student-form/student-form.component';
 
 
 const routesAdmin: Routes = [
@@ -152,7 +152,48 @@ const routesAdmin: Routes = [
     EvaluatorsListComponent,
     AddEvaluatorComponent,
     EvaluatorDetailsComponent,
-    UpdateEvaluatorComponent, PriorFormComponent, QuestionDetailsComponent, QuestionsListComponent, UpdateQuestionComponents, SocialFormComponent, SocialsListComponent, UpdateSocialComponent, SocialDetailsComponent, FullFormComponent, FullListComponent, FullDetailsComponent, UpdateFullComponent, LoginComponent, SearchComponent, StudentDetailsComponent, StudentsListComponent, UpdateStudentComponent, FeedbackMessagesComponent, AddTrainerComponent, TrainersListComponent, TrainerDetailsComponent, UpdateTrainerComponent, UsersListComponent, SettingsComponent, AddUserComponent, UserDetailsComponent, UpdateUserComponent, UpdateSettingsComponent, UpdateTradesComponent, MyStudentsComponent, AddFollowUpComponent, TooltipComponent, CoverImageComponent, TutorDetailsComponent, TutorsListComponent, UpdateTutorComponent, AddTutorComponent, AddExternalComponent, ExternalDetailsComponent, UpdateExternalComponent
+    UpdateEvaluatorComponent, 
+    PriorFormComponent, 
+    QuestionDetailsComponent, 
+    QuestionsListComponent, 
+    UpdateQuestionComponents, 
+    SocialFormComponent, 
+    SocialsListComponent, 
+    UpdateSocialComponent, 
+    SocialDetailsComponent, 
+    FullFormComponent, 
+    FullListComponent, 
+    FullDetailsComponent, 
+    UpdateFullComponent, 
+    LoginComponent, 
+    SearchComponent, 
+    StudentDetailsComponent, 
+    StudentsListComponent, 
+    UpdateStudentComponent, 
+    FeedbackMessagesComponent, 
+    AddTrainerComponent, 
+    TrainersListComponent, 
+    TrainerDetailsComponent, 
+    UpdateTrainerComponent, 
+    UsersListComponent, 
+    SettingsComponent, 
+    AddUserComponent, 
+    UserDetailsComponent, 
+    UpdateUserComponent, 
+    UpdateSettingsComponent, 
+    UpdateTradesComponent, 
+    MyStudentsComponent, 
+    AddFollowUpComponent, 
+    TooltipComponent, 
+    CoverImageComponent, 
+    TutorDetailsComponent, 
+    TutorsListComponent, 
+    UpdateTutorComponent, 
+    AddTutorComponent, 
+    AddExternalComponent, 
+    ExternalDetailsComponent, 
+    UpdateExternalComponent, 
+    StudentFormComponent
   ],
   imports: [
     BrowserModule,
@@ -166,7 +207,8 @@ const routesAdmin: Routes = [
   exports: [
     FeedbackMessagesComponent,
     TooltipComponent,
-    CoverImageComponent
+    CoverImageComponent,
+    StudentFormComponent
   ]
 })
 

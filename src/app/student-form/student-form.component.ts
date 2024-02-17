@@ -1,10 +1,11 @@
 import { query } from '@angular/animations';
-import { Component, OnInit, Directive, HostListener, } from '@angular/core';
-import { Auth, onAuthStateChanged } from '@angular/fire/auth';
+import { Component, OnInit, Directive, HostListener, Input, OnChanges, SimpleChanges, } from '@angular/core';
+import { Auth, onAuthStateChanged, user } from '@angular/fire/auth';
 import { DocumentSnapshot, Firestore, addDoc, collection, doc, docData, getDocs, setDoc, where } from '@angular/fire/firestore';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { getDoc } from 'firebase/firestore';
+import { Observable, from, map } from 'rxjs';
 import { StudentsService } from 'src/app/admin/students.service';
 
 @Component({
@@ -14,7 +15,7 @@ import { StudentsService } from 'src/app/admin/students.service';
 })
 
 
-export class StudentFormComponent implements OnInit {
+export class StudentFormComponent implements OnInit, OnChanges {
   // authId?: any;
   // userData?: any;
   userData: any = {};
@@ -40,6 +41,8 @@ export class StudentFormComponent implements OnInit {
   // nationaliteFrancaise: boolean =true;
   socialData: any = {};
 
+  @Input() studentData: any;
+
 
 
   constructor(private router: Router, private service: StudentsService, private auth: Auth, private firestore: Firestore) { }
@@ -50,17 +53,10 @@ export class StudentFormComponent implements OnInit {
     onAuthStateChanged(this.auth, (user: any) => {
       if (user) {
         this.uid = user.uid
-        // on récupère la data de l'utilisateur
-        this.service.getStudentById(user.uid).subscribe(data => {
-          console.log("userData from students 0...", data);
-          this.userData = data
-        })
-        // on récupère la data de la collection SocialForm
-        const docRef = doc(this.firestore, 'SocialForm', user.uid);
 
-        docData(docRef).subscribe((data: any) => {
-          this.socialData = data;
-        });
+        this.isDocumentInStudentsCollection(user.uid).subscribe(isStudent => {
+          if (isStudent) {this.retrieveStudentProperties(user.uid)}
+        })
       }
       else {
         console.log("Personne n'est authentifié actuellement !");
@@ -68,6 +64,13 @@ export class StudentFormComponent implements OnInit {
     })
 
 
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['studentData'] && changes['studentData'].currentValue) {
+      console.log('studentData', this['studentData']);
+      this.processNonStudentData(this['studentData']);
+    }
   }
 
 
@@ -109,6 +112,41 @@ export class StudentFormComponent implements OnInit {
     } catch (error) {
       console.error('Erreur lors de l\'enregistrement des données: ', error);
     }
+  }
+
+  isDocumentInStudentsCollection(documentId: string): Observable<boolean> {
+    const docRef = doc(this.firestore, 'students', documentId);
+
+    return from(getDoc(docRef)).pipe(
+      map(snapshot => snapshot.exists())
+    )
+  }
+
+  retrieveStudentProperties(user: string) {
+    console.log('user properties from user authentified', user);
+
+    // on récupère la data de l'utilisateur
+    this.service.getStudentById(user).subscribe(data => {
+      console.log("userData from students 0...", data);
+      this.userData = data
+    })
+    // on récupère la data de la collection SocialForm
+    const docRef = doc(this.firestore, 'SocialForm', user);
+
+    docData(docRef).subscribe((data: any) => {
+      this.socialData = data;
+    });
+
+  }
+
+  processNonStudentData(studentDataRetrived:any) {
+    console.log('user properties from parent StudentData', studentDataRetrived);    
+    const docRef = doc(this.firestore, 'SocialForm', studentDataRetrived.id);
+    docData(docRef).subscribe((data: any) => {
+      this.socialData = data;
+    })
+    this.userData=studentDataRetrived
+
   }
 
 

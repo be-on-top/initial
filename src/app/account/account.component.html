@@ -234,7 +234,7 @@
                         <p class="card-text d-inline" *ngFor="let subscription of userData.subscriptions">
                             {{subscription}}</p>
                     </div>
-                    <button class="btn bg-success" disabled="userData.subscriptions"
+                    <button class="btn bg-success" [disabled]="userData.subscriptions"
                         [ngClass]="{'disabled':userData.subscriptions}"><a class="text-light"
                             [routerLink]="['/socialregistration']">
                             Formulaire de pré-inscription</a>
