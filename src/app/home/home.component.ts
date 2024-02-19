@@ -93,7 +93,11 @@ export class HomeComponent implements OnInit {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
         this.user = user.uid
-        this.studentService.getStudentById(user.uid).subscribe((data) => this.studentData = data)
+        this.studentService.getStudentById(user.uid).subscribe((data) => {
+          this.studentData = data
+          this.checkIfQuizzAchieved()
+
+        })
         this.authService.getUserId();
         // retourne this.ui tout de suite après la connexion. undefined plus tard, donc ne convient pas...
         // console.log("log de ui", this.ui);
@@ -186,6 +190,16 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/account']);
   }
 
+  // à l'initialisation pour chercher si il existe UN fullResults indépendant d'un trade
+  checkIfQuizzAchieved() {
+    for (const key in this.studentData) {
+      if (this.studentData[key]?.fullResults) {
+        this.isOneQuizzAchieved = true;
+        break;  // Sortir de la boucle dès qu'un fullResults est trouvé
+      }
+    }
+  }
+
 
   checkQuizzCondition(trade: any) {
     if (this.studentData && this.studentData['quizz_' + trade.sigle] && this.studentData['quizz_' + trade.sigle].fullResults) {
@@ -198,6 +212,7 @@ export class HomeComponent implements OnInit {
   setOneQuizzAchieved() {
     this.isOneQuizzAchieved = true;
   }
+
 
   // truncateText(text: string, maxWords: number): string {
   //   const words = text.split(' ');
