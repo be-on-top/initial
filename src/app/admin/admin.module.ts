@@ -62,6 +62,8 @@ import { ExternalDetailsComponent } from './External/external-details/external-d
 import { UpdateExternalComponent } from './External/update-external/update-external.component';
 import { HomeComponent } from '../home/home.component';
 import { StudentFormComponent } from '../student-form/student-form.component';
+import { AutoChangeDirective } from '../auto-change.directive';
+
 
 
 const routesAdmin: Routes = [
@@ -193,7 +195,8 @@ const routesAdmin: Routes = [
     AddExternalComponent, 
     ExternalDetailsComponent, 
     UpdateExternalComponent, 
-    StudentFormComponent
+    StudentFormComponent,
+    AutoChangeDirective
   ],
   imports: [
     BrowserModule,
@@ -208,7 +211,8 @@ const routesAdmin: Routes = [
     FeedbackMessagesComponent,
     TooltipComponent,
     CoverImageComponent,
-    StudentFormComponent
+    StudentFormComponent,
+    AutoChangeDirective
   ]
 })
 

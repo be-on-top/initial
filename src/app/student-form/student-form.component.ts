@@ -28,18 +28,19 @@ export class StudentFormComponent implements OnInit, OnChanges {
   email: string = "";
   // champsDesactives: boolean = true;
   handicap: boolean = false;
-  pieceIdentiteAJour: boolean = true;
+  isValidID: boolean = true;
   // demandeFinancement?: string = '';
-  demandeFinancement: boolean | undefined;
-  promesseEmbauche: boolean | null = null;
+  requestFinancing: boolean | undefined;
+  employmentPromise: boolean | null = null;
   // MoyenDeTransport: boolean | undefined;
   // MoyenDeTransport: boolean | undefined;
   // selectedOrientation?: string = '';
-  // renouvellementPIEnCours: boolean = false;
-  inscritPoleEmploi: boolean = false;
-  numIdentifiantPoleEmploi: string = "";
-  // nationaliteFrancaise: boolean =true;
+  // isRenewalIDinProgress: boolean = false;
+  isPoleEmploi: boolean = false;
+  idPoleEmploi: string = "";
+  // frenchNationality: boolean =true;
   socialData: any = {};
+
 
   @Input() studentData: any;
 
@@ -55,6 +56,7 @@ export class StudentFormComponent implements OnInit, OnChanges {
         this.uid = user.uid
 
         this.isDocumentInStudentsCollection(user.uid).subscribe(isStudent => {
+          console.log("un étudiant est authentifié !!!!!", isStudent)
           if (isStudent) {this.retrieveStudentProperties(user.uid)}
         })
       }
@@ -62,7 +64,6 @@ export class StudentFormComponent implements OnInit, OnChanges {
         console.log("Personne n'est authentifié actuellement !");
       }
     })
-
 
   }
 
@@ -123,20 +124,22 @@ export class StudentFormComponent implements OnInit, OnChanges {
   }
 
   retrieveStudentProperties(user: string) {
-    console.log('user properties from user authentified', user);
+    console.log('user properties from user authentified!!!!!', user);
 
     // on récupère la data de l'utilisateur
     this.service.getStudentById(user).subscribe(data => {
       console.log("userData from students 0...", data);
       this.userData = data
     })
-    // on récupère la data de la collection SocialForm
-    const docRef = doc(this.firestore, 'SocialForm', user);
-
-    docData(docRef).subscribe((data: any) => {
-      this.socialData = data;
-    });
-
+      // on récupère la data de la collection SocialForm
+      const docRef = doc(this.firestore, 'SocialForm', user);
+      
+      docData(docRef).subscribe((stData: any) => {
+        stData?this.socialData = stData:''
+        // stData?alert(stData):''
+        
+      })
+      
   }
 
   processNonStudentData(studentDataRetrived:any) {

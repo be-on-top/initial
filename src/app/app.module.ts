@@ -40,7 +40,7 @@ import { AuthGuardService } from './auth-guard.service';
 import { FooterComponent } from './footer/footer/footer.component';
 import { FirstWordPipe } from './first-word.pipe';
 import { InstallButtonComponent } from './install-button/install-button.component';
-import { AutoChangeDirective } from './auto-change.directive';
+// import { AutoChangeDirective } from './auto-change.directive';
 
 // import { getMessaging } from 'firebase/messaging';
 
@@ -65,7 +65,7 @@ import { AutoChangeDirective } from './auto-change.directive';
     FooterComponent,
     FirstWordPipe,
     InstallButtonComponent,
-    AutoChangeDirective,
+    // AutoChangeDirective,
     // TooltipComponent
   ],
   imports: [
