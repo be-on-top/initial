@@ -19,6 +19,26 @@
     transform: none;
 }
 
+
+/* .read-only-form {
+  pointer-events: none;
+  opacity: 0.7; 
+} */
+
+
+.read-only-form input, .read-only-form textarea, .read-only-form.form-control{
+  color: #666; /* Couleur de texte gris pour indiquer que le champ est en lecture seule */
+  pointer-events: none;
+  
+}
+.read-only-form{
+  opacity: 0.85;   
+}
+
+.read-only-form button{
+  opacity: 0.6;   
+}
+
   
 
 

@@ -109,28 +109,30 @@
 
                             <!-- on peut les mettre en vis à vis pour les grands écrans -->
 
-                                    <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
-                                    <div class="card-text mb-0 align-items-center"
-                                        *ngFor="let result of getTradeDetails(trade)?.fullResults  | keyvalue, let i=index ">
-                                        <ng-container *ngFor="let item of objectEntries(result.value)">
-                                            <div><span class="fw-bold">{{item[0] }}: </span> <span *ngIf="trades[trade]">{{trades[trade][i]}}</span></div>                                                
-                                            <div class="mb-2">
-                                                <div class="d-sm-inline">
-                                                    <span class="fw-bold">Note: </span>
-                                                    <span>{{ item[1].notation | json| number:'1.1-1' }}/20 </span>
-                                                </div>
-                                                <div class="d-sm-inline">
-                                                    <!-- on réintègre la deuxième colonne -->
-                                                    <span class="fw-bold">Durée: </span>
-                                                    {{ item[1].duration }} heures <span class="fw-bold">Coût</span> : {{ item[1].cost }}€
-                                                </div>
-                                            </div>
-                                        </ng-container>
+                            <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
+                            <div class="card-text mb-0 align-items-center"
+                                *ngFor="let result of getTradeDetails(trade)?.fullResults  | keyvalue, let i=index ">
+                                <ng-container *ngFor="let item of objectEntries(result.value)">
+                                    <div><span class="fw-bold">{{item[0] }}: </span> <span
+                                            *ngIf="trades[trade]">{{trades[trade][i]}}</span></div>
+                                    <div class="mb-2">
+                                        <div class="d-sm-inline">
+                                            <span class="fw-bold">Note: </span>
+                                            <span>{{ item[1].notation | json| number:'1.1-1' }}/20 </span>
+                                        </div>
+                                        <div class="d-sm-inline">
+                                            <!-- on réintègre la deuxième colonne -->
+                                            <span class="fw-bold">Durée: </span>
+                                            {{ item[1].duration }} heures <span class="fw-bold">Coût</span> : {{
+                                            item[1].cost }}€
+                                        </div>
                                     </div>
+                                </ng-container>
+                            </div>
 
-                                    <hr>
-                                    <p><span class="fw-bold">Total</span> : {{totalTime}} heures de formation pour
-                                        {{totalCost}}€</p>
+                            <hr>
+                            <p><span class="fw-bold">Total</span> : {{totalTime}} heures de formation pour
+                                {{totalCost}}€</p>
 
                         </ng-template>
 
@@ -146,11 +148,14 @@
         </div>
 
         <!-- spécifiquement, pour la visualiser son inscription -->
-        <ng-container *ngIf="userRouterLinks.user=='admin'">
-            Test vue admin !!!!!!!!!!!! <br>
+        <ng-container *ngIf="userRouterLinks.user=='admin' && student">
+            <h3 *ngIf="student.subscriptions">Inscription Formation du Candidat</h3>
             <!-- Exemple -->
             <div *ngFor="let subscription of subscriptions">{{ subscription }}</div>
-            <!-- <app-student-form></app-student-form> -->
+            <!-- test intégration comme composant enfant du formulaire désormais déclaré dans admin.module -->
+            <div *ngIf="student">
+                <app-student-form [studentData]="student"></app-student-form>
+            </div>
         </ng-container>
 
 
@@ -162,33 +167,41 @@
             <div *ngFor="let evaluation of evaluations | keyvalue, let i=index">
                 <div class="card my-5">
                     <div class="card-header" *ngIf="evaluation.value.competence && evaluation.value.level">
-                     
+
                         <div class="form-check form-check-inline ms-2">
-                            <input class="form-check-input" [ngClass]="{'level1':evaluation.value.level=='beginner'}" type="checkbox" id="inlineCheckbox1" value="option1" disabled>
+                            <input class="form-check-input" [ngClass]="{'level1':evaluation.value.level=='beginner'}"
+                                type="checkbox" id="inlineCheckbox1" value="option1" disabled>
                             <label class="form-check-label" for="inlineCheckbox1">1</label>
-                          </div>
-                          <div class="form-check form-check-inline">
-                            <input class="form-check-input" [ngClass]="{'level2':evaluation.value.level=='intermediate'}" type="checkbox" id="inlineCheckbox2" value="option2" disabled>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input"
+                                [ngClass]="{'level2':evaluation.value.level=='intermediate'}" type="checkbox"
+                                id="inlineCheckbox2" value="option2" disabled>
                             <label class="form-check-label" for="inlineCheckbox2">2</label>
-                          </div>
-                          <div class="form-check form-check-inline">
-                            <input class="form-check-input" [ngClass]="{'level3':evaluation.value.level=='advance'}" type="checkbox" id="inlineCheckbox3" value="option3" disabled>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" [ngClass]="{'level3':evaluation.value.level=='advance'}"
+                                type="checkbox" id="inlineCheckbox3" value="option3" disabled>
                             <label class="form-check-label" for="inlineCheckbox3">3</label>
-                          </div>
-                          <div class="form-check form-check-inline">
-                            <input class="form-check-input" [ngClass]="{'level4':evaluation.value.level=='pro'}" type="checkbox" id="inlineCheckbox3" value="option4" disabled>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" [ngClass]="{'level4':evaluation.value.level=='pro'}"
+                                type="checkbox" id="inlineCheckbox3" value="option4" disabled>
                             <label class="form-check-label" for="inlineCheckbox3">4</label>
-                          </div>
+                        </div>
                     </div>
                     <div class="card-body">
                         <!-- {{trades | json}} -->
-                        <ng-container *ngIf="evaluation.value.competence">  
-                         <!-- puisqu'on a un tableau qui restitue les compétences ici avec quizz_macompétence -->
-                            <p class="fw-bold">{{trades['quizz_'+evaluation.value.sigle][getCpIndex(evaluation.value.competence)]}} ({{ evaluation.value.competence }})</p>                          
+                        <ng-container *ngIf="evaluation.value.competence">
+                            <!-- puisqu'on a un tableau qui restitue les compétences ici avec quizz_macompétence -->
+                            <p class="fw-bold">
+                                {{trades['quizz_'+evaluation.value.sigle][getCpIndex(evaluation.value.competence)]}} ({{
+                                evaluation.value.competence }})</p>
                         </ng-container>
-                          
-                          
-                        <p class="card-text" *ngIf="evaluation.value.subject"><span class="fw-bold">Sujet</span>: {{ evaluation.value.subject }}</p>
+
+
+                        <p class="card-text" *ngIf="evaluation.value.subject"><span class="fw-bold">Sujet</span>: {{
+                            evaluation.value.subject }}</p>
 
                         <div class="card-text"
                             [innerHTML]="sanitizer.bypassSecurityTrustHtml(evaluation.value.details)"></div>
@@ -217,14 +230,14 @@
                             'level3': evaluation.value.level === 'advance',
                             'level4': evaluation.value.level === 'pro'
                           }">
-                          <ng-container *ngIf="evaluation.value.level === 'beginner'"> Débutant
-                          </ng-container>
-                          <ng-container *ngIf="evaluation.value.level === 'intermediate'"> Intermédiaire
-                          </ng-container>
-                          <ng-container *ngIf="evaluation.value.level === 'advance'"> Avancé
-                          </ng-container>
-                          <ng-container *ngIf="evaluation.value.level === 'pro'"> Acquise
-                          </ng-container>
+                            <ng-container *ngIf="evaluation.value.level === 'beginner'"> Débutant
+                            </ng-container>
+                            <ng-container *ngIf="evaluation.value.level === 'intermediate'"> Intermédiaire
+                            </ng-container>
+                            <ng-container *ngIf="evaluation.value.level === 'advance'"> Avancé
+                            </ng-container>
+                            <ng-container *ngIf="evaluation.value.level === 'pro'"> Acquise
+                            </ng-container>
                         </div>
                     </div>
                 </div>

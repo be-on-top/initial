@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { getDoc } from 'firebase/firestore';
 import { Observable, from, map } from 'rxjs';
 import { StudentsService } from 'src/app/admin/students.service';
+import { Student } from '../admin/Students/student';
 
 @Component({
   selector: 'app-student-form',
@@ -43,6 +44,7 @@ export class StudentFormComponent implements OnInit, OnChanges {
 
 
   @Input() studentData: any;
+  isReadOnly: boolean = false;
 
 
 
@@ -57,7 +59,10 @@ export class StudentFormComponent implements OnInit, OnChanges {
 
         this.isDocumentInStudentsCollection(user.uid).subscribe(isStudent => {
           console.log("un étudiant est authentifié !!!!!", isStudent)
-          if (isStudent) {this.retrieveStudentProperties(user.uid)}
+          if (isStudent) { this.retrieveStudentProperties(user.uid) }
+          // else {
+          //   this.processNonStudentData(this.studentData)
+          // }
         })
       }
       else {
@@ -68,11 +73,19 @@ export class StudentFormComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['studentData'] && changes['studentData'].currentValue) {
-      console.log('studentData', this['studentData']);
-      this.processNonStudentData(this['studentData']);
+    if (changes['studentData'] && this.studentData) {
+      const studentData = this.studentData;
+      console.log('studentData', studentData);
+
+      if (studentData.id) {
+        this.processNonStudentData(studentData);
+      } else {
+        console.log('ID not available in studentData');
+      }
     }
   }
+
+
 
 
   async onSubmit(form: NgForm) {
@@ -131,26 +144,32 @@ export class StudentFormComponent implements OnInit, OnChanges {
       console.log("userData from students 0...", data);
       this.userData = data
     })
-      // on récupère la data de la collection SocialForm
-      const docRef = doc(this.firestore, 'SocialForm', user);
-      
-      docData(docRef).subscribe((stData: any) => {
-        stData?this.socialData = stData:''
-        // stData?alert(stData):''
-        
-      })
-      
-  }
+    // on récupère la data de la collection SocialForm
+    const docRef = doc(this.firestore, 'SocialForm', user);
 
-  processNonStudentData(studentDataRetrived:any) {
-    console.log('user properties from parent StudentData', studentDataRetrived);    
-    const docRef = doc(this.firestore, 'SocialForm', studentDataRetrived.id);
-    docData(docRef).subscribe((data: any) => {
-      this.socialData = data;
+    docData(docRef).subscribe((stData: any) => {
+      stData ? this.socialData = stData : ''
+      // stData?alert(stData):''
+
     })
-    this.userData=studentDataRetrived
 
   }
+
+  processNonStudentData(studentDataRetrived: Student) {
+    console.log('user properties from parent StudentData', studentDataRetrived);
+
+    if (studentDataRetrived && studentDataRetrived.id) {
+      const docRef = doc(this.firestore, 'SocialForm', studentDataRetrived.id);
+      docData(docRef).subscribe((data: any) => {
+        this.socialData = data;
+      });
+      this.userData = studentDataRetrived
+      this.isReadOnly = true
+    } else {
+      console.error('ID not available in studentDataRetrived');
+    }
+  }
+
 
 
 }

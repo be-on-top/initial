@@ -58,6 +58,8 @@ export class StudentDetailsComponent {
   cpEvaluated:string=""
   getCpNameCalled: boolean = false;
 
+  isReadOnly = false;
+
   constructor(
     private service: StudentsService,
     private route: ActivatedRoute,
