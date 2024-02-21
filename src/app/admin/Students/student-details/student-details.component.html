@@ -150,15 +150,17 @@
         </div>
 
         <!-- spécifiquement, pour la visualiser son inscription -->
-        <ng-container *ngIf="userRouterLinks.user=='admin' && student">
+        <ng-container
+            *ngIf="(userRouterLinks.user=='admin' || userRouterLinks.user=='trainer' || userRouterLinks.user=='tutor') && student">
             <h3 *ngIf="student.subscriptions">Inscription Formation du Candidat</h3>
             <!-- Exemple -->
-            <div class="text-center" *ngFor="let subscription of subscriptions"><span class="fw-bold">Ref.:</span> {{
+            <div class="text-center mb-5" [ngClass]="{'mb-5':last}"
+                *ngFor="let subscription of subscriptions, let last=last"><span class="fw-bold">Ref.:</span> {{
                 subscription }}.
                 <span class="fw-bold">Dénomination :</span>{{ getDenomination(subscription) | async }}
             </div>
             <!-- test intégration comme composant enfant du formulaire désormais déclaré dans admin.module -->
-            <div *ngIf="student">
+            <div *ngIf="student && userRouterLinks.user=='admin' || userRouterLinks.user=='external'">
                 <app-student-form [studentData]="student"></app-student-form>
             </div>
         </ng-container>
@@ -176,7 +178,7 @@
                 <div class="alert bg-light alert-light d-flex justify-content-between">Pour la formation au métier de {{
                     getDenomination(subscription) | async }}<span>{{m+1}}</span></div>
                 <div *ngFor="let evaluation of evaluations | keyvalue, let i=index">
-                    <div class="card my-5" *ngIf="evaluation.value.sigle==subscription">
+                    <div class="card my-5" *ngIf="evaluation.value.sigle==subscription else noEvaluation">
                         <div class="card-header" *ngIf="evaluation.value.competence && evaluation.value.level">
 
                             <div class="form-check form-check-inline ms-2">
@@ -256,6 +258,12 @@
                             </div>
                         </div>
                     </div>
+                    <!-- si rien aucune évaluation pour le métier -->
+                    <ng-template #noEvaluation>
+                        <div class="alert bg-light text-warning">
+                            Aucune évaluation n'a encore été saisie
+                        </div>
+                    </ng-template>
                 </div>
             </ng-container>
             <!-- fin de la boucle additionnelle si inscriptions multiples -->
@@ -272,7 +280,7 @@
                 <div class="alert bg-light alert-light d-flex justify-content-between">Pour la formation au métier de {{
                     getDenomination(subscription) | async }}<span>{{m+1}}</span></div>
                 <div *ngFor="let tutorial of tutorials | keyvalue">
-                    <div class="card my-5" *ngIf="tutorial.value.sigle==subscription">
+                    <div class="card my-5" *ngIf="tutorial.value.sigle==subscription else noTutorial">
                         <div class="card-body">
                             <p class="card-text"><span class="fw-bold">Sujet</span>: {{ tutorial.value.subject }}</p>
                             <!-- version sans recours à TinyMCE donc sans balise html enregistrées en base -->
@@ -295,6 +303,12 @@
                                 }} - Nom du tuteur : {{student.tutor}}</span>
                         </div>
                     </div>
+                    <!-- si rien aucune évaluation pour le métier -->
+                    <ng-template #noTutorial>
+                        <div class="alert bg-light text-warning">
+                            Aucune évaluation n'a encore été saisie
+                        </div>
+                    </ng-template>
                 </div>
             </ng-container>
         </ng-container>

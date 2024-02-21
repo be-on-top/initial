@@ -31,7 +31,8 @@
             </div>
             <div class="form-group col-sm-4">
                 <ng-container *ngIf="relatedCompetences">
-                    <select class="form-select" name="competence" id="competence" ngModel required
+                    <!-- j'ai retiré required pour laisser la possibilité de saisir une appréciation globale -->
+                    <select class="form-select" name="competence" id="competence" ngModel 
                         #competence="ngModel" [disabled]="!isRealStudent">
                         <option value>Competence métier à évaluer</option>
                         <option
@@ -44,7 +45,7 @@
             </div>
             <div class="form-group col-sm-4">
                 <!-- {{userRouterLinks=='tutor' | json}} !!!!!! -->
-                <select *ngIf="userRouterLinks=='trainer'" class="form-select" name="level" id="level" ngModel required
+                <select *ngIf="userRouterLinks=='trainer'" class="form-select" name="level" id="level" ngModel [required]="f.value.competence!==''"
                     #level="ngModel" [disabled]="!isRealStudent">
                     <option value>Niveau</option>
                     <option *ngFor="let level of levels" value="{{level}}">{{level}}</option>
