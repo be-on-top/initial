@@ -104,7 +104,7 @@
                         <ng-template #done class="mb-3">
                             <h4 class="text-left mb-3">
                                 Questionnaire de positionnement terminé pour {{
-                                    getDenomination(trade) | async }} <i class="bi bi-check-lg ms-2 text-success fs-4"></i>
+                                getDenomination(trade) | async }} <i class="bi bi-check-lg ms-2 text-success fs-4"></i>
                                 <!-- <i class="bi bi-arrow-down-square-fill ms-auto text-light"></i> -->
                             </h4>
 
@@ -153,8 +153,10 @@
         <ng-container *ngIf="userRouterLinks.user=='admin' && student">
             <h3 *ngIf="student.subscriptions">Inscription Formation du Candidat</h3>
             <!-- Exemple -->
-            <div class="text-center" *ngFor="let subscription of subscriptions"><span class="fw-bold">Ref.:</span> {{ subscription }}.
-            <span class="fw-bold">Dénomination :</span>{{ getDenomination(subscription) | async }}</div>
+            <div class="text-center" *ngFor="let subscription of subscriptions"><span class="fw-bold">Ref.:</span> {{
+                subscription }}.
+                <span class="fw-bold">Dénomination :</span>{{ getDenomination(subscription) | async }}
+            </div>
             <!-- test intégration comme composant enfant du formulaire désormais déclaré dans admin.module -->
             <div *ngIf="student">
                 <app-student-form [studentData]="student"></app-student-form>
@@ -171,14 +173,16 @@
 
             <!-- si on a plusieurs inscriptions potentielles, pour bien faire, va falloir boucler sur l'ensemble -->
             <ng-container *ngFor="let subscription of student.subscriptions, let m=index">
-                <div class="alert bg-light alert-light d-flex justify-content-between">Pour la formation au métier de {{ getDenomination(subscription) | async }}<span>{{m+1}}</span></div>
+                <div class="alert bg-light alert-light d-flex justify-content-between">Pour la formation au métier de {{
+                    getDenomination(subscription) | async }}<span>{{m+1}}</span></div>
                 <div *ngFor="let evaluation of evaluations | keyvalue, let i=index">
                     <div class="card my-5" *ngIf="evaluation.value.sigle==subscription">
                         <div class="card-header" *ngIf="evaluation.value.competence && evaluation.value.level">
-    
+
                             <div class="form-check form-check-inline ms-2">
-                                <input class="form-check-input" [ngClass]="{'level1':evaluation.value.level=='beginner'}"
-                                    type="checkbox" id="inlineCheckbox1" value="option1" disabled>
+                                <input class="form-check-input"
+                                    [ngClass]="{'level1':evaluation.value.level=='beginner'}" type="checkbox"
+                                    id="inlineCheckbox1" value="option1" disabled>
                                 <label class="form-check-label" for="inlineCheckbox1">1</label>
                             </div>
                             <div class="form-check form-check-inline">
@@ -204,25 +208,27 @@
                                 <!-- puisqu'on a un tableau qui restitue les compétences ici avec quizz_macompétence -->
                                 <!-- <p class="fw-bold">{{trades['quizz_'+evaluation.value.sigle][getCpIndex(evaluation.value.competence)]}} ({{
                                     evaluation.value.competence }})</p> -->
-                                <p class="fw-bold">{{trades['quizz_'+evaluation.value.sigle][getCpIndex(evaluation.value.competence)]}} ({{
+                                <p class="fw-bold">
+                                    {{trades['quizz_'+evaluation.value.sigle][getCpIndex(evaluation.value.competence)]}}
+                                    ({{
                                     evaluation.value.competence }})</p>
                             </ng-container>
-    
-    
+
+
                             <p class="card-text" *ngIf="evaluation.value.subject"><span class="fw-bold">Sujet</span>: {{
                                 evaluation.value.subject }}</p>
-    
+
                             <div class="card-text"
                                 [innerHTML]="sanitizer.bypassSecurityTrustHtml(evaluation.value.details)"></div>
                             <!-- 
                             <button class="btn btn-danger mt-3" *ngIf="userRouterLinks.user=='trainer' || userRouterLinks.user=='admin'"
                                 [routerLink]="['/admin/updateEvaluation', studentId, evaluation.key]">Modifier
                                 l'évaluation</button> -->
-    
+
                             <button class="btn btn-danger mt-3" *ngIf="userRouterLinks.user=='trainer'"
                                 [routerLink]="['/admin/updateEvaluation', studentId, evaluation.key]">Modifier
                                 l'évaluation</button>
-    
+
                             <button class="btn btn-danger mt-3" *ngIf="userRouterLinks.user=='admin'"
                                 [routerLink]="['/admin/updateEvaluation', studentId, evaluation.key]">Modifier
                                 l'évaluation</button>
@@ -250,44 +256,47 @@
                             </div>
                         </div>
                     </div>
-                </div>            
+                </div>
             </ng-container>
             <!-- fin de la boucle additionnelle si inscriptions multiples -->
-
-
-
 
         </ng-container>
 
         <!-- affichage du  suivi entreprise (tutorials) -->
 
         <ng-container *ngIf="student && tutorialsNotEmpty()">
+            <!-- <h3 class="mt-3"><i class="bi bi-clipboard-data-fill fs-3 me-3 me-sm-5"></i>Son suivi en entreprise</h3> -->
             <h3 class="mt-3"><i class="bi bi-clipboard-data-fill fs-3 me-3 me-sm-5"></i>Son suivi en entreprise</h3>
+            <!-- si on a plusieurs inscriptions potentielles, pour bien faire, va falloir boucler sur l'ensemble -->
+            <ng-container *ngFor="let subscription of student.subscriptions, let m=index">
+                <div class="alert bg-light alert-light d-flex justify-content-between">Pour la formation au métier de {{
+                    getDenomination(subscription) | async }}<span>{{m+1}}</span></div>
+                <div *ngFor="let tutorial of tutorials | keyvalue">
+                    <div class="card my-5" *ngIf="tutorial.value.sigle==subscription">
+                        <div class="card-body">
+                            <p class="card-text"><span class="fw-bold">Sujet</span>: {{ tutorial.value.subject }}</p>
+                            <!-- version sans recours à TinyMCE donc sans balise html enregistrées en base -->
+                            <!-- <p class="card-text"><span class="fw-bold">Détails</span>: {{ evaluation.value.details }}</p> -->
+                            <!-- version avec filtre de rendu de balises HTML enregistrées en base -->
+                            <div class="card-text"
+                                [innerHTML]="sanitizer.bypassSecurityTrustHtml(tutorial.value.details)">
+                            </div>
 
-            <div *ngFor="let tutorial of tutorials | keyvalue">
-                <div class="card my-5">
-                    <div class="card-body">
-                        <p class="card-text"><span class="fw-bold">Sujet</span>: {{ tutorial.value.subject }}</p>
-                        <!-- version sans recours à TinyMCE donc sans balise html enregistrées en base -->
-                        <!-- <p class="card-text"><span class="fw-bold">Détails</span>: {{ evaluation.value.details }}</p> -->
-                        <!-- version avec filtre de rendu de balises HTML enregistrées en base -->
-                        <div class="card-text" [innerHTML]="sanitizer.bypassSecurityTrustHtml(tutorial.value.details)">
+                            <button class="btn btn-danger mt-3" *ngIf="userRouterLinks.user=='tutor'"
+                                [routerLink]="['/admin/updateTutorial', studentId, tutorial.key]">Modifier
+                                le suivi</button>
+
+                            <button class="btn btn-danger mt-3" *ngIf="userRouterLinks.user=='admin'"
+                                [routerLink]="['/admin/updateStudent', studentId, tutorial.key]">Modifier
+                                le suivi</button>
                         </div>
-
-                        <button class="btn btn-danger mt-3" *ngIf="userRouterLinks.user=='tutor'"
-                            [routerLink]="['/admin/updateTutorial', studentId, tutorial.key]">Modifier
-                            le suivi</button>
-
-                        <button class="btn btn-danger mt-3" *ngIf="userRouterLinks.user=='admin'"
-                            [routerLink]="['/admin/updateStudent', studentId, tutorial.key]">Modifier
-                            le suivi</button>
-                    </div>
-                    <div class="card-footer text-muted">
-                        <span *ngIf="student.created">Date de création : {{tutorial.value.date | date:'dd/MM/yyyy'
-                            }} - Nom du tuteur : {{student.tutor}}</span>
+                        <div class="card-footer text-muted">
+                            <span *ngIf="student.created">Date de création : {{tutorial.value.date | date:'dd/MM/yyyy'
+                                }} - Nom du tuteur : {{student.tutor}}</span>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </ng-container>
         </ng-container>
 
     </div>
