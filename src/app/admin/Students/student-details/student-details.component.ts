@@ -9,7 +9,7 @@ import { Student } from '../student';
 import { Evaluation } from '../../evaluation';
 import { QuizDetails } from '../../quizzDetails';
 import { SettingsService } from '../../settings.service';
-import { Observable, forkJoin, map } from 'rxjs';
+import { Observable, forkJoin, map, of } from 'rxjs';
 
 
 @Component({
@@ -58,6 +58,7 @@ export class StudentDetailsComponent {
   cpEvaluated:string=""
   getCpNameCalled: boolean = false;
 
+  // pour rajouter une classe au formulaire si c'est l'admin qui regarde
   isReadOnly = false;
 
   constructor(
@@ -85,8 +86,7 @@ export class StudentDetailsComponent {
       this.student = student
       /* console.log(studentId); */
       this.subscriptions = this.student.subscriptions
-      console.log('3333333333333333', this.student);
-
+      // console.log('student return by service', this.student);
       // Utilisation d'un Set pour stocker les tradesEvaluated uniques
       const tradesEvaluatedSet = new Set<string>();
 
@@ -135,11 +135,7 @@ export class StudentDetailsComponent {
           });
         }
       }
-
-
     })
-
-
 
   }
 
@@ -163,7 +159,6 @@ export class StudentDetailsComponent {
   }
 
 
-
   // Ajoutez une propriété pour stocker le nom du métier sans le préfixe
   tradeWithoutQuizzPrefix: string = '';
 
@@ -173,7 +168,7 @@ export class StudentDetailsComponent {
   }
 
   getTradeDetails(trade: string) {
-    if (this.student && this.student[trade]) {
+    if (this.student && this.student[trade]['fullResults']) {
       console.log('this.student[trade]', this.student[trade]['fullResults']);
       const relatedResults = this.student[trade]['fullResults']
       this.updateTotalCost(relatedResults)
@@ -185,11 +180,10 @@ export class StudentDetailsComponent {
   }
 
 
-
   // Fonction pour récupérer les noms des métiers en parallèle
   getTradeNames(tradeIds: string[]): Observable<string[]> {
-    const observables = tradeIds.map(tradeId => this.getTradeName(tradeId));
-    return forkJoin(observables);
+    const observables = tradeIds.map(tradeId => this.getTradeName(tradeId))
+    return forkJoin(observables)
   }
 
   // Fonction pour obtenir le nom d'un métier
@@ -281,7 +275,17 @@ export class StudentDetailsComponent {
     return cp-1
 
   }
-    
+  
+  // Méthode pour récupérer la dénomination du métier côté composant
+  denominationMap: Map<string, Observable<string | null>> = new Map();
+
+  getDenomination(trade: string): Observable<string | null> {
+    const sigle = trade.replace('quizz_', '');
+    if (!this.denominationMap.has(trade)) {
+      this.denominationMap.set(trade, this.settingsService.getDenomination(sigle));
+    }
+    return this.denominationMap.get(trade) || of(null);
+  }
   
 
 }
