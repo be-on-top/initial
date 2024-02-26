@@ -18,6 +18,7 @@ import { Observable, forkJoin, map, of } from 'rxjs';
   styleUrls: ['./student-details.component.css']
 })
 export class StudentDetailsComponent {
+  title:string=""
 
   editMode: boolean = false;
   editedStudent?: Student;
@@ -151,10 +152,12 @@ export class StudentDetailsComponent {
 
   getUsers() {
     if (this.userRouterLinks.user == "trainer") {
-      alert("C'est un formateur !!!")
+      this.title="formateur"
+      // alert("C'est un formateur !!!")
     }
     else if (this.userRouterLinks.user == "admin") {
-      alert("C'est un super administrateur !!!")
+      this.title="super administrateur"
+      // alert("C'est un super administrateur !!!")
     }
   }
 
