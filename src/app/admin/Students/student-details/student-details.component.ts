@@ -55,7 +55,7 @@ export class StudentDetailsComponent {
   trades: { [key: string]: string[] } = {};
   // pour les compétences évaluées
 
-  cpEvaluated:string=""
+  cpEvaluated: string = ""
   getCpNameCalled: boolean = false;
 
   // pour rajouter une classe au formulaire si c'est l'admin qui regarde
@@ -262,7 +262,7 @@ export class StudentDetailsComponent {
   // getCpNameFromEval(element: string): void {
   //   const sigle = element.slice(0, -4);
   //   const cp = Number(element.slice(-1));
- 
+
   //   this.settingsService.getCPName(sigle, cp).subscribe(data => {
   //     console.log(data);
   //     this.cpEvaluated = data;
@@ -270,12 +270,12 @@ export class StudentDetailsComponent {
   //   })
   // }
 
-  getCpIndex(element: string):number{
+  getCpIndex(element: string): number {
     const cp = Number(element.slice(-1))
-    return cp-1
+    return cp - 1
 
   }
-  
+
   // Méthode pour récupérer la dénomination du métier côté composant
   denominationMap: Map<string, Observable<string | null>> = new Map();
 
@@ -286,6 +286,22 @@ export class StudentDetailsComponent {
     }
     return this.denominationMap.get(trade) || of(null);
   }
-  
+
+  // Méthode pour filtrer les évaluations par abonnement
+  getFilteredEvaluationsForSubscription(subscription: string): any[] {
+    return Object.entries(this.evaluations)
+      .filter(([key, value]) => value.sigle === subscription)
+      .map(([key, value]) => ({ key, value }));
+  }
+  // Méthode pour filtrer les évaluations par abonnement
+  getFilteredTutorialsForSubscription(subscription: string): any[] {
+    return Object.entries(this.tutorials)
+      .filter(([key, value]) => value.sigle === subscription)
+      .map(([key, value]) => ({ key, value }));
+  }
+
+
+
+
 
 }

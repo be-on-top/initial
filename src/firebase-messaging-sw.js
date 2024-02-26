@@ -28,28 +28,21 @@ firebase.initializeApp(
 )
 
 
+// Importez firebase.messaging() si nécessaire
 const messaging = firebase.messaging();
 
-
+// Événement d'installation
 self.addEventListener('install', (event) => {
   console.log('Service Worker install event:', event);
   self.skipWaiting();
 });
 
+// Événement d'activation
 self.addEventListener('activate', (event) => {
   console.log('Service Worker activate event:', event);
 });
 
-// self.addEventListener('push', (event) => {
-//   console.log('Push notification received:', event);
-//   const options = {
-//     body: event.data.text(),
-//   };
-//   event.waitUntil(
-//     self.registration.showNotification('Push Notification', options)
-//   );
-// });
-
+// Événement de réception des notifications push
 self.addEventListener('push', (event) => {
   const data = event.data.json();
   const options = {
@@ -60,8 +53,42 @@ self.addEventListener('push', (event) => {
   );
 });
 
+// Événement de changement d'abonnement aux notifications push (peut être ajouté)
+self.addEventListener('pushsubscriptionchange', (event) => {
+  event.waitUntil(
+    self.registration.pushManager.subscribe(event.oldSubscription.options)
+      .then((subscription) => {
+        console.log('Subscription renewed:', subscription);
+      })
+  );
+});
 
 
+// // Ajoutez la gestion de onBackgroundMessage ici
+// messaging.onBackgroundMessage((payload) => {
+//   console.log('Background Message received:', payload);
+//   // Vous pouvez personnaliser la gestion du message ici
+//   const notificationTitle = payload.notification.title;
+//   const notificationOptions = {
+//     body: payload.notification.body,
+//     icon: 'your-icon-url.png', // Ajoutez une URL vers votre icône
+//   };
 
+//   return self.registration.showNotification(notificationTitle, notificationOptions);
+// });
 
+messaging.onBackgroundMessage((payload) => {
+  console.log(
+    '[firebase-messaging-sw.js] Received background message ',
+    payload
+  );
+  // Customize notification here
+  const notificationTitle = 'Background Message Title';
+  const notificationOptions = {
+    body: 'Background Message body.',
+    icon: '/firebase-logo.png'
+  };
+
+  self.registration.showNotification(notificationTitle, notificationOptions);
+});
 

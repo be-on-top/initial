@@ -227,8 +227,7 @@
             <div id="collapseFor" class="collapse" data-bs-parent="#accordion">
                 <div class="card-body">
                     <p class="card-text" *ngIf="!userData.subscriptions">Pour faciliter votre inscription et votre
-                        prise en
-                        charge, nous vous invitons à remplir le formulaire ci-dessous...
+                        prise en charge, nous vous invitons à remplir le formulaire ci-dessous...
                     </p>
                     <div class="card-text" *ngIf="userData.subscriptions">Inscription confirmée pour :
                         <p class="card-text d-inline" *ngFor="let subscription of userData.subscriptions">
@@ -245,61 +244,84 @@
         </div>
 
         <!-- suivi pédagogique -->
+
         <div class="card" *ngIf="isOneQuizzAchieved==true && evaluationsNotEmpty()">
+
+
             <div class="card-header bg-primary d-flex justify-content-between">
                 <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseTwo">
                     Suivi pédagogique
                 </a><i class="bi bi-clipboard-data-fill fs-4 text-light"></i>
+
             </div>
             <div id="collapseTwo" class="collapse" data-bs-parent="#accordion">
-                <div class="card-body">
-                    <div class="rounded p-2">
-                        <ul class="list-group">
-                            <!-- <li class="list-group-item"><span class="fw-bolder">Son id sur firestore :</span>  {{userData.id}}</li> -->
-                            <li class="list-group-item"><span class="fw-bolder">Votre formateur référent
-                                    :</span>
-                                {{userData.trainer}}</li>
-                            <!-- si y a déjà des enregistrements datés des évaluations de suivi pédagogique, on bouclera dessus -->
-                            <ng-container *ngIf="evaluations; else noEvaluation">
+                <!-- pour un métier -->
+                <!-- si on a plusieurs inscriptions potentielles, pour bien faire, va falloir boucler sur l'ensemble -->
+                <ng-container *ngIf="userData.subscriptions">
+                    <div *ngFor="let subscription of userData.subscriptions, let m=index">
+
+                        <div class="alert bg-light alert-light d-flex justify-content-between mx-3 mt-2">Formation au
+                            métier de {{
+                            getDenomination(subscription) | async }}<span>{{m+1}}</span></div>
+
+                        <div class="card-body">
+                            <div class="rounded p-2">
+                                <ul class="list-group">
+                                    <!-- <li class="list-group-item"><span class="fw-bolder">Son id sur firestore :</span>  {{userData.id}}</li> -->
+                                    <li class="list-group-item"><span class="fw-bolder">Formateur
+                                            :</span>
+                                        {{userData.trainer}}</li>
+                                    <!-- si y a déjà des enregistrements datés des évaluations de suivi pédagogique, on bouclera dessus -->
+                                    <ng-container *ngIf="evaluations; else noEvaluation">
 
 
-                                <ng-container *ngFor="let evaluation of evaluations | keyvalue">
-                                    <!-- partie additionnelle pour les niveaux si compétence -->
-                                    <div class="card rounded-0 mb-2 ">
-                                        <ng-container *ngIf="evaluation.value.competence">
-                                            <div class="card-header">
-                                                <!-- <span class="text-primary">
+                                        <!-- <ng-container *ngFor="let evaluation of evaluations | keyvalue"> -->
+                                        <ng-container
+                                            *ngFor="let evaluation of getFilteredEvaluationsForSubscription(subscription)">
+                                            <!-- partie additionnelle pour les niveaux si compétence -->
+                                            <div class="card rounded-0 mb-2 ">
+                                                <ng-container *ngIf="evaluation.value.competence">
+                                                    <div class="card-header">
+                                                        <!-- <span class="text-primary">
                                                     {{ evaluation.value.competence }}
                                                 </span> -->
-                                                <div class="form-check form-check-inline ms-2">
-                                                    <input class="form-check-input"
-                                                        [ngClass]="{'level1':evaluation.value.level=='beginner'}"
-                                                        type="checkbox" id="inlineCheckbox1" value="option1" disabled>
-                                                    <label class="form-check-label" for="inlineCheckbox1">1</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input"
-                                                        [ngClass]="{'level2':evaluation.value.level=='intermediate'}"
-                                                        type="checkbox" id="inlineCheckbox2" value="option2" disabled>
-                                                    <label class="form-check-label" for="inlineCheckbox2">2</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input"
-                                                        [ngClass]="{'level3':evaluation.value.level=='advance'}"
-                                                        type="checkbox" id="inlineCheckbox3" value="option3" disabled>
-                                                    <label class="form-check-label" for="inlineCheckbox3">3</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input"
-                                                        [ngClass]="{'level4':evaluation.value.level=='pro'}"
-                                                        type="checkbox" id="inlineCheckbox3" value="option4" disabled>
-                                                    <label class="form-check-label" for="inlineCheckbox3">4</label>
-                                                </div>
-                                            </div>
-                                        </ng-container>
-                                        <!--  -->
-                                        <div class="card-body">
-                                            <!-- <ng-container *ngIf="evaluation.value.competence">
+                                                        <div class="form-check form-check-inline ms-2">
+                                                            <input class="form-check-input"
+                                                                [ngClass]="{'level1':evaluation.value.level=='beginner'}"
+                                                                type="checkbox" id="inlineCheckbox1" value="option1"
+                                                                disabled>
+                                                            <label class="form-check-label"
+                                                                for="inlineCheckbox1">1</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input"
+                                                                [ngClass]="{'level2':evaluation.value.level=='intermediate'}"
+                                                                type="checkbox" id="inlineCheckbox2" value="option2"
+                                                                disabled>
+                                                            <label class="form-check-label"
+                                                                for="inlineCheckbox2">2</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input"
+                                                                [ngClass]="{'level3':evaluation.value.level=='advance'}"
+                                                                type="checkbox" id="inlineCheckbox3" value="option3"
+                                                                disabled>
+                                                            <label class="form-check-label"
+                                                                for="inlineCheckbox3">3</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input"
+                                                                [ngClass]="{'level4':evaluation.value.level=='pro'}"
+                                                                type="checkbox" id="inlineCheckbox3" value="option4"
+                                                                disabled>
+                                                            <label class="form-check-label"
+                                                                for="inlineCheckbox3">4</label>
+                                                        </div>
+                                                    </div>
+                                                </ng-container>
+                                                <!--  -->
+                                                <div class="card-body">
+                                                    <!-- <ng-container *ngIf="evaluation.value.competence">
                                                 <p *ngIf="!getCpNameCalled" class="card-text text-primary">{{
                                                     getCpName(evaluation.value.competence) }} ( {{
                                                     evaluation.value.competence }}) </p>
@@ -307,54 +329,60 @@
                                                     class="card-text text-primary">{{
                                                     cpEvaluated }} ({{ evaluation.value.competence }})</p>
                                             </ng-container> -->
-                                            <ng-container *ngIf="evaluation.value.competence">
-                                                <!-- {{trades |  json}} !!!!!!!! -->
-                                                <!-- puisqu'on a un tableau qui restitue les compétences ici avec quizz_macompétence -->
-                                                <p class="card-text text-primary">
-                                                    {{trades['quizz_'+evaluation.value.sigle][getCpIndex(evaluation.value.competence)]}}
-                                                    ({{ evaluation.value.competence }})</p>
-                                            </ng-container>
+                                                    <ng-container *ngIf="evaluation.value.competence">
+                                                        <!-- {{trades |  json}} !!!!!!!! -->
+                                                        <!-- puisqu'on a un tableau qui restitue les compétences ici avec quizz_macompétence -->
+                                                        <p class="card-text text-primary"
+                                                            *ngIf="trades['quizz_'+evaluation.value.sigle] && evaluation.value.competence">
+                                                            {{trades['quizz_'+evaluation.value.sigle][getCpIndex(evaluation.value.competence)]}}
+                                                            ({{ evaluation.value.competence }})</p>
+                                                    </ng-container>
 
-                                            <p class="card-text"><span class="fw-bold">Objet :
-                                                </span>{{evaluation.value.subject}}</p>
-                                            <!-- <p>{{evaluation.value.details}}</p> -->
-                                            <div class="card-text"
-                                                [innerHTML]="sanitizer.bypassSecurityTrustHtml(evaluation.value.details)">
-                                            </div>
-                                        </div>
-                                        <div class="card-footer d-flex justify-content-between">
-                                            <p><span class="fw-bold">Date : </span>{{evaluation.value.date}}</p>
-                                            <p [ngClass]="{
+                                                    <p class="card-text"><span class="fw-bold">Objet :
+                                                        </span>{{evaluation.value.subject}}</p>
+                                                    <!-- <p>{{evaluation.value.details}}</p> -->
+                                                    <div class="card-text"
+                                                        [innerHTML]="sanitizer.bypassSecurityTrustHtml(evaluation.value.details)">
+                                                    </div>
+                                                </div>
+                                                <div class="card-footer d-flex justify-content-between">
+                                                    <p><span class="fw-bold">Date : </span>{{evaluation.value.date}}</p>
+                                                    <p [ngClass]="{
                                                 'level1': evaluation.value.level === 'beginner',
                                                 'level2': evaluation.value.level === 'intermediate',
                                                 'level3': evaluation.value.level === 'advance',
                                                 'level4': evaluation.value.level === 'pro'
                                               }">
-                                                <ng-container *ngIf="evaluation.value.level === 'beginner'"> Débutant
-                                                </ng-container>
-                                                <ng-container *ngIf="evaluation.value.level === 'intermediate'">
-                                                    Intermédiaire
-                                                </ng-container>
-                                                <ng-container *ngIf="evaluation.value.level === 'advance'"> Avancé
-                                                </ng-container>
-                                                <ng-container *ngIf="evaluation.value.level === 'pro'"> Acquise
-                                                </ng-container>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </ng-container>
-                                <!-- {{userData.evaluations | json}} -->
+                                                        <ng-container *ngIf="evaluation.value.level === 'beginner'">
+                                                            Débutant
+                                                        </ng-container>
+                                                        <ng-container *ngIf="evaluation.value.level === 'intermediate'">
+                                                            Intermédiaire
+                                                        </ng-container>
+                                                        <ng-container *ngIf="evaluation.value.level === 'advance'">
+                                                            Avancé
+                                                        </ng-container>
+                                                        <ng-container *ngIf="evaluation.value.level === 'pro'"> Acquise
+                                                        </ng-container>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                        <!-- {{userData.evaluations | json}} -->
 
-                            </ng-container>
-                            <!-- si aucune évaluation de suivi jusqu'ici, on le mentionne -->
-                            <ng-template #noEvaluation>
-                                <li class="list-group-item">
-                                    <span class="fw-bolder">Pas de suivi consultable pour le moment</span>
-                                </li>
-                            </ng-template>
-                        </ul>
+                                    </ng-container>
+                                    <!-- si aucune évaluation de suivi jusqu'ici, on le mentionne -->
+                                    <ng-template #noEvaluation>
+                                        <li class="list-group-item">
+                                            <span class="fw-bolder">Pas de suivi consultable pour le moment</span>
+                                        </li>
+                                    </ng-template>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                </ng-container>
+
             </div>
         </div>
 
@@ -366,29 +394,134 @@
                 </a><i class="bi bi-activity fs-4 text-light"></i>
             </div>
             <div id="collapseTutorials" class="collapse" data-bs-parent="#accordion">
-                <div class="card-body">
-                    <div class="rounded p-2">
-                        <ul class="list-group">
-                            <!-- <li class="list-group-item"><span class="fw-bolder">Son id sur firestore :</span>  {{userData.id}}</li> -->
-                            <li class="list-group-item"><span class="fw-bolder">Votre tuteur en entreprise :</span>
-                                {{userData.tutor}}</li>
-                            <!-- si y a déjà des enregistrements datés des évaluations de suivi pédagogique, on bouclera dessus -->
 
-                            <li class="list-group-item">
-                                <ng-container *ngFor="let tutorial of tutorials | keyvalue">
-                                    <p><span class="fw-bold">Objet : </span>{{tutorial.value.subject}}</p>
-                                    <!-- <p>{{evaluation.value.details}}</p> -->
-                                    <div class="card-text"
-                                        [innerHTML]="sanitizer.bypassSecurityTrustHtml(tutorial.value.details)">
-                                    </div>
+                <!-- si on a plusieurs inscriptions potentielles, pour bien faire, va falloir boucler sur l'ensemble -->
+                <ng-container *ngIf="userData.subscriptions">
+                    <div *ngFor="let subscription of userData.subscriptions, let m=index">
 
-                                    <p><span class="fw-bold">Date : </span>{{tutorial.value.date}}</p>
-                                </ng-container>
-                                <!-- {{userData.evaluations | json}} -->
-                            </li>
-                        </ul>
+                        <div class="alert bg-light alert-light d-flex justify-content-between mx-3 mt-2">Formation au
+                            métier de {{ getDenomination(subscription) | async }}<span>{{m+1}}</span></div>
+
+                        <div class="card-body">
+                            <div class="rounded p-2">
+                                <ul class="list-group">
+                                    <!-- <li class="list-group-item"><span class="fw-bolder">Son id sur firestore :</span>  {{userData.id}}</li> -->
+                                    <li class="list-group-item"><span class="fw-bolder">Votre tuteur en entreprise
+                                            :</span>
+                                        {{userData.tutor}}</li>
+                                    <!-- si y a déjà des enregistrements datés des évaluations de suivi pédagogique, on bouclera dessus -->
+
+                                    <ng-container *ngIf="tutorials; else noTutorial">
+
+
+                                        <!-- <ng-container *ngFor="let evaluation of evaluations | keyvalue"> -->
+                                        <ng-container
+                                            *ngFor="let tutorial of getFilteredTutorialsForSubscription(subscription)">
+                                            <!-- partie additionnelle pour les niveaux si compétence -->
+                                            <div class="card rounded-0 mb-2 ">
+                                                <ng-container *ngIf="tutorial.value.competence">
+                                                    <div class="card-header">
+                                                        <!-- <span class="text-primary">
+                                                    {{ evaluation.value.competence }}
+                                                </span> -->
+                                                        <div class="form-check form-check-inline ms-2">
+                                                            <input class="form-check-input"
+                                                                [ngClass]="{'level1':tutorial.value.level=='beginner'}"
+                                                                type="checkbox" id="inlineCheckbox1" value="option1"
+                                                                disabled>
+                                                            <label class="form-check-label"
+                                                                for="inlineCheckbox1">1</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input"
+                                                                [ngClass]="{'level2':tutorial.value.level=='intermediate'}"
+                                                                type="checkbox" id="inlineCheckbox2" value="option2"
+                                                                disabled>
+                                                            <label class="form-check-label"
+                                                                for="inlineCheckbox2">2</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input"
+                                                                [ngClass]="{'level3':tutorial.value.level=='advance'}"
+                                                                type="checkbox" id="inlineCheckbox3" value="option3"
+                                                                disabled>
+                                                            <label class="form-check-label"
+                                                                for="inlineCheckbox3">3</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input"
+                                                                [ngClass]="{'level4':tutorial.value.level=='pro'}"
+                                                                type="checkbox" id="inlineCheckbox3" value="option4"
+                                                                disabled>
+                                                            <label class="form-check-label"
+                                                                for="inlineCheckbox3">4</label>
+                                                        </div>
+                                                    </div>
+                                                </ng-container>
+                                                <!--  -->
+                                                <div class="card-body">
+                                                    <!-- <ng-container *ngIf="evaluation.value.competence">
+                                                <p *ngIf="!getCpNameCalled" class="card-text text-primary">{{
+                                                    getCpName(evaluation.value.competence) }} ( {{
+                                                    evaluation.value.competence }}) </p>
+                                                <p *ngIf="getCpNameCalled && cpEvaluated"
+                                                    class="card-text text-primary">{{
+                                                    cpEvaluated }} ({{ evaluation.value.competence }})</p>
+                                            </ng-container> -->
+                                                    <ng-container *ngIf="tutorial.value.competence">
+                                                        <!-- {{trades |  json}} !!!!!!!! -->
+                                                        <!-- puisqu'on a un tableau qui restitue les compétences ici avec quizz_macompétence -->
+                                                        <p class="card-text text-primary"
+                                                            *ngIf="trades['quizz_'+tutorial.value.sigle] && tutorial.value.competence">
+                                                            {{trades['quizz_'+tutorial.value.sigle][getCpIndex(tutorial.value.competence)]}}
+                                                            ({{ tutorial.value.competence }})</p>
+                                                    </ng-container>
+
+                                                    <p class="card-text"><span class="fw-bold">Objet :
+                                                        </span>{{tutorial.value.subject}}</p>
+                                                    <!-- <p>{{evaluation.value.details}}</p> -->
+                                                    <div class="card-text"
+                                                        [innerHTML]="sanitizer.bypassSecurityTrustHtml(tutorial.value.details)">
+                                                    </div>
+                                                </div>
+                                                <div class="card-footer d-flex justify-content-between">
+                                                    <p><span class="fw-bold">Date : </span>{{tutorial.value.date}}</p>
+                                                    <p [ngClass]="{
+                                                'level1': tutorial.value.level === 'beginner',
+                                                'level2': tutorial.value.level === 'intermediate',
+                                                'level3': tutorial.value.level === 'advance',
+                                                'level4': tutorial.value.level === 'pro'
+                                              }">
+                                                        <ng-container *ngIf="tutorial.value.level === 'beginner'">
+                                                            Débutant
+                                                        </ng-container>
+                                                        <ng-container *ngIf="tutorial.value.level === 'intermediate'">
+                                                            Intermédiaire
+                                                        </ng-container>
+                                                        <ng-container *ngIf="tutorial.value.level === 'advance'">
+                                                            Avancé
+                                                        </ng-container>
+                                                        <ng-container *ngIf="tutorial.value.level === 'pro'"> Acquise
+                                                        </ng-container>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                        <!-- {{userData.evaluations | json}} -->
+
+                                    </ng-container>
+                                    <!-- si aucune évaluation de suivi jusqu'ici, on le mentionne -->
+                                    <ng-template #noTutorial>
+                                        <li class="list-group-item">
+                                            <span class="fw-bolder">Pas de suivi consultable pour le moment</span>
+                                        </li>
+                                    </ng-template>
+                                </ul>
+                            </div>
+                        </div>
+
                     </div>
-                </div>
+                </ng-container>
             </div>
         </div>
 

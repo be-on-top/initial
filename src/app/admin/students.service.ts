@@ -363,19 +363,19 @@ export class StudentsService {
   }
 
   // fonctionne très bien conserver
-  // async getUserToken(studentId: string) {
-  //   const tokenRef = doc(this.firestore, 'tokens', studentId);
-  //   const tokenSnapshot = await getDoc(tokenRef);
+  async getUserToken(studentId: string) {
+    const tokenRef = doc(this.firestore, 'tokens', studentId);
+    const tokenSnapshot = await getDoc(tokenRef);
   
-  //   if (tokenSnapshot.exists()) {
-  //     const tokenData = tokenSnapshot.data()?.['key'];
-  //     console.log('tokenData', tokenData);
+    if (tokenSnapshot.exists()) {
+      const tokenData = tokenSnapshot.data()?.['key'];
+      console.log('tokenData', tokenData);
       
-  //     return tokenData;
-  //   }
+      return tokenData;
+    }
   
-  //   return null;
-  // }
+    return null;
+  }
 
   async activateSubscription(id:string, sigle:string){
     const studentRef = doc(this.firestore, "students/" + id)

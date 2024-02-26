@@ -359,9 +359,29 @@ export class AccountComponent implements OnInit, OnDestroy {
   // }
 
   getCpIndex(element: string):number{
+    
     const cp = Number(element.slice(-1))
     return cp-1
 
   }
+
+  
+  // Méthode pour filtrer les évaluations par abonnement
+  getFilteredEvaluationsForSubscription(subscription: string): any[] {
+    return Object.entries(this.evaluations)
+      .filter(([key, value]) => value.sigle === subscription)
+      .map(([key, value]) => ({ key, value }));
+  }
+
+    // Méthode pour filtrer les évaluations par abonnement
+    getFilteredTutorialsForSubscription(subscription: string): any[] {
+      return Object.entries(this.tutorials)
+        .filter(([key, value]) => value.sigle === subscription)
+        .map(([key, value]) => ({ key, value }));
+    }
+
+
+
+
 
 }

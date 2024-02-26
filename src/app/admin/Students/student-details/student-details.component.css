@@ -43,6 +43,10 @@
   visibility: visible;
 }
 
+.card-footer{
+  font-size: smaller;
+}
+
 .form-check-input.level1{
   background-color: #E21937;
 }
@@ -69,20 +73,20 @@
 }
 
 .level1 {
-  border-bottom: 1px solid #E21937;
+  border-bottom: 2px solid #E21937;
 
 }
 
 .level2 {
-  border-bottom: 1px solid #fcb311;
+  border-bottom: 2px solid #fcb311;
 }
 
 .level3 {
-  border-bottom: 1px solid #82BC00;
+  border-bottom: 2px solid #82BC00;
 
 }
 
 .level4 {
-  border-bottom: 1px solid #0062fe;
+  border-bottom: 2px solid #0062fe;
 }
 

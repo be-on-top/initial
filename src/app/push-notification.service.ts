@@ -10,7 +10,7 @@ import { environment } from '../environments/environment';
 import { Firestore, collection, addDoc, setDoc, doc, getDoc, DocumentSnapshot} from '@angular/fire/firestore';
 import { pipe } from "rxjs";
 // Importez le module HttpClient d'Angular pour effectuer une requête HTTP à l'API 
-import { HttpClient } from '@angular/common/http';
+import { HttpClient , HttpHeaders} from '@angular/common/http';
 
 
 // setBackgroundMessageh
@@ -23,7 +23,7 @@ export class PushNotificationService {
   messagingFirebase: any;
 
 // Utiliser le HttpClient pour envoyer une requête POST à l'API FCM avec le token de l'utilisateur et la notification :
-  constructor(private firestore:Firestore) {
+  constructor(private firestore:Firestore, private httpClient:HttpClient) {
     this.messagingFirebase = getMessaging()
     initializeApp(environment.firebaseConfig)
   }
@@ -69,7 +69,7 @@ export class PushNotificationService {
       method: 'POST',
       headers: new Headers({
         // 'Authorization': 'key='+fcm_server_key
-        'Authorization': 'key='+"509490429297"
+        'Authorization': 'key='+"AAAAMXxVdgU:APA91bHBoF748PZxvifdv4LkN_gHAXuIoB6KpPFCYXofAc30yBzvOivIhIav0DW7LLdWMWRnclWglZa__c0HJlaed_b5LMSKB9LTkgha6WAEJjGElnnD0gOCNJ1ubZ35laRIYd89ut7J"
       })
     }).then(response => {
       if (response.status < 200 || response.status >= 400) {
@@ -218,7 +218,39 @@ export class PushNotificationService {
   
   //   return null;
 
+  async sendNotificationPushToUser(tokenId: string) {
+    console.log("token récupéré", tokenId);
+    
+    // Récupérer le token FCM de l'utilisateur depuis la collection "tokens"
 
+
+      // Construire le message de notification
+      const message = {
+        "to": tokenId,
+        "notification": {
+          "title": "New Notification blablablablabla",
+          "body": "This is a sample push notification."
+        },
+        "data": {
+          "title": "New Notification blablablablabla",
+          "body": "This is a sample push notification."
+        }
+      };
+ 
+    
+  
+    // Envoyer la requête HTTP à l'API FCM
+    this.httpClient.post('https://fcm.googleapis.com/fcm/send', message, {
+      headers: new HttpHeaders({
+        'Authorization': 'key='+'AAAAMXxVdgU:APA91bHBoF748PZxvifdv4LkN_gHAXuIoB6KpPFCYXofAc30yBzvOivIhIav0DW7LLdWMWRnclWglZa__c0HJlaed_b5LMSKB9LTkgha6WAEJjGElnnD0gOCNJ1ubZ35laRIYd89ut7J', 
+        'Content-Type': 'application/json',
+      }),
+    }).subscribe(response => {
+      console.log('Notification envoyée avec succès:', response);
+    }, error => {
+      console.error('Erreur lors de l\'envoi de la notification:', error);
+    });
+  }
 
   
 
