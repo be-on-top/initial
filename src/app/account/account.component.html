@@ -96,86 +96,84 @@
                 </div>
 
             </div>
+        </div>
+        <!-- anciennement positionnement > vos QCM(s) -->
+        <div class="card" *ngIf="hasStartedEvaluation">
+            <div class="card-header bg-primary d-flex justify-content-between">
+                <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseQuizz">
+                    Questionnaires & Résultats
+                </a><i class="bi bi-bar-chart-steps fs-4 text-light"></i>
+            </div>
+            <div id="collapseQuizz" class="collapse" data-bs-parent="#accordion">
+                <div class="card-body">
 
-            <!-- anciennement positionnement > vos QCM(s) -->
-            <div class="card" *ngIf="hasStartedEvaluation">
-                <div class="card-header bg-primary d-flex justify-content-between">
-                    <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse"
-                        href="#collapseThreea">
-                        Questionnaires & Résultats
-                    </a><i class="bi bi-bar-chart-steps fs-4 text-light"></i>
-                </div>
-                <div id="collapseThreea" class="collapse" data-bs-parent="#accordion">
-                    <div class="card-body">
+                    <!-- comme on ne questionnera plus tradeEvaluated mais tradesEvaluated [], on va devoir, avant d'inspecter la suite des ngIf, avoir une boucle ngFor pour voir métier après métier...  -->
+                    <!-- attention, compte tenu de la manière dont tradesEvaluated a été généré, trade ici, c'est une chaine de caractère type quizz_sigle -->
+                    <div *ngFor="let trade of tradesEvaluated, let last=last">
 
-                        <!-- comme on ne questionnera plus tradeEvaluated mais tradesEvaluated [], on va devoir, avant d'inspecter la suite des ngIf, avoir une boucle ngFor pour voir métier après métier...  -->
-                        <!-- attention, compte tenu de la manière dont tradesEvaluated a été généré, trade ici, c'est une chaine de caractère type quizz_sigle -->
-                        <div *ngFor="let trade of tradesEvaluated, let last=last">
+                        <!-- {{userData | json}} {{userData[trade].fullResults | json}} -->
+                        <!-- <p class="card-text">Métier concerné : <span class="fw-bold">{{trade}}</span></p> -->
+                        <p class="card-text">Métier concerné : <span class="fw-bold">{{ getDenomination(trade) |
+                                async }}</span></p>
+                        <!-- Partie 1 si QCM en cours -->
+                        <!-- <div *ngIf="userData.lastIndexQuestions[trade]<2, else done"> -->
+                        <div *ngIf="!userData[trade].fullResults, else done">
+                            <p class="card-text">Vous avez répondu à
+                                <span class="fw-bold">{{userData[trade].lastIndexQuestion +1 | number}}
+                                    Questions</span>
+                            </p>
 
-                            <!-- {{userData | json}} {{userData[trade].fullResults | json}} -->
-                            <!-- <p class="card-text">Métier concerné : <span class="fw-bold">{{trade}}</span></p> -->
-                            <p class="card-text">Métier concerné : <span class="fw-bold">{{ getDenomination(trade) |
-                                    async }}</span></p>
-                            <!-- Partie 1 si QCM en cours -->
-                            <!-- <div *ngIf="userData.lastIndexQuestions[trade]<2, else done"> -->
-                            <div *ngIf="!userData[trade].fullResults, else done">
-                                <p class="card-text">Vous avez répondu à
-                                    <span class="fw-bold">{{userData[trade].lastIndexQuestion +1 | number}}
-                                        Questions</span>
-                                </p>
+                            <button class="btn bg-success pe-5 d-flex align-items-center"><a class="text-light"
+                                    [routerLink]="['/quizz/', trade.slice(6), userData[trade].lastIndexQuestion +1 | number, userData[trade].scoreCounter,true, user]"><i
+                                        class="bi fs-5 bi-clock-history"></i>
+                                    Poursuivre</a>
+                            </button>
 
-                                <button class="btn bg-success pe-5 d-flex align-items-center"><a class="text-light"
-                                        [routerLink]="['/quizz/', trade.slice(6), userData[trade].lastIndexQuestion +1 | number, userData[trade].scoreCounter,true, user]"><i
-                                            class="bi fs-5 bi-clock-history"></i>
-                                        Poursuivre</a>
-                                </button>
-
-                            </div>
-
-                            <!-- pour compétences option 2 alternative pour tout le ng-template -->
-                            <ng-template #done class="mb-3">
-                                <p class="card-text fw-bold d-flex align-items-center">Questionnaire de positionnement
-                                    terminé
-                                    <i class="bi fs-4 bi-check-lg ms-3"></i>
-                                </p>
-                                <div class="mt-2">
-                                    <div class="card-text mb-0"
-                                        *ngFor="let result of userData[trade].fullResults | keyvalue, let lastResult=last, let i = index">
-
-                                        <ng-container *ngFor="let item of objectEntries(result.value)">
-                                            <div class="d-flex align-items-center p-0 m-0">
-                                                <span class="fw-bold">{{ item[0] }}</span>
-                                                <i class="bi fs-4 bi-arrow-right-short"></i>
-                                                <span>Note obtenue : {{ item[1].notation | json | number:'1.1-1'
-                                                    }}/20.</span>
-                                            </div>
-                                            <em *ngIf="trades[trade]"
-                                                class="text-primary fs-6">{{trades[trade][i]}}</em>
-                                        </ng-container>
-                                    </div>
-                                </div>
-                            </ng-template>
-
-                            <!-- Affichez le hr sauf dans la dernière itération -->
-                            <hr *ngIf="!last">
                         </div>
-                        <!-- fin boucle supplémentaire pour ngFor avec les options de multi-quizz -->
-                    </div>
 
-                    <ng-template #none> <span>Aucun Questionnaire en cours</span>
-                    </ng-template>
+                        <!-- pour compétences option 2 alternative pour tout le ng-template -->
+                        <ng-template #done class="mb-3">
+                            <p class="card-text fw-bold d-flex align-items-center">Questionnaire de positionnement
+                                terminé
+                                <i class="bi fs-4 bi-check-lg ms-3"></i>
+                            </p>
+                            <div class="mt-2">
+                                <div class="card-text mb-0"
+                                    *ngFor="let result of userData[trade].fullResults | keyvalue, let lastResult=last, let i = index">
+
+                                    <ng-container *ngFor="let item of objectEntries(result.value)">
+                                        <div class="d-flex align-items-center p-0 m-0">
+                                            <span class="fw-bold">{{ item[0] }}</span>
+                                            <i class="bi fs-4 bi-arrow-right-short"></i>
+                                            <span>Note obtenue : {{ item[1].notation | json | number:'1.1-1'
+                                                }}/20.</span>
+                                        </div>
+                                        <em *ngIf="trades[trade]" class="text-primary fs-6">{{trades[trade][i]}}</em>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </ng-template>
+
+                        <!-- Affichez le hr sauf dans la dernière itération -->
+                        <hr *ngIf="!last">
+                    </div>
+                    <!-- fin boucle supplémentaire pour ngFor avec les options de multi-quizz -->
                 </div>
+
+                <ng-template #none> <span>Aucun Questionnaire en cours</span>
+                </ng-template>
             </div>
         </div>
         <!-- fin vos QCM -->
         <!-- estimation seule -->
         <div class="card" *ngIf="isOneQuizzAchieved">
             <div class="card-header bg-primary d-flex justify-content-between">
-                <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseThreeb">
+                <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse"
+                    href="#collapseFullResults">
                     Estimations personnalisées
                 </a><i class="bi bi-card-list fs-4 text-light"></i>
             </div>
-            <div id="collapseThreeb" class="collapse" data-bs-parent="#accordion">
+            <div id="collapseFullResults" class="collapse" data-bs-parent="#accordion">
                 <div class="card-body">
                     <!-- nouveauté pour multi quizz VERSION 2 -->
 
@@ -249,7 +247,8 @@
 
 
             <div class="card-header bg-primary d-flex justify-content-between">
-                <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseEvaluations">
+                <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse"
+                    href="#collapseEvaluations">
                     Suivi pédagogique
                 </a><i class="bi bi-clipboard-data-fill fs-4 text-light"></i>
 
@@ -303,19 +302,22 @@
                                         <!--  -->
                                         <div class="card-body">
                                             <ng-container *ngIf="evaluation.value.competence">
+
                                                 <!-- {{trades |  json}} !!!!!!!! -->
                                                 <!-- puisqu'on a un tableau qui restitue les compétences ici avec quizz_macompétence -->
                                                 <p class="card-text text-primary d-flex justify-content-between"
                                                     *ngIf="trades['quizz_'+evaluation.value.sigle] && evaluation.value.competence">
                                                     {{trades['quizz_'+evaluation.value.sigle][getCpIndex(evaluation.value.competence)]}}
                                                     ({{ evaluation.value.competence }}) <span
+                                                        (click)="toggleCollapse(e)"
                                                         *ngIf="evaluation.value.subject || evaluation.value.details"> <a
                                                             href='#collapseEvaluation{{e}}' data-bs-toggle="collapse"><i
-                                                                class="bi bi-caret-down-fill"></i></a></span></p>
+                                                                [ngClass]="{'bi bi-caret-down-fill': !evaluationsState[e], 'bi bi-caret-up-fill': evaluationsState[e]}"></i></a></span>
+                                                </p>
                                             </ng-container>
                                             <!-- pour toute la sous partie qui doit être masquée -->
                                             <div id="collapseEvaluation{{e}}"
-                                                [ngClass]="{'collapse':evaluation.value.competence}"
+                                                [ngClass]="{'collapse':evaluation.value.competence && !evaluationsState[e]}"
                                                 data-bs-parent="#eval">
                                                 <p class="card-text"><span class="fw-bold">Objet :
                                                     </span>{{evaluation.value.subject}}</p>
@@ -451,15 +453,22 @@
                                                 <p class="card-text text-primary d-flex justify-content-between"
                                                     *ngIf="trades['quizz_'+tutorial.value.sigle] && tutorial.value.competence">
                                                     {{trades['quizz_'+tutorial.value.sigle][getCpIndex(tutorial.value.competence)]}}
-                                                    ({{ tutorial.value.competence }}) <span
-                                                        *ngIf="tutorial.value.subject || tutorial.value.details"> <a
+                                                    ({{ tutorial.value.competence }})
+                                                    <span (click)="toggleCollapse(t)"
+                                                        *ngIf="tutorial.value.subject || tutorial.value.details">
+                                                        <a href='#collapseEvaluation{{t}}' data-bs-toggle="collapse">
+                                                            <i
+                                                                [ngClass]="{'bi bi-caret-down-fill': !evaluationsState[t], 'bi bi-caret-up-fill': evaluationsState[t]}">
+                                                            </i></a></span>
+                                                    <!-- <span *ngIf="tutorial.value.subject || tutorial.value.details"> <a
                                                             href='#collapseTutorial{{t}}' data-bs-toggle="collapse"><i
-                                                                class="bi bi-caret-down-fill"></i></a></span></p>
+                                                                class="bi bi-caret-down-fill"></i></a></span> -->
+                                                </p>
 
                                             </ng-container>
                                             <!-- pour toute la sous partie qui doit être masquée -->
                                             <div id="collapseTutorial{{t}}"
-                                                [ngClass]="{'collapse':tutorial.value.competence}"
+                                                [ngClass]="{'collapse':tutorial.value.competence && !evaluationsState[t]}"
                                                 data-bs-parent="#tuto">
 
                                                 <p class="card-text"><span class="fw-bold">Objet :

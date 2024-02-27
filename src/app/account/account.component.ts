@@ -83,7 +83,7 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   denominationsMap: Map<string, Observable<string>> = new Map();
 
-  cpEvaluated:string=""
+  cpEvaluated: string = ""
   getCpNameCalled: boolean = false;
 
   public notificationPermissionGranted = false;
@@ -171,7 +171,7 @@ export class AccountComponent implements OnInit, OnDestroy {
     console.log('this.tradesEvaluated', this.tradesEvaluated);
     console.log('type of tradesEvaluated', typeof (this.tradesEvaluated));
     if (Notification.permission === 'granted') {
-      this.notificationPermissionGranted=true
+      this.notificationPermissionGranted = true
     }
 
   }
@@ -220,31 +220,31 @@ export class AccountComponent implements OnInit, OnDestroy {
       await this.requestNotificationPermission();
     }
 
-      // Le reste de votre code pour afficher la notification et enregistrer le token
-      try {
-        // const notification = new Notification("Coucou, vous venez de demander à être notifié !!! ");
-        const registration = await navigator.serviceWorker.getRegistration();
-        if (registration) {
-          registration.showNotification("Vous venez de demander à être notifié !");
-        }
-
-        const messaging = getMessaging();
-
-        const token = await getToken(messaging, { vapidKey: "BIh4nZeNhn8JfEciZJvgFL96Qd7uVzfZTmaoUp2RFb65SA2Lk2jvujAtmEkttGR5OtyTRIj2_FS49k5mPLl6HsM" });
-
-        console.log(token);
-        this.notificationService.registerToken(token, this.userData.id);
-      } catch (error) {
-        console.error("Error during notification setup:", error);
+    // Le reste de votre code pour afficher la notification et enregistrer le token
+    try {
+      // const notification = new Notification("Coucou, vous venez de demander à être notifié !!! ");
+      const registration = await navigator.serviceWorker.getRegistration();
+      if (registration) {
+        registration.showNotification("Vous venez de demander à être notifié !");
       }
 
-      this.notifyMeWithTitleAndBody('Votre Actualité', `Bravo ${this.userData.firstName}, vous êtes dans les starting-blocks ! `);
+      const messaging = getMessaging();
+
+      const token = await getToken(messaging, { vapidKey: "BIh4nZeNhn8JfEciZJvgFL96Qd7uVzfZTmaoUp2RFb65SA2Lk2jvujAtmEkttGR5OtyTRIj2_FS49k5mPLl6HsM" });
+
+      console.log(token);
+      this.notificationService.registerToken(token, this.userData.id);
+    } catch (error) {
+      console.error("Error during notification setup:", error);
+    }
+
+    this.notifyMeWithTitleAndBody('Votre Actualité', `Bravo ${this.userData.firstName}, vous êtes dans les starting-blocks ! `);
 
 
-      // mise à jour la variable pour indiquer que l'autorisation a été accordée
-      this.notificationPermissionGranted = true;
+    // mise à jour la variable pour indiquer que l'autorisation a été accordée
+    this.notificationPermissionGranted = true;
 
-      // this.studentService.setRequestNotification(this.userData.id)
+    // this.studentService.setRequestNotification(this.userData.id)
 
   }
 
@@ -358,14 +358,14 @@ export class AccountComponent implements OnInit, OnDestroy {
   //   })
   // }
 
-  getCpIndex(element: string):number{
-    
+  getCpIndex(element: string): number {
+
     const cp = Number(element.slice(-1))
-    return cp-1
+    return cp - 1
 
   }
 
-  
+
   // Méthode pour filtrer les évaluations par abonnement
   getFilteredEvaluationsForSubscription(subscription: string): any[] {
     return Object.entries(this.evaluations)
@@ -373,12 +373,22 @@ export class AccountComponent implements OnInit, OnDestroy {
       .map(([key, value]) => ({ key, value }));
   }
 
-    // Méthode pour filtrer les évaluations par abonnement
-    getFilteredTutorialsForSubscription(subscription: string): any[] {
-      return Object.entries(this.tutorials)
-        .filter(([key, value]) => value.sigle === subscription)
-        .map(([key, value]) => ({ key, value }));
-    }
+  // Méthode pour filtrer les évaluations par abonnement
+  getFilteredTutorialsForSubscription(subscription: string): any[] {
+    return Object.entries(this.tutorials)
+      .filter(([key, value]) => value.sigle === subscription)
+      .map(([key, value]) => ({ key, value }));
+  }
+
+
+
+
+
+  evaluationsState: { [key: number]: boolean } = {};
+
+  toggleCollapse(eIndex: number) {
+    this.evaluationsState[eIndex] = !this.evaluationsState[eIndex];
+  }
 
 
 
