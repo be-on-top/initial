@@ -295,16 +295,48 @@ export class StudentDetailsComponent {
   }
 
   // Méthode pour filtrer les évaluations par abonnement
+  // getFilteredEvaluationsForSubscription(subscription: string): any[] {
+  //   return Object.entries(this.evaluations)
+  //     .filter(([key, value]) => value.sigle === subscription)
+  //     .map(([key, value]) => ({ key, value }));
+  // }
+  
   getFilteredEvaluationsForSubscription(subscription: string): any[] {
-    return Object.entries(this.evaluations)
-      .filter(([key, value]) => value.sigle === subscription)
-      .map(([key, value]) => ({ key, value }));
+    const filteredEvaluations = Object.entries(this.evaluations)
+      .filter(([key, value]: [string, any]) => value.sigle === subscription)
+      .map(([key, value]: [string, any]) => ({ key, value: value }));
+  
+    // Trie les évaluations par compétence en extrayant le chiffre à la fin
+    return filteredEvaluations.sort((a, b) => {
+      const regex = /\D+/g; // Expression régulière pour extraire les chiffres à la fin
+      const aNumber = parseInt(a.value.competence.replace(regex, ''), 10);
+      const bNumber = parseInt(b.value.competence.replace(regex, ''), 10);
+  
+      return aNumber - bNumber; // Trie par ordre croissant
+    });
   }
+
+
+
   // Méthode pour filtrer les évaluations par abonnement
+  // getFilteredTutorialsForSubscription(subscription: string): any[] {
+  //   return Object.entries(this.tutorials)
+  //     .filter(([key, value]) => value.sigle === subscription)
+  //     .map(([key, value]) => ({ key, value }));
+  // }
   getFilteredTutorialsForSubscription(subscription: string): any[] {
-    return Object.entries(this.tutorials)
-      .filter(([key, value]) => value.sigle === subscription)
-      .map(([key, value]) => ({ key, value }));
+    const filteredTutorials = Object.entries(this.tutorials)
+      .filter(([key, value]: [string, any]) => value.sigle === subscription)
+      .map(([key, value]: [string, any]) => ({ key, value: value }));
+  
+    // Trie les évaluations par compétence en extrayant le chiffre à la fin
+    return filteredTutorials.sort((a, b) => {
+      const regex = /\D+/g; // Expression régulière pour extraire les chiffres à la fin
+      const aNumber = parseInt(a.value.competence.replace(regex, ''), 10);
+      const bNumber = parseInt(b.value.competence.replace(regex, ''), 10);
+  
+      return aNumber - bNumber; // Trie par ordre croissant
+    });
   }
 
   evaluationsState: { [key: number]: boolean } = {};
