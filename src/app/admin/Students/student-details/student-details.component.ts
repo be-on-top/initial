@@ -309,8 +309,8 @@ export class StudentDetailsComponent {
     // Trie les évaluations par compétence en extrayant le chiffre à la fin
     return filteredEvaluations.sort((a, b) => {
       const regex = /\D+/g; // Expression régulière pour extraire les chiffres à la fin
-      const aNumber = parseInt(a.value.competence.replace(regex, ''), 10);
-      const bNumber = parseInt(b.value.competence.replace(regex, ''), 10);
+      const aNumber = parseInt((a.value.competence || '').replace(regex, ''), 10);
+      const bNumber = parseInt((b.value.competence || '').replace(regex, ''), 10);   
   
       return aNumber - bNumber; // Trie par ordre croissant
     });
@@ -332,8 +332,9 @@ export class StudentDetailsComponent {
     // Trie les évaluations par compétence en extrayant le chiffre à la fin
     return filteredTutorials.sort((a, b) => {
       const regex = /\D+/g; // Expression régulière pour extraire les chiffres à la fin
-      const aNumber = parseInt(a.value.competence.replace(regex, ''), 10);
-      const bNumber = parseInt(b.value.competence.replace(regex, ''), 10);
+      const aNumber = parseInt((a.value.competence || '').replace(regex, ''), 10);
+      const bNumber = parseInt((b.value.competence || '').replace(regex, ''), 10);
+      
   
       return aNumber - bNumber; // Trie par ordre croissant
     });
