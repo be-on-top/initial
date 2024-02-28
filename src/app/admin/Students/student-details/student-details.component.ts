@@ -159,6 +159,10 @@ export class StudentDetailsComponent {
       this.title="super administrateur"
       // alert("C'est un super administrateur !!!")
     }
+    else if (this.userRouterLinks.user == "external") {
+      this.title="observateur externe"
+      // alert("C'est un super administrateur !!!")
+    }
   }
 
 
@@ -301,6 +305,12 @@ export class StudentDetailsComponent {
     return Object.entries(this.tutorials)
       .filter(([key, value]) => value.sigle === subscription)
       .map(([key, value]) => ({ key, value }));
+  }
+
+  evaluationsState: { [key: number]: boolean } = {};
+
+  toggleCollapse(eIndex: number) {
+    this.evaluationsState[eIndex] = !this.evaluationsState[eIndex];
   }
 
 

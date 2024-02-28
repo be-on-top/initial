@@ -43,9 +43,14 @@
   visibility: visible;
 }
 
-.card-footer{
+/* .card-footer{
   font-size: smaller;
+} */
+.card-footer p{
+margin-bottom: 0;
 }
+
+
 
 .form-check-input.level1{
   background-color: #E21937;
