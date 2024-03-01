@@ -164,8 +164,7 @@
             *ngIf="(userRouterLinks.user=='admin' || userRouterLinks.user=='trainer' || userRouterLinks.user=='tutor' || userRouterLinks.user=='external') && student">
             <div class="card-header bg-primary d-flex justify-content-between">
                 <a class="btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseThree">
-                    Inscription
-                </a><i class="bi bi-info-square-fill fs-4 text-light"></i>
+                    Inscription</a><i class="bi bi-info-square-fill fs-4 text-light"></i>
             </div>
             <div class="collapse" data-bs-parent="#accordion" id="collapseThree">
 
@@ -200,7 +199,7 @@
                 <!-- si on a plusieurs inscriptions potentielles, pour bien faire, va falloir boucler sur l'ensemble -->
                 <ng-container *ngIf="student.subscriptions">
                     <div *ngFor="let subscription of student.subscriptions, let m=index" class="px-2">
-                        <div class="alert bg-light alert-light d-flex justify-content-between my-2">
+                        <div class="alert bg-light alert-light d-flex justify-content-between my-2 gap-5">
                             Formation au métier de {{ getDenomination(subscription) | async }}
                             <span>{{m+1}}</span>
                         </div>
@@ -212,30 +211,47 @@
                                     <!-- <div class="card my-5" *ngIf="evaluation.value.sigle==subscription"> -->
                                     <div class="card mb-2">
                                         <ng-container *ngIf="evaluation.value.competence && evaluation.value.level">
-                                            <div class="card-header">
-                                                <div class="form-check form-check-inline ms-2">
+                                            <div class="card-header fs-5 d-flex align-items-center">
+                                                <div class="form-check form-check-inline ms-0 ms-xs-2">
                                                     <input class="form-check-input"
                                                         [ngClass]="{'level1':evaluation.value.level=='beginner'}"
                                                         type="checkbox" id="inlineCheckbox1" value="option1" disabled>
-                                                    <label class="form-check-label" for="inlineCheckbox1">1</label>
+                                                    <label class="form-check-label"
+                                                        for="inlineCheckbox1">1</label>
                                                 </div>
-                                                <div class="form-check form-check-inline">
+                                                <div class="form-check form-check-inline ms-0 ms-xs-2">
                                                     <input class="form-check-input"
                                                         [ngClass]="{'level2':evaluation.value.level=='intermediate'}"
                                                         type="checkbox" id="inlineCheckbox2" value="option2" disabled>
-                                                    <label class="form-check-label" for="inlineCheckbox2">2</label>
+                                                    <label class="form-check-label"
+                                                        for="inlineCheckbox2">2</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input"
                                                         [ngClass]="{'level3':evaluation.value.level=='advance'}"
                                                         type="checkbox" id="inlineCheckbox3" value="option3" disabled>
-                                                    <label class="form-check-label" for="inlineCheckbox3">3</label>
+                                                    <label class="form-check-label"
+                                                        for="inlineCheckbox3">3</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input"
                                                         [ngClass]="{'level4':evaluation.value.level=='pro'}"
                                                         type="checkbox" id="inlineCheckbox3" value="option4" disabled>
-                                                    <label class="form-check-label" for="inlineCheckbox3">4</label>
+                                                    <label class="form-check-label"
+                                                        for="inlineCheckbox3">4</label>
+                                                </div>
+                                                <!-- pour le moment, on n'affiche la légende dans le header QUE pour external -->
+                                                <div class="form-check p-0 text-secundary">
+                                                    <ng-container *ngIf="evaluation.value.level === 'beginner'">
+                                                        Débutant
+                                                    </ng-container>
+                                                    <ng-container *ngIf="evaluation.value.level === 'intermediate'">
+                                                        Intermédiaire
+                                                    </ng-container>
+                                                    <ng-container *ngIf="evaluation.value.level === 'advance'"> Avancé
+                                                    </ng-container>
+                                                    <ng-container *ngIf="evaluation.value.level === 'pro'"> Acquise
+                                                    </ng-container>                                       
                                                 </div>
                                             </div>
                                         </ng-container>
@@ -243,7 +259,7 @@
                                             <!-- {{trades | json}} -->
                                             <ng-container *ngIf="evaluation.value.competence">
                                                 <!-- puisqu'on a un tableau qui restitue les compétences ici avec quizz_macompétence -->
-                                                <p class="fw-bold d-flex justify-content-between"
+                                                <p class="fw-bold d-flex justify-content-between gap-2"
                                                     *ngIf="trades['quizz_'+evaluation.value.sigle] && evaluation.value.competence">
                                                     {{trades['quizz_'+evaluation.value.sigle][getCpIndex(evaluation.value.competence)]}}
                                                     ({{ evaluation.value.competence }}) <span
@@ -275,9 +291,11 @@
                                                 l'évaluation</button>
                                         </div>
                                         <!-- fin  partie censée être cachée -->
-                                        <div class="card-footer d-flex justify-content-between align-items-center">
-                                            <p><span class="fw-bold">Date : </span>{{evaluation.value.date}}</p>
-                                            <p [ngClass]="{
+                                        <div *ngIf="userRouterLinks.user!=='external'"
+                                            class="card-footer d-flex justify-content-between align-items-center">
+                                            <p class="fs-5"><span class="fw-bold">Date :
+                                                </span>{{evaluation.value.date}}</p>
+                                            <p class="fs-5" [ngClass]="{
                                 'level1': evaluation.value.level === 'beginner',
                                 'level2': evaluation.value.level === 'intermediate',
                                 'level3': evaluation.value.level === 'advance',
@@ -341,7 +359,7 @@
                                 <div class="card mb-2">
                                     <!-- hypothèse où competence évaluée -->
                                     <ng-container *ngIf="tutorial.value.competence && tutorial.value.level">
-                                        <div class="card-header"
+                                        <div class="card-header fs-5 d-flex align-items-center"
                                             *ngIf="tutorial.value.competence && tutorial.value.level">
 
                                             <div class="form-check form-check-inline ms-2">
@@ -368,6 +386,19 @@
                                                     id="inlineCheckbox3" value="option4" disabled>
                                                 <label class="form-check-label" for="inlineCheckbox3">4</label>
                                             </div>
+                                             <!-- pour le moment, on n'affiche la légende dans le header QUE pour external -->
+                                             <div class="form-check p-0 text-secundary">
+                                                <ng-container *ngIf="tutorial.value.level === 'beginner'">
+                                                    Débutant
+                                                </ng-container>
+                                                <ng-container *ngIf="tutorial.value.level === 'intermediate'">
+                                                    Intermédiaire
+                                                </ng-container>
+                                                <ng-container *ngIf="tutorial.value.level === 'advance'"> Avancé
+                                                </ng-container>
+                                                <ng-container *ngIf="tutorial.value.level === 'pro'"> Acquise
+                                                </ng-container>                                       
+                                            </div>                                        
                                         </div>
                                     </ng-container>
                                     <div class="card-body">
@@ -377,7 +408,7 @@
                                             <!-- puisqu'on a un tableau qui restitue les compétences ici avec quizz_macompétence -->
                                             <!-- <p class="fw-bold">{{trades['quizz_'+evaluation.value.sigle][getCpIndex(evaluation.value.competence)]}} ({{
                                                                 evaluation.value.competence }})</p> -->
-                                            <p class="fw-bold d-flex justify-content-between"
+                                            <p class="fw-bold d-flex justify-content-between gap-2"
                                                 *ngIf="trades['quizz_'+tutorial.value.sigle] && tutorial.value.competence">
                                                 {{trades['quizz_'+tutorial.value.sigle][getCpIndex(tutorial.value.competence)]}}
                                                 ({{ tutorial.value.competence }})
@@ -413,7 +444,8 @@
                                             [routerLink]="['/admin/updateStudent', studentId, tutorial.key]">Modifier
                                             le suivi</button>
                                     </div>
-                                    <div class="card-footer d-flex justify-content-between align-items-center">
+                                    <!-- on l'exclu  pour l'observateur externe qui s'en moque -->
+                                    <div *ngIf="userRouterLinks.user!=='external'" class="card-footer d-flex justify-content-between align-items-center">
                                         <p><span class="fw-bold">Date : </span>{{tutorial.value.date}}</p>
                                         <p [ngClass]="{
                             'level1': tutorial.value.level === 'beginner',

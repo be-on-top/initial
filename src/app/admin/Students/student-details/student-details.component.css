@@ -7,7 +7,8 @@
 .trade-hover::before {
   content: "";
   position: absolute;
-  bottom: 100%; /* Positionne le triangle */
+  bottom: 100%;
+  /* Positionne le triangle */
   left: 50%;
   transform: translateX(-50%);
   border-width: 6px;
@@ -22,7 +23,8 @@
 .trade-hover::after {
   content: attr(title);
   position: absolute;
-  bottom: calc(100% + 10px); /* Positionne l'info-bulle au-dessus du texte */
+  bottom: calc(100% + 10px);
+  /* Positionne l'info-bulle au-dessus du texte */
   left: 50%;
   transform: translateX(-50%);
   background-color: rgba(0, 0, 0, 0.8);
@@ -43,28 +45,33 @@
   visibility: visible;
 }
 
-/* .card-footer{
-  font-size: smaller;
+/* .card-footer {
+font-size: x-small;
 } */
-.card-footer p{
-margin-bottom: 0;
+
+.card-footer p {
+  margin-bottom: 0;
 }
 
 
 
-.form-check-input.level1{
+.form-check-input.level1 {
   background-color: #E21937;
 }
-.form-check-input.level2{
+
+.form-check-input.level2 {
   background-color: #fcb311;
 }
-.form-check-input.level3{
-  background-color:#82BC00;
+
+.form-check-input.level3 {
+  background-color: #82BC00;
 }
-.form-check-input.level4{
+
+.form-check-input.level4 {
   background-color: #0062fe;
 }
-.form-check-input:disabled{
+
+.form-check-input:disabled {
   opacity: 80;
 }
 
@@ -72,9 +79,9 @@ margin-bottom: 0;
 .level2,
 .level3,
 .level4 {
-    font-weight: 500 !important;
-    font-size: smaller;
-    text-transform: capitalize;
+  font-weight: 500 !important;
+  /* font-size: smaller; */
+  text-transform: capitalize;
 }
 
 .level1 {
@@ -93,5 +100,14 @@ margin-bottom: 0;
 
 .level4 {
   border-bottom: 2px solid #0062fe;
+}
+
+@media screen and (max-width:420px) {
+  .justify-content-between{
+    justify-content:center!important;
+
+  }
+
+  
 }
 
