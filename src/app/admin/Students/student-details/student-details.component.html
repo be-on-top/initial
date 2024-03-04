@@ -241,7 +241,7 @@
                                                         for="inlineCheckbox3">4</label>
                                                 </div>
                                                 <!-- pour le moment, on n'affiche la légende dans le header QUE pour external -->
-                                                <div class="form-check p-0 text-secundary">
+                                                <div class="form-check p-0 text-secundary" *ngIf="userRouterLinks.user=='external'">
                                                     <ng-container *ngIf="evaluation.value.level === 'beginner'">
                                                         Débutant
                                                     </ng-container>
@@ -335,7 +335,7 @@
         <div class="card" *ngIf="student && tutorialsNotEmpty()">
             <div class="card-header bg-primary d-flex justify-content-between">
                 <a class="btn text-light" data-bs-toggle="collapse" href="#collapseFive">
-                    Ses évaluations de suivi tutorial
+                    Ses évaluations de suivi en entreprise
                 </a><i class="bi bi-activity fs-4 text-light"></i>
             </div>
             <div class="collapse p-2" data-bs-parent="#accordion" id="collapseFive">
@@ -387,7 +387,7 @@
                                                 <label class="form-check-label" for="inlineCheckbox3">4</label>
                                             </div>
                                              <!-- pour le moment, on n'affiche la légende dans le header QUE pour external -->
-                                             <div class="form-check p-0 text-secundary">
+                                             <div class="form-check p-0 text-secundary" *ngIf="userRouterLinks.user=='external'">
                                                 <ng-container *ngIf="tutorial.value.level === 'beginner'">
                                                     Débutant
                                                 </ng-container>
