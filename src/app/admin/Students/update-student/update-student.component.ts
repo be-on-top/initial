@@ -145,4 +145,8 @@ export class UpdateStudentComponent implements OnInit {
 
   }
 
+  addEndingDate(endSubscription:NgForm){
+    this.service.endSubscription(this.studentId,endSubscription.value.sigle )
+  }
+
 }

@@ -90,7 +90,7 @@ export class StudentsService {
 
     let studentsRef = collection(this.firestore, "students");
     setDoc(doc(studentsRef, newStudent.id), newStudent)
-      let $rolesRef = collection(this.firestore, "roles");
+    let $rolesRef = collection(this.firestore, "roles");
     setDoc(doc($rolesRef, newStudent.id), { role: 'student' })
   }
 
@@ -161,13 +161,13 @@ export class StudentsService {
     // setDoc($studentRef, student);
     let $studentRef = doc(this.firestore, "students/" + id);
     console.log("evaluation", evaluations);
-    
+
     updateDoc($studentRef, evaluations);
   }
 
   async updateStudentTutorial(id: string, tutorials: {}) {
     let $studentRef = doc(this.firestore, "students/" + id);
-    console.log("tutorials", tutorials);    
+    console.log("tutorials", tutorials);
     updateDoc($studentRef, tutorials);
   }
 
@@ -366,24 +366,38 @@ export class StudentsService {
   async getUserToken(studentId: string) {
     const tokenRef = doc(this.firestore, 'tokens', studentId);
     const tokenSnapshot = await getDoc(tokenRef);
-  
+
     if (tokenSnapshot.exists()) {
       const tokenData = tokenSnapshot.data()?.['key'];
       console.log('tokenData', tokenData);
-      
+
       return tokenData;
     }
-  
+
     return null;
   }
 
-  async activateSubscription(id:string, sigle:string){
+  async activateSubscription(id: string, sigle: string) {
     const studentRef = doc(this.firestore, "students/" + id)
     const updateStudent = {
       subscriptions: [sigle]
     }
     setDoc(studentRef, updateStudent, { merge: true })
   }
+
+  async endSubscription(id: string, sigle: string) {
+    const studentRef = doc(this.firestore, "students/" + id)
+    const date = new Date();
+    // Formater la date au format YYYY-MM-DD
+    const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+
+    const updateStudent = {
+      endedSubscriptions: { date: formattedDate, sigle: sigle }
+    }
+    setDoc(studentRef, updateStudent, { merge: true })
+  }
+
+
 
 
 }

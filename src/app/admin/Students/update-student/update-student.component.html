@@ -74,6 +74,19 @@
                 </form>
                 <!-- test intégration comme composant enfant du formulaire désormais déclaré dans admin.module -->
                 <app-student-form [studentData]="student"></app-student-form>
+                <form class="form mb-5" #endSubscription="ngForm" (submit)="addEndingDate(endSubscription)"
+                class="was-validated">
+                <select class="form-select" name="sigle" ngModel required #sigle="ngModel">
+                    <option value>Enregistrer la fin d'inscription pour :</option>
+                    <ng-container *ngFor="let element of student.subscriptions">
+                        <ng-container *ngIf="!student.endedSubscriptions || student.endedSubscriptions.sigle !== element">
+                          <option [value]="element">{{ element }}</option>
+                        </ng-container>
+                      </ng-container>                      
+                </select>
+                <button type="submit" id="submit" class="btn btn-primary mt-3"
+                    [ngClass]="{'disabled':endSubscription.invalid}">Valider</button>
+            </form>
             </div>
 
         </ng-container>
