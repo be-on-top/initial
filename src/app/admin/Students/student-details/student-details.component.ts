@@ -17,8 +17,9 @@ import { Observable, forkJoin, map, of } from 'rxjs';
   templateUrl: './student-details.component.html',
   styleUrls: ['./student-details.component.css']
 })
+
 export class StudentDetailsComponent {
-  title:string=""
+  title: string = ""
 
   editMode: boolean = false;
   editedStudent?: Student;
@@ -80,6 +81,8 @@ export class StudentDetailsComponent {
     }
     this.getStudentDetails(this.studentId)
     this.getUsers()
+
+
   }
 
   getStudentDetails(studentId: string) {
@@ -87,6 +90,10 @@ export class StudentDetailsComponent {
       this.student = student
       /* console.log(studentId); */
       this.subscriptions = this.student.subscriptions
+
+      // essai pour alimenter la data de graph.js
+      // this.getfirstCpForGraph()
+      
       // console.log('student return by service', this.student);
       // Utilisation d'un Set pour stocker les tradesEvaluated uniques
       const tradesEvaluatedSet = new Set<string>();
@@ -94,6 +101,7 @@ export class StudentDetailsComponent {
       for (const key in this.student) {
         if (key.includes('quizz')) {
           tradesEvaluatedSet.add(key);
+
         }
 
         // if (key.includes('evaluations')) {
@@ -138,6 +146,7 @@ export class StudentDetailsComponent {
       }
     })
 
+
   }
 
   delete(student: Student) {
@@ -152,15 +161,15 @@ export class StudentDetailsComponent {
 
   getUsers() {
     if (this.userRouterLinks.user == "trainer") {
-      this.title="formateur"
+      this.title = "formateur"
       // alert("C'est un formateur !!!")
     }
     else if (this.userRouterLinks.user == "admin") {
-      this.title="super administrateur"
+      this.title = "super administrateur"
       // alert("C'est un super administrateur !!!")
     }
     else if (this.userRouterLinks.user == "external") {
-      this.title="observateur externe"
+      this.title = "observateur externe"
       // alert("C'est un super administrateur !!!")
     }
   }
@@ -300,18 +309,18 @@ export class StudentDetailsComponent {
   //     .filter(([key, value]) => value.sigle === subscription)
   //     .map(([key, value]) => ({ key, value }));
   // }
-  
+
   getFilteredEvaluationsForSubscription(subscription: string): any[] {
     const filteredEvaluations = Object.entries(this.evaluations)
       .filter(([key, value]: [string, any]) => value.sigle === subscription)
       .map(([key, value]: [string, any]) => ({ key, value: value }));
-  
+
     // Trie les évaluations par compétence en extrayant le chiffre à la fin
     return filteredEvaluations.sort((a, b) => {
       const regex = /\D+/g; // Expression régulière pour extraire les chiffres à la fin
       const aNumber = parseInt((a.value.competence || '').replace(regex, ''), 10);
-      const bNumber = parseInt((b.value.competence || '').replace(regex, ''), 10);   
-  
+      const bNumber = parseInt((b.value.competence || '').replace(regex, ''), 10);
+
       return aNumber - bNumber; // Trie par ordre croissant
     });
   }
@@ -328,14 +337,14 @@ export class StudentDetailsComponent {
     const filteredTutorials = Object.entries(this.tutorials)
       .filter(([key, value]: [string, any]) => value.sigle === subscription)
       .map(([key, value]: [string, any]) => ({ key, value: value }));
-  
+
     // Trie les évaluations par compétence en extrayant le chiffre à la fin
     return filteredTutorials.sort((a, b) => {
       const regex = /\D+/g; // Expression régulière pour extraire les chiffres à la fin
       const aNumber = parseInt((a.value.competence || '').replace(regex, ''), 10);
       const bNumber = parseInt((b.value.competence || '').replace(regex, ''), 10);
-      
-  
+
+
       return aNumber - bNumber; // Trie par ordre croissant
     });
   }
@@ -346,6 +355,63 @@ export class StudentDetailsComponent {
     this.evaluationsState[eIndex] = !this.evaluationsState[eIndex];
   }
 
+
+  getfirstCpForGraph() {
+    if (this.student.subscriptions) {
+      for (const iterator of this.student.subscriptions) {
+        console.log("iterator to getFirstCpForGraph", iterator);
+
+        if (this.student && this.student["quizz_" + iterator]['fullResults']) {
+          console.log('this.student[trade]', this.student["quizz_" + iterator]['fullResults']);
+          const relatedResult = this.student["quizz_" + iterator]['fullResults']
+          console.log('relatedResult', relatedResult)
+          // const allNotations: number[] = relatedResult.flatMap((entry:any) => Object.values(entry).map((item:any) => item.notation));
+          //     const simplifiedObject: { [key: string]: number } = relatedResult.reduce((acc:any, entry:any) => {
+          //       for (const key in entry) {
+          //           if (entry.hasOwnProperty(key)) {
+          //               const notation = entry[key]?.notation;
+          //               if (notation !== undefined) {
+          //                   acc[key] = notation;
+          //               }
+          //           }
+          //       }
+          //       return acc;
+          //   }, {});
+
+          //   console.log('Simplified Object:', simplifiedObject);
+          // }
+          const simplifiedObject: { [key: string]: number } = relatedResult.reduce((acc: any, entry: any) => {
+            for (const key in entry) {
+              if (entry.hasOwnProperty(key)) {
+                const notation = entry[key]?.notation;
+                if (notation !== undefined) {
+                  // Appliquer la logique de mapping ici
+                  let niveau: number;
+
+                  if (notation < 10) {
+                    niveau = 1;
+                  } else if (notation <= 15) {
+                    niveau = 2;
+                  } else {
+                    niveau = 3;
+                  }
+
+                  // Assigner le niveau au lieu de la notation
+                  acc[key] = niveau;
+                }
+              }
+            }
+            return acc;
+          }, {});
+
+          console.log('Simplified Object:', simplifiedObject);
+        }
+
+      }
+
+    }
+
+  }
 
 
 
