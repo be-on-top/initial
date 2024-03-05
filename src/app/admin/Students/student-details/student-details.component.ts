@@ -53,6 +53,7 @@ export class StudentDetailsComponent {
   // donc si je veux un affichage conditionné côté template, me faut une méthode pour vérifier si evaluations n'est pas vide
 
   subscriptions?: any
+  achievedTrainings?:any
 
   trades: { [key: string]: string[] } = {};
   // pour les compétences évaluées
@@ -90,6 +91,7 @@ export class StudentDetailsComponent {
       this.student = student
       /* console.log(studentId); */
       this.subscriptions = this.student.subscriptions
+      this.achievedTrainings = this.student.endedSubscriptions
 
       // essai pour alimenter la data de graph.js
       // this.getfirstCpForGraph()

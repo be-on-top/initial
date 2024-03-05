@@ -182,6 +182,14 @@
                 <div *ngIf="student && userRouterLinks.user=='admin'">
                     <app-student-form [studentData]="student"></app-student-form>
                 </div>
+                <ng-container *ngIf="student.endedSubscriptions">
+                    <!-- {{achievedTrainings | json}} -->
+                    <h3 *ngIf="student.endedSubscriptions">Fin de Formation du Candidat pour :</h3>
+                    <div class="text-center mb-5"><span class="fw-bold">Ref.:</span>
+                        {{achievedTrainings.sigle}} - <span class="fw-bold">Métier :</span>{{ getDenomination(achievedTrainings.sigle)
+                        | async }} - <span class="fw-bold">Date de sortie de formation :</span>{{ achievedTrainings.date | date:'dd/MM/yyyy'}} 
+                    </div>
+                </ng-container>
 
             </div>
         </div>
@@ -216,32 +224,29 @@
                                                     <input class="form-check-input"
                                                         [ngClass]="{'level1':evaluation.value.level=='beginner'}"
                                                         type="checkbox" id="inlineCheckbox1" value="option1" disabled>
-                                                    <label class="form-check-label"
-                                                        for="inlineCheckbox1">1</label>
+                                                    <label class="form-check-label" for="inlineCheckbox1">1</label>
                                                 </div>
                                                 <div class="form-check form-check-inline ms-0 ms-xs-2">
                                                     <input class="form-check-input"
                                                         [ngClass]="{'level2':evaluation.value.level=='intermediate'}"
                                                         type="checkbox" id="inlineCheckbox2" value="option2" disabled>
-                                                    <label class="form-check-label"
-                                                        for="inlineCheckbox2">2</label>
+                                                    <label class="form-check-label" for="inlineCheckbox2">2</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input"
                                                         [ngClass]="{'level3':evaluation.value.level=='advance'}"
                                                         type="checkbox" id="inlineCheckbox3" value="option3" disabled>
-                                                    <label class="form-check-label"
-                                                        for="inlineCheckbox3">3</label>
+                                                    <label class="form-check-label" for="inlineCheckbox3">3</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input"
                                                         [ngClass]="{'level4':evaluation.value.level=='pro'}"
                                                         type="checkbox" id="inlineCheckbox3" value="option4" disabled>
-                                                    <label class="form-check-label"
-                                                        for="inlineCheckbox3">4</label>
+                                                    <label class="form-check-label" for="inlineCheckbox3">4</label>
                                                 </div>
                                                 <!-- pour le moment, on n'affiche la légende dans le header QUE pour external -->
-                                                <div class="form-check p-0 text-secundary" *ngIf="userRouterLinks.user=='external'">
+                                                <div class="form-check p-0 text-secundary"
+                                                    *ngIf="userRouterLinks.user=='external'">
                                                     <ng-container *ngIf="evaluation.value.level === 'beginner'">
                                                         Débutant
                                                     </ng-container>
@@ -251,7 +256,7 @@
                                                     <ng-container *ngIf="evaluation.value.level === 'advance'"> Avancé
                                                     </ng-container>
                                                     <ng-container *ngIf="evaluation.value.level === 'pro'"> Acquise
-                                                    </ng-container>                                       
+                                                    </ng-container>
                                                 </div>
                                             </div>
                                         </ng-container>
@@ -386,8 +391,9 @@
                                                     id="inlineCheckbox3" value="option4" disabled>
                                                 <label class="form-check-label" for="inlineCheckbox3">4</label>
                                             </div>
-                                             <!-- pour le moment, on n'affiche la légende dans le header QUE pour external -->
-                                             <div class="form-check p-0 text-secundary" *ngIf="userRouterLinks.user=='external'">
+                                            <!-- pour le moment, on n'affiche la légende dans le header QUE pour external -->
+                                            <div class="form-check p-0 text-secundary"
+                                                *ngIf="userRouterLinks.user=='external'">
                                                 <ng-container *ngIf="tutorial.value.level === 'beginner'">
                                                     Débutant
                                                 </ng-container>
@@ -397,8 +403,8 @@
                                                 <ng-container *ngIf="tutorial.value.level === 'advance'"> Avancé
                                                 </ng-container>
                                                 <ng-container *ngIf="tutorial.value.level === 'pro'"> Acquise
-                                                </ng-container>                                       
-                                            </div>                                        
+                                                </ng-container>
+                                            </div>
                                         </div>
                                     </ng-container>
                                     <div class="card-body">
@@ -445,7 +451,8 @@
                                             le suivi</button>
                                     </div>
                                     <!-- on l'exclu  pour l'observateur externe qui s'en moque -->
-                                    <div *ngIf="userRouterLinks.user!=='external'" class="card-footer d-flex justify-content-between align-items-center">
+                                    <div *ngIf="userRouterLinks.user!=='external'"
+                                        class="card-footer d-flex justify-content-between align-items-center">
                                         <p><span class="fw-bold">Date : </span>{{tutorial.value.date}}</p>
                                         <p [ngClass]="{
                             'level1': tutorial.value.level === 'beginner',
