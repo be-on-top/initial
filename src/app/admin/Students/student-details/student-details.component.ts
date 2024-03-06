@@ -53,7 +53,7 @@ export class StudentDetailsComponent {
   // donc si je veux un affichage conditionné côté template, me faut une méthode pour vérifier si evaluations n'est pas vide
 
   subscriptions?: any
-  achievedTrainings?:any
+  achievedTrainings?: any
 
   trades: { [key: string]: string[] } = {};
   // pour les compétences évaluées
@@ -94,16 +94,15 @@ export class StudentDetailsComponent {
       this.achievedTrainings = this.student.endedSubscriptions
 
       // essai pour alimenter la data de graph.js
-      // this.getfirstCpForGraph()
-      
+      this.getfirstCpForGraph()
+
       // console.log('student return by service', this.student);
       // Utilisation d'un Set pour stocker les tradesEvaluated uniques
       const tradesEvaluatedSet = new Set<string>();
 
       for (const key in this.student) {
         if (key.includes('quizz')) {
-          tradesEvaluatedSet.add(key);
-
+          tradesEvaluatedSet.add(key)
         }
 
         // if (key.includes('evaluations')) {
@@ -113,11 +112,19 @@ export class StudentDetailsComponent {
         if (this.student.evaluations) {
           // this.userFollowUpEvaluations = this.student.evaluations;
           this.evaluations = this.student.evaluations;
-          console.log("this.evaluations", this.evaluations);
+          console.log("this.evaluations", this.evaluations)
+
+          // essai pour alimenter la data de graph.js date 2
+          this.getSecundCpForGraph()
 
         }
 
-        if (this.student.tutorials) { this.tutorials = this.student.tutorials; console.log("this.tutorials", this.tutorials); }
+        if (this.student.tutorials) {
+          this.tutorials = this.student.tutorials;
+          console.log("this.tutorials", this.tutorials)
+          // essai pour alimenter la data de graph.js date 2<
+          this.getThirdCpForGraph()
+        }
 
       }
 
@@ -367,21 +374,7 @@ export class StudentDetailsComponent {
           console.log('this.student[trade]', this.student["quizz_" + iterator]['fullResults']);
           const relatedResult = this.student["quizz_" + iterator]['fullResults']
           console.log('relatedResult', relatedResult)
-          // const allNotations: number[] = relatedResult.flatMap((entry:any) => Object.values(entry).map((item:any) => item.notation));
-          //     const simplifiedObject: { [key: string]: number } = relatedResult.reduce((acc:any, entry:any) => {
-          //       for (const key in entry) {
-          //           if (entry.hasOwnProperty(key)) {
-          //               const notation = entry[key]?.notation;
-          //               if (notation !== undefined) {
-          //                   acc[key] = notation;
-          //               }
-          //           }
-          //       }
-          //       return acc;
-          //   }, {});
 
-          //   console.log('Simplified Object:', simplifiedObject);
-          // }
           const simplifiedObject: { [key: string]: number } = relatedResult.reduce((acc: any, entry: any) => {
             for (const key in entry) {
               if (entry.hasOwnProperty(key)) {
@@ -415,7 +408,120 @@ export class StudentDetailsComponent {
 
   }
 
+  getSecundCpForGraph() {
+
+    // Créer un objet pour mapper les compétences aux niveaux
+    const niveauMapping: { [key: string]: string | undefined } = {};
 
 
+    // Parcourir les évaluations pour remplir le mapping
+    for (const evaluation of Object.values(this.evaluations)) {
+      // Extraire la clé de compétence (CP1, CP2, etc.)
+      const competenceKey = evaluation.competence;
+
+      // Vérifier si competenceKey est défini et n'est pas vide
+      if (competenceKey) {
+        // const competence: any = competenceKey.split('_')[1];
+        const competence: any = competenceKey.substring(competenceKey.lastIndexOf('_') + 1);
+        const level = evaluation.level;
+
+        // Utiliser ! pour indiquer à TypeScript que competence n'est pas nulle
+        if (competence !== undefined
+        ) {
+
+          niveauMapping[competence!] = level;
+        }
+      }
+    }
+
+
+    // Simplifier l'objet en utilisant le mapping des niveaux
+    const simplifiedObject: { [key: string]: number } = {};
+    for (const competence in niveauMapping) {
+      if (niveauMapping.hasOwnProperty(competence)) {
+        // Appliquer la logique de mapping ici (beginner: 1, intermediate: 2, advance: 3, etc.)
+        let niveau: number;
+
+        switch (niveauMapping[competence]) {
+          case 'beginner':
+            niveau = 1;
+            break;
+          case 'intermediate':
+            niveau = 2;
+            break;
+          case 'advance':
+            niveau = 3;
+            break;
+          default:
+            niveau = 0; // Valeur par défaut ou logique supplémentaire si nécessaire
+        }
+
+        // Assigner le niveau au lieu de la notation
+        simplifiedObject[competence] = niveau;
+      }
+    }
+
+    console.log('Simplified Object 2:', simplifiedObject);
+
+  }
+
+  getThirdCpForGraph() {
+
+    // Créer un objet pour mapper les compétences aux niveaux
+    const niveauMapping: { [key: string]: string | undefined } = {};
+
+    // Parcourir les évaluations pour remplir le mapping
+    for (const tutorial of Object.values(this.tutorials)) {
+      // Extraire la clé de compétence (CP1, CP2, etc.)
+      const competenceKey = tutorial.competence;
+
+      // Vérifier si competenceKey est défini et n'est pas vide
+      if (competenceKey) {
+        // const competence: any = competenceKey.split('_')[1];
+        const competence: any = competenceKey.substring(competenceKey.lastIndexOf('_') + 1);
+        const level = tutorial.level;
+
+        // Utiliser ! pour indiquer à TypeScript que competence n'est pas nulle
+        if (competence !== undefined
+        ) {
+
+          niveauMapping[competence!] = level;
+        }
+      }
+    }
+
+
+    // Simplifier l'objet en utilisant le mapping des niveaux
+    const simplifiedObject: { [key: string]: number } = {};
+    for (const competence in niveauMapping) {
+      if (niveauMapping.hasOwnProperty(competence)) {
+        // Appliquer la logique de mapping ici (beginner: 1, intermediate: 2, advance: 3, etc.)
+        let niveau: number;
+
+        switch (niveauMapping[competence]) {
+          case 'beginner':
+            niveau = 1;
+            break;
+          case 'intermediate':
+            niveau = 2;
+            break;
+          case 'advance':
+            niveau = 3;
+            break;
+          case 'pro':
+            niveau = 4;
+            break;
+          default:
+            niveau = 0; // Valeur par défaut ou logique supplémentaire si nécessaire
+        }
+
+        // Assigner le niveau au lieu de la notation
+        simplifiedObject[competence] = niveau;
+      }
+    }
+
+    console.log('Simplified Object 3:', simplifiedObject);
+
+  }
 
 }
