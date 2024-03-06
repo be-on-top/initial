@@ -117,7 +117,7 @@ export class StudentDetailsComponent {
         if (this.student.evaluations) {
           // this.userFollowUpEvaluations = this.student.evaluations;
           this.evaluations = this.student.evaluations;
-          console.log("this.evaluations", this.evaluations)
+          // console.log("this.evaluations", this.evaluations)
 
           // essai pour alimenter la data de graph.js date 2
           // this.chartService.getSecundCpForGraph(this.evaluations)
@@ -126,7 +126,7 @@ export class StudentDetailsComponent {
 
         if (this.student.tutorials) {
           this.tutorials = this.student.tutorials;
-          console.log("this.tutorials", this.tutorials)
+          // console.log("this.tutorials", this.tutorials)
           // essai pour alimenter la data de graph.js date 2<
           // this.chartService.getThirdCpForGraph(this.tutorials)
         }
@@ -199,7 +199,7 @@ export class StudentDetailsComponent {
 
   getTradeDetails(trade: string) {
     if (this.student && this.student[trade]['fullResults']) {
-      console.log('this.student[trade]', this.student[trade]['fullResults']);
+      // console.log('this.student[trade]', this.student[trade]['fullResults']);
       const relatedResults = this.student[trade]['fullResults']
       this.updateTotalCost(relatedResults)
       this.tradeWithoutQuizzPrefix = this.removeQuizzPrefix(trade);
