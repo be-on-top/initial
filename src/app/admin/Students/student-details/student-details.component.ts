@@ -10,6 +10,10 @@ import { Evaluation } from '../../evaluation';
 import { QuizDetails } from '../../quizzDetails';
 import { SettingsService } from '../../settings.service';
 import { Observable, forkJoin, map, of } from 'rxjs';
+// pour anticiper des essais de chart.js
+import { ChartService } from '../../chart.service';
+
+
 
 
 @Component({
@@ -68,7 +72,8 @@ export class StudentDetailsComponent {
     private service: StudentsService,
     private route: ActivatedRoute,
     private settingsService: SettingsService,
-    public sanitizer: DomSanitizer
+    public sanitizer: DomSanitizer,
+    // private chartService:ChartService
   ) {
 
     this.userRouterLinks = this.route.snapshot.data;
@@ -94,7 +99,7 @@ export class StudentDetailsComponent {
       this.achievedTrainings = this.student.endedSubscriptions
 
       // essai pour alimenter la data de graph.js
-      this.getfirstCpForGraph()
+      // this.getfirstCpForGraph()
 
       // console.log('student return by service', this.student);
       // Utilisation d'un Set pour stocker les tradesEvaluated uniques
@@ -115,7 +120,7 @@ export class StudentDetailsComponent {
           console.log("this.evaluations", this.evaluations)
 
           // essai pour alimenter la data de graph.js date 2
-          this.getSecundCpForGraph()
+          // this.chartService.getSecundCpForGraph(this.evaluations)
 
         }
 
@@ -123,7 +128,7 @@ export class StudentDetailsComponent {
           this.tutorials = this.student.tutorials;
           console.log("this.tutorials", this.tutorials)
           // essai pour alimenter la data de graph.js date 2<
-          this.getThirdCpForGraph()
+          // this.chartService.getThirdCpForGraph(this.tutorials)
         }
 
       }
@@ -334,8 +339,6 @@ export class StudentDetailsComponent {
     });
   }
 
-
-
   // Méthode pour filtrer les évaluations par abonnement
   // getFilteredTutorialsForSubscription(subscription: string): any[] {
   //   return Object.entries(this.tutorials)
@@ -364,164 +367,26 @@ export class StudentDetailsComponent {
     this.evaluationsState[eIndex] = !this.evaluationsState[eIndex];
   }
 
+  // conserver !!!
+  // getfirstCpForGraph() {
+  //   if (this.student.subscriptions) {
+  //     for (const iterator of this.student.subscriptions) {
+  //       console.log("iterator to getFirstCpForGraph", iterator);
 
-  getfirstCpForGraph() {
-    if (this.student.subscriptions) {
-      for (const iterator of this.student.subscriptions) {
-        console.log("iterator to getFirstCpForGraph", iterator);
+  //       if (this.student && this.student["quizz_" + iterator]['fullResults']) {
+  //         console.log('this.student[trade]', this.student["quizz_" + iterator]['fullResults']);
+  //         const relatedResult = this.student["quizz_" + iterator]['fullResults']
+  //         console.log('relatedResult', relatedResult)
 
-        if (this.student && this.student["quizz_" + iterator]['fullResults']) {
-          console.log('this.student[trade]', this.student["quizz_" + iterator]['fullResults']);
-          const relatedResult = this.student["quizz_" + iterator]['fullResults']
-          console.log('relatedResult', relatedResult)
+  //         this.chartService.getfirstCpForGraph(relatedResult)
 
-          const simplifiedObject: { [key: string]: number } = relatedResult.reduce((acc: any, entry: any) => {
-            for (const key in entry) {
-              if (entry.hasOwnProperty(key)) {
-                const notation = entry[key]?.notation;
-                if (notation !== undefined) {
-                  // Appliquer la logique de mapping ici
-                  let niveau: number;
+  //       }
 
-                  if (notation < 10) {
-                    niveau = 1;
-                  } else if (notation <= 15) {
-                    niveau = 2;
-                  } else {
-                    niveau = 3;
-                  }
+  //     }
 
-                  // Assigner le niveau au lieu de la notation
-                  acc[key] = niveau;
-                }
-              }
-            }
-            return acc;
-          }, {});
+  //   }
 
-          console.log('Simplified Object:', simplifiedObject);
-        }
+  // }
 
-      }
-
-    }
-
-  }
-
-  getSecundCpForGraph() {
-
-    // Créer un objet pour mapper les compétences aux niveaux
-    const niveauMapping: { [key: string]: string | undefined } = {};
-
-
-    // Parcourir les évaluations pour remplir le mapping
-    for (const evaluation of Object.values(this.evaluations)) {
-      // Extraire la clé de compétence (CP1, CP2, etc.)
-      const competenceKey = evaluation.competence;
-
-      // Vérifier si competenceKey est défini et n'est pas vide
-      if (competenceKey) {
-        // const competence: any = competenceKey.split('_')[1];
-        const competence: any = competenceKey.substring(competenceKey.lastIndexOf('_') + 1);
-        const level = evaluation.level;
-
-        // Utiliser ! pour indiquer à TypeScript que competence n'est pas nulle
-        if (competence !== undefined
-        ) {
-
-          niveauMapping[competence!] = level;
-        }
-      }
-    }
-
-
-    // Simplifier l'objet en utilisant le mapping des niveaux
-    const simplifiedObject: { [key: string]: number } = {};
-    for (const competence in niveauMapping) {
-      if (niveauMapping.hasOwnProperty(competence)) {
-        // Appliquer la logique de mapping ici (beginner: 1, intermediate: 2, advance: 3, etc.)
-        let niveau: number;
-
-        switch (niveauMapping[competence]) {
-          case 'beginner':
-            niveau = 1;
-            break;
-          case 'intermediate':
-            niveau = 2;
-            break;
-          case 'advance':
-            niveau = 3;
-            break;
-          default:
-            niveau = 0; // Valeur par défaut ou logique supplémentaire si nécessaire
-        }
-
-        // Assigner le niveau au lieu de la notation
-        simplifiedObject[competence] = niveau;
-      }
-    }
-
-    console.log('Simplified Object 2:', simplifiedObject);
-
-  }
-
-  getThirdCpForGraph() {
-
-    // Créer un objet pour mapper les compétences aux niveaux
-    const niveauMapping: { [key: string]: string | undefined } = {};
-
-    // Parcourir les évaluations pour remplir le mapping
-    for (const tutorial of Object.values(this.tutorials)) {
-      // Extraire la clé de compétence (CP1, CP2, etc.)
-      const competenceKey = tutorial.competence;
-
-      // Vérifier si competenceKey est défini et n'est pas vide
-      if (competenceKey) {
-        // const competence: any = competenceKey.split('_')[1];
-        const competence: any = competenceKey.substring(competenceKey.lastIndexOf('_') + 1);
-        const level = tutorial.level;
-
-        // Utiliser ! pour indiquer à TypeScript que competence n'est pas nulle
-        if (competence !== undefined
-        ) {
-
-          niveauMapping[competence!] = level;
-        }
-      }
-    }
-
-
-    // Simplifier l'objet en utilisant le mapping des niveaux
-    const simplifiedObject: { [key: string]: number } = {};
-    for (const competence in niveauMapping) {
-      if (niveauMapping.hasOwnProperty(competence)) {
-        // Appliquer la logique de mapping ici (beginner: 1, intermediate: 2, advance: 3, etc.)
-        let niveau: number;
-
-        switch (niveauMapping[competence]) {
-          case 'beginner':
-            niveau = 1;
-            break;
-          case 'intermediate':
-            niveau = 2;
-            break;
-          case 'advance':
-            niveau = 3;
-            break;
-          case 'pro':
-            niveau = 4;
-            break;
-          default:
-            niveau = 0; // Valeur par défaut ou logique supplémentaire si nécessaire
-        }
-
-        // Assigner le niveau au lieu de la notation
-        simplifiedObject[competence] = niveau;
-      }
-    }
-
-    console.log('Simplified Object 3:', simplifiedObject);
-
-  }
 
 }
