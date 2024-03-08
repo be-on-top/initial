@@ -25,11 +25,17 @@
                 <div class="col-sm-3 col-6"><button class="btn btn-danger" (click)="deleteUser(user.id)"><i class="bi bi-person-dash-fill"></i>Suppression</button></div>
                 <div class="col-sm-3 col-6 order-perso4"><button class="btn btn-primary">
                     <!-- <a [routerLink]="['/admin/user', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a> -->
-                    <a *ngIf="userRouterLinks.user==='trainer'" [routerLink]="['/admin/trainer', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
+                    <!-- <a *ngIf="userRouterLinks.user==='trainer'" [routerLink]="['/admin/trainer', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
                     <a *ngIf="userRouterLinks.user==='tutor'" [routerLink]="['/admin/tutor', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
                     <a *ngIf="userRouterLinks.user==='evaluator'" [routerLink]="['/admin/evaluator', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
-                    <a *ngIf="userRouterLinks.user==='editor'" [routerLink]="['/admin/user', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
-                    <a *ngIf="userRouterLinks.user==='external'" [routerLink]="['/admin/external', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
+                    <a *ngIf="userRouterLinks.user==='editor'" [routerLink]="['/admin/user', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a> -->
+
+                    <!-- c'est l'un ou l'autre, on ajuste les chemin côté template c'est plus verbeux mais très secure -->
+                    <!-- <a *ngIf="userRouterLinks.user==='admin' && userRouterLinks.data==='editors' " [routerLink]="['/admin/editor', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
+                    <a *ngIf="userRouterLinks.user==='admin' && userRouterLinks.data==='referents' " [routerLink]="['/admin/referent', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a> -->
+                   <!-- soit on prépare le lien côté typescript, c'est moins verbeux -->
+                    <a  [routerLink]="[linkToDetails, user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
+                    <!-- <a *ngIf="userRouterLinks.user==='external'" [routerLink]="['/admin/external', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a> -->
                 </button></div>
             </div>
         </div>
@@ -40,8 +46,10 @@
                 <a *ngIf="userRouterLinks.user==='trainer'" [routerLink]="['/admin/addTrainer']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a>
                 <a *ngIf="userRouterLinks.user==='tutor'" [routerLink]="['/admin/addTutor']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a>
                 <a *ngIf="userRouterLinks.user==='evaluator'" [routerLink]="['/admin/addEvaluator']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a>
-                <a *ngIf="userRouterLinks.user==='editor'" [routerLink]="['/admin/addUser']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a>
-                <a *ngIf="userRouterLinks.user==='external'" [routerLink]="['/admin/addExternal']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a>
+               <!-- les 3 qui suivent pour tester la mutualisation ++ ne se réfèrent plus qu'à un seul composant -->
+                <a *ngIf="userRouterLinks.user==='editor' && userRouterLinks.data=='editors' " [routerLink]="['/admin/addEditor']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a>
+                <a *ngIf="userRouterLinks.user==='admin'  && userRouterLinks.data=='externals'" [routerLink]="['/admin/addUser']" class="text-white"><i class="bi bi-person-lines-fill"></i>Ajouter</a>
+                <a *ngIf="userRouterLinks.user==='admin'  && userRouterLinks.data=='referents'" [routerLink]="['/admin/addReferent']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a>
             </button></div>
         </div>
 

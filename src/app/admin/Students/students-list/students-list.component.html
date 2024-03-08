@@ -1,6 +1,7 @@
 <div class="container py-5">
 
-    <h3 *ngIf="userRouterLinks.user=='admin'">Gestion des candidats (apprenants)</h3>
+    <h3 *ngIf="userRouterLinks.user=='admin' || userRouterLinks.user=='referent'">Gestion des candidats (apprenants)
+    </h3>
     <h3 *ngIf="userRouterLinks.user=='external'">Annuaire étudiants certifiés (qualifiés)</h3>
     <hr>
     <div *ngIf="(!allStudents)">
@@ -24,25 +25,29 @@
             <div class="col-sm-3 col-6 h5">Détails</div>
         </div>
 
-        <!-- <div *ngFor="let user of allUsers">
-            <div class="row mt-4 ps-5 ps-sm-0" *ngIf="searchText==='' || user.lastName.toLowerCase().includes(searchText) || user.firstName.toLowerCase().includes(searchText) ">
-    -->
         <div *ngFor="let student of allStudents">
-            <div *ngIf="userRouterLinks.user=='admin', else external">
-                <div class="row mt-4 ps-5 ps-sm-0" *ngIf="searchText==='' || student.lastName.includes(searchText) || student.lastName.toLowerCase().includes(searchText) || student.firstName.includes(searchText) || student.firstName.toLowerCase().includes(searchText)">
+            <div *ngIf="userRouterLinks.user=='admin' || userRouterLinks.user=='referent', else external">
+                <div class="row mt-4 ps-5 ps-sm-0"
+                    *ngIf="searchText==='' || student.lastName.includes(searchText) || student.lastName.toLowerCase().includes(searchText) || student.firstName.includes(searchText) || student.firstName.toLowerCase().includes(searchText)">
 
                     <div class="col-sm-3 col-6">{{student.lastName}}</div>
                     <div class="col-sm-3 col-6 order-perso2">{{student.firstName}}</div>
-                    <div class="col-sm-3 col-6 "><button class="btn btn-danger text-white"
+                    <div class="col-sm-3 col-6"><button class="btn btn-danger text-white"
+                            [ngClass]="{'disabled':userRouterLinks.user=='referent'}"
                             (click)="deleteStudent(student)"><i class="bi bi-person-dash-fill"></i>Suppression</button>
                     </div>
-                    <div class="col-sm-3 col-6 order-perso4"><button class="btn btn-primary"><a
-                                [routerLink]="['/admin/student', student.id]" class="text-white"><i
-                                    class="bi bi-person-lines-fill"></i>Détails</a></button></div>
+                    <div class="col-sm-3 col-6 order-perso4"><button class="btn btn-primary">
+                            <a *ngIf="userRouterLinks.user=='admin'" [routerLink]="['/admin/student', student.id]"
+                                class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
+                            <a *ngIf="userRouterLinks.user=='referent'"
+                                [routerLink]="['/admin/referent/studentDetails', student.id]" class="text-white"><i
+                                    class="bi bi-person-lines-fill"></i>Détails</a>
+                        </button></div>
                 </div>
             </div>
             <ng-template #external>
-                <div class="row mt-4 justify-content-around" *ngIf="searchText==='' || student.lastName.includes(searchText) || student.lastName.toLowerCase().includes(searchText) || student.firstName.includes(searchText) || student.firstName.toLowerCase().includes(searchText)">
+                <div class="row mt-4 justify-content-around"
+                    *ngIf="searchText==='' || student.lastName.includes(searchText) || student.lastName.toLowerCase().includes(searchText) || student.firstName.includes(searchText) || student.firstName.toLowerCase().includes(searchText)">
                     <div class="col-sm-3 col-6">{{student.lastName}}</div>
                     <div class="col-sm-3 col-6">{{student.firstName}}</div>
                     <div class="col-sm-3 col-6"><button class="btn btn-primary"><a

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, sendPasswordResetEmail, deleteUser } from '@angular/fire/auth';
-import { Firestore, collectionData, collection, docData, setDoc, query, where,  updateDoc, getDoc } from '@angular/fire/firestore';
+import { Auth, createUserWithEmailAndPassword, sendPasswordResetEmail, deleteUser, signInWithEmailAndPassword } from '@angular/fire/auth';
+import { Firestore, collectionData, collection, docData, setDoc, query, where, updateDoc, getDoc } from '@angular/fire/firestore';
 import { deleteDoc, doc, getDocs } from 'firebase/firestore';
 import { Observable, pipe } from 'rxjs';
 
@@ -17,11 +17,13 @@ export class UsersService {
   // ATTENTION : dans un premier temps, c'est pour les contributeurs (=editors) que je tente ce module générique !!!!!! 
   // On va donc se référer à user pour contributeur... 
 
+  // pour en faire une méthode générique susceptible d'attribuer un rôle ou un autre, me faut 2 arguments.
   async createUser(user: any) {
 
     // si nul besoin de récupérer le rôle dans le profil de l'utilisateur, inutile de l'y inscrire. 
     // on peut cependant considérer que l'ajout de role modifie 2 collections pour éviter d'aller lire dans rôles celui attribué à l'utilisateur.... 
-    let newUser = { created: Date.now(), roles: 'trainer', status: true, ...user };
+    // let newUser = { created: Date.now(), roles: 'editor', status: true, ...user };
+    let newUser = { created: Date.now(), role: user.role, status: true, ...user };
     this.users = [newUser, ...this.users];
     console.log(this.users);
     // on va lui affecter un password aléatoire en fonction de la date
@@ -45,10 +47,11 @@ export class UsersService {
     // enregistre dans Firestore d'autre part le role attribué dans une collection roles qui regroupera tous les roles de tous les utilisateurs avec comme idDoc uid d'authentification là aussi
     let $rolesRef = collection(this.firestore, "roles");
     // addDoc($trainersRef, newTrainer)
-    setDoc(doc($rolesRef, newUser.id), { role: 'editor' })
+    // setDoc(doc($rolesRef, newUser.id), { role: 'editor' })
+    await setDoc(doc($rolesRef, newUser.id), { role: user.role })
 
     // envoie un mail de réinitialisation du mot de passe
-    sendPasswordResetEmail(this.auth, newUser.email)
+    await sendPasswordResetEmail(this.auth, newUser.email)
       .then(() => {
         // Password reset email sent!
         // ..
@@ -88,8 +91,8 @@ export class UsersService {
     return docData($userRef, { idField: 'id' }) as Observable<any>;
   }
 
-  
-  updateUser(id: string, user:any) {
+
+  updateUser(id: string, user: any) {
     let $userRef = doc(this.firestore, "users/" + id);
     setDoc($userRef, user)
 

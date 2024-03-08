@@ -37,9 +37,10 @@
                 <div class="d-flex mb-5 justify-content-end gap-5 me-3"
                     *ngIf="userRouterLinks.user!=='trainer' && userRouterLinks.user!=='external'&& userRouterLinks.user!=='tutor'  ">
                     <button class="btn btn-warning">
-                        <a class="text-white" routerLink="/admin/updateStudent/{{student.id}}">Modifier</a>
+                        <a *ngIf="userRouterLinks.user=='admin'" class="text-white" routerLink="/admin/updateStudent/{{student.id}}">Modifier</a>
+                        <a  *ngIf="userRouterLinks.user=='referent'" class="text-white" routerLink="/admin/referent/updateStudent/{{student.id}}">Modifier</a>
                     </button>
-                    <button class="btn btn-danger">
+                    <button class="btn btn-danger" [ngClass]="{'disabled':userRouterLinks.user=='referent'}">
                         <a class="text-white" (click)="delete(student)">Supprimer</a>
                     </button>
                 </div>
@@ -161,13 +162,12 @@
 
         <!-- son inscription -->
         <div class="card"
-            *ngIf="(userRouterLinks.user=='admin' || userRouterLinks.user=='trainer' || userRouterLinks.user=='tutor' || userRouterLinks.user=='external') && student">
+            *ngIf="(userRouterLinks.user=='admin' || userRouterLinks.user=='trainer' || userRouterLinks.user=='tutor' || userRouterLinks.user=='external' || userRouterLinks.user=='referent') && student">
             <div class="card-header bg-primary d-flex justify-content-between">
                 <a class="btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseThree">
                     Inscription</a><i class="bi bi-info-square-fill fs-4 text-light"></i>
             </div>
             <div class="collapse" data-bs-parent="#accordion" id="collapseThree">
-
 
                 <!-- Exemple -->
                 <ng-container *ngIf="student.subscriptions">
@@ -496,5 +496,7 @@
         *ngIf="userRouterLinks.user=='tutor'">Retour à la liste</a>
     <a class="btn btn-primary text-white retourList" [routerLink]="['/admin/students']"
         *ngIf="userRouterLinks.user=='admin'">Retour à la liste</a>
+    <a class="btn btn-primary text-white retourList" [routerLink]="['/admin/referent/students']"
+        *ngIf="userRouterLinks.user=='referent'">Retour à la liste</a>
     <a class="btn btn-primary text-white retourList" [routerLink]="['/admin/externalStudentsList']"
         *ngIf="userRouterLinks.user=='external'">Retour à la liste</a>

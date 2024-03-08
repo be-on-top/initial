@@ -21,10 +21,11 @@ export class UsersListComponent {
 
   userRouterLinks: any;
   title?: string
-  linkBackToList:string=""
+  linkToDetails: string = ""
+  linkBackToList: string = ""
 
   // vous pouvez injecter le service ActivatedRoute pour accéder aux paramètres de route et déterminer quelle méthode doit être utilisée
-  constructor(private router: Router, private sTrainer: TrainersService, private sEditor: UsersService, private sEvaluator: EvaluatorsService, private sTutor: TutorsService, private sExternal:ExternalsService, private activatedRoute: ActivatedRoute) {
+  constructor(private router: Router, private sTrainer: TrainersService, private sUsers: UsersService, private sEvaluator: EvaluatorsService, private sTutor: TutorsService, private sExternal: ExternalsService, private activatedRoute: ActivatedRoute) {
     this.userRouterLinks = this.activatedRoute.snapshot.data;
     // console.log("user to edit", this.userRouterLinks);
   }
@@ -42,32 +43,60 @@ export class UsersListComponent {
 
     if (this.userRouterLinks.user == "trainer") {
       this.title = "Formateurs"
-      this.linkBackToList= "admin/trainers"   
+      this.linkToDetails = "/admin/trainer"
+      this.linkBackToList = "admin/trainers"
       this.sTrainer.getTrainers().subscribe(data => {
         console.log("data de getTrainers()", data)
         this.allUsers = data
         return this.allUsers
       }
- )
+      )
     } else if (this.userRouterLinks.user == "evaluator") {
       this.title = "Evaluateurs"
-      this.linkBackToList= "admin/evaluators"   
+      this.linkToDetails = "/admin/evaluator"
+      this.linkBackToList = "/admin/evaluators"
       this.sEvaluator.getEvaluators().subscribe(data => {
         console.log("data de getTrainers()", data)
         this.allUsers = data
         return this.allUsers
       })
-    } else if (this.userRouterLinks.user == "editor") {
-      this.title = "Contributeur"
-      this.linkBackToList= "admin/editors"  
-      this.sEditor.getUsers().subscribe(data => {
-        console.log("data de getTrainers()", data)
-        this.allUsers = data
+    } else if (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "referents") {
+      this.title = "Référents Administratifs"
+      this.linkToDetails = "/admin/referent"
+      this.linkBackToList = "/admin/referents"
+      this.sUsers.getUsers().subscribe(data => {
+        console.log("data de getUers pour admin()", data)
+        this.allUsers = data.filter(user => user.role == 'referent')
         return this.allUsers
       })
-    } else if (this.userRouterLinks.user == "tutor") {
+    } else if (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "editors") {
+      this.title = "Contributeurs"
+      this.linkToDetails = "/admin/editor"
+      this.linkBackToList = "/admin/editors"
+      this.sUsers.getUsers().subscribe(data => {
+        console.log("data de getUsers for editor()", data)
+        this.allUsers = data.filter(user => user.role == "editor")
+        return this.allUsers
+      })
+    } else if (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "externals") {
+      this.title = "Observateurs Externes"
+      this.linkToDetails = "/admin/external"
+      this.linkBackToList = "admin/editors"
+      // this.sExternal.getExternals().subscribe(data => {
+      //   console.log("data de getExternals()", data)
+      //   this.allUsers = data
+      //   return this.allUsers
+      // })
+      this.sUsers.getUsers().subscribe(data => {
+        console.log("data de getUsers for external()", data)
+        this.allUsers = data.filter(user => user.role == "external")
+        return this.allUsers
+      })
+    }
+    else if (this.userRouterLinks.user == "tutor") {
       this.title = "Tuteurs"
-      this.linkBackToList= "admin/tutors"  
+      this.linkToDetails = "/admin/tutor"
+      this.linkBackToList = "/admin/tutors"
       this.sTutor.getTutors().subscribe(data => {
         console.log("data de getTutors()", data)
         this.allUsers = data
@@ -75,21 +104,18 @@ export class UsersListComponent {
       })
     }
 
-    else if (this.userRouterLinks.user == "external") {
-      this.title = "Observateurs Externes"
-      this.linkBackToList= "admin/externals"  
-      this.sExternal.getExternals().subscribe(data => {
-        console.log("data de getExternals()", data)
-        this.allUsers = data
-        return this.allUsers
-      })
-    }
 
   }
 
   deleteUser(userId: string) {
     // console.log(trainerid);
-    if (this.userRouterLinks.user == "trainer") {      
+    if (this.userRouterLinks.user == "admin") {    
+
+    this.sUsers.deleteUser(userId)
+    // this.router.navigate([this.linkBackToList]);
+    }
+
+    else if (this.userRouterLinks.user == "trainer") {      
       this.sTrainer.deleteTrainer(userId)
     }
     else if (this.userRouterLinks.user == "tutor") {      
@@ -101,17 +127,12 @@ export class UsersListComponent {
     else if (this.userRouterLinks.user == "external") {      
       this.sExternal.deleteExternal(userId)
     }
-    else if (this.userRouterLinks.user == "editor") {      
-      this.sEditor.deleteUser(userId)
-    }
+    // else if (this.userRouterLinks.user == "editor") {      
+    //   this.sEditor.deleteUser(userId)
+    // }
     this.router.navigate([this.linkBackToList]);
-    // .then(()=>{
-
-    // })
-    // .catch(()=>{
-
-    // })
   }
+
 
   // pour utiliser le composant de recherche
   onSearchTextEntered(searchValue: string) {

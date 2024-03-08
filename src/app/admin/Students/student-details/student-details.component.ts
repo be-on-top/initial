@@ -186,6 +186,10 @@ export class StudentDetailsComponent {
       this.title = "observateur externe"
       // alert("C'est un super administrateur !!!")
     }
+    else if (this.userRouterLinks.user == "referent") {
+      this.title = "référent administratif"
+      // alert("C'est un super administrateur !!!")
+    }
   }
 
 
@@ -247,7 +251,6 @@ export class StudentDetailsComponent {
     this.totalTime = 0;
 
     // Vérifiez si fullResults existe et n'est pas vide
-
     for (const result of relatedResults) {
       for (const key in result) {
         if (result.hasOwnProperty(key)) {

@@ -1,6 +1,6 @@
 <div class="container py-5">
 
-    <h3 class="mb-3">Détails de l'Utilisateur</h3>
+    <h3 class="mb-3">Détails de l'Utilisateur !!!!!!!!!!!!!!!!!!!!</h3>
 
 
     <div *ngIf="user">
@@ -31,12 +31,13 @@
         <div class="d-flex my-4 justify-content-end gap-5">
 
             <button class="btn btn-primary">
-                <a class="text-white" [routerLink]="['/admin/users']">Retour à la liste</a>
+                <!-- <a class="text-white" [routerLink]="['/admin/users']">Retour à la liste</a> -->
+                <a class="text-white" [routerLink]="[linkBackToList]" >Retour à la liste</a>
             </button>
 
 
             <button class="btn btn-warning">
-                <a class="text-white" [routerLink]="['/admin/updateuser', user.id]">Modifier</a>
+                <a class="text-white" [routerLink]="['/admin/updateUser', user.id]">Modifier</a>
             </button>
 
 

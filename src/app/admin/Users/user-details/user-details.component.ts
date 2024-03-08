@@ -1,32 +1,68 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UsersService } from '../../users.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ExternalsService } from '../../externals.service';
 
 @Component({
   selector: 'app-user-details',
   templateUrl: './user-details.component.html',
   styleUrls: ['./user-details.component.css']
 })
-export class UserDetailsComponent {
+export class UserDetailsComponent implements OnInit {
 
-  userId:any;
-  user:any
+  userId: any;
+  user: any
 
-  constructor(private service:UsersService, private ac:ActivatedRoute, private router:Router){
-    this.userId=this.ac.snapshot.params["id"];
-    this.service.getUser(this.userId).subscribe(data=>{
-      console.log("data de getuser", data);
-      this.user=data
-      return this.user      
-    })
+
+  userRouterLinks: any;
+  title?: string
+  linkBackToList: string = ""
+
+
+  constructor(private service: UsersService, private ac: ActivatedRoute, private router: Router, private externalS: ExternalsService) {
+    this.userId = this.ac.snapshot.params["id"];
+    this.userRouterLinks = this.ac.snapshot.data;
+    if (this.userRouterLinks.user == 'admin' && this.userRouterLinks.data == 'externals') {
+      this.externalS.getExternal(this.userId).subscribe(data => {
+        console.log('data de getExternal', data);
+        this.user = data
+        return this.user
+      })
+    }
+    else {
+      this.service.getUser(this.userId).subscribe(data => {
+        console.log("data de getuser", data);
+        this.user = data
+        return this.user
+      })
+    }
 
   }
 
-  deleteUser(userid:string){
+  ngOnInit(): void {
+    if (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "referents") {
+      // this.title = "Référents Administratifs"
+      this.linkBackToList = "/admin/referents"
+    }
+    else if (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "editors") {
+      this.title = "Contributeurs"
+      this.linkBackToList = "/admin/editors"
+    } else if (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "externals") {
+      this.title = "Observateurs Externes"
+      this.linkBackToList = "admin/externals"
+
+    }
+  }
+
+
+
+  deleteUser(userid: string) {
     console.log(userid);
-    
+
     this.service.deleteUser(userid)
     this.router.navigate(['/admin/users'])
-  } 
+  }
+
+
 
 }

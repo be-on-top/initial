@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { UsersService } from '../../users.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
 @Component({
@@ -28,9 +28,29 @@ export class AddUserComponent {
     'auth/invalid-email': 'Aucun enregistrement ne correspond au mail fourni'
   }; // list of firebase error codes to alternate error messages
 
-  constructor(private service: UsersService, private router: Router) { }
+  userRouterLinks: any;
+  title?: string
+  linkToDetails: string = ""
+  linkBackToList: string = ""
+
+  constructor(private service: UsersService, private router: Router, private ac:ActivatedRoute) {
+    this.userRouterLinks = this.ac.snapshot.data;
+   }
 
   ngOnInit(): void {
+
+    if  (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "referents") {
+      this.title = "Référents Administratifs"
+      this.linkBackToList = '/admin/referents'
+
+    } else if (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "editors") {
+      this.title = "Contributeurs"
+      this.linkBackToList = '/admin/editors'
+
+    } else if (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "externals") {
+      this.title = "Observateurs Externes"
+      this.linkBackToList = '/admin/externals'
+    } 
 
   }
 
@@ -42,6 +62,7 @@ export class AddUserComponent {
       return
     }
 
+
     console.log("form registration", form.value);
     this.service.createUser(form.value).then((userCredential) => {
       // Signed in 
@@ -50,9 +71,11 @@ export class AddUserComponent {
 
       // alert("registration ok")
       setTimeout(() => {
-        this.router.navigate(['/admin/users'])
+        // this.router.navigate(['/admin/users'])
+        this.router.navigate([this.linkBackToList]);
       }, 2000)
       // this.router.navigate(['/admin/trainers']);
+
       // ...
     })
       .catch((error) => {
