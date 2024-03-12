@@ -54,14 +54,14 @@
                         <!-- pour mémo, pour l'instant on utilise le simple contributeur comme utilisateur générique -->
                         <li><a class="dropdown-item" [routerLink]="['/admin/editors']"
                                 *ngIf="userRole.includes('admin')">Gestion des contributeurs</a></li>
+                        <li><a class="dropdown-item" [routerLink]="['/admin/referents']"
+                                *ngIf="userRole.includes('admin')">Gestion des référents</a></li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/externals']"
                                 *ngIf="userRole.includes('admin')">Gestion des observateurs</a></li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/students']"
                                 *ngIf="userRole.includes('admin')">Gestion des candidats</a></li>
                         <!-- ajout d'une route pour designation du référent -->
-                        <hr *ngIf="userRole.includes('admin')">
-                        <li><a class="dropdown-item" [routerLink]="['/admin/referents']"
-                                *ngIf="userRole.includes('admin')">Designation du référent</a></li>
+
                         <!-- liste étudiants  pour observateurs -->
                         <li><a class="dropdown-item" [routerLink]="['/admin/externalStudentsList']"
                                 *ngIf="userRole.includes('external')">Annuaire candidats</a></li>
@@ -110,7 +110,8 @@
                                 *ngIf="userRole.includes('tutor') || userRole.includes('admin')">Suivi tutorial</a>
                         </li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/referent/students']"
-                                *ngIf="userRole.includes('referent') || userRole.includes('admin')">Suivi administratif</a>
+                                *ngIf="userRole.includes('referent') || userRole.includes('admin')">Suivi
+                                administratif</a>
                         </li>
                     </ul>
                 </li>
