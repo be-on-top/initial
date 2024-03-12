@@ -29,11 +29,16 @@
       </div>
       <!-- nouveaux champs du formulaire !!!!  -->
       <label for="rncp" class="form-label mt-3">Code RNCP (facultatif)</label>
-      <input type="text" name="rncp" [(ngModel)]="trade.rncp" #rncp="ngModel" class="form-control" minlength="5">
+      <input type="url" name="rncp" [(ngModel)]="trade.rncp" class="form-control" minlength="15" placeholder="renseigner url CNIL">
 
-      <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="statusCheckbox" name="status" [(ngModel)]="sigles.status">
-        <label class="form-check-label" for="statusCheckbox">Actif</label>
+      <div class="form-check form-switch mt-3">
+        <input class="form-check-input" type="checkbox" id="statusCheckbox" name="isQualifying" [(ngModel)]="trade.isQualifying">
+        <label class="form-check-label" for="statusCheckbox">Formation qualifiante ?</label>
+      </div>
+
+      <div class="form-check form-switch mt-3">
+        <input class="form-check-input" type="checkbox" id="statusCheckbox" name="status" [(ngModel)]="trade.status">
+        <label class="form-check-label" for="statusCheckbox">Status Actif ?</label>
       </div>
 
       <!-- pour arrêter le nombre de compétences par métier -->

@@ -23,16 +23,21 @@
         Nom valide.
       </div>
       <!-- champ accessoire code métier RNCP -->
-      <label for="rncp" class="form-label mt-3">Code RNCP (facultatif)</label>
-      <input type="text" name="rncp" ngModel #rncp="ngModel" class="form-control" 
-        minlength="4">
-      <!-- option pour pouvoir masquer un metier du catalogue -->
-      <label class="form-label mt-3">Statut :</label>
+      <label for="rncp" class="form-label mt-3">Code RNCP ou RS (facultatif)</label>
+      <input type="url" name="rncp" ngModel #rncp="ngModel" class="form-control" minlength="15" placeholder="Url à renseigner">
+      <!-- option pour formation qualifiante -->
+      <label class="form-label mt-3">Formation Qualifiante :</label>
       <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="statusCheckbox" name="status"  [(ngModel)]="sigles.status">
-        <label class="form-check-label" for="statusCheckbox">Actif</label>
+        <input class="form-check-input" type="checkbox" id="statusCheckbox" name="isQualifying" [(ngModel)]="sigles.isQualifying">
+        <label class="form-check-label" for="statusCheckbox">Oui</label>
       </div>
-      
+      <!-- option pour pouvoir masquer un metier du catalogue -->
+      <label class="form-label mt-3">Publication :</label>
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="statusCheckbox" name="status" [(ngModel)]="sigles.status">
+        <label class="form-check-label" for="statusCheckbox">Active</label>
+      </div>
+
 
       <!-- <div class="form-check">
         <input type="checkbox" id="active" name="status" ngModel checked>
@@ -82,7 +87,8 @@
   </form>
 
   <hr>
-   <h4 class="mt-5">Ajout de curseurs personnalisés pour le calcul des 3 niveaux de résultat au terme du positionnement des
+  <h4 class="mt-5">Ajout de curseurs personnalisés pour le calcul des 3 niveaux de résultat au terme du positionnement
+    des
     candidats
   </h4>
 
@@ -117,15 +123,15 @@
 
 
   <hr>
-  
+
   <h4 class="mt-5">Nombre de questions nécessaires à la finalisation d'un QCM de positionnement
   </h4>
-  
-  
+
+
   <form #setMaxForm="ngForm" class="mt-4" (submit)="addMaxIndexQuestion(setMaxForm)" class="was-validated">
-  
+
     <div class="form-group">
-  
+
       <label for="maxIndexQuestion" class="form-label mt-3">Nombre de questions</label>
       <input type="number" name="maxIndexQuestion" ngModel #maxIndexQuestion="ngModel" class="form-control" required
         min="40">
@@ -135,11 +141,10 @@
       <div *ngIf="secondCursor.valid" class="valid-feedback">
         Ok. Maxium pris en compte
       </div>
-  
+
     </div>
-  
-    <button id="settingsForm" type="submit" class="btn btn-primary mt-4"
-      [disabled]=setMaxForm.invalid>Ajouter</button>
+
+    <button id="settingsForm" type="submit" class="btn btn-primary mt-4" [disabled]=setMaxForm.invalid>Ajouter</button>
   </form>
 
 

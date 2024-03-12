@@ -51,7 +51,7 @@ export class SettingsComponent implements OnInit {
 
   addSigles(form: NgForm) {
     this.durations = []; // Réinitialise le tableau avant d'ajouter les durées
-    this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, rncp:form.value.rncp, status:form.value.status, totalCP: form.value.totalCP, competences: [], durations: {}, costs: {}}
+    this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, rncp:form.value.rncp, isQualifying:form.value.isQualifying, status:form.value.status, totalCP: form.value.totalCP, competences: [], durations: {}, costs: {}}
     // si on souhaite un objet, comme ceux écrits initialement en dur exemple : competences:{CP1:"", CP2:""}
     // this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, totalCP: form.value.totalCP, competences: {} }
     for (let i = 1; i <= form.value.totalCP; i++) {

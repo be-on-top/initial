@@ -8,7 +8,8 @@
                 Réf.: {{tradeData.sigle}}.
                 <br>Nombre de compétences à valider: {{tradeData.competences.length}}.
                 <br>Durée maximale: {{firstValuesSum}} heures.
-                <br><span *ngIf="tradeData.rncp">Code RNCP : {{tradeData.rncp}}.</span>
+                <!-- <br><span *ngIf="tradeData.rncp">Code RNCP : {{tradeData.rncp}}.</span> -->
+                <br><span *ngIf="tradeData.rncp"><a class="text-light" href="{{tradeData.rncp}}">Code RNCP (ou RS)</a></span>
                 <!-- <p class="rounded bg-dark p-2 mt-2 small">Pour vérification du rôle récupéré : {{userRole}}</p> -->
                 <br>
                 <span class="d-block mt-2" (click)="backToPrevious()">
