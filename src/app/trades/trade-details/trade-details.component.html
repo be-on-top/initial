@@ -8,6 +8,7 @@
                 Réf.: {{tradeData.sigle}}.
                 <br>Nombre de compétences à valider: {{tradeData.competences.length}}.
                 <br>Durée maximale: {{firstValuesSum}} heures.
+                <br><span *ngIf="tradeData.rncp">Code RNCP : {{tradeData.rncp}}.</span>
                 <!-- <p class="rounded bg-dark p-2 mt-2 small">Pour vérification du rôle récupéré : {{userRole}}</p> -->
                 <br>
                 <span class="d-block mt-2" (click)="backToPrevious()">
@@ -20,7 +21,6 @@
             <p class="text-md-left">Afin de commencer un QCM, merci de <a [routerLink]="[
                 '/login']" class="text-white fw-bold">vous authentifier</a> ou <a [routerLink]="[
                 '/register']" class="text-white fw-bold">vous enregister</a></p>
-
 
         </div>
         <!-- ...des autres cas -->

@@ -4,7 +4,7 @@
   <app-feedback-messages [feedbackMessages]="feedbackMessages"
     [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
 
-  <h4>Ajout des métiers (sigles) et leurs compétences (AT)</h4>
+  <h4 class="mt-5">Ajout des métiers (sigles) et leurs compétences (AT)</h4>
   <form #settingsForm="ngForm" class="mt-4" (submit)="addSigles(settingsForm)" class="was-validated">
 
     <div class="form-group">
@@ -22,6 +22,26 @@
       <div *ngIf="sigle.valid" class="valid-feedback">
         Nom valide.
       </div>
+      <!-- champ accessoire code métier RNCP -->
+      <label for="rncp" class="form-label mt-3">Code RNCP (facultatif)</label>
+      <input type="text" name="rncp" ngModel #rncp="ngModel" class="form-control" 
+        minlength="4">
+      <!-- option pour pouvoir masquer un metier du catalogue -->
+      <label class="form-label mt-3">Statut :</label>
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="statusCheckbox" name="status"  [(ngModel)]="sigles.status">
+        <label class="form-check-label" for="statusCheckbox">Actif</label>
+      </div>
+      
+
+      <!-- <div class="form-check">
+        <input type="checkbox" id="active" name="status" ngModel checked>
+        <label class="form-check-label" for="active">Actif</label>
+      </div>    
+      <div class="form-check">
+        <input type="checkbox" id="inactive" name="status" ngModel>
+        <label class="form-check-label" for="inactive">Inactif</label>
+      </div> -->
       <!-- pour arrêter le nombre de compétences par métier -->
       <label for="totalCP" class="form-label mt-3">Nombre de compétences au référenciel métier</label>
       <input type="number" name="totalCP" ngModel #totalCP="ngModel" class="form-control mb-1" required
@@ -62,13 +82,11 @@
   </form>
 
   <hr>
-
-  <h3>Ajout de curseurs personnalisés pour le calcul des 3 niveaux de résultat au terme du positionnement des
+   <h4 class="mt-5">Ajout de curseurs personnalisés pour le calcul des 3 niveaux de résultat au terme du positionnement des
     candidats
-  </h3>
+  </h4>
 
   <!-- pour les curseurs -->
-  <hr>
   <form #setCursorsForm="ngForm" class="mt-4" (submit)="addLevelCursors(setCursorsForm)" class="was-validated">
 
     <div class="form-group">
@@ -98,30 +116,31 @@
 
 
 
+  <hr>
+  
+  <h4 class="mt-5">Nombre de questions nécessaires à la finalisation d'un QCM de positionnement
+  </h4>
+  
+  
+  <form #setMaxForm="ngForm" class="mt-4" (submit)="addMaxIndexQuestion(setMaxForm)" class="was-validated">
+  
+    <div class="form-group">
+  
+      <label for="maxIndexQuestion" class="form-label mt-3">Nombre de questions</label>
+      <input type="number" name="maxIndexQuestion" ngModel #maxIndexQuestion="ngModel" class="form-control" required
+        min="40">
+      <div *ngIf="maxIndexQuestion.touched && maxIndexQuestion.invalid" class="invalid-feedback">
+        Veuillez indiquer un nombre supérieur à 40
+      </div>
+      <div *ngIf="secondCursor.valid" class="valid-feedback">
+        Ok. Maxium pris en compte
+      </div>
+  
+    </div>
+  
+    <button id="settingsForm" type="submit" class="btn btn-primary mt-4"
+      [disabled]=setMaxForm.invalid>Ajouter</button>
+  </form>
+
+
 </div>
-
-<hr>
-
-<h3>Nombre de questions néccessaires à la finalisation d'un QCM de positionnement
-</h3>
-
-
-<form #setMaxForm="ngForm" class="mt-4" (submit)="addMaxIndexQuestion(setMaxForm)" class="was-validated">
-
-  <div class="form-group">
-
-    <label for="maxIndexQuestion" class="form-label mt-3">Nombre de questions</label>
-    <input type="number" name="maxIndexQuestion" ngModel #maxIndexQuestion="ngModel" class="form-control" required
-      min="40">
-    <div *ngIf="maxIndexQuestion.touched && maxIndexQuestion.invalid" class="invalid-feedback">
-      Veuillez indiquer un nombre supérieur à 40
-    </div>
-    <div *ngIf="secondCursor.valid" class="valid-feedback">
-      Ok. Maxium pris en compte
-    </div>
-
-  </div>
-
-  <button id="settingsForm" type="submit" class="btn btn-primary mt-4"
-    [disabled]=setMaxForm.invalid>Ajouter</button>
-</form>

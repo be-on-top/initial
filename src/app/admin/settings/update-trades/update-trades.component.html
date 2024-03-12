@@ -1,7 +1,8 @@
 <div class="container py-5" *ngIf="trade">
 
   <!-- <h3 class="mb-3">Mise à jour des Paramètres de l'application</h3> -->
-  <h3 class="mb-3" *ngIf="userRouterLinks && userRouterLinks.user=='admin'">Modification des métiers (sigles) et leurs compétences (AT)</h3>
+  <h3 class="mb-3" *ngIf="userRouterLinks && userRouterLinks.user=='admin'">Modification des métiers (sigles) et leurs
+    compétences (AT)</h3>
   <h3 class="mb-3" *ngIf="userRouterLinks && userRouterLinks.user=='editor'">Edition métiers</h3>
   <!-- <h2 class="alert bg-info" *ngIf="userRouterLinks">userRouterLinks : {{userRouterLinks.user}}</h2> -->
   <app-feedback-messages [feedbackMessages]="feedbackMessages"
@@ -9,9 +10,10 @@
 
   <form #settingsForm="ngForm" class="mt-4" (submit)="updateSigles(settingsForm)" class="was-validated" novalidate>
 
-    <label for="sigle" class="form-label mt-3">Sigle <span *ngIf="userRouterLinks.user=='editor'"> (à ne surtout pas modifier)</span></label>
+    <label for="sigle" class="form-label mt-3">Sigle <span *ngIf="userRouterLinks.user=='editor'"> (à ne surtout pas
+        modifier)</span></label>
     <input type="text" name="sigle" [(ngModel)]="trade.sigle" #sigle="ngModel" class="form-control" required
-    minlength="3">
+      minlength="3">
     <div *ngIf="sigle.dirty || (sigle.touched && sigle.invalid)" class="invalid-feedback">
       Veuillez fournir un sigle valide.
     </div>
@@ -25,6 +27,15 @@
       <div *ngIf="sigle.valid" class="valid-feedback">
         Nom valide.
       </div>
+      <!-- nouveaux champs du formulaire !!!!  -->
+      <label for="rncp" class="form-label mt-3">Code RNCP (facultatif)</label>
+      <input type="text" name="rncp" [(ngModel)]="trade.rncp" #rncp="ngModel" class="form-control" minlength="5">
+
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="statusCheckbox" name="status" [(ngModel)]="sigles.status">
+        <label class="form-check-label" for="statusCheckbox">Actif</label>
+      </div>
+
       <!-- pour arrêter le nombre de compétences par métier -->
       <label for="totalCP" class="form-label mt-3">Nombre de compétences au référenciel métier</label>
       <input type="number" name="totalCP" [(ngModel)]="trade.totalCP" #totalCP="ngModel" class="form-control mb-1"
@@ -90,14 +101,17 @@
     </div>
 
     <div class="fom-control">
-    <!-- <div class="fom-control" *ngIf="userRouterLinks && userRouterLinks.user=='editor'"> -->
+      <!-- <div class="fom-control" *ngIf="userRouterLinks && userRouterLinks.user=='editor'"> -->
       <!-- <div [ngClass]="{'hidden-class': userRouterLinks && userRouterLinks.user === 'editor'}"> -->
       <!-- ajout partie édition du seul champ description qui sera accessible à un éditeur -->
-      <label for="description" class="form-label my-3" [ngClass]="{'alert bg-warning p-3 mb-2':userRouterLinks.user=='admin'}">Description textuelle à la charge du contributeur</label>
-      <editor [init]="{  plugins: ['lists'], toolbar: 'undo redo | formatselect | bold italic | bullist numlist outdent indent | heading' }" [id]="'description'" [(ngModel)]="trade.description"
-        name="description"></editor>
+      <label for="description" class="form-label my-3"
+        [ngClass]="{'alert bg-warning p-3 mb-2':userRouterLinks.user=='admin'}">Description textuelle à la charge du
+        contributeur</label>
+      <editor apiKey="ahl0yg86w69zh9viflcvku8m2k333o942kc9fpttussom153"
+        [init]="{  plugins: ['lists'], toolbar: 'undo redo | formatselect | bold italic | bullist numlist outdent indent | heading' }"
+        [id]="'description'" [(ngModel)]="trade.description" name="description"></editor>
 
-      </div>
+    </div>
 
     <button id="settingsForm" type="submit" class="btn btn-primary mt-4"
       [disabled]=settingsForm.invalid>Modifier</button>
