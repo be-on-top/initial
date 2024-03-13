@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { EvaluatorsService } from 'src/app/admin/evaluators.service';
@@ -92,6 +92,7 @@ export class PriorFormComponent implements OnInit {
     //   alert('user is signed out !!!')
     // }
 
+
   }
 
 
@@ -106,8 +107,12 @@ export class PriorFormComponent implements OnInit {
     form.value.option4 && !form.value.option3 ? (this.forbidden = true, alert('Vous ne pouvez pas enregistrer une réponse 4 sans avoir renseigné correctement la réponse 3')) : ''
 
     if (this.forbidden !== true) {
+
+
+
       // console.log(form.value);
-      this.service.createQuestion(form.value, this.arrayFilesToUpload, this.isVideo);
+     this.service.createQuestion(form.value, this.arrayFilesToUpload, this.isVideo);
+
 
       // // Stockez la valeur du select avant de réinitialiser le formulaire
       this.selectedSigle = form.value.sigle;
@@ -118,8 +123,7 @@ export class PriorFormComponent implements OnInit {
 
       // Mise à jour local de registryNumbers
       this.checkIfSelected(this.selectedSigle);
-
-      this.arrayFilesToUpload=[]
+      this.arrayFilesToUpload = []
 
     }
 
@@ -162,60 +166,59 @@ export class PriorFormComponent implements OnInit {
     alert(event.target.files[0].type)
     // première boucle si fichier image
     if (event.target.files[0].type.startsWith('image/')) {
-      this.isVideo=false;
+      this.isVideo = false;
       // Vérifie la taille du fichier et le type avant de l'ajouter
-    if (event.target.files[0].size <= 5000000) {
-      // Vérifie si le fichier avec le même nom existe déjà dans arrayFilesToUpload
-      const existingFileIndex = this.arrayFilesToUpload.findIndex((item: any) => item[1] === fieldName.name);
-      if (existingFileIndex !== -1) {
-        // Si le fichier existe déjà, le supprime
-        this.arrayFilesToUpload.splice(existingFileIndex, 1);
-        // alert('Changement d\'image détecté. Ancien fichier supprimé.');
+      if (event.target.files[0].size <= 5000000) {
+        // Vérifie si le fichier avec le même nom existe déjà dans arrayFilesToUpload
+        const existingFileIndex = this.arrayFilesToUpload.findIndex((item: any) => item[1] === fieldName.name);
+        if (existingFileIndex !== -1) {
+          // Si le fichier existe déjà, le supprime
+          this.arrayFilesToUpload.splice(existingFileIndex, 1);
+          // alert('Changement d\'image détecté. Ancien fichier supprimé.');
+        }
 
+        // Ajoute le nouveau fichier à arrayFilesToUpload
+        this.arrayFilesToUpload.push([event.target.files[0], fieldName.name, event.target.files[0].type]);
+        console.log("this.arrayFilesToUpload !!!!", this.arrayFilesToUpload);
+
+        // // Si déjà un fichier mediaOption...
+        const existingMediaOption = this.arrayFilesToUpload.findIndex((item: any) => item[1].includes("mediaOption"))
+        existingMediaOption !== -1 ? this.isOneMediaOption = true : this.isOneMediaOption = false;
+        // alert(this.isOneMediaOption)
+
+      } else {
+        // Fichier trop volumineux, affiche une alerte
+        alert("Le fichier est trop volumineux (limite : 5 Mo) !");
       }
 
-      // Ajoute le nouveau fichier à arrayFilesToUpload
-      this.arrayFilesToUpload.push([event.target.files[0], fieldName.name, event.target.files[0].type]);
-      console.log("this.arrayFilesToUpload !!!!", this.arrayFilesToUpload);
-
-      // // Si déjà un fichier mediaOption...
-      const existingMediaOption = this.arrayFilesToUpload.findIndex((item: any) => item[1].includes("mediaOption"))
-      existingMediaOption !== -1 ? this.isOneMediaOption = true : this.isOneMediaOption = false;
-      // alert(this.isOneMediaOption)
-
-    } else {
-      // Fichier trop volumineux, affiche une alerte
-      alert("Le fichier est trop volumineux (limite : 5 Mo) !");
-    }
-      
-    } else if(event.target.files[0].type.startsWith('video/')) {
-      this.isVideo=true;
+    } else if (event.target.files[0].type.startsWith('video/')) {
+      this.isVideo = true;
       if (event.target.files[0].size <= 1000000000) {
-          // Vérifie si le fichier avec le même nom existe déjà dans arrayFilesToUpload
-          const existingFileIndex = this.arrayFilesToUpload.findIndex((item: any) => item[1] === fieldName.name);
-          if (existingFileIndex !== -1) {
-            // Si le fichier existe déjà, le supprime
-            this.arrayFilesToUpload.splice(existingFileIndex, 1);
-            // alert('Changement de video détecté. Ancien fichier supprimé.');
-          }
-    
-          // Ajoute le nouveau fichier à arrayFilesToUpload
-          this.arrayFilesToUpload.push([event.target.files[0], fieldName.name, event.target.files[0].type]);
-          console.log("this.arrayFilesToUpload !!!!", this.arrayFilesToUpload);
-    
-          // // Si déjà un fichier mediaOption...
-          const existingMediaOption = this.arrayFilesToUpload.findIndex((item: any) => item[1].includes("mediaOption"))
-          existingMediaOption !== -1 ? this.isOneMediaOption = true : this.isOneMediaOption = false;
-          // alert(this.isOneMediaOption)
-    
-        } else {
-          // Fichier trop volumineux, affiche une alerte
-          alert("Le fichier est trop volumineux (limite : 100 Mo) !");
+        // Vérifie si le fichier avec le même nom existe déjà dans arrayFilesToUpload
+        const existingFileIndex = this.arrayFilesToUpload.findIndex((item: any) => item[1] === fieldName.name);
+        if (existingFileIndex !== -1) {
+          // Si le fichier existe déjà, le supprime
+          this.arrayFilesToUpload.splice(existingFileIndex, 1);
+          // alert('Changement de video détecté. Ancien fichier supprimé.');
         }
-      
+
+        // Ajoute le nouveau fichier à arrayFilesToUpload
+        this.arrayFilesToUpload.push([event.target.files[0], fieldName.name, event.target.files[0].type]);
+        console.log("this.arrayFilesToUpload !!!!", this.arrayFilesToUpload);
+
+        // // Si déjà un fichier mediaOption...
+        const existingMediaOption = this.arrayFilesToUpload.findIndex((item: any) => item[1].includes("mediaOption"))
+        existingMediaOption !== -1 ? this.isOneMediaOption = true : this.isOneMediaOption = false;
+        // alert(this.isOneMediaOption)
+
+      } else {
+        // Fichier trop volumineux, affiche une alerte
+        alert("Le fichier est trop volumineux (limite : 100 Mo) !");
+      }
+
     }
 
-    
+
   }
 
   resetFileInput(fieldName: string, form: NgForm) {
@@ -226,6 +229,7 @@ export class PriorFormComponent implements OnInit {
     if (fileIndex !== -1) {
       this.arrayFilesToUpload.splice(fileIndex, 1)
     }
+
   }
 
 
@@ -340,7 +344,23 @@ export class PriorFormComponent implements OnInit {
 
     // Naviguer vers la vue '/admin/questions' avec le paramètre de requête sigleIds  
     this.router.navigate(['/admin/questions'], { queryParams: { sigleIds: sigle } })
+
+
   }
+
+
+  // revenir en haut de page
+   scrollToTop() {
+
+    // Cibler l'élément au début de la page
+    const topOfPageElement = document.getElementById('topOfPage');
+
+    // Vérifier si l'élément existe avant de faire défiler
+    if (topOfPageElement) {
+      topOfPageElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
 
 }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { EvaluatorsService } from 'src/app/admin/evaluators.service';
@@ -316,6 +316,19 @@ export class FullFormComponent implements OnInit {
 
     // Naviguer vers la vue '/admin/questions' avec le paramètre de requête sigleIds  
     this.router.navigate(['/admin/fullList'], { queryParams: { sigleIds: sigle } })
+  }
+
+  
+  // revenir en haut de page
+  scrollToTop() {
+
+    // Cibler l'élément au début de la page
+    const topOfPageElement = document.getElementById('topOfPage');
+
+    // Vérifier si l'élément existe avant de faire défiler
+    if (topOfPageElement) {
+      topOfPageElement.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 
 

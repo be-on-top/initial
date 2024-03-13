@@ -1,6 +1,6 @@
 <div class="container py-5">
 
-    <h3 class="mb-5">Formulaire de saisie des {{title}}
+    <h3 id="topOfPage" class="mb-5">Formulaire de saisie des {{title}}
         <!-- <span *ngIf="userData.sigle">{{userData.sigle}}</span> -->
     </h3>
     <p *ngIf="registryNumbers.length!==0" class="border-dark bg-light rounded p-2" role="alert">Numéros de questions
@@ -218,9 +218,11 @@
             placeholder="Commentaires optionnels...">Difficultés / Remaques...</textarea> -->
 
         <button type="submit" id="submit" class="btn btn-primary mt-3"
-            [ngClass]="{'disabled':f.invalid}">Ajouter</button>
+            [ngClass]="{'disabled':f.invalid}" (click)="scrollToTop()">Ajouter</button>
     </form>
     <hr>
+
+    <!-- <button class="btn btn-primary mt-3" (click)="scrollToTop()">Revenir en haut de la page</button> -->
 
     <button type="submit" id="submit" class="btn btn-primary mt-3">
         <a class="dropdown-item" (click)="navigateToVue()">Aperçu
