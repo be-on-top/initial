@@ -138,18 +138,33 @@ export class AccountComponent implements OnInit, OnDestroy {
             // Logique pour récupérer isOneQuizzAchieved
             const achievedArray: any = [];
             for (const item of this.tradesEvaluated) {
-              this.userData[item].fullResults ? achievedArray.push(item) : '';
+              this.userData[item].fullResults ? achievedArray.push(item): '';
               achievedArray.length > 0 ? this.isOneQuizzAchieved = true : false;
+
+
+
+
+
+
+
             }
 
             // Logique pour trier les résultats
             for (const item of this.tradesEvaluated) {
               if (this.userData[item].fullResults) {
+
                 this.userData[item].fullResults.sort((a: any, b: any) => {
                   const keyA = Object.keys(a)[0];
                   const keyB = Object.keys(b)[0];
                   return keyA.localeCompare(keyB);
                 });
+
+                                // et c'est là qu'on pourrait rajouter 
+                const relatedResults = this.userData[item].fullResults
+                this.updateTotalCost(relatedResults)
+
+
+
               }
             }
 
@@ -377,13 +392,13 @@ export class AccountComponent implements OnInit, OnDestroy {
     const filteredEvaluations = Object.entries(this.evaluations)
       .filter(([key, value]: [string, any]) => value.sigle === subscription)
       .map(([key, value]: [string, any]) => ({ key, value: value }));
-  
-// Trie les évaluations par compétence en extrayant le chiffre à la fin
-return filteredEvaluations.sort((a, b) => {
-  const regex = /\D+/g; // Expression régulière pour extraire les chiffres à la fin
-  const aNumber = parseInt((a.value.competence || '').replace(regex, ''), 10);
-  const bNumber = parseInt((b.value.competence || '').replace(regex, ''), 10);
-  
+
+    // Trie les évaluations par compétence en extrayant le chiffre à la fin
+    return filteredEvaluations.sort((a, b) => {
+      const regex = /\D+/g; // Expression régulière pour extraire les chiffres à la fin
+      const aNumber = parseInt((a.value.competence || '').replace(regex, ''), 10);
+      const bNumber = parseInt((b.value.competence || '').replace(regex, ''), 10);
+
       return aNumber - bNumber; // Trie par ordre croissant
     });
   }
@@ -394,20 +409,20 @@ return filteredEvaluations.sort((a, b) => {
   //   return Object.entries(this.tutorials)
   //     .filter(([key, value]) => value.sigle === subscription)
   //     .map(([key, value]) => ({ key, value }));
-      
+
   // }
 
   getFilteredTutorialsForSubscription(subscription: string): any[] {
     const filteredTutorials = Object.entries(this.tutorials)
       .filter(([key, value]: [string, any]) => value.sigle === subscription)
       .map(([key, value]: [string, any]) => ({ key, value: value }));
-  
+
     // Trie les évaluations par compétence en extrayant le chiffre à la fin
     return filteredTutorials.sort((a, b) => {
       const regex = /\D+/g; // Expression régulière pour extraire les chiffres à la fin
       const aNumber = parseInt((a.value.competence || '').replace(regex, ''), 10);
       const bNumber = parseInt((b.value.competence || '').replace(regex, ''), 10);
-  
+
       return aNumber - bNumber; // Trie par ordre croissant
     });
   }
@@ -421,6 +436,59 @@ return filteredEvaluations.sort((a, b) => {
   toggleCollapse(eIndex: number) {
     this.evaluationsState[eIndex] = !this.evaluationsState[eIndex];
   }
+
+
+
+ // Dans mon composant
+ totalCost?: number;
+ totalTime?: number;
+
+ // Fonction pour mettre à jour le total
+ updateTotalCost(relatedResults: any): void {
+   this.totalCost = 0;
+   this.totalTime = 0;
+
+   // Vérifie si fullResults existe et n'est pas vide
+   for (const result of relatedResults) {
+     for (const key in result) {
+       if (result.hasOwnProperty(key)) {
+         this.totalCost += result[key].cost;
+         this.totalTime += result[key].duration;
+       }
+     }
+   }
+
+ }
+
+
+
+ calculateSubtotal(trade: string): number {
+  let subtotalTime = 0;
+  // Calcul du sous-total pour le temps
+  for (const result of this.userData[trade].fullResults) {
+    for (const key in result) {
+      if (result.hasOwnProperty(key)) {
+        subtotalTime += result[key].duration;
+      }
+    }
+  }
+  return subtotalTime;
+}
+
+calculateSubtotalCost(trade: string): number {
+  let subtotalCost = 0;
+  // Calcul du sous-total pour le coût
+  for (const result of this.userData[trade].fullResults) {
+    for (const key in result) {
+      if (result.hasOwnProperty(key)) {
+        subtotalCost += result[key].cost;
+      }
+    }
+  }
+  return subtotalCost;
+}
+
+
 
 
 

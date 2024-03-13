@@ -176,40 +176,30 @@
             <div id="collapseFullResults" class="collapse" data-bs-parent="#accordion">
                 <div class="card-body">
                     <!-- nouveauté pour multi quizz VERSION 2 -->
-
-                    <div *ngIf="userData && tradesEvaluated.length>0">
-                        <!-- comme on ne questionnera plus tradeEvaluated mais tradesEvaluated [], on va devoir, avant d'inspecter la suite des ngIf, avoir une boucle ngFor pour voir métier après métier...  -->
-                        <!-- attention, compte tenu de la manière dont tradesEvaluated a été généré, trade ici, c'est une chaine de caractère type quizz_sigle -->
-                        <div *ngFor="let trade of tradesEvaluated, let last=last">
-
-                            <div class="mb-3" *ngIf="userData[trade].fullResults">
-                                <!-- <p class="card-text">Métier concerné : <span class="fw-bold">{{trade}}</span></p> -->
-                                <p class="card-text">Métier concerné : <span class="fw-bold">{{ getDenomination(trade) |
-                                        async }}</span></p>
-
-                                <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
-                                <div class="card-text mb-0"
-                                    *ngFor="let result of userData[trade].fullResults | keyvalue, let lastEstimate=last, let i = index">
-                                    <ng-container *ngFor="let item of objectEntries(result.value)">
-                                        <div class="d-flex align-items-center">
-                                            <span class="fw-bold">{{ item[0] }}</span>
-                                            <i class="bi fs-4 bi-arrow-right-short"></i>
-                                            <span class="fw-bolder">Durée estimée :</span> {{ item[1].duration }}h.
-                                            <span class="fw-bolder">Coût :</span> {{
-                                            item[1].cost }}€
-                                        </div>
-                                        <em *ngIf="trades[trade]" class="text-primary fs-6">{{trades[trade][i]}}</em>
-
-                                    </ng-container>
-                                    <hr *ngIf="lastEstimate">
+                    <div *ngIf="userData && tradesEvaluated.length > 0">
+                        <div *ngFor="let trade of tradesEvaluated; let last=last">
+                          <div class="mb-3" *ngIf="userData[trade].fullResults">
+                            <p class="card-text">Métier concerné : <span class="fw-bold">{{ getDenomination(trade) | async }}</span></p>
+                      
+                            <div class="card-text mb-0" *ngFor="let result of userData[trade].fullResults | keyvalue, let lastEstimate=last, let i = index">
+                              <ng-container *ngFor="let item of objectEntries(result.value)">
+                                <div class="d-flex align-items-center">
+                                  <span class="fw-bold">{{ item[0] }}</span>
+                                  <i class="bi fs-4 bi-arrow-right-short"></i>
+                                  <span class="fw-bolder">Durée estimée :</span> {{ item[1].duration }}h.
+                                  <span class="fw-bolder">Coût :</span> {{ item[1].cost }}€
                                 </div>
-                            </div>
-
-                            <!-- Affichez le hr sauf dans la dernière itération -->
-                            <!-- <hr *ngIf="!last"> -->
+                                <em *ngIf="trades[trade]" class="text-primary fs-6">{{ trades[trade][i] }}</em>
+                              </ng-container>
+                                    <!-- Affichez le hr sauf dans la dernière itération -->
+                              <hr *ngIf="lastEstimate">
+                              <p *ngIf="lastEstimate" class="fw-bold mb-5">Total : {{ calculateSubtotal(trade) }} heures de formation pour {{ calculateSubtotalCost(trade) }}€</p>
+                            </div>               
+                          </div>
                         </div>
                         <!-- fin boucle supplémentaire pour ngFor avec les options de multi-quizz -->
-                    </div>
+                      </div>
+                      
                 </div>
             </div>
         </div>
