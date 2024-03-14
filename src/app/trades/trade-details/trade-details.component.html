@@ -1,7 +1,7 @@
 <div class="container py-5" *ngIf="tradeData">
 
     <!-- <h3>{{tradeData.denomination}}</h3> -->
-    <div class="p-4 bg-primary text-white rounded row fade show mx-1">
+    <div class="p-2 bg-primary text-white rounded row fade show mx-1">
         <div class="col-md-7">
             <h1>{{tradeData.denomination}}</h1>
             <p class="fs-5 mt-3">
@@ -9,7 +9,8 @@
                 <br>Nombre de compétences à valider: {{tradeData.competences.length}}.
                 <br>Durée maximale: {{firstValuesSum}} heures.
                 <!-- <br><span *ngIf="tradeData.rncp">Code RNCP : {{tradeData.rncp}}.</span> -->
-                <br><span *ngIf="tradeData.rncp"><a class="text-light" href="{{tradeData.rncp}}">Code RNCP (ou RS)</a></span>
+                <br><span *ngIf="tradeData.rncp"><a class="text-light" href="{{tradeData.rncp}}">Code RNCP (ou
+                        RS)</a></span>
                 <br><span *ngIf="tradeData.isQualifying && tradeData.isQualifying==true">Formation Qualifiante !</span>
 
                 <!-- <p class="rounded bg-dark p-2 mt-2 small">Pour vérification du rôle récupéré : {{userRole}}</p> -->
@@ -63,8 +64,7 @@
 
                     <!-- ---------------- -->
                 </a>
-                <div class="d-flex justify-content-md-end"
-                    *ngIf="isEvaluationCompleted">
+                <div class="d-flex justify-content-md-end" *ngIf="isEvaluationCompleted">
                     <div class="btn btn-transparent border-0 ps-0 text-light"><i class="bi bi-check-square-fill"></i>
                         Votre évaluation est terminée</div>
                 </div>
@@ -74,63 +74,84 @@
     </div>
     <!-- 
     {{tradeData | json}} -->
-
-    <div class="mt-4 p-2 bg-light rounded">
-        <!-- <div [ngClass]="{'col-lg-6':imageUrl!=''}" *ngIf="imageUrl && imageUrl!=''" >
-            <img class="img-fluid" [src]="imageUrl">
-        </div> -->
-
-        <!-- si on ne force pas le recadrage -->
-        <!-- <img class="cover rounded mb-5" [src]="imageUrl" *ngIf="imageUrl"> -->
-        <img class="rounded img-fluid mb-2 border border-2" [src]="imageUrl" *ngIf="imageUrl">
-
-
-        <ng-container *ngIf="tradeData.description">
-            <!-- si on utilise l'éditeur de texte -->
-            <!-- <div [ngClass]="{'col-lg-6 mt-3':imageUrl!=''}" [innerHTML]="sanitizer.bypassSecurityTrustHtml(tradeData.description)">
-            </div> -->
-            <div class="p-2 trade" [innerHTML]="sanitizer.bypassSecurityTrustHtml(tradeData.description)">
-            </div>
-            <!-- et pour avoir accès au lien d'édition -->
-            <div *ngIf="userRole=='editor'" class="d-flex justify-content-end text mt-3">
-                <button class="btn btn-primary">
-                    <a class="text-white" [routerLink]="['/admin/updateDescription', tradeData.sigle, userRole]">
-                        <i class="bi bi-pencil-square"></i>
-                        Editer</a>
-                </button>
-                <!-- pour images si option avec simple redirection vers le formulaire dédié -->
-                <!-- <button class="btn btn-primary ms-2">
-                    <a class="text-white" [routerLink]="['/admin/updateTradeImage', tradeData.sigle]">
-                        <i class="bi bi-image"></i>
-                        Image</a>
-                </button> -->
-                <!-- option édition avec modale -->
-                <button class="btn btn-primary ms-2 text-light" data-bs-toggle="modal" data-bs-target="#myModal">
-                    <i class="bi  bi-image"></i>Image
-                </button>
-                <div class="modal" id="myModal">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title ms-auto">Image de couverture pour {{tradeData.sigle}}</h4>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                            </div>
-                            <app-cover-image class="modal-body" [tradeId]="tradeData.sigle"></app-cover-image>
-                        </div>
-                    </div>
-                </div>
-                <!-- fin de l'option édition avec modale -->
-
-            </div>
-        </ng-container>
+    <div class="mt-4 p-2">
+        <img class="rounded img-fluid mb-2 border border-1 m-auto w-100" [src]="imageUrl" *ngIf="imageUrl">
     </div>
 
-    <div class="mt-4 p-5 bg-primary text-white rounded">
-        <ng-container *ngIf="tradeData.competences">
-            <p *ngFor="let cp of tradeData.competences, let index=index">
-                <span class="fw-bold">CP{{index+1}} : </span> {{cp}}
-            </p>
-        </ng-container>
+    <!-- à faire -->
+    <div id="accordion">
+        <div class="card p-2 border-0">
+
+            <div class="card-header bg-primary">
+                <a (click)="toggleDescriptionCollapse()" class="btn text-light text-capitalize d-flex justify-content-between"  data-bs-toggle="collapse" href="#collapseDescription">
+                    Description <i [ngClass]="{'bi-caret-down-fill': isDescriptionCollapsed, 'bi-caret-up-fill': !isDescriptionCollapsed}" class="bi fs-4 text-light"></i></a>
+            </div>
+    
+            <div id="collapseDescription" class="collapse" [class.show]="!isDescriptionCollapsed" data-bs-parent="#accordion">
+                <div class="card-body">
+
+                    <ng-container *ngIf="tradeData.description">
+                        <div class="p-2 trade" [innerHTML]="sanitizer.bypassSecurityTrustHtml(tradeData.description)">
+                        </div>
+                        <!-- et pour avoir accès au lien d'édition -->
+                        <div *ngIf="userRole=='editor'" class="d-flex justify-content-end text mt-3">
+                            <button class="btn btn-primary">
+                                <a class="text-white"
+                                    [routerLink]="['/admin/updateDescription', tradeData.sigle, userRole]">
+                                    <i class="bi bi-pencil-square"></i>
+                                    Editer</a>
+                            </button>
+                            <button class="btn btn-primary ms-2 text-light" data-bs-toggle="modal"
+                                data-bs-target="#myModal">
+                                <i class="bi  bi-image"></i>Image
+                            </button>
+                            <div class="modal" id="myModal">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title ms-auto">Image de couverture pour
+                                                {{tradeData.sigle}}</h4>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <app-cover-image class="modal-body"
+                                            [tradeId]="tradeData.sigle"></app-cover-image>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- fin de l'option édition avec modale -->
+
+                        </div>
+                    </ng-container>
+                    <!-- </div> -->
+
+                </div>
+            </div>
+
+
+            <!-- 2 -->
+
+            <div class="card-header bg-primary">
+                <a (click)="toggleCPCollapse()" class="btn text-light text-capitalize d-flex justify-content-between" data-bs-toggle="collapse" href="#collapseCP">
+                    Compétences <i [ngClass]="{'bi-caret-down-fill': isCPCollapsed, 'bi-caret-up-fill': !isCPCollapsed}" class="bi fs-4 text-light"></i></a>
+            </div>
+    
+            <div id="collapseCP" class="collapse" [class.show]="!isCPCollapsed" data-bs-parent="#accordion">
+                <div class="card-body mt-4 p-5 bg-primary text-white rounded">
+
+                    <!-- deuxième onglet -->
+                    <!-- <div class="mt-4 p-5 bg-primary text-white rounded"> -->
+                    <ng-container *ngIf="tradeData.competences">
+                        <p *ngFor="let cp of tradeData.competences, let index=index">
+                            <span class="fw-bold">CP{{index+1}} : </span> {{cp}}
+                        </p>
+                    </ng-container>
+                    <!-- </div> -->
+
+                </div>
+            </div>
+
+        </div>
+
 
     </div>
 

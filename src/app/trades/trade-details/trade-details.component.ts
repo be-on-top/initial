@@ -142,6 +142,17 @@ export class TradeDetailsComponent implements OnInit {
     this.location.back();
   }
 
+  isDescriptionCollapsed: boolean = true;
+  isCPCollapsed: boolean = false;
+
+  toggleDescriptionCollapse() {
+      this.isDescriptionCollapsed = !this.isDescriptionCollapsed;
+  }
+
+  toggleCPCollapse() {
+      this.isCPCollapsed = !this.isCPCollapsed;
+  }
+
 
 
 
