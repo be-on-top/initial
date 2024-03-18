@@ -1,8 +1,10 @@
 <div class="container py-5" *ngIf="trade">
 
   <!-- <h3 class="mb-3">Mise à jour des Paramètres de l'application</h3> -->
-  <h3 class="mb-3" *ngIf="userRouterLinks && userRouterLinks.user=='admin'">Modification des métiers (sigles) et leurs
-    compétences (AT)</h3>
+  <!-- <h3 class="mb-3" *ngIf="userRouterLinks && userRouterLinks.user=='admin'">Modification des métiers (sigles) et leurs
+    compétences (AT)</h3> -->
+  <h3 class="mb-3" *ngIf="userRouterLinks && userRouterLinks.user=='admin'">Modification des métiers et leurs
+    compétences</h3>
   <h3 class="mb-3" *ngIf="userRouterLinks && userRouterLinks.user=='editor'">Edition métiers</h3>
   <!-- <h2 class="alert bg-info" *ngIf="userRouterLinks">userRouterLinks : {{userRouterLinks.user}}</h2> -->
   <app-feedback-messages [feedbackMessages]="feedbackMessages"
@@ -10,10 +12,10 @@
 
   <form #settingsForm="ngForm" class="mt-4" (submit)="updateSigles(settingsForm)" class="was-validated" novalidate>
 
-    <label for="sigle" class="form-label mt-3">Sigle <span *ngIf="userRouterLinks.user=='editor'"> (à ne surtout pas
+    <label for="sigle" class="form-label mt-3">Ref <span *ngIf="userRouterLinks.user=='editor'"> (à ne surtout pas
         modifier)</span></label>
     <input type="text" name="sigle" [(ngModel)]="trade.sigle" #sigle="ngModel" class="form-control" required
-      minlength="3">
+      minlength="3" disabled>
     <div *ngIf="sigle.dirty || (sigle.touched && sigle.invalid)" class="invalid-feedback">
       Veuillez fournir un sigle valide.
     </div>
@@ -28,8 +30,8 @@
         Nom valide.
       </div>
       <!-- nouveaux champs du formulaire !!!!  -->
-      <label for="rncp" class="form-label mt-3">Code RNCP (facultatif)</label>
-      <input type="url" name="rncp" [(ngModel)]="trade.rncp" class="form-control" minlength="15" placeholder="renseigner url CNIL">
+      <label for="rncp" class="form-label mt-3">Code RNCP ou RS (facultatif)</label>
+      <input type="url" name="rncp" [(ngModel)]="trade.rncp" class="form-control" minlength="15" placeholder="renseigner url">
 
       <div class="form-check form-switch mt-3">
         <input class="form-check-input" type="checkbox" id="statusCheckbox" name="isQualifying" [(ngModel)]="trade.isQualifying">

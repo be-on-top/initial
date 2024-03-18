@@ -151,7 +151,8 @@ const routesAdmin: Routes = [
       // { path: 'updateEvaluation/:id/:evaluationKey', component: UpdateStudentComponent, data: { user: 'trainer' } },
       { path: 'updateEvaluation/:id/:evaluationKey', component: UpdateStudentComponent, data: { user: 'trainer' } },
       { path: 'updateTutorial/:id/:tutorialKey', component: UpdateStudentComponent, data: { user: 'tutor' } },
-      { path: 'updateDescription/:id/:role', component: UpdateTradesComponent, data: { user: 'editor' } },
+      // { path: 'updateDescription/:id/:role', component: UpdateTradesComponent, data: { user: 'editor' } },
+      { path: 'updateDescription/:id', component: UpdateTradesComponent, data: { user: 'editor' } },
       { path: 'updateTradeImage/:id', component: CoverImageComponent },
       // pour anticiper sur la création des utilisateurs externes
 
