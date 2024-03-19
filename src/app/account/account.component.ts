@@ -75,6 +75,8 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   trades: { [key: string]: string[] } = {};
 
+  firstValuesSum: number = 0
+
   private destroy$ = new Subject<void>();
 
   isSocialFormSent: boolean = false
@@ -85,6 +87,8 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   cpEvaluated: string = ""
   getCpNameCalled: boolean = false;
+
+  tradesData?: any
 
   public notificationPermissionGranted = false;
 
@@ -138,14 +142,8 @@ export class AccountComponent implements OnInit, OnDestroy {
             // Logique pour récupérer isOneQuizzAchieved
             const achievedArray: any = [];
             for (const item of this.tradesEvaluated) {
-              this.userData[item].fullResults ? achievedArray.push(item): '';
+              this.userData[item].fullResults ? achievedArray.push(item) : '';
               achievedArray.length > 0 ? this.isOneQuizzAchieved = true : false;
-
-
-
-
-
-
 
             }
 
@@ -159,11 +157,9 @@ export class AccountComponent implements OnInit, OnDestroy {
                   return keyA.localeCompare(keyB);
                 });
 
-                                // et c'est là qu'on pourrait rajouter 
+                // et c'est là qu'on pourrait rajouter 
                 const relatedResults = this.userData[item].fullResults
                 this.updateTotalCost(relatedResults)
-
-
 
               }
             }
@@ -188,6 +184,12 @@ export class AccountComponent implements OnInit, OnDestroy {
     if (Notification.permission === 'granted') {
       this.notificationPermissionGranted = true
     }
+
+    // pour récupérer les métiers (sigles) enregistrés en base qui détermineront les maximums couts et durée
+    this.settingsService.getTrades().subscribe(data => {
+      this.tradesData = data;
+      console.log("this.tradesData", this.tradesData)
+    })
 
   }
 
@@ -439,54 +441,107 @@ export class AccountComponent implements OnInit, OnDestroy {
 
 
 
- // Dans mon composant
- totalCost?: number;
- totalTime?: number;
+  // Dans mon composant
+  totalCost?: number;
+  totalTime?: number;
 
- // Fonction pour mettre à jour le total
- updateTotalCost(relatedResults: any): void {
-   this.totalCost = 0;
-   this.totalTime = 0;
+  // Fonction pour mettre à jour le total
+  updateTotalCost(relatedResults: any): void {
+    this.totalCost = 0;
+    this.totalTime = 0;
 
-   // Vérifie si fullResults existe et n'est pas vide
-   for (const result of relatedResults) {
-     for (const key in result) {
-       if (result.hasOwnProperty(key)) {
-         this.totalCost += result[key].cost;
-         this.totalTime += result[key].duration;
-       }
-     }
-   }
-
- }
-
-
-
- calculateSubtotal(trade: string): number {
-  let subtotalTime = 0;
-  // Calcul du sous-total pour le temps
-  for (const result of this.userData[trade].fullResults) {
-    for (const key in result) {
-      if (result.hasOwnProperty(key)) {
-        subtotalTime += result[key].duration;
+    // Vérifie si fullResults existe et n'est pas vide
+    for (const result of relatedResults) {
+      for (const key in result) {
+        if (result.hasOwnProperty(key)) {
+          this.totalCost += result[key].cost;
+          this.totalTime += result[key].duration;
+        }
       }
     }
-  }
-  return subtotalTime;
-}
 
-calculateSubtotalCost(trade: string): number {
-  let subtotalCost = 0;
-  // Calcul du sous-total pour le coût
-  for (const result of this.userData[trade].fullResults) {
-    for (const key in result) {
-      if (result.hasOwnProperty(key)) {
-        subtotalCost += result[key].cost;
+  }
+
+
+
+  calculateSubtotal(trade: string): number {
+    let subtotalTime = 0;
+    // Calcul du sous-total pour le temps
+    for (const result of this.userData[trade].fullResults) {
+      for (const key in result) {
+        if (result.hasOwnProperty(key)) {
+          subtotalTime += result[key].duration;
+        }
       }
     }
+    return subtotalTime;
   }
-  return subtotalCost;
+
+  calculateSubtotalCost(trade: string): number {
+    let subtotalCost = 0
+    // Calcul du sous-total pour le coût
+    for (const result of this.userData[trade].fullResults) {
+      for (const key in result) {
+        if (result.hasOwnProperty(key)) {
+          subtotalCost += result[key].cost
+        }
+      }
+    }
+    return subtotalCost
+  }
+
+
+  calculateTotalTime(trade: string): any {
+    const keyTrade = trade.replace('quizz_', '')
+    console.log("trade", keyTrade)
+
+    const filteredData = this.tradesData.filter((item: any) => item.sigle === keyTrade);
+
+    console.log('filteredData', filteredData)
+    let total = 0
+    Object.values(filteredData[0].durations).forEach((value: any) => {
+        total += value[0]
+    })
+
+    return total
+
+  }
+
+
+  calculateTotalCost(trade: string): number {
+    const keyTrade = trade.replace('quizz_', '');
+
+    // Filtrer les données pour obtenir les informations spécifiques au trade donné
+    const filteredData = this.tradesData.find((item: any) => item.sigle === keyTrade);
+
+    if (!filteredData) {
+        console.log('Trade non trouvé');
+        return 0;
+    }
+
+    let maxTotalCost = 0;
+
+    // Parcourir les propriétés dans durations
+    for (const durationKey in filteredData.durations) {
+        if (durationKey.includes('duration')) {
+            const costKey = `cost_${durationKey.substring(durationKey.lastIndexOf('_') + 1)}`; // Construire la clé de coût correspondante
+            const maxDuration = Math.max(...filteredData.durations[durationKey]); // Obtenir la durée maximale
+            const costValue = filteredData.costs[costKey]; // Obtenir le coût correspondant
+
+            if (costValue !== undefined) {
+                const totalCost = maxDuration * costValue; // Calculer le coût total pour cette compétence
+                maxTotalCost += totalCost; // Ajouter au coût total maximal
+            } else {
+                console.log(`Coût non trouvé pour ${durationKey}`);
+            }
+        }
+    }
+
+    return maxTotalCost;
 }
+
+
+  
 
 
 

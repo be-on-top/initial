@@ -200,12 +200,12 @@
                                             <span class="fw-bolder">Durée estimée :</span> {{ item[1].duration }}h.
                                             <span class="fw-bolder">Coût :</span> {{ item[1].cost }}€
                                         </div>
-                                        <em *ngIf="trades[trade]" class="text-primary fs-6">{{ trades[trade][i] }}</em>
+                                        <em *ngIf="trades[trade]" class="text-primary fs-6">{{ trades[trade][i] }}</em>  
                                     </ng-container>
                                     <!-- Affichez le hr sauf dans la dernière itération -->
                                     <hr *ngIf="lastEstimate">
-                                    <p *ngIf="lastEstimate" class="fw-bold mb-5">Total : {{ calculateSubtotal(trade) }}
-                                        heures de formation pour {{ calculateSubtotalCost(trade) }}€</p>
+                                    <p *ngIf="lastEstimate" class="fw-bold mb-5">Total : {{ calculateSubtotal(trade) }} / {{calculateTotalTime(trade) | json}}
+                                        heures de formation pour {{ calculateSubtotalCost(trade) }} /    {{ calculateTotalCost(trade) | json}} €</p>
                                 </div>
                             </div>
                         </div>
