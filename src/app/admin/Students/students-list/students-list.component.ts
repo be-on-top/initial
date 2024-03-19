@@ -2,6 +2,7 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { StudentsService } from '../../students.service';
 import { Student } from '../student';
 import { ActivatedRoute } from '@angular/router';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-students-list',
@@ -29,15 +30,41 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    
+
   }
 
+  // getStudents() {
+  //   this.service.getStudents().subscribe(students => {
+  //     this.allStudents = students
+  //     console.log('this.allStudents', this.allStudents)
+  //   })
+
+  // }
+
+
   getStudents() {
-    this.service.getStudents().subscribe(students => {
-      this.allStudents = students;
-      /* console.log(this.allStudents); */
+    this.service.getStudents().pipe(
+      map(students => students.filter(student => this.hasFullResults(student)))
+    ).subscribe(filteredStudents => {
+      this.allStudents = filteredStudents;
+      console.log('this.allStudents', this.allStudents);
     });
   }
+
+  hasFullResults(obj: any): boolean {
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        if (key === 'fullResults') {
+          return true;
+        }
+        if (typeof obj[key] === 'object' && this.hasFullResults(obj[key])) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
 
   deleteStudent(student: Student) {
     /* console.log(student); */
@@ -49,11 +76,11 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   onSearchTextEntered(searchValue: string) {
     console.log(searchValue);
 
-      this.searchText = searchValue
-      console.log(this.searchText);
+    this.searchText = searchValue
+    console.log(this.searchText);
 
   }
-  
+
 
 
 }

@@ -162,12 +162,12 @@
 
         <!-- son inscription -->
         <div class="card"
-            *ngIf="(userRouterLinks.user=='admin' || userRouterLinks.user=='trainer' || userRouterLinks.user=='tutor' || userRouterLinks.user=='external' || userRouterLinks.user=='referent') && student">
+            *ngIf="(userRouterLinks.user=='admin' || userRouterLinks.user=='trainer' || userRouterLinks.user=='tutor' || userRouterLinks.user=='external' || userRouterLinks.user=='referent') && student && student.isSocialFormSent">
             <div class="card-header bg-primary d-flex justify-content-between">
                 <a class="btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseThree">
                     Inscription</a><i class="bi bi-info-square-fill fs-4 text-light"></i>
             </div>
-            <div class="collapse" data-bs-parent="#accordion" id="collapseThree">
+            <div class="collapse pt-5" data-bs-parent="#accordion" id="collapseThree">
 
                 <!-- Exemple -->
                 <ng-container *ngIf="student.subscriptions">
@@ -179,9 +179,10 @@
                     </div>
                 </ng-container>
                 <!-- test intégration comme composant enfant du formulaire désormais déclaré dans admin.module -->
-                <div *ngIf="student && userRouterLinks.user=='admin'">
+                <!-- ça fonctionne mais les collapses interfèrent et pas indispensable sauf en update -->
+                <!-- <div *ngIf="student && userRouterLinks.user=='admin'">
                     <app-student-form [studentData]="student"></app-student-form>
-                </div>
+                </div> -->
                 <ng-container *ngIf="student.endedSubscriptions">
                     <!-- {{achievedTrainings | json}} -->
                     <h3 *ngIf="student.endedSubscriptions">Fin de Formation du Candidat pour :</h3>
