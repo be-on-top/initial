@@ -236,7 +236,8 @@ const routesAdmin: Routes = [
     TooltipComponent,
     CoverImageComponent,
     StudentFormComponent,
-    AutoChangeDirective
+    AutoChangeDirective,
+    SearchComponent
   ]
 })
 

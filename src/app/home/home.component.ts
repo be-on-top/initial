@@ -61,6 +61,20 @@ export class HomeComponent implements OnInit {
   // ne sert pas et ne doit pas avoir à être nécessaire. 
   userRole: string = ""
 
+  // on le prépare à recevoir un terme de recherche
+  searchText: string = ''
+
+  // pour utiliser le composant de recherche
+  onSearchTextEntered(searchValue: string) {
+    this.searchText = searchValue
+    console.log(this.searchText);
+  }
+
+  // Fonction pour supprimer les accents d'une chaîne de caractères
+  removeAccents(str: string): string {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  }
+
   constructor(
     // private notificationService: PushNotificationService, 
     private auth: Auth,
