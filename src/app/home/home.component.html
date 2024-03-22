@@ -40,7 +40,7 @@
     <!-- fin test alert-dismissible -->
 
     <!-- on introduit un champ de recherche -->
-    <app-search (searchTextChanged)="onSearchTextEntered($event)"></app-search>
+    <app-search *ngIf="tradesData && tradesData.length>4" (searchTextChanged)="onSearchTextEntered($event)"></app-search>
 
     <!-- Carousel -->
     <!-- <div id="demo" class="carousel slide mx-auto" data-bs-ride="carousel">

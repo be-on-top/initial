@@ -81,7 +81,7 @@
     <!-- à faire -->
     <div id="accordion">
         <div class="card p-2 border-0">
-
+    
             <div class="card-header bg-primary">
                 <a (click)="toggleDescriptionCollapse()" class="btn text-light text-capitalize d-flex justify-content-between"  data-bs-toggle="collapse" href="#collapseDescription">
                     Description <i [ngClass]="{'bi-caret-down-fill': isDescriptionCollapsed, 'bi-caret-up-fill': !isDescriptionCollapsed}" class="bi fs-4 text-light"></i></a>
@@ -89,7 +89,7 @@
     
             <div id="collapseDescription" class="collapse" [class.show]="!isDescriptionCollapsed" data-bs-parent="#accordion">
                 <div class="card-body">
-
+    
                     <ng-container *ngIf="tradeData.description">
                         <div class="p-2 trade" [innerHTML]="sanitizer.bypassSecurityTrustHtml(tradeData.description)">
                         </div>
@@ -119,17 +119,17 @@
                                 </div>
                             </div>
                             <!-- fin de l'option édition avec modale -->
-
+    
                         </div>
                     </ng-container>
                     <!-- </div> -->
-
+    
                 </div>
             </div>
-
-
+    
+    
             <!-- 2 -->
-
+    
             <div class="card-header bg-primary">
                 <a (click)="toggleCPCollapse()" class="btn text-light text-capitalize d-flex justify-content-between" data-bs-toggle="collapse" href="#collapseCP">
                     Compétences <i [ngClass]="{'bi-caret-down-fill': isCPCollapsed, 'bi-caret-up-fill': !isCPCollapsed}" class="bi fs-4 text-light"></i></a>
@@ -137,7 +137,7 @@
     
             <div id="collapseCP" class="collapse" [class.show]="!isCPCollapsed" data-bs-parent="#accordion">
                 <div class="card-body mt-4 p-5 bg-primary text-white rounded">
-
+    
                     <!-- deuxième onglet -->
                     <!-- <div class="mt-4 p-5 bg-primary text-white rounded"> -->
                     <ng-container *ngIf="tradeData.competences">
@@ -146,14 +146,13 @@
                         </p>
                     </ng-container>
                     <!-- </div> -->
-
+    
                 </div>
             </div>
-
+    
         </div>
-
-
     </div>
+    
 
 
 
