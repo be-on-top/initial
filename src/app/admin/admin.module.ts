@@ -96,15 +96,18 @@ const routesAdmin: Routes = [
 
       // l'éditeur est générique pour l'esssai ??
       // { path: 'users', component: UsersListComponent, data: { user: 'editor' } },
+      { path: 'managers', component: UsersListComponent, data: { user: 'admin', data: 'managers' } },
       { path: 'referents', component: UsersListComponent, data: { user: 'admin', data: 'referents' } },
       { path: 'editors', component: UsersListComponent, data: { user: 'admin', data: 'editors' } },
       { path: 'externals', component: UsersListComponent, data: { user: 'admin', data: 'externals' } },
       // { path: 'user/:id', component: UserDetailsComponent },
+      { path: 'manager/:id', component: UserDetailsComponent, data: { user: 'admin', data: 'managers' } },
       { path: 'referent/:id', component: UserDetailsComponent, data: { user: 'admin', data: 'referents' } },
       { path: 'editor/:id', component: UserDetailsComponent, data: { user: 'admin', data: 'editors' } },
       { path: 'external/:id', component: UserDetailsComponent, data: { user: 'admin', data: 'externals' } },
       // { path: 'external/:id', component: ExternalDetailsComponent, data: { user: 'external' } },
 
+      { path: 'addManager', component: AddUserComponent, data: { user: 'admin', data: 'managers' } },
       { path: 'addReferent', component: AddUserComponent, data: { user: 'admin', data: 'referents' } },
       { path: 'addEditor', component: AddUserComponent, data: { user: 'admin', data: 'editors' } },
       // si external est à rattaché simplement à users comme editor ou contributor 

@@ -73,10 +73,13 @@ export class UsersService {
   }
 
   deleteUser(id: string) {
-    // on utilisera la méthode deleteDoc() de Firestore et delete de currentUser
+    // on utilisera la méthode deleteDoc() de Firestore (pas delete de currentUser)
     let $usersRef = doc(this.firestore, "users/" + id)
-    console.log("this.auth.currentUser to delete", this.auth.currentUser);
-    deleteDoc($usersRef);
+    // faut aussi virer la référence à l'utilisateur dans la collection roles (tant qu'on maintient cette collection...)
+    let $rolesRef = doc(this.firestore, "roles/" + id)
+    console.log("this.auth.currentUser to delete", this.auth.currentUser)
+    deleteDoc($usersRef)
+    deleteDoc($rolesRef)
     // HORS DE QUESTION d'utiliser cette méthode. Elle supprime l'utilisateur authentifié !!!!
     // let userToDelete:any=this.auth.currentUser
     // deleteUser(userToDelete).then(() => {

@@ -1,6 +1,8 @@
 <div class="container py-5">
 
-    <h3>Gestion des {{title}}</h3>
+    <h3 *ngIf="userRouterLinks.data!=='managers'">Gestion des {{title}}</h3>
+    <h3 *ngIf="userRouterLinks.user==='admin' && userRouterLinks.data=='managers'">Désignation du manager (si besoin)
+    </h3>
     <hr>
     <div *ngIf="(!allUsers)">
         ...loading
@@ -19,38 +21,57 @@
         </div>
 
         <div *ngFor="let user of allUsers">
-            <div class="row mt-4 ps-5 ps-sm-0" *ngIf="searchText==='' || user.lastName.toLowerCase().includes(searchText) || user.firstName.toLowerCase().includes(searchText) ">
+            <div class="row mt-4 ps-5 ps-sm-0"
+                *ngIf="searchText==='' || user.lastName.toLowerCase().includes(searchText) || user.firstName.toLowerCase().includes(searchText) ">
                 <div class="col-sm-3 col-6">{{user.lastName}}</div>
                 <div class="col-sm-3 col-6 order-perso2">{{user.firstName}}</div>
-                <div class="col-sm-3 col-6"><button class="btn btn-danger" (click)="deleteUser(user.id)"><i class="bi bi-person-dash-fill"></i>Suppression</button></div>
+                <div class="col-sm-3 col-6"><button class="btn btn-danger" (click)="deleteUser(user.id)"><i
+                            class="bi bi-person-dash-fill"></i>Suppression</button></div>
                 <div class="col-sm-3 col-6 order-perso4"><button class="btn btn-primary">
-                    <!-- <a [routerLink]="['/admin/user', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a> -->
-                    <!-- <a *ngIf="userRouterLinks.user==='trainer'" [routerLink]="['/admin/trainer', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
+                        <!-- <a [routerLink]="['/admin/user', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a> -->
+                        <!-- <a *ngIf="userRouterLinks.user==='trainer'" [routerLink]="['/admin/trainer', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
                     <a *ngIf="userRouterLinks.user==='tutor'" [routerLink]="['/admin/tutor', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
                     <a *ngIf="userRouterLinks.user==='evaluator'" [routerLink]="['/admin/evaluator', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
                     <a *ngIf="userRouterLinks.user==='editor'" [routerLink]="['/admin/user', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a> -->
 
-                    <!-- c'est l'un ou l'autre, on ajuste les chemin côté template c'est plus verbeux mais très secure -->
-                    <!-- <a *ngIf="userRouterLinks.user==='admin' && userRouterLinks.data==='editors' " [routerLink]="['/admin/editor', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
+                        <!-- c'est l'un ou l'autre, on ajuste les chemin côté template c'est plus verbeux mais très secure -->
+                        <!-- <a *ngIf="userRouterLinks.user==='admin' && userRouterLinks.data==='editors' " [routerLink]="['/admin/editor', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
                     <a *ngIf="userRouterLinks.user==='admin' && userRouterLinks.data==='referents' " [routerLink]="['/admin/referent', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a> -->
-                   <!-- soit on prépare le lien côté typescript, c'est moins verbeux -->
-                    <a  [routerLink]="[linkToDetails, user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
-                    <!-- <a *ngIf="userRouterLinks.user==='external'" [routerLink]="['/admin/external', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a> -->
-                </button></div>
+                        <!-- soit on prépare le lien côté typescript, c'est moins verbeux -->
+                        <a [routerLink]="[linkToDetails, user.id]" class="text-white"><i
+                                class="bi bi-person-lines-fill"></i>Détails</a>
+                        <!-- <a *ngIf="userRouterLinks.user==='external'" [routerLink]="['/admin/external', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a> -->
+                    </button></div>
             </div>
         </div>
 
         <div class="row my-5 justify-content-end ps-5 ps-sm-0">
-            <div class="col-sm-3"><button class="btn btn-primary">
-                <!-- <a [routerLink]="['/admin/addUser']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a> -->
-                <a *ngIf="userRouterLinks.user==='trainer'" [routerLink]="['/admin/addTrainer']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a>
-                <a *ngIf="userRouterLinks.user==='tutor'" [routerLink]="['/admin/addTutor']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a>
-                <a *ngIf="userRouterLinks.user==='evaluator'" [routerLink]="['/admin/addEvaluator']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a>
-               <!-- les 3 qui suivent pour tester la mutualisation ++ ne se réfèrent plus qu'à un seul composant -->
-                <a *ngIf="userRouterLinks.user==='editor' && userRouterLinks.data=='editors' " [routerLink]="['/admin/addEditor']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a>
-                <a *ngIf="userRouterLinks.user==='admin'  && userRouterLinks.data=='externals'" [routerLink]="['/admin/addUser']" class="text-white"><i class="bi bi-person-lines-fill"></i>Ajouter</a>
-                <a *ngIf="userRouterLinks.user==='admin'  && userRouterLinks.data=='referents'" [routerLink]="['/admin/addReferent']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a>
-            </button></div>
+            <div class="col-sm-3">
+                <button class="btn btn-primary" *ngIf="userRouterLinks.data!=='managers'">
+                    <!-- <a [routerLink]="['/admin/addUser']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a> -->
+                    <a *ngIf="userRouterLinks.user==='trainer'" [routerLink]="['/admin/addTrainer']"
+                        class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a>
+                    <a *ngIf="userRouterLinks.user==='tutor'" [routerLink]="['/admin/addTutor']" class="text-white"><i
+                            class="bi bi-person-plus-fill"></i>Ajouter</a>
+                    <a *ngIf="userRouterLinks.user==='evaluator'" [routerLink]="['/admin/addEvaluator']"
+                        class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a>
+                    <!-- les 3 qui suivent pour tester la mutualisation ++ ne se réfèrent plus qu'à un seul composant -->
+                    <a *ngIf="userRouterLinks.user==='admin' && userRouterLinks.data=='editors' "
+                        [routerLink]="['/admin/addEditor']" class="text-white"><i
+                            class="bi bi-person-plus-fill"></i>Ajouter</a>
+                    <a *ngIf="userRouterLinks.user==='admin' && userRouterLinks.data=='externals'"
+                        [routerLink]="['/admin/addUser']" class="text-white"><i
+                            class="bi bi-person-lines-fill"></i>Ajouter</a>
+                    <a *ngIf="userRouterLinks.user==='admin' && userRouterLinks.data=='referents'"
+                        [routerLink]="['/admin/addReferent']" class="text-white"><i
+                            class="bi bi-person-plus-fill"></i>Ajouter</a>
+                </button>
+                <!-- {{allUsers.length}}{{userRouterLinks.data}} -->
+                <button class="btn btn-primary" *ngIf="userRouterLinks.user==='admin' && userRouterLinks.data=='managers' && allUsers.length===0">
+                    <a [routerLink]="['/admin/addManager']" class="text-white"><i
+                            class="bi bi-person-plus-fill"></i>Ajouter</a>
+                </button>
+            </div>
         </div>
 
     </div>

@@ -60,7 +60,17 @@ export class UsersListComponent {
         this.allUsers = data
         return this.allUsers
       })
-    } else if (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "referents") {
+    } else if (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "managers") {
+      this.title = "Managers (supervision des questionnaires)"
+      this.linkToDetails = "/admin/manager"
+      this.linkBackToList = "/admin/managers"
+      this.sUsers.getUsers().subscribe(data => {
+        console.log("data de getUers pour admin()", data)
+        this.allUsers = data.filter(user => user.role == 'manager')
+        return this.allUsers
+      })
+    }
+    else if (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "referents") {
       this.title = "Référents Administratifs"
       this.linkToDetails = "/admin/referent"
       this.linkBackToList = "/admin/referents"

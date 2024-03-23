@@ -1,7 +1,9 @@
 <div class="container py-5">
 
-    <h3>Ajouter un utilisateur (type Contributeur ou référent administratif)</h3>
-    <!-- <app-feedback-messages [feedbackMessages]="feedbackMessages" [isSuccessMessage]="isSuccessMessage"></app-feedback-messages> -->
+    <h3>Ajouter un utilisateur</h3>
+    <app-feedback-messages [feedbackMessages]="feedbackMessages" [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
+
+<div class="alert alert-info text-light">Essai de mutualisation pour l'ajout d'utilisateurs autres que évaluateurs, formateurs et tuteurs...</div>
 
     <!-- pour les messages de retour/validation des champs du formulaire ou form validation, on utilisera BOOTSTRAP plutôt que des directives structurelles -->
     <form class="form" #f="ngForm" (submit)="addUser(f)" class="was-validated">
@@ -49,8 +51,9 @@
                 <select class="form-select text-secundary" name="role" id="role" ngModel required #role="ngModel">
                     <option value>Merci de préciser...</option>
                     <option value="editor">Editeur (marketing)</option>
-                    <option value="referent">Référent administratif (un seul requis)</option>
-                    <option value="external">Référent administratif (un seul requis)</option>
+                    <option value="referent">Référent administratif (gestion des inscriptions)</option>
+                    <option value="manager">Manager (supervision des questionnaires)</option>
+                    <option value="external">Observateur externe (droits de consultations)</option>
                 </select>
             </div>
         </div>

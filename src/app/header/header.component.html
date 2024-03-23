@@ -61,6 +61,9 @@
                         <li><a class="dropdown-item" [routerLink]="['/admin/students']"
                                 *ngIf="userRole.includes('admin')">Gestion des candidats</a></li>
                         <!-- ajout d'une route pour designation du référent -->
+                        <hr>
+                        <li><a class="dropdown-item" [routerLink]="['/admin/managers']"
+                            *ngIf="userRole.includes('admin')">Choix d'un manager (optionnel)</a></li>
 
                         <!-- liste étudiants  pour observateurs -->
                         <li><a class="dropdown-item" [routerLink]="['/admin/externalStudentsList']"

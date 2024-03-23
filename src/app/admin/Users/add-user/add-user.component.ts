@@ -39,14 +39,15 @@ export class AddUserComponent {
 
   ngOnInit(): void {
 
-    if  (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "referents") {
+    if  (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "managers") {
+      this.title = "Manager (Responsable Métiers)"
+      this.linkBackToList = '/admin/managers'
+    } else if  (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "referents") {
       this.title = "Référents Administratifs"
       this.linkBackToList = '/admin/referents'
-
     } else if (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "editors") {
       this.title = "Contributeurs"
       this.linkBackToList = '/admin/editors'
-
     } else if (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "externals") {
       this.title = "Observateurs Externes"
       this.linkBackToList = '/admin/externals'
