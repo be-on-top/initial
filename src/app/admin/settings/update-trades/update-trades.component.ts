@@ -84,7 +84,7 @@ export class UpdateTradesComponent {
       
       // if (form.value.description !== this.trade.description) {
         alert(form.value.description)
-        this.service.updateDescription(form.value).then(() => {
+        this.service.updateDescription(form.value, this.sigleId).then(() => {
           this.feedbackMessages = `Modification de la description OK`;
           this.isSuccessMessage = true
           setTimeout(() => {
@@ -106,7 +106,7 @@ export class UpdateTradesComponent {
     else {
 
       this.durations = []; // Réinitialise le tableau avant d'ajouter les durées
-      this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, rncp:form.value.rncp, isQualifying:form.value.isQualifying, status:form.value.status, totalCP: form.value.totalCP, competences: [], durations: {}, costs: {}, description: form.value.description }
+      this.sigles = { sigle: this.trade.sigle, denomination: form.value.denomination, rncp:form.value.rncp, isQualifying:form.value.isQualifying, requirements:form.value.requirements, status:form.value.status, totalCP: form.value.totalCP, competences: [], durations: {}, costs: {}, description: form.value.description }
       // si on souhaite un objet, comme ceux écrits initialement en dur exemple : competences:{CP1:"", CP2:""}
       // this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, totalCP: form.value.totalCP, competences: {} }
 

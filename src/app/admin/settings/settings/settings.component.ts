@@ -13,7 +13,7 @@ import { Denominator } from 'src/app/quizz/denominator';
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
-  sigles: Trade = { sigle: "", denomination: "", status: true, competences: [], totalCP: 0, durations: {}, costs: {} }
+  sigles: Trade = { sigle: "", denomination: "", status: true, isQualifying:false, competences: [], totalCP: 0, durations: {}, costs: {} }
   form: any
   total: any = []
 
@@ -51,7 +51,7 @@ export class SettingsComponent implements OnInit {
 
   addSigles(form: NgForm) {
     this.durations = []; // Réinitialise le tableau avant d'ajouter les durées
-    this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, rncp:form.value.rncp, isQualifying:form.value.isQualifying, status:form.value.status, totalCP: form.value.totalCP, competences: [], durations: {}, costs: {}}
+    this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, rncp:form.value.rncp, isQualifying:form.value.isQualifying, requirements:form.value.requirements, status:form.value.status, totalCP: form.value.totalCP, competences: [], durations: {}, costs: {}}
     // si on souhaite un objet, comme ceux écrits initialement en dur exemple : competences:{CP1:"", CP2:""}
     // this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, totalCP: form.value.totalCP, competences: {} }
     for (let i = 1; i <= form.value.totalCP; i++) {

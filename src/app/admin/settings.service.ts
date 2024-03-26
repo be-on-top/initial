@@ -49,7 +49,7 @@ export class SettingsService {
 
   async updateTrade(trade: Trade, totalToRegister: number) {
 
-    console.log(trade);
+    console.log('trade récupéré dans updateTrade du service', trade);
     console.log('trade.totalCP', trade.totalCP);
 
     trade.totalCP = totalToRegister
@@ -66,7 +66,7 @@ export class SettingsService {
 
   }
 
-  async updateDescription(trade: Partial<Trade>) {
+  async updateDescription(trade: Partial<Trade>, tradeId:string) {
 
     let $settingsRef = collection(this.firestore, "sigles");
     let updateData: Partial<Trade> = {};
@@ -78,7 +78,7 @@ export class SettingsService {
 
     // ...
 
-    await updateDoc(doc($settingsRef, trade.sigle), updateData);
+    await updateDoc(doc($settingsRef, tradeId), updateData);
   }
 
 

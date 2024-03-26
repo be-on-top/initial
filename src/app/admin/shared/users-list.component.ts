@@ -91,7 +91,7 @@ export class UsersListComponent {
     } else if (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "externals") {
       this.title = "Observateurs Externes"
       this.linkToDetails = "/admin/external"
-      this.linkBackToList = "admin/editors"
+      this.linkBackToList = "admin/externals"
       // this.sExternal.getExternals().subscribe(data => {
       //   console.log("data de getExternals()", data)
       //   this.allUsers = data

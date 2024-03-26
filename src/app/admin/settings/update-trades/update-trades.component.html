@@ -14,11 +14,9 @@
 
     <label for="sigle" class="form-label mt-3">Ref <span *ngIf="userRouterLinks.user=='editor'"> (à ne surtout pas
         modifier)</span></label>
-    <input type="text" name="sigle" [(ngModel)]="trade.sigle" #sigle="ngModel" class="form-control" required
+    <input type="text" name="sigle" [(ngModel)]="trade.sigle" class="form-control" required
       minlength="3" disabled>
-    <div *ngIf="sigle.dirty || (sigle.touched && sigle.invalid)" class="invalid-feedback">
-      Veuillez fournir un sigle valide.
-    </div>
+
     <div class="form-group" *ngIf="userRouterLinks && userRouterLinks.user=='admin'">
       <label for="denomination" class="form-label mt-3">Dénomination</label>
       <input type="text" name="denomination" [(ngModel)]="trade.denomination" #denomination="ngModel"
@@ -26,7 +24,7 @@
       <div *ngIf="denomination.dirty || (denomination.touched && denomination.invalid)" class="invalid-feedback">
         Veuillez fournir une dénomination valide.
       </div>
-      <div *ngIf="sigle.valid" class="valid-feedback">
+      <div *ngIf="denomination.valid" class="valid-feedback">
         Nom valide.
       </div>
       <!-- nouveaux champs du formulaire !!!!  -->
@@ -36,6 +34,11 @@
       <div class="form-check form-switch mt-3">
         <input class="form-check-input" type="checkbox" id="statusCheckbox" name="isQualifying" [(ngModel)]="trade.isQualifying">
         <label class="form-check-label" for="statusCheckbox">Formation qualifiante ?</label>
+      </div>
+      <!-- si prérequis -->
+      <div class="mt-3">
+        <label class="form-label" for="requirements">Prérequis (faculatatif) ?</label>
+        <textarea class="form-control" id="requirements"  name="requirements" [(ngModel)]="trade.requirements" rows="3"></textarea>
       </div>
 
       <div class="form-check form-switch mt-3">
@@ -53,7 +56,6 @@
       <div *ngIf="totalCP.valid" class="valid-feedback">
         Champ OK.
       </div>
-
 
       <div *ngIf="total?.length != 0">
         <div *ngFor="let nb of total; let i = index">
