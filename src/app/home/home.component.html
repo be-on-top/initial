@@ -40,7 +40,8 @@
     <!-- fin test alert-dismissible -->
 
     <!-- on introduit un champ de recherche -->
-    <app-search *ngIf="tradesData && tradesData.length>4" (searchTextChanged)="onSearchTextEntered($event)"></app-search>
+    <app-search *ngIf="tradesData && tradesData.length>4"
+        (searchTextChanged)="onSearchTextEntered($event)"></app-search>
 
     <!-- Carousel -->
     <!-- <div id="demo" class="carousel slide mx-auto" data-bs-ride="carousel">
@@ -75,7 +76,8 @@
 
         <ng-container *ngFor="let trade of tradesData">
 
-            <div class="col-md-6" *ngIf="searchText==='' || trade.denomination.includes(searchText) || removeAccents(trade.denomination).toLowerCase().includes(removeAccents(searchText).toLowerCase()) || trade.denomination.includes(searchText) || trade.denomination.toLowerCase().includes(searchText)">
+            <div class="col-md-6"
+                *ngIf="searchText==='' || trade.denomination.includes(searchText) || removeAccents(trade.denomination).toLowerCase().includes(removeAccents(searchText).toLowerCase()) || trade.denomination.includes(searchText) || trade.denomination.toLowerCase().includes(searchText)">
 
                 <!-- <a [routerLink]="['/quizz/',  trade.sigle, studentData && studentData['quizz_'+trade.sigle] && studentData['quizz_'+trade.sigle].lastIndexQuestion?(studentData['quizz_'+trade.sigle].lastIndexQuestion | number)+1:0, studentData && studentData['quizz_'+trade.sigle] && studentData['quizz_'+trade.sigle].scoreCounter?studentData['quizz_'+trade.sigle].scoreCounter:0, studentData && studentData['quizz_'+trade.sigle]?true:false, studentData && studentData.id?studentData.id:'']" class="text-decoration-none text-dark"> -->
                 <div class="card my-3" (click)="selectTrade(trade.id)">
@@ -110,7 +112,6 @@
 
                         <!-- pour switcher d'un intitulé à un autre selon que studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle -->
 
-
                         <ng-container *ngIf="studentData">
                             <hr>
                             <a [routerLink]="[
@@ -120,17 +121,12 @@
                     studentData?.['quizz_'+trade.sigle] ? true : false,
                     studentData?.id ? studentData.id : ''
                   ]" class="text-decoration-none text-dark">
-                                <!-- <div class="d-flex justify-content-end" *ngIf="(studentData && !studentData['quizz_'+trade.sigle] && trade.status==true)"> -->
-                                <div class="d-flex justify-content-end"
-                                    *ngIf="(studentData && !studentData['quizz_'+trade.sigle])">
+
+                                    <div class="d-flex justify-content-end" *ngIf="(studentData && !studentData['quizz_'+trade.sigle])">
                                     <button class="btn btn-transparent"><i class="bi bi-clock-fill text-success"></i>
                                         Démarrer votre évaluation</button>
                                 </div>
-                                <!-- si le questionnaire n'est pas finalisé -->
-                                <!-- <div class="d-flex justify-content-end" *ngIf="(studentData && !studentData['quizz_'+trade.sigle] && !trade.status==true)">
-                                <button class="btn btn-transparent"><i class="bi bi-info-square-fill text-danger"></i>
-                                    Merci de patienter...</button>
-                            </div> -->
+
 
                                 <div class="d-flex justify-content-end"
                                     *ngIf="studentData && studentData['quizz_'+trade.sigle] && !studentData['quizz_'+trade.sigle].fullResults">

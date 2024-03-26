@@ -22,6 +22,7 @@ import { SettingsService } from '../admin/settings.service';
 import { StudentsService } from '../admin/students.service';
 import { Student } from '../admin/Students/student';
 import { UpdateService } from '../update.service';
+import { filter, map } from 'rxjs';
 // import { DomSanitizer } from '@angular/platform-browser';
 
 
@@ -149,7 +150,9 @@ export class HomeComponent implements OnInit {
 
 
     // pour récupérer les métiers (sigles) enregistrés en base qui détermineront les différentes zones éditioriales
-    this.settingsService.getTrades().subscribe(data => {
+    this.settingsService.getTrades()
+    .pipe(map(data => data.filter(item => item.status && item.status === true)))
+    .subscribe(data => {
       this.tradesData = data;
       console.log("this.tradesData", this.tradesData);
 
