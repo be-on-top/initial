@@ -40,6 +40,7 @@ import { AuthGuardService } from './auth-guard.service';
 import { FooterComponent } from './footer/footer/footer.component';
 import { FirstWordPipe } from './first-word.pipe';
 import { InstallButtonComponent } from './install-button/install-button.component';
+import { CookieConsentBannerComponent } from './cookie-consent-banner/cookie-consent-banner.component';
 // import { AutoChangeDirective } from './auto-change.directive';
 
 // import { getMessaging } from 'firebase/messaging';
@@ -65,6 +66,7 @@ import { InstallButtonComponent } from './install-button/install-button.componen
     FooterComponent,
     FirstWordPipe,
     InstallButtonComponent,
+    CookieConsentBannerComponent,
     // AutoChangeDirective,
     // TooltipComponent
   ],

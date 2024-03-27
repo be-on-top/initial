@@ -1,0 +1,18 @@
+<p>cookie-consent-banner works!</p>
+
+<!-- <div *ngIf="!userConsent" class="cookie-consent-banner">
+    <p>Nous utilisons des cookies pour améliorer votre expérience. Acceptez-vous l'utilisation des cookies?</p>
+    <button (click)="acceptCookies()">Accepter</button>
+    <button (click)="rejectCookies()">Refuser</button>
+  </div> -->
+
+  <!-- dans certains cas, comme celui-ci où on a besoin d'accéder au service dans le template HTML, 
+    rendre le service public dans le constructeur est une solution appropriée. -->
+
+  <div *ngIf="!consentService.getConsent()" class="cookie-consent-banner">
+    <p>Nous utilisons des cookies pour améliorer votre expérience. Acceptez-vous l'utilisation des cookies?</p>
+    <button (click)="acceptCookies()">Accepter</button>
+    <button (click)="rejectCookies()">Refuser</button>
+  </div>
+  
+  
