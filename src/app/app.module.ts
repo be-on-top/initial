@@ -41,6 +41,7 @@ import { FooterComponent } from './footer/footer/footer.component';
 import { FirstWordPipe } from './first-word.pipe';
 import { InstallButtonComponent } from './install-button/install-button.component';
 import { CookieConsentBannerComponent } from './cookie-consent-banner/cookie-consent-banner.component';
+import { RgpdComponent } from './rgpd/rgpd.component';
 // import { AutoChangeDirective } from './auto-change.directive';
 
 // import { getMessaging } from 'firebase/messaging';
@@ -67,6 +68,7 @@ import { CookieConsentBannerComponent } from './cookie-consent-banner/cookie-con
     FirstWordPipe,
     InstallButtonComponent,
     CookieConsentBannerComponent,
+    RgpdComponent,
     // AutoChangeDirective,
     // TooltipComponent
   ],

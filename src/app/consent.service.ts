@@ -10,15 +10,19 @@ export class ConsentService {
   constructor() {}
 
   getConsent(): boolean {
-    return localStorage.getItem(this.consentKey) === 'true';
+    const consent = localStorage.getItem(this.consentKey) === 'true';
+    console.log('Consentement récupéré du stockage local :', consent);
+    return consent;
   }
 
   setConsent(consent: boolean): void {
     localStorage.setItem(this.consentKey, consent.toString());
+    console.log('Consentement enregistré dans le stockage local :', consent);
   }
 
   clearConsent(): void {
     localStorage.removeItem(this.consentKey);
+    console.log('Consentement supprimé du stockage local.');
   }
   
 }
