@@ -1,0 +1,14 @@
+.fw-bold{
+    color: black;
+  }
+
+  .registration-page-banner {
+    position: relative; /* Position relative pour le composant dans la modale */
+  }
+
+  .rgpd-banner {
+    position: relative;
+    display:bloc;
+    top:0
+  }
+  

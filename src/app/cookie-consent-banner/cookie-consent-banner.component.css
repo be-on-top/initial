@@ -1,9 +1,9 @@
 .cookie-consent-banner {
-    position: fixed;
+    /* position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 1050; /* Valeur supérieure à la valeur du z-index de la modale Bootstrap par défaut */
+    z-index: 1050;  */
     background-color: #fff;
     opacity: 95%;
     border: 1px solid #ccc;
@@ -11,4 +11,14 @@
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     max-width: 500px; /* Ajustez la largeur selon vos besoins */
   }
+
+  .cookie-consent-banner-fixed {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1050; /* Valeur supérieure à la valeur du z-index de la modale Bootstrap par défaut */
+  }
+
+
   

@@ -24,5 +24,9 @@ export class ConsentService {
     localStorage.removeItem(this.consentKey);
     console.log('Consentement supprimé du stockage local.');
   }
+
+  hasRefusedConsent(): boolean {
+    return localStorage.getItem(this.consentKey) === 'false';
+  }
   
 }

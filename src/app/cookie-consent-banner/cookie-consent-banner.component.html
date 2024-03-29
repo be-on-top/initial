@@ -1,4 +1,4 @@
-<p>cookie-consent-banner works!</p>
+<!-- <p>cookie-consent-banner works!</p> -->
 
 <!-- <div *ngIf="!userConsent" class="cookie-consent-banner">
     <p>Nous utilisons des cookies pour améliorer votre expérience. Acceptez-vous l'utilisation des cookies?</p>
@@ -18,9 +18,9 @@
 
 <!-- si on souhaite que l'utilisateur puisse fermer la bannière quel que soit l'état de userConsent -->
 
-<div *ngIf="showBanner" class="cookie-consent-banner alert alert-dismissible alert-info">
+<div *ngIf="showBanner" class="cookie-consent-banner alert alert-dismissible alert-info" [ngClass]="{'cookie-consent-banner-fixed': consentService.hasRefusedConsent()==false}">   
     <p class="mb-3 text-dark">Nous utilisons des cookies pour améliorer votre expérience. Acceptez-vous l'utilisation
-        des cookies?</p>
+        des cookies?</p> <span class="fst-italic">Ces cookies peuvent être utilisés à des fins d'analyse, de personnalisation du contenu, d'amélioration des performances du site et pour faciliter vos interactions.</span>
     <button (click)="acceptCookies()" class="btn btn-primary">Accepter</button>
     <button (click)="rejectCookies()" class="btn btn-secondary ms-2">Refuser</button>
 </div>

@@ -9,6 +9,8 @@ import { ConsentService } from '../consent.service';
 export class CookieConsentBannerComponent implements OnInit {
 
   showBanner = true; // Affiche la bannière par défaut
+  showOnRegistrationPage = false; // Indique si la bannière doit être affichée dans la page d'inscription
+
 
   constructor(public consentService: ConsentService) {
 
@@ -37,6 +39,12 @@ export class CookieConsentBannerComponent implements OnInit {
     console.log('Bannière masquée après refus des cookies');
     // Autres actions nécessaires après avoir refusé les cookies
     this.showBanner = false;
+  }
+
+  // Méthode pour afficher la bannière dans la page d'inscription
+  showBannerOnRegistrationPage() {
+    this.showOnRegistrationPage = true;
+    // this.showBanner = true;
   }
 
 

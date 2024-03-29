@@ -64,7 +64,11 @@
 
     <div class="form-check my-3">
       <input class="form-check-input" type="checkbox" id="myCheck" name="remember" required>
-      <label class="form-check-label" for="myCheck">Je consens à ... (le lien RGPD reste à faire).</label>
+      <label class="form-check-label" for="myCheck">J'ai lu et compris <a href="#" class="link-primary" data-bs-toggle="modal" data-bs-target="#rgpdModal">
+        la charte de respect de la vie privée
+      </a>
+      </label>
+      
       <div class="valid-feedback">Validation OK.</div>
       <div class="invalid-feedback">Cocher la case pour continuer.</div>
     </div>
@@ -72,4 +76,23 @@
     <button type="submit" class="btn btn-primary mt-4" [disabled]=studentForm.invalid>S'inscrire</button>
   </form>
 
+</div>
+
+<!-- essai modale pour lire le contenu rgpd -->
+<div class="modal fade" id="rgpdModal" tabindex="-1" aria-labelledby="rgpdModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="rgpdModalLabel">Charte RGPD</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Contenu de la charte de respect de la vie privée -->
+        <app-rgpd></app-rgpd>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
 </div>

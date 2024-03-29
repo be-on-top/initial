@@ -8,6 +8,7 @@ import { TradeDetailsComponent } from './trades/trade-details/trade-details.comp
 // import { LoginComponent } from './admin/login/login.component';
 // import { RegisterComponent } from './register/register.component';
 import { AuthGuardService } from './auth-guard.service';
+import { RgpdComponent } from './rgpd/rgpd.component';
 
 // const routes: Routes = [
 //   { path: 'home', component: HomeComponent, pathMatch: 'full', canActivate: [AuthGuardService] },
@@ -33,6 +34,7 @@ import { AuthGuardService } from './auth-guard.service';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
+  { path: 'rgpd', component: RgpdComponent },
   { path: 'home/:userRole', component: HomeComponent, pathMatch: 'full' },
   { path: 'admin', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'account', component: AccountComponent, canActivate: [AuthGuardService] },
