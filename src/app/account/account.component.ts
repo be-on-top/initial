@@ -18,6 +18,7 @@ import { PushNotificationService } from '../push-notification.service';
 import { Evaluation } from '../admin/evaluation';
 import { SettingsService } from '../admin/settings.service';
 import { Observable, forkJoin, combineLatest, concatMap, toArray, tap, takeUntil, Subject, take, of } from 'rxjs';
+import { ConsentService } from '../consent.service';
 
 
 @Component({
@@ -91,14 +92,18 @@ export class AccountComponent implements OnInit, OnDestroy {
   tradesData?: any
 
   public notificationPermissionGranted = false;
+  // pour la gestion du consentement à l'utilisation des cookies
+  consentStatus: boolean;
 
-  constructor(private auth: Auth, private firestore: Firestore, private authService: AuthService, private studentService: StudentsService, private activatedRoute: ActivatedRoute, private router: Router, private notificationService: PushNotificationService, public sanitizer: DomSanitizer, private settingsService: SettingsService) {
+  constructor(private auth: Auth, private firestore: Firestore, private authService: AuthService, private studentService: StudentsService, private activatedRoute: ActivatedRoute, private router: Router, private notificationService: PushNotificationService, public sanitizer: DomSanitizer, private settingsService: SettingsService, private consentService: ConsentService) {
     // const messaging = getMessaging();
     // onMessage(messaging, (payload) => {
     //   console.log('Message received. ', payload);
     //   // ...
     // });
 
+    // Initialiser l'état du consentement en récupérant la valeur depuis le service
+    this.consentStatus = this.consentService.getConsent()
   }
 
   ngOnInit(): void {
@@ -500,7 +505,7 @@ export class AccountComponent implements OnInit, OnDestroy {
     console.log('filteredData', filteredData)
     let total = 0
     Object.values(filteredData[0].durations).forEach((value: any) => {
-        total += value[0]
+      total += value[0]
     })
 
     return total
@@ -515,38 +520,41 @@ export class AccountComponent implements OnInit, OnDestroy {
     const filteredData = this.tradesData.find((item: any) => item.sigle === keyTrade);
 
     if (!filteredData) {
-        console.log('Trade non trouvé');
-        return 0;
+      console.log('Trade non trouvé');
+      return 0;
     }
 
     let maxTotalCost = 0;
 
     // Parcourir les propriétés dans durations
     for (const durationKey in filteredData.durations) {
-        if (durationKey.includes('duration')) {
-            const costKey = `cost_${durationKey.substring(durationKey.lastIndexOf('_') + 1)}`; // Construire la clé de coût correspondante
-            const maxDuration = Math.max(...filteredData.durations[durationKey]); // Obtenir la durée maximale
-            const costValue = filteredData.costs[costKey]; // Obtenir le coût correspondant
+      if (durationKey.includes('duration')) {
+        const costKey = `cost_${durationKey.substring(durationKey.lastIndexOf('_') + 1)}`; // Construire la clé de coût correspondante
+        const maxDuration = Math.max(...filteredData.durations[durationKey]); // Obtenir la durée maximale
+        const costValue = filteredData.costs[costKey]; // Obtenir le coût correspondant
 
-            if (costValue !== undefined) {
-                const totalCost = maxDuration * costValue; // Calculer le coût total pour cette compétence
-                maxTotalCost += totalCost; // Ajouter au coût total maximal
-            } else {
-                console.log(`Coût non trouvé pour ${durationKey}`);
-            }
+        if (costValue !== undefined) {
+          const totalCost = maxDuration * costValue; // Calculer le coût total pour cette compétence
+          maxTotalCost += totalCost; // Ajouter au coût total maximal
+        } else {
+          console.log(`Coût non trouvé pour ${durationKey}`);
         }
+      }
     }
 
     return maxTotalCost;
-}
+  }
 
 
-  
-
-
-
-
-
+  // Fonction appelée lorsque l'utilisateur souhaite modifier son consentement
+  modifyConsent(): void {
+    const currentConsent = this.consentService.getConsent();
+    // Afficher l'état actuel du consentement de l'utilisateur (par exemple, dans une boîte de dialogue)
+    // Laisser l'utilisateur choisir s'il souhaite accepter ou refuser les cookies
+    // Mettre à jour le consentement dans le stockage local en fonction de la décision de l'utilisateur
+    this.consentStatus = !currentConsent; // Met à jour l'état du consentement dans l'interface utilisateur
+    this.consentService.setConsent(this.consentStatus); // Met à jour le consentement dans le stockage local
+  }
 
 
 }
