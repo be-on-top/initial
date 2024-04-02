@@ -1,3 +1,5 @@
+import { getDocsFromCache } from "firebase/firestore";
+
 export const environment = {
     production: false,
     firebaseConfig: {
@@ -16,7 +18,6 @@ export const environment = {
         // messagingSenderId: "212539373061",
         // appId: "1:212539373061:web:ae37997ebc068516700e6c"
     }
-
 
 }
 

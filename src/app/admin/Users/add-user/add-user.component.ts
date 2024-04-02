@@ -64,16 +64,18 @@ export class AddUserComponent {
     }
 
 
-    console.log("form registration", form.value);
-    this.service.createUser(form.value).then((userCredential) => {
+    console.log("form registration", form.value);    
+    this.service.createUser(form.value).then(() => {
       // Signed in 
-      const user = userCredential;
+      // const user = userCredential
       this.feedbackMessages = `Enregistrement OK`;
+      // alert("adminReconnected call")
 
       // alert("registration ok")
       setTimeout(() => {
-        // this.router.navigate(['/admin/users'])
-        this.router.navigate([this.linkBackToList]);
+         this.router.navigate([this.linkBackToList]);
+         window.location.reload();
+         
       }, 2000)
       // this.router.navigate(['/admin/trainers']);
 
@@ -87,9 +89,6 @@ export class AddUserComponent {
 
         // ..};
       })
-    // form.reset();
-    // redirige vers la vue de détail 
-    // this.router.navigate(['/admin/trainers']);
 
   }
 
