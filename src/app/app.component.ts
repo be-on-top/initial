@@ -6,10 +6,11 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  host: {'[attr.lang]': '"fr"'}
 })
 export class AppComponent implements OnInit {
-  title = 'Be On Top APP';
+  title = 'Be On Top Application de positionnement et de formation métiers';
   // ui : string | undefined=""
   // mesaggeReceived:string | undefined="";
 
