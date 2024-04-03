@@ -4,7 +4,8 @@
     <!-- {{allMediasResponses | json}}
     all mediaQuestions :{{allMediasQuestions | json}} -->
 
-    <h3 *ngIf="result">Mise à jour de la question {{result.number}} <span class="d-block fs-6 mt-1">id : {{questionId}}</span> </h3>
+    <h3 *ngIf="result">Mise à jour de la question {{result.number}} <span class="d-block fs-6 mt-1">id :
+            {{questionId}}</span> </h3>
     <!-- <hr> -->
 
     <form class="form" #f="ngForm" (submit)="updateForm(f)" class="was-validated">
@@ -34,6 +35,7 @@
                 </select>
             </div>
             <!-- rappel du sigle métier -->
+
             <div class="col-md-3 mb-1">
                 <select class="form-select disabled" id="sigle" name="sigle" [(ngModel)]="result.sigle"
                     #category="ngModel">
@@ -42,12 +44,28 @@
                 </select>
             </div>
             <!-- rappel de la compétence associée -->
-            <div class="col-md-4 mb-1">
+            <!-- on va le rendre éditable (pas de disabled) finalement pour tester les répercussions -->
+            <!-- <div class="col-md-4 mb-1">
                 <select class="form-select disabled" id="competence" name="competence" [(ngModel)]="result.competence"
                     #competence="ngModel">
                     <option selected="selected" value="{{result.competence}}" disabled>CP {{result.competence}}
                     </option>
                 </select>
+            </div> -->
+            <div class="col-md-4 mb-1">
+                <!-- {{relatedCompetences | json}} -->
+                <ng-container *ngIf="relatedCompetences">
+                    <select class="form-select" name="competence" id="competence" [(ngModel)]="result.competence" required
+                        #competence="ngModel">
+                                <option selected [value]="result.competence">{{result.competence}} (actuel enregistrement)</option>
+
+                        <option
+                            *ngFor="let key of relatedCompetences, let i = index"
+                            [value]="result.sigle + '_CP' + (i + 1)">
+                            {{result.sigle}}_CP{{i+1}} ({{ key }})
+                        </option>
+                    </select>
+                </ng-container>
             </div>
         </div>
 
@@ -76,10 +94,9 @@
                     <!-- pour englober cas de modification et de reset sur question -->
                     <div class="alert alert-info text-light py-2 mt-2">image : modification</div>
                     <div class="d-sm-flex gap-2 justify-content-between">
-                        <input type="text" [ngModel]="result.mediaQuestion"
-                            name="mediaQuestion" class="disabled invisible" #mediaQuestion>
-                        <input type="file" accept="image/*, video/*" 
-                            class="form-control w-75" 
+                        <input type="text" [ngModel]="result.mediaQuestion" name="mediaQuestion"
+                            class="disabled invisible" #mediaQuestion>
+                        <input type="file" accept="image/*, video/*" class="form-control w-75"
                             (change)="detectFiles($event, mediaQuestion, item)">
                         <button type="button" class="btn btn-danger w-25 mt-3 mt-sm-0"
                             (click)="resetFileInput('mediaQuestion', f, item)">Reset</button>
@@ -118,8 +135,8 @@
                     <!-- <label class="form-label mt-3" for="mediaOption1">Fichier à modifier</label> -->
                     <!-- pour englober la modification et le reset -->
                     <div class="d-sm-flex gap-2 justify-content-between">
-                        <input type="text" [ngModel]="result.mediaOption1"
-                        name="mediaOption1" class="disabled invisible" #mediaOption1>
+                        <input type="text" [ngModel]="result.mediaOption1" name="mediaOption1"
+                            class="disabled invisible" #mediaOption1>
                         <input type="file" class="form-control w-75" placeholder="Fichier média de votre choix"
                             (change)="detectFiles($event, mediaOption1, item)">
                         <button type="button" class="btn btn-danger w-25 mt-3 mt-sm-0"
@@ -174,9 +191,9 @@
                     <!-- <label class="form-label mt-3" for="mediaOption2">Fichier à modifier</label> -->
                     <!-- pour englober la modification et le reset -->
                     <div class="d-sm-flex gap-2 justify-content-between">
-                        <input type="text" [ngModel]="result.mediaOption2"
-                        name="mediaOption2" class="disabled invisible" #mediaOption2>                        
-                        <input type="file"  class="form-control w-75" placeholder="Fichier média de votre choix"
+                        <input type="text" [ngModel]="result.mediaOption2" name="mediaOption2"
+                            class="disabled invisible" #mediaOption2>
+                        <input type="file" class="form-control w-75" placeholder="Fichier média de votre choix"
                             (change)="detectFiles($event, mediaOption2, item)">
                         <button type="button" class="btn btn-danger w-25 mt-3 mt-sm-0"
                             (click)="resetFileInput('mediaOption2', f, item)">Reset</button>
@@ -229,8 +246,8 @@
                     <!-- <label class="form-label mt-3" for="mediaOption3">Fichier à modifier</label> -->
                     <!-- pour englober la modification et le reset -->
                     <div class="d-sm-flex gap-2 justify-content-between">
-                        <input type="text" [ngModel]="result.mediaOption3"
-                        name="mediaOption3" class="disabled invisible" #mediaOption3>   
+                        <input type="text" [ngModel]="result.mediaOption3" name="mediaOption3"
+                            class="disabled invisible" #mediaOption3>
                         <input type="file" class="form-control w-75" placeholder="Fichier média de votre choix"
                             (change)="detectFiles($event, mediaOption3, item)">
                         <button type="button" class="btn btn-danger w-25 mt-3 mt-sm-0"
@@ -259,15 +276,15 @@
             placeholder="Commentaire si besoin" cols="30" rows="5"></textarea>
         <div class="form-group d-sm-flex gap-5 mt-3">
             <div class="form-check">
-                <input type="radio" class="form-check-input" name="optScoring3" [value]="true" [(ngModel)]="result.optScoring3"
-                    [checked]="result.optScoring3 && f.value.option3!=''">Vraie
+                <input type="radio" class="form-check-input" name="optScoring3" [value]="true"
+                    [(ngModel)]="result.optScoring3" [checked]="result.optScoring3 && f.value.option3!=''">Vraie
                 <!-- <label class="form-check-label" for="radio3"></label> -->
             </div>
             <div class="form-check">
                 <input type="radio" class="form-check-input" name="optScoring3" [value]="false"
                     [(ngModel)]="result.optScoring3" [checked]="result.optScoring3 && f.value.option3!=''">Fausse
             </div>
-            
+
         </div>
 
         <hr>
@@ -287,8 +304,8 @@
                     <!-- <label class="form-label mt-3" for="mediaOption4">Fichier à modifier</label> -->
                     <!-- pour englober la modifiction et le reset -->
                     <div class="d-sm-flex gap-2 justify-content-between">
-                        <input type="text" [ngModel]="result.mediaOption4"
-                        name="mediaOption4" class="disabled invisible" #mediaOption4>   
+                        <input type="text" [ngModel]="result.mediaOption4" name="mediaOption4"
+                            class="disabled invisible" #mediaOption4>
                         <input type="file" class="form-control" placeholder="Fichier média de votre choix"
                             (change)="detectFiles($event, mediaOption4, item)">
                         <button type="button" class="btn btn-danger w-25 mt-3 mt-sm-0"
@@ -316,8 +333,8 @@
             placeholder="Commentaire si besoin" cols="30" rows="5"></textarea>
         <div class="form-group d-sm-flex gap-5 mt-3">
             <div class="form-check">
-                <input type="radio" class="form-check-input" name="optScoring4" [value]="true" [(ngModel)]="result.optScoring4"
-                    [checked]="result.optScoring4 && f.value.option4!=''">Vraie
+                <input type="radio" class="form-check-input" name="optScoring4" [value]="true"
+                    [(ngModel)]="result.optScoring4" [checked]="result.optScoring4 && f.value.option4!=''">Vraie
                 <!-- <label class="form-check-label" for="radio4"></label> -->
             </div>
             <div class="form-check">

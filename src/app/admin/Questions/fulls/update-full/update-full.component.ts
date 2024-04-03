@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuestionsService } from 'src/app/admin/questions.service';
 import { EvaluatorsService } from 'src/app/admin/evaluators.service';
+import { SettingsService } from 'src/app/admin/settings.service';
 
 
 @Component({
@@ -47,7 +48,13 @@ export class UpdateFullComponent {
   isRequiredOption3: boolean = false
   isRequiredOption4: boolean = false
 
-  constructor(private service: QuestionsService, private ac: ActivatedRoute, private router: Router, private evaluatorService: EvaluatorsService
+  relatedCompetences: any = []
+
+  registryCompetences: any = []
+
+  competence:string=""
+
+  constructor(private service: QuestionsService, private ac: ActivatedRoute, private router: Router, private evaluatorService: EvaluatorsService, private tradeService:SettingsService
   ) {
   }
 
@@ -66,6 +73,8 @@ export class UpdateFullComponent {
       console.log("data depuis update-full component !!!!!!!!!!!!!", data);
       this.result = data
       this.isVideo = data.isVideo
+      // this.relatedCompetences = data
+      this.checkIfSelected(data.sigle)
       // data.optScoring3 ? this.optScoring3 = data.optScoring3 : 'null'
       // data.optScoring4 ? this.optScoring4 = data.optScoring4 : 'null'
     })
@@ -273,5 +282,14 @@ export class UpdateFullComponent {
   onMediaOption1Change(newMediaOption1Value: string) {
     this.result.mediaOption1 = newMediaOption1Value;
   }
+
+  checkIfSelected(sigle: any) {
+    console.log(sigle);
+    this.tradeService.getCompetences(sigle).subscribe(data => {
+      this.relatedCompetences= data
+      })
+  }
+
+
 
 }

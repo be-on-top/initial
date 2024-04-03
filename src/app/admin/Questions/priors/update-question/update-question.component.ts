@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 // import { Observable } from 'rxjs';
 import { QuestionsService } from 'src/app/admin/questions.service';
+import { SettingsService } from 'src/app/admin/settings.service';
 
 
 @Component({
@@ -67,7 +68,9 @@ export class UpdateQuestionComponents implements OnInit {
   isRequiredOption3: boolean = false
   isRequiredOption4: boolean = false
 
-  constructor(private service: QuestionsService, private ac: ActivatedRoute, private router: Router) {
+  relatedCompetences: any = []
+
+  constructor(private service: QuestionsService, private ac: ActivatedRoute, private router: Router, private tradeService:SettingsService) {
   }
 
   ngOnInit(): void {
@@ -80,6 +83,7 @@ export class UpdateQuestionComponents implements OnInit {
       console.log("data depuis update-question component !!!!!!!!!!!!!", data.question);
       this.result = data
       this.isVideo = data.isVideo
+      this.checkIfSelected(data.sigle)
       console.log('status de la video', this.isVideo);
     })
 
@@ -275,6 +279,13 @@ export class UpdateQuestionComponents implements OnInit {
 
   onMediaOption1Change(newMediaOption1Value: string) {
     this.result.mediaOption1 = newMediaOption1Value;
+  }
+
+  checkIfSelected(sigle: any) {
+    console.log(sigle);
+    this.tradeService.getCompetences(sigle).subscribe(data => {
+      this.relatedCompetences= data
+      })
   }
 
 
