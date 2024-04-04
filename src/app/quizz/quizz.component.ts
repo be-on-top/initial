@@ -93,8 +93,10 @@ export class QuizzComponent implements OnInit {
   mobileBreakpoint = 575; // Remplacez cela par la largeur de la fenêtre à partir de laquelle vous considérez que c'est un téléphone mobile
 
   title: string = ""
-  totalQuestions: number = 100
+  // totalQuestions: number = 100
+  totalQuestions: number = 0
   hasReaden: boolean = false
+  loading: boolean = true
 
 
   @ViewChild('myModal') myModal!: ElementRef;
@@ -136,7 +138,8 @@ export class QuizzComponent implements OnInit {
       this.questions.sort(this.compare)
       // pour déterminer le nombre total (réel) de questions
       this.totalQuestions = this.questions.length + 1
-
+      this.loading = false
+      
       // pour qu'on ne se retrouve pas en console avec un can not read id parce qu'il n'y en a plus
       // on peut rajouter ATTENTION !!!!! 
       if (this.indexQuestion < this.questions.length - 1) {
@@ -146,6 +149,8 @@ export class QuizzComponent implements OnInit {
         this.questionsMedias = this.questionsService.getMediaQuestionById(this.questions[this.indexQuestion].id)
         console.log("questionsMedias depuis questions-details", this.questionsMedias);
         this.responsesMedias = this.questionsService.getMediasResponsesById(this.questions[this.indexQuestion].id)
+
+
 
         console.log("this.fullOptScoringArray initial", this.fullOptScoringTrue)
         console.log("this.totalAnswersAvailable initial", this.totalAnswersAvailable)
@@ -236,8 +241,17 @@ export class QuizzComponent implements OnInit {
       } else if (this.trade == "poseur_ite") {
         this.title = "Poseur ITE"
       }
+
       else if (this.trade == "mac_vrd") {
         this.title = "Maçon VRD"
+      }
+
+      else if (this.trade == "caces_R489") {
+        this.title = "Conducteur chariot élévateur R489"
+      }
+
+      else if (this.trade == "caces_R482") {
+        this.title = "Conducteur engins de chantier R482"
       }
 
     })

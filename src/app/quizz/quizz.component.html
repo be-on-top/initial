@@ -23,7 +23,12 @@
     </div>
     <div class="alert bg-info text-white text-smaller">hasStartedEvaluation : {{hasStartedEvaluation}}</div> -->
 
-    <div *ngIf="!hasStartedEvaluation && !hasReaden" class="alert bg-light p-4 pe-5 alert-dismissible mb-4 fade show">
+    <div *ngIf="loading" class="spinner-border" role="status">
+        <!-- Affiche un spinner ou un message de chargement -->
+        <p class="visually-hidden">Loading...</p>
+    </div>
+
+    <div *ngIf="!hasStartedEvaluation && !hasReaden && !loading" class="alert bg-light p-4 pe-5 alert-dismissible mb-4 fade show">
         <!-- <div *ngIf="!hasStartedEvaluation" class="alert bg-light p-4 pe-5 alert-dismissible mb-4 fade show"> -->
         <!-- <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="alert"></button> -->
         Ce <strong>questionnaire est un questionnaire à choix multiples</strong>. <strong>Une ou plusieurs
