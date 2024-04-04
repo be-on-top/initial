@@ -1,7 +1,7 @@
 <div class="container py-5">
 
     <h3 *ngIf="userRouterLinks.data!=='managers'">Gestion des {{title}}</h3>
-    <h3 *ngIf="userRouterLinks.user==='admin' && userRouterLinks.data=='managers'">Désignation du manager (si besoin)
+    <h3 *ngIf="userRouterLinks.user==='admin' && userRouterLinks.data=='managers'">Désignation du responsable métier (si besoin)
     </h3>
     <hr>
     <div *ngIf="(!allUsers)">

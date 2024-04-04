@@ -50,11 +50,15 @@ export class UserDetailsComponent implements OnInit {
     } else if (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "externals") {
       this.title = "Observateurs Externes"
       this.linkBackToList = "admin/externals"
-
+    }
+    // Responsable métiers
+    else if (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "managers") {
+      this.title = "Responsables métiers"
+      this.linkBackToList = "admin/managers"
     }
   }
 
-
+// Responsable métiers
 
   deleteUser(userid: string) {
     console.log(userid);

@@ -33,10 +33,10 @@
                 <li class="nav-item dropdown" [routerLinkActive]="['active']"
                     *ngIf="userUid!==undefined && userUid!=='' && userRole!=='student' && userRole!=='editor'">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                        *ngIf="userRole.includes('admin') || userRole.includes('evaluator') || userRole.includes('trainer') || userRole.includes('tutor') || userRole.includes('external') || userRole.includes('referent')">Admin</a>
+                        *ngIf="userRole.includes('admin') || userRole.includes('evaluator') || userRole.includes('trainer') || userRole.includes('tutor') || userRole.includes('external') || userRole.includes('referent') || userRole.includes('manager')">Admin</a>
                     <!-- <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Admin</a> -->
                     <ul class="dropdown-menu">
-                        <li *ngIf="userRole.includes('admin')"><a class="dropdown-item"
+                        <li *ngIf="userRole.includes('admin') || userRole.includes('manager')"><a class="dropdown-item"
                                 (click)="navigateTo('/admin/settings')">Paramètres</a>
 
                         </li>
@@ -61,9 +61,9 @@
                         <li><a class="dropdown-item" [routerLink]="['/admin/students']"
                                 *ngIf="userRole.includes('admin')">Gestion des candidats</a></li>
                         <!-- ajout d'une route pour designation du référent -->
-                        <hr>
+                        <hr *ngIf="userRole.includes('admin')">
                         <li><a class="dropdown-item" [routerLink]="['/admin/managers']"
-                            *ngIf="userRole.includes('admin')">Choix d'un manager (optionnel)</a></li>
+                            *ngIf="userRole.includes('admin')">Responsable métiers (optionnel)</a></li>
 
                         <!-- liste étudiants  pour observateurs -->
                         <li><a class="dropdown-item" [routerLink]="['/admin/externalStudentsList']"

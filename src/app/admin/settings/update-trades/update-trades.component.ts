@@ -19,11 +19,11 @@ export class UpdateTradesComponent {
   userRole: string = ""
 
   sigleId: string = ""
-  trade: Trade = { sigle: "", denomination: "", rncp:"", isQualifying:false, status:true, competences: [], totalCP: 0, durations: {}, costs: {}, description:"" }
+  trade: Trade = { sigle: "", denomination: "", rncp:"", isQualifying:false, status:true, requirements:"", competences: [], totalCP: 0, durations: {}, costs: {}, description:"" }
 
 
   // sigles: Trade = { sigle: "", denomination: "", competences: [], totalCP: 0, durations: {}, costs: {}, description:"" }
-  sigles: Trade = { sigle: "", denomination: "", rncp:"", isQualifying:false, status: true, competences: [], totalCP: 0, durations: {}, costs: {} }
+  sigles: Trade = { sigle: "", denomination: "", rncp:"", isQualifying:false, status: true, requirements:"", competences: [], totalCP: 0, durations: {}, costs: {} }
   form: any
   total: any = []
   minValue: number = 0; // Valeur minimale pour toute nouvelle compétence
@@ -76,6 +76,10 @@ export class UpdateTradesComponent {
 
   updateSigles(form: NgForm) {
 
+    // Vérifier si le champ requirements est défini
+    let requirementsValue = form.value.requirements !== undefined ? form.value.requirements : '';
+
+
     // on introduit juste une distinction pour le scénario où userRouterLinks est editor
     if (this.userRouterLinks.user === 'editor') {
       console.log("on a bien à faire à un éditeur");
@@ -106,7 +110,7 @@ export class UpdateTradesComponent {
     else {
 
       this.durations = []; // Réinitialise le tableau avant d'ajouter les durées
-      this.sigles = { sigle: this.trade.sigle, denomination: form.value.denomination, rncp:form.value.rncp, isQualifying:form.value.isQualifying, requirements:form.value.requirements, status:form.value.status, totalCP: form.value.totalCP, competences: [], durations: {}, costs: {}, description: form.value.description }
+      this.sigles = { sigle: this.trade.sigle, denomination: form.value.denomination, rncp:form.value.rncp, isQualifying:form.value.isQualifying, requirements: requirementsValue, status:form.value.status, totalCP: form.value.totalCP, competences: [], durations: {}, costs: {}, description: form.value.description }
       // si on souhaite un objet, comme ceux écrits initialement en dur exemple : competences:{CP1:"", CP2:""}
       // this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, totalCP: form.value.totalCP, competences: {} }
 
