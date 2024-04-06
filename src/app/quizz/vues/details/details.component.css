@@ -71,3 +71,8 @@ i.text-choiced::after {
     position: relative;
   } */
   
+
+.loading{
+    filter: blur(5px);
+}
+

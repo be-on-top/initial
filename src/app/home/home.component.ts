@@ -258,5 +258,13 @@ export class HomeComponent implements OnInit {
     return truncatedText.trim() + '...';
   }
 
+  isLoading:boolean = true
+
+  onImageLoad
+  () {
+  // alert("bingo")
+  this.isLoading = false;
+}
+
 
 }

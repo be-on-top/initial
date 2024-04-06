@@ -1,4 +1,4 @@
-import { NumberFormatStyle } from '@angular/common';
+import { NumberFormatStyle, NgOptimizedImage } from '@angular/common';
 import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit, ElementRef, Renderer2, ViewChild, HostListener } from '@angular/core';
 // import { Firestore, collection, orderBy, startAt, startAfter, query, where, limit } from '@angular/fire/firestore';
 // import { QuestionsService } from 'src/app/admin/questions.service';
@@ -171,6 +171,8 @@ export class DetailsComponent implements OnInit {
     // alert("bingo")
     this.isLoading = false;
   }
+
+  
 
 
   // handleTouch() {
