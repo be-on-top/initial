@@ -46,7 +46,8 @@ export class DetailsComponent implements OnInit {
   @Output() hasBeenUpdated: EventEmitter<{ counter: number, evaluatedCompetence: string, isIncremented: boolean, isDecremented: boolean, fullAnswersClicked: number }> = new EventEmitter<{ counter: number, evaluatedCompetence: string, isIncremented: boolean, isDecremented: boolean, fullAnswersClicked: number }>();
 
 
-  isLoading = true
+  isLoading: boolean = true
+  isImageResponseLoading: boolean = true
 
   // pour zoomer image sur mobile
   @ViewChild('imageElement') imageElement?: ElementRef;
@@ -172,7 +173,13 @@ export class DetailsComponent implements OnInit {
     this.isLoading = false;
   }
 
-  
+  onImageResponseLoad
+    () {
+    // alert("bingo")
+    this.isImageResponseLoading = false;
+  }
+
+
 
 
   // handleTouch() {

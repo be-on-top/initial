@@ -47,14 +47,15 @@
                     <!-- <div class="image-container" (touchstart)="handleTouch()"> -->
                     <div class="image-container">
                         <!-- <img #imageElement class="img-fluid bg-light image-zoomable" [src]="item"> -->
-                        <img #imageElement class="img-fluid p-1 rounded" [src]="item" (load)="onImageLoad()" loading="lazy" [class.bg-primary]="!isLoading" [ngClass]="{'loading':isLoading}">
+                        <img #imageElement class="img-fluid p-1 rounded" [src]="item" (load)="onImageLoad()"
+                            loading="lazy" [class.bg-primary]="!isLoading" [ngClass]="{'loading':isLoading}">
                     </div>
                 </ng-template>
             </div>
         </div>
     </div>
 
-    
+
     <!-- fin de la question -->
 
     <!-- début des réponses -->
@@ -66,10 +67,16 @@
                 <!-- pour illusion du selected  -->
                 <i *ngIf="toggledStates[q.option1]" class="ms-2 text-choiced fs-5 bi bi-check-lg"></i>
             </button>
-            <div *ngIf="responsesMedias && responsesMedias.length!==0">
+            <!-- <div *ngIf="responsesMedias && responsesMedias.length!==0"> -->
+            <div *ngIf="responsesMedias">
+                
+                <div *ngIf="responsesMedias.length===1 && isImageResponseLoading" class="spinner-border text-success m-auto" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                
                 <div *ngFor="let item of responsesMedias">
                     <img *ngIf="item.includes(q.id) && item.includes('Option1')" class="img-fluid rounded my-3"
-                        [src]="item" loading="lazy">
+                        [src]="item" loading="lazy" (load)="onImageResponseLoad()" [ngClass]="{'loading':isImageResponseLoading}">
                 </div>
             </div>
             <!-- si pas d'images -->
@@ -81,9 +88,14 @@
                 <i *ngIf="toggledStates[q.option2]" class="ms-2 text-choiced fs-5 bi bi-check-lg"></i>
             </button>
             <div *ngIf="responsesMedias">
+
+                    <div *ngIf="responsesMedias.length===1 && isImageResponseLoading" class="spinner-border text-success m-auto" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+     
                 <div *ngFor="let item of responsesMedias">
                     <img *ngIf="item.includes(q.id) && item.includes('Option2')" class="img-fluid rounded my-3"
-                        [src]="item" loading="lazy">
+                        [src]="item" loading="lazy" (load)="onImageResponseLoad()" [ngClass]="{'loading':isImageResponseLoading}">
                 </div>
             </div>
         </div>
@@ -97,9 +109,14 @@
             </button>
 
             <div *ngIf="responsesMedias">
+
+                <div *ngIf="responsesMedias.length===1 && isImageResponseLoading" class="spinner-border text-success m-auto" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+
                 <div *ngFor="let item of responsesMedias">
                     <img *ngIf="item.includes(q.id) && item.includes('Option3')" class="img-fluid rounded my-3"
-                        [src]="item" loading="lazy">
+                        [src]="item" loading="lazy" (load)="onImageResponseLoad()" [ngClass]="{'loading':isImageResponseLoading}">
                 </div>
             </div>
         </div>
@@ -113,9 +130,14 @@
                 <i *ngIf="toggledStates[q.option4]" class="ms-2 text-choiced fs-5 bi bi-check-lg"></i>
             </button>
             <div *ngIf="responsesMedias">
+
+                <div *ngIf="responsesMedias.length===1 && isImageResponseLoading" class="spinner-border text-success m-auto" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+
                 <div *ngFor="let item of responsesMedias">
                     <img *ngIf="item.includes(q.id) && item.includes('Option4')" class="img-fluid rounded my-3"
-                        [src]="item" loading="lazy">
+                        [src]="item" loading="lazy" (load)="onImageResponseLoad()" [ngClass]="{'loading':isImageResponseLoading}">
                 </div>
             </div>
         </div>
