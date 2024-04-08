@@ -26,12 +26,28 @@ import { filter, map } from 'rxjs';
 // import { DomSanitizer } from '@angular/platform-browser';
 
 
+interface Image {
+  alt?: string;
+  src: string;
+  srcset?: string;
+  sizes?: string;
+  width: number;
+  height: number;
+  fill?: boolean;
+  decoding?: 'sync' | 'async' | 'auto';
+  loading?: 'lazy' | 'eager' | 'auto';
+  fetchPriority?: 'low' | 'high' | 'auto';
+  priority: boolean;
+}
+
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+
   user?: any;
   // sub: Subscription;
   uid = '';
@@ -65,6 +81,11 @@ export class HomeComponent implements OnInit {
   // on le prépare à recevoir un terme de recherche
   searchText: string = ''
 
+  largeurImage: number = 0
+  hauteurImage: number = 0
+
+
+
   // pour utiliser le composant de recherche
   onSearchTextEntered(searchValue: string) {
     this.searchText = searchValue
@@ -96,6 +117,9 @@ export class HomeComponent implements OnInit {
     // console.log("this.ac.snapshot.params", this.ac.snapshot.params !== null)
     // console.log("this.ac.snapshot.params['userRole']", this.ac.snapshot.params["userRole"])
     this.userRole = this.ac.snapshot.params["userRole"]
+    this.largeurImage = window.innerWidth;
+    this.hauteurImage = window.innerHeight;
+
   }
 
 
@@ -151,26 +175,26 @@ export class HomeComponent implements OnInit {
 
     // pour récupérer les métiers (sigles) enregistrés en base qui détermineront les différentes zones éditioriales
     this.settingsService.getTrades()
-    .pipe(map(data => data.filter(item => item.status && item.status === true)))
-    .subscribe(data => {
-      this.tradesData = data;
-      console.log("this.tradesData", this.tradesData);
+      .pipe(map(data => data.filter(item => item.status && item.status === true)))
+      .subscribe(data => {
+        this.tradesData = data;
+        console.log("this.tradesData", this.tradesData);
 
-      // Charge les images pour chaque métier
-      this.tradesData.forEach((trade: any) => {
-        this.settingsService.loadImage(trade.id)
-          .then((url: string) => {
-            trade.imageUrl = url; // Met à jour l'URL de l'image si elle est trouvée
-          })
-          .catch((error) => {
-            if (error.code === 'storage/object-not-found') {
-              trade.imageUrl = 'https://dalmont.staticlbi.com/original/images/biens/2/8efa48ae0918f1e8a89684a39abdbdf7/photo_5432049cf11f3071651cb2c30317bd5e.jpg'; // Définir l'URL par défaut en cas d'erreur 404
-            } else {
-              console.error('Erreur lors du chargement de l\'image pour le métier ' + trade.id, error);
-            }
-          })
+        // Charge les images pour chaque métier
+        this.tradesData.forEach((trade: any) => {
+          this.settingsService.loadImage(trade.id)
+            .then((url: string) => {
+              trade.imageUrl = url; // Met à jour l'URL de l'image si elle est trouvée
+            })
+            .catch((error) => {
+              if (error.code === 'storage/object-not-found') {
+                trade.imageUrl = 'https://dalmont.staticlbi.com/original/images/biens/2/8efa48ae0918f1e8a89684a39abdbdf7/photo_5432049cf11f3071651cb2c30317bd5e.jpg'; // Définir l'URL par défaut en cas d'erreur 404
+              } else {
+                console.error('Erreur lors du chargement de l\'image pour le métier ' + trade.id, error);
+              }
+            })
+        })
       })
-    })
 
   }
 
@@ -258,13 +282,16 @@ export class HomeComponent implements OnInit {
     return truncatedText.trim() + '...';
   }
 
-  isLoading:boolean = true
+
+
+
+  isLoading: boolean = true
 
   onImageLoad
-  () {
-  // alert("bingo")
-  this.isLoading = false;
-}
+    () {
+    // alert("bingo")
+    this.isLoading = false;
+  }
 
 
 }

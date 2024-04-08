@@ -7,6 +7,19 @@
     ],
     "headers": [
       {
+        "source": "**/*.{js,html,css,json,ico,png,jpg,jpeg,svg,eot,ttf,woff,woff2}",
+        "headers": [
+          {
+            "key": "Content-Encoding",
+            "value": "gzip"
+          },
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=31536000, immutable"
+          }
+        ]
+      },
+      {
         "source": "*.[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f].+(css|js)",
         "headers": [
           {
