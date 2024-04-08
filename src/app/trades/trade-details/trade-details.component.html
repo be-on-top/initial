@@ -9,9 +9,9 @@
                 <br>Nombre de compétences à valider: {{tradeData.competences.length}}.
                 <br>Durée maximale: {{firstValuesSum}} heures.
                 <!-- <br><span *ngIf="tradeData.rncp">Code RNCP : {{tradeData.rncp}}.</span> -->
-                <br><span *ngIf="tradeData.rncp"><a class="text-light" href="{{tradeData.rncp}}" target="_blank">Code RNCP (ou
+                <span class="d-block" *ngIf="tradeData.rncp"><a class="text-light" href="{{tradeData.rncp}}" target="_blank">Code RNCP (ou
                         RS)</a></span>
-                <br><span *ngIf="tradeData.isQualifying && tradeData.isQualifying==true">Formation Qualifiante !</span>
+                <span class="d-block" *ngIf="tradeData.isQualifying && tradeData.isQualifying==true">Formation Qualifiante !</span>
                 <br *ngIf="tradeData.requirements">
                 <span *ngIf="tradeData.requirements && tradeData.requirements!==''" class="text-light">Prérequis : {{tradeData.requirements}}</span>
 
