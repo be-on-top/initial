@@ -87,7 +87,7 @@ export class UpdateTradesComponent {
       
       
       // if (form.value.description !== this.trade.description) {
-        alert(form.value.description)
+        // alert(form.value.description)
         this.service.updateDescription(form.value, this.sigleId).then(() => {
           this.feedbackMessages = `Modification de la description OK`;
           this.isSuccessMessage = true
@@ -253,8 +253,12 @@ export class UpdateTradesComponent {
     if (this.userRouterLinks.user == "editor") {
       alert("C'est un éditeur !!!")
     }
+    // inutile de créer une route pour ça ça complique trop...
+    // else if (this.userRouterLinks.user == "manager") {
+    //   alert("C'est le référent métier !!!")
+    // }
     else if (this.userRouterLinks.user == "admin") {
-      alert("C'est un super administrateur !!!")
+      alert("C'est l'admin ou le référent métier !!!")
     }
   }
 
