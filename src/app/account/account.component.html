@@ -7,28 +7,28 @@
 
     <!-- ici, c'est en tout début, seul l'onglet informations est actif -->
     <div *ngIf="!isOneQuizzAchieved && !hasStartedEvaluation"
-        class="alert alert-light p-4 alert-dismissible mb-4 fade show">
-        <button type="button" class="btn-close btn-close" data-bs-dismiss="alert"></button>
+        class="alert alert-light p-4 alert-dismissible mb-4 fade show pe-5">
+        <button type="button" class="btn-close mt-2" data-bs-dismiss="alert"></button>
         <span> Au fur à mesure de vos interactions, vous pourrez suivre ci-dessous les résultas des questionnaires
             d'évaluation, vos estimations chiffrées et les évaluations de vos professeurs</span>...
     </div>
     <!-- ici, c'est si ils se sont interrompus en cours de questionnaire -->
     <div *ngIf="!isOneQuizzAchieved && hasStartedEvaluation"
         class="alert alert-light p-4 alert-dismissible mb-4 fade show">
-        <button type="button" class="btn-close btn-close" data-bs-dismiss="alert"></button>
+        <button type="button" class="btn-close mt-2" data-bs-dismiss="alert"></button>
         <span> Retrouvez l'état d'avancement de votre questionnaire</span>...
     </div>
     <!-- ici, c'est une fois qu'ils ont terminés un questionnaire dans son intégralité, avec 3 nouveaux onglets -->
     <div *ngIf="isOneQuizzAchieved && !userData.isSocialFormSent && !userData.subscriptions"
         class="alert alert-light p-4 alert-dismissible mb-4 fade show pe-5">
-        <button type="button" class="btn-close btn-close mt-2" data-bs-dismiss="alert"></button>
+        <button type="button" class="btn-close mt-2" data-bs-dismiss="alert"></button>
         <span> Tous vos résultats et estimations chiffrées sont disponibles ci-dessous. L'incription formation peut
             également commencer !</span>
     </div>
     <!-- ici, c'est une fois le formulaire de pré-inscription envoyé, en attendans que l'inscription soit officialisée  -->
-    <div *ngIf="userData && userData.isSocialFormSent && !userData.subscriptions "
-        class="alert alert-light p-4 alert-dismissible mb-4 fade show">
-        <button type="button" class="btn-close btn-close" data-bs-dismiss="alert"></button>
+    <div *ngIf="userData && userData.isSocialFormSent"
+        class="alert alert-light p-4 alert-dismissible mb-4 fade show pe-5">
+        <button type="button" class="btn-close mt-2" data-bs-dismiss="alert"></button>
         <span> Merci d'avoir pris le temps de remplir le formulaire d'inscription à nos formations. Un conseiller
             référent va prendre contact avec vous.</span>
     </div>
@@ -543,11 +543,12 @@
 
     <!-- Dans le template HTML du composant du compte utilisateur -->
     <p class="mt-5">Statut du consentement : {{ consentStatus ? 'Accepté' : 'Refusé' }}</p>
-   
+
     <div class="form-check form-switch my-3">
-        <input class="form-check-input" type="checkbox" id="cookieConsent" [(ngModel)]="consentStatus" (change)="modifyConsent()">
+        <input class="form-check-input" type="checkbox" id="cookieConsent" [(ngModel)]="consentStatus"
+            (change)="modifyConsent()">
         <label class="form-check-label" for="cookieConsent">Modifier le consentement aux cookies</label>
-      </div>
+    </div>
 
 
 </div>
