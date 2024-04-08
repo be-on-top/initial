@@ -19,7 +19,7 @@
                     <source [src]="item" type="video/mp4">
                     Your browser does not support HTML video.
                 </video>
-                <ng-template #image><img class="img-fluid bg-light" [src]="item"></ng-template>
+                <ng-template #image><img class="img-fluid bg-light" [src]="item" loading="lazy"></ng-template>
             </div>
         </div>
     </div>
@@ -38,7 +38,7 @@
                     <!-- <img *ngIf="item.includes(q.id) && item.includes('Option1')" class="img-fluid rounded mb-3"
                         [src]="item"> -->
                     <img *ngIf="item.includes(q.id) && item.includes('Option1')"
-                        class="cover img-fluid rounded mb-3 img-thumbnail" [src]="item">
+                        class="cover img-fluid rounded mb-3 img-thumbnail" [src]="item" loading="lazy" >
                 </div>
             </div>
             <!-- si pas d'images -->
@@ -48,7 +48,7 @@
             <div *ngIf="responsesMedias">
                 <div *ngFor="let item of responsesMedias">
                     <img *ngIf="item.includes(q.id) && item.includes('Option2')"
-                        class="cover img-fluid rounded mb-3 img-thumbnail" [src]="item">
+                        class="cover img-fluid rounded mb-3 img-thumbnail" [src]="item" loading="lazy" >
                 </div>
             </div>
         </div>
@@ -58,7 +58,7 @@
             <div *ngIf="responsesMedias">
                 <div *ngFor="let item of responsesMedias">
                     <img *ngIf="item.includes(q.id) && item.includes('Option3')"
-                        class="cover img-fluid rounded mb-3 img-thumbnail" [src]="item">
+                        class="cover img-fluid rounded mb-3 img-thumbnail" [src]="item" loading="lazy" >
                 </div>
             </div>
         </div>
@@ -67,7 +67,7 @@
             <div *ngIf="responsesMedias">
                 <div *ngFor="let item of responsesMedias">
                     <img *ngIf="item.includes(q.id) && item.includes('Option4')"
-                        class="cover img-fluid rounded mb-3 img-thumbnail" [src]="item">
+                        class="cover img-fluid rounded mb-3 img-thumbnail" [src]="item" loading="lazy">
                 </div>
             </div>
         </div>

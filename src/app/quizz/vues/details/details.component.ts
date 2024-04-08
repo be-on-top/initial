@@ -165,7 +165,7 @@ export class DetailsComponent implements OnInit {
   }
 
 
-  private isZoomed = false;
+  // private isZoomed = false;
 
   onImageLoad
     () {
