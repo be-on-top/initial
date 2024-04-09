@@ -14,6 +14,10 @@ export class FullDetailsComponent {
   responsesMedias: any = []
 
 
+  isLoading: boolean = true
+  isImageResponseLoading: boolean = true
+
+
   constructor(private service: QuestionsService) {
   }
 
@@ -28,5 +32,15 @@ export class FullDetailsComponent {
     this.responsesMedias = []
 
   }
+
+  onImageLoad
+    () {
+    this.isLoading = false;
+  }
+
+  // onImageResponseLoad
+  //   () {
+  //   this.isImageResponseLoading = false;
+  // }
 
 }

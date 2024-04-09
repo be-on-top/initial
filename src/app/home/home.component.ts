@@ -117,8 +117,8 @@ export class HomeComponent implements OnInit {
     // console.log("this.ac.snapshot.params", this.ac.snapshot.params !== null)
     // console.log("this.ac.snapshot.params['userRole']", this.ac.snapshot.params["userRole"])
     this.userRole = this.ac.snapshot.params["userRole"]
-    this.largeurImage = window.innerWidth;
-    this.hauteurImage = window.innerHeight;
+    // this.largeurImage = window.innerWidth;
+    // this.hauteurImage = window.innerHeight;
 
   }
 

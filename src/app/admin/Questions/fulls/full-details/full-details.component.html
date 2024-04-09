@@ -1,6 +1,3 @@
-
-
-
 <div class="p-3 p-md-5 d-flex flex-column justify-content-between align-items-center rounded mb-3">
     <p class="rounded bg-primary text-light px-3 py-2 h4 fw-normal text-center">Q{{q.number}} : {{q.question}}
     </p>
@@ -13,28 +10,39 @@
     <!-- questionMedia {{questionsMedias |json}} -->
     <div *ngIf="questionsMedias">
         <div class="bg-light rounded rounded mb-3" *ngFor="let item of questionsMedias">
+            <!-- spinner essai -->
+            <div *ngIf="questionsMedias.length===1 && isLoading"
+                class="d-flex justify-content-center align-items-center mt-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+            <!-- fin spinner -->
+
             <!-- item : {{item}} -->
-            <div class="w-100 bg-primary p-2 rounded">
+            <div class="w-100 rounded">
                 <!-- {{q.isVideo==true}} -->
                 <!-- si fichier de type video / sinon utiliser le template pour l'image  -->
                 <video *ngIf="q.isVideo==true; else image" class="video img-fluid" controls>
                     <source [src]="item" type="video/mp4">
                     Your browser does not support HTML video.
                 </video>
-                <ng-template #image><img class="img-fluid bg-light image-zoomable" [src]="item" loading="lazy"></ng-template>
+                <ng-template #image><img class="img-fluid image-zoomable p-2" [src]="item"
+                        (load)="onImageLoad()" loading="lazy" [class.bg-primary]="!isLoading"></ng-template>
             </div>
         </div>
     </div>
     <!-- fin de la question -->
 
     <!-- début des réponses -->
-    <div class="p-3 pt-sm-4 row justify-content-between align-items-start mb-3 rounded bg-light w-100 border-bottom border-top">
+    <div
+        class="p-3 pt-sm-4 row justify-content-between align-items-start mb-3 rounded bg-light w-100 border-bottom border-top">
         <div class="pt-3 pt-sm-0 col-sm-6 rounded" [ngClass]="{'text-success':q.optScoring1===true}">
             <p class="text-center fs-5">R1 : {{q.option1}}</p>
             <div *ngIf="responsesMedias && responsesMedias.length!==0">
                 <div *ngFor="let item of responsesMedias">
-                    <img *ngIf="item.includes(q.id) && item.includes('Option1')" class="cover img-fluid rounded mb-3 img-thumbnail"
-                        [src]="item" loading="lazy" >
+                    <img *ngIf="item.includes(q.id) && item.includes('Option1')"
+                        class="cover img-fluid rounded mb-3 img-thumbnail" [src]="item" loading="lazy">
                 </div>
             </div>
             <!-- si pas d'images -->
@@ -43,8 +51,8 @@
             <p class="text-center fs-5">R2 : {{q.option2}}</p>
             <div *ngIf="responsesMedias">
                 <div *ngFor="let item of responsesMedias">
-                    <img *ngIf="item.includes(q.id) && item.includes('Option2')" class="cover img-fluid rounded mb-3 img-thumbnail"
-                        [src]="item" loading="lazy" >
+                    <img *ngIf="item.includes(q.id) && item.includes('Option2')"
+                        class="cover img-fluid rounded mb-3 img-thumbnail" [src]="item" loading="lazy">
                 </div>
             </div>
         </div>
@@ -53,8 +61,8 @@
             <p class="text-center fs-5">R3 : {{q.option3}}</p>
             <div *ngIf="responsesMedias">
                 <div *ngFor="let item of responsesMedias">
-                    <img *ngIf="item.includes(q.id) && item.includes('Option3')" class="cover img-fluid rounded mb-3 img-thumbnail"
-                        [src]="item" loading="lazy" >
+                    <img *ngIf="item.includes(q.id) && item.includes('Option3')"
+                        class="cover img-fluid rounded mb-3 img-thumbnail" [src]="item" loading="lazy">
                 </div>
             </div>
         </div>
@@ -62,8 +70,8 @@
             <p class="text-center fs-5">R4 : {{q.option4}}</p>
             <div *ngIf="responsesMedias">
                 <div *ngFor="let item of responsesMedias">
-                    <img *ngIf="item.includes(q.id) && item.includes('Option4')" class="cover img-fluid rounded mb-3 img-thumbnail"
-                        [src]="item" loading="lazy">
+                    <img *ngIf="item.includes(q.id) && item.includes('Option4')"
+                        class="cover img-fluid rounded mb-3 img-thumbnail" [src]="item" loading="lazy">
                 </div>
             </div>
         </div>
@@ -71,4 +79,3 @@
     </div>
     <!-- fin des réponses -->
 </div>
-

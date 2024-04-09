@@ -14,6 +14,9 @@ export class QuestionDetailsComponent implements OnInit {
   questionsMedias: any = []
   responsesMedias: any = []
 
+  isLoading: boolean = true
+  isImageResponseLoading: boolean = true
+
   constructor(private service: QuestionsService) {
   }
 
@@ -27,5 +30,15 @@ export class QuestionDetailsComponent implements OnInit {
   ngOnDestroy(): void {
     this.responsesMedias = []
   }
+
+  onImageLoad
+    () {
+    this.isLoading = false;
+  }
+
+  // onImageResponseLoad
+  //   () {
+  //   this.isImageResponseLoading = false;
+  // }
 
 }

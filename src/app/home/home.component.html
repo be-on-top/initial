@@ -101,9 +101,13 @@
                         <!-- fin spinner -->
 
                         <div class="image-container rounded mb-1 ">
-                            <a [routerLink]="['/trade', trade.sigle]" class="text-decoration-none">
+                            <!-- <a [routerLink]="['/trade', trade.sigle]" class="text-decoration-none">
                                 <img class="img-fluid rounded" [ngSrc]="trade.imageUrl" *ngIf="trade.imageUrl"
                                     (load)="onImageLoad()" [width]="largeurImage" [height]="hauteurImage">
+                            </a> -->
+                            <a [routerLink]="['/trade', trade.sigle]" class="text-decoration-none">
+                                <img class="img-fluid rounded" [src]="trade.imageUrl" *ngIf="trade.imageUrl"
+                                    (load)="onImageLoad()" loading="lazy">
                             </a>
                         </div>
 
