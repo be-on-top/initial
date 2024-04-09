@@ -24,7 +24,7 @@
         </div>
         <!-- il faut différencier le cas d'un userRole=none...  -->
         <div *ngIf="userRole==='none' else switch" class="col-md-5 text-white mt-md-5 ">
-            <p class="text-md-left">Afin de commencer un QCM, merci de <a [routerLink]="[
+            <p class="text-md-left fs-5">Afin de commencer un QCM, merci de <a [routerLink]="[
                 '/login']" class="text-white fw-bold">vous authentifier</a> ou <a [routerLink]="[
                 '/register']" class="text-white fw-bold">vous enregister</a></p>
 
@@ -89,7 +89,7 @@
                     Description <i [ngClass]="{'bi-caret-down-fill': isDescriptionCollapsed, 'bi-caret-up-fill': !isDescriptionCollapsed}" class="bi fs-4 text-light"></i></a>
             </div>
     
-            <div id="collapseDescription" class="collapse" [class.show]="!isDescriptionCollapsed" data-bs-parent="#accordion">
+            <div id="collapseDescription" class="collapse" data-bs-parent="#accordion">
                 <div class="card-body">
     
                     <ng-container *ngIf="tradeData.description">
@@ -134,11 +134,11 @@
     
             <div class="card-header bg-primary">
                 <a (click)="toggleCPCollapse()" class="btn text-light text-capitalize d-flex justify-content-between" data-bs-toggle="collapse" href="#collapseCP">
-                    Compétences <i [ngClass]="{'bi-caret-down-fill': isCPCollapsed, 'bi-caret-up-fill': !isCPCollapsed}" class="bi fs-4 text-light"></i></a>
+                    Compétences <i [ngClass]="{'bi-caret-down-fill': !isCPCollapsed, 'bi-caret-up-fill': isCPCollapsed}" class="bi fs-4 text-light"></i></a>
             </div>
     
-            <div id="collapseCP" class="collapse" [class.show]="!isCPCollapsed" data-bs-parent="#accordion">
-                <div class="card-body mt-4 p-5 bg-primary text-white rounded">
+            <div id="collapseCP" class="collapse show" data-bs-parent="#accordion">
+                <div class="card-body mt-4 p-4 bg-primary text-white rounded">
     
                     <!-- deuxième onglet -->
                     <!-- <div class="mt-4 p-5 bg-primary text-white rounded"> -->

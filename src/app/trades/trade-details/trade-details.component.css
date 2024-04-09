@@ -58,4 +58,9 @@ button.btn-primary:hover {
     border: 0;
   }
 
+  .card-body p, .card-body span{
+    font-size: 1rem !important;
+
+  }
+
 }
