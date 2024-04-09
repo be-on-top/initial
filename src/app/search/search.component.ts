@@ -15,6 +15,12 @@ export class SearchComponent {
     this.searchTextChanged.emit(this.enteredSearchValue)
   }
 
+  resetSearch() {
+    this.enteredSearchValue=''
+    this.searchTextChanged.emit(this.enteredSearchValue)
+    
+  }
+
 
 
 }

@@ -2,7 +2,12 @@
 <div class="p-0 m-0 bg-light">
     <form autocomplete="off">
         <input type="text" class="d-none" autocomplete="false">
-        <input name="search" placeholder="Entrer un terme de recherche..." value="" class="form-control" type="text"
-            [(ngModel)]="enteredSearchValue" (input)="onSearchTextChanged()" autocomplete="false">
+        <div class="input-group">
+            <input name="search" placeholder="Entrer un terme de recherche..." value="" class="form-control" type="text"
+                [(ngModel)]="enteredSearchValue" (input)="onSearchTextChanged()" autocomplete="false">
+            <div class="input-group-append" (click)="resetSearch()">
+                <span class="input-group-text rounded-0 rounded-end"><i class="bi bi-x"></i></span>
+            </div>
+        </div>
     </form>
 </div>
