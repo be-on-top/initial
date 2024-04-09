@@ -26,7 +26,7 @@
             également commencer !</span>
     </div>
     <!-- ici, c'est une fois le formulaire de pré-inscription envoyé, en attendans que l'inscription soit officialisée  -->
-    <div *ngIf="userData && userData.isSocialFormSent"
+    <div *ngIf="userData && userData.isSocialFormSent && !userData.subscriptions"
         class="alert alert-light p-4 alert-dismissible mb-4 fade show pe-5">
         <button type="button" class="btn-close mt-2" data-bs-dismiss="alert"></button>
         <span> Merci d'avoir pris le temps de remplir le formulaire d'inscription à nos formations. Un conseiller
