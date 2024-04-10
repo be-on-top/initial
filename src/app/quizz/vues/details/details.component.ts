@@ -48,12 +48,15 @@ export class DetailsComponent implements OnInit {
 
   isLoading: boolean = true
   isImageResponseLoading: boolean = true
+  screenWidth:number=0
 
   // pour zoomer image sur mobile
   @ViewChild('imageElement') imageElement?: ElementRef;
-  constructor(private renderer: Renderer2) { }
+  constructor(private renderer: Renderer2) { 
+  }
 
   ngOnInit() {
+    this.screenWidth = window.innerWidth;
   }
 
   ngOnDestroy(): void {

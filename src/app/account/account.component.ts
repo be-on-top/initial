@@ -63,12 +63,11 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   competencesMap: Map<string, string[]> = new Map();
 
-  // trades: string[] = []; // Vous stockerez ici les compétences pour chaque trade
+  // trades: string[] = []; // Stocker ici les compétences pour chaque trade
   // trades: { tradeId: any; competences: string[] }[] = [];
   // trades: { [key: string]: string[] }[] = [];
 
-  tradeIds = []; // Mettez vos tradeIds ici
-
+  tradeIds = []; // Mettre les tradeIds ici
   formattedTrades: { [key: string]: string[] } = {};
 
   // Utilisez forkJoin pour attendre la résolution de toutes les requêtes
@@ -117,13 +116,13 @@ export class AccountComponent implements OnInit, OnDestroy {
             take(1),
             takeUntil(this.destroy$)) // Utilisation de takeUntil ici
           .subscribe(data => {
-            console.log("userData from students 0...", data);
+            // console.log("userData from students 0...", data);
             this.userData = data;
             // this.lastIndex = Number(this.userData.lastIndexQuestion);
 
             // Logique pour obtenir tradesEvaluated
             for (const key in this.userData) {
-              console.log('key', key.includes('quizz'));
+              // console.log('key', key.includes('quizz'));
 
               if (key.includes('quizz')) {
                 // on peut rajouter hasStartedEvaluation pour conditionner l'affichage de l'onglet QCMS et résulats
@@ -178,14 +177,17 @@ export class AccountComponent implements OnInit, OnDestroy {
             if (this.userData.tutorials) {
               this.tutorials = this.userData.tutorials;
             }
+            
+            this.triggerContextualNotification()
+            
           });
       }
     });
 
     // this.authService.getToken()?.then(res => console.log("token authentification depuis authService", res.token));
 
-    console.log('this.tradesEvaluated', this.tradesEvaluated);
-    console.log('type of tradesEvaluated', typeof (this.tradesEvaluated));
+    // console.log('this.tradesEvaluated', this.tradesEvaluated);
+    // console.log('type of tradesEvaluated', typeof (this.tradesEvaluated));
     if (Notification.permission === 'granted') {
       this.notificationPermissionGranted = true
     }
@@ -195,6 +197,7 @@ export class AccountComponent implements OnInit, OnDestroy {
       this.tradesData = data;
       console.log("this.tradesData", this.tradesData)
     })
+
 
   }
 
@@ -272,13 +275,12 @@ export class AccountComponent implements OnInit, OnDestroy {
 
 
   async notifyMeWithTitleAndBody(title: string, body: string) {
-
     try {
       const options = {
         body: body,
         icon: 'https://be-on-top-beta.web.app/assets/BE-ON-TOP_picto_LOGO.svg', // Remplacez par l'URL de l'icône que vous souhaitez afficher
         // image: 'https://firebasestorage.googleapis.com/v0/b/be-on-top-beta.appspot.com/o/images%2Ftrades%2Fcl_vul.jpeg?alt=media&token=d49e9dea-f9d3-43d8-8b2f-52e71ad792c3',
-      };
+      }
 
       // Afficher la notification avec les options
       const registration = await navigator.serviceWorker.getRegistration();
@@ -287,13 +289,38 @@ export class AccountComponent implements OnInit, OnDestroy {
       }
 
       const messaging = getMessaging();
-
       const token = await getToken(messaging, { vapidKey: "BIh4nZeNhn8JfEciZJvgFL96Qd7uVzfZTmaoUp2RFb65SA2Lk2jvujAtmEkttGR5OtyTRIj2_FS49k5mPLl6HsM" });
-
       console.log(token);
       this.notificationService.registerToken(token, this.userData.id);
     } catch (error) {
       console.error("Error during notification setup:", error);
+    }
+  }
+
+  triggerContextualNotification() {
+    if (this.userData.isSocialFormSent && !this.userData.subscriptions) {
+      this.contextualNotification('Suivi personnalisé', 'Le dossier est en cours de traitement. Votre inscription sera bientôt finalisée');
+    }
+  }
+
+
+  async contextualNotification(title: string, body: string) {
+    // Vérifier si la permission est déjà accordée
+    if (Notification.permission === 'granted') {
+      try {
+        const options = {
+          body: body,
+          icon: 'https://be-on-top-beta.web.app/assets/BE-ON-TOP_picto_LOGO.svg',
+        }
+        // Afficher la notification avec les options
+        const registration = await navigator.serviceWorker.getRegistration();
+        // alert(registration)
+        if (registration) {
+          registration.showNotification(title, options);
+        }
+      } catch (error) {
+        console.error("Error during notification setup:", error);
+      }
     }
   }
 
@@ -435,16 +462,11 @@ export class AccountComponent implements OnInit, OnDestroy {
   }
 
 
-
-
-
   evaluationsState: { [key: number]: boolean } = {};
 
   toggleCollapse(eIndex: number) {
     this.evaluationsState[eIndex] = !this.evaluationsState[eIndex];
   }
-
-
 
   // Dans mon composant
   totalCost?: number;
@@ -466,7 +488,6 @@ export class AccountComponent implements OnInit, OnDestroy {
     }
 
   }
-
 
 
   calculateSubtotal(trade: string): number {
