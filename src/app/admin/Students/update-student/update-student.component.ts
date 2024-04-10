@@ -141,7 +141,14 @@ export class UpdateStudentComponent implements OnInit {
 
   subscribeStudent(subscribeStudent: NgForm) {
     // console.log('subscribeStudent.value.sigle', subscribeStudent.value.sigle);
-    this.service.activateSubscription(this.studentId, subscribeStudent.value.sigle)
+    let array=[]
+    for (const key of subscribeStudent.value.sigle) {
+      array.push(key)
+
+      }
+      alert(array)
+    
+    this.service.activateSubscription(this.studentId, array)
 
   }
 

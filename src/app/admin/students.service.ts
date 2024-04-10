@@ -377,10 +377,10 @@ export class StudentsService {
     return null;
   }
 
-  async activateSubscription(id: string, sigle: string) {
+  async activateSubscription(id: string, sigle: any) {
     const studentRef = doc(this.firestore, "students/" + id)
     const updateStudent = {
-      subscriptions: [sigle]
+      subscriptions: sigle
     }
     setDoc(studentRef, updateStudent, { merge: true })
   }

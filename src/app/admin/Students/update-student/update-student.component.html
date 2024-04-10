@@ -61,9 +61,10 @@
             <div class="mb-5">
                 <!-- test intégration comme composant enfant du formulaire désormais déclaré dans admin.module -->
                 <h3>Inscription Formation</h3>
+                <p *ngIf="student.subscriptions.length!==0">Inscriptions actuelles : {{student.subscriptions}}</p>
                 <form class="form mb-5" #subscription="ngForm" (submit)="subscribeStudent(subscription)"
                     class="was-validated">
-                    <select class="form-select" name="sigle" ngModel required #sigle="ngModel">
+                    <select class="form-select" name="sigle" [(ngModel)]="student.subscriptions" required #sigle="ngModel" multiple>
                         <option value>Selectionner l'intitulé métier de la formation :</option>
                         <option *ngFor="let element of sigleIds" value="{{element}}">
                             {{element}}
