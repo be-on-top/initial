@@ -112,7 +112,7 @@
                         <li><a class="dropdown-item" [routerLink]="['/admin/tutor/myStudents']"
                                 *ngIf="userRole.includes('tutor') || userRole.includes('admin')">Suivi tutorial</a>
                         </li>
-                        <li><a class="dropdown-item" [routerLink]="['/admin/referent/students']"
+                        <li><a class="dropdown-item" [routerLink]="['/admin/referentStudentsList']"
                                 *ngIf="userRole.includes('referent') || userRole.includes('admin')">Suivi
                                 administratif</a>
                         </li>
