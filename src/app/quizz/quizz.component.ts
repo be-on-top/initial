@@ -341,7 +341,14 @@ export class QuizzComponent implements OnInit {
     // alert(evaluatedCompetence)
 
 
-    if (this.fullAnswersClicked >= this.totalAnswersAvailable) {
+    // if (this.fullAnswersClicked >= this.totalAnswersAvailable) {
+    //   // alert("Vous ne pouvez pas cocher toutes les réponses. Il faut faire une sélection"),
+    //   this.scoreCounter -= Number(this.numberOfPoints),
+    //     this.studentService.updateStudentScore(this.studentId, this.scoreCounter, this.indexQuestion, this.trade, this.hasStartedEvaluation, this.studentCompetences, evaluatedCompetence, this.numberOfPoints, false, true)
+    // }
+
+    // la ligne ci-dessous fonctionne très bien pour un algorithme plus selectif
+    if (this.fullAnswersClicked >this.fullOptScoringTrue) {
       // alert("Vous ne pouvez pas cocher toutes les réponses. Il faut faire une sélection"),
       this.scoreCounter -= Number(this.numberOfPoints),
         this.studentService.updateStudentScore(this.studentId, this.scoreCounter, this.indexQuestion, this.trade, this.hasStartedEvaluation, this.studentCompetences, evaluatedCompetence, this.numberOfPoints, false, true)
