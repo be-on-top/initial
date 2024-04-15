@@ -143,8 +143,6 @@ export class QuizzComponent implements OnInit {
       // pour qu'on ne se retrouve pas en console avec un can not read id parce qu'il n'y en a plus
       // on peut rajouter ATTENTION !!!!! 
       if (this.indexQuestion < this.questions.length - 1) {
-
-
         // pour recevoir la liste des médias relatifs aux questions relatives au métier
         this.questionsMedias = this.questionsService.getMediaQuestionById(this.questions[this.indexQuestion].id)
         console.log("questionsMedias depuis questions-details", this.questionsMedias);
@@ -348,11 +346,10 @@ export class QuizzComponent implements OnInit {
     // }
 
     // la ligne ci-dessous fonctionne très bien pour un algorithme plus selectif
-    if (this.fullAnswersClicked >this.fullOptScoringTrue) {
-      // alert("Vous ne pouvez pas cocher toutes les réponses. Il faut faire une sélection"),
-      this.scoreCounter -= Number(this.numberOfPoints),
-        this.studentService.updateStudentScore(this.studentId, this.scoreCounter, this.indexQuestion, this.trade, this.hasStartedEvaluation, this.studentCompetences, evaluatedCompetence, this.numberOfPoints, false, true)
-    }
+    // if (this.fullAnswersClicked >this.fullOptScoringTrue) {
+    //   this.scoreCounter -= Number(this.numberOfPoints),
+    //     this.studentService.updateStudentScore(this.studentId, this.scoreCounter, this.indexQuestion, this.trade, this.hasStartedEvaluation, this.studentCompetences, evaluatedCompetence, this.numberOfPoints, false, true)
+    // }
 
     // Appel de la méthode "reset" du composant enfant
     this.childComponent.reset();
@@ -413,15 +410,15 @@ export class QuizzComponent implements OnInit {
 
 
 
-    const isMobile = window.innerWidth <= this.mobileBreakpoint;
+    // const isMobile = window.innerWidth <= this.mobileBreakpoint;
 
-    if (isMobile) {
-      const nextAnchor = this.el.nativeElement.querySelector('a[name="next"]');
-      if (nextAnchor) {
-        const offset = nextAnchor.offsetTop - this.menuHeight;
-        window.scrollTo({ top: offset, behavior: 'smooth' });
-      }
-    }
+    // if (isMobile) {
+    //   const nextAnchor = this.el.nativeElement.querySelector('a[name="next"]');
+    //   if (nextAnchor) {
+    //     const offset = nextAnchor.offsetTop - this.menuHeight;
+    //     window.scrollTo({ top: offset, behavior: 'smooth' });
+    //   }
+    // }
 
   }
 

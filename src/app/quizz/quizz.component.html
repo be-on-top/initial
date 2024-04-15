@@ -31,11 +31,10 @@
     <div *ngIf="!hasStartedEvaluation && !hasReaden && !loading" class="alert bg-light p-4 pe-5 alert-dismissible mb-4 fade show">
         <!-- <div *ngIf="!hasStartedEvaluation" class="alert bg-light p-4 pe-5 alert-dismissible mb-4 fade show"> -->
         <!-- <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="alert"></button> -->
-        Ce <strong>questionnaire est un questionnaire à choix multiples</strong>. <strong>Une ou plusieurs
+        Ce questionnaire est <strong>un questionnaire à choix multiples</strong>. <strong>Une ou plusieurs
             réponses peuvent donc être sélectionnées</strong>.<br><br>Composé de <strong>{{totalQuestions}}
             questions</strong>, vous pouvez à tout moment <strong>l'interrompre
-            et le reprendre</strong> depuis la page d'accueil, la page métier ou votre compte utilisateur. <br><br>
-        Attention : il y a toujours au moins une réponse fausse !
+            et le reprendre</strong> depuis la page d'accueil, la page métier ou votre compte utilisateur. 
         <br>
 
         <button type="button" class="btn btn-primary mt-3" data-bs-dismiss="alert" (click)="readen()">J'ai lu et
@@ -51,7 +50,7 @@
             <!-- <div *ngIf="questions[indexQuestion]"> -->
 
             <div>
-                <a name="next"></a>
+                <a name="next" #next></a>
                 <app-details (resetCounter)="resetChildCounter()" [q]="questions[indexQuestion]"
                     [questionsMedias]="questionsMedias" [responsesMedias]="responsesMedias"
                     (hasBeenClicked)="answered($event)" [fullGoodAnswersClicked]="fullGoodAnswersClicked"

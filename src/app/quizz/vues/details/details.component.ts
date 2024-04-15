@@ -48,11 +48,11 @@ export class DetailsComponent implements OnInit {
 
   isLoading: boolean = true
   isImageResponseLoading: boolean = true
-  screenWidth:number=0
+  screenWidth: number = 0
 
   // pour zoomer image sur mobile
   @ViewChild('imageElement') imageElement?: ElementRef;
-  constructor(private renderer: Renderer2) { 
+  constructor(private renderer: Renderer2) {
   }
 
   ngOnInit() {
@@ -80,24 +80,30 @@ export class DetailsComponent implements OnInit {
       // on incrémente le nombre de bonnes réponses données
       this.fullGoodAnswersClicked++
       console.log("this.fullGoodAnswersClicked", this.fullGoodAnswersClicked);
-      this.fullGoodAnswersClicked === this.fullOptScoringTrue ? this.counter = Number(this.counter) + Number(this.q.notation) : ""
-      this.fullGoodAnswersClicked === this.fullOptScoringTrue ? this.isIncremented = true : this.isIncremented = false
-      this.fullGoodAnswersClicked === this.fullOptScoringTrue ? this.isDecremented = false : this.isDecremented = true
+      this.fullGoodAnswersClicked === this.fullOptScoringTrue && this.fullAnswersClicked == this.fullOptScoringTrue ? this.counter = Number(this.counter) + Number(this.q.notation) : ""
+      this.fullGoodAnswersClicked === this.fullOptScoringTrue && this.fullAnswersClicked == this.fullOptScoringTrue ? this.isIncremented = true : this.isIncremented = false
+      this.fullGoodAnswersClicked === this.fullOptScoringTrue && this.fullAnswersClicked == this.fullOptScoringTrue ? this.isDecremented = false : this.isDecremented = false
       // this.fullGoodAnswersClicked>this.fullOptScoringTrue?alert("Vous devez faire un choix. Toutes les réponses ne peuvent être bonnes"): ""    
       console.log("this.fullAnswersClicked", this.fullAnswersClicked)
       // alert(Number(this.counter))
 
-      // this.fullAnswersClicked >= this.totalAnswersAvailable ? (alert("Vous ne pouvez pas cocher toutes les réponses. Il faut faire une sélection"), this.fullAnswersClicked = 0, this.fullGoodAnswersClicked = 0, this.counter -= Number(this.q.notation), this.isIncremented = false, this.isDecremented = true) : ""
       // // ici, on enregistrera sûrement en base !!!!
 
     } else {
-      this.isIncremented = false
-      this.isDecremented = false
-    }
 
-    // this.fullAnswersClicked >= this.totalAnswersAvailable ? (alert("Vous ne pouvez pas cocher toutes les réponses. Il faut faire une sélection"),
-    //   this.fullAnswersClicked = 0, this.fullGoodAnswersClicked = 0, this.counter -= Number(this.q.notation), this.isDecremented = true, this.resetToggledStates()) : this.isDecremented = false
-    this.isDecremented = false
+      this.fullGoodAnswersClicked > 0 && this.fullGoodAnswersClicked === this.fullOptScoringTrue && this.fullAnswersClicked == this.fullOptScoringTrue + 1 ? this.counter = Number(this.counter) - Number(this.q.notation) : ""
+      this.fullGoodAnswersClicked > 0 && this.fullGoodAnswersClicked === this.fullOptScoringTrue && this.fullAnswersClicked == this.fullOptScoringTrue + 1 ? this.isIncremented = false : this.isIncremented = false
+      this.fullGoodAnswersClicked > 0 && this.fullGoodAnswersClicked === this.fullOptScoringTrue && this.fullAnswersClicked == this.fullOptScoringTrue + 1 ? this.isDecremented = true : this.isDecremented = false
+      // this.isIncremented = false
+      // this.isDecremented = false
+      // this.fullGoodAnswersClicked===this.fullOptScoringTrue && this.fullAnswersClicked!==this.fullOptScoringTrue+1?(alert("y a un mauvais qu'annule"),this.counter -= Number(this.q.notation),this.isDecremented = true):this.isDecremented=false,this.isIncremented = false
+
+      // this.fullGoodAnswersClicked===this.fullOptScoringTrue && this.fullAnswersClicked!==this.fullOptScoringTrue+1 ? (this.counter -= Number(this.q.notation), this.isDecremented = true) : this.isDecremented = false
+
+
+    }
+    // this.fullGoodAnswersClicked===this.fullOptScoringTrue && this.fullAnswersClicked!==this.fullOptScoringTrue+1?(alert("y a un mauvais qu'annule"),this.counter -= Number(this.q.notation),this.isDecremented = true):this.isDecremented=false,this.isIncremented = false
+
 
     // on fait remonter l'information : une réponse a bien été cliquée (au minimum), ce qui en soit suffit pour pouvoir passer à la suivante ! 
     this.isCompleted = true
@@ -116,13 +122,18 @@ export class DetailsComponent implements OnInit {
 
 
     if (optScoring === true) {
-      this.fullGoodAnswersClicked === this.fullOptScoringTrue ? this.isDecremented = true : this.isDecremented = false
-      this.isIncremented = false
-      // on décrémente le nombre de bonnes réponses données
       this.fullGoodAnswersClicked--
 
+      // on décrémente le nombre de bonnes réponses données
+
+
+      this.fullGoodAnswersClicked === this.fullOptScoringTrue - 1 && this.fullAnswersClicked  === this.fullOptScoringTrue - 1 ? this.counter = Number(this.counter) - Number(this.q.notation) : ''
+      this.fullGoodAnswersClicked === this.fullOptScoringTrue - 1 && this.fullAnswersClicked  === this.fullOptScoringTrue - 1 ? this.isIncremented = false : this.isIncremented = false
+      this.fullGoodAnswersClicked === this.fullOptScoringTrue - 1 && this.fullAnswersClicked  === this.fullOptScoringTrue - 1 ? this.isDecremented = true : this.isDecremented = false
+
+
       console.log("this.fullGoodAnswersClicked", this.fullGoodAnswersClicked);
-      this.counter = Number(this.counter) - Number(this.q.notation)
+      // this.counter = Number(this.counter) - Number(this.q.notation)
 
       // this.fullGoodAnswersClicked>this.fullOptScoringTrue?alert("Vous devez faire un choix. Toutes les réponses ne peuvent être bonnes"): ""    
       console.log("this.fullAnswersClicked", this.fullAnswersClicked)
@@ -131,10 +142,20 @@ export class DetailsComponent implements OnInit {
 
     } else {
 
-      this.isIncremented = false
-      this.isDecremented = false
+
+      this.fullGoodAnswersClicked > 0 && this.fullGoodAnswersClicked === this.fullOptScoringTrue && this.fullAnswersClicked === this.fullOptScoringTrue ? this.counter = Number(this.counter) + Number(this.q.notation) : ''
+      this.fullGoodAnswersClicked > 0 && this.fullGoodAnswersClicked === this.fullOptScoringTrue && this.fullAnswersClicked === this.fullOptScoringTrue ? this.isIncremented = true : this.isIncremented = false
+      this.fullGoodAnswersClicked > 0 && this.fullGoodAnswersClicked === this.fullOptScoringTrue && this.fullAnswersClicked === this.fullOptScoringTrue ? this.isDecremented = false : this.isDecremented = false
+      // this.fullGoodAnswersClicked === this.fullOptScoringTrue && this.fullAnswersClicked===this.fullOptScoringTrue ? this.isIncremented = true : ""
+      // this.fullGoodAnswersClicked === this.fullOptScoringTrue && this.fullAnswersClicked===this.fullOptScoringTrue ? this.isDecremented = false : ""
+
+
+      // this.isIncremented = false
+      // this.fullGoodAnswersClicked===this.fullOptScoringTrue && this.fullAnswersClicked!==this.fullOptScoringTrue+1?(this.counter -= Number(this.q.notation),this.isDecremented = true):this.isDecremented=false,this.isIncremented = false
 
     }
+
+
     // dans le cas du toggle, faut a priori le passer à false si et seulement si fullAnswersClicked = 0
     this.fullAnswersClicked <= 0 ? this.isCompleted = false : this.isCompleted = true
     console.log("(this.isCompleted", this.isCompleted);
