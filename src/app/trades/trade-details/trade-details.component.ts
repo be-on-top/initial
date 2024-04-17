@@ -127,6 +127,8 @@ export class TradeDetailsComponent implements OnInit {
       // fin ac.paramMap.subscribe
     })
 
+    
+
   }
 
 

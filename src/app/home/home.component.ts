@@ -11,7 +11,7 @@ import { onAuthStateChanged } from '@angular/fire/auth';
 // import { getMessaging, onMessage, getToken } from "@angular/fire/messaging";
 
 // import { PushNotificationService } from '../push-notification.service';
-import { SwPush } from '@angular/service-worker';
+import { SwPush, SwUpdate } from '@angular/service-worker';
 
 import { getMessaging } from "firebase/messaging/sw";
 // import { onBackgroundMessage } from "firebase/messaging/sw";
@@ -24,6 +24,8 @@ import { Student } from '../admin/Students/student';
 import { UpdateService } from '../update.service';
 import { filter, map } from 'rxjs';
 // import { DomSanitizer } from '@angular/platform-browser';
+
+
 
 
 interface Image {
@@ -85,7 +87,6 @@ export class HomeComponent implements OnInit {
   hauteurImage: number = 0
 
 
-
   // pour utiliser le composant de recherche
   onSearchTextEntered(searchValue: string) {
     this.searchText = searchValue
@@ -105,6 +106,7 @@ export class HomeComponent implements OnInit {
     private ac: ActivatedRoute,
     private router: Router,
     private swPush: SwPush,
+    private swUpdate: SwUpdate,
     private settingsService: SettingsService,
     private updateService: UpdateService) {
     // pour savoir si l'utilisateur est éditeur sans interroger firestore, on peut (?) récupérer userRole livré en paramètre de route
@@ -120,11 +122,20 @@ export class HomeComponent implements OnInit {
     // this.largeurImage = window.innerWidth;
     // this.hauteurImage = window.innerHeight;
 
+    this.offline=!navigator.onLine
+
+
   }
 
 
   ngOnInit(): void {
-    // pour tenter de détecter des updates côté template
+
+
+    // window.addEventListener('online', () => {   
+      if(!this.offline){
+      alert("on est en ligne")   
+      // L'utilisateur est en ligne
+      // pour tenter de détecter des updates côté template
     this.updateService.checkForUpdates();
 
     onAuthStateChanged(this.auth, (user: any) => {
@@ -144,23 +155,6 @@ export class HomeComponent implements OnInit {
         this.authService.getToken()?.then(res => console.log("token authentification depuis authService", res.token))
         // fonctionne parfaitement !!!!!!!!!!!!!!!!!!
         this.authService.authStatusListener()
-
-        // to check User offline status
-        // basic method : OK
-        if (!navigator.onLine) {
-          // ici, en lançant l'application avec ng serve, on l rend accessible au navigateur sans passer par le service worker (?)
-          alert('merci de vérifier votre connexion internet !!!');
-          // alert('please check your internet connection');
-        }
-
-        // eventListener
-        addEventListener('offline', e => {
-          this.offline = true
-        })
-
-        addEventListener('online', e => {
-          this.offline = false
-        })
       }
 
       // pour le cas où non authentifié
@@ -172,29 +166,60 @@ export class HomeComponent implements OnInit {
       }
     })
 
-
+    //--------------------
     // pour récupérer les métiers (sigles) enregistrés en base qui détermineront les différentes zones éditioriales
-    this.settingsService.getTrades()
-      .pipe(map(data => data.filter(item => item.status && item.status === true)))
-      .subscribe(data => {
-        this.tradesData = data;
-        console.log("this.tradesData", this.tradesData);
+ 
+    alert("on est en ligne")
 
-        // Charge les images pour chaque métier
-        this.tradesData.forEach((trade: any) => {
-          this.settingsService.loadImage(trade.id)
-            .then((url: string) => {
-              trade.imageUrl = url; // Met à jour l'URL de l'image si elle est trouvée
-            })
-            .catch((error) => {
-              if (error.code === 'storage/object-not-found') {
-                trade.imageUrl = 'https://dalmont.staticlbi.com/original/images/biens/2/8efa48ae0918f1e8a89684a39abdbdf7/photo_5432049cf11f3071651cb2c30317bd5e.jpg'; // Définir l'URL par défaut en cas d'erreur 404
-              } else {
-                console.error('Erreur lors du chargement de l\'image pour le métier ' + trade.id, error);
-              }
-            })
-        })
+    this.settingsService.getTrades()
+    .pipe(map(data => data.filter(item => item.status && item.status === true)))
+    .subscribe(data => {
+      this.tradesData = data;
+      console.log("this.tradesData", this.tradesData);
+
+      // Charge les images pour chaque métier
+      this.tradesData.forEach((trade: any) => {
+        this.settingsService.loadImage(trade.id)
+          .then((url: string) => {
+            trade.imageUrl = url; // Met à jour l'URL de l'image si elle est trouvée
+          })
+          .catch((error) => {
+            if (error.code === 'storage/object-not-found') {
+              trade.imageUrl = 'https://dalmont.staticlbi.com/original/images/biens/2/8efa48ae0918f1e8a89684a39abdbdf7/photo_5432049cf11f3071651cb2c30317bd5e.jpg'; // Définir l'URL par défaut en cas d'erreur 404
+            } else {
+              console.error('Erreur lors du chargement de l\'image pour le métier ' + trade.id, error);
+            }
+          })
       })
+    })
+
+
+    }
+  else if(this.offline) {
+
+      alert("offline")
+    // pour ouvrir la base indexedDB
+    const openRequest = window.indexedDB.open('my-database');
+    // Pour gérer les évènements à l'ouverture de la base
+    openRequest.onsuccess = (event) => {
+      const db = openRequest.result;
+      const transaction = db.transaction('sigles', 'readonly');
+      const objectStore = transaction.objectStore('sigles');
+      const getAllRequest = objectStore.getAll();
+
+      // alert(this.tradesData)
+
+      // Traitez les données récupérées ici depuis base de données indexée my-database
+      getAllRequest.onsuccess = (event) => {
+        this.tradesData = getAllRequest.result;
+        console.log("this.tradesData offline", this.tradesData);
+      };
+
+
+    }
+      
+    }
+
 
   }
 
@@ -294,4 +319,9 @@ export class HomeComponent implements OnInit {
   }
 
 
+
+
+
+
 }
+
