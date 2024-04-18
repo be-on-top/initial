@@ -26,5 +26,20 @@
         ]
       }
     }
+  ],
+  "dataGroups": [
+    {
+      "name": "firebase-storage-images",
+      "urls": [
+        "https://firebasestorage.googleapis.com/v0/b/be-on-top-beta.appspot.com/o/images%2Ftrades%2F*"
+      ],
+      "cacheConfig": {
+        "maxAge": "3d",
+        "strategy": "performance",
+        "timeout": "10s",
+        "maxSize": 300
+      }
+    }
   ]
+
 }
