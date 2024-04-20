@@ -93,7 +93,7 @@
                         <!-- <img class="img-fluid" [src]="trade.imageUrl || defaultImageUrl" *ngIf="trade.imageUrl"> -->
 
                         <!-- spinner essai -->
-                        <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center mt-5">
+                        <div *ngIf="isLoading && !offline" class="d-flex justify-content-center align-items-center mt-5">
                             <div class="spinner-border text-success" role="status">
                                 <span class="visually-hidden">Loading...</span>
                             </div>

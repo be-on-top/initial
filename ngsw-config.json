@@ -4,25 +4,33 @@
   "assetGroups": [
     {
       "name": "app",
-      "installMode": "lazy",
+      "installMode": "prefetch",
       "resources": {
         "files": [
           "/favicon.ico",
           "/index.html",
           "/manifest.webmanifest",
           "/*.css",
-          "/*.js"
+          "/*.js",
+          "images-presentation-metiers-vide.jpg",
+          "caces_r489.jpeg",
+          "caces_r482.jpeg",
+          "prepa_cdes.jpeg",
+          "poseur_ite.jpeg",
+          "cl_vul.jpeg",
+          "mac_vrd.jpeg"
         ]
       }
     },
     {
       "name": "assets",
-      "installMode": "lazy",
+      "installMode": "prefetch",
       "updateMode": "prefetch",
       "resources": {
         "files": [
           "/assets/**",
-          "/*.(svg|cur|jpg|jpeg|png|apng|webp|avif|gif|otf|ttf|woff|woff2)"
+          "/*.(svg|cur|jpg|jpeg|png|apng|webp|avif|gif|otf|ttf|woff|woff2)",
+          "gs://be-on-top-beta.appspot.com/images/trades/*"
         ]
       }
     }

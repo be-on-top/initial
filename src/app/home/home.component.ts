@@ -23,7 +23,9 @@ import { StudentsService } from '../admin/students.service';
 import { Student } from '../admin/Students/student';
 import { UpdateService } from '../update.service';
 import { filter, map } from 'rxjs';
+import { getBytes } from '@angular/fire/storage';
 // import { DomSanitizer } from '@angular/platform-browser';
+
 
 
 
@@ -182,6 +184,17 @@ export class HomeComponent implements OnInit {
         this.settingsService.loadImage(trade.id)
           .then((url: string) => {
             trade.imageUrl = url; // Met à jour l'URL de l'image si elle est trouvée
+
+
+
+
+
+
+
+
+
+
+
           })
           .catch((error) => {
             if (error.code === 'storage/object-not-found') {
@@ -213,6 +226,12 @@ export class HomeComponent implements OnInit {
       getAllRequest.onsuccess = (event) => {
         this.tradesData = getAllRequest.result;
         console.log("this.tradesData offline", this.tradesData);
+        this.tradesData.forEach((trade:any) => {
+          trade.imageUrl=`../../assets/${trade.id}.jpeg`
+          console.log(trade.imageUrl);
+          
+          
+        });
       };
 
 
@@ -319,7 +338,18 @@ export class HomeComponent implements OnInit {
   }
 
 
+  saveLocally(imageFile: File): void {
+    const reader = new FileReader();
+    reader.onload = (event: any) => {
+      const imageData = event.target.result;
+      localStorage.setItem('localImage', imageData);
+    };
+    reader.readAsDataURL(imageFile);
+  }
 
+  getLocalImageSrc(): any {
+    return localStorage.getItem('localImage');
+  }
 
 
 
