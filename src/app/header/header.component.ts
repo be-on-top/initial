@@ -23,11 +23,14 @@ export class HeaderComponent implements OnInit {
   isMenuOpen = false;
   isNavbarOpen = false;
 
+  offline:boolean =false
+
 
   @ViewChild('collapsibleNavbar') collapsibleNavbar!: ElementRef;
 
   constructor(private renderer: Renderer2, private authService: AuthService, private auth: Auth, private firestore: Firestore, private tradeService: SettingsService, private router: Router) {
     // this.userUid=this.authService.getUserId()
+    this.offline=!navigator.onLine
   }
 
   ngOnInit(): void {
@@ -56,10 +59,30 @@ export class HeaderComponent implements OnInit {
 
     //  })
 
-    this.tradeService.getTrades().subscribe(data => {
-      // alert(data)
-      this.trades = data
-    })
+    if (navigator.onLine) {
+      this.tradeService.getTrades().subscribe(data => {
+        // alert(data)
+        this.trades = data
+      })
+    } else {
+      const openRequest = window.indexedDB.open('my-database');
+      // Pour gérer les évènements à l'ouverture de la base
+      openRequest.onsuccess = (event) => {
+        const db = openRequest.result;
+        const transaction = db.transaction('sigles', 'readonly');
+        const objectStore = transaction.objectStore('sigles');
+        const getAllRequest = objectStore.getAll();
+
+        // alert(this.tradesData)
+
+        // Traite les données récupérées ici depuis base de données indexée my-database
+        getAllRequest.onsuccess = (event) => {
+          console.log("métier récupéré depuis indexedDB")
+          this.trades = getAllRequest.result
+        }
+      }
+
+    }
   }
 
   getRole(id: any) {

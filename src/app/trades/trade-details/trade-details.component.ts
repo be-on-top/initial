@@ -28,13 +28,16 @@ export class TradeDetailsComponent implements OnInit {
   studentId?: string
   studentData?: Student
   hasStartedEvaluation: boolean = false
-  isEvaluationCompleted:boolean= false
+  isEvaluationCompleted: boolean = false
   userRole: string = ""
   // pour charger l'image associée si image
   imageUrl: string = ''; // Pour stocker l'URL de l'image
 
+  offline: boolean = false
+
 
   constructor(private service: SettingsService, private ac: ActivatedRoute, private auth: Auth, private authService: AuthService, private studentService: StudentsService, private firestore: Firestore, public sanitizer: DomSanitizer, private location: Location) {
+    this.offline = !navigator.onLine
 
   }
 
@@ -42,28 +45,85 @@ export class TradeDetailsComponent implements OnInit {
     // this.tradeId = this.ac.snapshot.params["id"]
     this.ac.paramMap.subscribe(params => {
       this.tradeId = params.get('id') ?? ''
-      // Faites quelque chose avec this.tradeId ici
-      this.service.getSigle(this.tradeId).subscribe(data => {
+      // Faire quelque chose avec this.tradeId ici si online
+      if (!this.offline) {
+        // 1 récupération du doc en ligne
+        this.service.getSigle(this.tradeId).subscribe(data => {
+          console.log("metier récupéré via le paramètre de route", data)
+          this.tradeData = data
 
-        console.log("metier récupéré via le paramètre de route", data)
-        this.tradeData = data
+          // Pour extraire et additionner les premières valeurs des tableaux associés aux clés spécifiques dans l'objet tradeData.durations, vous pouvez utiliser TypeScript avec Angular de la manière suivante :  
+          const keysToExtractFrom = Object.keys(this.tradeData.durations)
+          this.firstValuesSum = keysToExtractFrom.reduce((sum, key) => {
+            const valuesArray = this.tradeData.durations[key]
+            if (valuesArray && valuesArray.length > 0) {
+              sum += valuesArray[0]
+            }
+            return sum;
+          }, 0)
 
+          console.log("Sum of first values:", this.firstValuesSum)
+        })
 
-        // Pour extraire et additionner les premières valeurs des tableaux associés aux clés spécifiques dans l'objet tradeData.durations, vous pouvez utiliser TypeScript avec Angular de la manière suivante :  
-        const keysToExtractFrom = Object.keys(this.tradeData.durations)
+        // 2 récupérer l'image en ligne
+        
+      // pour charger l'image si image
+      this.service.loadImage(this.tradeId).then(
+        (url: any) => {
+          // L'image existe, on retourne l'URL
+          this.imageUrl = url;
+          console.log(this.imageUrl);
 
-        this.firstValuesSum = keysToExtractFrom.reduce((sum, key) => {
-          const valuesArray = this.tradeData.durations[key]
-          if (valuesArray && valuesArray.length > 0) {
-            sum += valuesArray[0]
+        }).catch((error) => {
+          if (error.code === 'storage/object-not-found') {
+            // L'image n'existe pas, gérer le cas ici sans générer de sortie de console indésirable
+            console.log('Aucune image n\'a encore été ajoutée');
+          } else {
+            // Gérer d'autres erreurs ici
+            console.error('Erreur lors du chargement de l\'image', error);
           }
-          return sum;
-        }, 0)
+        })
 
-        console.log("Sum of first values:", this.firstValuesSum);
+      } else if (this.offline) {
+
+        alert("offline")
+        // 1 pour ouvrir la base indexedDB et récupérer le doc sauverdé :
+        const openRequest = window.indexedDB.open('my-database');
+        // Pour gérer les évènements à l'ouverture de la base
+        openRequest.onsuccess = (event) => {
+          const db = openRequest.result;
+          const transaction = db.transaction('sigles', 'readonly');
+          const objectStore = transaction.objectStore('sigles');
+          const getOneRequest = objectStore.get(this.tradeId);
+
+          // alert(this.tradesData)
+
+          // Traite les données récupérées ici depuis base de données indexée my-database
+          getOneRequest.onsuccess = (event) => {
+            console.log("métier récupéré depuis indexedDB")
+            this.tradeData = getOneRequest.result
+            // Pour extraire et additionner les premières valeurs des tableaux associés aux clés spécifiques dans l'objet tradeData.durations, vous pouvez utiliser TypeScript avec Angular de la manière suivante :  
+            const keysToExtractFrom = Object.keys(this.tradeData.durations)
+            this.firstValuesSum = keysToExtractFrom.reduce((sum, key) => {
+              const valuesArray = this.tradeData.durations[key]
+              if (valuesArray && valuesArray.length > 0) {
+                sum += valuesArray[0]
+              }
+              return sum;
+            }, 0)
+
+            console.log("Sum of first values:", this.firstValuesSum);
+
+          }
+
+        } // fin de la requête indexedDB
+
+        // pour récupérer l'image locale si image locale
+        this.imageUrl = `../../assets/${this.tradeId}.jpeg`
+
+
+
       }
-
-      )
 
 
       onAuthStateChanged(this.auth, (user: any) => {
@@ -74,7 +134,7 @@ export class TradeDetailsComponent implements OnInit {
             // alert(JSON.stringify(this.studentData!['quizz_' + this.tradeId].scoreCounter))
             this.studentData && this.studentData!['quizz_' + this.tradeId] ? this.hasStartedEvaluation = true : this.hasStartedEvaluation = false;
             console.log('this.hasStartedEvaluation', this.hasStartedEvaluation);
-            this.studentData && this.studentData['quizz_'+this.tradeData.sigle].fullResults?this.isEvaluationCompleted=true:this.isEvaluationCompleted=false;
+            this.studentData && this.studentData['quizz_' + this.tradeData.sigle].fullResults ? this.isEvaluationCompleted = true : this.isEvaluationCompleted = false;
 
           })
 
@@ -107,29 +167,14 @@ export class TradeDetailsComponent implements OnInit {
 
       // alert(this.hasStartedEvaluation)
 
-      // pour charger l'image si image
-      this.service.loadImage(this.tradeId).then(
-        (url: any) => {
-          // L'image existe, on retourne l'URL
-          this.imageUrl = url;
-          console.log(this.imageUrl);
-
-        }).catch((error) => {
-          if (error.code === 'storage/object-not-found') {
-            // L'image n'existe pas, gérer le cas ici sans générer de sortie de console indésirable
-            console.log('Aucune image n\'a encore été ajoutée');
-          } else {
-            // Gérer d'autres erreurs ici
-            console.error('Erreur lors du chargement de l\'image', error);
-          }
-        })
 
       // fin ac.paramMap.subscribe
     })
 
-    
+
 
   }
+
 
 
   getRole(id: any) {
@@ -146,19 +191,19 @@ export class TradeDetailsComponent implements OnInit {
 
   isDescriptionCollapsed: boolean = true;
   isCPCollapsed: boolean = true;
-  
+
   toggleDescriptionCollapse() {
-      this.isDescriptionCollapsed = !this.isDescriptionCollapsed;
-      !this.isDescriptionCollapsed&&this.isCPCollapsed?this.toggleCPCollapse():''
+    this.isDescriptionCollapsed = !this.isDescriptionCollapsed;
+    !this.isDescriptionCollapsed && this.isCPCollapsed ? this.toggleCPCollapse() : ''
 
   }
-  
+
   toggleCPCollapse() {
-      this.isCPCollapsed = !this.isCPCollapsed;
-      // !this.isDescriptionCollapsed?this.isCPCollapsed:''
-      !this.isDescriptionCollapsed&&this.isCPCollapsed?this.toggleDescriptionCollapse():''
+    this.isCPCollapsed = !this.isCPCollapsed;
+    // !this.isDescriptionCollapsed?this.isCPCollapsed:''
+    !this.isDescriptionCollapsed && this.isCPCollapsed ? this.toggleDescriptionCollapse() : ''
 
   }
-  
+
 
 }

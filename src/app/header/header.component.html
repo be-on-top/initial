@@ -29,7 +29,6 @@
                 <!-- <li class="nav-item">
                     <a class="nav-link" [routerLink]="['socialregistration']">Pré-inscription Formation</a>
                 </li> -->
-
                 <li class="nav-item dropdown" [routerLinkActive]="['active']"
                     *ngIf="userUid!==undefined && userUid!=='' && userRole!=='student' && userRole!=='editor'">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -63,7 +62,7 @@
                         <!-- ajout d'une route pour designation du référent -->
                         <hr *ngIf="userRole.includes('admin')">
                         <li><a class="dropdown-item" [routerLink]="['/admin/managers']"
-                            *ngIf="userRole.includes('admin')">Responsable métiers (optionnel)</a></li>
+                                *ngIf="userRole.includes('admin')">Responsable métiers (optionnel)</a></li>
 
                         <!-- liste étudiants  pour observateurs -->
                         <li><a class="dropdown-item" [routerLink]="['/admin/externalStudentsList']"
@@ -131,7 +130,7 @@
                 </li>
 
                 <!-- ajout login global (on aura ultérieurement un public et privé réservé aux contributeurs et évaluateurs...) -->
-                <li class="nav-item dropdown" [routerLinkActive]="['active']">
+                <li *ngIf="!offline" class="nav-item dropdown" [routerLinkActive]="['active']">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Utilisateur <i
                             class="bi bi-person-fill-gear mx-2"></i></a>
                     <ul class="dropdown-menu mb-2">
@@ -146,6 +145,11 @@
                         <li *ngIf="!userRole || userRole==''"><a class="dropdown-item"
                                 [routerLink]="['register']">Inscription</a></li>
                     </ul>
+                </li>
+                <!-- si hors ligne -->
+                <li class="nav-item" *ngIf="offline">
+                    <span class="nav-link bg-danger px-2 mt-2 small text-light rounded text-mutted" role="button"
+                        data-bs-toggle="dropdown">Utilisateur hors ligne <i class="bi bi-exclamation"></i></span>
                 </li>
 
                 <!-- Inscription lien externe sans condition pour tester en local -->

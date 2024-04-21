@@ -228,14 +228,12 @@ export class HomeComponent implements OnInit {
         console.log("this.tradesData offline", this.tradesData);
         this.tradesData.forEach((trade:any) => {
           trade.imageUrl=`../../assets/${trade.id}.jpeg`
-          console.log(trade.imageUrl);
-          
+          console.log(trade.imageUrl);          
           
         });
-      };
+      }
 
-
-    }
+    } // fin de la requête indexedDB
       
     }
 
@@ -291,6 +289,7 @@ export class HomeComponent implements OnInit {
       this.setOneQuizzAchieved();
       return true;
     }
+    
     return false;
   }
 

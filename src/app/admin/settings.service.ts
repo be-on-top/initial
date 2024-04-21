@@ -20,8 +20,7 @@ import {
 export class SettingsService {
 
 
-
-  constructor(private firestore: Firestore, private storage: Storage) {
+  constructor(private firestore: Firestore, private storage: Storage) {    
   }
 
   async addTrade(trade: Trade) {
@@ -195,25 +194,28 @@ export class SettingsService {
 
   getSigle(id: string) {
 
-    let sigleRef = doc(this.firestore, "sigles/" + id)
-    // return docData(sigleRef, { idField: 'id' }) as Observable<Trade>
+    
+
+      let sigleRef = doc(this.firestore, "sigles/" + id)
+      return docData(sigleRef, { idField: 'id' }) as Observable<Trade>
+
+  
 
 
-    const sigleData$ = docData(sigleRef, { idField: 'id' }) as Observable<Trade>;
-
+    // const sigleData$ = docData(sigleRef, { idField: 'id' }) as Observable<Trade>;
     // Sauvegarder les données localement une fois qu'elles sont récupérées
     // sigleData$.subscribe((data) => {     
     //   this.saveToIndexedDB(id, data);
     // });
-
-    return sigleData$.pipe(
-      tap(data => {
-        this.saveToIndexedDB(id, data); // Sauvegarder le sigle dans IndexedDB
-      })
-    );
-
+    // return sigleData$.pipe(
+    //   tap(data => {
+    //     this.saveToIndexedDB(id, data); // Sauvegarder le sigle dans IndexedDB
+    //   })
+    // );
     // return sigleData$;
 
+   
+    
 
   }
 
@@ -236,7 +238,7 @@ export class SettingsService {
     return getDownloadURL(imageRef)
   }
 
- 
+
 
 
   // updateTradeImage(tradeId: string, file: File): Promise<string> {
