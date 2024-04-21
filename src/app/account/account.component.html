@@ -230,15 +230,15 @@
             </div>
             <div id="collapseFor" class="collapse" data-bs-parent="#accordion">
                 <div class="card-body">
-                    <p class="card-text" *ngIf="!userData.subscriptions">Pour faciliter votre inscription et votre
+                    <p class="card-text" *ngIf="!userData.isSocialFormSent">Pour faciliter votre inscription et votre
                         prise en charge, nous vous invitons à remplir le formulaire ci-dessous...
                     </p>
                     <div class="card-text" *ngIf="userData.subscriptions">Inscription confirmée pour :
                         <p class="card-text d-inline" *ngFor="let subscription of userData.subscriptions">
                             {{subscription}}</p>
                     </div>
-                    <button class="btn bg-success" [disabled]="userData.subscriptions"
-                        [ngClass]="{'disabled':userData.subscriptions}"><a class="text-light"
+                    <button class="btn bg-success" [disabled]="userData.isSocialFormSent"
+                        [ngClass]="{'disabled':userData.isSocialFormSent}"><a class="text-light"
                             [routerLink]="['/socialregistration']">
                             Formulaire de pré-inscription</a>
                     </button>

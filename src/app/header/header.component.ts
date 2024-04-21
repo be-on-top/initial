@@ -7,6 +7,8 @@ import { Observable } from 'rxjs'
 import { Trade } from '../admin/trade';
 import { SettingsService } from '../admin/settings.service';
 import { Router } from '@angular/router';
+import { StudentsService } from '../admin/students.service';
+import { Student } from '../admin/Students/student';
 
 
 
@@ -23,12 +25,15 @@ export class HeaderComponent implements OnInit {
   isMenuOpen = false;
   isNavbarOpen = false;
 
+  studentData?:Student
+  isOneQuizzAchieved:boolean=false
+
   offline:boolean =false
 
 
   @ViewChild('collapsibleNavbar') collapsibleNavbar!: ElementRef;
 
-  constructor(private renderer: Renderer2, private authService: AuthService, private auth: Auth, private firestore: Firestore, private tradeService: SettingsService, private router: Router) {
+  constructor(private renderer: Renderer2, private authService: AuthService, private auth: Auth, private firestore: Firestore, private tradeService: SettingsService, private router: Router, private studentService:StudentsService) {
     // this.userUid=this.authService.getUserId()
     this.offline=!navigator.onLine
   }
@@ -44,6 +49,10 @@ export class HeaderComponent implements OnInit {
           // si on a un tableau de rôles, c'est data.role[0]
           this.userRole = data.role
           console.log("roles depuis header", data.role);
+         this.studentService.getStudentById(user.uid).subscribe(data=>{
+          this.studentData=data
+          this.checkIfQuizzAchieved()
+         })
 
         })
 
@@ -130,6 +139,18 @@ export class HeaderComponent implements OnInit {
       this.isMenuOpen = !this.isMenuOpen;
     }, 300)
   }
+
+
+      // à l'initialisation pour chercher si il existe UN fullResults indépendant d'un trade
+      checkIfQuizzAchieved() {
+        for (const key in this.studentData) {
+          if (this.studentData[key]?.fullResults) {
+            this.isOneQuizzAchieved = true;
+            break;  // Sortir de la boucle dès qu'un fullResults est trouvé
+          }
+        }
+      }
+
 
 
 }
