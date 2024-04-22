@@ -47,6 +47,32 @@
     margin-right: 15px;
 }
 
+li.nav-item.social>a::before{
+    content: "";
+    position: absolute;
+    bottom: 0rem;
+    height: 2px;
+    /* background-color: #B2BC00 !important; */
+}
+
+li.nav-item.social a {
+    opacity: 1 !important;
+
+    /* Opacité complète pour le texte */
+}
+li.nav-item.social {
+    /* background-color: #82BC00; */
+    position: relative;
+    /* Opacité complète pour le texte */
+}
+
+li.nav-item.social a::before {
+    width: 95%;
+    background-color: #82BC00;
+    opacity: 1;
+    /* Opacité complète pour le soulignement */
+}
+
 
 
 @media screen and (max-width=750px) {

@@ -37,7 +37,7 @@ export class StudentFormComponent implements OnInit, OnChanges {
   // MoyenDeTransport: boolean | undefined;
   // selectedOrientation?: string = '';
   // isRenewalIDinProgress: boolean = false;
-  isPoleEmploi: boolean = false;
+  // isPoleEmploi: boolean = false;
   idPoleEmploi: string = "";
   // frenchNationality: boolean =true;
   socialData: any = {};
