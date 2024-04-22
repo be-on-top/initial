@@ -21,6 +21,7 @@ export interface Student {
     subscriptions?:[];
     isSocialFormSent?:boolean;
     endedSubscriptions?:{"date":string; "sigle":string}
+    elearning?:string
      // Index signature
      [key: string]: any; // Index signature for dynamic properties
 }

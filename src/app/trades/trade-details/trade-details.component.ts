@@ -134,7 +134,7 @@ export class TradeDetailsComponent implements OnInit {
             // alert(JSON.stringify(this.studentData!['quizz_' + this.tradeId].scoreCounter))
             this.studentData && this.studentData!['quizz_' + this.tradeId] ? this.hasStartedEvaluation = true : this.hasStartedEvaluation = false;
             console.log('this.hasStartedEvaluation', this.hasStartedEvaluation);
-            this.studentData && this.studentData['quizz_' + this.tradeData.sigle].fullResults ? this.isEvaluationCompleted = true : this.isEvaluationCompleted = false;
+            this.studentData && this.studentData['quizz_' + this.tradeData.sigle] && this.studentData['quizz_' + this.tradeData.sigle].fullResults ? this.isEvaluationCompleted = true : this.isEvaluationCompleted = false;
 
           })
 

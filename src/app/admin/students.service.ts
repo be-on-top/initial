@@ -391,10 +391,16 @@ export class StudentsService {
     // Formater la date au format YYYY-MM-DD
     const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
 
-    const updateStudent = {
+    const updatedStudent = {
       endedSubscriptions: { date: formattedDate, sigle: sigle }
     }
-    setDoc(studentRef, updateStudent, { merge: true })
+    setDoc(studentRef, updatedStudent, { merge: true })
+  }
+
+  sendElearningInfo(id: string, info:any) {
+    let $studentRef = doc(this.firestore, "students/" + id)
+    const updatedStudent = {elearning: info }
+    updateDoc($studentRef, updatedStudent)
   }
 
 

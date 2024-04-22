@@ -135,7 +135,7 @@ export class HomeComponent implements OnInit {
 
     // window.addEventListener('online', () => {   
       if(!this.offline){
-      alert("on est en ligne")   
+      // alert("on est en ligne")   
       // L'utilisateur est en ligne
       // pour tenter de détecter des updates côté template
     this.updateService.checkForUpdates();
@@ -170,8 +170,6 @@ export class HomeComponent implements OnInit {
 
     //--------------------
     // pour récupérer les métiers (sigles) enregistrés en base qui détermineront les différentes zones éditioriales
- 
-    alert("on est en ligne")
 
     this.settingsService.getTrades()
     .pipe(map(data => data.filter(item => item.status && item.status === true)))

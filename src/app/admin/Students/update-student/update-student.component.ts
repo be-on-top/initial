@@ -152,6 +152,11 @@ export class UpdateStudentComponent implements OnInit {
 
   }
 
+  sendElearningInfo(info:NgForm){
+    this.service.sendElearningInfo(this.studentId, info.value.elearning)
+
+  }
+
   addEndingDate(endSubscription:NgForm){
     this.service.endSubscription(this.studentId,endSubscription.value.sigle )
   }

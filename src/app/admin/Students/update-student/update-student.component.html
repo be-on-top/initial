@@ -61,17 +61,30 @@
             <div class="mb-5">
                 <!-- test intégration comme composant enfant du formulaire désormais déclaré dans admin.module -->
                 <h3>Inscription Formation</h3>
-                <p *ngIf="student.subscriptions && student.subscriptions.length!==0">Inscriptions actuelles : {{student.subscriptions}}</p>
+                <p *ngIf="student.subscriptions && student.subscriptions.length!==0">Inscriptions actuelles :
+                    {{student.subscriptions}}</p>
                 <form class="form mb-5" #subscription="ngForm" (submit)="subscribeStudent(subscription)"
                     class="was-validated">
-                    <select class="form-select" name="sigle" [(ngModel)]="student.subscriptions" required #sigle="ngModel" multiple>
-                        <option value>Selectionner l'intitulé métier de la formation :</option>
+                    <select class="form-select" name="sigle" [(ngModel)]="student.subscriptions" required
+                        #sigle="ngModel" multiple>
+                        <option value>Sélectionner l'intitulé métier de la formation :</option>
                         <option *ngFor="let element of sigleIds" value="{{element}}">
                             {{element}}
                         </option>
                     </select>
+
                     <button type="submit" id="submit" class="btn btn-primary mt-3"
                         [ngClass]="{'disabled':subscription.invalid}">Valider</button>
+                </form>
+
+                <h3>Plateform E-learning</h3>
+
+                <form class="form mb-5" #info="ngForm" (submit)="sendElearningInfo(info)" class="was-validated">
+                    <!-- <label for="url">Lien vers plateforme e-learning :</label> -->
+                    <input type="url" name="elearning" [(ngModel)]="student.elearning" class="form-control mt-3"
+                        minlength="15" placeholder="renseigner url pour le e-learning">
+
+                    <button type="submit" id="submit" class="btn btn-primary mt-3">Valider</button>
                 </form>
 
                 <app-student-form [studentData]="student"></app-student-form>
