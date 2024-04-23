@@ -24,6 +24,7 @@ import { Student } from '../admin/Students/student';
 import { UpdateService } from '../update.service';
 import { filter, map } from 'rxjs';
 import { getBytes } from '@angular/fire/storage';
+import { NetworkService } from '../network.service';
 // import { DomSanitizer } from '@angular/platform-browser';
 
 
@@ -110,7 +111,8 @@ export class HomeComponent implements OnInit {
     private swPush: SwPush,
     private swUpdate: SwUpdate,
     private settingsService: SettingsService,
-    private updateService: UpdateService) {
+    private updateService: UpdateService,
+  private networkService:NetworkService) {
     // pour savoir si l'utilisateur est éditeur sans interroger firestore, on peut (?) récupérer userRole livré en paramètre de route
     // this.ac.snapshot.params["userRole"]="editor"?this.isEditor=true:""
 
@@ -131,6 +133,11 @@ export class HomeComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.networkService.getOnlineStatus().subscribe(online => {
+      if (!online) {
+        this.router.navigate(['/home']); // Rediriger vers la page d'accueil lorsque hors ligne
+      }
+    });
 
 
     // window.addEventListener('online', () => {   

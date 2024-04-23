@@ -298,12 +298,23 @@ export class AccountComponent implements OnInit, OnDestroy {
   }
 
   triggerContextualNotification() {
+
+    if (!this.isOneQuizzAchieved && this.hasStartedEvaluation) {
+      this.contextualNotification('Suivi personnalisé', "Retrouvez l'état d'avancement de votre questionnaire en cours...");
+    }
+
+    if (this.isOneQuizzAchieved && !this.userData.isSocialFormSent && !this.userData.subscriptions) {
+      this.contextualNotification('Suivi personnalisé', 'Vos résulats et estimations personnalisées de durée et de coût de formation sont désormais disponibles. Votre inscription formation peut également commencer');
+    }
+
     if (this.userData.isSocialFormSent && !this.userData.subscriptions) {
       this.contextualNotification('Suivi personnalisé', 'Le dossier est en cours de traitement. Votre inscription sera bientôt finalisée');
     }
+    
     if (this.userData.subscriptions && this.userData.elearning) {
       this.contextualNotification('Suivi personnalisé', 'Votre inscription est maintenant confirmée. Vous pouvez démarrer votre session e-learning ');
     }
+
   }
 
 
