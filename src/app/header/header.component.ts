@@ -25,17 +25,18 @@ export class HeaderComponent implements OnInit {
   isMenuOpen = false;
   isNavbarOpen = false;
 
-  studentData?:Student
-  isOneQuizzAchieved:boolean=false
+  studentData?: Student
+  isOneQuizzAchieved: boolean = false
 
-  offline:boolean =false
+  offline: boolean = false
+  filteredTrades: Trade[] = []
 
 
   @ViewChild('collapsibleNavbar') collapsibleNavbar!: ElementRef;
 
-  constructor(private renderer: Renderer2, private authService: AuthService, private auth: Auth, private firestore: Firestore, private tradeService: SettingsService, private router: Router, private studentService:StudentsService) {
+  constructor(private renderer: Renderer2, private authService: AuthService, private auth: Auth, private firestore: Firestore, private tradeService: SettingsService, private router: Router, private studentService: StudentsService) {
     // this.userUid=this.authService.getUserId()
-    this.offline=!navigator.onLine
+    this.offline = !navigator.onLine
   }
 
   ngOnInit(): void {
@@ -49,10 +50,10 @@ export class HeaderComponent implements OnInit {
           // si on a un tableau de rôles, c'est data.role[0]
           this.userRole = data.role
           console.log("roles depuis header", data.role);
-         this.studentService.getStudentById(user.uid).subscribe(data=>{
-          this.studentData=data
-          this.checkIfQuizzAchieved()
-         })
+          this.studentService.getStudentById(user.uid).subscribe(data => {
+            this.studentData = data
+            this.checkIfQuizzAchieved()
+          })
 
         })
 
@@ -72,6 +73,7 @@ export class HeaderComponent implements OnInit {
       this.tradeService.getTrades().subscribe(data => {
         // alert(data)
         this.trades = data
+        this.filterTradesByStatus()
       })
     } else {
       const openRequest = window.indexedDB.open('my-database');
@@ -141,15 +143,20 @@ export class HeaderComponent implements OnInit {
   }
 
 
-      // à l'initialisation pour chercher si il existe UN fullResults indépendant d'un trade
-      checkIfQuizzAchieved() {
-        for (const key in this.studentData) {
-          if (this.studentData[key]?.fullResults) {
-            this.isOneQuizzAchieved = true;
-            break;  // Sortir de la boucle dès qu'un fullResults est trouvé
-          }
-        }
+  // à l'initialisation pour chercher si il existe UN fullResults indépendant d'un trade
+  checkIfQuizzAchieved() {
+    for (const key in this.studentData) {
+      if (this.studentData[key]?.fullResults) {
+        this.isOneQuizzAchieved = true;
+        break;  // Sortir de la boucle dès qu'un fullResults est trouvé
       }
+    }
+  }
+
+  // Vous pouvez appeler cette fonction lorsque vous avez besoin de filtrer les métiers
+  filterTradesByStatus() {
+    this.filteredTrades = this.trades.filter((trade: any) => trade.status === true);
+  }
 
 
 

@@ -119,10 +119,11 @@
                 </li>
 
 
-                <li class="nav-item dropdown" *ngIf="trades" [routerLinkActive]="['active']">
+                <!-- <li class="nav-item dropdown" *ngIf="trades" [routerLinkActive]="['active']"> -->
+                <li class="nav-item dropdown" *ngIf="filteredTrades" [routerLinkActive]="['active']">
                     <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">Nos métiers</a>
                     <ul class="dropdown-menu mb-2">
-                        <li *ngFor="let trade of trades">
+                        <li *ngFor="let trade of filteredTrades">
                             <a class="dropdown-item" (click)="closeNavbar()"
                                 [routerLink]="['/trade', trade.sigle]">{{trade.denomination}}</a>
                         </li>
