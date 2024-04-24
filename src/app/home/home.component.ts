@@ -112,7 +112,8 @@ export class HomeComponent implements OnInit {
     private swUpdate: SwUpdate,
     private settingsService: SettingsService,
     private updateService: UpdateService,
-  private networkService:NetworkService) {
+    // private networkService: NetworkService
+  ) {
     // pour savoir si l'utilisateur est éditeur sans interroger firestore, on peut (?) récupérer userRole livré en paramètre de route
     // this.ac.snapshot.params["userRole"]="editor"?this.isEditor=true:""
 
@@ -126,120 +127,112 @@ export class HomeComponent implements OnInit {
     // this.largeurImage = window.innerWidth;
     // this.hauteurImage = window.innerHeight;
 
-    this.offline=!navigator.onLine
-
-
+    this.offline = !navigator.onLine
   }
 
 
   ngOnInit(): void {
-    this.networkService.getOnlineStatus().subscribe(online => {
-      if (!online) {
-        this.router.navigate(['/home']); // Rediriger vers la page d'accueil lorsque hors ligne
-      }
-    });
-
 
     // window.addEventListener('online', () => {   
-      if(!this.offline){
+    if (!this.offline) {
       // alert("on est en ligne")   
       // L'utilisateur est en ligne
       // pour tenter de détecter des updates côté template
-    this.updateService.checkForUpdates();
+      this.updateService.checkForUpdates();
 
-    onAuthStateChanged(this.auth, (user: any) => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        this.user = user.uid
-        this.studentService.getStudentById(user.uid).subscribe((data) => {
-          this.studentData = data
-          this.checkIfQuizzAchieved()
-
-        })
-        this.authService.getUserId();
-        // retourne this.ui tout de suite après la connexion. undefined plus tard, donc ne convient pas...
-        // console.log("log de ui", this.ui);
-        // tests ok pour information, mais ne semble pas être très utile 
-        this.authService.getToken()?.then(res => console.log("token authentification depuis authService", res.token))
-        // fonctionne parfaitement !!!!!!!!!!!!!!!!!!
-        this.authService.authStatusListener()
-      }
-
-      // pour le cas où non authentifié
-      else {
-        // L'utilisateur n'est pas authentifié
-        console.log("Utilisateur non authentifié");
-        // Rediriger vers la page de connexion si nécessaire
-        // this.router.navigate(['/login']);
-      }
-    })
-
-    //--------------------
-    // pour récupérer les métiers (sigles) enregistrés en base qui détermineront les différentes zones éditioriales
-
-    this.settingsService.getTrades()
-    .pipe(map(data => data.filter(item => item.status && item.status === true)))
-    .subscribe(data => {
-      this.tradesData = data;
-      console.log("this.tradesData", this.tradesData);
-
-      // Charge les images pour chaque métier
-      this.tradesData.forEach((trade: any) => {
-        this.settingsService.loadImage(trade.id)
-          .then((url: string) => {
-            trade.imageUrl = url; // Met à jour l'URL de l'image si elle est trouvée
-
-
-
-
-
-
-
-
-
-
+      onAuthStateChanged(this.auth, (user: any) => {
+        if (user) {
+          // User is signed in, see docs for a list of available properties
+          // https://firebase.google.com/docs/reference/js/firebase.User
+          this.user = user.uid
+          this.studentService.getStudentById(user.uid).subscribe((data) => {
+            this.studentData = data
+            this.checkIfQuizzAchieved()
 
           })
-          .catch((error) => {
-            if (error.code === 'storage/object-not-found') {
-              trade.imageUrl = 'https://dalmont.staticlbi.com/original/images/biens/2/8efa48ae0918f1e8a89684a39abdbdf7/photo_5432049cf11f3071651cb2c30317bd5e.jpg'; // Définir l'URL par défaut en cas d'erreur 404
-            } else {
-              console.error('Erreur lors du chargement de l\'image pour le métier ' + trade.id, error);
-            }
-          })
+          this.authService.getUserId();
+          // retourne this.ui tout de suite après la connexion. undefined plus tard, donc ne convient pas...
+          // console.log("log de ui", this.ui);
+          // tests ok pour information, mais ne semble pas être très utile 
+          this.authService.getToken()?.then(res => console.log("token authentification depuis authService", res.token))
+          // fonctionne parfaitement !!!!!!!!!!!!!!!!!!
+          this.authService.authStatusListener()
+        }
+
+        // pour le cas où non authentifié
+        else {
+          // L'utilisateur n'est pas authentifié
+          console.log("Utilisateur non authentifié");
+          // Rediriger vers la page de connexion si nécessaire
+          // this.router.navigate(['/login']);
+        }
       })
-    })
+
+      //--------------------
+      // pour récupérer les métiers (sigles) enregistrés en base qui détermineront les différentes zones éditioriales
+
+      this.settingsService.getTrades()
+        .pipe(map(data => data.filter(item => item.status && item.status === true)))
+        .subscribe(data => {
+          this.tradesData = data;
+          console.log("this.tradesData", this.tradesData);
+
+          // Charge les images pour chaque métier
+          this.tradesData.forEach((trade: any) => {
+            this.settingsService.loadImage(trade.id)
+              .then((url: string) => {
+                trade.imageUrl = url; // Met à jour l'URL de l'image si elle est trouvée
+
+
+
+
+
+
+
+
+
+
+
+              })
+              .catch((error) => {
+                if (error.code === 'storage/object-not-found') {
+                  trade.imageUrl = 'https://dalmont.staticlbi.com/original/images/biens/2/8efa48ae0918f1e8a89684a39abdbdf7/photo_5432049cf11f3071651cb2c30317bd5e.jpg'; // Définir l'URL par défaut en cas d'erreur 404
+                } else {
+                  console.error('Erreur lors du chargement de l\'image pour le métier ' + trade.id, error);
+                }
+              })
+          })
+        })
 
 
     }
-  else if(this.offline) {
+    else if (this.offline) {
 
       alert("offline")
-    // pour ouvrir la base indexedDB
-    const openRequest = window.indexedDB.open('my-database');
-    // Pour gérer les évènements à l'ouverture de la base
-    openRequest.onsuccess = (event) => {
-      const db = openRequest.result;
-      const transaction = db.transaction('sigles', 'readonly');
-      const objectStore = transaction.objectStore('sigles');
-      const getAllRequest = objectStore.getAll();
+      // pour ouvrir la base indexedDB
+      const openRequest = window.indexedDB.open('my-database');
+      // Pour gérer les évènements à l'ouverture de la base
+      openRequest.onsuccess = (event) => {
+        const db = openRequest.result;
+        const transaction = db.transaction('sigles', 'readonly');
+        const objectStore = transaction.objectStore('sigles');
+        const getAllRequest = objectStore.getAll();
 
-      // alert(this.tradesData)
+        // alert(this.tradesData)
 
-      // Traitez les données récupérées ici depuis base de données indexée my-database
-      getAllRequest.onsuccess = (event) => {
-        this.tradesData = getAllRequest.result;
-        console.log("this.tradesData offline", this.tradesData);
-        this.tradesData.forEach((trade:any) => {
-          trade.imageUrl=`../../assets/${trade.id}.jpeg`
-          console.log(trade.imageUrl);          
-          
-        });
-      }
+        // Traitez les données récupérées ici depuis base de données indexée my-database
+        getAllRequest.onsuccess = (event) => {
+          this.tradesData = getAllRequest.result;
+          console.log("this.tradesData offline", this.tradesData);
+          this.tradesData.forEach((trade: any) => {
+            trade.imageUrl = `../../assets/${trade.id}.jpeg`
+            console.log(trade.imageUrl);
 
-    } // fin de la requête indexedDB
-      
+          });
+        }
+
+      } // fin de la requête indexedDB
+
     }
 
 
@@ -294,7 +287,7 @@ export class HomeComponent implements OnInit {
       this.setOneQuizzAchieved();
       return true;
     }
-    
+
     return false;
   }
 

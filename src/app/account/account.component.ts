@@ -19,6 +19,7 @@ import { Evaluation } from '../admin/evaluation';
 import { SettingsService } from '../admin/settings.service';
 import { Observable, forkJoin, combineLatest, concatMap, toArray, tap, takeUntil, Subject, take, of } from 'rxjs';
 import { ConsentService } from '../consent.service';
+import { NetworkService } from '../network.service';
 
 
 @Component({
@@ -94,7 +95,18 @@ export class AccountComponent implements OnInit, OnDestroy {
   // pour la gestion du consentement à l'utilisation des cookies
   consentStatus: boolean;
 
-  constructor(private auth: Auth, private firestore: Firestore, private authService: AuthService, private studentService: StudentsService, private activatedRoute: ActivatedRoute, private router: Router, private notificationService: PushNotificationService, public sanitizer: DomSanitizer, private settingsService: SettingsService, private consentService: ConsentService) {
+  constructor(
+    private auth: Auth, 
+    // private firestore: Firestore, 
+    private authService: AuthService, 
+    private studentService: StudentsService, 
+    // private activatedRoute: ActivatedRoute, 
+    private router: Router, 
+    private notificationService: PushNotificationService, 
+    public sanitizer: DomSanitizer, 
+    private settingsService: SettingsService, 
+    private consentService: ConsentService, 
+    private networkService:NetworkService) {
     // const messaging = getMessaging();
     // onMessage(messaging, (payload) => {
     //   console.log('Message received. ', payload);
@@ -106,6 +118,12 @@ export class AccountComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.networkService.getOnlineStatus().subscribe(online => {
+      if (!online) {
+        alert("Vous n'avez plus de connexion. L'application vient de passer en mode lecture hors connexion. ")
+        this.router.navigate(['/home']); // Rediriger vers la page d'accueil lorsque hors ligne
+      }
+    });
     // this.requestNotificationPermission();
     onAuthStateChanged(this.auth, (user: any) => {
       if (user) {
@@ -177,9 +195,9 @@ export class AccountComponent implements OnInit, OnDestroy {
             if (this.userData.tutorials) {
               this.tutorials = this.userData.tutorials;
             }
-            
+
             this.triggerContextualNotification()
-            
+
           });
       }
     });
@@ -300,43 +318,72 @@ export class AccountComponent implements OnInit, OnDestroy {
   triggerContextualNotification() {
 
     if (!this.isOneQuizzAchieved && this.hasStartedEvaluation) {
-      this.contextualNotification('Suivi personnalisé', "Retrouvez l'état d'avancement de votre questionnaire en cours...");
+      this.contextualNotification('Suivi personnalisé', "Retrouvez l'état d'avancement de votre questionnaire en cours...", "hasStartedEvaluation");
     }
 
     if (this.isOneQuizzAchieved && !this.userData.isSocialFormSent && !this.userData.subscriptions) {
-      this.contextualNotification('Suivi personnalisé', 'Vos résulats et estimations personnalisées de durée et de coût de formation sont désormais disponibles. Votre inscription formation peut également commencer');
+      this.contextualNotification('Suivi personnalisé', 'Vos résulats et estimations personnalisées de durée et de coût de formation sont désormais disponibles. Votre inscription formation peut également commencer', 'isOneQuizzAchieved');
     }
 
     if (this.userData.isSocialFormSent && !this.userData.subscriptions) {
-      this.contextualNotification('Suivi personnalisé', 'Le dossier est en cours de traitement. Votre inscription sera bientôt finalisée');
+      this.contextualNotification('Suivi personnalisé', 'Le dossier est en cours de traitement. Votre inscription sera bientôt finalisée', 'isSocialFormSent' );
     }
-    
+
     if (this.userData.subscriptions && this.userData.elearning) {
-      this.contextualNotification('Suivi personnalisé', 'Votre inscription est maintenant confirmée. Vous pouvez démarrer votre session e-learning ');
+      this.contextualNotification('Suivi personnalisé', 'Votre inscription est maintenant confirmée. Vous pouvez démarrer votre session e-learning ', 'subscriptions');
     }
 
   }
 
+// si on veut rajouter une logique pour vérifier l'état de la notification dans local Storage
+  // async contextualNotification(title: string, body: string, notificationId: string) {
+  //   // Vérifier si la permission est déjà accordée
+  //   if (Notification.permission === 'granted') {
+  //     try {
+  //       const options = {
+  //         body: body,
+  //         icon: 'https://be-on-top-beta.web.app/assets/BE-ON-TOP_picto_LOGO.svg',
+  //       }
+  //       // Afficher la notification avec les options
+  //       const registration = await navigator.serviceWorker.getRegistration();
+  //       // alert(registration)
+  //       if (registration) {
+  //         registration.showNotification(title, options);
+  //         // Enregistrer l'identifiant de la notification dans le stockage local
+  //         localStorage.setItem(notificationId, 'true');
+  //       }
+  //     } catch (error) {
+  //       console.error("Error during notification setup:", error);
+  //     }
+  //   }
+  // }
 
-  async contextualNotification(title: string, body: string) {
+  async contextualNotification(title: string, body: string, notificationId: string) {
     // Vérifier si la permission est déjà accordée
     if (Notification.permission === 'granted') {
-      try {
-        const options = {
-          body: body,
-          icon: 'https://be-on-top-beta.web.app/assets/BE-ON-TOP_picto_LOGO.svg',
+        // Vérifier si la notification a déjà été affichée
+        if (!localStorage.getItem(notificationId)) {
+            try {
+                const options = {
+                    body: body,
+                    icon: 'https://be-on-top-beta.web.app/assets/BE-ON-TOP_picto_LOGO.svg',
+                }
+                // Afficher la notification avec les options
+                const registration = await navigator.serviceWorker.getRegistration();
+                // alert(registration)
+                if (registration) {
+                    registration.showNotification(title, options);
+                }
+                
+                // Enregistrer l'identifiant de la notification dans le stockage local
+                localStorage.setItem(notificationId, 'true');
+            } catch (error) {
+                console.error("Error during notification setup:", error);
+            }
         }
-        // Afficher la notification avec les options
-        const registration = await navigator.serviceWorker.getRegistration();
-        // alert(registration)
-        if (registration) {
-          registration.showNotification(title, options);
-        }
-      } catch (error) {
-        console.error("Error during notification setup:", error);
-      }
     }
-  }
+}
+
 
 
   focus() {

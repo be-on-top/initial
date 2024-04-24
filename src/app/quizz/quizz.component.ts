@@ -13,6 +13,7 @@ import { Trade } from '../admin/trade';
 import { Observable, of } from 'rxjs';
 import { PushNotificationService } from '../push-notification.service';
 import { getMessaging, getToken } from "@angular/fire/messaging";
+import { NetworkService } from '../network.service';
 // import { UpdateService } from '../update.service';
 
 @Component({
@@ -110,7 +111,8 @@ export class QuizzComponent implements OnInit {
     private settingsService: SettingsService,
     private router: Router,
     private el: ElementRef,
-    private notificationService: PushNotificationService
+    private notificationService: PushNotificationService,
+    private networkService:NetworkService
     // private updateService: UpdateService
   ) {
 
@@ -119,6 +121,13 @@ export class QuizzComponent implements OnInit {
   ngOnInit() {
     // pour tenter de détecter des updates côté template
     // this.updateService.checkForUpdates();
+    this.networkService.getOnlineStatus().subscribe(online => {
+      if (!online) {
+        alert("Vous n'avez plus de connexion. L'application vient de passer en mode lecture hors connexion. ")
+        this.router.navigate(['/home']); // Rediriger vers la page d'accueil lorsque hors ligne
+      }
+    });
+  
 
     this.trade = this.ac.snapshot.params["id"]
     this.indexQuestion = this.ac.snapshot.params["indexQuestion"]
@@ -147,7 +156,6 @@ export class QuizzComponent implements OnInit {
         this.questionsMedias = this.questionsService.getMediaQuestionById(this.questions[this.indexQuestion].id)
         console.log("questionsMedias depuis questions-details", this.questionsMedias);
         this.responsesMedias = this.questionsService.getMediasResponsesById(this.questions[this.indexQuestion].id)
-
 
 
         console.log("this.fullOptScoringArray initial", this.fullOptScoringTrue)
