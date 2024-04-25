@@ -232,11 +232,25 @@ export class SettingsService {
     return docData($sigleRef, { idField: 'id' }).pipe(map(trade => trade['competences'][cpId]))
   }
 
-  // pour les cover images des métiers
-  loadImage(tradeId: string) {
-    const imageRef = ref(this.storage, 'images/trades/' + tradeId + '.jpeg');
+  // // pour les cover images des métiers initiale qu'on peut conserver pour le cas de la home page en la renommant loadImage+Reduced
+  loadImageReduced(tradeId: string) {
+    const imageRef = ref(this.storage, 'images/trades/' + tradeId + '_resized.jpeg');
     return getDownloadURL(imageRef)
   }
+
+  // pour les cover images des métiers si 2 versions attention !!!!
+  loadImage(tradeId: string): Promise<{ originalUrl: string, resizedUrl: string }> {
+    const originalImageRef = ref(this.storage, 'images/trades/' + tradeId + '.jpeg');
+    const resizedImageRef = ref(this.storage, 'images/trades/' + tradeId + '_resized.jpeg');
+  
+    const originalImageUrl = getDownloadURL(originalImageRef);
+    const resizedImageUrl = getDownloadURL(resizedImageRef);
+  
+    return Promise.all([originalImageUrl, resizedImageUrl]).then(([originalUrl, resizedUrl]) => {
+      return { originalUrl, resizedUrl };
+    });
+  }
+  
 
 
 
@@ -261,35 +275,98 @@ export class SettingsService {
   //     });
   // }
 
-  updateTradeImage(tradeId: string, file: File): Promise<string> {
-    const imageRef = ref(this.storage, 'images/trades/' + tradeId + '.jpeg');
+  // updateTradeImage(tradeId: string, file: File): Promise<string> {
+  //   const imageRef = ref(this.storage, 'images/trades/' + tradeId + '.jpeg');
 
-    // Vérifie d'abord si l'objet existe
-    return getMetadata(imageRef)
-      .then((metadata) => {
-        // L'ancienne image existe, on la supprime
-        return deleteObject(imageRef);
-      })
-      .catch((error) => {
-        // L'ancienne image n'existe pas ou une erreur s'est produite lors de la vérification, on gère l'erreur ici
-      })
-      .then(() => {
-        // Télécharger la nouvelle image
-        return uploadBytes(imageRef, file);
-      })
-      .then(() => {
-        // Récupérer l'URL de la nouvelle image
-        return getDownloadURL(imageRef);
-      })
-      .then((url) => {
-        // Retourner l'URL de la nouvelle image
-        return url;
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la mise à jour de l'image", error);
-        throw error; // Propage l'erreur pour une gestion ultérieure dans le composant
-      });
+  //   // Vérifie d'abord si l'objet existe
+  //   return getMetadata(imageRef)
+  //     .then((metadata) => {
+  //       // L'ancienne image existe, on la supprime
+  //       return deleteObject(imageRef);
+  //     })
+  //     .catch((error) => {
+  //       // L'ancienne image n'existe pas ou une erreur s'est produite lors de la vérification, on gère l'erreur ici
+  //     })
+  //     .then(() => {
+  //       // Télécharger la nouvelle image
+  //       return uploadBytes(imageRef, file);
+  //     })
+  //     .then(() => {
+  //       // Récupérer l'URL de la nouvelle image
+  //       return getDownloadURL(imageRef);
+  //     })
+  //     .then((url) => {
+  //       // Retourner l'URL de la nouvelle image
+  //       return url;
+  //     })
+  //     .catch((error) => {
+  //       console.error("Erreur lors de la mise à jour de l'image", error);
+  //       throw error; // Propage l'erreur pour une gestion ultérieure dans le composant
+  //     });
+  // }
+  
+  async updateTradeImage(tradeId: string, file: File): Promise<string[]> {
+    // Référence de l'image d'origine
+    const originalImageRef = ref(this.storage, 'images/trades/' + tradeId + '.jpeg');
+    // Référence de la version redimensionnée de l'image
+    const resizedImageRef = ref(this.storage, 'images/trades/' + tradeId + '_resized.jpeg');
+
+    try {
+      // Obtenir la largeur de l'image
+      const width = await this.getImageWidth(file);
+
+      // Redimensionner l'image d'origine en divisant sa largeur par deux
+      const resizedFile = await this.resizeImage(file, width / 2);
+
+      // Enregistrer l'image d'origine
+      await uploadBytes(originalImageRef, file);
+
+      // Enregistrer la version redimensionnée de l'image
+      await uploadBytes(resizedImageRef, resizedFile);
+
+      // Récupérer les URLs des deux versions de l'image
+      const originalImageUrl = await getDownloadURL(originalImageRef);
+      const resizedImageUrl = await getDownloadURL(resizedImageRef);
+
+      return [originalImageUrl, resizedImageUrl];
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour de l'image", error);
+      throw error;
+    }
   }
+
+  private async getImageWidth(file: File): Promise<number> {
+    return new Promise((resolve, reject) => {
+      const image = new Image();
+      image.onload = () => resolve(image.width);
+      image.onerror = () => reject(new Error("Impossible de charger l'image"));
+      image.src = URL.createObjectURL(file);
+    });
+  }
+
+
+  private async resizeImage(file: File, newWidth: number): Promise<Blob> {
+    // Utiliser l'API Canvas pour redimensionner l'image
+    const image = new Image();
+    image.src = URL.createObjectURL(file);
+    await new Promise(resolve => { image.onload = resolve });
+  
+    const canvas = document.createElement('canvas');
+    canvas.width = newWidth;
+    canvas.height = image.height * (newWidth / image.width);
+  
+    const ctx = canvas.getContext('2d')!;
+    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+  
+    // Convertir le canvas en Blob avec le type MIME 'image/jpeg' et une qualité de 0.9
+    return new Promise<Blob>((resolve) => {
+      canvas.toBlob((blob) => {
+        resolve(blob!);
+      }, 'image/jpeg', 0.9);
+    });
+  }
+
+
 
 
   getSigleIds() {

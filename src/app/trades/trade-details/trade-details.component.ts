@@ -32,6 +32,7 @@ export class TradeDetailsComponent implements OnInit {
   userRole: string = ""
   // pour charger l'image associée si image
   imageUrl: string = ''; // Pour stocker l'URL de l'image
+  imageUrlReduced: string = ''; 
 
   offline: boolean = false
 
@@ -67,22 +68,19 @@ export class TradeDetailsComponent implements OnInit {
 
         // 2 récupérer l'image en ligne
         
-      // pour charger l'image si image
-      this.service.loadImage(this.tradeId).then(
-        (url: any) => {
-          // L'image existe, on retourne l'URL
-          this.imageUrl = url;
-          console.log(this.imageUrl);
+    // Charge les URLs des deux versions de l'image
+    this.service.loadImage(this.tradeId).then(({ originalUrl, resizedUrl }) => {
+      this.imageUrl = originalUrl;
+      this.imageUrlReduced = resizedUrl;
+    }).catch((error) => {
+      if (error.code === 'storage/object-not-found') {
+        console.log('Aucune image n\'a encore été ajoutée.');
+      } else {
+        console.error('Erreur lors du chargement de l\'image', error);
+      }
+    });
 
-        }).catch((error) => {
-          if (error.code === 'storage/object-not-found') {
-            // L'image n'existe pas, gérer le cas ici sans générer de sortie de console indésirable
-            console.log('Aucune image n\'a encore été ajoutée');
-          } else {
-            // Gérer d'autres erreurs ici
-            console.error('Erreur lors du chargement de l\'image', error);
-          }
-        })
+  
 
       } else if (this.offline) {
 

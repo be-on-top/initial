@@ -14,6 +14,8 @@ export class CoverImageComponent {
   imageUrl: string = ''; // Pour stocker l'URL de l'image
   imageFile: File | null = null; // Pour stocker la nouvelle image à télécharger
   imageSelected = false; // Pour conditionner l'affichage du message d'erreur
+  imageUrlReduced: string = '';
+  // resizedImageUrl:string = '';
 
   constructor(
     private service: SettingsService,
@@ -24,24 +26,18 @@ export class CoverImageComponent {
   ngOnInit(): void {
     this.tradeId = this.ac.snapshot.params['id'];
 
-    // Charge l'URL de l'image existante si elle existe
-    
-    // pour charger l'image si image
-    this.service.loadImage(this.tradeId).then(
-      (url:any) => {
-        // L'image existe, on retourne l'URL
-        this.imageUrl = url;
-        console.log(this.imageUrl);
-        
-      }).catch((error) => {
-        if (error.code === 'storage/object-not-found') {
-          // L'image n'existe pas, gérer le cas ici sans générer de sortie de console indésirable
-          console.log('Aucune image n\'a encore été ajoutée.');
-        } else {
-          // Gérer d'autres erreurs ici
-          console.error('Erreur lors du chargement de l\'image', error);
-        }
-      });
+    // Charge les URLs des deux versions de l'image
+    this.service.loadImage(this.tradeId).then(({ originalUrl, resizedUrl }) => {
+      this.imageUrl = originalUrl;
+      this.imageUrlReduced = resizedUrl;
+    }).catch((error) => {
+      if (error.code === 'storage/object-not-found') {
+        console.log('Aucune image n\'a encore été ajoutée.');
+      } else {
+        console.error('Erreur lors du chargement de l\'image', error);
+      }
+    });
+
   }
 
   // comme pour les questionnaires, j'intercepte l'image pour évaluer le poids
@@ -66,9 +62,10 @@ export class CoverImageComponent {
   updateImage() {
     if (this.imageFile) {
       this.service.updateTradeImage(this.tradeId, this.imageFile)
-        .then((url) => {
+        .then((urls: string[]) => {
           // Mise à jour de l'URL de l'image dans le composant
-          this.imageUrl = url;
+          this.imageUrl = urls[0];
+          this.imageUrlReduced = urls[1]
           console.log('Image mise à jour avec succès.');
         })
         .catch((error) => {

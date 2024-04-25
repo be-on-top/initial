@@ -179,24 +179,13 @@ export class HomeComponent implements OnInit {
 
           // Charge les images pour chaque métier
           this.tradesData.forEach((trade: any) => {
-            this.settingsService.loadImage(trade.id)
+            this.settingsService.loadImageReduced(trade.id)
               .then((url: string) => {
                 trade.imageUrl = url; // Met à jour l'URL de l'image si elle est trouvée
-
-
-
-
-
-
-
-
-
-
-
               })
               .catch((error) => {
                 if (error.code === 'storage/object-not-found') {
-                  trade.imageUrl = 'https://dalmont.staticlbi.com/original/images/biens/2/8efa48ae0918f1e8a89684a39abdbdf7/photo_5432049cf11f3071651cb2c30317bd5e.jpg'; // Définir l'URL par défaut en cas d'erreur 404
+                  trade.imageUrl = './assets/images-presentation-metiers-vide.jpg'; // Définir l'URL par défaut en cas d'erreur 404
                 } else {
                   console.error('Erreur lors du chargement de l\'image pour le métier ' + trade.id, error);
                 }
@@ -335,18 +324,19 @@ export class HomeComponent implements OnInit {
   }
 
 
-  saveLocally(imageFile: File): void {
-    const reader = new FileReader();
-    reader.onload = (event: any) => {
-      const imageData = event.target.result;
-      localStorage.setItem('localImage', imageData);
-    };
-    reader.readAsDataURL(imageFile);
-  }
+  // étude non concluante
+  // saveLocally(imageFile: File): void {
+  //   const reader = new FileReader();
+  //   reader.onload = (event: any) => {
+  //     const imageData = event.target.result;
+  //     localStorage.setItem('localImage', imageData);
+  //   };
+  //   reader.readAsDataURL(imageFile);
+  // }
 
-  getLocalImageSrc(): any {
-    return localStorage.getItem('localImage');
-  }
+  // getLocalImageSrc(): any {
+  //   return localStorage.getItem('localImage');
+  // }
 
 
 
