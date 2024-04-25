@@ -6,24 +6,13 @@ import { Auth } from '@angular/fire/auth';
 // import { of } from 'rxjs';
 import { AuthService } from '../admin/auth.service';
 import { onAuthStateChanged } from '@angular/fire/auth';
-
-// c'est maintenant le service qui régale !!!
-// import { getMessaging, onMessage, getToken } from "@angular/fire/messaging";
-
-// import { PushNotificationService } from '../push-notification.service';
-import { SwPush, SwUpdate } from '@angular/service-worker';
-
-import { getMessaging } from "firebase/messaging/sw";
-// import { onBackgroundMessage } from "firebase/messaging/sw";
-// import { getToken } from 'firebase/messaging';
 import { SettingsService } from '../admin/settings.service';
 // import { Trade } from '../admin/trade';
 // import { Observable } from 'rxjs';
 import { StudentsService } from '../admin/students.service';
 import { Student } from '../admin/Students/student';
 import { UpdateService } from '../update.service';
-import { filter, map } from 'rxjs';
-import { getBytes } from '@angular/fire/storage';
+import { map } from 'rxjs';
 import { NetworkService } from '../network.service';
 // import { DomSanitizer } from '@angular/platform-browser';
 
@@ -108,8 +97,6 @@ export class HomeComponent implements OnInit {
     private studentService: StudentsService,
     private ac: ActivatedRoute,
     private router: Router,
-    private swPush: SwPush,
-    private swUpdate: SwUpdate,
     private settingsService: SettingsService,
     private updateService: UpdateService,
     // private networkService: NetworkService
@@ -239,7 +226,7 @@ export class HomeComponent implements OnInit {
 
 
   handleImageError(trade: any) {
-    trade.imageUrl = 'https://dalmont.staticlbi.com/original/images/biens/2/8efa48ae0918f1e8a89684a39abdbdf7/photo_5432049cf11f3071651cb2c30317bd5e.jpg';
+    trade.imageUrl = './assets/images-presentation-metiers-vide.jpg';
   }
 
   wrapFirstWord(text: string): string {

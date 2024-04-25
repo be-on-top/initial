@@ -107,7 +107,7 @@
                             </a> -->
                             <a [routerLink]="['/trade', trade.sigle]" class="text-decoration-none">
                                 <img class="img-fluid rounded" [src]="trade.imageUrl" *ngIf="trade.imageUrl"
-                                    (load)="onImageLoad()" loading="lazy">
+                                    (load)="onImageLoad()" loading="lazy" alt="formation au métier {{trade.sigle}}">
                             </a>
                         </div>
 

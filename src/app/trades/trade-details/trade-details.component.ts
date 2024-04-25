@@ -119,8 +119,6 @@ export class TradeDetailsComponent implements OnInit {
         // pour récupérer l'image locale si image locale
         this.imageUrl = `../../assets/${this.tradeId}.jpeg`
 
-
-
       }
 
 

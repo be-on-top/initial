@@ -4,28 +4,21 @@
   "assetGroups": [
     {
       "name": "app",
-      "installMode": "prefetch",
+      "installMode": "lazy",
       "resources": {
         "files": [
           "/favicon.ico",
           "/index.html",
           "/manifest.webmanifest",
           "/*.css",
-          "/*.js",
-          "images-presentation-metiers-vide.jpg",
-          "caces_r489.jpeg",
-          "caces_r482.jpeg",
-          "prepa_cdes.jpeg",
-          "poseur_ite.jpeg",
-          "cl_vul.jpeg",
-          "mac_vrd.jpeg"
+          "/*.js"
         ]
       }
     },
     {
       "name": "assets",
       "installMode": "prefetch",
-      "updateMode": "prefetch",
+      "updateMode": "lazy",
       "resources": {
         "files": [
           "/assets/**",
