@@ -70,10 +70,11 @@ export class HeaderComponent implements OnInit {
     //  })
 
     if (navigator.onLine) {
-      this.tradeService.getTrades().subscribe(data => {
+      this.tradeService.getTradesWithStatusTrue().subscribe(data => {
         // alert(data)
         this.trades = data
-        this.filterTradesByStatus()
+        // je n'ai plus besoin puisque je filtre à la source :
+        // this.filterTradesByStatus()
       })
     } else {
       const openRequest = window.indexedDB.open('my-database');

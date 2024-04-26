@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Firestore, collection, collectionData, docData, setDoc, addDoc, query, doc, where, getDocs, DocumentData, getDoc, updateDoc } from '@angular/fire/firestore';
 // import { NgForm } from '@angular/forms';
-import { Observable, map, of, tap } from 'rxjs';
+import { Observable, from, map, of, tap } from 'rxjs';
 import { Trade } from './trade';
 import { Settings } from './settings';
 // à externaliser vers un service
@@ -80,7 +80,37 @@ export class SettingsService {
     await updateDoc(doc($settingsRef, tradeId), updateData);
   }
 
+// Méthode pour récupérer uniquement la propriété 'denomination' des métiers avec status=true
+// getTradeDenominationsWithStatusTrue(): Observable<string[]> {
+//   const tradesRef = collection(this.firestore, 'sigles');
+//   const statusQuery = query(tradesRef, where('status', '==', true));
+  
+//   return from(getDocs(statusQuery)).pipe(
+//     map((querySnapshot) => {
+//       const denominations: string[] = [];
+//       querySnapshot.forEach((doc) => {
+//         denominations.push(doc.data()["denomination"]);
+//       });
+//       return denominations;
+//     })
+//   );
+// }
 
+// Méthode pour récupérer tous les métiers avec status=true
+getTradesWithStatusTrue(): Observable<Trade[]> {
+  const tradesRef = collection(this.firestore, 'sigles');
+  const statusQuery = query(tradesRef, where('status', '==', true));
+  
+  return from(getDocs(statusQuery)).pipe(
+    map((querySnapshot) => {
+      const trades: Trade[] = [];
+      querySnapshot.forEach((doc) => {
+        trades.push(doc.data() as Trade);
+      });
+      return trades;
+    })
+  );
+}
 
   // getTrades() {
   //   const tradesRef = collection(this.firestore, "sigles");

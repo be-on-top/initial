@@ -13,6 +13,7 @@ export class AppComponent implements OnInit {
   title = 'Be On Top Application de positionnement et de formation métiers';
   // ui : string | undefined=""
   // mesaggeReceived:string | undefined="";
+  loadingComplete:boolean=false
 
 
   constructor(
@@ -35,6 +36,10 @@ export class AppComponent implements OnInit {
     //   console.log(payload);
     //   this.mesaggeReceived = payload.notification.title;
     // })
+
+    window.onload = () => {
+      this.loadingComplete = true;
+    };
   }
 
 }

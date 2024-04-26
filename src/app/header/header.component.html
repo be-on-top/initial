@@ -5,7 +5,7 @@
         <!-- pour éviter les erreurs d'interprétation des segments de chemin -->
         <!-- <a class="navbar-brand" [routerLink]="['home']" [queryParams]="{ userRole: userRole }">BE-ON-TOP</a> -->
         <a class="navbar-brand" [routerLink]="['']" [queryParams]="{ userRole: userRole }">
-            <img src="./assets/BE-ON-TOP_picto_LOGO.svg" class="logo">BE-ON-TOP</a>
+            <img alt="logo BE-ON-TOP de l'application de positionnement" src="./assets/BE-ON-TOP_picto_LOGO.svg" class="logo">BE-ON-TOP</a>
 
         <!-- <p class="text-light">{{userRole}} Authentification</p> -->
         <!-- <a class="navbar-brand" [routerLink]="['']">BE-ON-TOP</a> -->
@@ -20,7 +20,7 @@
             <span *ngIf="isMenuOpen" class="navbar-toggler-icon">&#10006;</span>
         </button> -->
         <button class="navbar-toggler" style="border-width: 0;" type="button" data-bs-toggle="collapse"
-            data-bs-target="#collapsibleNavbar" (click)="toggleMenu()">
+            data-bs-target="#collapsibleNavbar" (click)="toggleMenu()" aria-label="Fermer le menu">
             <span class="navbar-toggler-icon" [ngClass]="{'closed-menu': isMenuOpen}"></span>
         </button>
 
@@ -119,11 +119,11 @@
                 </li>
 
 
-                <!-- <li class="nav-item dropdown" *ngIf="trades" [routerLinkActive]="['active']"> -->
-                <li class="nav-item dropdown" *ngIf="filteredTrades" [routerLinkActive]="['active']">
+                <li class="nav-item dropdown" *ngIf="trades" [routerLinkActive]="['active']">
+                <!-- <li class="nav-item dropdown" *ngIf="filteredTrades" [routerLinkActive]="['active']"> -->
                     <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">Nos métiers</a>
                     <ul class="dropdown-menu mb-2">
-                        <li *ngFor="let trade of filteredTrades">
+                        <li *ngFor="let trade of trades">
                             <a class="dropdown-item" (click)="closeNavbar()"
                                 [routerLink]="['/trade', trade.sigle]">{{trade.denomination}}</a>
                         </li>
