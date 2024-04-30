@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Auth, signInWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, sendPasswordResetEmail } from '@angular/fire/auth';
+import { getAuth, Auth, signInWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, sendPasswordResetEmail } from '@angular/fire/auth';
 import { collection, Firestore } from '@angular/fire/firestore';
 import { ActivatedRoute, Router } from '@angular/router';
 import { stringify } from '@firebase/util';
@@ -7,7 +7,8 @@ import { stringify } from '@firebase/util';
 
 import { BehaviorSubject, Observable, Subscription, switchMap } from 'rxjs';
 import { EvaluatorsService } from './evaluators.service';
-// import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { setPersistence, browserSessionPersistence } from 'firebase/auth';
+import { ConsentService } from '../consent.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,18 @@ export class AuthService {
   // rappel : on utilise par convention le suffixxe $ pour préciser que c'est un observable
   // user$ :Observable<any>;
 
-  constructor(private auth: Auth, private evaluatorService: EvaluatorsService, private firestore: Firestore, private router: Router) {
+  constructor(private auth: Auth, private evaluatorService: EvaluatorsService, private firestore: Firestore, private router: Router, private consentService:ConsentService) {
+    const consent:boolean = consentService.getConsent()
+    if (!consent) {      
+      // Configurer la persistance de session au moment de l'initialisation du service
+      setPersistence(auth, browserSessionPersistence)
+        .then(() => {
+          console.log('Session persistence set successfully');
+        })
+        .catch((error) => {
+          console.error('Error setting session persistence:', error);
+        });
+    }
 
   }
 
@@ -65,19 +77,65 @@ export class AuthService {
   //   return signInWithEmailAndPassword(this.auth, email, password);
   // }
 
-    async login({ email, password }: any) {
+  async login({ email, password }: any) {
 
 
-      const result = await signInWithEmailAndPassword(this.auth, email, password);
-      console.log("User signed in successfully:", result.user.uid);
-      return result
-   
+    const result = await signInWithEmailAndPassword(this.auth, email, password);
+    console.log("User signed in successfully:", result.user.uid);
+    // if (result.user.uid) {
+    //   setPersistence(this.auth, browserSessionPersistence)
+    //     .then(() => {
+    //       // In memory persistence will be applied to the signed in Google user
+    //       // even though the persistence was set to 'none' and a page redirect
+    //       // occurred.
+    //       return signInWithEmailAndPassword(this.auth, email, password);
+    //     })
+    //     .catch((error) => {
+    //       // Handle Errors here.
+    //       const errorCode = error.code;
+    //       const errorMessage = error.message;
+    //     });
+
+    // }
+    return result
+
   }
+
+
+
+  //   async login({ email, password }: any) {
+  //     try {
+  //         await setPersistence(this.auth, browserSessionPersistence); // Configure la persistance de la session
+  //         const result = await signInWithEmailAndPassword(this.auth, email, password); // Authentification de l'utilisateur
+  //         console.log("User signed in successfully:", result.user.uid);
+  //         return result;
+  //     } catch (error) {
+  //         console.error('Error during login:', error);
+  //         throw error;
+  //     }
+  // }
+  // async login({ email, password }: any) {
+  //   try {
+  //       await setPersistence(this.auth, browserSessionPersistence); // Configure la persistance de la session
+  //       const result = await signInWithEmailAndPassword(this.auth, email, password); // Authentification de l'utilisateur
+  //       console.log("User signed in successfully:", result.user.uid);
+  //       return result;
+  //   } catch (error) {
+  //       console.error('Error during login:', error);
+  //       throw error;
+  //   }
+  // }
+
+
+
+
+
+
 
 
   loginWithGoogle() {
     return signInWithPopup(this.auth, new GoogleAuthProvider());
-  } 
+  }
 
 
   // logout() {
@@ -108,7 +166,7 @@ export class AuthService {
   // }
 
 
-  
+
 
 
   passwordReset(email: string) {

@@ -1,6 +1,6 @@
 import { Component, DoCheck, OnInit } from '@angular/core';
 import { ConsentService } from '../consent.service';
-import { Auth, browserSessionPersistence, setPersistence, signInWithEmailAndPassword } from '@angular/fire/auth';
+import { Auth, browserSessionPersistence, setPersistence, signInWithEmailAndPassword, browserLocalPersistence } from '@angular/fire/auth';
 import { persistentLocalCache } from 'firebase/firestore';
 
 
@@ -20,9 +20,10 @@ export class CookieConsentBannerComponent implements OnInit {
     // Vérifier si l'utilisateur a déjà pris une décision concernant les cookies
     if (this.consentService.getConsent()) {
       this.showBanner = false; // Masquer la bannière si l'utilisateur a déjà donné son consentement
+      // alert("autorisé")
       setPersistence(auth, browserSessionPersistence)
         .then(() => {
-          sessionStorage.setItem('userConsent', 'true');
+          sessionStorage.setItem('userConsent', 'true')
         })
         .catch((error) => {
           // Handle Errors here.
@@ -35,25 +36,25 @@ export class CookieConsentBannerComponent implements OnInit {
 
   ngOnInit(): void {
     // Vérifier si l'utilisateur a déjà pris une décision concernant les cookies
-    if (this.consentService.getConsent()) {
-      this.showBanner = false; // Masquer la bannière si l'utilisateur a déjà donné son consentement
-    }
+    // if (this.consentService.getConsent()) {
+    //   this.showBanner = false; // Masquer la bannière si l'utilisateur a déjà donné son consentement
+    // }
   }
 
   acceptCookies() {
     this.consentService.setConsent(true);
     // Autres actions nécessaires après avoir accepté les cookies
     this.showBanner = false;
-    sessionStorage.setItem('userConsent', 'true');
+
   }
 
   rejectCookies() {
     this.consentService.setConsent(false);
-    console.log('Bannière masquée après refus des cookies');
+    console.log('Bannière masquée après refus des cookies')
     // Autres actions nécessaires après avoir refusé les cookies
     this.showBanner = false;
-    // Si le consentement est refusé, supprimer la clé de sessionStorage
-    sessionStorage.removeItem('userConsent');
+    this.consentService.deleteCookiesStartingWith("_ga")
+    
   }
 
   // Méthode pour afficher la bannière dans la page d'inscription

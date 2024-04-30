@@ -12,7 +12,7 @@
             <input type="text" id="firstName" [(ngModel)]="student.firstName" name="firstName" class="form-control"
                 placeholder="Prénom">
 
-            <label for="lastname" class="form-label mt-3">Nom *</label>
+            <label for="lastName" class="form-label mt-3">Nom *</label>
             <input type="text" id="lastName" [(ngModel)]="student.lastName" name="lastName" class="form-control"
                 #lastName="ngModel" placeholder="Nom" required>
             <div class="valid-feedback" *ngIf="lastName.valid">Champ correctement renseigné</div>
@@ -25,9 +25,9 @@
                     #email="ngModel" placeholder="Email" disabled>
             </div>
 
-            <label for="cp" class="form-label mt-3">CP</label>
+            <!-- <label for="cp" class="form-label mt-3">CP</label>
             <input type="text" id="cp" [(ngModel)]="student.cp" name="cp" class="form-control"
-                placeholder="Code Postal Optionnel...">
+                placeholder="Code Postal Optionnel..."> -->
             <button type="submit" id="submit" class="btn btn-primary mt-3"
                 [ngClass]="{'disabled':f.invalid}" data-bs-toggle="collapse" data-bs-target="#demo">Valider</button>
         </form>
