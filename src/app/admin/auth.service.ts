@@ -21,9 +21,9 @@ export class AuthService {
   // rappel : on utilise par convention le suffixxe $ pour préciser que c'est un observable
   // user$ :Observable<any>;
 
-  constructor(private auth: Auth, private evaluatorService: EvaluatorsService, private firestore: Firestore, private router: Router, private consentService:ConsentService) {
-    const consent:boolean = consentService.getConsent()
-    if (!consent) {      
+  constructor(private auth: Auth, private evaluatorService: EvaluatorsService, private firestore: Firestore, private router: Router, private consentService: ConsentService) {
+    const consent: boolean = consentService.getConsent()
+    if (!consent) {
       // Configurer la persistance de session au moment de l'initialisation du service
       setPersistence(auth, browserSessionPersistence)
         .then(() => {
@@ -79,52 +79,17 @@ export class AuthService {
 
   async login({ email, password }: any) {
 
-
     const result = await signInWithEmailAndPassword(this.auth, email, password);
     console.log("User signed in successfully:", result.user.uid);
-    // if (result.user.uid) {
-    //   setPersistence(this.auth, browserSessionPersistence)
-    //     .then(() => {
-    //       // In memory persistence will be applied to the signed in Google user
-    //       // even though the persistence was set to 'none' and a page redirect
-    //       // occurred.
-    //       return signInWithEmailAndPassword(this.auth, email, password);
-    //     })
-    //     .catch((error) => {
-    //       // Handle Errors here.
-    //       const errorCode = error.code;
-    //       const errorMessage = error.message;
-    //     });
+    // Enregistrer la date de la dernière connexion dans le localStorage
+    const lastLoginDate = new Date();
+    localStorage.setItem('lastLoginDate', lastLoginDate.toString());
 
-    // }
     return result
 
   }
 
 
-
-  //   async login({ email, password }: any) {
-  //     try {
-  //         await setPersistence(this.auth, browserSessionPersistence); // Configure la persistance de la session
-  //         const result = await signInWithEmailAndPassword(this.auth, email, password); // Authentification de l'utilisateur
-  //         console.log("User signed in successfully:", result.user.uid);
-  //         return result;
-  //     } catch (error) {
-  //         console.error('Error during login:', error);
-  //         throw error;
-  //     }
-  // }
-  // async login({ email, password }: any) {
-  //   try {
-  //       await setPersistence(this.auth, browserSessionPersistence); // Configure la persistance de la session
-  //       const result = await signInWithEmailAndPassword(this.auth, email, password); // Authentification de l'utilisateur
-  //       console.log("User signed in successfully:", result.user.uid);
-  //       return result;
-  //   } catch (error) {
-  //       console.error('Error during login:', error);
-  //       throw error;
-  //   }
-  // }
 
 
 
@@ -239,7 +204,38 @@ export class AuthService {
 
     // return userKey
 
+    // AuthService.js
+
+
+
+
   }
+
+  // Fonction pour récupérer la date de dernière connexion de l'utilisateur depuis le localStorage
+  getLastLoginDate = () => {
+    const lastLoginString = localStorage.getItem('lastLoginDate');
+    if (lastLoginString) {
+      return new Date(lastLoginString);
+    } else {
+      // Si aucune date de dernière connexion n'est disponible, retourner null
+      return null;
+    }
+  }
+
+  // Fonction pour comparer la date de dernière connexion avec la date actuelle
+  checkLastLoginDate() {
+    const lastLoginDate: any = this.getLastLoginDate();
+    const currentDate: any = new Date();
+    const millisecondsIn15Days = 15 * 24 * 60 * 60 * 1000; // 15 jours en millisecondes
+
+    // Vérifier si la durée écoulée dépasse 15 jours
+    if (lastLoginDate && currentDate - lastLoginDate > millisecondsIn15Days) {
+      // Déconnecter automatiquement l'utilisateur
+      this.logout();
+    }
+  }
+
+
 
 
 

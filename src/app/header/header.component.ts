@@ -41,6 +41,9 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
 
+    // Appeler la fonction de vérification au démarrage de l'application
+    this.authService.checkLastLoginDate();
+
     onAuthStateChanged(this.auth, (user: any) => {
       if (user) {
         this.userUid = user.uid
