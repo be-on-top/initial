@@ -88,9 +88,14 @@ hr{
     /* Assurez-vous que l'image est au-dessus du pseudo-élément */
 }
 
-@media only screen and (max-width: 750px) {
+
+@media only screen and (max-width: 765px) {
 
     .image-container, .home{
         height: 40vw;
+    }
+    .image-container img{
+        width: 100%;
+        object-fit: cover;
     }
 }

@@ -18,16 +18,16 @@
 
 
     <!-- test alert-dismissible for mission -->
-    <ng-container *ngIf="!isOneQuizzAchieved; else yes">
-        <div class="alert p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show">
+    <ng-container *ngIf="user==undefined || (!isLoading && !isOneQuizzAchieved); else yes">
+        <div *ngIf="!isLoading && !isOneQuizzAchieved" class="alert w-100 p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show">
             <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert" aria-label="Fermer le message"></button>
-            <span class="d-inline h5">Testez-vous </span> grâce à des <h2 class="d-inline h5">questionnaires ciblés</h2>
+            <span class="d-inline h5">Testez vos connaissance </span> grâce à nos <h2 class="d-inline h5">questionnaires d'évaluation</h2>
             et<span class="d-inline h5"> commencez sans attendre</span> une <h1 class="d-inline h5">formation
-                personnalisée</h1> pour <span class="d-inline h5">vous hisser aux portes</span> du métier de votre choix
+                personnalisée</h1> pour <span class="d-inline h5">vous hisser au top</span> du métier de votre choix
         </div>
     </ng-container>
     <ng-template #yes>
-        <div class="alert alert-light p-4 alert-dismissible mb-4 fade show">
+        <div class="alert alert-light p-4 alert-dismissible mb-4 fade show" *ngIf="!isLoading && isOneQuizzAchieved">
             <!-- <button type="button" class="btn-close btn-close-light" data-bs-dismiss="alert"></button> -->
             <button type="button" class="btn-close btn-close" data-bs-dismiss="alert" aria-label="Fermer le message"></button>
             <!-- Vous pourrez aussi dès maintenant finaliser votre inscription administrative -->

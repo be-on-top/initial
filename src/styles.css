@@ -275,28 +275,6 @@ hr {
     background-color: #fcb311;
 }
 
-/* 
-.btn {
-    transition: .3s transform cubic-bezier(.155, 1.105, .295, 1.12), .3s box-shadow, .3s -webkit-transform cubic-bezier(.155, 1.105, .295, 1.12);
-    cursor: pointer;
-}
-
-
-.btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, .12), 0 4px 8px rgba(0, 0, 0, .06);
-} */
-
-/* .bg-test:hover {
-    background-color: #B2BC00 !important;
-} */
-
-
-
-/* .card-header.bg-dark{
-    
-    
-} */
 
 /* pour tenter une option light de  la navbar */
 nav.navbar.navbar-light a {
@@ -367,55 +345,37 @@ p.question {
     background-color: #dde0e3;
     cursor: pointer;
 }
+.alert-light {
+    background-color: #f8f9fa;
+    cursor: pointer;
+}
 
 .choice:hover {
     cursor: pointer;
 }
 
-/* .choice:hover img {
-    opacity: 0.3;
+.fade {
+    animation: fade-in 1s ease forwards;
+    animation-delay: 1s;
+    animation-duration: 1s!important;
 }
 
-.choice img {
-    opacity: 1;
-    max-height: 350px;
-    transition: .5s ease;
-    backface-visibility: hidden;
-} */
 
-/* Pour masquer l'icône "hamburger" par défaut de Bootstrap */
-/* .navbar-toggler-icon {
-    background-image: none;
-    border-color: #82BC00;
-
+.alert {
+    animation: fade-zoom-out 0.8s; 
 }
 
-.navbar-toggler {
-    background-image: none;
-} */
-
-/* Pour afficher votre propre icône */
-/* .navbar-toggler-icon::before {
-    content: '\2630';
-    font-size: 1.6rem;
-    width: 60px;
-    height: 4px;
-} */
-
-
-
-/* pour virer les bordures du bouton */
-/* .navbar-toggler {
-    text-decoration: none !important;
-    border: none;
-} */
-
-/* @media screen and (max-width: 750px) {
-
-    .image-container, .home{
-        height: 40vw;
+@keyframes fade-zoom-out {
+    from {
+        opacity: 0;
+        transform: scale(0.8); /* Applique un zoom-in au début de l'animation */
     }
-} */
+    to {
+        opacity: 1;
+        transform: scale(1); /* Retourne à la taille d'origine à la fin de l'animation */
+    }
+}
+
 
 /* added to avoid container reduced on landscape screen under 992px */
 

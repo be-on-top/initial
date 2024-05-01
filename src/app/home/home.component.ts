@@ -78,6 +78,8 @@ export class HomeComponent implements OnInit {
   largeurImage: number = 0
   hauteurImage: number = 0
 
+  dataLoading: boolean = true
+
 
   // pour utiliser le composant de recherche
   onSearchTextEntered(searchValue: string) {
@@ -101,18 +103,6 @@ export class HomeComponent implements OnInit {
     private updateService: UpdateService,
     // private networkService: NetworkService
   ) {
-    // pour savoir si l'utilisateur est éditeur sans interroger firestore, on peut (?) récupérer userRole livré en paramètre de route
-    // this.ac.snapshot.params["userRole"]="editor"?this.isEditor=true:""
-
-    if (this.ac.snapshot.params && this.ac.snapshot.params["userRole"] == "editor") {
-      this.isEditor = true
-    }
-
-    // console.log("this.ac.snapshot.params", this.ac.snapshot.params !== null)
-    // console.log("this.ac.snapshot.params['userRole']", this.ac.snapshot.params["userRole"])
-    this.userRole = this.ac.snapshot.params["userRole"]
-    // this.largeurImage = window.innerWidth;
-    // this.hauteurImage = window.innerHeight;
 
     this.offline = !navigator.onLine
   }
@@ -123,20 +113,27 @@ export class HomeComponent implements OnInit {
     // window.addEventListener('online', () => {   
     if (!this.offline) {
       // alert("on est en ligne")   
-      // L'utilisateur est en ligne
       // pour tenter de détecter des updates côté template
       this.updateService.checkForUpdates();
+      // pour récupérer le role si il est passé
+      this.ac.queryParams.subscribe(params => {
+        this.userRole = params['userRole'] || '';
+        console.log('UserRole:', this.userRole);
+      })
 
+      // pour récupérer la data de l'utilisateur authentifié si c'est un étudiant 
       onAuthStateChanged(this.auth, (user: any) => {
-        if (user) {
+        if (user && (this.userRole == 'student' || this.userRole == '')) {
           // User is signed in, see docs for a list of available properties
           // https://firebase.google.com/docs/reference/js/firebase.User
           this.user = user.uid
-          this.studentService.getStudentById(user.uid).subscribe((data) => {
-            this.studentData = data
-            this.checkIfQuizzAchieved()
-
-          })
+          this.studentService.getStudentById(user.uid).
+            subscribe((data) => {
+              console.log("data", data);
+              this.studentData = data
+              this.checkIfQuizzAchieved()
+              this.dataLoading = false
+            })
           this.authService.getUserId();
           // retourne this.ui tout de suite après la connexion. undefined plus tard, donc ne convient pas...
           // console.log("log de ui", this.ui);
@@ -247,16 +244,10 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/account']);
   }
 
-  // à l'initialisation pour chercher si il existe UN fullResults indépendant d'un trade
-  checkIfQuizzAchieved() {
-    for (const key in this.studentData) {
-      if (this.studentData[key]?.fullResults) {
-        this.isOneQuizzAchieved = true;
-        break;  // Sortir de la boucle dès qu'un fullResults est trouvé
-      }
-    }
-  }
 
+  checkIfQuizzAchieved() {
+    this.isOneQuizzAchieved = Object.values(this.studentData).some((data: any) => data?.fullResults);
+  }
 
   checkQuizzCondition(trade: any) {
     if (this.studentData && this.studentData['quizz_' + trade.sigle] && this.studentData['quizz_' + trade.sigle].fullResults) {
