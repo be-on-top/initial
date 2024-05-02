@@ -1,7 +1,6 @@
-.d-inline.h5 {
-    font-size: 1rem;
 
-}
+
+
 
 a .btn.btn-transparent:hover {
     box-shadow: none !important;
@@ -60,15 +59,12 @@ hr{
     /* Centre l'image dans le conteneur */
     /* filter: brightness(110%) saturate(100%); */
 }
-
+/* 
 .image-container {
     position: relative;
     display: inline-block;
     width: 100%;
-    /* Ajuste automatiquement la largeur en fonction de la hauteur */
-    /* height: 20vw; */
-    /* Définit la hauteur en fonction de 30% de la largeur de la fenêtre */
-}
+} */
 
 /* .image-container::before {
     content: "";

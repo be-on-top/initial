@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 // import { Auth } from '@angular/fire/auth';
 // import { PushNotificationService } from './push-notification.service';
 
@@ -9,17 +9,32 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app.component.css'],
   host: {'[attr.lang]': '"fr"'}
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'Be On Top Application de positionnement et de formation métiers';
   // ui : string | undefined=""
   // mesaggeReceived:string | undefined="";
-  loadingComplete:boolean=false
+  consentReaded:boolean=false
+
+   // Détermine si la bannière de consentement doit être affichée
+  // showConsentBanner: boolean = false;
+
+  
 
 
   constructor(
     // private auth:Auth, 
     // private pushNotificationService: PushNotificationService
     ){
+      const consentValue = localStorage.getItem("userConsent");
+      console.log('Consentement lu depuis app avant de boucler', consentValue);
+      
+      if (consentValue == null) {
+          console.log('Consentement évalué depuis app si null', consentValue);
+          this.consentReaded = true;
+      } 
+
+
+
 
     // const userKey = this.auth.currentUser?.uid;
     // console.log("userKey", userKey);
@@ -31,15 +46,11 @@ export class AppComponent implements OnInit {
     // })
   }
 
-  ngOnInit(): void {
-    // this.pushNotificationService.receiveMessage().subscribe(payload => {
-    //   console.log(payload);
-    //   this.mesaggeReceived = payload.notification.title;
-    // })
 
-    window.onload = () => {
-      this.loadingComplete = true;
-    };
-  }
+
+  // ngAfterViewInit() {
+  //   // Par exemple, afficher toujours la bannière de consentement après le chargement du contenu principal
+  //   this.showConsentBanner = true;
+  // } 
 
 }

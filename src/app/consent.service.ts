@@ -10,25 +10,39 @@ export class ConsentService {
 
   constructor() { }
 
+  // getConsent(): boolean {
+  //   const consent = localStorage.getItem(this.consentKey) === 'true';
+  //   console.log('Consentement récupéré du stockage local :', consent);
+  //   return consent;
+  // }
+
   getConsent(): boolean {
-    const consent = localStorage.getItem(this.consentKey) === 'true';
-    console.log('Consentement récupéré du stockage local :', consent);
-    return consent;
+    const consentValue = localStorage.getItem(this.consentKey);
+    if (consentValue === 'true') {
+      return true;
+    } else {
+      return false;
+    }
   }
+
 
   setConsent(consent: boolean): void {
-    alert(consent)
+    // alert(consent)
     localStorage.setItem(this.consentKey, consent.toString())
     console.log('Consentement enregistré dans le stockage local :', consent);
-    // sessionStorage.removeItem('userConsent');
-    sessionStorage.setItem('userConsent', consent.toString())
+    sessionStorage.removeItem('userConsent');
+    // sessionStorage.setItem('userConsent', consent.toString())
   }
 
-  clearConsent(): void {
-    localStorage.removeItem(this.consentKey);
-    sessionStorage.removeItem('userConsent')
-    console.log('Consentement supprimé du stockage local.');
-  }
+  // clearConsent(): void {
+  //   localStorage.removeItem(this.consentKey);
+  //   // sessionStorage.removeItem('userConsent')
+  //   // Pour vider le sessionStorage
+  //   sessionStorage.clear();
+  //   console.log('Consentement supprimé de sessionStorage avec toutes les datas enregistrées.');
+  //   // console.log('Consentement supprimé du stockage local.');
+  // }
+
 
   hasRefusedConsent(): boolean {
     return localStorage.getItem(this.consentKey) === 'false';

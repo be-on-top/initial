@@ -1,24 +1,6 @@
-<!-- <p>cookie-consent-banner works!</p> -->
-
-<!-- <div *ngIf="!userConsent" class="cookie-consent-banner">
-    <p>Nous utilisons des cookies pour améliorer votre expérience. Acceptez-vous l'utilisation des cookies?</p>
-    <button (click)="acceptCookies()">Accepter</button>
-    <button (click)="rejectCookies()">Refuser</button>
-  </div> -->
-
-<!-- dans certains cas, comme celui-ci où on a besoin d'accéder au service dans le template HTML, 
-    rendre le service public dans le constructeur est une solution appropriée. -->
-
-<!-- <div *ngIf="!consentService.getConsent()" class="cookie-consent-banner alert alert-dismissible alert-info">
-    <p class="mb-3 text-dark">Nous utilisons des cookies pour améliorer votre expérience. Acceptez-vous l'utilisation
-        des cookies?</p>
-    <button (click)="acceptCookies()" class="btn btn-primary">Accepter</button>
-    <button (click)="rejectCookies()" class="btn btn-secondary ms-2">Refuser</button>
-</div> -->
-
 <!-- si on souhaite que l'utilisateur puisse fermer la bannière quel que soit l'état de userConsent -->
 
-<div *ngIf="showBanner" class="cookie-consent-banner" [ngClass]="{'fixed-bottom w-100 mb-0': consentService.hasRefusedConsent()==false}">   
+<div *ngIf="showBanner || integratedBanner" class="cookie-consent-banner" [ngClass]="{'w-100 mb-0': consentService.hasRefusedConsent()==false}">   
    <div class="container">
        <p class="mb-3 text-dark fs-5">Nous utilisons des cookies pour améliorer votre expérience. Ces cookies peuvent être utilisés à des fins d'analyse, de personnalisation du contenu, ou pour faciliter vos interactions. <span class="fw-bold">Acceptez-vous leur utilisation ?</span></p>
    
