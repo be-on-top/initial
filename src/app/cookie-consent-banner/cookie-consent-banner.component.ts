@@ -13,7 +13,7 @@ export class CookieConsentBannerComponent implements OnInit {
 
   showBanner = true; // Affiche la bannière par défaut
   showOnRegistrationPage = false; // Indique si la bannière doit être affichée dans la page d'inscription
-  @Input() integratedBanner: boolean =false;
+  @Input() integratedBanner: boolean = false;
 
 
   constructor(public consentService: ConsentService, private auth: Auth) {
@@ -30,6 +30,8 @@ export class CookieConsentBannerComponent implements OnInit {
           // Handle Errors here.
           const errorCode = error.code;
           const errorMessage = error.message;
+          console.log(errorCode, errorMessage);
+
         });
     }
 
@@ -64,7 +66,7 @@ export class CookieConsentBannerComponent implements OnInit {
     // Autres actions nécessaires après avoir refusé les cookies
     this.showBanner = false;
     this.consentService.deleteCookiesStartingWith("_ga")
-    
+
   }
 
   // Méthode pour afficher la bannière dans la page d'inscription

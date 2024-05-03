@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 // je ne vois pas l'utilité de cette méthode pour le moment, donc on désactive !!!!
 // import { loggedIn } from '@angular/fire/auth-guard';
@@ -317,6 +317,24 @@ export class HomeComponent implements OnInit {
   // }
 
 
+  showsImage = false;
+  @ViewChild('image') divImage!: ElementRef;
 
+
+@HostListener('document:scroll', ['$event'])
+public onViewportScroll() {
+  const windowHeight = window.innerHeight;
+  const boundingRectImage = this.divImage.nativeElement.getBoundingClientRect();
+  if (boundingRectImage.top >= 0 && boundingRectImage.bottom <= windowHeight) {
+    this.showsImage = true; 
+  } else {
+    this.showsImage = false;
+  }
 }
+}
+  
+
+
+
+
 
