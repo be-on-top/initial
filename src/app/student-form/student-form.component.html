@@ -4,14 +4,15 @@
 Tests OK. Sur une  partie. A finir. 
   -->
 
-  <!-- {{studentData | json}} -->
+    <!-- {{studentData | json}} -->
 
     <h3 class="text-capitalize">Pré-inscription Formation {{userData.firstName}} {{userData.lastName}}</h3>
     <div class="alert alert-light p-4 alert-dismissible mb-4 fade show">
         <!-- <button type="button" class="btn-close btn-close-light" data-bs-dismiss="alert"></button> -->
-        <button type="button" class="btn-close btn-close" data-bs-dismiss="alert"></button>
+        <button type="button" class="btn-close btn-close ms-5 mt-2" data-bs-dismiss="alert"></button>
         <!-- Vous pourrez aussi dès maintenant finaliser votre inscription administrative -->
-        Pour faciliter votre inscription et le financement de votre formation, merci de renseigner un maximum d'informations. Vos saisies seront enregistrées au fur à mesure et vous pourrez les modifier tant que vous n'avez pas soumis le formulaire.
+        Pour faciliter votre inscription et le financement de votre formation, merci de renseigner un maximum
+        d'informations. Vous pourrez modifier vos saisie tant que vous n'avez pas soumis le formulaire.
     </div>
     <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)" class="mt-3" [ngClass]="{'read-only-form': isReadOnly}">
 
@@ -32,8 +33,8 @@ Tests OK. Sur une  partie. A finir.
                                 Nom : {{lastName}}
                             </label>
                             <div class="col-md-9">
-                                <input appAutoChange type="text" name="lastName" [(ngModel)]="userData.lastName" disabled
-                                    class="form-control text-light capitalized">
+                                <input appAutoChange type="text" name="lastName" [(ngModel)]="userData.lastName"
+                                    disabled class="form-control text-light capitalized">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -41,16 +42,17 @@ Tests OK. Sur une  partie. A finir.
                                 Prénom : {{firstName}}
                             </label>
                             <div class="col-md-9">
-                                <input appAutoChange type="text" name="firstName" [(ngModel)]="userData.firstName" disabled
-                                    class="form-control text-light">
+                                <input appAutoChange type="text" name="firstName" [(ngModel)]="userData.firstName"
+                                    disabled class="form-control text-light">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label text-decoration-underline pt-3 pb-2" >
+                            <label class="col-md-3 col-form-label text-decoration-underline pt-3 pb-2">
                                 Date de naissance :
                             </label>
                             <div class="col-md-9">
-                                <input appAutoChange type="date" name="dateOfBirth" [(ngModel)]="userData.dateOfBirth" required class="form-control" >
+                                <input appAutoChange type="date" name="dateOfBirth" [(ngModel)]="userData.dateOfBirth"
+                                    required class="form-control">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -59,17 +61,18 @@ Tests OK. Sur une  partie. A finir.
                                 Adresse complète :
                             </label>
                             <div class="col-md-9">
-                                <input appAutoChange type="text" name="address" [(ngModel)]="socialData.address" required class="form-control"
-                                    placeholder="(bat, rue, chemin, n°)" >
+                                <input appAutoChange type="text" name="address" [(ngModel)]="socialData.address"
+                                    required class="form-control" placeholder="(bat, rue, chemin, n°)">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label text-decoration-underline pt-3 pb-2">
                                 Code Postal :
                             </label>
-                            <div class="col-md-9">                              
+                            <div class="col-md-9">
                                 <!-- <input appAutoChange type="text" name="postalCode" ngModel class="form-control" required  (change)="onInputChange('postalCode', myForm.value.postalCode)"> -->
-                                <input appAutoChange type="text" name="postalCode" [(ngModel)]="socialData.postalCode" class="form-control" required  appAutoChange >
+                                <input appAutoChange type="text" name="postalCode" [(ngModel)]="socialData.postalCode"
+                                    class="form-control" required appAutoChange>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -77,7 +80,8 @@ Tests OK. Sur une  partie. A finir.
                                 Ville :
                             </label>
                             <div class="col-md-9">
-                                <input appAutoChange type="text" name="city" [(ngModel)]="socialData.city" required class="form-control" >
+                                <input appAutoChange type="text" name="city" [(ngModel)]="socialData.city" required
+                                    class="form-control">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -85,7 +89,8 @@ Tests OK. Sur une  partie. A finir.
                                 Téléphone :
                             </label>
                             <div class="col-md-9">
-                                <input appAutoChange type="tel" name="phone" [(ngModel)]="socialData.tel" required class="form-control" >
+                                <input appAutoChange type="tel" name="phone" [(ngModel)]="socialData.phone" required
+                                    class="form-control">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -119,28 +124,31 @@ Tests OK. Sur une  partie. A finir.
                             </label>
                             <div class="col-md-7">
                                 <div class="form-check form-check-inline">
-                                    <input appAutoChange class="form-check-input" type="radio" name="permisB" [(ngModel)]="socialData.permisB"
-                                        value=true >
+                                    <input appAutoChange class="form-check-input" type="radio" name="permisB"
+                                        [(ngModel)]="socialData.permisB" value=true>
                                     <label class="form-check-label" for="permisB">oui</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input appAutoChange class="form-check-input" type="radio" name="permisB" [(ngModel)]="socialData.permisB"
-                                        value=false >
+                                    <input appAutoChange class="form-check-input" type="radio" name="permisB"
+                                        [(ngModel)]="socialData.permisB" value=false>
                                     <label class="form-check-label" for="permis">non</label>
                                 </div>
                             </div>
 
-                            <label for="foreignValidBDrivingLicense" class="col-md-5 text-decoration-underline pt-3 pb-2">Pour les
+                            <label for="foreignValidBDrivingLicense"
+                                class="col-md-5 text-decoration-underline pt-3 pb-2">Pour les
                                 publics étrangers, Permis B valide en France :</label>
                             <div class="col-md-7">
                                 <div class="form-check form-check-inline">
-                                    <input appAutoChange type="radio" name="foreignValidBLicense" [(ngModel)]="socialData.foreignValidBLicense"
-                                        value=true class="form-check-input" >
+                                    <input appAutoChange type="radio" name="foreignValidBLicense"
+                                        [(ngModel)]="socialData.foreignValidBLicense" value=true
+                                        class="form-check-input">
                                     <label for="foreignValidBLicense" class="form-check-label">oui</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input appAutoChange type="radio" name="foreignValidBLicense" [(ngModel)]="socialData.foreignValidBLicense"
-                                        value=false class="form-check-input" >
+                                    <input appAutoChange type="radio" name="foreignValidBLicense"
+                                        [(ngModel)]="socialData.foreignValidBLicense" value=false
+                                        class="form-check-input">
                                     <label for="foreignValidBLicense" class="form-check-label">non</label>
                                 </div>
                             </div>
@@ -150,7 +158,8 @@ Tests OK. Sur une  partie. A finir.
                                 autre
                                 permis valide ?</label>
                             <div class="col-md-7">
-                                <select name="otherDrivingLicense" appAutoChange [(ngModel)]="socialData.otherDrivingLicense" class="form-control" >
+                                <select name="otherDrivingLicense" appAutoChange
+                                    [(ngModel)]="socialData.otherDrivingLicense" class="form-control">
                                     <option value="">Choisir une option</option>
                                     <option value="BE">Permis BE</option>
                                     <option value="C">Permis C</option>
@@ -181,20 +190,20 @@ Tests OK. Sur une  partie. A finir.
                             </div>
                             <div class="col-md-8">
                                 <div class="form-check form-check-inline">
-                                    <input appAutoChange class="form-check-input" type="radio" name="frenchNationality" [(ngModel)]="socialData.frenchNationality"
-                                        value='oui'>
+                                    <input appAutoChange class="form-check-input" type="radio" name="frenchNationality"
+                                        [(ngModel)]="socialData.frenchNationality" value='oui'>
                                     <label class="form-check-label" for="frenchNationality">oui</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input appAutoChange class="form-check-input" type="radio" name="frenchNationality" [(ngModel)]="socialData.frenchNationality"
-                                        value='non'>
+                                    <input appAutoChange class="form-check-input" type="radio" name="frenchNationality"
+                                        [(ngModel)]="socialData.frenchNationality" value='non'>
                                     <label class="form-check-label" for="frenchNationality">non</label>
                                 </div>
                             </div>
                         </div>
                         <!-- si nationalité française -->
                         <ng-container *ngIf="myForm.value.frenchNationality=='oui'">
-                        <!-- <ng-container *ngIf="myForm.value.frenchNationality"> -->
+                            <!-- <ng-container *ngIf="myForm.value.frenchNationality"> -->
 
                             <div class="form-group row">
                                 <div for="isValidID" class="pt-2 col-md-4">
@@ -205,17 +214,17 @@ Tests OK. Sur une  partie. A finir.
                                         <!-- c'est un boolean !!!! -->
                                         <!-- <input appAutoChange class="form-check-input" type="radio" name="isValidID" value="oui"> -->
                                         <input appAutoChange class="form-check-input" type="radio" name="isValidID"
-                                            value='oui' [(ngModel)]="socialData.isValidID" >
+                                            value='oui' [(ngModel)]="socialData.isValidID">
                                         <label class="form-check-label" for="isValidID">oui</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <!-- <input appAutoChange class="form-check-input" type="radio" name="isValidID" ngModel
                                             value="non"> -->
-                                        <input appAutoChange class="form-check-input" type="radio" name="isValidID" ngModel
-                                            value="non"  [(ngModel)]="socialData.isValidID">
+                                        <input appAutoChange class="form-check-input" type="radio" name="isValidID"
+                                            ngModel value="non" [(ngModel)]="socialData.isValidID">
                                         <label class="form-check-label" for="isValidID">non</label>
                                     </div>
-                                </div>   
+                                </div>
                             </div>
 
                             <div *ngIf="myForm.value.isValidID=='non' && myForm.value.frenchNationality=='oui'">
@@ -227,13 +236,15 @@ Tests OK. Sur une  partie. A finir.
                                         <!-- c'est un boolean, pas un string ! -->
                                         <!-- <input appAutoChange class="form-check-input" type="radio" name="isRenewalIDinProgress"
                                             id="isRenewalIDinProgress_oui" ngModel value="oui"> -->
-                                        <input appAutoChange class="form-check-input" type="radio" name="isRenewalIDinProgress"
-                                        [(ngModel)]="socialData.isRenewalIDinProgress" value=true >
+                                        <input appAutoChange class="form-check-input" type="radio"
+                                            name="isRenewalIDinProgress" [(ngModel)]="socialData.isRenewalIDinProgress"
+                                            value=true>
                                         <label class="form-check-label" for="isRenewalIDinProgress">oui</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input appAutoChange class="form-check-input" type="radio" name="isRenewalIDinProgress"
-                                        [(ngModel)]="socialData.isRenewalIDinProgress" value=false >
+                                        <input appAutoChange class="form-check-input" type="radio"
+                                            name="isRenewalIDinProgress" [(ngModel)]="socialData.isRenewalIDinProgress"
+                                            value=false>
                                         <label class="form-check-label" for="isRenewalIDinProgress">non</label>
                                     </div>
                                 </div>
@@ -250,45 +261,54 @@ Tests OK. Sur une  partie. A finir.
                                 :</div>
                             <div class="col-md-8">
                                 <div class="form-check">
-                                    <input appAutoChange class="form-check-input" type="checkbox" name="longStayVisa" [(ngModel)]="socialData.longStayVisa"
-                                        id="longStayVisa" >
+                                    <input appAutoChange class="form-check-input" type="checkbox" name="longStayVisa"
+                                        [(ngModel)]="socialData.longStayVisa" id="longStayVisa">
                                     <label class="form-check-label" for="longStayVisa">Vous avez un visa long séjour ?
                                         Date
                                         d'expiration</label>
-                                    <input appAutoChange type="date" class="form-control" name="expirDateLongStayVisa" [(ngModel)]="socialData.expirDateLongStayVisa">
+                                    <input appAutoChange type="date" class="form-control" name="expirDateLongStayVisa"
+                                        [(ngModel)]="socialData.expirDateLongStayVisa">
                                 </div>
                                 <div class="form-check">
-                                    <input appAutoChange class="form-check-input" type="checkbox" name="longStayVisaResidencePermit"
-                                        ngModel >
+                                    <input appAutoChange class="form-check-input" type="checkbox"
+                                        name="longStayVisaResidencePermit" ngModel>
                                     <label class="form-check-label" for="longStayVisaResidencePermit">Vous avez un visa
                                         long séjour
                                         valant titre de séjour ? Date de fin d'expiration</label>
                                     <input appAutoChange type="date" class="form-control"
-                                        name="expirDateLongStayVisaResidencePermit" [(ngModel)]="socialData.expirDateLongStayVisaResidencePermit"
-                                        ng-show="longStayVisa" >
+                                        name="expirDateLongStayVisaResidencePermit"
+                                        [(ngModel)]="socialData.expirDateLongStayVisaResidencePermit"
+                                        ng-show="longStayVisa">
                                 </div>
                                 <div class="form-check">
-                                    <input appAutoChange class="form-check-input" type="checkbox" name="titreSejour" [(ngModel)]="socialData.residencePermit"
-                                        >
+                                    <input appAutoChange class="form-check-input" type="checkbox" name="titreSejour"
+                                        [(ngModel)]="socialData.residencePermit">
                                     <label class="form-check-label" for="titreSejour">Vous avez un titre de séjour ?
                                         Date de fin
                                         d'expiration</label>
-                                    <input appAutoChange type="date" class="form-control" name="expirDateResidencePermit" [(ngModel)]="socialData.expirDateResidencePermit">
+                                    <input appAutoChange type="date" class="form-control"
+                                        name="expirDateResidencePermit"
+                                        [(ngModel)]="socialData.expirDateResidencePermit">
                                 </div>
                                 <div class="form-check">
-                                    <input appAutoChange class="form-check-input" type="checkbox" name="workAuthorization" [(ngModel)]="socialData.workAuthorization">
-                                    <label class="form-check-label" for="workAuthorization">Vous avez une autorisation de travail en France ? Date de fin d'expiration</label>
-                                    <input appAutoChange type="date" class="form-control" name="expirDateWorkAuthorization"
-                                    [(ngModel)]="socialData.expirDateWorkAuthorization">
+                                    <input appAutoChange class="form-check-input" type="checkbox"
+                                        name="workAuthorization" [(ngModel)]="socialData.workAuthorization">
+                                    <label class="form-check-label" for="workAuthorization">Vous avez une autorisation
+                                        de travail en France ? Date de fin d'expiration</label>
+                                    <input appAutoChange type="date" class="form-control"
+                                        name="expirDateWorkAuthorization"
+                                        [(ngModel)]="socialData.expirDateWorkAuthorization">
                                 </div>
                                 <div class="form-check">
-                                    <input appAutoChange class="form-check-input" type="checkbox" name="visaVacancesTravail" [(ngModel)]="socialData.visaVacancesTravail">
+                                    <input appAutoChange class="form-check-input" type="checkbox"
+                                        name="visaVacancesTravail" [(ngModel)]="socialData.visaVacancesTravail">
                                     <label class="form-check-label" for="visaVacancesTravail">Vous avez un visa
                                         vacances-travail ?
                                         Date
                                         de fin d'expiration ?</label>
-                                    <input appAutoChange type="date" class="form-control" name="expirationDateVisaVacancesTravail"
-                                    [(ngModel)]="socialData.expirationDateVisaVacancesTravail">
+                                    <input appAutoChange type="date" class="form-control"
+                                        name="expirationDateVisaVacancesTravail"
+                                        [(ngModel)]="socialData.expirationDateVisaVacancesTravail">
                                 </div>
                             </div>
                         </div>
@@ -302,7 +322,7 @@ Tests OK. Sur une  partie. A finir.
                 <div class="card-header bg-primary">
                     <a class="collapsed btn text-light text-capitalize d-flex justify-content-between align-items-center"
                         data-bs-toggle="collapse" href="#collapseFor">
-                        <span>Votre situation actuelle</span> <i class="bi bi-journal text-light fs-4"></i>
+                        <span>Historique emploi</span> <i class="bi bi-journal text-light fs-4"></i>
                     </a>
                 </div>
 
@@ -321,251 +341,275 @@ Tests OK. Sur une  partie. A finir.
 
                             </div>
                         </div> -->
+
                         <div class="form-group row">
-                            <div class="col-6 text-decoration-underline">
+                            <div class="col-md-4 text-decoration-underline">
                                 Inscrit à Pôle Emploi :
                             </div>
-                            <div class="col-6">
+                            <div class="col-md-8">
                                 <div class="form-check form-check-inline">
-                                    <input appAutoChange class="form-check-input" type="radio" name="isPoleEmploi" [(ngModel)]="socialData.isPoleEmploi"
-                                        value='oui'>
+                                    <input appAutoChange class="form-check-input" type="radio" name="isPoleEmploi"
+                                        [(ngModel)]="socialData.isPoleEmploi" value='oui'>
                                     <label class="form-check-label" for="isPoleEmploi">oui</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input appAutoChange class="form-check-input" type="radio" name="isPoleEmploi" [(ngModel)]="socialData.isPoleEmploi"
-                                        value='non'>
+                                    <input appAutoChange class="form-check-input" type="radio" name="isPoleEmploi"
+                                        [(ngModel)]="socialData.isPoleEmploi" value='non'>
                                     <label class="form-check-label" for="isPoleEmploi">non</label>
                                 </div>
                             </div>
                         </div>
 
 
-                            
 
-                            <div *ngIf="socialData.isPoleEmploi=='oui'" class="form-group mt-3">
-                                <label class="form-check-label" for="idPoleEmploi">Numéro identifiant POLE
-                                    EMPLOI:</label>
-                                <input appAutoChange class="form-check-input" type="text" class="form-control"
-                                    name="idPoleEmploi" [(ngModel)]="socialData.idPoleEmploi" >
-                                <!-- partie RSA -->
-                                <div class="text-decoration-underline pt-3 pb-2">Etes-vous bénéficiaire des minima
-                                    sociaux
-                                    (RSA)</div>
-                                <div class="d-flex align-items-center gap-3">
-                                    <div class="form-check">
-                                        <label class="form-check-label">oui</label>
-                                        <input appAutoChange class="form-check-input" type="radio"
-                                            name="beneficiaireMinimaSociaux" [(ngModel)]="socialData.beneficiaireMinimaSociaux" value=true >
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">non</label>
-                                        <input appAutoChange class="form-check-input" type="radio"
-                                            name="beneficiaireMinimaSociaux" [(ngModel)]="socialData.beneficiaireMinimaSociaux" value=false >
-                                    </div>
+
+                        <div *ngIf="socialData.isPoleEmploi=='oui'" class="form-group mt-3">
+                            <label class="form-check-label" for="idPoleEmploi">Numéro identifiant POLE
+                                EMPLOI:</label>
+                            <input appAutoChange class="form-check-input" type="text" class="form-control"
+                                name="idPoleEmploi" [(ngModel)]="socialData.idPoleEmploi">
+                            <!-- partie RSA -->
+                            <div class="text-decoration-underline pt-3 pb-2">Etes-vous bénéficiaire des minima
+                                sociaux
+                                (RSA)</div>
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="form-check">
+                                    <label class="form-check-label">oui</label>
+                                    <input appAutoChange class="form-check-input" type="radio"
+                                        name="beneficiaireMinimaSociaux"
+                                        [(ngModel)]="socialData.beneficiaireMinimaSociaux" value=true>
                                 </div>
-                                <!-- fin RSA -->
+                                <div class="form-check">
+                                    <label class="form-check-label">non</label>
+                                    <input appAutoChange class="form-check-input" type="radio"
+                                        name="beneficiaireMinimaSociaux"
+                                        [(ngModel)]="socialData.beneficiaireMinimaSociaux" value=false>
+                                </div>
+                            </div>
+                            <!-- fin RSA -->
+                        </div>
+
+
+                        <!-- <div class="form-group"> -->
+                        <!-- pour tout ce qu'il faut masquer si Inscrit à Pôle Emploi -->
+                        <ng-container *ngIf="myForm.value.isPoleEmploi!=='oui'">
+                            <hr>
+                            <div class="text-decoration-underline pt-3 pb-2">Salarié en CDI ? </div>
+                            <div class="d-flex  align-items-center gap-3">
+                                <label for="cdiDuration" class="form-label">Depuis combien d'années ?</label>
+                                <input appAutoChange type="number" class="form-control"
+                                    [(ngModel)]="socialData.cdiDuration" name="cdiDuration">
+                            </div>
+                            <div class="fst-italic pt-3 pb-2">Pouvez-vous justifier d'une ancienneté
+                                de 24 mois en qualité de salarié, dont 12 mois dans la même entreprise (Financement
+                                salarié) ?</div>
+                            <div class="d-flex  align-items-center gap-3">
+                                <div class="form-check">
+                                    <label class="form-check-label">oui</label>
+                                    <input appAutoChange class="form-check-input" type="radio"
+                                        name="cdiRequiredDuration" value=true
+                                        [(ngModel)]="socialData.cdiRequiredDuration">
+                                </div>
+                                <div class="form-check">
+                                    <label class="form-check-label">non</label>
+                                    <input appAutoChange class="form-check-input" type="radio"
+                                        name="cdiRequiredDuration" value=false
+                                        [(ngModel)]="socialData.cdiRequiredDuration">
+                                </div>
                             </div>
 
+                            <hr>
 
-                            <!-- <div class="form-group"> -->
-                            <!-- pour tout ce qu'il faut masquer si Inscrit à Pôle Emploi -->
-                            <ng-container *ngIf="myForm.value.isPoleEmploi!=='oui'">
-                                <hr>
-                                <div class="text-decoration-underline pt-3 pb-2">Salarié en CDI ? </div>
-                                <div class="d-flex  align-items-center gap-3">
-                                    <label for="cdiDuration" class="form-label">Depuis combien d'années ?</label>
-                                    <input appAutoChange type="number" class="form-control" [(ngModel)]="socialData.cdiDuration" name="cdiDuration" >
+                            <div class="text-decoration-underline pt-3 pb-2">Salarié en CDD ?</div>
+                            <div class="d-sm-flex align-items-center gap-3">
+                                <div class="form-group">
+                                    <label class="form-label" for="cddDuration">Durée du contrat (en mois) :</label>
+                                    <input appAutoChange type="number" class="form-control" ngModel name="cddDuration">
                                 </div>
-                                <div class="fst-italic pt-3 pb-2">Pouvez-vous justifier d'une ancienneté
-                                    de 24 mois en qualité de salarié, dont 12 mois dans la même entreprise ?</div>
-                                <div class="d-flex  align-items-center gap-3">
-                                    <div class="form-check">
-                                        <label class="form-check-label">oui</label>
-                                        <input appAutoChange class="form-check-input" type="radio" name="cdiRequiredDuration" value=true
-                                        [(ngModel)]="socialData.cdiRequiredDuration" >
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">non</label>
-                                        <input appAutoChange class="form-check-input" type="radio" name="cdiRequiredDuration" value=false
-                                        [(ngModel)]="socialData.cdiRequiredDuration" >
-                                    </div>
+                                <div class="form-group d-block d-md-inline">
+                                    <label class="form-label">Date de fin du contrat :</label>
+                                    <input appAutoChange type="date" class="form-control"
+                                        [(ngModel)]="socialData.cddEndDate" name="cddEndDate">
                                 </div>
+                            </div>
 
-                                <hr>
+                            <div class="fst-italic pt-3 pb-2">Pouvez-vous justifier de 24 mois
+                                d'activité professionnelle dans les 5 dernières années, dont 4 mois en CDD au cours
+                                de la dernière année ?</div>
+                            <div class="d-flex  align-items-center gap-3">
+                                <div class="form-check">
+                                    <input appAutoChange class="form-check-input" type="radio"
+                                        name="historyFiveLastYears" value=true
+                                        [(ngModel)]="socialData.historyFiveLastYears">
+                                    <label class="form-check-label">oui</label>
+                                </div>
+                                <div class="form-check">
+                                    <input appAutoChange class="form-check-input" type="radio"
+                                        name="historyFiveLastYears" value=false
+                                        [(ngModel)]="socialData.historyFiveLastYears">
+                                    <label class="form-check-label"> non</label>
+                                </div>
+                            </div>
 
-                                <div class="text-decoration-underline pt-3 pb-2">Salarié en CDD ?</div>
-                                <div class="d-sm-flex align-items-center gap-3">
+                            <hr>
+
+                            <div class="text-decoration-underline pt-3 pb-2">Êtes-vous intérimaire ?</div>
+                            <div class="d-flex  align-items-center gap-3">
+                                <div class="form-check">
+                                    <input appAutoChange class="form-check-input" type="radio" name="tempWorker"
+                                        value=true [(ngModel)]="socialData.tempWorker">
+                                    <label class="form-check-label">oui</label>
+                                </div>
+                                <div class="form-check">
+                                    <input appAutoChange class="form-check-input" type="radio" name="tempWorker"
+                                        value=false [(ngModel)]="socialData.tempWorker">
+                                    <label class="form-check-label">non</label>
+                                </div>
+                            </div>
+                            <!-- ngIf  interimaire -->
+                            <!-- {{myForm.value.interimaire | json}} -->
+                            <div *ngIf="myForm.value.tempWorker==='true'">
+
+                                <div class="d-lg-flex gap-3 my-1">
                                     <div class="form-group">
-                                        <label class="form-label" for="cddDuration">Durée du contrat (en mois) :</label>
-                                        <input appAutoChange type="number" class="form-control" ngModel name="cddDuration" >
+                                        <label for="tempWorDuration" class="form-label pt-2">Depuis combien de temps (en
+                                            mois) ?</label>
+                                        <input appAutoChange type="number" class="form-control"
+                                            name="tempWorkingDuration" [(ngModel)]="socialData.tempWorkingDuration">
                                     </div>
-                                    <div class="form-group d-block d-md-inline">
-                                        <label class="form-label">Date de fin du contrat :</label>
-                                        <input appAutoChange type="date" class="form-control" [(ngModel)]="socialData.cddEndDate" name="cddEndDate" >
-                                    </div>
-                                </div>
-
-                                <div class="fst-italic pt-3 pb-2">Pouvez-vous justifier de 24 mois
-                                    d'activité professionnelle dans les 5 dernières années, dont 4 mois en CDD au cours
-                                    de la dernière année ?</div>
-                                <div class="d-flex  align-items-center gap-3">
-                                    <div class="form-check">
-                                        <input appAutoChange class="form-check-input" type="radio" name="historyFiveLastYears" value=true
-                                        [(ngModel)]="socialData.historyFiveLastYears" >
-                                        <label class="form-check-label">oui</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input appAutoChange class="form-check-input" type="radio" name="historyFiveLastYears" value=false
-                                        [(ngModel)]="socialData.historyFiveLastYears" >
-                                        <label class="form-check-label"> non</label>
+                                    <div class="form-group">
+                                        <label for="tempWorkingEndDate" class="pt-2">Date de fin de contrat :</label>
+                                        <input appAutoChange type="date" class="form-control" name="tempWorkingEndDate">
                                     </div>
                                 </div>
-
-                                <hr>
-
-                                <div class="text-decoration-underline pt-3 pb-2">Êtes-vous intérimaire ?</div>
-                                <div class="d-flex  align-items-center gap-3">
+                                <div class="pt-2">Pouvez-vous justifier d'une ancienneté de 1600 heures en tant
+                                    qu'intérimaire au cours des 18 derniers mois, dont 600 dans une même
+                                    entreprise du travail temporaire ?</div>
+                                <div class="d-flex align-items-center gap-3">
                                     <div class="form-check">
-                                        <input appAutoChange class="form-check-input" type="radio" name="tempWorker" value=true
-                                        [(ngModel)]="socialData.tempWorker" >
-                                        <label class="form-check-label">oui</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input appAutoChange class="form-check-input" type="radio" name="tempWorker" value=false
-                                        [(ngModel)]="socialData.tempWorker" >
-                                        <label class="form-check-label">non</label>
-                                    </div>
-                                </div>
-                                <!-- ngIf  interimaire -->
-                                <!-- {{myForm.value.interimaire | json}} -->
-                                <div *ngIf="myForm.value.tempWorker==='true'">
-
-                                    <div class="d-lg-flex gap-3 my-1 gap-5">
-                                        <div class="form-group">
-                                            <label for="tempWorDuration" class="form-label pt-2">Depuis combien de temps (en mois) ?</label>
-                                            <input appAutoChange type="number" class="form-control" name="tempWorkingDuration" [(ngModel)]="socialData.tempWorkingDuration" >
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="tempWorkingEndDate" class="pt-2">Date de fin de contrat :</label>
-                                            <input appAutoChange type="date" class="form-control" name="tempWorkingEndDate" >
-                                        </div>
-                                    </div>
-                                    <div class="pt-2">Pouvez-vous justifier d'une ancienneté de 1600 heures en tant
-                                        qu'intérimaire au cours des 18 derniers mois, dont 600 dans une même
-                                        entreprise du travail temporaire ?</div>
-                                    <div class="d-flex align-items-center gap-3">
-                                        <div class="form-check">
-                                            <input appAutoChange class="form-check-input" type="radio" name="tempWorkingRequiredDuration"
-                                                value=true [(ngModel)]="socialData.tempWorkingRequiredDuration"  >
-                                            <label class="form-check-label"> oui</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input appAutoChange class="form-check-input" type="radio" name="tempWorkingRequiredDuration"
-                                                value=false [(ngModel)]="socialData.tempWorkingRequiredDuration"  >
-                                            <label class="form-check-label">non</label>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <div class="text-decoration-underline pt-3 pb-2">Êtes-vous étudiant ?</div>
-                                <div class="d-flex  align-items-center gap-3">
-                                    <div class="form-check">
-                                        <input appAutoChange class="form-check-input" type="radio" name="isStudent" value="oui"
-                                        [(ngModel)]="socialData.isStudent">
-                                        <label class="form-check-label">oui</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input appAutoChange class="form-check-input" type="radio" name="isStudent" value="non"
-                                        [(ngModel)]="socialData.isStudent" ><label class="form-check-label"> non</label>
-                                    </div>
-
-                                </div>
-
-                                <div class="text-decoration-underline pt-3 pb-2">Êtes-vous militaire ?</div>
-                                <div class="d-flex  align-items-center gap-3">
-                                    <div class="form-check">
-                                        <input appAutoChange class="form-check-input" type="radio" name="isMilitary" value=true
-                                        [(ngModel)]="socialData.isMilitary" >
+                                        <input appAutoChange class="form-check-input" type="radio"
+                                            name="tempWorkingRequiredDuration" value=true
+                                            [(ngModel)]="socialData.tempWorkingRequiredDuration">
                                         <label class="form-check-label"> oui</label>
                                     </div>
                                     <div class="form-check">
-                                        <input appAutoChange class="form-check-input" type="radio" name="isMilitary" value=false
-                                        [(ngModel)]="socialData.isMilitary" >
-                                        <label class="form-check-label"> non</label>
+                                        <input appAutoChange class="form-check-input" type="radio"
+                                            name="tempWorkingRequiredDuration" value=false
+                                            [(ngModel)]="socialData.tempWorkingRequiredDuration">
+                                        <label class="form-check-label">non</label>
                                     </div>
                                 </div>
 
-                                <!-- SI militaire -->
-                                <ng-container *ngIf="myForm.value.isMilitary==='true'">
-                                    <div class="form-group">
-                                        <label for="militaryReconversionDate" class="pt-2">Date de début de votre
-                                            reconversion
-                                            :</label>
-                                        <input appAutoChange type="date" class="form-control" name="militaryReconversionDate"  [(ngModel)]="socialData.militaryReconversionDate" >
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="text-decoration-underline pt-3 pb-2">Avez-vous fait part de votre
-                                            projet à votre Conseiller Mobilité?</label>
-                                        <div class="d-flex  align-items-center gap-3">
-                                            <div class="form-check">
-                                                <input appAutoChange class="form-check-input" type="radio" name="mobilityAdvisor"
-                                                    value=true [(ngModel)]="socialData.mobilityAdvisor" ><label class="form-check-label">
-                                                    oui</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input appAutoChange class="form-check-input" type="radio" name="mobilityAdvisor"
-                                                    value=false  [(ngModel)]="socialData.mobilityAdvisor" ><label class="form-check-label">
-                                                    non</label>
-                                            </div>
+                            </div>
+
+                            <div class="text-decoration-underline pt-3 pb-2">Êtes-vous étudiant ?</div>
+                            <div class="d-flex  align-items-center gap-3">
+                                <div class="form-check">
+                                    <input appAutoChange class="form-check-input" type="radio" name="isStudent"
+                                        value="oui" [(ngModel)]="socialData.isStudent">
+                                    <label class="form-check-label">oui</label>
+                                </div>
+                                <div class="form-check">
+                                    <input appAutoChange class="form-check-input" type="radio" name="isStudent"
+                                        value="non" [(ngModel)]="socialData.isStudent"><label class="form-check-label">
+                                        non</label>
+                                </div>
+
+                            </div>
+
+                            <div class="text-decoration-underline pt-3 pb-2">Êtes-vous militaire ?</div>
+                            <div class="d-flex  align-items-center gap-3">
+                                <div class="form-check">
+                                    <input appAutoChange class="form-check-input" type="radio" name="isMilitary"
+                                        value=true [(ngModel)]="socialData.isMilitary">
+                                    <label class="form-check-label"> oui</label>
+                                </div>
+                                <div class="form-check">
+                                    <input appAutoChange class="form-check-input" type="radio" name="isMilitary"
+                                        value=false [(ngModel)]="socialData.isMilitary">
+                                    <label class="form-check-label"> non</label>
+                                </div>
+                            </div>
+
+                            <!-- SI militaire -->
+                            <ng-container *ngIf="myForm.value.isMilitary==='true'">
+                                <div class="form-group">
+                                    <label for="militaryReconversionDate" class="pt-2">Date de début de votre
+                                        reconversion
+                                        :</label>
+                                    <input appAutoChange type="date" class="form-control"
+                                        name="militaryReconversionDate"
+                                        [(ngModel)]="socialData.militaryReconversionDate">
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-decoration-underline pt-3 pb-2">Avez-vous fait part de votre
+                                        projet à votre Conseiller Mobilité?</label>
+                                    <div class="d-flex  align-items-center gap-3">
+                                        <div class="form-check">
+                                            <input appAutoChange class="form-check-input" type="radio"
+                                                name="mobilityAdvisor" value=true
+                                                [(ngModel)]="socialData.mobilityAdvisor"><label
+                                                class="form-check-label">
+                                                oui</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input appAutoChange class="form-check-input" type="radio"
+                                                name="mobilityAdvisor" value=false
+                                                [(ngModel)]="socialData.mobilityAdvisor"><label
+                                                class="form-check-label">
+                                                non</label>
                                         </div>
                                     </div>
-                                </ng-container>
-                                <!-- fin de SI militaire -->
-                            </ng-container>
-
-                            <!-- fin de Si PAS Inscrit à Pole Emploi -->
-                            <hr>
-                            <div class="form-group">
-                                <div class="text-decoration-underline pt-3 pb-2">Possédez-vous une reconnaissance
-                                    Travailleur Handicapé?
                                 </div>
-                                <div class="d-flex  align-items-center gap-3">
+                            </ng-container>
+                            <!-- fin de SI militaire -->
+                        </ng-container>
+
+                        <!-- fin de Si PAS Inscrit à Pole Emploi -->
+                        <hr>
+                        <div class="form-group">
+                            <div class="text-decoration-underline pt-3 pb-2">Possédez-vous une reconnaissance
+                                Travailleur Handicapé?
+                            </div>
+                            <div class="d-flex  align-items-center gap-3">
+                                <div class="form-check">
+                                    <input appAutoChange class="form-check-input" type="radio" name="handicap"
+                                        [(ngModel)]="socialData.handicap" value=true><label class="form-check-label">
+                                        oui</label>
+                                </div>
+                                <div class="form-check">
+                                    <input appAutoChange class="form-check-input" type="radio" name="handicap"
+                                        [(ngModel)]="socialData.handicap" value=false><label class="form-check-label">
+                                        non</label>
+                                </div>
+                            </div>
+                            <!-- c'est un boolean !!! -->
+                            <!-- <div *ngIf="handicap === 'oui'"> -->
+                            <div *ngIf="handicap">
+                                <div class="text-decoration-underline pt-3 pb-2">Êtes-vous suivi par CAP EMPLOI ?
+                                </div>
+                                <div class="d-flex align-items-center gap-3">
                                     <div class="form-check">
-                                        <input appAutoChange class="form-check-input" type="radio" name="handicap"
-                                        [(ngModel)]="socialData.handicap" value=true><label class="form-check-label" >
+                                        <input appAutoChange [(ngModel)]="socialData.capEmploi" class="form-check-input"
+                                            type="radio" name="capEmploi" value=true><label class="form-check-label">
                                             oui</label>
                                     </div>
                                     <div class="form-check">
-                                        <input appAutoChange class="form-check-input" type="radio" name="handicap"
-                                        [(ngModel)]="socialData.handicap" value=false><label class="form-check-label" >
-                                            non</label>
+                                        <input appAutoChange class="form-check-input" type="radio" name="capEmploi"
+                                            value=false [(ngModel)]="socialData.capEmploi"><label
+                                            class="form-check-label"> non</label>
                                     </div>
                                 </div>
-                                <!-- c'est un boolean !!! -->
-                                <!-- <div *ngIf="handicap === 'oui'"> -->
-                                <div *ngIf="handicap">
-                                    <div class="text-decoration-underline pt-3 pb-2">Êtes-vous suivi par CAP EMPLOI ?
-                                    </div>
-                                    <div class="d-flex align-items-center gap-3">
-                                        <div class="form-check">
-                                            <input appAutoChange [(ngModel)]="socialData.capEmploi" class="form-check-input" type="radio" name="capEmploi"
-                                                value=true ><label class="form-check-label"> oui</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input appAutoChange class="form-check-input" type="radio" name="capEmploi"
-                                                value=false [(ngModel)]="socialData.capEmploi" ><label class="form-check-label"> non</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr>
-                                <label for="otherCurrentSituation" class="text-decoration-underline pt-3 pb-2">Êtes-vous dans
-                                    une autre situation?</label>
-                                <input appAutoChange type="text" class="form-control" name="otherCurrentSituation" [(ngModel)]="socialData.otherCurrentSituation"
-                                    placeholder="préciser..." >
                             </div>
+                            <hr>
+                            <label for="otherCurrentSituation" class="text-decoration-underline pt-3 pb-2">Êtes-vous
+                                dans
+                                une autre situation?</label>
+                            <input appAutoChange type="text" class="form-control" name="otherCurrentSituation"
+                                [(ngModel)]="socialData.otherCurrentSituation" placeholder="préciser...">
+                        </div>
 
-                       
+
 
                         <!-- fin Historique Emploi -->
                         <hr>
@@ -578,8 +622,7 @@ Tests OK. Sur une  partie. A finir.
                 <div class="card-header bg-primary">
                     <a class="collapsed btn text-light text-capitalize d-flex justify-content-between align-items-center"
                         data-bs-toggle="collapse" href="#collapseFive">
-                        <span>Votre historique formation</span> <i
-                            class="bi bi-journal-bookmark-fill text-light fs-4"></i>
+                        <span>Historique formation</span> <i class="bi bi-journal-bookmark-fill text-light fs-4"></i>
                     </a>
                 </div>
                 <div id="collapseFive" class="collapse" data-bs-parent="#accordion">
@@ -590,50 +633,51 @@ Tests OK. Sur une  partie. A finir.
                                 initiale ?</div>
                             <div class="col-md-8">
                                 <div class="form-check">
-                                    <input appAutoChange class="form-check-input" type="radio" name="noDegree" [(ngModel)]="socialData.noDegree"
-                                        value="noDegree" >
+                                    <input appAutoChange class="form-check-input" type="radio" name="noDegree"
+                                        [(ngModel)]="socialData.noDegree" value="noDegree">
                                     <label class="form-check-label" for="noDegree">Sans diplôme</label>
                                 </div>
-                                <div class="form-check" >
-                                    <input appAutoChange class="form-check-input" type="radio" name="cap" [(ngModel)]="socialData.cap"
-                                        value="cap">
+                                <div class="form-check">
+                                    <input appAutoChange class="form-check-input" type="radio" name="cap"
+                                        [(ngModel)]="socialData.cap" value="cap">
                                     <label class="form-check-label" for="cap">CAP ou autre reconnaissance du
                                         même
                                         niveau</label>
                                 </div>
                                 <div class="form-check">
-                                    <input appAutoChange class="form-check-input" type="radio" name="bep" [(ngModel)]="socialData.bep"
-                                        value="bep" >
+                                    <input appAutoChange class="form-check-input" type="radio" name="bep"
+                                        [(ngModel)]="socialData.bep" value="bep">
                                     <label class="form-check-label" for="bep">BEP ou reconnaissance du même
                                         niveau</label>
                                 </div>
                                 <div class="form-check">
-                                    <input appAutoChange class="form-check-input" type="radio" name="bac" [(ngModel)]="socialData.bac"
-                                        value="bacOuEquivalent" >
+                                    <input appAutoChange class="form-check-input" type="radio" name="bac"
+                                        [(ngModel)]="socialData.bac" value="bacOuEquivalent">
                                     <label class="form-check-label" for="bac">BAC ou reconnaissance du même
                                         niveau</label>
                                 </div>
                                 <div class="form-check">
-                                    <input appAutoChange class="form-check-input" type="radio" name="bacPlus2" [(ngModel)]="socialData.bacPlus2"
-                                        value="bacPlus2" >
+                                    <input appAutoChange class="form-check-input" type="radio" name="bacPlus2"
+                                        [(ngModel)]="socialData.bacPlus2" value="bacPlus2">
                                     <label class="form-check-label" for="bacPlus2">BAC + 2</label>
                                 </div>
                                 <div class="form-check">
-                                    <input appAutoChange class="form-check-input" type="radio" name="bacPlus3" [(ngModel)]="socialData.bacPlus3"
-                                        value="bacPlus3">
+                                    <input appAutoChange class="form-check-input" type="radio" name="bacPlus3"
+                                        [(ngModel)]="socialData.bacPlus3" value="bacPlus3">
                                     <label class="form-check-label" for="bacPlus3">BAC + 3</label>
                                 </div>
                                 <div class="form-check">
                                     <input appAutoChange class="form-check-input" type="radio" name="higherEducation"
-                                        id="higherEducation" [(ngModel)]="socialData.higherEducation" value="higherEducation">
+                                        id="higherEducation" [(ngModel)]="socialData.higherEducation"
+                                        value="higherEducation">
                                     <label class="form-check-label" for="higherEducation">Formation supérieure à
                                         BAC + 3</label>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-4 col-form-label text-right mt-3"
-                                        for="mainSector">Principale
+                                    <label class="col-sm-4 col-form-label text-right mt-3" for="mainSector">Principale
                                         filière ?</label>
-                                    <input appAutoChange type="text" class="form-control" name="mainSector" [(ngModel)]="socialData.mainSector"
+                                    <input appAutoChange type="text" class="form-control" name="mainSector"
+                                        [(ngModel)]="socialData.mainSector"
                                         placeholder="BTP, santé, métallurgie, transport...">
                                 </div>
                             </div>
@@ -643,7 +687,8 @@ Tests OK. Sur une  partie. A finir.
                             <label for="continuingEducation" class="col-md-4 text-decoration-underline pt-3 pb-2">
                                 Formation continue ?</label>
                             <div class="col-md-8">
-                                <input appAutoChange class="form-control" type="text" name="continuingEducation" [(ngModel)]="socialData.continuingEducation"
+                                <input appAutoChange class="form-control" type="text" name="continuingEducation"
+                                    [(ngModel)]="socialData.continuingEducation"
                                     placeholder="A renseigner si formation continue">
                             </div>
                         </div>
@@ -656,13 +701,13 @@ Tests OK. Sur une  partie. A finir.
                         <div class="d-flex  align-items-center gap-3">
                             <div class="form-check">
                                 <label class="form-check-label">oui</label>
-                                <input appAutoChange class="form-check-input" type="radio" name="requestFinancing" [value]=true
-                                    [(ngModel)]="requestFinancing">
+                                <input appAutoChange class="form-check-input" type="radio" name="requestFinancing"
+                                    [value]=true [(ngModel)]="requestFinancing">
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label">non</label>
-                                <input appAutoChange class="form-check-input" type="radio" name="requestFinancing" [value]=false
-                                    [(ngModel)]="requestFinancing">
+                                <input appAutoChange class="form-check-input" type="radio" name="requestFinancing"
+                                    [value]=false [(ngModel)]="requestFinancing">
                             </div>
                         </div>
 
@@ -671,13 +716,13 @@ Tests OK. Sur une  partie. A finir.
                             <!-- on reprend tout -->
                             <div class="form-check">
                                 <label class="form-check-label">CPF</label>
-                                <input appAutoChange class="form-check-input" type="checkbox" name="financementCPF" value="CPF"
-                                    ngModel>
+                                <input appAutoChange class="form-check-input" type="checkbox" name="financementCPF"
+                                    value="CPF" ngModel>
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label">Projet de transition professionnelle</label>
-                                <input appAutoChange class="form-check-input" type="checkbox" name="financementPTP" value="PTP"
-                                    ngModel>
+                                <input appAutoChange class="form-check-input" type="checkbox" name="financementPTP"
+                                    value="PTP" ngModel>
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label">Agefiph</label>
@@ -686,8 +731,8 @@ Tests OK. Sur une  partie. A finir.
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label" for="financementAutre">Autre</label>
-                                <input appAutoChange class="form-check-input" type="checkbox" name="financementAutre" value="autre"
-                                    ngModel>
+                                <input appAutoChange class="form-check-input" type="checkbox" name="financementAutre"
+                                    value="autre" ngModel>
                             </div>
                             <input appAutoChange class="form-control mt-1" type="text" name="financementDetails" ngModel
                                 placeholder="Préciser...">
@@ -699,22 +744,26 @@ Tests OK. Sur une  partie. A finir.
                         <div class="text-decoration-underline pt-3 pb-2">Avez-vous des droits CPF ?</div>
                         <div class="d-flex  align-items-center gap-3">
                             <div class="form-check">
-                                <input appAutoChange class="form-check-input" type="radio" name="droitsCPF" value="oui" ngModel>
+                                <input appAutoChange class="form-check-input" type="radio" name="droitsCPF" value="oui"
+                                    ngModel>
                                 <label class="form-check-label"> oui </label>
                             </div>
                             <div class="form-check">
-                                <input appAutoChange class="form-check-input" type="radio" name="droitsCPF" value="non" ngModel>
+                                <input appAutoChange class="form-check-input" type="radio" name="droitsCPF" value="non"
+                                    ngModel>
                                 <label class="form-check-label"> non </label>
                             </div>
                         </div>
                         <div class="text-decoration-underline pt-3 pb-2">Avez-vous créé votre COMPTE CPF ?</div>
                         <div class="d-flex  align-items-center gap-3">
                             <div class="form-check">
-                                <input appAutoChange class="form-check-input" type="radio" name="compteCPF" value="oui" ngModel>
+                                <input appAutoChange class="form-check-input" type="radio" name="compteCPF" value="oui"
+                                    ngModel>
                                 <label class="form-check-label"> oui</label>
                             </div>
                             <div class="form-check">
-                                <input appAutoChange class="form-check-input" type="radio" name="compteCPF" value="non" ngModel>
+                                <input appAutoChange class="form-check-input" type="radio" name="compteCPF" value="non"
+                                    ngModel>
                                 <label class="form-check-label"> non </label>
                             </div>
                         </div>
@@ -724,7 +773,8 @@ Tests OK. Sur une  partie. A finir.
             </div>
 
             <!-------------->
-            <div class="card">
+            <!-- si financement salarié on retire -->
+            <div class="card" *ngIf="myForm.value.cdiRequiredDuration==='false'">
                 <div class="card-header bg-primary">
                     <a class="collapsed btn text-light text-capitalize d-flex justify-content-between align-items-center"
                         data-bs-toggle="collapse" href="#collapseSix">
@@ -740,14 +790,16 @@ Tests OK. Sur une  partie. A finir.
                             <div class="form-check">
                                 <label class="form-check-label" for="conseillerPoleEmploi">Un conseiller POLE
                                     EMPLOI</label>
-                                <input appAutoChange class="form-check-input" type="checkbox" name="conseillerPoleEmploi"
-                                    value="Un conseiller POLE EMPLOI" [(ngModel)]="socialData.conseillerPoleEmploi">
+                                <input appAutoChange class="form-check-input" type="checkbox"
+                                    name="conseillerPoleEmploi" value="Un conseiller POLE EMPLOI"
+                                    [(ngModel)]="socialData.conseillerPoleEmploi">
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label" for="conseillerMissionLocale">Un conseiller Mission
                                     Locale</label>
-                                <input appAutoChange class="form-check-input" type="checkbox" name="conseillerMissionLocale"
-                                    value="Un conseiller Mission Locale" [(ngModel)]="socialData.conseillerMissionLocale">
+                                <input appAutoChange class="form-check-input" type="checkbox"
+                                    name="conseillerMissionLocale" value="Un conseiller Mission Locale"
+                                    [(ngModel)]="socialData.conseillerMissionLocale">
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label" for="conseillerCapEmploi">Un conseiller CAP
@@ -759,31 +811,36 @@ Tests OK. Sur une  partie. A finir.
                                 <label class="form-check-label" for="conseillerCapEmploi">Un Conseiller en Evolution
                                     Professionnelle (CEP)</label>
                                 <input appAutoChange class="form-check-input" type="checkbox" name="conseillerCep"
-                                    value="Un Conseiller en Evolution Professionnelle (CEP)" [(ngModel)]="socialData.conseillerCep">
+                                    value="Un Conseiller en Evolution Professionnelle (CEP)"
+                                    [(ngModel)]="socialData.conseillerCep">
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label" for="conseillerRsa">Un Conseiller RSA du Conseil
                                     Départemental</label>
                                 <input appAutoChange class="form-check-input" type="checkbox" name="conseillerRsa"
-                                    value="Un Conseiller RSA du Conseil Départemental" [(ngModel)]="socialData.conseillerRsa">
+                                    value="Un Conseiller RSA du Conseil Départemental"
+                                    [(ngModel)]="socialData.conseillerRsa">
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label" for="groupementEmployeurs">Un groupement d'employeurs
                                     (GE) ou groupement d'employeurs par l'insertion et la qualification (GEIQ)</label>
-                                <input appAutoChange class="form-check-input" type="checkbox" name="groupementEmployeurs" value="GEIQ"
-                                [(ngModel)]="socialData.groupementEmployeurs">
+                                <input appAutoChange class="form-check-input" type="checkbox"
+                                    name="groupementEmployeurs" value="GEIQ"
+                                    [(ngModel)]="socialData.groupementEmployeurs">
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label" for="agenceTravailTemporaire">Une agence de travail
                                     temporaire</label>
-                                <input appAutoChange class="form-check-input" type="checkbox" name="agenceTravailTemporaire"
-                                    value="Une agence de travail temporaire" [(ngModel)]="socialData.agenceTravailTemporaire">
+                                <input appAutoChange class="form-check-input" type="checkbox"
+                                    name="agenceTravailTemporaire" value="Une agence de travail temporaire"
+                                    [(ngModel)]="socialData.agenceTravailTemporaire">
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label" for="entreprise"> Une entreprise (hors travail
                                     temporaire)</label>
                                 <input appAutoChange class="form-check-input" type="checkbox" name="entreprise"
-                                    value="Une entreprise (hors travail temporaire)" [(ngModel)]="socialData.entreprise">
+                                    value="Une entreprise (hors travail temporaire)"
+                                    [(ngModel)]="socialData.entreprise">
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label" for="reseauxSociaux">Réseaux
@@ -795,17 +852,20 @@ Tests OK. Sur une  partie. A finir.
                                 <label class="form-check-label" for="salonFormation">Sur
                                     un salon, forum de l'emploi et/ou de la formation</label>
                                 <input appAutoChange class="form-check-input" type="checkbox" name="salonFormation"
-                                    value="Sur un salon, forum de l'emploi et/ou de la formation" [(ngModel)]="socialData.salonFormation">
+                                    value="Sur un salon, forum de l'emploi et/ou de la formation"
+                                    [(ngModel)]="socialData.salonFormation">
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label" for="informationCollective">Lors d'une information
                                     collective</label>
-                                <input appAutoChange class="form-check-input" type="checkbox" name="informationCollective"
-                                    value="Lors d'une information collective" [(ngModel)]="socialData.salonFormation">
+                                <input appAutoChange class="form-check-input" type="checkbox"
+                                    name="informationCollective" value="Lors d'une information collective"
+                                    [(ngModel)]="socialData.salonFormation">
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label" for="autre">Autre</label>
-                                <input appAutoChange class="form-check-input" type="checkbox" name="other" value="other" [(ngModel)]="socialData.other">
+                                <input appAutoChange class="form-check-input" type="checkbox" name="other" value="other"
+                                    [(ngModel)]="socialData.other">
                             </div>
                             <!-- <input appAutoChange class="form-control my-2" type="text" name="autrePrecisez" [(ngModel)]="socialData.autrePrecisez"
                                 placeholder="Préciser"> -->
@@ -821,13 +881,13 @@ Tests OK. Sur une  partie. A finir.
                                 <!-- c'est un boolean !!! -->
                                 <!-- <input appAutoChange class="form-check-input" type="radio" name="employmentPromise" value="oui"
                                     [(ngModel)]="employmentPromise"> -->
-                                <input appAutoChange class="form-check-input" type="radio" name="employmentPromise" [value]=true
-                                    [(ngModel)]="employmentPromise">
+                                <input appAutoChange class="form-check-input" type="radio" name="employmentPromise"
+                                    [value]=true [(ngModel)]="employmentPromise">
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label">non</label>
-                                <input appAutoChange class="form-check-input" type="radio" name="employmentPromise" [value]=false
-                                    [(ngModel)]="employmentPromise">
+                                <input appAutoChange class="form-check-input" type="radio" name="employmentPromise"
+                                    [value]=false [(ngModel)]="employmentPromise">
                             </div>
                         </div>
 
@@ -851,8 +911,8 @@ Tests OK. Sur une  partie. A finir.
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label" for="cddProposalDuration">CDD de 12 mois</label>
-                                <input appAutoChange class="form-check-input" type="radio" name="cddProposalDuration" value="CDD de 12 mois"
-                                [(ngModel)]="socialData.cddProposalDuration">
+                                <input appAutoChange class="form-check-input" type="radio" name="cddProposalDuration"
+                                    value="CDD de 12 mois" [(ngModel)]="socialData.cddProposalDuration">
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label" for="cddProposalDuration">CDD de plus de 12 mois</label>
@@ -861,7 +921,8 @@ Tests OK. Sur une  partie. A finir.
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label" for="cddProposalDuration">CDI</label>
-                                <input appAutoChange class="form-check-input" type="radio" name="cddProposalDuration" value="CDI" [(ngModel)]="socialData.cddProposalDuration">
+                                <input appAutoChange class="form-check-input" type="radio" name="cddProposalDuration"
+                                    value="CDI" [(ngModel)]="socialData.cddProposalDuration">
                             </div>
 
                             <!-- financement -->
@@ -871,30 +932,36 @@ Tests OK. Sur une  partie. A finir.
                                 <div class="form-check">
                                     <label class="form-check-label" for="trainingFinancingProposal1"> Pôle Emploi (POEI,
                                         AFPR…)</label>
-                                    <input appAutoChange class="form-check-input" type="checkbox" name="trainingFinancingProposal1"
-                                        value="Pôle Emploi (POEI, AFPR…)" [(ngModel)]="socialData.trainingFinancingProposal1">
+                                    <input appAutoChange class="form-check-input" type="checkbox"
+                                        name="trainingFinancingProposal1" value="Pôle Emploi (POEI, AFPR…)"
+                                        [(ngModel)]="socialData.trainingFinancingProposal1">
                                 </div>
                                 <div class="form-check">
                                     <label class="form-check-label" for="trainingFinancingProposal2"> Contrat de
                                         professionnalisation </label>
-                                    <input appAutoChange class="form-check-input" type="checkbox" name="trainingFinancingProposal2"
-                                        value="Contrat de professionnalisation"  [(ngModel)]="socialData.trainingFinancingProposal2">
+                                    <input appAutoChange class="form-check-input" type="checkbox"
+                                        name="trainingFinancingProposal2" value="Contrat de professionnalisation"
+                                        [(ngModel)]="socialData.trainingFinancingProposal2">
                                 </div>
                                 <div class="form-check">
                                     <label class="form-check-label" for="trainingFinancingProposal3"> Contrat
                                         d'apprentissage
                                     </label>
-                                    <input appAutoChange class="form-check-input" type="checkbox" name="trainingFinancingProposal3"
-                                        value="Contrat d'apprentissage"  [(ngModel)]="socialData.trainingFinancingProposal3">
+                                    <input appAutoChange class="form-check-input" type="checkbox"
+                                        name="trainingFinancingProposal3" value="Contrat d'apprentissage"
+                                        [(ngModel)]="socialData.trainingFinancingProposal3">
                                 </div>
                                 <div class="form-check">
                                     <label class="form-check-label" for="trainingFinancingProposal4"> Agefiph </label>
-                                    <input appAutoChange class="form-check-input" type="checkbox" name="trainingFinancingProposal4"
-                                        value="Agefiph"  [(ngModel)]="socialData.trainingFinancingProposal4">
+                                    <input appAutoChange class="form-check-input" type="checkbox"
+                                        name="trainingFinancingProposal4" value="Agefiph"
+                                        [(ngModel)]="socialData.trainingFinancingProposal4">
                                 </div>
                                 <div class="form-check">
                                     <label class="form-check-label" for="trainingFinancingOtherProposal"> Autre</label>
-                                    <input appAutoChange class="form-check-input" type="checkbox" name="trainingFinancingOtherProposal"  [(ngModel)]="socialData.trainingFinancingOtherProposal" value="other">
+                                    <input appAutoChange class="form-check-input" type="checkbox"
+                                        name="trainingFinancingOtherProposal"
+                                        [(ngModel)]="socialData.trainingFinancingOtherProposal" value="other">
                                 </div>
                             </div>
                             <!-- fin financement -->
@@ -910,24 +977,27 @@ Tests OK. Sur une  partie. A finir.
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label" for="searchCDD">CDD</label>
-                                <input appAutoChange class="form-check-input" type="checkbox" name="searchPartTime" ngModel>
+                                <input appAutoChange class="form-check-input" type="checkbox" name="searchPartTime"
+                                    ngModel>
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label" for="searchPartTime">Travail
                                     Temporaire</label>
-                                <input appAutoChange class="form-check-input" type="checkbox" name="searchPartTime" ngModel>
+                                <input appAutoChange class="form-check-input" type="checkbox" name="searchPartTime"
+                                    ngModel>
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label" for="searchApprenticeship">Alternance (contrat
                                     d'apprentissage / de professionnalisation)</label>
-                                <input appAutoChange class="form-check-input" type="checkbox" name="searchApprenticeship" ngModel>
+                                <input appAutoChange class="form-check-input" type="checkbox"
+                                    name="searchApprenticeship" ngModel>
                             </div>
 
                             <!-- <label class="text-decoration-underline pt-3 pb-2 ">Vous recherchez un emploi à :</label> -->
                             <div class="d-flex align-items-center gap-5 mt-3">
                                 <div class="form-check">
-                                    <input appAutoChange class="form-check-input" type="checkbox" name="miTemps" value="Mi-temps"
-                                        ngModel>
+                                    <input appAutoChange class="form-check-input" type="checkbox" name="miTemps"
+                                        value="Mi-temps" ngModel>
                                     <label class="form-check-label" for="miTemps">Du Mi-temps</label>
                                 </div>
                                 <div class="form-check">
@@ -953,8 +1023,8 @@ Tests OK. Sur une  partie. A finir.
                                 <div class="form-check">
                                     <label class="form-check-label" for="travailHorairesDecales">En horaires décalés
                                         (2x7 ou 2x8)</label>
-                                    <input appAutoChange class="form-check-input" type="checkbox" name="travailHorairesDecales"
-                                        value="travailHorairesDecales" ngModel>
+                                    <input appAutoChange class="form-check-input" type="checkbox"
+                                        name="travailHorairesDecales" value="travailHorairesDecales" ngModel>
                                 </div>
                                 <div class="form-check">
                                     <label class="form-check-label" for="travailHorairesDecales">Le
@@ -971,13 +1041,13 @@ Tests OK. Sur une  partie. A finir.
                             <div class="d-flex align-items-center gap-5">
                                 <div class="form-check">
                                     <label class="form-check-label">oui</label>
-                                    <input appAutoChange class="form-check-input" type="radio" name="travailExterieur" value="oui"
-                                        ngModel>
+                                    <input appAutoChange class="form-check-input" type="radio" name="travailExterieur"
+                                        value="oui" ngModel>
                                 </div>
                                 <div class="form-check">
                                     <label class="form-check-label">non</label>
-                                    <input appAutoChange class="form-check-input" type="radio" name="travailExterieur" value="non"
-                                        ngModel>
+                                    <input appAutoChange class="form-check-input" type="radio" name="travailExterieur"
+                                        value="non" ngModel>
                                 </div>
                             </div>
                         </div>
@@ -995,7 +1065,7 @@ Tests OK. Sur une  partie. A finir.
             <div class="card-header bg-primary">
                 <a class="collapsed btn text-light text-capitalize d-flex justify-content-between align-items-center"
                     data-bs-toggle="collapse" href="#collapseSeven">
-                    <span>Votre Mobilité</span> <i class="bi bi-geo-alt-fill text-light fs-4"></i>
+                    <span>Mobilité</span> <i class="bi bi-geo-alt-fill text-light fs-4"></i>
                 </a>
             </div>
             <div id="collapseSeven" class="collapse" data-bs-parent="#accordion">
@@ -1007,14 +1077,14 @@ Tests OK. Sur une  partie. A finir.
                     <div class="d-flex align-items-center gap-5">
                         <div class="form-check">
                             <label class="form-check-label">oui</label>
-                            <input appAutoChange class="form-check-input" type="radio" name="hasTransportationMean" value=true
-                                [(ngModel)]="socialData.hasTransportationMean">
+                            <input appAutoChange class="form-check-input" type="radio" name="hasTransportationMean"
+                                value=true [(ngModel)]="socialData.hasTransportationMean">
                         </div>
                         <div class="form-check">
                             <label class="form-check-label">non</label>
                             <!-- <input appAutoChange class="form-check-input" type="radio" name="hasTransportationMean" value="non" -->
-                            <input appAutoChange class="form-check-input" type="radio" name="hasTransportationMean" value=false
-                                [(ngModel)]="socialData.hasTransportationMean">
+                            <input appAutoChange class="form-check-input" type="radio" name="hasTransportationMean"
+                                value=false [(ngModel)]="socialData.hasTransportationMean">
                         </div>
                     </div>
                     <!-- C'est un boolean !!! -->
@@ -1023,48 +1093,52 @@ Tests OK. Sur une  partie. A finir.
                         <div class="pt-2">Merci de préciser</div>
                         <div class="form-check">
                             <input appAutoChange class="form-check-input" type="radio" name="voiture" value=true
-                            [(ngModel)]="socialData.voiture">
+                                [(ngModel)]="socialData.voiture">
                             <label class="form-check-label">Voiture</label>
                         </div>
                         <div class="form-check">
                             <input appAutoChange class="form-check-input" type="radio" name="moto" value=true
-                            [(ngModel)]="socialData.moto">
+                                [(ngModel)]="socialData.moto">
                             <label class="form-check-label">Moto</label>
                         </div>
                         <div class="form-check">
                             <input appAutoChange class="form-check-input" type="radio" name="scooter" value=true
-                            [(ngModel)]="socialData.scooter">
+                                [(ngModel)]="socialData.scooter">
                             <label class="form-check-label">Scooter</label>
                         </div>
                         <div class="form-check">
                             <input appAutoChange class="form-check-input" type="radio" name="velo" value=true
-                            [(ngModel)]="socialData.velo">
+                                [(ngModel)]="socialData.velo">
                             <label class="form-check-label">Vélo</label>
                         </div>
                     </div>
                     <!-- </div> -->
-
-                    <div>
+                    <!-- si financement salarié on retire -->
+                    <div *ngIf="myForm.value.cdiRequiredDuration==='false'">
 
                         <div class="text-decoration-underline pt-3 pb-2">Quelle est votre mobilité pour aller travailler
                             ?</div>
                         <div class="form-check">
-                            <input appAutoChange class="form-check-input" type="radio" name="mobility" value="10km" [(ngModel)]="socialData.mobility">
+                            <input appAutoChange class="form-check-input" type="radio" name="mobility" value="10km"
+                                [(ngModel)]="socialData.mobility">
                             <label class="form-check-label"> à moins de 10
                                 kms de votre domicile</label>
                         </div>
                         <div class="form-check">
-                            <input appAutoChange class="form-check-input" type="radio" name="mobility" value="20km" [(ngModel)]="socialData.mobility">
+                            <input appAutoChange class="form-check-input" type="radio" name="mobility" value="20km"
+                                [(ngModel)]="socialData.mobility">
                             <label class="form-check-label"> à moins de 20
                                 kms de votre domicile</label>
                         </div>
                         <div class="form-check">
-                            <input appAutoChange class="form-check-input" type="radio" name="mobility" value="30km" [(ngModel)]="socialData.mobility">
+                            <input appAutoChange class="form-check-input" type="radio" name="mobility" value="30km"
+                                [(ngModel)]="socialData.mobility">
                             <label class="form-check-label"> à moins de 30
                                 kms de votre domicile</label>
                         </div>
                         <div class="form-check">
-                            <input appAutoChange class="form-check-input" type="radio" name="mobility" value="allFrance" [(ngModel)]="socialData.mobility">
+                            <input appAutoChange class="form-check-input" type="radio" name="mobility" value="allFrance"
+                                [(ngModel)]="socialData.mobility">
                             <label class="form-check-label"> sur toute la france</label>
                         </div>
                     </div>
