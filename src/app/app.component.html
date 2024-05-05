@@ -1,7 +1,8 @@
 <app-header></app-header>
 <router-outlet></router-outlet>
 <app-install-button></app-install-button>
-<app-cookie-consent-banner *ngIf="consentReaded"></app-cookie-consent-banner>
+<!-- <app-cookie-consent-banner *ngIf="consentReaded"></app-cookie-consent-banner> -->
+<div #banner *ngIf="consentReaded"></div>
 
 
 

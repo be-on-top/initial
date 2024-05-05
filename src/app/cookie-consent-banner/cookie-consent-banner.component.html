@@ -1,10 +1,14 @@
 <!-- si on souhaite que l'utilisateur puisse fermer la bannière quel que soit l'état de userConsent -->
+<ng-container *ngIf="showBanner || integratedBanner">
+    <div class="cookie-consent-banner container-fluid"
+        [ngClass]="{'fixed-bottom w-100 mb-0': consentService.hasRefusedConsent()==false}">
+        <div class="container p-2">
+            <p>Nous utilisons des cookies pour améliorer votre expérience. Ces cookies peuvent être
+                utilisés à des fins d'analyse, de personnalisation du contenu, ou pour faciliter vos interactions. <span
+                    class="fw-bold">Acceptez-vous leur utilisation ?</span></p>
 
-<div *ngIf="showBanner || integratedBanner" class="cookie-consent-banner" [ngClass]="{'w-100 mb-0': consentService.hasRefusedConsent()==false}">   
-   <div class="container">
-       <p class="mb-3 text-dark fs-5">Nous utilisons des cookies pour améliorer votre expérience. Ces cookies peuvent être utilisés à des fins d'analyse, de personnalisation du contenu, ou pour faciliter vos interactions. <span class="fw-bold">Acceptez-vous leur utilisation ?</span></p>
-   
-       <button (click)="acceptCookies()" class="btn btn-primary">Accepter</button>
-       <button (click)="rejectCookies()" class="btn btn-secondary ms-2">Refuser</button>
-   </div>
-</div>
+            <button (click)="acceptCookies()" class="btn btn-primary">Accepter</button>
+            <button (click)="rejectCookies()" class="btn btn-secondary ms-2">Refuser</button>
+        </div>
+    </div>
+</ng-container>

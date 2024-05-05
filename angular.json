@@ -39,7 +39,12 @@
             "ngswConfigPath": "ngsw-config.json"
           },
           "configurations": {
-            "production": {                    
+            "production": { 
+              "optimization": true,
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,                 
               "budgets": [
                 {
                   "type": "initial",

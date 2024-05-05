@@ -1,4 +1,10 @@
+img {
+    width: 100%;
+    /* or max-width: 100%; */
+    height: auto;
+    aspect-ratio: auto 600 / 250;
 
+}
 
 
 
@@ -29,7 +35,7 @@ button.btn-transparent {
     cursor: pointer;
 }
 
-.card-text a{
+.card-text a {
     font-size: 1rem !important;
 }
 
@@ -38,7 +44,7 @@ button.btn-transparent {
     box-shadow: 0 10px 20px rgba(0, 0, 0, .12), 0 4px 8px rgba(0, 0, 0, .06);
 }
 
-hr{
+hr {
     color: #82BC00;
 }
 
@@ -50,7 +56,7 @@ hr{
 .home {
     width: 100%;
     /* Ajuste automatiquement la largeur en fonction de la hauteur */
-    height:20vw;
+    height: 20vw;
     /* Définit la hauteur en fonction de 30% de la largeur de la fenêtre */
 
     object-fit: cover;
@@ -59,6 +65,7 @@ hr{
     /* Centre l'image dans le conteneur */
     /* filter: brightness(110%) saturate(100%); */
 }
+
 /* 
 .image-container {
     position: relative;
@@ -87,10 +94,10 @@ hr{
 
 @media only screen and (max-width: 765px) {
 
-    .image-container, .home{
+    /* .image-container, .home{
         height: 40vw;
-    }
-    .image-container img{
+    } */
+    .image-container img {
         width: 100%;
         object-fit: cover;
     }

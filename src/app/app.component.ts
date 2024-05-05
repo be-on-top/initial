@@ -1,4 +1,5 @@
-import { Component} from '@angular/core';
+import { Component, ViewChild, ViewContainerRef, AfterViewInit} from '@angular/core';
+// import { CookieConsentBannerComponent } from './cookie-consent-banner/cookie-consent-banner.component';
 // import { Auth } from '@angular/fire/auth';
 // import { PushNotificationService } from './push-notification.service';
 
@@ -9,7 +10,7 @@ import { Component} from '@angular/core';
   styleUrls: ['./app.component.css'],
   host: {'[attr.lang]': '"fr"'}
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
   title = 'Be On Top Application de positionnement et de formation métiers';
   // ui : string | undefined=""
   // mesaggeReceived:string | undefined="";
@@ -17,8 +18,6 @@ export class AppComponent {
 
    // Détermine si la bannière de consentement doit être affichée
   // showConsentBanner: boolean = false;
-
-  
 
 
   constructor(
@@ -33,24 +32,20 @@ export class AppComponent {
           this.consentReaded = true;
       } 
 
-
-
-
-    // const userKey = this.auth.currentUser?.uid;
-    // console.log("userKey", userKey);
-    // this.ui = userKey
-
-    // test FCM
-    // pushNotificationService.requestPermission().then(token => {
-    //   console.log("token depuis le service injecté dans appComponent", token);
-    // })
   }
 
 
+@ViewChild('banner', { read: ViewContainerRef }) vc1!: ViewContainerRef;
 
-  // ngAfterViewInit() {
-  //   // Par exemple, afficher toujours la bannière de consentement après le chargement du contenu principal
-  //   this.showConsentBanner = true;
-  // } 
+
+  ngAfterViewInit(): void {
+    this.consentReaded ? this.loadComponent():''
+  }
+  
+  async loadComponent() {
+    let { CookieConsentBannerComponent } = await import('./cookie-consent-banner/cookie-consent-banner.component');
+    this.vc1.createComponent(CookieConsentBannerComponent);
+  }
+
 
 }

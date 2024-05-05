@@ -19,16 +19,19 @@
 
     <!-- test alert-dismissible for mission -->
     <ng-container *ngIf="user==undefined || (!isLoading && !isOneQuizzAchieved); else yes">
-        <div *ngIf="!isLoading && !isOneQuizzAchieved" class="alert w-100 p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show fs-5">
-            <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert" aria-label="Fermer le message"></button>
-            Evaluez vos connaissances et commencez rapidement une <h1 class="d-inline fs-5">formation
-                personnalisée</h1> pour vous hisser aux portes du métier de votre choix
+        <div *ngIf="!isLoading && !isOneQuizzAchieved"
+            class="alert w-100 p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show fs-5">
+            <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
+                aria-label="Fermer le message"></button>
+            Evaluez vos connaissances et démarrez rapidement une <h1 class="d-inline fs-5">formation
+                personnalisée</h1> qui vous hissera aux portes du métier de votre choix
         </div>
     </ng-container>
     <ng-template #yes>
         <div class="alert alert-light p-4 alert-dismissible mb-4 fade show" *ngIf="!isLoading && isOneQuizzAchieved">
             <!-- <button type="button" class="btn-close btn-close-light" data-bs-dismiss="alert"></button> -->
-            <button type="button" class="btn-close btn-close" data-bs-dismiss="alert" aria-label="Fermer le message"></button>
+            <button type="button" class="btn-close btn-close" data-bs-dismiss="alert"
+                aria-label="Fermer le message"></button>
             <!-- Vous pourrez aussi dès maintenant finaliser votre inscription administrative -->
             Retrouvez <span class="fw-bold">tous vos résultats</span> et <span class="fw-bold">vos estimations
                 personnalisées</span> depuis <a [routerLink]="['/account']" class="text-decoration-none"> votre compte
@@ -64,23 +67,25 @@
                         <!-- <img class="img-fluid" [src]="trade.imageUrl || defaultImageUrl" *ngIf="trade.imageUrl"> -->
 
                         <!-- spinner essai -->
-                        <div *ngIf="isLoading && !offline" class="d-flex justify-content-center align-items-center mt-5">
+                        <div *ngIf="isLoading && !offline"
+                            class="d-flex justify-content-center align-items-center mt-5">
                             <div class="spinner-border text-success" role="status">
                                 <span class="visually-hidden">Loading...</span>
                             </div>
                         </div>
                         <!-- fin spinner -->
-
-                        <div class="image-container rounded mb-1 " >
-                            <!-- <a [routerLink]="['/trade', trade.sigle]" class="text-decoration-none">
-                                <img class="img-fluid rounded" [ngSrc]="trade.imageUrl" *ngIf="trade.imageUrl"
-                                    (load)="onImageLoad()" [width]="largeurImage" [height]="hauteurImage">
-                            </a> -->
-                            <a [routerLink]="['/trade', trade.sigle]" class="text-decoration-none">
-                                <img class="img-fluid rounded" [src]="trade.imageUrl" *ngIf="trade.imageUrl" #image
-                                    (load)="onImageLoad()" [loading]="!showsImage ? 'lazy' : 'eager'" alt="formation au métier {{trade.sigle}}">
-                            </a>
-                        </div>
+                        <ng-container *ngIf="trade.imageUrl">
+                            <div class="image-container rounded mb-1">
+                                <!-- <a [routerLink]="['/trade', trade.sigle]" class="text-decoration-none">
+            <img class="img-fluid rounded" [ngSrc]="trade.imageUrl" *ngIf="trade.imageUrl"
+                (load)="onImageLoad()" [width]="largeurImage" [height]="hauteurImage">
+        </a> -->
+                                <a [routerLink]="['/trade', trade.sigle]" class="text-decoration-none">
+                                    <img class="img-fluid rounded" [src]="trade.imageUrl" (load)="onImageLoad()"
+                                        alt="formation au métier {{trade.sigle}}">
+                                </a>
+                            </div>
+                        </ng-container>
 
                         <div class="card-text"><a [routerLink]="['/trade', trade.sigle]"
                                 class="text-decoration-none fs-6">
@@ -91,7 +96,8 @@
 
                         <div *ngIf="isEditor" class="d-flex justify-content-end">
                             <hr>
-                            <button class="btn btn-transparent" aria-label="Edition du métier"><i class="bi bi-pencil-square"></i>
+                            <button class="btn btn-transparent" aria-label="Edition du métier"><i
+                                    class="bi bi-pencil-square"></i>
                                 Editer</button>
                         </div>
 
@@ -109,13 +115,15 @@
 
                                 <div class="d-flex justify-content-end"
                                     *ngIf="(studentData && !studentData['quizz_'+trade.sigle])">
-                                    <button aria-label="Démarrer le questionnaire" class="btn btn-transparent"><i class="bi bi-clock-fill text-success"></i>
+                                    <button aria-label="Démarrer le questionnaire" class="btn btn-transparent"><i
+                                            class="bi bi-clock-fill text-success"></i>
                                         Démarrer votre évaluation</button>
                                 </div>
                                 <div class="d-flex justify-content-end"
                                     *ngIf="studentData && studentData['quizz_'+trade.sigle] && !studentData['quizz_'+trade.sigle].fullResults">
 
-                                    <button aria-label="Poursuivre le questionnaire" class="btn btn-transparent"><i class="bi bi-clock-history fw-bold"></i>
+                                    <button aria-label="Poursuivre le questionnaire" class="btn btn-transparent"><i
+                                            class="bi bi-clock-history fw-bold"></i>
                                         <!-- Reprendre à la question {{studentData.lastIndexQuestion+1}}</button></div> -->
                                         Poursuivre</button>
                                 </div>

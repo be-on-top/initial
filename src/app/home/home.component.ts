@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 // je ne vois pas l'utilité de cette méthode pour le moment, donc on désactive !!!!
 // import { loggedIn } from '@angular/fire/auth-guard';
@@ -17,22 +17,19 @@ import { NetworkService } from '../network.service';
 // import { DomSanitizer } from '@angular/platform-browser';
 
 
-
-
-
-interface Image {
-  alt?: string;
-  src: string;
-  srcset?: string;
-  sizes?: string;
-  width: number;
-  height: number;
-  fill?: boolean;
-  decoding?: 'sync' | 'async' | 'auto';
-  loading?: 'lazy' | 'eager' | 'auto';
-  fetchPriority?: 'low' | 'high' | 'auto';
-  priority: boolean;
-}
+// interface Image {
+//   alt?: string;
+//   src: string;
+//   srcset?: string;
+//   sizes?: string;
+//   width: number;
+//   height: number;
+//   fill?: boolean;
+//   decoding?: 'sync' | 'async' | 'auto';
+//   loading?: 'lazy' | 'eager' | 'auto';
+//   fetchPriority?: 'low' | 'high' | 'auto';
+//   priority: boolean;
+// }
 
 
 @Component({
@@ -129,7 +126,7 @@ export class HomeComponent implements OnInit {
           this.user = user.uid
           this.studentService.getStudentById(user.uid).
             subscribe((data) => {
-              console.log("data", data);
+              // console.log("data", data);
               this.studentData = data
               this.checkIfQuizzAchieved()
               this.dataLoading = false
@@ -263,14 +260,6 @@ export class HomeComponent implements OnInit {
   }
 
 
-  // truncateText(text: string, maxWords: number): string {
-  //   const words = text.split(' ');
-  //   if (words.length > maxWords) {
-  //     return words.slice(0, maxWords).join(' ');
-  //   }
-  //   return text;
-  // }
-
   truncateText(text: string, limit: number): string {
     if (!text || text.length <= limit) {
       return text;
@@ -290,9 +279,6 @@ export class HomeComponent implements OnInit {
     return truncatedText.trim() + '...';
   }
 
-
-
-
   isLoading: boolean = true
 
   onImageLoad
@@ -301,36 +287,17 @@ export class HomeComponent implements OnInit {
     this.isLoading = false;
   }
 
+  // @ViewChild('image') imageElement!: ElementRef;
 
-  // étude non concluante
-  // saveLocally(imageFile: File): void {
-  //   const reader = new FileReader();
-  //   reader.onload = (event: any) => {
-  //     const imageData = event.target.result;
-  //     localStorage.setItem('localImage', imageData);
-  //   };
-  //   reader.readAsDataURL(imageFile);
-  // }
+  // setDimensions(image: HTMLImageElement) {
+  //   const width = image.width;
+  //   const height = image.height;
 
-  // getLocalImageSrc(): any {
-  //   return localStorage.getItem('localImage');
+  //   this.imageElement.nativeElement.setAttribute('width', width.toString());
+  //   this.imageElement.nativeElement.setAttribute('height', height.toString());
   // }
 
 
-  showsImage = false;
-  @ViewChild('image') divImage!: ElementRef;
-
-
-@HostListener('document:scroll', ['$event'])
-public onViewportScroll() {
-  const windowHeight = window.innerHeight;
-  const boundingRectImage = this.divImage.nativeElement.getBoundingClientRect();
-  if (boundingRectImage.top >= 0 && boundingRectImage.bottom <= windowHeight) {
-    this.showsImage = true; 
-  } else {
-    this.showsImage = false;
-  }
-}
 }
   
 
