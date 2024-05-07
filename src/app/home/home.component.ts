@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 // je ne vois pas l'utilité de cette méthode pour le moment, donc on désactive !!!!
 // import { loggedIn } from '@angular/fire/auth-guard';
 import { Auth } from '@angular/fire/auth';
@@ -98,14 +99,19 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private settingsService: SettingsService,
     private updateService: UpdateService,
+    private titleService : Title
     // private networkService: NetworkService
   ) {
 
     this.offline = !navigator.onLine
+
   }
 
 
   ngOnInit(): void {
+
+    this.titleService.setTitle('Accueil - BE-ON-TOP formation application'); // Mettre à jour le titre de la page
+
 
     // window.addEventListener('online', () => {   
     if (!this.offline) {

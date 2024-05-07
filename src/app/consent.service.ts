@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Analytics, setAnalyticsCollectionEnabled, setUserProperties } from '@angular/fire/analytics';
 
 
 @Injectable({
@@ -8,7 +9,7 @@ export class ConsentService {
 
   private readonly consentKey = 'userConsent';
 
-  constructor() { }
+  constructor(private analytics:Analytics) { }
 
   // getConsent(): boolean {
   //   const consent = localStorage.getItem(this.consentKey) === 'true';
@@ -26,12 +27,17 @@ export class ConsentService {
   }
 
 
+
   setConsent(consent: boolean): void {
     // alert(consent)
     localStorage.setItem(this.consentKey, consent.toString())
     console.log('Consentement enregistré dans le stockage local :', consent);
-    sessionStorage.removeItem('userConsent');
-    // sessionStorage.setItem('userConsent', consent.toString())
+        // Désactiver la collecte de google analytics
+        !consent?(setAnalyticsCollectionEnabled(this.analytics, false), this.deleteCookiesStartingWith('_ga')):''
+        // Désactiver la collecte des signaux de personnalisation des annonces (cookies marketing)
+        !consent?setUserProperties(this.analytics, { allow_ad_personalization_signals: false }):''
+    // sessionStorage.removeItem('userConsent');
+    sessionStorage.setItem('userConsent', consent.toString())
   }
 
   // clearConsent(): void {

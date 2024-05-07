@@ -14,6 +14,7 @@ export const environment = {
     projectId: "be-on-top-beta",
     storageBucket: "be-on-top-beta.appspot.com",
     messagingSenderId: "212539373061",
-    appId: "1:212539373061:web:ae37997ebc068516700e6c"
+    appId: "1:212539373061:web:ae37997ebc068516700e6c",
+    measurementId: "G-4D90TV8L6W"
   }
 };

@@ -16,6 +16,7 @@ import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { getMessaging, provideMessaging } from '@angular/fire/messaging';
+import { getAnalytics, provideAnalytics, ScreenTrackingService, UserTrackingService } from '@angular/fire/analytics';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,7 +25,7 @@ import { AdminModule } from './admin/admin.module';
 import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './header/header.component';
 import { RegisterComponent } from './register/register.component';
-import { ServiceWorkerModule} from '@angular/service-worker';
+import { ServiceWorkerModule } from '@angular/service-worker';
 import { AccountComponent } from './account/account.component';
 // pour appliquer à la lettre la division des tâches. ceci ne me semble pourtant pas très pertinent ici. 
 import { UpdateAccountComponent } from './account/update-account/update-account.component';
@@ -83,8 +84,16 @@ NgOptimizedImage
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
-    provideStorage(()=>getStorage()),
-    provideMessaging(()=>getMessaging()),
+    provideStorage(() => getStorage()),
+    provideMessaging(() => getMessaging()),
+    provideAnalytics(() => getAnalytics(),
+    // Désactive les cookies marketing
+    //  {
+    //   options: {
+    //     allow_ad_personalization_signals: false 
+    //   }
+    // }
+  ),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
       // Register the ServiceWorker as soon as the application is stable
@@ -92,7 +101,7 @@ NgOptimizedImage
       registrationStrategy: 'registerWhenStable:30000'
     })
   ],
-  providers: [AuthGuardService],
+  providers: [AuthGuardService, ScreenTrackingService, UserTrackingService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,7 +1,8 @@
 import { Component, DoCheck, Input, OnInit } from '@angular/core';
 import { ConsentService } from '../consent.service';
-import { Auth, browserSessionPersistence, setPersistence, signInWithEmailAndPassword, browserLocalPersistence } from '@angular/fire/auth';
+import { Auth, browserSessionPersistence, setPersistence} from '@angular/fire/auth';
 import { persistentLocalCache } from 'firebase/firestore';
+// import { Analytics, setAnalyticsCollectionEnabled, setUserProperties } from '@angular/fire/analytics';
 
 
 @Component({

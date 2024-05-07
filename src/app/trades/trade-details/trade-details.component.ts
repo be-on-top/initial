@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { Firestore, docData, doc } from '@angular/fire/firestore';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Student } from 'src/app/admin/Students/student';
@@ -37,9 +37,18 @@ export class TradeDetailsComponent implements OnInit {
   offline: boolean = false
 
 
-  constructor(private service: SettingsService, private ac: ActivatedRoute, private auth: Auth, private authService: AuthService, private studentService: StudentsService, private firestore: Firestore, public sanitizer: DomSanitizer, private location: Location) {
+  constructor(
+    private service: SettingsService, 
+    private ac: ActivatedRoute, 
+    private auth: Auth, 
+    // private authService: AuthService, 
+    private studentService: StudentsService, 
+    private firestore: Firestore, 
+    public sanitizer: DomSanitizer, 
+    private location: Location,
+    private titleService:Title
+  ) {
     this.offline = !navigator.onLine
-
   }
 
   ngOnInit(): void {
@@ -167,7 +176,8 @@ export class TradeDetailsComponent implements OnInit {
       // fin ac.paramMap.subscribe
     })
 
-
+    // Mettre à jour le titre de la page
+    this.titleService.setTitle(`Formation ${this.tradeId }: compétences métier et emploi`)
 
   }
 
