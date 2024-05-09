@@ -9,7 +9,7 @@ export class ConsentService {
 
   private readonly consentKey = 'userConsent';
 
-  constructor(private analytics:Analytics) { }
+  constructor(private analytics: Analytics) { }
 
   // getConsent(): boolean {
   //   const consent = localStorage.getItem(this.consentKey) === 'true';
@@ -32,10 +32,13 @@ export class ConsentService {
     // alert(consent)
     localStorage.setItem(this.consentKey, consent.toString())
     console.log('Consentement enregistré dans le stockage local :', consent);
-        // Désactiver la collecte de google analytics
-        !consent?(setAnalyticsCollectionEnabled(this.analytics, false), this.deleteCookiesStartingWith('_ga')):''
-        // Désactiver la collecte des signaux de personnalisation des annonces (cookies marketing)
-        !consent?setUserProperties(this.analytics, { allow_ad_personalization_signals: false }):''
+    // Désactiver la collecte de google analytics
+    !consent ? (setAnalyticsCollectionEnabled(this.analytics, false), this.deleteCookiesStartingWith('_ga')) : ''
+    // Désactiver la collecte des signaux de personnalisation des annonces (cookies marketing)
+    !consent ? setUserProperties(this.analytics, { allow_ad_personalization_signals: false }) : ''
+    consent ? (setAnalyticsCollectionEnabled(this.analytics, true)) : ''
+    // réactiver la collecte
+    consent ? setUserProperties(this.analytics, { allow_ad_personalization_signals: true }) : ''
     // sessionStorage.removeItem('userConsent');
     sessionStorage.setItem('userConsent', consent.toString())
   }

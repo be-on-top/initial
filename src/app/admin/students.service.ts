@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 // import { NgForm } from '@angular/forms';
-import { Auth, createUserWithEmailAndPassword } from "@angular/fire/auth";
+import { Auth, createUserWithEmailAndPassword, deleteUser} from "@angular/fire/auth";
 import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc, updateDoc, query, getDocs, where, getDoc } from '@angular/fire/firestore';
 // import { FirebaseApp } from '@angular/fire/app';
 import { Observable } from 'rxjs';
@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { Student } from './Students/student';
 import { NgForm } from '@angular/forms';
 import { Evaluation } from './evaluation';
+import { Analytics, setUserId } from "@angular/fire/analytics";
 
 
 
@@ -19,7 +20,7 @@ import { Evaluation } from './evaluation';
 export class StudentsService {
   // private fullResults: { [key: string]: { duration: number; cost: number } }[] = [];
 
-  constructor(private auth: Auth, private firestore: Firestore) { }
+  constructor(private auth: Auth, private firestore: Firestore, private analytics: Analytics) { }
 
   // createStudent(studentForm: NgForm) {
   async createStudent(student: any) {
@@ -92,6 +93,9 @@ export class StudentsService {
     setDoc(doc(studentsRef, newStudent.id), newStudent)
     let $rolesRef = collection(this.firestore, "roles");
     setDoc(doc($rolesRef, newStudent.id), { role: 'student' })
+
+    // pour lui attribuer un id ou un nom dans analytics
+    setUserId(this.analytics, newStudent.id);
   }
 
 
@@ -118,12 +122,15 @@ export class StudentsService {
     try {
       await deleteDoc(studentRef);
       console.log(`Student with id=${student.id} deleted from firebase successfully`);
+      // await deleteUser(student.id)
     } catch (error) {
       console.error(`Error deleting student from firebase with id=${student.id}: `, error);
     }
     // } catch (error) {
     //   console.error('Error deleting user account:', error);
     // }
+
+        
   }
 
 
@@ -397,9 +404,9 @@ export class StudentsService {
     setDoc(studentRef, updatedStudent, { merge: true })
   }
 
-  sendElearningInfo(id: string, info:any) {
+  sendElearningInfo(id: string, info: any) {
     let $studentRef = doc(this.firestore, "students/" + id)
-    const updatedStudent = {elearning: info }
+    const updatedStudent = { elearning: info }
     updateDoc($studentRef, updatedStudent)
   }
 
