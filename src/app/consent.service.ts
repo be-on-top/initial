@@ -36,9 +36,9 @@ export class ConsentService {
     !consent ? (setAnalyticsCollectionEnabled(this.analytics, false), this.deleteCookiesStartingWith('_ga')) : ''
     // Désactiver la collecte des signaux de personnalisation des annonces (cookies marketing)
     !consent ? setUserProperties(this.analytics, { allow_ad_personalization_signals: false }) : ''
-    consent ? (setAnalyticsCollectionEnabled(this.analytics, true)) : ''
+    // consent ? (setAnalyticsCollectionEnabled(this.analytics, true)) : ''
     // réactiver la collecte
-    consent ? setUserProperties(this.analytics, { allow_ad_personalization_signals: true }) : ''
+    // consent ? setUserProperties(this.analytics, { allow_ad_personalization_signals: true }) : ''
     // sessionStorage.removeItem('userConsent');
     sessionStorage.setItem('userConsent', consent.toString())
   }
@@ -79,6 +79,8 @@ export class ConsentService {
 
   deleteCookiesStartingWith(prefix: any) {
     const cookies = document.cookie.split(';');
+    console.log("cookies récupérées depuis deleteCookies", cookies);
+    
 
     cookies.forEach(cookie => {
       const [name] = cookie.trim().split('=');
@@ -90,7 +92,8 @@ export class ConsentService {
 
   // Fonction pour supprimer un cookie individuel
   deleteCookie(name: string) {
-    document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
+    // document.cookie = name + '=;expires=Thu, 01 Jan 2023 00:00:00 GMT;path=/';
+    document.cookie = name + '=;Max-Age=0;path=/';
   }
 
   deleteAllCookies() {
