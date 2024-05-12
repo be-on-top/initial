@@ -81,6 +81,13 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
 
   }
 
+  exportStudentsCollection(){
+    this.service.exportCollection("students")
+  }
+
+  exportCollectionAsCSV(){
+    this.service.exportCollectionAsCSV("students")
+  }
 
 
 }

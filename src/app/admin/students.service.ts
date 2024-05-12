@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 // import { NgForm } from '@angular/forms';
 import { Auth, createUserWithEmailAndPassword, deleteUser} from "@angular/fire/auth";
-import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc, updateDoc, query, getDocs, where, getDoc } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc, updateDoc, query, getDocs, where, getDoc, QuerySnapshot } from '@angular/fire/firestore';
 // import { FirebaseApp } from '@angular/fire/app';
 import { Observable } from 'rxjs';
 // import { switchMap, tap } from 'rxjs/operators';
@@ -408,6 +408,96 @@ export class StudentsService {
     let $studentRef = doc(this.firestore, "students/" + id)
     const updatedStudent = { elearning: info }
     updateDoc($studentRef, updatedStudent)
+  }
+
+  // async exportCollection(collectionName: string): Promise<void> {
+  //   const exportRef = collection(this.firestore, collectionName);
+  //   return await getDocs(exportRef).then(snapshot => {
+  //     const data = snapshot.docs.map(doc => doc.data());
+  //     const jsonData = JSON.stringify(data);
+  //     // Vous pouvez envoyer ce JSON à un backend pour l'exporter
+  //     console.log(jsonData);
+  //   }).catch(error => {
+  //     console.error('Erreur lors de l\'export de la collection:', error);
+  //     throw error;
+  //   });
+  // }
+
+  async exportCollection(collectionName: string): Promise<void> {
+    const exportRef = collection(this.firestore, collectionName);
+    try {
+      const snapshot: QuerySnapshot<any> = await getDocs(exportRef);
+      const data = snapshot.docs.map(doc => doc.data());
+      const jsonData = JSON.stringify(data);
+      console.log(jsonData);
+
+      // Création d'un objet Blob avec le contenu JSON
+      const blob = new Blob([jsonData], { type: 'application/json' });
+
+      // Création d'un objet URL pour le Blob
+      const url = window.URL.createObjectURL(blob);
+
+      // Création d'un lien HTML pour le téléchargement
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${collectionName}_export.json`; // Nom du fichier JSON
+      document.body.appendChild(a);
+
+      // Déclenchement du téléchargement
+      a.click();
+
+      // Libération de l'URL de l'objet Blob
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Erreur lors de l\'export de la collection:', error);
+      throw error;
+    }
+  }
+
+
+  async exportCollectionAsCSV(collectionName: string): Promise<void> {
+    const exportRef = collection(this.firestore, collectionName);
+    try {
+      const snapshot: QuerySnapshot<any> = await getDocs(exportRef);
+      const headers = Object.keys(snapshot.docs[0].data()); // Récupérer les noms de colonnes depuis le premier document
+      const csvContent = this.generateCSVContent(snapshot, headers);
+      
+      // Création d'un objet Blob avec le contenu CSV
+      const blob = new Blob([csvContent], { type: 'text/csv' });
+
+      // Création d'un objet URL pour le Blob
+      const url = window.URL.createObjectURL(blob);
+
+      // Création d'un lien HTML pour le téléchargement
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${collectionName}_export.csv`; // Nom du fichier CSV
+      document.body.appendChild(a);
+
+      // Déclenchement du téléchargement
+      a.click();
+
+      // Libération de l'URL de l'objet Blob
+      window.URL.revokeObjectURL(url);
+      
+    } catch (error) {
+      console.error('Erreur lors de l\'export de la collection:', error);
+      throw error;
+    }
+  }
+
+  private generateCSVContent(snapshot: QuerySnapshot<any>, headers: string[]): string {
+    let csvContent = headers.join(',') + '\n'; // En-têtes de colonnes
+    
+    snapshot.docs.forEach(doc => {
+      const rowData:any[] = []
+      headers.forEach(header => {
+        rowData.push(doc.data()[header])
+      });
+      csvContent += rowData.join(',') + '\n'
+    });
+    
+    return csvContent;
   }
 
 
