@@ -33,6 +33,7 @@ export class StudentFormComponent implements OnInit, OnChanges {
   // demandeFinancement?: string = '';
   requestFinancing: boolean | undefined;
   employmentPromise: boolean | null = null;
+  sentCompanyEmployee:boolean | null = null
   // MoyenDeTransport: boolean | undefined;
   // MoyenDeTransport: boolean | undefined;
   // selectedOrientation?: string = '';

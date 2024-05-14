@@ -12,7 +12,8 @@ Tests OK. Sur une  partie. A finir.
         <button type="button" class="btn-close btn-close mt-2" data-bs-dismiss="alert"></button>
         <!-- Vous pourrez aussi dès maintenant finaliser votre inscription administrative -->
         Pour faciliter votre inscription et le financement de votre formation, <strong>merci de renseigner un maximum
-        d'informations</strong>. Tant que vous n'avez pas soumis le formulaire, vous pourrez interrompre ou modifier vos saisies.
+            d'informations</strong>. Tant que vous n'avez pas soumis le formulaire, vous pourrez interrompre ou modifier
+        vos saisies.
     </div>
     <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)" class="mt-3" [ngClass]="{'read-only-form': isReadOnly}">
 
@@ -343,7 +344,7 @@ Tests OK. Sur une  partie. A finir.
 
                         <div class="form-group row">
                             <div class="col-md-4 text-decoration-underline">
-                                Inscrit à Pôle Emploi :
+                                Inscrit à France Travail :
                             </div>
                             <div class="col-md-8">
                                 <div class="form-check form-check-inline">
@@ -363,8 +364,8 @@ Tests OK. Sur une  partie. A finir.
 
 
                         <div *ngIf="socialData.isPoleEmploi=='oui'" class="form-group mt-3">
-                            <label class="form-check-label" for="idPoleEmploi">Numéro identifiant POLE
-                                EMPLOI:</label>
+                            <label class="form-check-label" for="idPoleEmploi">Numéro identifiant France
+                                Travail:</label>
                             <input appAutoChange class="form-check-input" type="text" class="form-control"
                                 name="idPoleEmploi" [(ngModel)]="socialData.idPoleEmploi">
                             <!-- partie RSA -->
@@ -394,28 +395,69 @@ Tests OK. Sur une  partie. A finir.
                         <ng-container *ngIf="myForm.value.isPoleEmploi!=='oui'">
                             <hr>
                             <div class="text-decoration-underline pt-3 pb-2">Salarié en CDI ? </div>
-                            <div class="d-flex  align-items-center gap-3">
+                            <!-- <div class="d-flex  align-items-center gap-3">
                                 <label for="cdiDuration" class="form-label">Depuis combien d'années ?</label>
                                 <input appAutoChange type="number" class="form-control"
                                     [(ngModel)]="socialData.cdiDuration" name="cdiDuration">
-                            </div>
-                            <div class="fst-italic pt-3 pb-2">Pouvez-vous justifier d'une ancienneté
-                                de 24 mois en qualité de salarié, dont 12 mois dans la même entreprise (Financement
-                                salarié) ?</div>
+                            </div> -->
+                            <!-- envoyé par entreprise -->
+                            <div class="fst-italic pt-3 pb-2">Vous êtes envoyé(e) par votre entreprise ?</div>
                             <div class="d-flex  align-items-center gap-3">
                                 <div class="form-check">
                                     <label class="form-check-label">oui</label>
                                     <input appAutoChange class="form-check-input" type="radio"
-                                        name="cdiRequiredDuration" value=true
-                                        [(ngModel)]="socialData.cdiRequiredDuration">
+                                        name="sentCompanyEmployee" value=true
+                                        [(ngModel)]="socialData.sentCompanyEmployee">
                                 </div>
                                 <div class="form-check">
                                     <label class="form-check-label">non</label>
                                     <input appAutoChange class="form-check-input" type="radio"
-                                        name="cdiRequiredDuration" value=false
-                                        [(ngModel)]="socialData.cdiRequiredDuration">
+                                        name="sentCompanyEmployee" value=false
+                                        [(ngModel)]="socialData.sentCompanyEmployee">
                                 </div>
                             </div>
+                            <!-- fin -->
+                            <!-- en recherche d'accompagnement qui disparait si envoyé par entreprise -->
+                            <ng-container *ngIf="myForm.value.sentCompanyEmployee==='false'">
+                                <div class="fst-italic pt-3 pb-2">Vous êtes en recherche d'accompagnement (vers un
+                                    nouvel emploi ou une reconversion) ?</div>
+                                <div class="d-flex  align-items-center gap-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label">oui</label>
+                                        <input appAutoChange class="form-check-input" type="radio"
+                                            name="lookingForSupport" value=true
+                                            [(ngModel)]="socialData.lookingForSupport">
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">non</label>
+                                        <input appAutoChange class="form-check-input" type="radio"
+                                            name="lookingForSupport" value=false
+                                            [(ngModel)]="socialData.lookingForSupport">
+                                    </div>
+                                </div>
+                            </ng-container>
+                            <!-- fin -->
+                            <!-- ancienneté qui sera maintenant conditionnée par le oui au bloc qui précède -->
+                            <ng-container *ngIf="myForm.value.lookingForSupport==='true'">
+                                <div class="fst-italic pt-3 pb-2">Pouvez-vous justifier d'une ancienneté
+                                    de 24 mois en qualité de salarié, dont 12 mois dans la même entreprise (Financement
+                                    salarié) ?</div>
+                                <div class="d-flex  align-items-center gap-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label">oui</label>
+                                        <input appAutoChange class="form-check-input" type="radio"
+                                            name="cdiRequiredDuration" value=true
+                                            [(ngModel)]="socialData.cdiRequiredDuration">
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">non</label>
+                                        <input appAutoChange class="form-check-input" type="radio"
+                                            name="cdiRequiredDuration" value=false
+                                            [(ngModel)]="socialData.cdiRequiredDuration">
+                                    </div>
+                                </div>
+                            </ng-container>
+                            <!-- fin ancienneté -->
 
                             <hr>
 
@@ -567,8 +609,8 @@ Tests OK. Sur une  partie. A finir.
                         <!-- fin de Si PAS Inscrit à Pole Emploi -->
                         <hr>
                         <div class="form-group">
-                            <div class="text-decoration-underline pt-3 pb-2">Possédez-vous une reconnaissance
-                                Travailleur Handicapé?
+                            <div class="text-decoration-underline pt-3 pb-2">Possédez-vous la reconnaissance de la
+                                qualité de travailleur handicapé (RQTH)
                             </div>
                             <div class="d-flex  align-items-center gap-3">
                                 <div class="form-check">
@@ -680,6 +722,7 @@ Tests OK. Sur une  partie. A finir.
                                         placeholder="BTP, santé, métallurgie, transport...">
                                 </div>
                             </div>
+
                         </div>
                         <hr>
                         <div class="form-group row align-items-center">
@@ -691,6 +734,17 @@ Tests OK. Sur une  partie. A finir.
                                     placeholder="A renseigner si formation continue">
                             </div>
                         </div>
+                        <hr>
+                        <!-- date de fin d'étude -->
+                        <div class="form-group row align-items-center">
+                            <label for="endingDateEducation" class="col-md-4 text-decoration-underline pt-3 pb-2">
+                                Date de fin d'étude ?</label>
+                            <div class="col-md-8">
+                                <input appAutoChange class="form-control" type="date" name="endingDateEducation"
+                                    [(ngModel)]="socialData.endingDateEducation">
+                            </div>
+                        </div>
+                        <!-- fin -->
 
                         <hr>
                         <div class="text-decoration-underline pt-3 pb-2">Avez-vous des demandes de financement pour une
@@ -714,7 +768,10 @@ Tests OK. Sur une  partie. A finir.
                             <div class="text-decoration-underline pt-3 pb-2">Choisissez le type de financement :</div>
                             <!-- on reprend tout -->
                             <div class="form-check">
-                                <label class="form-check-label">CPF</label>
+                                <label class="form-check-label">CPF (<a
+                                        href="https://www.moncompteformation.gouv.fr/espace-prive/html/#/"
+                                        target="_blank" rel="noopener noreferrer">Compte Personnel de
+                                        Formation</a>)</label>
                                 <input appAutoChange class="form-check-input" type="checkbox" name="financementCPF"
                                     value="CPF" ngModel>
                             </div>
@@ -740,7 +797,9 @@ Tests OK. Sur une  partie. A finir.
                             </label>
                             <input appAutoChange class="form-control" type="text" name="formation" ngModel>
                         </div>
-                        <div class="text-decoration-underline pt-3 pb-2">Avez-vous des droits CPF ?</div>
+                        <div class="text-decoration-underline pt-3 pb-2">Avez-vous des droits CPF (<a
+                                href="https://www.moncompteformation.gouv.fr/espace-prive/html/#/" target="_blank"
+                                rel="noopener noreferrer">Compte Personnel de Formation</a>) ?</div>
                         <div class="d-flex  align-items-center gap-3">
                             <div class="form-check">
                                 <input appAutoChange class="form-check-input" type="radio" name="droitsCPF" value="oui"
@@ -772,8 +831,9 @@ Tests OK. Sur une  partie. A finir.
             </div>
 
             <!-------------->
-            <!-- si financement salarié on retire -->
-            <div class="card" *ngIf="myForm.value.cdiRequiredDuration==='false'">
+            <!-- si financement salarié ET envoyé par entreprise on retire -->
+            <div class="card"
+                *ngIf="myForm.value.sentCompanyEmployee=== undefined || myForm.value.sentCompanyEmployee==='false'">
                 <div class="card-header bg-primary">
                     <a class="collapsed btn text-light text-capitalize d-flex justify-content-between align-items-center"
                         data-bs-toggle="collapse" href="#collapseSix">
@@ -783,12 +843,18 @@ Tests OK. Sur une  partie. A finir.
                 <div id="collapseSix" class="collapse" data-bs-parent="#accordion">
                     <div class="card-body">
                         <!-- début éléments de formularie -->
-                        <div class="text-decoration-underline pt-3 pb-2">Comment avez-vous connu notre centre de
-                            formation?</div>
+                        <div class="text-decoration-underline pt-3 pb-2">Comment avez-vous connu notre notre application
+                            ?</div>
                         <div>
                             <div class="form-check">
-                                <label class="form-check-label" for="conseillerPoleEmploi">Un conseiller POLE
-                                    EMPLOI</label>
+                                <label class="form-check-label" for="reseauxSociaux">Réseaux
+                                    Sociaux / Internet</label>
+                                <input appAutoChange class="form-check-input" type="checkbox" name="reseauxSociaux"
+                                    value="Réseaux Sociaux / Internet" [(ngModel)]="socialData.reseauxSociaux">
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label" for="conseillerPoleEmploi">Un conseiller France
+                                    Travail</label>
                                 <input appAutoChange class="form-check-input" type="checkbox"
                                     name="conseillerPoleEmploi" value="Un conseiller POLE EMPLOI"
                                     [(ngModel)]="socialData.conseillerPoleEmploi">
@@ -841,12 +907,7 @@ Tests OK. Sur une  partie. A finir.
                                     value="Une entreprise (hors travail temporaire)"
                                     [(ngModel)]="socialData.entreprise">
                             </div>
-                            <div class="form-check">
-                                <label class="form-check-label" for="reseauxSociaux">Réseaux
-                                    Sociaux / Internet</label>
-                                <input appAutoChange class="form-check-input" type="checkbox" name="reseauxSociaux"
-                                    value="Réseaux Sociaux / Internet" [(ngModel)]="socialData.reseauxSociaux">
-                            </div>
+
                             <div class="form-check">
                                 <label class="form-check-label" for="salonFormation">Sur
                                     un salon, forum de l'emploi et/ou de la formation</label>
@@ -1057,10 +1118,12 @@ Tests OK. Sur une  partie. A finir.
                 </div>
             </div>
         </div>
-
         <!----------------->
-        <!-- si salarié CDI on retire -->
-        <div class="card" *ngIf="myForm.value.cdiRequiredDuration==='false'">
+
+        <!-- si salarié CDI ET envoyé par entreprise on retire -->
+        <!-- <div class="card" *ngIf="myForm.value.cdiRequiredDuration==='false'"> -->
+        <div class="card"
+            *ngIf="myForm.value.sentCompanyEmployee=== undefined || myForm.value.sentCompanyEmployee==='false'">
             <div class="card-header bg-primary">
                 <a class="collapsed btn text-light text-capitalize d-flex justify-content-between align-items-center"
                     data-bs-toggle="collapse" href="#collapseSeven">
