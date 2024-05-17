@@ -43,11 +43,11 @@ import { FirstWordPipe } from './first-word.pipe';
 import { InstallButtonComponent } from './install-button/install-button.component';
 import { CookieConsentBannerComponent } from './cookie-consent-banner/cookie-consent-banner.component';
 import { RgpdComponent } from './rgpd/rgpd.component';
-import { NgOptimizedImage } from '@angular/common';
+// import { NgOptimizedImage } from '@angular/common';
 // import { AutoChangeDirective } from './auto-change.directive';
 
 // import { getMessaging } from 'firebase/messaging';
-NgOptimizedImage
+
 
 
 @NgModule({
@@ -80,7 +80,7 @@ NgOptimizedImage
     ReactiveFormsModule,
     AppRoutingModule,
     AdminModule,
-    NgOptimizedImage,
+    // NgOptimizedImage,
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
