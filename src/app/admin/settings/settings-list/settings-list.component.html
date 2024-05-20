@@ -37,39 +37,73 @@
     </div>
 
 
-    <hr>
+    <!-- <hr>
 
     <h4 class="my-5">Ajustement des Curseurs</h4>
 
     <div *ngIf="cursors" class="mx-auto">
-        <!-- on introduit un champ de recherche -->
-        <!-- <app-search (searchTextChanged)="onSearchTextEntered($event)"></app-search> -->
-
-        <div *ngFor="let cursor of cursors | keyvalue" class="row">
+        <div *ngFor="let cursor of cursors | keyvalue" class="row justify-content-center">
 
             <div class="col-6 mb-3">{{cursor.key}} : <span>{{cursor.value}}</span></div>
             <div class="col-6 mb-3"><button class="btn btn-primary"><a [routerLink]="['/admin/updateSettings']"
                         class="text-white"><i class="bi bi-pencil-square"></i>Editer</a></button></div>
         </div>
 
-    </div>
+    </div> -->
 
     <hr>
 
-    <h4 class="my-5">Ajustement des Maximums</h4>
+    <!-- <h4 class="my-5">Ajustement des Maximums</h4>
 
     <div *ngIf="maximums" class="mx-auto">
-        <!-- on introduit un champ de recherche -->
-        <!-- <app-search (searchTextChanged)="onSearchTextEntered($event)"></app-search> -->
-
         <div *ngFor="let max of maximums | keyvalue" class="row">
 
             <div class="col-6 mb-3">{{max.key}} : <span>{{max.value}}</span></div>
             <div class="col-6 mb-3"><button class="btn btn-primary"><a [routerLink]="['/admin/updateSettings']"
                         class="text-white"><i class="bi bi-pencil-square"></i>Editer</a></button></div>
         </div>
-
     </div>
+    <hr> -->
+
+    <h4 class="my-5">Gestion des Partenaires</h4>
+
+    <!-- <div *ngIf="(!allSettings)">
+        ...loading
+    </div> -->
+
+    <div *ngIf="partners" class="mx-auto">
+        <!-- on introduit un champ de recherche -->
+        <!-- <app-search (searchTextChanged)="onSearchTextEntered($event)"></app-search> -->
+
+        <!-- <div class="row mt-5"> -->
+        <div class="row justify-content-center mt-4 d-xs-none">
+            <div class="col-sm-4 h5">Nom</div>
+            <!-- <div class="col-sm-3 h5">Dénomination</div> -->
+            <div class="col-sm-4 h5">Description</div>
+            <div class="col-sm-4 h5">Lien</div>
+        </div>
+
+        <div *ngFor="let partner of partners">
+            <div class="row justify-content-center mt-4 ps-5 ps-sm-0"
+                *ngIf="searchText==='' || partner.name.toLowerCase().includes(searchText)">
+                <div class="col-sm-4 col-6">{{partner.name}}</div>
+                <div class="col-sm-4 col-8">{{partner.description}}</div>
+                <div class="col-sm-4 col-4 text-center d-flex justify-content-between flex-column">
+                    <a href="{{partner.url}}" target="_blank" rel="noopener noreferrer">{{partner.url}}</a>
+                    <div>
+                        <button class="btn btn-primary"><a [routerLink]="['/admin/updateSettings', partner.id]"
+                                class="text-white"><i class="bi bi-pencil-square"></i>Editer</a></button>
+                    </div>
+                </div>
+            </div>
+            <hr>
+        </div>
+        <div class="row my-5 justify-content-end ps-5 ps-sm-0">
+            <div class="col-sm-4 col-6"><button class="btn btn-primary"><a [routerLink]="['/admin/addSettings']"
+                        class="text-white"><i class="bi bi-file-earmark-plus"></i>Ajouter</a></button></div>
+        </div>
+    </div>
+
 
 
 </div>

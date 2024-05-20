@@ -24,16 +24,19 @@
       </div>
       <!-- champ accessoire code métier RNCP -->
       <label for="rncp" class="form-label mt-3">Code RNCP ou RS (facultatif)</label>
-      <input type="url" name="rncp" ngModel #rncp="ngModel" class="form-control" minlength="15" placeholder="Url à renseigner">
+      <input type="url" name="rncp" ngModel #rncp="ngModel" class="form-control" minlength="15"
+        placeholder="Url à renseigner">
       <!-- option pour formation qualifiante -->
       <label class="form-label mt-3">Formation Qualifiante :</label>
       <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="statusCheckbox" name="isQualifying" [(ngModel)]="sigles.isQualifying">
+        <input class="form-check-input" type="checkbox" id="statusCheckbox" name="isQualifying"
+          [(ngModel)]="sigles.isQualifying">
         <label class="form-check-label" for="statusCheckbox">Oui</label>
       </div>
       <div class="mt-3">
         <label class="form-label" for="requirements">Prérequis (faculatatif) ?</label>
-        <textarea class="form-control" id="requirements"  name="requirements" ngModel rows="3" placeholder="Renseigner la liste des prérequis premier, deuxième, troisième..."></textarea>
+        <textarea class="form-control" id="requirements" name="requirements" ngModel rows="3"
+          placeholder="Renseigner la liste des prérequis premier, deuxième, troisième..."></textarea>
       </div>
       <!-- option pour pouvoir masquer un metier du catalogue -->
       <label class="form-label mt-3">Publication :</label>
@@ -89,8 +92,8 @@
     <button id="settingsForm" type="submit" class="btn btn-primary mt-4"
       [disabled]=settingsForm.invalid>Ajouter</button>
   </form>
-
-  <hr>
+  <!-- 2 ème partie -->
+  
   <h4 class="mt-5">Ajout de curseurs personnalisés pour le calcul des 3 niveaux de résultat au terme du positionnement
     des
     candidats
@@ -124,15 +127,15 @@
       [disabled]=setCursorsForm.invalid>Ajouter</button>
   </form>
 
+  <!-- 3ème partie inexploitée -->
 
-
-  <hr>
+  <!-- <hr>
 
   <h4 class="mt-5">Nombre de questions nécessaires à la finalisation d'un QCM de positionnement
-  </h4>
+  </h4> -->
 
 
-  <form #setMaxForm="ngForm" class="mt-4" (submit)="addMaxIndexQuestion(setMaxForm)" class="was-validated">
+  <!-- <form #setMaxForm="ngForm" class="mt-4" (submit)="addMaxIndexQuestion(setMaxForm)" class="was-validated">
 
     <div class="form-group">
 
@@ -149,7 +152,44 @@
     </div>
 
     <button id="settingsForm" type="submit" class="btn btn-primary mt-4" [disabled]=setMaxForm.invalid>Ajouter</button>
+  </form> -->
+
+  <!-- 4ème partie pour partenaires -->
+  
+  <h4 class="mt-5">Ajout d'un nouveau partenaire</h4>
+  <form #partnersForm="ngForm" class="mt-4" (submit)="addPartners(partnersForm)" class="was-validated">
+    <div class="form-group">
+      <label for="name" class="form-label mt-3">Nom</label>
+      <input type="text" name="name" ngModel #name="ngModel" class="form-control" required minlength="3">
+      <div *ngIf="name.dirty || (name.touched && name.invalid)" class="invalid-feedback">
+        Veuillez fournir un nom valid.
+      </div>
+      <div *ngIf="name.valid" class="valid-feedback">
+        Nom OK.
+      </div>
+      <label for="description" class="form-label mt-3">Description</label>
+      <input type="text" name="description" ngModel #description="ngModel" class="form-control" required minlength="50">
+      <div *ngIf="description.dirty || (description.touched && description.invalid)" class="invalid-feedback">
+        Veuillez fournir une description valide.
+      </div>
+      <div *ngIf="description.valid" class="valid-feedback">
+        Description OK.
+      </div>
+      <label for="url" class="form-label mt-3">Lien</label>
+      <input type="url" name="url" ngModel #url="ngModel" class="form-control">
+      <div *ngIf="url.dirty || (url.touched && url.invalid)" class="invalid-feedback">
+        Veuillez fournir une url valide.
+      </div>
+      <div *ngIf="description.valid" class="valid-feedback">
+        Url OK.
+      </div>
+    </div>
+
+    <button id="settingsForm" type="submit" class="btn btn-primary mt-4"
+      [disabled]=partnersForm.invalid>Ajouter</button>
   </form>
+
+  <hr>
 
 
 </div>

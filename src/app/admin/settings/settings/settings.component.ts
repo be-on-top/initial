@@ -4,6 +4,7 @@ import { NgForm, NgModel } from '@angular/forms';
 import { SettingsService } from '../../settings.service';
 import { Router } from '@angular/router';
 import { Denominator } from 'src/app/quizz/denominator';
+import { Partner } from '../../partner';
 
 
 
@@ -13,9 +14,11 @@ import { Denominator } from 'src/app/quizz/denominator';
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
-  sigles: Trade = { sigle: "", denomination: "", status: true, isQualifying:false, competences: [], totalCP: 0, durations: {}, costs: {} }
+  sigles: Trade = { sigle: "", denomination: "", status: true, isQualifying: false, competences: [], totalCP: 0, durations: {}, costs: {} }
   form: any
   total: any = []
+
+  totalPartners: any = []
 
   cursors: any
   CPNumber: any
@@ -34,10 +37,9 @@ export class SettingsComponent implements OnInit {
     // chercher !!!!!!!F
   }; // list of firebase error codes to alternate error messages
 
+  // partners: Partner = { name: "", description: "", url: "" }
+  partners: Partner[] = [];
 
-  //  dans un premier temps, on peut ne leur donner qu'un nom. l'important étant de savoir à combien les catégories métiers s'élèveront pour pouvoir  prévoir
-  // 1 - autant de zones éditables sur la  page d'accueil
-  // 2 - rattacher le décompte des questions à une catégorie et non un tronc commun
 
   constructor(private service: SettingsService, private router: Router) {
 
@@ -46,12 +48,15 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = document.getElementById("settingsForm")
+    this.service.fetchPartners().subscribe(partners => {
+      this.partners = partners;
+    })
   }
 
 
   addSigles(form: NgForm) {
     this.durations = []; // Réinitialise le tableau avant d'ajouter les durées
-    this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, rncp:form.value.rncp, isQualifying:form.value.isQualifying, requirements:form.value.requirements, status:form.value.status, totalCP: form.value.totalCP, competences: [], durations: {}, costs: {}}
+    this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, rncp: form.value.rncp, isQualifying: form.value.isQualifying, requirements: form.value.requirements, status: form.value.status, totalCP: form.value.totalCP, competences: [], durations: {}, costs: {} }
     // si on souhaite un objet, comme ceux écrits initialement en dur exemple : competences:{CP1:"", CP2:""}
     // this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, totalCP: form.value.totalCP, competences: {} }
     for (let i = 1; i <= form.value.totalCP; i++) {
@@ -77,7 +82,7 @@ export class SettingsComponent implements OnInit {
 
       // pour les taux horaires, à savoir ici qu'on aura 1 taux par compétence, indifféremment des durées
       // this.competencesCostByHours[`cost_CP${i}`]= form.value[`cost_CP${i}`]
-      this.sigles.costs[`cost_CP${i}`]= form.value[`cost_CP${i}`]
+      this.sigles.costs[`cost_CP${i}`] = form.value[`cost_CP${i}`]
       console.log('this.sigles.costs', this.sigles.costs);
 
     }
@@ -153,27 +158,45 @@ export class SettingsComponent implements OnInit {
   }
 
 
-  addMaxIndexQuestion(form: NgForm){
-    
-    this.service.addMaximums({maxIndexQuestion:form.value.maxIndexQuestion})
-    .then(() => {
-      // Signed in 
-      this.feedbackMessages = `Enregistrement des maximums OK`;
-      this.isSuccessMessage = true
-      setTimeout(() => {
-        form.reset()
-        // this.router.navigate([''])
-      }, 1000)
-    })
-    .catch((error) => {
-      this.feedbackMessages = error.message;
-      // this.feedbackMessages = this.firebaseErrors[error.code];
-      this.isSuccessMessage = false;
-      console.log(this.feedbackMessages);
+  addMaxIndexQuestion(form: NgForm) {
 
-      // ..};
-    })
+    this.service.addMaximums({ maxIndexQuestion: form.value.maxIndexQuestion })
+      .then(() => {
+        // Signed in 
+        this.feedbackMessages = `Enregistrement des maximums OK`;
+        this.isSuccessMessage = true
+        setTimeout(() => {
+          form.reset()
+          // this.router.navigate([''])
+        }, 1000)
+      })
+      .catch((error) => {
+        this.feedbackMessages = error.message;
+        // this.feedbackMessages = this.firebaseErrors[error.code];
+        this.isSuccessMessage = false;
+        console.log(this.feedbackMessages);
 
+        // ..};
+      })
+
+  }
+
+  addPartners(partnersForm: NgForm) {
+    if (partnersForm.valid) {
+      const newPartner = {
+        name: partnersForm.value.name,
+        description: partnersForm.value.description,
+        url: partnersForm.value.url,
+      };
+
+      this.partners = [newPartner, ...this.partners];
+      this.service.addPartners(this.partners).subscribe(() => {
+        partnersForm.resetForm();
+        this.feedbackMessages = `Enregistrement du partnaire et ses informations OK`;
+        this.isSuccessMessage = true
+      })
+
+    }
   }
 
 

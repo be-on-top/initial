@@ -17,6 +17,8 @@ export class SettingsListComponent implements OnInit {
   // on le prépare à recevoir un terme de recherche
   searchText: string = ''
 
+  partners?:any
+
 
   constructor(private router: Router, private service: SettingsService) { }
 
@@ -51,6 +53,9 @@ export class SettingsListComponent implements OnInit {
     }
     )
 
+    this.service.fetchPartners().subscribe(data=>{
+      this.partners=data
+    })
   }
 
   // pour utiliser le composant de recherche

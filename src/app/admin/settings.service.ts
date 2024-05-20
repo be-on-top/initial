@@ -13,6 +13,7 @@ import {
   uploadBytes,
   getMetadata
 } from '@angular/fire/storage';
+import { Partner } from './partner';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ import {
 export class SettingsService {
 
 
-  constructor(private firestore: Firestore, private storage: Storage) {    
+  constructor(private firestore: Firestore, private storage: Storage) {
   }
 
   async addTrade(trade: Trade) {
@@ -80,37 +81,37 @@ export class SettingsService {
     await updateDoc(doc($settingsRef, tradeId), updateData);
   }
 
-// Méthode pour récupérer uniquement la propriété 'denomination' des métiers avec status=true
-// getTradeDenominationsWithStatusTrue(): Observable<string[]> {
-//   const tradesRef = collection(this.firestore, 'sigles');
-//   const statusQuery = query(tradesRef, where('status', '==', true));
-  
-//   return from(getDocs(statusQuery)).pipe(
-//     map((querySnapshot) => {
-//       const denominations: string[] = [];
-//       querySnapshot.forEach((doc) => {
-//         denominations.push(doc.data()["denomination"]);
-//       });
-//       return denominations;
-//     })
-//   );
-// }
+  // Méthode pour récupérer uniquement la propriété 'denomination' des métiers avec status=true
+  // getTradeDenominationsWithStatusTrue(): Observable<string[]> {
+  //   const tradesRef = collection(this.firestore, 'sigles');
+  //   const statusQuery = query(tradesRef, where('status', '==', true));
 
-// Méthode pour récupérer tous les métiers avec status=true
-getTradesWithStatusTrue(): Observable<Trade[]> {
-  const tradesRef = collection(this.firestore, 'sigles');
-  const statusQuery = query(tradesRef, where('status', '==', true));
-  
-  return from(getDocs(statusQuery)).pipe(
-    map((querySnapshot) => {
-      const trades: Trade[] = [];
-      querySnapshot.forEach((doc) => {
-        trades.push(doc.data() as Trade);
-      });
-      return trades;
-    })
-  );
-}
+  //   return from(getDocs(statusQuery)).pipe(
+  //     map((querySnapshot) => {
+  //       const denominations: string[] = [];
+  //       querySnapshot.forEach((doc) => {
+  //         denominations.push(doc.data()["denomination"]);
+  //       });
+  //       return denominations;
+  //     })
+  //   );
+  // }
+
+  // Méthode pour récupérer tous les métiers avec status=true
+  getTradesWithStatusTrue(): Observable<Trade[]> {
+    const tradesRef = collection(this.firestore, 'sigles');
+    const statusQuery = query(tradesRef, where('status', '==', true));
+
+    return from(getDocs(statusQuery)).pipe(
+      map((querySnapshot) => {
+        const trades: Trade[] = [];
+        querySnapshot.forEach((doc) => {
+          trades.push(doc.data() as Trade);
+        });
+        return trades;
+      })
+    );
+  }
 
   // getTrades() {
   //   const tradesRef = collection(this.firestore, "sigles");
@@ -202,6 +203,38 @@ getTradesWithStatusTrue(): Observable<Trade[]> {
 
   }
 
+  partners: any[] = []
+  // async addPartners(partner: Partner) {
+  //   this.partners=[partner, ...this.partners]
+  //   const $settingsRef = collection(this.firestore, "settings");
+  //   const $partnersDocRef = doc($settingsRef, 'partners')
+  //   await setDoc($partnersDocRef, { partners: this.partners }, { merge: true });
+
+  // }
+
+  // Méthode pour ajouter des partenaires
+  addPartners(partners: any[]): Observable<void> {
+    const $settingsRef = collection(this.firestore, 'settings');
+    const $partnersDocRef = doc($settingsRef, 'partners');
+    return from(setDoc($partnersDocRef, { partners: partners }, { merge: true }));
+  }
+
+  // Méthode pour récupérer les partenaires
+  fetchPartners(): Observable<any[]> {
+    const $settingsRef = collection(this.firestore, 'settings');
+    const $partnersDocRef = doc($settingsRef, 'partners');
+    return from(getDoc($partnersDocRef)).pipe(
+      map(docSnap => {
+        if (docSnap.exists()) {
+          return docSnap.data()['partners'] || [];
+        } else {
+          return [];
+        }
+      })
+    );
+  }
+
+
   // getLevelsCursors() {
   //   const cursorsRef = collection(this.firestore, "cursors")
   //   return collectionData(cursorsRef) as Observable<DocumentData>
@@ -224,12 +257,12 @@ getTradesWithStatusTrue(): Observable<Trade[]> {
 
   getSigle(id: string) {
 
-    
 
-      let sigleRef = doc(this.firestore, "sigles/" + id)
-      return docData(sigleRef, { idField: 'id' }) as Observable<Trade>
 
-  
+    let sigleRef = doc(this.firestore, "sigles/" + id)
+    return docData(sigleRef, { idField: 'id' }) as Observable<Trade>
+
+
 
 
     // const sigleData$ = docData(sigleRef, { idField: 'id' }) as Observable<Trade>;
@@ -244,8 +277,8 @@ getTradesWithStatusTrue(): Observable<Trade[]> {
     // );
     // return sigleData$;
 
-   
-    
+
+
 
   }
 
@@ -272,15 +305,15 @@ getTradesWithStatusTrue(): Observable<Trade[]> {
   loadImage(tradeId: string): Promise<{ originalUrl: string, resizedUrl: string }> {
     const originalImageRef = ref(this.storage, 'images/trades/' + tradeId + '.jpeg');
     const resizedImageRef = ref(this.storage, 'images/trades/' + tradeId + '_resized.jpeg');
-  
+
     const originalImageUrl = getDownloadURL(originalImageRef);
     const resizedImageUrl = getDownloadURL(resizedImageRef);
-  
+
     return Promise.all([originalImageUrl, resizedImageUrl]).then(([originalUrl, resizedUrl]) => {
       return { originalUrl, resizedUrl };
     });
   }
-  
+
 
 
 
@@ -334,7 +367,7 @@ getTradesWithStatusTrue(): Observable<Trade[]> {
   //       throw error; // Propage l'erreur pour une gestion ultérieure dans le composant
   //     });
   // }
-  
+
   async updateTradeImage(tradeId: string, file: File): Promise<string[]> {
     // Référence de l'image d'origine
     const originalImageRef = ref(this.storage, 'images/trades/' + tradeId + '.jpeg');
@@ -380,14 +413,14 @@ getTradesWithStatusTrue(): Observable<Trade[]> {
     const image = new Image();
     image.src = URL.createObjectURL(file);
     await new Promise(resolve => { image.onload = resolve });
-  
+
     const canvas = document.createElement('canvas');
     canvas.width = newWidth;
     canvas.height = image.height * (newWidth / image.width);
-  
+
     const ctx = canvas.getContext('2d')!;
     ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-  
+
     // Convertir le canvas en Blob avec le type MIME 'image/jpeg' et une qualité de 0.9
     return new Promise<Blob>((resolve) => {
       canvas.toBlob((blob) => {
