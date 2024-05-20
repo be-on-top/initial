@@ -21,7 +21,8 @@ body {
     font-family: 'Plus Jakarta Sans';
     /* font-family: 'Poppins', sans-serif; */
     /* font-size: 16px; */
-    z-index: 1040; /* Assurez-vous que le contenu de la page est sous la bannière de consentement */
+    z-index: 1040;
+    /* Assurez-vous que le contenu de la page est sous la bannière de consentement */
 
 }
 
@@ -163,7 +164,8 @@ h3,
     font-size: 0.8rem !important;
 }
 
-.d-inline, .alert {
+.d-inline,
+.alert {
     font-weight: 100;
 }
 
@@ -358,22 +360,25 @@ p.question {
 .fade {
     animation: fade-in 1s ease forwards;
     animation-delay: 1s;
-    animation-duration: 1s!important;
+    animation-duration: 1s !important;
 }
 
 
 .alert {
-    animation: fade-zoom-out 0.8s; 
+    animation: fade-zoom-out 0.8s;
 }
 
 @keyframes fade-zoom-out {
     from {
         opacity: 0;
-        transform: scale(0.8); /* Applique un zoom-in au début de l'animation */
+        transform: scale(0.8);
+        /* Applique un zoom-in au début de l'animation */
     }
+
     to {
         opacity: 1;
-        transform: scale(1); /* Retourne à la taille d'origine à la fin de l'animation */
+        transform: scale(1);
+        /* Retourne à la taille d'origine à la fin de l'animation */
     }
 }
 
@@ -392,7 +397,8 @@ p.question {
     }
 
 
-    .fs-5, p {
+    .fs-5,
+    p {
         font-size: 1rem !important;
     }
 
@@ -421,11 +427,20 @@ p.question {
         font-size: 1em !important;
     }
 
-    h2.h3{font-size: 1.2rem !important;}
+
+    h1 {
+        font-size: 1.5rem !important;
+    }
+
+    h2.h3 {
+        font-size: 1.2rem !important;
+    }
 
     li.nav-item.dropdown.active a::before {
         width: 100%;
     }
+
+
 
 
 }

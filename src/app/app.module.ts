@@ -44,6 +44,7 @@ import { InstallButtonComponent } from './install-button/install-button.componen
 import { CookieConsentBannerComponent } from './cookie-consent-banner/cookie-consent-banner.component';
 import { RgpdComponent } from './rgpd/rgpd.component';
 import { PartnersComponent } from './partners/partners.component';
+import { ShareButtonComponent } from './share-button/share-button.component';
 // import { NgOptimizedImage } from '@angular/common';
 // import { AutoChangeDirective } from './auto-change.directive';
 
@@ -73,6 +74,7 @@ import { PartnersComponent } from './partners/partners.component';
     CookieConsentBannerComponent,
     RgpdComponent,
     PartnersComponent,
+    ShareButtonComponent,
     // AutoChangeDirective,
     // TooltipComponent
   ],

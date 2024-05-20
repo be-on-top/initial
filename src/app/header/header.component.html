@@ -145,6 +145,10 @@
                         </li>
                         <li *ngIf="!userRole || userRole==''"><a class="dropdown-item"
                                 [routerLink]="['register']">Inscription</a></li>
+                                                <!-- Inscription lien externe sans condition pour tester en local -->
+                <li *ngIf="!offline && isOneQuizzAchieved && !studentData?.isSocialFormSent">
+                    <a class="dropdown-item" [routerLink]="['socialregistration']">Inscription Formation</a>
+                </li>
                     </ul>
                 </li>
                 <!-- si hors ligne -->
@@ -153,10 +157,7 @@
                         data-bs-toggle="dropdown">Utilisateur hors ligne <i class="bi bi-exclamation"></i></span>
                 </li>
 
-                <!-- Inscription lien externe sans condition pour tester en local -->
-                <li class="nav-item" [routerLinkActive]="['social']" *ngIf="!offline && isOneQuizzAchieved && !studentData?.isSocialFormSent">
-                    <a class="nav-link" [routerLink]="['socialregistration']" role="button">Inscription Formation</a>
-                </li>
+
                 <!-- Inscription lien externe sans condition pour tester en local -->
                 <li class="nav-item" [routerLinkActive]="['partners']" *ngIf="partners && partners.length!==0">
                     <a class="nav-link" [routerLink]="['partners']" role="button">Partenaires</a>
