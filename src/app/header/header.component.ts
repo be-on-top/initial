@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer2, ViewChild, OnInit } from '@angular/core';
+import { Component, ElementRef, Renderer2, ViewChild, OnInit, AfterViewInit } from '@angular/core';
 import { AuthService } from '../admin/auth.service';
 import { onAuthStateChanged } from 'firebase/auth';
 import { Auth, reload } from '@angular/fire/auth';
@@ -9,6 +9,7 @@ import { SettingsService } from '../admin/settings.service';
 import { Router } from '@angular/router';
 import { StudentsService } from '../admin/students.service';
 import { Student } from '../admin/Students/student';
+import { Partner } from '../admin/partner';
 
 
 
@@ -17,7 +18,7 @@ import { Student } from '../admin/Students/student';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, AfterViewInit {
   userUid?: any
   userRole: string = ""
   trades?: any
@@ -30,6 +31,7 @@ export class HeaderComponent implements OnInit {
 
   offline: boolean = false
   filteredTrades: Trade[] = []
+  partners:Partner[]=[]
 
 
   @ViewChild('collapsibleNavbar') collapsibleNavbar!: ElementRef;
@@ -98,6 +100,14 @@ export class HeaderComponent implements OnInit {
       }
 
     }
+  }
+
+  ngAfterViewInit(): void {
+    this.tradeService.fetchPartners().subscribe(data=>{
+      this.partners=data
+      console.log("partenaires récupérés", this.partners);
+      
+    })
   }
 
   getRole(id: any) {

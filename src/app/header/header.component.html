@@ -157,6 +157,10 @@
                 <li class="nav-item" [routerLinkActive]="['social']" *ngIf="!offline && isOneQuizzAchieved && !studentData?.isSocialFormSent">
                     <a class="nav-link" [routerLink]="['socialregistration']" role="button">Inscription Formation</a>
                 </li>
+                <!-- Inscription lien externe sans condition pour tester en local -->
+                <li class="nav-item" [routerLinkActive]="['partners']" *ngIf="partners && partners.length!==0">
+                    <a class="nav-link" [routerLink]="['partners']" role="button">Partenaires</a>
+                </li>
 
             </ul>
         </div>

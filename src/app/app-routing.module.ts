@@ -9,6 +9,7 @@ import { TradeDetailsComponent } from './trades/trade-details/trade-details.comp
 // import { RegisterComponent } from './register/register.component';
 import { AuthGuardService } from './auth-guard.service';
 import { RgpdComponent } from './rgpd/rgpd.component';
+import { PartnersComponent } from './partners/partners.component';
 
 // const routes: Routes = [
 //   { path: 'home', component: HomeComponent, pathMatch: 'full', canActivate: [AuthGuardService] },
@@ -36,6 +37,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'rgpd', component: RgpdComponent },
   { path: 'home/:userRole', component: HomeComponent, pathMatch: 'full' },
+  { path: 'partners', component: PartnersComponent },
   // { path: 'admin', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'account', component: AccountComponent, canActivate: [AuthGuardService] },
   { path: 'socialregistration', component: AdminForm},

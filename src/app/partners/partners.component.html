@@ -1,0 +1,24 @@
+<div class="container pt-3">
+
+    <h3 class="text-capitalize">Partenaires</h3>
+
+    <div *ngIf="partners" class="rounded row column-gap-2">
+        <ng-container *ngFor="let partner of partners">
+
+            <div class="col-md-6">
+
+                <div class="card">
+                    <!-- <img src="..." class="card-img-top" alt="..."> -->
+                    <div class="card-body">
+                        <h5 class="card-title">{{partner.name}}</h5>
+                        <p class="card-text">{{partner.description}}</p>
+                        <a *ngIf="partner.url" href="{{partner.description}}" class="btn btn-primary">Visite</a>
+                    </div>
+                </div>
+
+            </div>
+
+        </ng-container>
+    </div>
+
+</div>

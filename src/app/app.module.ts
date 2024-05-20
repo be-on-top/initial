@@ -43,6 +43,7 @@ import { FirstWordPipe } from './first-word.pipe';
 import { InstallButtonComponent } from './install-button/install-button.component';
 import { CookieConsentBannerComponent } from './cookie-consent-banner/cookie-consent-banner.component';
 import { RgpdComponent } from './rgpd/rgpd.component';
+import { PartnersComponent } from './partners/partners.component';
 // import { NgOptimizedImage } from '@angular/common';
 // import { AutoChangeDirective } from './auto-change.directive';
 
@@ -71,6 +72,7 @@ import { RgpdComponent } from './rgpd/rgpd.component';
     InstallButtonComponent,
     CookieConsentBannerComponent,
     RgpdComponent,
+    PartnersComponent,
     // AutoChangeDirective,
     // TooltipComponent
   ],

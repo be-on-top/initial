@@ -220,7 +220,7 @@ export class SettingsService {
   }
 
   // Méthode pour récupérer les partenaires
-  fetchPartners(): Observable<any[]> {
+  fetchPartners(): Observable<Partner[]> {
     const $settingsRef = collection(this.firestore, 'settings');
     const $partnersDocRef = doc($settingsRef, 'partners');
     return from(getDoc($partnersDocRef)).pipe(
@@ -535,6 +535,9 @@ export class SettingsService {
       console.error('Erreur lors de la sauvegarde des sigles localement :', error);
     }
   }
+
+
+
 
 
 
