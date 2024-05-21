@@ -12,6 +12,15 @@
         <!-- on introduit un champ de recherche -->
         <app-search (searchTextChanged)="onSearchTextEntered($event)"></app-search>
 
+        <div class="row mt-2 text-secondary justify-content-around">
+            <p class="col-md-6">Activer un filtre additionnel</p>
+
+            <div class="form-check col-md-6">
+                <label class="form-check-label" for="socialCheckbox"> Formulaire administratif renseigné</label>
+                <input type="checkbox" (change)="onCheckboxChange($event)" class="form-check-input" id="socialCheckbox">           
+            </div>
+        </div>
+
         <div class="row mt-4 d-xs-none" *ngIf="userRouterLinks.user=='admin'">
             <div class="col-sm-3 h5">Nom</div>
             <div class="col-sm-3 h5">Prénom</div>
@@ -19,7 +28,8 @@
             <div class="col-sm-3 h5">Détails</div>
         </div>
 
-        <div class="row mt-4 d-xs-none justify-content-around" *ngIf="userRouterLinks.user=='external' || userRouterLinks.user=='referent'">
+        <div class="row mt-4 d-xs-none justify-content-around"
+            *ngIf="userRouterLinks.user=='external' || userRouterLinks.user=='referent'">
             <div class="col-sm-3 col-6 h5">Nom</div>
             <div class="col-sm-3 col-6 h5">Prénom</div>
             <div class="col-sm-3 col-6 h5">Détails</div>
@@ -58,8 +68,10 @@
         </div>
 
         <div class="row gap-3">
-            <button class="btn btn-primary mt-5 col-10 col-md-5" (click)="exportStudentsCollection()"><i class="bi bi-box-arrow-down me-3"></i>Export au format JSON de la collection</button>
-            <button class="btn btn-primary mt-5 col-10 col-md-5" (click)="exportCollectionAsCSV()"><i class="bi bi-box-arrow-down me-3"></i>Export au format csv de la collection</button>
+            <button class="btn btn-primary mt-5 col-10 col-md-5" (click)="exportStudentsCollection()"><i
+                    class="bi bi-box-arrow-down me-3"></i>Export au format JSON de la collection</button>
+            <button class="btn btn-primary mt-5 col-10 col-md-5" (click)="exportCollectionAsCSV()"><i
+                    class="bi bi-box-arrow-down me-3"></i>Export au format csv de la collection</button>
         </div>
 
 

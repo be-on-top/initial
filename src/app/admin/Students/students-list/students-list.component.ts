@@ -42,12 +42,22 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   // }
 
 
+  // getStudents() {
+  //   this.service.getStudents().pipe(
+  //     map(students => students.filter(student => this.hasFullResults(student)))
+  //   ).subscribe(filteredStudents => {
+  //     this.allStudents = filteredStudents;
+  //     console.log('this.allStudents', this.allStudents);
+  //   });
+  // }
+
   getStudents() {
     this.service.getStudents().pipe(
       map(students => students.filter(student => this.hasFullResults(student)))
     ).subscribe(filteredStudents => {
-      this.allStudents = filteredStudents;
-      console.log('this.allStudents', this.allStudents);
+      this.initialStudents = filteredStudents; // Stocker la liste initiale
+      this.allStudents = [...this.initialStudents]; // Initialiser allStudents
+      this.applyFilters();
     });
   }
 
@@ -81,12 +91,45 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
 
   }
 
-  exportStudentsCollection(){
+  exportStudentsCollection() {
     this.service.exportCollection("students")
   }
 
-  exportCollectionAsCSV(){
+  exportCollectionAsCSV() {
     this.service.exportCollectionAsCSV("students")
+  }
+
+
+  isSocialFormSentFilter: boolean = false;
+  initialStudents: any[] = []; // Copie initiale des étudiants
+
+  // applyFilters() {
+  //   // Restaurer l'état initial avant de filtrer
+  //   this.allStudents = this.initialStudents.filter(student => {
+  //     const matchesSearchText = this.searchText === '' || student.lastName.includes(this.searchText) || student.lastName.toLowerCase().includes(this.searchText) || student.firstName.includes(this.searchText) || student.firstName.toLowerCase().includes(this.searchText);
+  //     if (this.isSocialFormSentFilter) {
+  //       return student.isSocialFormSent && matchesSearchText;
+  //     }
+  //     return matchesSearchText;
+  //   });
+  // }
+
+  // onCheckboxChange(event: any) {
+  //   this.isSocialFormSentFilter = event.target.checked;
+  //   this.applyFilters();
+  // }
+
+  applyFilters() {
+    if (this.isSocialFormSentFilter) {
+      this.allStudents = this.initialStudents.filter(student => student.isSocialFormSent);
+    } else {
+      this.allStudents = [...this.initialStudents];
+    }
+  }
+
+  onCheckboxChange(event: any) {
+    this.isSocialFormSentFilter = event.target.checked;
+    this.applyFilters();
   }
 
 
