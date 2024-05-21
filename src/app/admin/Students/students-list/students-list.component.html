@@ -3,7 +3,7 @@
     <h3 *ngIf="userRouterLinks.user=='admin' || userRouterLinks.user=='referent'">Gestion des candidats (apprenants)
     </h3>
     <h3 *ngIf="userRouterLinks.user=='external'">Annuaire étudiants certifiés (qualifiés)</h3>
-    <hr>
+    <!-- <hr> -->
     <div *ngIf="(!allStudents)">
         ...loading
     </div>
@@ -14,11 +14,18 @@
 
         <div class="row mt-2 text-secondary justify-content-around">
             <p class="col-md-6">Activer un filtre additionnel</p>
-
-            <div class="form-check col-md-6">
-                <label class="form-check-label" for="socialCheckbox"> Formulaire administratif renseigné</label>
-                <input type="checkbox" (change)="onCheckboxChange($event)" class="form-check-input" id="socialCheckbox">           
+            <div class="col-md-6">
+                <div class="form-check ">
+                    <label class="form-check-label" for="socialCheckbox"> Formulaire administratif renseigné</label>
+                    <input type="checkbox" (change)="onCheckboxChangeSocial($event)" class="form-check-input" id="socialCheckbox">           
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label" for="subscriptionsCheckbox"> Inscription finalisée</label>
+                    <input type="checkbox" (change)="onCheckboxChangeSubscriptions($event)" class="form-check-input" id="subscriptionsCheckbox">           
+                </div>
+                <hr class="border-secondary">
             </div>
+
         </div>
 
         <div class="row mt-4 d-xs-none" *ngIf="userRouterLinks.user=='admin'">

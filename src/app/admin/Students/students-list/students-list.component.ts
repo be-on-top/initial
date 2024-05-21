@@ -101,6 +101,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
 
 
   isSocialFormSentFilter: boolean = false;
+  isSubscriptionFilter: boolean = false
   initialStudents: any[] = []; // Copie initiale des étudiants
 
   // applyFilters() {
@@ -122,13 +123,20 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   applyFilters() {
     if (this.isSocialFormSentFilter) {
       this.allStudents = this.initialStudents.filter(student => student.isSocialFormSent);
+    } else if (this.isSubscriptionFilter) {
+      this.allStudents = this.initialStudents.filter(student => student.subscriptions);
     } else {
       this.allStudents = [...this.initialStudents];
     }
   }
 
-  onCheckboxChange(event: any) {
+  onCheckboxChangeSocial(event: any) {
     this.isSocialFormSentFilter = event.target.checked;
+    this.applyFilters();
+  }
+
+  onCheckboxChangeSubscriptions(event: any) {
+    this.isSubscriptionFilter = event.target.checked;
     this.applyFilters();
   }
 
