@@ -109,7 +109,7 @@ export class StudentFormComponent implements OnInit, OnChanges {
       // Mise à jour du document dans la collection "students"
       await setDoc(doc(studentRef, this.uid), { isSocialFormSent: true }, { merge: true });
       form.reset();
-      this.router.navigate(['/']);
+      this.router.navigate(['/account'], {queryParams: this.userData.id});
     } catch (error) {
       console.error('Erreur lors de l\'enregistrement des données: ', error);
     }

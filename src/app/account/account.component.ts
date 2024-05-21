@@ -329,8 +329,11 @@ export class AccountComponent implements OnInit, OnDestroy {
       this.contextualNotification('Suivi personnalisé', 'Le dossier est en cours de traitement. Votre inscription sera bientôt finalisée', 'isSocialFormSent' );
     }
 
+    if (this.userData.subscriptions && !this.userData.elearning) {
+      this.contextualNotification('Suivi personnalisé', 'Votre inscription est maintenant confirmée !', 'subscriptions');
+    }
     if (this.userData.subscriptions && this.userData.elearning) {
-      this.contextualNotification('Suivi personnalisé', 'Votre inscription est maintenant confirmée. Vous pouvez démarrer votre session e-learning ', 'subscriptions');
+      this.contextualNotification('Suivi personnalisé', 'Vous pouvez démarrer votre session e-learning ', 'elearning');
     }
 
   }
