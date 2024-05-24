@@ -15,6 +15,7 @@ import { Student } from '../admin/Students/student';
 import { UpdateService } from '../update.service';
 import { map } from 'rxjs';
 import { NetworkService } from '../network.service';
+import { PRECONNECT_CHECK_BLOCKLIST } from '@angular/common';
 // import { DomSanitizer } from '@angular/platform-browser';
 
 
@@ -36,7 +37,11 @@ import { NetworkService } from '../network.service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
+  providers: [
+  {provide: PRECONNECT_CHECK_BLOCKLIST, useValue: 'https://firebasestorage.googleapis.com'}
+],
+
 })
 export class HomeComponent implements OnInit {
 
@@ -73,8 +78,8 @@ export class HomeComponent implements OnInit {
   // on le prépare à recevoir un terme de recherche
   searchText: string = ''
 
-  largeurImage: number = 0
-  hauteurImage: number = 0
+  largeurImage: number = 100
+  hauteurImage: number = 100
 
   dataLoading: boolean = true
 
@@ -161,7 +166,8 @@ export class HomeComponent implements OnInit {
       this.settingsService.getTrades()
         .pipe(map(data => data.filter(item => item.status && item.status === true)))
         .subscribe(data => {
-          this.tradesData = data;
+          // pour inverser temporairement
+          this.tradesData = data.reverse();
           console.log("this.tradesData", this.tradesData);
 
           // Charge les images pour chaque métier
@@ -293,15 +299,15 @@ export class HomeComponent implements OnInit {
     this.isLoading = false;
   }
 
-  // @ViewChild('image') imageElement!: ElementRef;
+  @ViewChild('image') imageElement!: ElementRef;
 
-  // setDimensions(image: HTMLImageElement) {
-  //   const width = image.width;
-  //   const height = image.height;
+  setDimensions(image: HTMLImageElement) {
+    const width = image.width;
+    const height = image.height;
 
-  //   this.imageElement.nativeElement.setAttribute('width', width.toString());
-  //   this.imageElement.nativeElement.setAttribute('height', height.toString());
-  // }
+    this.imageElement.nativeElement.setAttribute('width', width.toString());
+    this.imageElement.nativeElement.setAttribute('height', height.toString());
+  }
 
 
 }

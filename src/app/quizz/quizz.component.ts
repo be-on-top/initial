@@ -143,10 +143,12 @@ export class QuizzComponent implements OnInit {
 
       // on ne compte pas afficher un résulat intermédiaire, donc pour tester le calcul au global...
       // this.questions = allQuestions.filter(q => q.number < 21 && q.sigle == this.trade)
+      // this.questions = allQuestions.filter(q => q.number < 100 && q.sigle == this.trade)
       this.questions = allQuestions.filter(q => q.number < 100 && q.sigle == this.trade)
       this.questions.sort(this.compare)
       // pour déterminer le nombre total (réel) de questions
-      this.totalQuestions = this.questions.length + 1
+      // this.totalQuestions = this.questions.length + 1
+      this.totalQuestions = this.questions.length
       this.loading = false
       
       // pour qu'on ne se retrouve pas en console avec un can not read id parce qu'il n'y en a plus

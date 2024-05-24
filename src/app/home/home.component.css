@@ -2,7 +2,7 @@ img {
     width: 100%;
     /* or max-width: 100%; */
     height: auto;
-    aspect-ratio: auto 600 / 250;
+    /* aspect-ratio: auto 600 / 250; */
 
 }
 
@@ -53,18 +53,6 @@ hr {
 } */
 
 
-.home {
-    width: 100%;
-    /* Ajuste automatiquement la largeur en fonction de la hauteur */
-    height: 20vw;
-    /* Définit la hauteur en fonction de 30% de la largeur de la fenêtre */
-
-    object-fit: cover;
-    /* Tronque l'image pour qu'elle remplisse complètement le conteneur */
-    object-position: center;
-    /* Centre l'image dans le conteneur */
-    /* filter: brightness(110%) saturate(100%); */
-}
 
 /* 
 .image-container {

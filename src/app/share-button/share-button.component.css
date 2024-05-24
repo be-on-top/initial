@@ -1,1 +1,10 @@
+/* .bi .bi-share-fill{
+    font-size: 1.5rem;
+} */
 
+@media screen and (max-width:575) {
+    .bi .bi-share-fill{
+        font-size: 1.2rem;
+    }
+    
+}

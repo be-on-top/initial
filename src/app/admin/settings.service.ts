@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, collectionData, docData, setDoc, addDoc, query, doc, where, getDocs, DocumentData, getDoc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, docData, setDoc, addDoc, query, doc, where, getDocs, DocumentData, getDoc, updateDoc, documentId } from '@angular/fire/firestore';
 // import { NgForm } from '@angular/forms';
 import { Observable, from, map, of, tap } from 'rxjs';
 import { Trade } from './trade';
@@ -14,6 +14,7 @@ import {
   getMetadata
 } from '@angular/fire/storage';
 import { Partner } from './partner';
+import { orderBy } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -100,6 +101,7 @@ export class SettingsService {
   // Méthode pour récupérer tous les métiers avec status=true
   getTradesWithStatusTrue(): Observable<Trade[]> {
     const tradesRef = collection(this.firestore, 'sigles');
+    
     const statusQuery = query(tradesRef, where('status', '==', true));
 
     return from(getDocs(statusQuery)).pipe(
@@ -108,7 +110,8 @@ export class SettingsService {
         querySnapshot.forEach((doc) => {
           trades.push(doc.data() as Trade);
         });
-        return trades;
+        return trades.reverse();
+
       })
     );
   }

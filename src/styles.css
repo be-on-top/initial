@@ -26,6 +26,11 @@ body {
 
 }
 
+h1{
+    font-weight: 400;
+}
+
+
 
 /* .first-word {
     color: rgb(115, 110, 128) !important;
@@ -394,6 +399,10 @@ p.question {
     .fs-6 span {
         width: 90%;
         font-size: 0.8rem !important;
+    }
+
+    h2.h5, h1{
+        font-size: 1.2rem
     }
 
 

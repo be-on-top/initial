@@ -45,7 +45,7 @@ import { CookieConsentBannerComponent } from './cookie-consent-banner/cookie-con
 import { RgpdComponent } from './rgpd/rgpd.component';
 import { PartnersComponent } from './partners/partners.component';
 import { ShareButtonComponent } from './share-button/share-button.component';
-// import { NgOptimizedImage } from '@angular/common';
+import { NgOptimizedImage } from '@angular/common';
 // import { AutoChangeDirective } from './auto-change.directive';
 
 // import { getMessaging } from 'firebase/messaging';
@@ -84,7 +84,7 @@ import { ShareButtonComponent } from './share-button/share-button.component';
     ReactiveFormsModule,
     AppRoutingModule,
     AdminModule,
-    // NgOptimizedImage,
+    NgOptimizedImage,
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
