@@ -14,6 +14,7 @@ import { Observable, of } from 'rxjs';
 import { PushNotificationService } from '../push-notification.service';
 import { getMessaging, getToken } from "@angular/fire/messaging";
 import { NetworkService } from '../network.service';
+import { KeyValue } from '@angular/common';
 // import { UpdateService } from '../update.service';
 
 @Component({
@@ -112,7 +113,7 @@ export class QuizzComponent implements OnInit {
     private router: Router,
     private el: ElementRef,
     private notificationService: PushNotificationService,
-    private networkService:NetworkService
+    private networkService: NetworkService
     // private updateService: UpdateService
   ) {
 
@@ -127,7 +128,7 @@ export class QuizzComponent implements OnInit {
         this.router.navigate(['/home']); // Rediriger vers la page d'accueil lorsque hors ligne
       }
     });
-  
+
 
     this.trade = this.ac.snapshot.params["id"]
     this.indexQuestion = this.ac.snapshot.params["indexQuestion"]
@@ -150,7 +151,7 @@ export class QuizzComponent implements OnInit {
       // this.totalQuestions = this.questions.length + 1
       this.totalQuestions = this.questions.length
       this.loading = false
-      
+
       // pour qu'on ne se retrouve pas en console avec un can not read id parce qu'il n'y en a plus
       // on peut rajouter ATTENTION !!!!! 
       if (this.indexQuestion < this.questions.length - 1) {
@@ -600,7 +601,31 @@ export class QuizzComponent implements OnInit {
 
     }
 
+
     console.log('this.troisiemeTableau', this.durationsByLevels);
+
+    // Fonction pour extraire les numéros des clés
+    // const extractNumber = (key: string) => {
+    //   const match = key.match(/\d+$/);
+    //   return match ? parseInt(match[0], 10) : 0;
+    // };
+
+    // // Logique pour trier les résultats
+    // const sortedEntries = Object.entries(this.durationsByLevels).sort((a, b) => {
+    //   const numA = extractNumber(a[0]);
+    //   const numB = extractNumber(b[0]);
+
+    //   console.log(`Comparing ${a[0]} (${numA}) with ${b[0]} (${numB})`);
+
+    //   return numA - numB;
+    // });
+
+    // // Conversion de la liste triée de paires clé-valeur en un nouvel objet
+    // this.durationsByLevels = Object.fromEntries(sortedEntries);
+
+    // console.log('this.troisiemeTableau après tri', this.durationsByLevels);
+
+
   }
 
 
@@ -699,8 +724,8 @@ export class QuizzComponent implements OnInit {
     return value === null || value.trim() === '';
   };
 
-  redirectToAccount() {    
-    this.notifyMeWithTitleAndBody('Votre Actualité', `Bravo, vous êtes au top ! Retrouvez tous vos résultats et vos estimations personnalisées dans votre compte personnel ` );
+  redirectToAccount() {
+    this.notifyMeWithTitleAndBody('Votre Actualité', `Bravo, vous êtes au top ! Retrouvez tous vos résultats et vos estimations personnalisées dans votre compte personnel `);
 
     this.router.navigate(['/account']);
 
@@ -816,6 +841,17 @@ export class QuizzComponent implements OnInit {
     } catch (error) {
       console.error("Error requesting notification permission:", error);
     }
+  }
+
+  // Méthode pour trier les entrées de l'objet par les parties numériques des clés
+  sortDurationsByLevels(): KeyValue<string, number>[] {
+    return Object.entries(this.durationsByLevels)
+      .sort(([keyA], [keyB]) => {
+        const numA = parseInt(keyA.match(/\d+/)![0], 10);
+        const numB = parseInt(keyB.match(/\d+/)![0], 10);
+        return numA - numB;
+      })
+      .map(([key, value]) => ({ key, value }));
   }
 
 
