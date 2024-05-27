@@ -14,8 +14,11 @@ button.btn.btn-primary:disabled {
     /* opacity: 60!important; */
 }
 
+
+
 .display-6 {
-    font-size: 1.5rem;
+    font-size: 1.3rem!important;
+    font-weight: 500;
 }
 
 .fw-bold {
@@ -36,4 +39,11 @@ button.btn.btn-primary:disabled {
   visibility: hidden !important;
   max-height: 10px ! important;
   overflow: hidden;
+}
+
+@media screen and (max-width:575px) {
+    .btn-lg{
+        font-size: 1.1rem!important;
+    }
+    
 }

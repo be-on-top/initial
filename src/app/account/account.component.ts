@@ -641,5 +641,21 @@ export class AccountComponent implements OnInit, OnDestroy {
     this.consentService.setConsent(this.consentStatus); // Met à jour le consentement dans le stockage local
   }
 
+  sortResultsByKeys(results: any[]): any[] {
+    return results.sort((a, b) => {
+      const keyA = Object.keys(a)[0];
+      const keyB = Object.keys(b)[0];
+      const numA = parseInt(keyA.match(/\d+/)?.[0] || '0', 10);
+      const numB = parseInt(keyB.match(/\d+/)?.[0] || '0', 10);
+      return numA - numB;
+    });
+  }
+
+  // Utilisez cette méthode dans le template pour obtenir les résultats triés
+  getSortedResults(trade: string): any[] {
+    return this.sortResultsByKeys(this.userData[trade].fullResults);
+  }
+  
+
 
 }
