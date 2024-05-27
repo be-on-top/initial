@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 // import { NgForm } from '@angular/forms';
-import { Auth, createUserWithEmailAndPassword, deleteUser} from "@angular/fire/auth";
+import { Auth, createUserWithEmailAndPassword, deleteUser, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithRedirect } from "@angular/fire/auth";
 import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc, updateDoc, query, getDocs, where, getDoc, QuerySnapshot } from '@angular/fire/firestore';
 // import { FirebaseApp } from '@angular/fire/app';
 import { Observable } from 'rxjs';
@@ -9,6 +9,7 @@ import { Student } from './Students/student';
 import { NgForm } from '@angular/forms';
 import { Evaluation } from './evaluation';
 import { Analytics, setUserId } from "@angular/fire/analytics";
+import { Router } from '@angular/router';
 
 
 
@@ -20,61 +21,95 @@ import { Analytics, setUserId } from "@angular/fire/analytics";
 export class StudentsService {
   // private fullResults: { [key: string]: { duration: number; cost: number } }[] = [];
 
-  constructor(private auth: Auth, private firestore: Firestore, private analytics: Analytics) { }
+  constructor(private auth: Auth, private firestore: Firestore, private analytics: Analytics, private router: Router) { }
 
   // createStudent(studentForm: NgForm) {
   async createStudent(student: any) {
-    // let newEvaluator = { id: Date.now(), ...evaluator };
-    let newStudent = { created: Date.now(), status: true, trainer: "Attribué ultérieurement", ...student };
-    // on va lui affecter un password aléatoire en fonction de la date
-    // let password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
-    // juste le temps du test, let password sera le même pour tous : password
-    let password = "password"
+
+    // Vérifier si currentUser est défini
+    if (this.auth.currentUser && this.auth.currentUser.email) {
+      // Récupérer l'email de l'administrateur
+      const adminEmail = this.auth.currentUser.email;
+      // const actualRoute = this.router.url
 
 
-    // enregistrement en base dans fireAuth d'une part : 
-    const result = await createUserWithEmailAndPassword(this.auth, student.email, password);
+      // let newEvaluator = { id: Date.now(), ...evaluator };
+      let newStudent = { created: Date.now(), status: true, trainer: "Attribué ultérieurement", ...student };
+      // on va lui affecter un password aléatoire en fonction de la date
+      // let password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
+      // juste le temps du test, let password sera le même pour tous : password
+      let password = "password"
 
-    if (result && result.user) {
-      // const { uid, emailVerified } = this.result.user;
-      newStudent.id = result.user.uid
-      delete newStudent.studentPw;
+      // enregistrement en base dans fireAuth d'une part : 
+      const result = await createUserWithEmailAndPassword(this.auth, student.email, password);
+
+      if (result && result.user) {
+        // const { uid, emailVerified } = this.result.user;
+        newStudent.id = result.user.uid
+        delete newStudent.studentPw;
+
+        // on ajoute à la collection
+        let studentsRef = collection(this.firestore, "students");
+        setDoc(doc(studentsRef, newStudent.id), newStudent)
+          .then(() => {
+            console.log("New student added successfully");
+            // alert("l'utilisateur a été ajouté et un email de personnalisation du mot de passe envoyé")
+          }).catch((error) => {
+            console.error("Error adding student document: ", error);
+          });
+        // enregistre dans Firestore d'autre part le role attribué dans une collection roles qui regroupera tous les roles de tous les utilisateurs avec comme idDoc uid d'authentification là aussi
+        let $rolesRef = collection(this.firestore, "roles");
+       
+       await setDoc(doc($rolesRef, newStudent.id), { role: 'student' })
+
+        // envoie un mail de réinitialisation du mot de passe
+        await sendPasswordResetEmail(this.auth, student.email)
+          .then((result) => {
+            // Password reset email sent!
+            console.log("result sentPasswordReset", result)
+
+          })
+          .catch((error) => {
+            // const errorCode = error.code;
+            const errorMessage = error.message;
+            return errorMessage
+            // ..
+          });
+
+      }
+
+
+
+      // Déconnexion de l'administrateur après la création de l'utilisateur
+      await this.auth.signOut();
+
+      // Attendre que la déconnexion soit terminée
+      this.auth.onAuthStateChanged(async (user) => {
+        if (!user) {
+      // Demander à l'administrateur de se reconnecter
+      const adminPassword = prompt('Veuillez entrer votre mot de passe pour vous reconnecter.');
+
+      if (adminPassword) {
+        await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
+        console.log('Reconnexion automatique en tant qu\'administrateur réussie.', adminPassword);
+        this.router.navigate(['/admin/student', newStudent.id]);
+      } else {
+        console.error('Mot de passe non fourni.');
+      }
+        }
+      });
+
+
+    } else {
+      // Gérer le cas où currentUser est undefined
+      console.error('Utilisateur non connecté.');
     }
 
-    // const newStudent: any = {
-    //   id: '', created: Date.now(), status: true, cp: '', details: '', ...student
-    // };
 
-    // // if (!student.email) {
-    // //   console.error("Error: Email is missing");
-    // //   return;
-    // // }
 
-    //  let userCredential=await createUserWithEmailAndPassword(this.auth, student.email, student.studentPw)
-    //   // .then((userCredential) => {
-    //     console.log("userCredential depuis le service", userCredential);
-    //     // const user = userCredential.user;
-    //     newStudent.id = userCredential.user.uid;
-    //     newStudent.trainer = "Attribué ultérieurement"       
-    //   // }).catch((error) => {
-    //   //   const errorCode = error.code;
-    //   //   const errorMessage = error.message;
-    //   //   console.log(errorCode, errorMessage);
-    //   // });
 
-    let studentsRef = collection(this.firestore, "students");
-    // delete newStudent.studentPw;
-    // addDoc(studentsRef, newStudent).then(() => {
-    setDoc(doc(studentsRef, newStudent.id), newStudent)
-    // .then(() => {
-    //   console.log("New student added successfully");
-    // }).catch((error) => {
-    //   console.error("Error adding student document: ", error);
-    // });
-    // enregistre dans Firestore d'autre part le role attribué dans une collection roles qui regroupera tous les roles de tous les utilisateurs avec comme idDoc uid d'authentification là aussi
-    let $rolesRef = collection(this.firestore, "roles");
-    // addDoc($trainersRef, newTrainer)
-    setDoc(doc($rolesRef, newStudent.id), { role: 'student' })
+
+
   }
 
   async register(student: any) {
@@ -130,7 +165,7 @@ export class StudentsService {
     //   console.error('Error deleting user account:', error);
     // }
 
-        
+
   }
 
 
@@ -461,7 +496,7 @@ export class StudentsService {
       const snapshot: QuerySnapshot<any> = await getDocs(exportRef);
       const headers = Object.keys(snapshot.docs[0].data()); // Récupérer les noms de colonnes depuis le premier document
       const csvContent = this.generateCSVContent(snapshot, headers);
-      
+
       // Création d'un objet Blob avec le contenu CSV
       const blob = new Blob([csvContent], { type: 'text/csv' });
 
@@ -479,7 +514,7 @@ export class StudentsService {
 
       // Libération de l'URL de l'objet Blob
       window.URL.revokeObjectURL(url);
-      
+
     } catch (error) {
       console.error('Erreur lors de l\'export de la collection:', error);
       throw error;
@@ -488,15 +523,15 @@ export class StudentsService {
 
   private generateCSVContent(snapshot: QuerySnapshot<any>, headers: string[]): string {
     let csvContent = headers.join(',') + '\n'; // En-têtes de colonnes
-    
+
     snapshot.docs.forEach(doc => {
-      const rowData:any[] = []
+      const rowData: any[] = []
       headers.forEach(header => {
         rowData.push(doc.data()[header])
       });
       csvContent += rowData.join(',') + '\n'
     });
-    
+
     return csvContent;
   }
 

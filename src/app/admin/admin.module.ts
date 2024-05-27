@@ -63,6 +63,7 @@ import { UpdateExternalComponent } from './External/update-external/update-exter
 import { HomeComponent } from '../home/home.component';
 import { StudentFormComponent } from '../student-form/student-form.component';
 import { AutoChangeDirective } from '../auto-change.directive';
+import { AddStudentComponent } from './Students/add-student/add-student.component';
 
 
 
@@ -115,6 +116,8 @@ const routesAdmin: Routes = [
 
       { path: 'addUser', component: AddUserComponent },
       { path: 'updateUser/:id', component: UpdateUserComponent },
+      // pour prendre la responsabilité d'enregistrer un étudiant déjà inscrit dans l'école à l'application
+      { path: 'addStudent', component: AddStudentComponent },
       { path: 'students', component: StudentsListComponent, data: { user: 'admin' } },
       { path: 'student/:id', component: StudentDetailsComponent, data: { user: 'admin' } },
 
@@ -223,7 +226,8 @@ const routesAdmin: Routes = [
     ExternalDetailsComponent,
     UpdateExternalComponent,
     StudentFormComponent,
-    AutoChangeDirective
+    AutoChangeDirective,
+    AddStudentComponent
   ],
   imports: [
     BrowserModule,

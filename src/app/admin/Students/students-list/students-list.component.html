@@ -17,11 +17,13 @@
             <div class="col-md-6">
                 <div class="form-check ">
                     <label class="form-check-label" for="socialCheckbox"> Formulaire administratif renseigné</label>
-                    <input type="checkbox" (change)="onCheckboxChangeSocial($event)" class="form-check-input" id="socialCheckbox">           
+                    <input type="checkbox" (change)="onCheckboxChangeSocial($event)" class="form-check-input"
+                        id="socialCheckbox">
                 </div>
                 <div class="form-check">
                     <label class="form-check-label" for="subscriptionsCheckbox"> Inscription finalisée</label>
-                    <input type="checkbox" (change)="onCheckboxChangeSubscriptions($event)" class="form-check-input" id="subscriptionsCheckbox">           
+                    <input type="checkbox" (change)="onCheckboxChangeSubscriptions($event)" class="form-check-input"
+                        id="subscriptionsCheckbox">
                 </div>
                 <hr class="border-secondary">
             </div>
@@ -72,7 +74,11 @@
                                     class="bi bi-person-lines-fill"></i>Détails</a></button></div>
                 </div>
             </ng-template>
+
         </div>
+        <button class="btn btn-primary mt-5"><a
+                    [routerLink]="['/admin/addStudent']" class="text-white"><i class="bi bi-person-fill-add me-2"></i>Ajouter</a></button>
+        
 
         <div class="row gap-3">
             <button class="btn btn-primary mt-5 col-10 col-md-5" (click)="exportStudentsCollection()"><i
