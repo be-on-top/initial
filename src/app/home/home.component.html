@@ -19,7 +19,7 @@
 
     <!-- test alert-dismissible for mission -->
     <ng-container *ngIf="user==undefined || (!isLoading && !isOneQuizzAchieved); else yes">
-        <div *ngIf="!isLoading && !isOneQuizzAchieved"
+        <div *ngIf="!isLoading && !isOneQuizzAchieved && !offline"
             class="alert w-100 p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show fs-5">
             <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
                 aria-label="Fermer le message"></button>
@@ -38,9 +38,16 @@
                 personnalisées</span> depuis <a [routerLink]="['/account']" class="text-decoration-none"> votre compte
                 personnel</a>.
         </div>
-
     </ng-template>
+    <!-- cas du offline -->
+    <div *ngIf="offline" class="alert w-100 p-4 pe-5 bg-danger alert-dismissible text-white mb-4 fade show fs-5">
+        <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
+            aria-label="Fermer le message"></button>
+        Attention, vous n'avez plus de réseau. L'application vient de passer en mode lecture seule. Vous pourrez
+        retrouver toutes vos fonctionnalités dès que la connexion sera rétablie
+    </div>
     <!-- fin test alert-dismissible -->
+
 
     <!-- on introduit un champ de recherche -->
     <app-search *ngIf="tradesData && tradesData.length>4"

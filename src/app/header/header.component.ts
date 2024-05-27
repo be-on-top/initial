@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { StudentsService } from '../admin/students.service';
 import { Student } from '../admin/Students/student';
 import { Partner } from '../admin/partner';
+import { NetworkService } from '../network.service';
 
 
 
@@ -31,14 +32,29 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
   offline: boolean = false
   filteredTrades: Trade[] = []
-  partners:Partner[]=[]
+  partners: Partner[] = []
 
 
   @ViewChild('collapsibleNavbar') collapsibleNavbar!: ElementRef;
 
-  constructor(private renderer: Renderer2, private authService: AuthService, private auth: Auth, private firestore: Firestore, private tradeService: SettingsService, private router: Router, private studentService: StudentsService) {
+  constructor(
+    private renderer: Renderer2,
+    private authService: AuthService,
+    private auth: Auth,
+    private firestore: Firestore,
+    private tradeService: SettingsService,
+    private router: Router,
+    private studentService: StudentsService,
+    private networkService: NetworkService) {
     // this.userUid=this.authService.getUserId()
-    this.offline = !navigator.onLine
+    // this.offline = !navigator.onLine
+    // Si on passe par networkService pour une détection plus rapide
+    this.networkService.getOnlineStatus().subscribe(online => {
+      if (!online) {
+        alert("Vous n'avez plus de réseau. L'application vient de passer en mode hors connexion. ")
+        this.offline = true
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -103,10 +119,10 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.tradeService.fetchPartners().subscribe(data=>{
-      this.partners=data
+    this.tradeService.fetchPartners().subscribe(data => {
+      this.partners = data
       console.log("partenaires récupérés", this.partners);
-      
+
     })
   }
 

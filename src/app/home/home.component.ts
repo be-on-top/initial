@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 // je ne vois pas l'utilité de cette méthode pour le moment, donc on désactive !!!!
@@ -39,8 +39,8 @@ import { PRECONNECT_CHECK_BLOCKLIST } from '@angular/common';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
   providers: [
-  {provide: PRECONNECT_CHECK_BLOCKLIST, useValue: 'https://firebasestorage.googleapis.com'}
-],
+    { provide: PRECONNECT_CHECK_BLOCKLIST, useValue: 'https://firebasestorage.googleapis.com' }
+  ],
 
 })
 export class HomeComponent implements OnInit {
@@ -78,8 +78,8 @@ export class HomeComponent implements OnInit {
   // on le prépare à recevoir un terme de recherche
   searchText: string = ''
 
-  largeurImage: number = 100
-  hauteurImage: number = 100
+  largeurImage: number = 350
+  hauteurImage: number = 145
 
   dataLoading: boolean = true
 
@@ -104,11 +104,20 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private settingsService: SettingsService,
     private updateService: UpdateService,
-    private titleService : Title
+    private titleService: Title,
+    private networkService: NetworkService
     // private networkService: NetworkService
   ) {
 
-    this.offline = !navigator.onLine
+    // this.offline = !navigator.onLine
+
+    // Si on passe par networkService pour une détection plus rapide
+    this.networkService.getOnlineStatus().subscribe(online => {
+      if (!online) {
+        // alert("Vous n'avez plus de réseau. L'application vient de passer en mode hors connexion. ")
+        this.offline = true
+      }
+    });
 
   }
 
@@ -311,7 +320,7 @@ export class HomeComponent implements OnInit {
 
 
 }
-  
+
 
 
 

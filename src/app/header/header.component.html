@@ -154,10 +154,8 @@
                 <!-- si hors ligne -->
                 <li class="nav-item" *ngIf="offline">
                     <span class="nav-link bg-danger px-2 mt-2 mt-md-0 small text-light rounded" role="button"
-                        data-bs-toggle="dropdown">Utilisateur hors ligne <i class="bi bi-exclamation"></i></span>
+                        data-bs-toggle="dropdown">Utilisateur Hors connexion<i class="bi bi-exclamation"></i></span>
                 </li>
-
-
                 <!-- Inscription lien externe sans condition pour tester en local -->
                 <li class="nav-item" [routerLinkActive]="['partners']" *ngIf="partners && partners.length!==0">
                     <a class="nav-link" [routerLink]="['partners']" role="button">Partenaires</a>
