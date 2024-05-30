@@ -3,7 +3,7 @@ import { AuthService } from '../admin/auth.service';
 import { onAuthStateChanged } from 'firebase/auth';
 import { Auth, reload } from '@angular/fire/auth';
 import { Firestore, docData, doc } from '@angular/fire/firestore';
-import { Observable } from 'rxjs'
+import { Observable, Subscription } from 'rxjs'
 import { Trade } from '../admin/trade';
 import { SettingsService } from '../admin/settings.service';
 import { Router } from '@angular/router';
@@ -11,7 +11,6 @@ import { StudentsService } from '../admin/students.service';
 import { Student } from '../admin/Students/student';
 import { Partner } from '../admin/partner';
 import { NetworkService } from '../network.service';
-
 
 
 @Component({
@@ -34,6 +33,12 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   filteredTrades: Trade[] = []
   partners: Partner[] = []
 
+  // utilisation de networkService pour détecter le retour du réseau
+  onlineStatus: boolean = true;
+  private networkSubscription: Subscription | null = null; // Initialisé à null
+  private hasCheckedInitialStatus = false;
+
+
 
   @ViewChild('collapsibleNavbar') collapsibleNavbar!: ElementRef;
 
@@ -49,15 +54,27 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     // this.userUid=this.authService.getUserId()
     // this.offline = !navigator.onLine
     // Si on passe par networkService pour une détection plus rapide
-    this.networkService.getOnlineStatus().subscribe(online => {
-      if (!online) {
-        alert("Vous n'avez plus de réseau. L'application vient de passer en mode hors connexion. ")
-        this.offline = true
-      }
-    });
+    // this.networkService.getOnlineStatus().subscribe(online => {
+    //   if (!online) {
+    //     alert("Vous n'avez plus de connexion. Nous ne pourrons plus charger les données du questionnaire ou détails du compte utilisateur. Merci de réessayer ultérieurement")
+    //     this.router.navigate(['/home']); // Rediriger vers la page d'accueil lorsque hors ligne
+    //   }
+    // });
   }
 
   ngOnInit(): void {
+
+
+    this.networkSubscription = this.networkService.getOnlineStatus().subscribe(online => {
+      if (!online) {
+        alert("Connexion réseeau perdue.");
+        this.offline = true; // Mettre à jour le flag pour indiquer que nous sommes hors ligne
+      } else if (this.offline) {
+        alert("Connexion réseau rétablie. Vous pouvez continuer à utiliser l'application.");
+        location.reload();  // Rafraîchir la page pour recharger les données
+        this.offline = false; // Réinitialiser le flag après la reconnexion
+      }
+    });
 
     // Appeler la fonction de vérification au démarrage de l'application
     this.authService.checkLastLoginDate();
@@ -188,7 +205,11 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     this.filteredTrades = this.trades.filter((trade: any) => trade.status === true);
   }
 
-
+  ngOnDestroy() {
+    if (this.networkSubscription) {
+      this.networkSubscription.unsubscribe(); // Vérification explicite pour null
+    }
+  }
 
 
 }

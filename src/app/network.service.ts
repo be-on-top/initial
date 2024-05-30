@@ -1,26 +1,35 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NetworkService {
 
-  private onlineStatus: Subject<boolean>;
+  // BehaviorSubject est utilisé pour maintenir et émettre l'état de connexion (en ligne/hors ligne)
+  // BehaviorSubject est un type spécial de Subject qui nécessite une valeur initiale et 
+  // émet toujours la dernière valeur à ses abonnés dès qu'ils s'abonnent.
+  private onlineStatus: BehaviorSubject<boolean>;
 
   constructor() {
-    this.onlineStatus = new Subject<boolean>();
-    this.onlineStatus.next(window.navigator.onLine);
+    // Initialiser onlineStatus avec l'état actuel de la connexion réseau
+    this.onlineStatus = new BehaviorSubject<boolean>(navigator.onLine);
 
-    window.addEventListener('online', () => this.updateOnlineStatus());
-    window.addEventListener('offline', () => this.updateOnlineStatus());
+    // Ajouter des écouteurs d'événements pour les changements de statut de connexion
+    window.addEventListener('online', () => this.updateOnlineStatus(true));
+    window.addEventListener('offline', () => this.updateOnlineStatus(false));
   }
 
-  private updateOnlineStatus() {
-    this.onlineStatus.next(window.navigator.onLine);
+  // Méthode privée pour mettre à jour le statut de connexion
+  private updateOnlineStatus(status: boolean) {
+    this.onlineStatus.next(status);
   }
 
-  getOnlineStatus() {
+  // Méthode pour obtenir un Observable de l'état de connexion
+  // Cela permet aux composants de s'abonner aux changements de statut de connexion
+  getOnlineStatus(): Observable<boolean> {
     return this.onlineStatus.asObservable();
   }
+
+
 }

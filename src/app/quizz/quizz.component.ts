@@ -10,7 +10,7 @@ import { StudentsService } from '../admin/students.service';
 import { Denominator } from './denominator';
 import { Questions } from '../admin/Questions/questions';
 import { Trade } from '../admin/trade';
-import { Observable, of } from 'rxjs';
+import { Observable, Subject, distinctUntilChanged, of, takeUntil } from 'rxjs';
 import { PushNotificationService } from '../push-notification.service';
 import { getMessaging, getToken } from "@angular/fire/messaging";
 import { NetworkService } from '../network.service';
@@ -97,8 +97,11 @@ export class QuizzComponent implements OnInit {
   title: string = ""
   // totalQuestions: number = 100
   totalQuestions: number = 0
-  hasReaden: boolean = false
+  // hasReaden: boolean = false
   loading: boolean = true
+
+    // Subject utilisé pour gérer la destruction de l'abonnement au statut de connexion
+    private destroy$ = new Subject<void>();
 
 
   @ViewChild('myModal') myModal!: ElementRef;
@@ -117,18 +120,36 @@ export class QuizzComponent implements OnInit {
     // private updateService: UpdateService
   ) {
 
+    // this.networkService.getOnlineStatus().subscribe(online => {
+    //   if (!online) {
+    //     alert("Vous n'avez plus de connexion. Nous ne pourrons plus charger les données du questionnaire ou détails du compte utilisateur. Merci de réessayer ultérieurement")
+    //     this.router.navigate(['/home']); // Rediriger vers la page d'accueil lorsque hors ligne
+    //   }
+    // });
+
   }
 
   ngOnInit() {
+
+    // S'abonner aux changements de statut de connexion
+    this.networkService.getOnlineStatus()
+      .pipe(
+        // Utiliser takeUntil pour gérer la désinscription automatique lors de la destruction du composant
+        takeUntil(this.destroy$),
+        // Utiliser distinctUntilChanged pour ne réagir qu'aux changements de statut (évite les répétitions)
+        distinctUntilChanged()
+      )
+      .subscribe(online => {
+        // Si l'application est hors ligne
+        if (!online) {
+          alert("Vous n'avez plus de connexion. Nous ne pourrons plus charger les données du questionnaire ou détails du compte utilisateur. Merci de réessayer ultérieurement");
+          // Rediriger vers la page d'accueil
+          this.router.navigate(['/home'])
+        }
+      })
+
     // pour tenter de détecter des updates côté template
     // this.updateService.checkForUpdates();
-    this.networkService.getOnlineStatus().subscribe(online => {
-      if (!online) {
-        alert("Vous n'avez plus de connexion. L'application vient de passer en mode lecture hors connexion. ")
-        this.router.navigate(['/home']); // Rediriger vers la page d'accueil lorsque hors ligne
-      }
-    });
-
 
     this.trade = this.ac.snapshot.params["id"]
     this.indexQuestion = this.ac.snapshot.params["indexQuestion"]
@@ -150,6 +171,7 @@ export class QuizzComponent implements OnInit {
       // pour déterminer le nombre total (réel) de questions
       // this.totalQuestions = this.questions.length + 1
       this.totalQuestions = this.questions.length
+      // alert(this.totalQuestions)
       this.loading = false
 
       // pour qu'on ne se retrouve pas en console avec un can not read id parce qu'il n'y en a plus
@@ -636,18 +658,18 @@ export class QuizzComponent implements OnInit {
     await this.displayDuration(this.durations, this.levelsArray)
 
     // Par exemple, si ces objets proviennent d'une autre fonction, vous les récupérerez ici.
-    const durationsByLevels = this.durationsByLevels // Récupérez les données de manière appropriée
-    const estimatedCPCost = this.estimatedCPCost // Récupérez les données de manière appropriée
+    const durationsByLevels = this.durationsByLevels // Récupérer les données de manière appropriée
+    const estimatedCPCost = this.estimatedCPCost // Récupérer les données de manière appropriée
 
     console.log("this.durationsByLevels dans generateFullResults", this.durationsByLevels);
     console.log("this.levelsArray dans generateFullResults", this.levelsArray);
 
 
-    // Appelez la fonction setFullResults pour générer le tableau fullResults
+    // Appeler la fonction setFullResults pour générer le tableau fullResults
     this.fullResults = await this.studentService.setFullResults(durationsByLevels, estimatedCPCost, this.realEvaluations);
 
-    // Maintenant, vous pouvez utiliser this.fullResults en sachant qu'il est correctement rempli
-    console.log('this.fullResults', this.fullResults)
+    // Maintenant, on peut utiliser this.fullResults en sachant qu'il est correctement rempli
+    console.log('this.fullResults de generatedFullResults', this.fullResults)
 
     this.studentService.updateFullResults(this.studentId, this.fullResults, this.trade)
 
@@ -789,9 +811,9 @@ export class QuizzComponent implements OnInit {
     }
   }
 
-  readen() {
-    this.hasReaden = true;
-  }
+  // readen() {
+  //   this.hasReaden = true;
+  // }
 
 
   // à tester 
@@ -852,6 +874,12 @@ export class QuizzComponent implements OnInit {
         return numA - numB;
       })
       .map(([key, value]) => ({ key, value }));
+  }
+
+  ngOnDestroy() {
+    // Emettre un signal pour compléter l'Observable et désinscrire les abonnés
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
 

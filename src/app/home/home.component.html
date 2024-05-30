@@ -29,7 +29,7 @@
     </ng-container>
     <ng-template #yes>
         <div class="alert alert-light p-4 alert-dismissible mb-4 fade show pe-5"
-            *ngIf="!isLoading && isOneQuizzAchieved">
+            *ngIf="!isLoading && isOneQuizzAchieved && !offline">
             <!-- <button type="button" class="btn-close btn-close-light" data-bs-dismiss="alert"></button> -->
             <button type="button" class="btn-close btn-close mt-2" data-bs-dismiss="alert"
                 aria-label="Fermer le message"></button>
@@ -43,11 +43,10 @@
     <div *ngIf="offline" class="alert w-100 p-4 pe-5 bg-danger alert-dismissible text-white mb-4 fade show fs-5">
         <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
             aria-label="Fermer le message"></button>
-        Attention, vous n'avez plus de réseau. L'application vient de passer en mode lecture seule. Vous pourrez
-        retrouver toutes vos fonctionnalités dès que la connexion sera rétablie
+        Attention, vous n'avez plus de réseau. Nous ne pouvons plus charger les données des questionnaires ou détails de votre compte. Vous pourrez
+        retrouver toutes vos fonctionnalités dès que la connexion sera rétablie.
     </div>
     <!-- fin test alert-dismissible -->
-
 
     <!-- on introduit un champ de recherche -->
     <app-search *ngIf="tradesData && tradesData.length>4"
@@ -112,7 +111,7 @@
 
                         <!-- pour switcher d'un intitulé à un autre selon que studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle -->
 
-                        <ng-container *ngIf="studentData">
+                        <ng-container *ngIf="studentData && !offline">
                             <hr>
                             <a [routerLink]="[
                     '/quizz/',

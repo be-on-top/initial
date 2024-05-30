@@ -13,7 +13,7 @@ import { SettingsService } from '../admin/settings.service';
 import { StudentsService } from '../admin/students.service';
 import { Student } from '../admin/Students/student';
 import { UpdateService } from '../update.service';
-import { map } from 'rxjs';
+import { Subject, distinctUntilChanged, map, takeUntil } from 'rxjs';
 import { NetworkService } from '../network.service';
 import { PRECONNECT_CHECK_BLOCKLIST } from '@angular/common';
 // import { DomSanitizer } from '@angular/platform-browser';
@@ -83,6 +83,8 @@ export class HomeComponent implements OnInit {
 
   dataLoading: boolean = true
 
+  private destroy$ = new Subject<void>();
+
 
   // pour utiliser le composant de recherche
   onSearchTextEntered(searchValue: string) {
@@ -112,12 +114,12 @@ export class HomeComponent implements OnInit {
     // this.offline = !navigator.onLine
 
     // Si on passe par networkService pour une détection plus rapide
-    this.networkService.getOnlineStatus().subscribe(online => {
-      if (!online) {
-        // alert("Vous n'avez plus de réseau. L'application vient de passer en mode hors connexion. ")
-        this.offline = true
-      }
-    });
+    // this.networkService.getOnlineStatus().subscribe(online => {
+    //   if (!online) {
+    //     alert("Vous n'avez plus de réseau. L'application vient de passer en mode hors connexion. ")
+    //     this.offline = true
+    //   }
+    // });
 
   }
 
@@ -125,6 +127,17 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
 
     this.titleService.setTitle('Accueil - BE-ON-TOP formation application'); // Mettre à jour le titre de la page
+
+    this.networkService.getOnlineStatus()
+    .pipe(
+      takeUntil(this.destroy$),
+      distinctUntilChanged()
+    )
+    .subscribe(online => {
+      if (!online) {
+       this.offline=true
+      }
+    });
 
 
     // window.addEventListener('online', () => {   
@@ -199,7 +212,7 @@ export class HomeComponent implements OnInit {
     }
     else if (this.offline) {
 
-      alert("offline")
+      // alert("version offline")
       // pour ouvrir la base indexedDB
       const openRequest = window.indexedDB.open('my-database');
       // Pour gérer les évènements à l'ouverture de la base
@@ -316,6 +329,11 @@ export class HomeComponent implements OnInit {
 
     this.imageElement.nativeElement.setAttribute('width', width.toString());
     this.imageElement.nativeElement.setAttribute('height', height.toString());
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
 
