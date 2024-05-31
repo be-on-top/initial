@@ -11,8 +11,8 @@ import { Denominator } from './denominator';
 import { Questions } from '../admin/Questions/questions';
 import { Trade } from '../admin/trade';
 import { Observable, Subject, distinctUntilChanged, of, takeUntil } from 'rxjs';
-import { PushNotificationService } from '../push-notification.service';
-import { getMessaging, getToken } from "@angular/fire/messaging";
+// import { PushNotificationService } from '../push-notification.service';
+// import { getMessaging, getToken } from "@angular/fire/messaging";
 import { NetworkService } from '../network.service';
 import { KeyValue } from '@angular/common';
 // import { UpdateService } from '../update.service';
@@ -115,7 +115,7 @@ export class QuizzComponent implements OnInit {
     private settingsService: SettingsService,
     private router: Router,
     private el: ElementRef,
-    private notificationService: PushNotificationService,
+    // private notificationService: PushNotificationService,
     private networkService: NetworkService
     // private updateService: UpdateService
   ) {

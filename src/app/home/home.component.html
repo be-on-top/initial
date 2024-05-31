@@ -123,7 +123,8 @@
 
                                 <div class="d-flex justify-content-end"
                                     *ngIf="(studentData && !studentData['quizz_'+trade.sigle])">
-                                    <button aria-label="Démarrer le questionnaire" class="btn btn-transparent"><i
+                                    
+                                    <button (click)="logStartEvaluationEvent(trade.denomination)" aria-label="Démarrer le questionnaire" class="btn btn-transparent"><i
                                             class="bi bi-clock-fill text-success"></i>
                                         Démarrer votre évaluation</button>
                                 </div>

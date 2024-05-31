@@ -9,7 +9,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { AuthService } from '../admin/auth.service';
 // on a pu se passer de rxjs, donc on désactive tout pour le moment
 // import { Observable, Subscription, switchMap } from 'rxjs';
-import { query, Firestore, where, collection, getDocs } from '@angular/fire/firestore';
+// import { query, Firestore, where, collection, getDocs } from '@angular/fire/firestore';
 import { onAuthStateChanged } from '@angular/fire/auth';
 import { StudentsService } from '../admin/students.service';
 
@@ -96,17 +96,17 @@ export class AccountComponent implements OnInit, OnDestroy {
   consentStatus: boolean;
 
   constructor(
-    private auth: Auth, 
+    private auth: Auth,
     // private firestore: Firestore, 
-    private authService: AuthService, 
-    private studentService: StudentsService, 
+    private authService: AuthService,
+    private studentService: StudentsService,
     // private activatedRoute: ActivatedRoute, 
-    private router: Router, 
-    private notificationService: PushNotificationService, 
-    public sanitizer: DomSanitizer, 
-    private settingsService: SettingsService, 
-    private consentService: ConsentService, 
-    private networkService:NetworkService) {
+    private router: Router,
+    private notificationService: PushNotificationService,
+    public sanitizer: DomSanitizer,
+    private settingsService: SettingsService,
+    private consentService: ConsentService,
+    private networkService: NetworkService) {
     // const messaging = getMessaging();
     // onMessage(messaging, (payload) => {
     //   console.log('Message received. ', payload);
@@ -216,6 +216,8 @@ export class AccountComponent implements OnInit, OnDestroy {
       console.log("this.tradesData", this.tradesData)
     })
 
+    // this.checkNotificationPermission()
+
 
   }
 
@@ -277,6 +279,7 @@ export class AccountComponent implements OnInit, OnDestroy {
 
       console.log(token);
       this.notificationService.registerToken(token, this.userData.id);
+      localStorage.setItem('notification-permission', 'granted')
     } catch (error) {
       console.error("Error during notification setup:", error);
     }
@@ -326,7 +329,7 @@ export class AccountComponent implements OnInit, OnDestroy {
     }
 
     if (this.userData.isSocialFormSent && !this.userData.subscriptions) {
-      this.contextualNotification('Suivi personnalisé', 'Le dossier est en cours de traitement. Votre inscription sera bientôt finalisée', 'isSocialFormSent' );
+      this.contextualNotification('Suivi personnalisé', 'Le dossier est en cours de traitement. Votre inscription sera bientôt finalisée', 'isSocialFormSent');
     }
 
     if (this.userData.subscriptions && !this.userData.elearning) {
@@ -338,7 +341,7 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   }
 
-// si on veut rajouter une logique pour vérifier l'état de la notification dans local Storage
+  // si on veut rajouter une logique pour vérifier l'état de la notification dans local Storage
   // async contextualNotification(title: string, body: string, notificationId: string) {
   //   // Vérifier si la permission est déjà accordée
   //   if (Notification.permission === 'granted') {
@@ -363,29 +366,29 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   async contextualNotification(title: string, body: string, notificationId: string) {
     // Vérifier si la permission est déjà accordée
-    if (Notification.permission === 'granted') {
-        // Vérifier si la notification a déjà été affichée
-        if (!localStorage.getItem(notificationId)) {
-            try {
-                const options = {
-                    body: body,
-                    icon: 'https://be-on-top-beta.web.app/assets/BE-ON-TOP_picto_LOGO.svg',
-                }
-                // Afficher la notification avec les options
-                const registration = await navigator.serviceWorker.getRegistration();
-                // alert(registration)
-                if (registration) {
-                    registration.showNotification(title, options);
-                }
-                
-                // Enregistrer l'identifiant de la notification dans le stockage local
-                localStorage.setItem(notificationId, 'true');
-            } catch (error) {
-                console.error("Error during notification setup:", error);
-            }
+    if (Notification.permission === 'granted' && this.checkNotificationPermission()) {
+      // Vérifier si la notification a déjà été affichée
+      if (!localStorage.getItem(notificationId)) {
+        try {
+          const options = {
+            body: body,
+            icon: 'https://be-on-top-beta.web.app/assets/BE-ON-TOP_picto_LOGO.svg',
+          }
+          // Afficher la notification avec les options
+          const registration = await navigator.serviceWorker.getRegistration();
+          // alert(registration)
+          if (registration) {
+            registration.showNotification(title, options);
+          }
+
+          // Enregistrer l'identifiant de la notification dans le stockage local
+          localStorage.setItem(notificationId, 'true');
+        } catch (error) {
+          console.error("Error during notification setup:", error);
         }
+      }
     }
-}
+  }
 
 
 
@@ -522,7 +525,7 @@ export class AccountComponent implements OnInit, OnDestroy {
       const bNumber = parseInt((b.value.competence || '').replace(regex, ''), 10);
 
       return aNumber - bNumber; // Trie par ordre croissant
-    });
+    })
   }
 
 
@@ -655,7 +658,45 @@ export class AccountComponent implements OnInit, OnDestroy {
   getSortedResults(trade: string): any[] {
     return this.sortResultsByKeys(this.userData[trade].fullResults);
   }
-  
 
+  // Fonction appelée lorsque l'utilisateur souhaite révoquer son consentement à l'utilisation de cookies
+  // async modifyNotificationPermission() {
+  //   try {
+  //     const registration = await navigator.serviceWorker.getRegistration();
+  //     if (!registration) {
+  //       console.error("Service worker registration not found.");
+  //       return;
+  //     }
+
+  //     if (!this.notificationPermissionGranted) {
+  //       await this.notifyMe();
+  //     } else {
+  //       await this.notificationService.unregisterToken(this.userData.id);
+  //       await registration.unregister();
+  //     }
+
+  //     this.notificationPermissionGranted = !this.notificationPermissionGranted; // Met à jour l'état du consentement dans l'interface utilisateur
+  //   } catch (error) {
+  //     console.error("Error modifying notification permission:", error);
+  //   }
+  // }
+
+  checkNotificationPermission(): boolean {
+    const permission = localStorage.getItem('notification-permission');
+    if (permission === 'granted') {
+      return true
+    }
+    else { return false }
+  }
+
+  toggleNotificationPermission(event: any) {
+    this.notificationPermissionGranted = event.target.checked;
+    localStorage.setItem('notification-permission', this.notificationPermissionGranted ? 'granted' : 'denied');
+  }
 
 }
+
+
+
+
+

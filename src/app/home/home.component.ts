@@ -11,12 +11,14 @@ import { SettingsService } from '../admin/settings.service';
 // import { Trade } from '../admin/trade';
 // import { Observable } from 'rxjs';
 import { StudentsService } from '../admin/students.service';
-import { Student } from '../admin/Students/student';
+// import { Student } from '../admin/Students/student';
 import { UpdateService } from '../update.service';
 import { Subject, distinctUntilChanged, map, takeUntil } from 'rxjs';
 import { NetworkService } from '../network.service';
 import { PRECONNECT_CHECK_BLOCKLIST } from '@angular/common';
+import { Analytics, logEvent } from '@angular/fire/analytics';
 // import { DomSanitizer } from '@angular/platform-browser';
+
 
 
 // interface Image {
@@ -107,7 +109,8 @@ export class HomeComponent implements OnInit {
     private settingsService: SettingsService,
     private updateService: UpdateService,
     private titleService: Title,
-    private networkService: NetworkService
+    private networkService: NetworkService,
+    private analytics: Analytics
     // private networkService: NetworkService
   ) {
 
@@ -129,15 +132,15 @@ export class HomeComponent implements OnInit {
     this.titleService.setTitle('Accueil - BE-ON-TOP formation application'); // Mettre à jour le titre de la page
 
     this.networkService.getOnlineStatus()
-    .pipe(
-      takeUntil(this.destroy$),
-      distinctUntilChanged()
-    )
-    .subscribe(online => {
-      if (!online) {
-       this.offline=true
-      }
-    });
+      .pipe(
+        takeUntil(this.destroy$),
+        distinctUntilChanged()
+      )
+      .subscribe(online => {
+        if (!online) {
+          this.offline = true
+        }
+      });
 
 
     // window.addEventListener('online', () => {   
@@ -334,6 +337,11 @@ export class HomeComponent implements OnInit {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  logStartEvaluationEvent(tradeName: string) {
+    alert(tradeName)
+    logEvent(this.analytics, 'has_started_evaluation_from_home', { trade_name: tradeName });
   }
 
 

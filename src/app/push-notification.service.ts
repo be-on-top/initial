@@ -7,7 +7,7 @@ import { getMessaging, isSupported, Messaging, onMessage, getToken } from '@angu
 // import { AngularFireMessaging } from '@angular/fire/compat/messaging';
 import { environment } from '../environments/environment';
 // pour enregistrer les jetons utilisateurs en base 
-import { Firestore, collection, addDoc, setDoc, doc, getDoc, DocumentSnapshot} from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, setDoc, doc, getDoc, DocumentSnapshot, deleteDoc} from '@angular/fire/firestore';
 import { pipe } from "rxjs";
 // Importez le module HttpClient d'Angular pour effectuer une requête HTTP à l'API 
 import { HttpClient , HttpHeaders} from '@angular/common/http';
@@ -40,8 +40,7 @@ export class PushNotificationService {
       } else {
         reject(new Error("No se otorgaron los permisos"))
       }
-    }) 
-    
+    })     
     
   }
 
@@ -60,6 +59,13 @@ export class PushNotificationService {
 
   receiveMessage() {
     return this.messaginObservable;
+  }
+
+  unregisterToken(userId: string) {
+    // const tokensCollection = collection(this.firestore, 'tokens');
+    // const userTokenDoc = doc(tokensCollection, userId);
+    // return deleteDoc(userTokenDoc);
+    alert("ok unregisterToken")
   }
 
 
