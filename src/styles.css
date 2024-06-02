@@ -411,13 +411,19 @@ p.question {
         font-size: 1rem !important;
     }
 
-    button.btn,
+    /* button.btn,
     button a,
     .card-body p,
     .card-body span,
     .card-body a,
     form p {
         font-size: 0.8rem ! important;
+    } */
+    button.btn,
+    button a,
+    .card-body,
+    form p {
+        font-size: 0.9rem ! important;
     }
 
     .order-perso2 {
@@ -433,7 +439,7 @@ p.question {
     }
 
     .trade>p {
-        font-size: 1em !important;
+        font-size: 0.8rem !important;
     }
 
 
