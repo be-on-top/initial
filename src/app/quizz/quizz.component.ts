@@ -443,15 +443,15 @@ export class QuizzComponent implements OnInit {
 
 
 
-    // const isMobile = window.innerWidth <= this.mobileBreakpoint;
+    const isMobile = window.innerWidth <= this.mobileBreakpoint;
 
-    // if (isMobile) {
-    //   const nextAnchor = this.el.nativeElement.querySelector('a[name="next"]');
-    //   if (nextAnchor) {
-    //     const offset = nextAnchor.offsetTop - this.menuHeight;
-    //     window.scrollTo({ top: offset, behavior: 'smooth' });
-    //   }
-    // }
+    if (isMobile) {
+      const nextAnchor = this.el.nativeElement.querySelector('a[name="next"]');
+      if (nextAnchor) {
+        const offset = nextAnchor.offsetTop - this.menuHeight;
+        window.scrollTo({ top: offset, behavior: 'smooth' });
+      }
+    }
 
   }
 

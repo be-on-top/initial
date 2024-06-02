@@ -340,7 +340,7 @@ export class HomeComponent implements OnInit {
   }
 
   logStartEvaluationEvent(tradeName: string) {
-    alert(tradeName)
+    // alert(tradeName)
     logEvent(this.analytics, 'has_started_evaluation_from_home', { trade_name: tradeName });
   }
 
