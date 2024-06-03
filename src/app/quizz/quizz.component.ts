@@ -91,8 +91,8 @@ export class QuizzComponent implements OnInit {
   isIndexValable: boolean = true;
 
   // Définissez la hauteur de votre menu fixe
-  menuHeight = 100; // Remplacez cela par la hauteur réelle de votre menu fixe
-  mobileBreakpoint = 575; // Remplacez cela par la largeur de la fenêtre à partir de laquelle vous considérez que c'est un téléphone mobile
+  // menuHeight = 100;
+  // mobileBreakpoint = 575;
 
   title: string = ""
   // totalQuestions: number = 100
@@ -100,8 +100,8 @@ export class QuizzComponent implements OnInit {
   // hasReaden: boolean = false
   loading: boolean = true
 
-    // Subject utilisé pour gérer la destruction de l'abonnement au statut de connexion
-    private destroy$ = new Subject<void>();
+  // Subject utilisé pour gérer la destruction de l'abonnement au statut de connexion
+  private destroy$ = new Subject<void>();
 
 
   @ViewChild('myModal') myModal!: ElementRef;
@@ -142,7 +142,7 @@ export class QuizzComponent implements OnInit {
       .subscribe(online => {
         // Si l'application est hors ligne
         if (!online) {
-          alert("Vous n'avez plus de connexion. Nous ne pourrons plus charger les données du questionnaire ou détails du compte utilisateur. Merci de réessayer ultérieurement");
+          // alert("Vous n'avez plus de connexion. Nous ne pourrons plus charger les données du questionnaire ou détails du compte utilisateur. Merci de réessayer ultérieurement");
           // Rediriger vers la page d'accueil
           this.router.navigate(['/home'])
         }
@@ -442,16 +442,16 @@ export class QuizzComponent implements OnInit {
     console.log("this.totalAnswersAvailable mis à jour !!!!", this.totalAnswersAvailable);
 
 
+    // ne sert à rien une fois déployé
+    // const isMobile = window.innerWidth <= this.mobileBreakpoint;
 
-    const isMobile = window.innerWidth <= this.mobileBreakpoint;
-
-    if (isMobile) {
-      const nextAnchor = this.el.nativeElement.querySelector('a[name="next"]');
-      if (nextAnchor) {
-        const offset = nextAnchor.offsetTop - this.menuHeight;
-        window.scrollTo({ top: offset, behavior: 'smooth' });
-      }
-    }
+    // if (isMobile) {
+    //   const nextAnchor = this.el.nativeElement.querySelector('a[name="next"]');
+    //   if (nextAnchor) {
+    //     const offset = nextAnchor.offsetTop - this.menuHeight;
+    //     window.scrollTo({ top: offset, behavior: 'smooth' });
+    //   }
+    // }
 
   }
 

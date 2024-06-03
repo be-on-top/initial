@@ -2,7 +2,7 @@
 
     <!-- <h3>Quizz pour métier {{trade}}</h3> -->
 
-    <h3 *ngIf="title!==''" #next>Questionnaire {{title}}</h3>
+    <h3 *ngIf="title!==''">Questionnaire {{title}}</h3>
 
     <!-- <h4 class="fs-6">Id de l'étudiant récupéré : {{studentId}}</h4>
     <div class="alert alert-danger">fullOptScoring récupéré par le parent{{fullOptScoringTrue}} à comparer à
@@ -54,15 +54,14 @@
     <div *ngIf="questions[indexQuestion]  && !loading">
         <!-- <div *ngIf="questions[indexQuestion]"> -->
 
-        <div>
-            <a name="next"></a>
+        <!-- <div>             -->
             <app-details (resetCounter)="resetChildCounter()" [q]="questions[indexQuestion]"
                 [questionsMedias]="questionsMedias" [responsesMedias]="responsesMedias"
                 (hasBeenClicked)="answered($event)" [fullGoodAnswersClicked]="fullGoodAnswersClicked"
                 [fullAnswersClicked]="fullAnswersClicked" [totalAnswersAvailable]="totalAnswersAvailable"
                 [fullOptScoringTrue]="fullOptScoringTrue" (hasBeenUpdated)="updated($event)" [counter]="scoreCounter"
                 [studentCompetences]="studentCompetences" [totalQuestions]="totalQuestions"></app-details>
-        </div>
+        <!-- </div> -->
 
     </div>
 

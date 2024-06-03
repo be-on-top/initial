@@ -682,8 +682,8 @@ export class AccountComponent implements OnInit, OnDestroy {
   // }
 
   checkNotificationPermission(): boolean {
-    const permission = localStorage.getItem('notification-permission');
-    if (permission === 'granted') {
+    const localPermission = localStorage.getItem('notification-permission');
+    if (localPermission === 'granted') {
       return true
     }
     else { return false }

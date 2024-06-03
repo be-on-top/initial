@@ -14,7 +14,7 @@
     </div> -->
 
     <!-- {{questionsMedias.length | json}} -->
-    <p class="fs-6 mb-3"><span class="fw-bold"> QUESTION à + {{q.notation}} PNTS</span> - <span class="fw-bold">Bonne(s) réponse(s) attendue(s) : {{fullOptScoringTrue}}</span></p>
+    <p *ngIf="screenWidth>=575" class="fs-6 rounded bg-light"><span class="fw-bold"> Question à {{q.notation}} PNT(S)</span>. <span class="fw-bold">Bonne(s) réponse(s) attendue(s) : {{fullOptScoringTrue}}</span></p>
 
     <!-- <p class="fs-6 mt-3 bg-light p-2">Cette question peut vous rapporter <i class="bi bi-{{q.notation}}-square-fill fs-5"></i> PNTS</p> -->
     <!-- <p *ngIf="screenWidth>=575" class="fs-6 mt-3 bg-light p-2"><span class="fw-bold">Compétence évaluée :</span>
@@ -47,7 +47,7 @@
                     <!-- <div class="image-container" (touchstart)="handleTouch()"> -->
                     <div class="image-container">
                         <!-- <img #imageElement class="img-fluid bg-light image-zoomable" [src]="item"> -->
-                        <img #imageElement class="img-fluid w-100 p-1 rounded mt-3" [src]="item" (load)="onImageLoad()"
+                        <img #imageElement class="img-fluid w-100 p-1 rounded mt-2" [src]="item" (load)="onImageLoad()"
                             loading="lazy" [class.bg-primary]="!isLoading" [ngClass]="{'loading':isLoading}">
                     </div>
                 </ng-template>
@@ -59,7 +59,7 @@
     <!-- fin de la question -->
 
     <!-- début des réponses -->
-    <div class="p-3 row justify-content-between align-items-end w-100 pb-0">
+    <div class="p-2 row justify-content-between align-items-end w-100 pb-0">
 
         <div class="col-sm-6 rounded text-center choice mb-3" (click)="toggle(q.option1, q.optScoring1)">
             <button [ngClass]="{'bg-test':q.optScoring1==true, 'text-choiced':toggledStates[q.option1]}"

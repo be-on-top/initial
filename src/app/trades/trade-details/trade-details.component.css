@@ -10,6 +10,10 @@
 
 /* pour les cas où le bouton est un btn-primary et puisque je veux tenter de l'assombrir au survolbub */
 
+.btn.btn-transparent {
+  font-size: 0.9rem ! important;
+
+}
 
 button.btn.btn-primary:hover {
   /* background-color: none; */
@@ -43,7 +47,7 @@ button.btn-primary:hover {
 @media only screen and (max-width:575px) {
 
   .btn.btn-transparent {
-    font-size: 1rem ! important;
+    /* font-size: 0.9rem ! important; */
     /* text-decoration: underline; */
     border: 1px solid white;
   }
