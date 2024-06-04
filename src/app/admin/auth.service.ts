@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { getAuth, Auth, signInWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, sendPasswordResetEmail } from '@angular/fire/auth';
+import { Auth, signInWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, sendPasswordResetEmail } from '@angular/fire/auth';
 import { collection, Firestore } from '@angular/fire/firestore';
-import { ActivatedRoute, Router } from '@angular/router';
-import { stringify } from '@firebase/util';
+import { Router } from '@angular/router';
+// import { stringify } from '@firebase/util';
 // import { collection, Firestore } from '@angular/fire/firestore';
 
-import { BehaviorSubject, Observable, Subscription, switchMap } from 'rxjs';
+import { BehaviorSubject, Observable} from 'rxjs';
 import { EvaluatorsService } from './evaluators.service';
-import { setPersistence, browserSessionPersistence } from 'firebase/auth';
-import { ConsentService } from '../consent.service';
+// import { setPersistence, browserSessionPersistence } from 'firebase/auth';
+// import { ConsentService } from '../consent.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,18 +21,25 @@ export class AuthService {
   // rappel : on utilise par convention le suffixxe $ pour préciser que c'est un observable
   // user$ :Observable<any>;
 
-  constructor(private auth: Auth, private evaluatorService: EvaluatorsService, private firestore: Firestore, private router: Router, private consentService: ConsentService) {
-    const consent: boolean = consentService.getConsent()
-    if (!consent) {
-      // Configurer la persistance de session au moment de l'initialisation du service
-      setPersistence(auth, browserSessionPersistence)
-        .then(() => {
-          console.log('Session persistence set successfully');
-        })
-        .catch((error) => {
-          console.error('Error setting session persistence:', error);
-        });
-    }
+  constructor(
+    private auth: Auth, 
+    private evaluatorService: EvaluatorsService, 
+    private firestore: Firestore, 
+    private router: Router 
+    // private consentService: ConsentService
+  ) {
+    // si finalement, on ne détériore pas l'expérience utilisateur de celui qui n'a pas consenti à l'utilation de cookies
+    // const consent: boolean = consentService.getConsent()
+    // if (!consent) {
+    //   // Configurer la persistance de session au moment de l'initialisation du service
+    //   setPersistence(auth, browserSessionPersistence)
+    //     .then(() => {
+    //       console.log('Session persistence set successfully');
+    //     })
+    //     .catch((error) => {
+    //       console.error('Error setting session persistence:', error);
+    //     });
+    // }
 
   }
 
