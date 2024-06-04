@@ -1,4 +1,5 @@
 import { Component, ViewChild, ViewContainerRef, AfterViewInit, OnInit } from '@angular/core';
+import { setAnalyticsCollectionEnabled, Analytics } from '@angular/fire/analytics';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,10 @@ export class AppComponent implements OnInit, AfterViewInit {
   consentReaded: boolean = false;
 
   @ViewChild('banner', { read: ViewContainerRef }) vc1!: ViewContainerRef;
+
+  constructor(private analytics:Analytics){
+
+  }
 
   ngOnInit(): void {
     this.checkUserConsent();
@@ -31,6 +36,11 @@ export class AppComponent implements OnInit, AfterViewInit {
       this.consentReaded = true;
     }
 
+    if (consentValue==="false") {
+      console.log('consentement refusé');
+      setAnalyticsCollectionEnabled(this.analytics, false)      
+    }
+
     // Configuration des options pour désactiver la collecte analytic
     this.disableAnalytics();
   }
@@ -41,6 +51,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   disableAnalytics(): void {
+    // setAnalyticsCollectionEnabled(this.analytics, false)
     // Set cookies with SameSite=None; Secure attributes
     document.cookie = '__Secure-3PAPISID=value; SameSite=None; Secure';
     document.cookie = '__Secure-3PSID=value; SameSite=None; Secure';
