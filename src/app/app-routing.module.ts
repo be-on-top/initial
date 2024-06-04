@@ -10,7 +10,7 @@ import { TradeDetailsComponent } from './trades/trade-details/trade-details.comp
 import { AuthGuardService } from './auth-guard.service';
 import { RgpdComponent } from './rgpd/rgpd.component';
 import { PartnersComponent } from './partners/partners.component';
-import { historyGuard } from './guards/hystory.guard';
+import { historyGuard } from './guards/history.guard';
 
 // const routes: Routes = [
 //   { path: 'home', component: HomeComponent, pathMatch: 'full', canActivate: [AuthGuardService] },
