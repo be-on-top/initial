@@ -198,7 +198,7 @@
         <!-- fin estimation seule -->
 
         <!-- bouton d'accès au formulaire de préinscription administrative -->
-        <div class="card" *ngIf="isOneQuizzAchieved==true">
+        <div class="card" *ngIf="isOneQuizzAchieved==true && !userData.isInnerStudent">
             <div class="card-header bg-primary d-flex justify-content-between">
                 <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseFor">
                     Inscription Formation

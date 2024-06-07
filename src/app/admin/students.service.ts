@@ -34,7 +34,7 @@ export class StudentsService {
 
 
       // let newEvaluator = { id: Date.now(), ...evaluator };
-      let newStudent = { created: Date.now(), status: true, trainer: "Attribué ultérieurement", ...student };
+      let newStudent :Student = { created: Date.now(), status: true, trainer: "Attribué ultérieurement", innerStudent:true, ...student };
       // on va lui affecter un password aléatoire en fonction de la date
       // let password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
       // juste le temps du test, let password sera le même pour tous : password
@@ -46,7 +46,7 @@ export class StudentsService {
       if (result && result.user) {
         // const { uid, emailVerified } = this.result.user;
         newStudent.id = result.user.uid
-        delete newStudent.studentPw;
+        // delete newStudent.studentPw;
 
         // on ajoute à la collection
         let studentsRef = collection(this.firestore, "students");
