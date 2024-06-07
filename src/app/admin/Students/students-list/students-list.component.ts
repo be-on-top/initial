@@ -3,6 +3,8 @@ import { StudentsService } from '../../students.service';
 import { Student } from '../student';
 import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs';
+import { SettingsService } from '../../settings.service';
+import { Trade } from '../../trade';
 
 @Component({
   selector: 'app-students-list',
@@ -18,9 +20,12 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   // on le prépare à recevoir un terme de recherche
   searchText: string = ''
 
+  // pour récupérer les métiers et en faire des filtres
+  trades:string[]=[]
+
   // on pourrait avoir directement dans le template une méthode  pour réinitialiser le composant
 
-  constructor(private service: StudentsService, private activatedRoute: ActivatedRoute) {
+  constructor(private service: StudentsService, private activatedRoute: ActivatedRoute, private tradeService:SettingsService) {
     this.userRouterLinks = this.activatedRoute.snapshot.data;
   }
 
@@ -30,6 +35,11 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    this.tradeService.getTrades().subscribe(data=>{
+      data.forEach(element => {
+        this.trades.push(element.sigle)        
+      });
+    })
 
   }
 
@@ -103,6 +113,8 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   isSocialFormSentFilter: boolean = false;
   isSubscriptionFilter: boolean = false
   initialStudents: any[] = []; // Copie initiale des étudiants
+  isTradeFilter:boolean = false
+  tradesActivated:boolean=false
 
   // applyFilters() {
   //   // Restaurer l'état initial avant de filtrer
@@ -120,13 +132,17 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   //   this.applyFilters();
   // }
 
-  applyFilters() {
+  applyFilters(trade?:string) {
     if (this.isSocialFormSentFilter) {
       this.allStudents = this.initialStudents.filter(student => student.isSocialFormSent);
     } else if (this.isSubscriptionFilter) {
       this.allStudents = this.initialStudents.filter(student => student.subscriptions);
+      this.tradesActivated=true
+    } else if (this.isTradeFilter) {
+      this.allStudents = this.initialStudents.filter(student => student.subscriptions && student.subscriptions.includes(trade));
     } else {
       this.allStudents = [...this.initialStudents];
+      this.tradesActivated=false
     }
   }
 
@@ -138,6 +154,11 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   onCheckboxChangeSubscriptions(event: any) {
     this.isSubscriptionFilter = event.target.checked;
     this.applyFilters();
+  }
+
+  onCheckboxChangeTrades(event: any, trade:string) {
+    this.isTradeFilter = event.target.checked;
+    this.applyFilters(trade);
   }
 
 

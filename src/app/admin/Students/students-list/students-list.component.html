@@ -2,7 +2,7 @@
 
     <h3 *ngIf="userRouterLinks.user=='admin' || userRouterLinks.user=='referent'">Gestion des candidats (apprenants)
     </h3>
-    <h3 *ngIf="userRouterLinks.user=='external'">Annuaire étudiants certifiés (qualifiés)</h3>
+    <h3 *ngIf="userRouterLinks.user=='external'">Annuaire étudiants</h3>
     <!-- <hr> -->
     <div *ngIf="(!allStudents)">
         ...loading
@@ -12,19 +12,28 @@
         <!-- on introduit un champ de recherche -->
         <app-search (searchTextChanged)="onSearchTextEntered($event)"></app-search>
 
-        <div class="row mt-2 text-secondary justify-content-around">
+        <div class="row mt-3 text-secondary justify-content-between">
             <p class="col-md-6">Activer un filtre additionnel</p>
             <div class="col-md-6">
-                <div class="form-check ">
-                    <label class="form-check-label" for="socialCheckbox"> Formulaire administratif renseigné</label>
+                <div class="form-check" *ngIf="userRouterLinks.user!=='external'">
+                    <label class="form-check-label" for="socialCheckbox">Formulaire administratif renseigné</label>
                     <input type="checkbox" (change)="onCheckboxChangeSocial($event)" class="form-check-input"
                         id="socialCheckbox">
                 </div>
                 <div class="form-check">
-                    <label class="form-check-label" for="subscriptionsCheckbox"> Inscription finalisée</label>
+                    <label class="form-check-label" for="subscriptionsCheckbox">Inscription finalisée</label>
                     <input type="checkbox" (change)="onCheckboxChangeSubscriptions($event)" class="form-check-input"
-                        id="subscriptionsCheckbox">
+                    id="subscriptionsCheckbox">
                 </div>
+                <!-- <ng-container *ngIf="tradesActivated"> -->
+                    <div *ngFor="let trade of trades">
+                        <div class="form-check">
+                            <label class="form-check-label" for="tradeCheckbox"> {{trade}}</label>
+                            <input type="checkbox" (change)="onCheckboxChangeTrades($event, trade)" class="form-check-input">
+                        </div>
+                    </div>
+                <!-- </ng-container> -->
+
                 <hr class="border-secondary">
             </div>
 
@@ -76,11 +85,12 @@
             </ng-template>
 
         </div>
-        <button class="btn btn-primary mt-5"><a
+        <!-- {{userRouterLinks.user}} -->
+        <button class="btn btn-primary mt-5" *ngIf="userRouterLinks.user!=='external'"><a
                     [routerLink]="['/admin/addStudent']" class="text-white"><i class="bi bi-person-fill-add me-2"></i>Ajouter</a></button>
         
 
-        <div class="row gap-3">
+        <div class="row gap-3" *ngIf="userRouterLinks.user!=='external'">
             <button class="btn btn-primary mt-5 col-10 col-md-5" (click)="exportStudentsCollection()"><i
                     class="bi bi-box-arrow-down me-3"></i>Export au format JSON de la collection</button>
             <button class="btn btn-primary mt-5 col-10 col-md-5" (click)="exportCollectionAsCSV()"><i
