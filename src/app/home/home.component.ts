@@ -14,7 +14,7 @@ import { StudentsService } from '../admin/students.service';
 // import { Student } from '../admin/Students/student';
 import { UpdateService } from '../update.service';
 import { Subject, distinctUntilChanged, map, takeUntil } from 'rxjs';
-import { NetworkService } from '../network.service';
+// import { NetworkService } from '../network.service';
 import { PRECONNECT_CHECK_BLOCKLIST } from '@angular/common';
 import { Analytics, logEvent } from '@angular/fire/analytics';
 // import { DomSanitizer } from '@angular/platform-browser';
@@ -109,12 +109,12 @@ export class HomeComponent implements OnInit {
     private settingsService: SettingsService,
     private updateService: UpdateService,
     private titleService: Title,
-    private networkService: NetworkService,
+    // private networkService: NetworkService,
     private analytics: Analytics
     // private networkService: NetworkService
   ) {
 
-    // this.offline = !navigator.onLine
+    this.offline = !navigator.onLine
 
     // Si on passe par networkService pour une détection plus rapide
     // this.networkService.getOnlineStatus().subscribe(online => {
@@ -131,16 +131,16 @@ export class HomeComponent implements OnInit {
 
     this.titleService.setTitle('Accueil - BE-ON-TOP formation application'); // Mettre à jour le titre de la page
 
-    this.networkService.getOnlineStatus()
-      .pipe(
-        takeUntil(this.destroy$),
-        distinctUntilChanged()
-      )
-      .subscribe(online => {
-        if (!online) {
-          this.offline = true
-        }
-      });
+    // this.networkService.getOnlineStatus()
+    //   .pipe(
+    //     takeUntil(this.destroy$),
+    //     distinctUntilChanged()
+    //   )
+    //   .subscribe(online => {
+    //     if (!online) {
+    //       this.offline = true
+    //     }
+    //   });
 
 
     // window.addEventListener('online', () => {   

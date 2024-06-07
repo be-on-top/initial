@@ -2,7 +2,7 @@
 
     <!-- <h3>{{tradeData.denomination}}</h3> -->
     <div class="p-2 bg-primary text-white rounded row fade show mx-1">
-        <h1 class="d-flex justify-content-between">{{tradeData.denomination}} <app-share-button></app-share-button></h1>
+        <h1 class="d-flex justify-content-between mt-3">{{tradeData.denomination}} <app-share-button></app-share-button></h1>
 
         <div class="col-md-7">
             <p class="fs-5 mt-3">
@@ -68,8 +68,10 @@
                     <!-- ---------------- -->
                 </a>
                 <div class="d-flex justify-content-md-end" *ngIf="isEvaluationCompleted">
+                    <a [routerLink]="['/account']">
                     <div class="btn btn-transparent border-0 ps-0 text-light"><i class="bi bi-check-square-fill"></i>
                         Votre évaluation est terminée</div>
+                    </a>
                 </div>
             </div>
         </ng-template>

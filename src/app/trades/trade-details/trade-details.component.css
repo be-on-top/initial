@@ -4,6 +4,10 @@
   font-size: 1.08rem;
 }
 
+h1 {
+  font-size: 2rem;
+}
+
 .d-flex button:hover {
   transform: scale(1.05);
 }
@@ -44,6 +48,12 @@ button.btn-primary:hover {
   object-fit: cover;
 }
 
+@media only screen and (max-width:992px) {
+  h1 {
+    font-size: 1.8rem;
+  }
+}
+
 @media only screen and (max-width:575px) {
 
   .btn.btn-transparent {
@@ -58,11 +68,12 @@ button.btn-primary:hover {
 
   }
 
-  .btn.btn-transparent.border-0{
+  .btn.btn-transparent.border-0 {
     border: 0;
   }
 
-  .card-body p, .card-body span{
+  .card-body p,
+  .card-body span {
     font-size: 1rem !important;
 
   }

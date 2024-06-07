@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 // je ne vois pas l'utilité de cette méthode pour le moment, donc on désactive !!!!
 // import { loggedIn } from '@angular/fire/auth-guard';
 import { Auth } from '@angular/fire/auth';
@@ -17,7 +17,7 @@ import { getMessaging, getToken, onMessage } from "@angular/fire/messaging";
 import { PushNotificationService } from '../push-notification.service';
 import { Evaluation } from '../admin/evaluation';
 import { SettingsService } from '../admin/settings.service';
-import { Observable, forkJoin, combineLatest, concatMap, toArray, tap, takeUntil, Subject, take, of } from 'rxjs';
+import { Observable, takeUntil, Subject, take, of } from 'rxjs';
 import { ConsentService } from '../consent.service';
 import { NetworkService } from '../network.service';
 
@@ -95,6 +95,9 @@ export class AccountComponent implements OnInit, OnDestroy {
   // pour la gestion du consentement à l'utilisation des cookies
   consentStatus: boolean;
 
+  // pour détecter online et offline moins rapidement que NetWorkService
+  offline: boolean = false
+
   constructor(
     private auth: Auth,
     // private firestore: Firestore, 
@@ -115,15 +118,25 @@ export class AccountComponent implements OnInit, OnDestroy {
 
     // Initialiser l'état du consentement en récupérant la valeur depuis le service
     this.consentStatus = this.consentService.getConsent()
+
+    // Si au lieu d'utiliser networkService pour regiriger illico 
+    // on laisse les données en cache s'afficher
+    this.offline = !navigator.onLine
   }
 
   ngOnInit(): void {
-    this.networkService.getOnlineStatus().subscribe(online => {
-      if (!online) {
-        alert("Vous n'avez plus de connexion. L'application vient de passer en mode lecture hors connexion. ")
-        this.router.navigate(['/home']); // Rediriger vers la page d'accueil lorsque hors ligne
-      }
-    });
+
+    if (this.offline) {
+      alert("Sans connexion réseau vous ne pouvez pas accéder aux dernières mises à jour de vos données. ")
+      this.router.navigate(['/home'])
+    }
+
+    // this.networkService.getOnlineStatus().subscribe(online => {
+    //   if (!online) {
+    //     alert("Vous n'avez plus de connexion. L'application vient de passer en mode lecture hors connexion. ")
+    //     this.router.navigate(['/home']); // Rediriger vers la page d'accueil lorsque hors ligne
+    //   }
+    // });
     // this.requestNotificationPermission();
     onAuthStateChanged(this.auth, (user: any) => {
       if (user) {
@@ -131,76 +144,22 @@ export class AccountComponent implements OnInit, OnDestroy {
 
         this.studentService.getStudentById(user.uid)
           .pipe(
-            take(1),
+            // take(1),
             takeUntil(this.destroy$)) // Utilisation de takeUntil ici
           .subscribe(data => {
             // console.log("userData from students 0...", data);
             this.userData = data;
             // this.lastIndex = Number(this.userData.lastIndexQuestion);
 
-            // Logique pour obtenir tradesEvaluated
-            for (const key in this.userData) {
-              // console.log('key', key.includes('quizz'));
-
-              if (key.includes('quizz')) {
-                // on peut rajouter hasStartedEvaluation pour conditionner l'affichage de l'onglet QCMS et résulats
-                this.hasStartedEvaluation = true;
-                this.tradesEvaluated.push(key);
-              }
-            }
-
-            console.log("this.tradesEvaluated after loop:", this.tradesEvaluated);
-
-            // Logique pour obtenir les compétences pour chaque tradeId
-            this.tradesEvaluated.forEach(tradeId => {
-              this.settingsService.getCompetences(tradeId).subscribe(competences => {
-                // Ajoutez les compétences dans l'objet trades
-                this.trades[tradeId] = competences;
-                // Loguez les compétences dans la console
-                console.log(`${tradeId}:`, competences);
-              });
-            });
-
-            // Logique pour récupérer isOneQuizzAchieved
-            const achievedArray: any = [];
-            for (const item of this.tradesEvaluated) {
-              this.userData[item].fullResults ? achievedArray.push(item) : '';
-              achievedArray.length > 0 ? this.isOneQuizzAchieved = true : false;
-
-            }
-
-            // Logique pour trier les résultats
-            for (const item of this.tradesEvaluated) {
-              if (this.userData[item].fullResults) {
-
-                this.userData[item].fullResults.sort((a: any, b: any) => {
-                  const keyA = Object.keys(a)[0];
-                  const keyB = Object.keys(b)[0];
-                  return keyA.localeCompare(keyB);
-                });
-
-                // et c'est là qu'on pourrait rajouter 
-                const relatedResults = this.userData[item].fullResults
-                this.updateTotalCost(relatedResults)
-
-              }
-            }
-
-            // Logique pour récupérer evaluations
-            if (this.userData.evaluations) {
-              this.evaluations = this.userData.evaluations;
-            }
-
-            // Logique pour récupérer le suivi tutorial
-            if (this.userData.tutorials) {
-              this.tutorials = this.userData.tutorials;
-            }
-
-            this.triggerContextualNotification()
-
+            this.processStudentData();
           });
       }
-    });
+    })
+
+
+
+
+
 
     // this.authService.getToken()?.then(res => console.log("token authentification depuis authService", res.token));
 
@@ -694,9 +653,64 @@ export class AccountComponent implements OnInit, OnDestroy {
     localStorage.setItem('notification-permission', this.notificationPermissionGranted ? 'granted' : 'denied');
   }
 
+
+  private processStudentData(): void {
+    if (!this.userData) return;
+
+    // Logique pour obtenir tradesEvaluated
+    this.tradesEvaluated = [];
+    for (const key in this.userData) {
+      if (key.includes('quizz')) {
+        this.hasStartedEvaluation = true;
+        this.tradesEvaluated.push(key);
+      }
+    }
+
+    // Logique pour obtenir les compétences pour chaque tradeId
+    this.tradesEvaluated.forEach(tradeId => {
+      this.settingsService.getCompetences(tradeId)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(competences => {
+          this.trades[tradeId] = competences;
+        });
+    });
+
+    // Logique pour récupérer isOneQuizzAchieved
+    const achievedArray: any[] = [];
+    for (const item of this.tradesEvaluated) {
+      if (this.userData[item].fullResults) {
+        achievedArray.push(item);
+        this.isOneQuizzAchieved = true;
+      }
+    }
+
+    // Logique pour trier les résultats
+    for (const item of this.tradesEvaluated) {
+      if (this.userData[item].fullResults) {
+        this.userData[item].fullResults.sort((a: any, b: any) => {
+          const keyA = Object.keys(a)[0];
+          const keyB = Object.keys(b)[0];
+          return keyA.localeCompare(keyB);
+        });
+        const relatedResults = this.userData[item].fullResults;
+        this.updateTotalCost(relatedResults);
+      }
+    }
+
+    // Logique pour récupérer evaluations
+    if (this.userData.evaluations) {
+      this.evaluations = this.userData.evaluations;
+    }
+
+    // Logique pour récupérer le suivi tutorial
+    if (this.userData.tutorials) {
+      this.tutorials = this.userData.tutorials;
+    }
+
+    this.triggerContextualNotification();
+  }
+
+
+
+
 }
-
-
-
-
-

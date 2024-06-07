@@ -16,7 +16,11 @@
     <!-- fin tests de notification desktop -->
 
 
-
+    <!-- <div *ngIf="isLoading" class="d-flex justify-content-center mt-5">
+        <div class="spinner-border text-success" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div> -->
     <!-- test alert-dismissible for mission -->
     <ng-container *ngIf="user==undefined || (!isLoading && !isOneQuizzAchieved); else yes">
         <div *ngIf="!isLoading && !isOneQuizzAchieved && !offline"
@@ -139,10 +143,12 @@
                                 </div>
                             </a>
                             <div class="d-flex justify-content-end" *ngIf="checkQuizzCondition(trade)">
+                                <a [routerLink]="['/account']">
                                 <div class="btn btn-transparent border-0">
                                     <i class="bi bi-check-square-fill text-success"></i>
                                     Votre évaluation est terminée
                                 </div>
+                            </a>
                             </div>
                         </ng-container>
 

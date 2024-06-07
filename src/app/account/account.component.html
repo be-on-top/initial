@@ -186,8 +186,7 @@
                           <em *ngIf="trades[trade]" class="text-primary fs-6">{{ trades[trade][i] }}</em>
                         </ng-container>
                         <hr *ngIf="lastEstimate">
-                        <p *ngIf="lastEstimate" class="fw-bold mb-5">Total : {{ calculateSubtotal(trade) }} / {{ calculateTotalTime(trade) | json }}
-                          heures de formation pour {{ calculateSubtotalCost(trade) }} / {{ calculateTotalCost(trade) | json }}€</p>
+                        <div *ngIf="lastEstimate"><span class="fw-bolder mb-5">Total estimé: </span>{{ calculateSubtotal(trade) }}h/{{ calculateTotalTime(trade) | json }}h <span class="fw-bolder mb-5">de formation pour</span> {{ calculateSubtotalCost(trade) }}€/{{ calculateTotalCost(trade) | json }}€ (moyenne nationale)</div>
                       </div>
                     </div>
                   </div>
@@ -540,8 +539,5 @@
       <label class="form-check-label" for="notificationConsent">Modifier le consentement aux notifications</label>
     </div>
     
-    
-    
-
-
+ 
 </div>
