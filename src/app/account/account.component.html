@@ -1,6 +1,7 @@
 <div class="container py-5">
 
     <h3>Votre compte BE-ON-TOP</h3>
+    <!-- <p>{{ 1.75 | duration }}</p>  -->
 
     <p class="bg-primary text-light p-2 my-3 fs-4 fw-light rounded">Bonjour et bienvenue <span
             class="text-capitalize">{{userData.firstName}}</span></p>
@@ -175,18 +176,19 @@
                   <div *ngFor="let trade of tradesEvaluated; let last=last">
                     <div class="mb-3" *ngIf="userData[trade].fullResults">
                       <p class="card-text">Métier concerné : <span class="fw-bold">{{ getDenomination(trade) | async }}</span></p>
-                      <div class="card-text mb-0" *ngFor="let result of getSortedResults(trade); let lastEstimate=last; let i = index">
+                      <div class="card-text" *ngFor="let result of getSortedResults(trade); let lastEstimate=last; let i = index">
                         <ng-container *ngFor="let item of objectEntries(result)">
                           <div class="d-flex align-items-center">
                             <span class="fw-bold">{{ item[0] }}</span>
                             <i class="bi fs-4 bi-arrow-right-short"></i>
-                            <span class="fw-bolder">Durée :</span> {{ item[1].duration }}h.
-                            <span class="fw-bolder"> Coût :</span> {{ item[1].cost }}€
+                            <span class="fw-bolder">Durée: </span>{{ item[1].duration | duration }}.
+                            <!-- attention si on fait du fractionné à l'enregistrement, faire un arrondi à la restitution ici -->
+                            <span class="fw-bolder"> Coût: </span>{{ item[1].cost | round }}€
                           </div>
                           <em *ngIf="trades[trade]" class="text-primary fs-6">{{ trades[trade][i] }}</em>
                         </ng-container>
                         <hr *ngIf="lastEstimate">
-                        <div *ngIf="lastEstimate"><span class="fw-bolder mb-5">Total estimé: </span>{{ calculateSubtotal(trade) }}h/{{ calculateTotalTime(trade) | json }}h <span class="fw-bolder mb-5">de formation pour</span> {{ calculateSubtotalCost(trade) }}€/{{ calculateTotalCost(trade) | json }}€ (moyenne nationale)</div>
+                        <div *ngIf="lastEstimate" class="mb-5"><span class="fw-bolder">Total estimé: {{ calculateSubtotal(trade) | duration }}</span>/{{ calculateTotalTime(trade) | duration }} <span class="fw-bolder">de formation</span> pour <span class="fw-bolder">{{ calculateSubtotalCost(trade) }}€</span>/{{ calculateTotalCost(trade) | json }}€ (moyenne nationale)</div>
                       </div>
                     </div>
                   </div>

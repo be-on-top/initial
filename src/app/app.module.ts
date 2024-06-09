@@ -46,6 +46,8 @@ import { RgpdComponent } from './rgpd/rgpd.component';
 import { PartnersComponent } from './partners/partners.component';
 import { ShareButtonComponent } from './share-button/share-button.component';
 import { NgOptimizedImage } from '@angular/common';
+import { DurationPipe } from './duration.pipe';
+import { RoundPipe } from './round.pipe';
 // import { AutoChangeDirective } from './auto-change.directive';
 
 // import { getMessaging } from 'firebase/messaging';
@@ -75,6 +77,8 @@ import { NgOptimizedImage } from '@angular/common';
     RgpdComponent,
     PartnersComponent,
     ShareButtonComponent,
+    DurationPipe,
+    RoundPipe,
     // AutoChangeDirective,
     // TooltipComponent
   ],

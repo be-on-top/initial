@@ -539,7 +539,11 @@ export class AccountComponent implements OnInit, OnDestroy {
         }
       }
     }
-    return subtotalCost
+    // return subtotalCost
+    // Arrondir le résultat final à deux décimales
+    // return parseFloat(subtotalCost);
+    // Arrondir le résultat final à l'entier le plus proche
+    return Math.round(subtotalCost);
   }
 
 
@@ -590,7 +594,7 @@ export class AccountComponent implements OnInit, OnDestroy {
     }
 
     // return maxTotalCost;
-    
+
     // Arrondir le résultat final à deux décimales
     // return parseFloat(maxTotalCost.toFixed(2));
     // Arrondir le résultat final à l'entier le plus proche
