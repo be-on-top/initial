@@ -710,6 +710,9 @@ export class QuizzComponent implements OnInit {
     }
 
     return totalCost;
+    // pour être certain de la gestion du fractionné (?)
+    // Arrondir le résultat final à deux décimales
+    // return parseFloat(totalCost.toFixed(2));
   }
 
 
