@@ -2,7 +2,7 @@
   "targets": {
       "be-on-top-beta": {
       "hosting": {
-        "my-first-project": [
+        "be-on-top": [
           "be-on-top-beta"
         ]
       }

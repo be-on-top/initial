@@ -1,7 +1,7 @@
 {
   "hosting": {
-    "target": "my-first-project",
-    "public": "dist/my-first-project",
+    "target": "be-on-top",
+    "public": "dist/be-on-top",
     "ignore": [
       "**/.*"
     ],
@@ -9,7 +9,6 @@
       {
         "source": "**/*.{js,html,css,json,ico,png,jpg,jpeg,svg,eot,ttf,woff,woff2}",
         "headers": [
-
           {
             "key": "Cache-Control",
             "value": "public, max-age=31536000, immutable"

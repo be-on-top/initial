@@ -1,6 +1,6 @@
 {
-  "name": "my-first-project",
-  "short_name": "my-first-project",
+  "name": "be-on-top",
+  "short_name": "be-on-top",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",

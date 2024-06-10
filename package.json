@@ -1,5 +1,5 @@
 {
-  "name": "my-first-project",
+  "name": "be-on-top",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "start-pwa": "ng build --configuration production && http-server -p 8080 -c-1 dist/my-first-project"
+    "start-pwa": "ng build --configuration production && http-server -p 8080 -c-1 dist/be-on-top"
   },
   "private": true,
   "dependencies": {
