@@ -25,6 +25,10 @@ button.btn.btn-primary:hover {
 
 }
 
+.secund{
+  border-bottom: 0;
+}
+
 button.btn-primary:hover {
   background-color: #0152d4 !important;
   /* background-image: linear-gradient(to right, rgb(27, 9, 106),  #0062fe); */
@@ -48,25 +52,45 @@ button.btn-primary:hover {
   object-fit: cover;
 }
 
+.btn.btn-transparent {
+  border: 1px solid white;
+}
+
+.btn.btn-transparent i {
+  margin-left: 10px;
+  margin-right: 10px;
+
+}
+
+.btn {
+  transition: .3s transform cubic-bezier(.155, 1.105, .295, 1.12), .3s box-shadow, .3s -webkit-transform cubic-bezier(.155, 1.105, .295, 1.12);
+  cursor: pointer;
+}
+
+
+.btn:hover {
+  transform: scale(1.07);
+  /* box-shadow: 0 10px 20px rgba(0, 0, 0, .12), 0 4px 8px rgba(0, 0, 0, .06); */
+} 
+
+
+
 @media only screen and (max-width:992px) {
   h1 {
     font-size: 1.8rem;
-  }
-}
-
-@media only screen and (max-width:575px) {
-
-  .btn.btn-transparent {
-    /* font-size: 0.9rem ! important; */
-    /* text-decoration: underline; */
-    border: 1px solid white;
   }
 
   .btn.btn-transparent i {
     margin-left: 8px;
     margin-right: 8px;
-
+  
   }
+}
+
+@media only screen and (max-width:575px) {
+
+
+
 
   .btn.btn-transparent.border-0 {
     border: 0;

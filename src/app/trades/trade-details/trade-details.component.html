@@ -2,7 +2,8 @@
 
     <!-- <h3>{{tradeData.denomination}}</h3> -->
     <div class="p-2 bg-primary text-white rounded row fade show mx-1">
-        <h1 class="d-flex justify-content-between mt-3">{{tradeData.denomination}} <app-share-button></app-share-button></h1>
+        <h1 class="d-flex justify-content-between mt-3">{{tradeData.denomination}} <app-share-button></app-share-button>
+        </h1>
 
         <div class="col-md-7">
             <p class="fs-5 mt-3">
@@ -10,11 +11,14 @@
                 <br>Nombre de compétences à valider: {{tradeData.competences.length}}.
                 <br>Durée maximale: {{firstValuesSum}} heures.
                 <!-- <br><span *ngIf="tradeData.rncp">Code RNCP : {{tradeData.rncp}}.</span> -->
-                <span class="d-block" *ngIf="tradeData.rncp"><a class="text-light" href="{{tradeData.rncp}}" target="_blank">Code RNCP (ou
+                <span class="d-block" *ngIf="tradeData.rncp"><a class="text-light" href="{{tradeData.rncp}}"
+                        target="_blank">Code RNCP (ou
                         RS)</a></span>
-                <span class="d-block" *ngIf="tradeData.isQualifying && tradeData.isQualifying==true">Formation Qualifiante !</span>
+                <span class="d-block" *ngIf="tradeData.isQualifying && tradeData.isQualifying==true">Formation
+                    Qualifiante !</span>
                 <br *ngIf="tradeData.requirements">
-                <span *ngIf="tradeData.requirements && tradeData.requirements!==''" class="text-light">Prérequis : {{tradeData.requirements}}</span>
+                <span *ngIf="tradeData.requirements && tradeData.requirements!==''" class="text-light">Prérequis :
+                    {{tradeData.requirements}}</span>
 
                 <!-- <p class="rounded bg-dark p-2 mt-2 small">Pour vérification du rôle récupéré : {{userRole}}</p> -->
                 <br>
@@ -25,7 +29,7 @@
         </div>
         <!-- il faut différencier le cas d'un userRole=none...  -->
         <div *ngIf="userRole==='none' else switch" class="col-md-5 text-white mt-md-5">
-            <p class="text-md-left fs-6">Afin de commencer un QCM, merci de <a [routerLink]="[
+            <p class="text-md-left fs-5">Afin de commencer un QCM, merci de <a [routerLink]="[
                 '/login']" class="text-white fw-bold">vous authentifier</a> ou <a [routerLink]="[
                 '/register']" class="text-white fw-bold">vous enregister</a></p>
 
@@ -45,16 +49,18 @@
                     <ng-container *ngIf="studentData && userRole!=='editor'">
                         <!-- ScoreCounter : {{ studentData['quizz_'+this.tradeData.sigle].scoreCounter | json }} -->
                         <!-- pour switcher d'un intitulé à un autre selon que studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle -->
-                        <div class="d-flex justify-content-md-end" *ngIf="hasStartedEvaluation==false, else none">
-                            <button class="btn btn-transparent ps-0"><i class="bi bi-clock"></i>
-                                Démarrer le questionnaire</button>
+                        <div class="d-flex justify-content-md-end"
+                            *ngIf="hasStartedEvaluation==false, else none">
+                            <p class="btn btn-transparent ps-0 fs-5 text-white"><i class="bi bi-clock"></i>
+                                Démarrer votre évaluation</p>
                         </div>
                         <ng-template #none>
                             <div class="d-flex justify-content-md-end"
-                                *ngIf="!studentData['quizz_'+this.tradeData.sigle].fullResults"><button
-                                    class="btn btn-transparent ps-0"><i class="bi bi-clock-history"></i>
+                                *ngIf="!studentData['quizz_'+this.tradeData.sigle].fullResults">
+                                <p class="btn btn-transparent ps-0 text-white fs-5"><i class="bi bi-clock-history"></i>
                                     <!-- Reprendre à la question {{studentData.lastIndexQuestion+1}}</button></div> -->
-                                    Poursuivre</button></div>
+                                    Poursuivre</p>
+                            </div>
 
                             <!-- <div class="d-flex justify-content-md-end"
                                 *ngIf="studentData['quizz_'+this.tradeData.sigle].fullResults"><button
@@ -69,8 +75,9 @@
                 </a>
                 <div class="d-flex justify-content-md-end" *ngIf="isEvaluationCompleted">
                     <a [routerLink]="['/account']">
-                    <div class="btn btn-transparent border-0 ps-0 text-light"><i class="bi bi-check-square-fill"></i>
-                        Votre évaluation est terminée</div>
+                        <div class="btn btn-transparent border-0 ps-0 text-light"><i
+                                class="bi bi-check-square-fill"></i>
+                            Votre évaluation est terminée</div>
                     </a>
                 </div>
             </div>
@@ -81,31 +88,37 @@
     {{tradeData | json}} -->
     <div class="mt-4 p-2">
         <!-- <img class="rounded img-fluid mb-2 border border-1 m-auto w-100" [src]="imageUrl" *ngIf="imageUrl"> -->
-        <img *ngIf="!offline" class="rounded img-fluid mb-2 border border-1 m-auto w-100" [src]="imageUrl" srcset="{{ imageUrlReduced }} 575w, {{ imageUrl }} 1024w" sizes="(max-width: 575px) 575px, 1024px" alt="formation au métier {{tradeId}}">
-        <img *ngIf="offline" class="rounded img-fluid mb-2 border border-1 m-auto w-100" [src]="imageUrl" alt="formation au métier {{tradeId}}">
+        <img *ngIf="!offline" class="rounded img-fluid mb-2 border border-1 m-auto w-100" [src]="imageUrl"
+            srcset="{{ imageUrlReduced }} 575w, {{ imageUrl }} 1024w" sizes="(max-width: 575px) 575px, 1024px"
+            alt="formation au métier {{tradeId}}">
+        <img *ngIf="offline" class="rounded img-fluid mb-2 border border-1 m-auto w-100" [src]="imageUrl"
+            alt="formation au métier {{tradeId}}">
 
     </div>
 
     <!-- à faire -->
     <div id="accordion">
         <div class="card p-2 border-0">
-    
-            <div class="card-header bg-primary">
-                <a (click)="toggleDescriptionCollapse()" class="btn text-light text-capitalize d-flex justify-content-between"  data-bs-toggle="collapse" href="#collapseDescription">
-                    Description <i [ngClass]="{'bi-caret-down-fill': isDescriptionCollapsed, 'bi-caret-up-fill': !isDescriptionCollapsed}" class="bi fs-4 text-light"></i></a>
+
+            <div class="card-header bg-primary pt-3">
+                <a (click)="toggleDescriptionCollapse()"
+                    class="btn text-light text-capitalize d-flex justify-content-between border-0"
+                    data-bs-toggle="collapse" href="#collapseDescription">
+                    Description <i
+                        [ngClass]="{'bi-caret-down-fill': isDescriptionCollapsed, 'bi-caret-up-fill': !isDescriptionCollapsed}"
+                        class="bi fs-4 text-light"></i></a>
             </div>
-    
+
             <div id="collapseDescription" class="collapse" data-bs-parent="#accordion">
                 <div class="card-body">
-    
+
                     <ng-container *ngIf="tradeData.description">
                         <div class="p-2 trade" [innerHTML]="sanitizer.bypassSecurityTrustHtml(tradeData.description)">
                         </div>
                         <!-- et pour avoir accès au lien d'édition -->
                         <div *ngIf="userRole=='editor'" class="d-flex justify-content-end text mt-3">
                             <button class="btn btn-primary">
-                                <a class="text-white"
-                                    [routerLink]="['/admin/updateDescription', tradeData.sigle]">
+                                <a class="text-white" [routerLink]="['/admin/updateDescription', tradeData.sigle]">
                                     <i class="bi bi-pencil-square"></i>
                                     Editer</a>
                             </button>
@@ -127,25 +140,28 @@
                                 </div>
                             </div>
                             <!-- fin de l'option édition avec modale -->
-    
+
                         </div>
                     </ng-container>
                     <!-- </div> -->
-    
+
                 </div>
             </div>
-    
-    
+
+
             <!-- 2 -->
-    
-            <div class="card-header bg-primary">
-                <a (click)="toggleCPCollapse()" class="btn text-light text-capitalize d-flex justify-content-between" data-bs-toggle="collapse" href="#collapseCP">
-                    Compétences <i [ngClass]="{'bi-caret-down-fill': !isCPCollapsed, 'bi-caret-up-fill': isCPCollapsed}" class="bi fs-4 text-light"></i></a>
+
+            <div class="card-header secund bg-primary pb-0">
+                <a (click)="toggleCPCollapse()"
+                    class="btn text-light text-capitalize d-flex justify-content-between border-0"
+                    data-bs-toggle="collapse" href="#collapseCP">
+                    Compétences <i [ngClass]="{'bi-caret-down-fill': !isCPCollapsed, 'bi-caret-up-fill': isCPCollapsed}"
+                        class="bi fs-4 text-light"></i></a>
             </div>
-    
+
             <div id="collapseCP" class="collapse show" data-bs-parent="#accordion">
-                <div class="card-body mt-4 p-4 bg-primary text-white rounded">
-    
+                <div class="card-body mt-0 px-4 bg-primary text-white border-0">
+
                     <!-- deuxième onglet -->
                     <!-- <div class="mt-4 p-5 bg-primary text-white rounded"> -->
                     <ng-container *ngIf="tradeData.competences">
@@ -154,13 +170,15 @@
                         </p>
                     </ng-container>
                     <!-- </div> -->
-    
+
                 </div>
             </div>
-    
+            <!-- div juste pour l'arrondi -->
+            <div class="rounded-bottom p-1 bg-primary"></div>
+
         </div>
     </div>
-    
+
 
 
 

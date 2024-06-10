@@ -32,7 +32,7 @@ button.btn-transparent {
 .card {
     /* box-shadow: 0 6px 10px rgba(0, 0, 0, .08), 0 0 6px rgba(0, 0, 0, .05); */
     transition: .3s transform cubic-bezier(.155, 1.105, .295, 1.12), .3s box-shadow, .3s -webkit-transform cubic-bezier(.155, 1.105, .295, 1.12);
-    cursor:none;
+    cursor: none;
 }
 
 .card-text a {
@@ -77,6 +77,18 @@ hr {
 .image-container img {
     z-index: 2;
     /* Assurez-vous que l'image est au-dessus du pseudo-élément */
+}
+
+
+.loading {
+    display: flex;
+    /* background-color: black; */
+    justify-content: center;
+    align-items: center;
+    height: 25vh;
+    /* 25% de la hauteur de la fenêtre */
+    width: 100%;
+    /* Conserver le ratio 1:1 pour un cercle */
 }
 
 
