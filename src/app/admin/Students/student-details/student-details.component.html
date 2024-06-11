@@ -208,7 +208,8 @@
                 <!-- si on a plusieurs inscriptions potentielles, pour bien faire, va falloir boucler sur l'ensemble -->
                 <ng-container *ngIf="student.subscriptions">
                     <div *ngFor="let subscription of student.subscriptions, let m=index" class="px-2">
-                        <div class="alert bg-light alert-light d-flex justify-content-between my-2 gap-5">
+                       <!-- {{ getFilteredEvaluationsForSubscription(subscription) | json}} -->
+                        <div *ngIf="getFilteredEvaluationsForSubscription(subscription).length!==0" class="alert bg-light alert-light d-flex justify-content-between my-2 gap-5">
                             Formation au métier de {{ getDenomination(subscription) | async }}
                             <span>{{m+1}}</span>
                         </div>
@@ -348,7 +349,7 @@
 
                 <!-- si on a plusieurs inscriptions potentielles, pour bien faire, va falloir boucler sur l'ensemble -->
                 <ng-container *ngFor="let subscription of student.subscriptions, let m=index">
-                    <div class="alert bg-light alert-light d-flex justify-content-between mb-2">
+                    <div *ngIf="getFilteredTutorialsForSubscription(subscription).length!==0" class="alert bg-light alert-light d-flex justify-content-between mb-2">
                         Formation au métier de {{ getDenomination(subscription) | async }}
                         <span>{{m+1}}</span>
                     </div>

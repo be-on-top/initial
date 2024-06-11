@@ -215,6 +215,12 @@
                         <p class="card-text d-inline fw-bold" *ngFor="let subscription of userData.subscriptions">
                             {{subscription}}</p>
                     </div>
+                    <!-- fin de formations -->
+                    <div class="card-text" *ngIf="userData.endedSubscriptions">Formation terminée pour :
+                        <p class="card-text d-inline"><span class="fw-bold">
+                            {{userData.endedSubscriptions.sigle}}en date du {{userData.endedSubscriptions.date}}</span> </p>
+                    </div>
+
                     <!-- lien e-learning -->
                     <p *ngIf="userData.elearning" class="card-text mt-3"><a
                             class="text-decoration-none text-dark fw-bold" target="_blank"
