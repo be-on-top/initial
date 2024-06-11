@@ -115,6 +115,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   initialStudents: any[] = []; // Copie initiale des étudiants
   isTradeFilter:boolean = false
   tradesActivated:boolean=false
+  isQualifiedFilter:boolean=false
 
   // applyFilters() {
   //   // Restaurer l'état initial avant de filtrer
@@ -140,6 +141,8 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       this.tradesActivated=true
     } else if (this.isTradeFilter) {
       this.allStudents = this.initialStudents.filter(student => student.subscriptions && student.subscriptions.includes(trade));
+    } else if (this.isQualifiedFilter) {
+      this.allStudents = this.initialStudents.filter(student => student.endedSubscriptions);
     } else {
       this.allStudents = [...this.initialStudents];
       this.tradesActivated=false
@@ -159,6 +162,11 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   onCheckboxChangeTrades(event: any, trade:string) {
     this.isTradeFilter = event.target.checked;
     this.applyFilters(trade);
+  }
+
+  onCheckboxChangeEndedTraining(event: any) {
+    this.isQualifiedFilter = event.target.checked;
+    this.applyFilters();
   }
 
 

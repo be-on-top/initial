@@ -32,6 +32,14 @@ export class AddFollowUpComponent implements OnInit {
   selectedSigle: string = ""
   relatedCompetences: any = []
   levels: string[] = ['beginner', 'intermediate', 'advance', 'pro']
+  // pour traduire en bon français
+  levelTranslations: { [key: string]: string } = {
+    'beginner': 'débutant',
+    'intermediate': 'intermédiaire',
+    'advance': 'avancé',
+    'pro': 'acquise'
+  }
+
   fullName: string = ""
   // si trades devait se baser à terme sur subscriptions exclusivement, on peut se passer de :
   // subscriptions?: any

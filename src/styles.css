@@ -26,7 +26,7 @@ body {
 
 }
 
-h1{
+h1 {
     font-weight: 400;
 }
 
@@ -66,12 +66,30 @@ h3::before {
 } */
 
 
-li.nav-item.dropdown.active a {
+li.nav-item.dropdown.active a,
+li.nav-item.dropdown.active a.nav-link {
     opacity: 1 !important;
     /* Opacité complète pour le texte */
 }
 
-li.nav-item.dropdown.active a::before {
+/* pour home */
+li.nav-item.active {
+    position: relative;
+}
+
+li.nav-item.dropdown.active>a::before,
+
+li.nav-item.active>a::before,
+h3::before {
+    content: "";
+    position: absolute;
+    bottom: 0rem;
+    height: 2px;
+    /* background-color: #B2BC00 !important; */
+}
+
+li.nav-item.dropdown.active a::before,
+li.nav-item.active a::before {
     width: 80%;
     background-color: #82BC00 !important;
     opacity: 1 !important;
@@ -393,6 +411,25 @@ p.question {
 
 /* @media only screen and (max-width: 768px) { */
 
+
+
+@media only screen and (max-width: 992px) {
+
+    /* button.btn,
+    button a {
+        font-size: 0.8rem ! important;
+    } */
+
+    .d-xs-none {
+        display: none ! important;
+    }
+
+    .btn.btn-transparent.text-center.fs-5 {
+        font-size: 1rem ! important;
+    }
+
+}
+
 @media only screen and (max-width: 576px) {
 
     .fs-6,
@@ -401,7 +438,8 @@ p.question {
         font-size: 0.8rem !important;
     }
 
-    h2.h5, h1{
+    h2.h5,
+    h1 {
         font-size: 1.2rem
     }
 
@@ -455,30 +493,12 @@ p.question {
         width: 100%;
     }
 
-
-
-
-}
-
-@media only screen and (max-width: 992px) {
-
-    /* button.btn,
-    button a {
-        font-size: 0.8rem ! important;
-    } */
-
-    .d-xs-none {
-        display: none ! important;
+    .dropdown-item {
+        padding-bottom: 8px;
+        padding-top: 8px;
     }
 
-    .btn.btn-transparent.text-center.fs-5 {
-        font-size: 1rem ! important;
-    }
-
-}
-
-/* Media query pour les écrans de 430px et plus pour la classe col-sm-6 */
-@media only screen and (min-width: 430px) and (max-width:575px) {
+    /* report des classes ci-dessous */
     .col-sm-6 {
         width: 50%;
         padding: 2px;
@@ -488,4 +508,20 @@ p.question {
         display: none;
     }
 
+
+
+
 }
+
+/* Media query pour les écrans de 430px et plus pour la classe col-sm-6 */
+/* @media only screen and (min-width: 430px) and (max-width:575px) {
+    .col-sm-6 {
+        width: 50%;
+        padding: 2px;
+    }
+
+    i.text-choiced.fs-5 {
+        display: none;
+    }
+
+} */

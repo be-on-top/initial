@@ -1,7 +1,7 @@
 <div *ngIf="student">
     <div class="container py-5">
 
-        <h3>Mise à jour du candidat ID-{{studentId}}</h3>
+        <h3>Mise à jour du statut de <span class="text-capitalize">{{student.lastName}} {{student.firstName}}</span></h3>
 
         <form class="form mb-5 was-validated" #f="ngForm" (submit)="updateStudent(f)">
 
@@ -110,14 +110,17 @@
         <!-- spécifiquement, pour la saisie des évaluations de suivi -->
         <ng-container *ngIf="userRouterLinks.user=='trainer'">
             <h3>Mise à jour de ses évaluations de suivi</h3>
+            <p>Compétence : {{evaluationToUpdate.competence}}</p>
 
             <form class="form" #followUp="ngForm" (submit)="updateStudentEvaluation(followUp)" class="was-validated">
                 <!-- ajout pour les niveaux -->
                 <div class="form-group col-sm-4">
+                    <!-- <label for="level">Niveau</label> -->
                     <select class="form-select" name="level" id="level" [ngModel]="evaluationToUpdate.level" required
                         #level="ngModel">
-                        <option value>Niveau</option>
-                        <option *ngFor="let level of levels" value="{{level}}">{{level}}</option>
+                         <!-- pour embarquer les traductions -->
+                        <!-- <option value>Niveau</option> -->
+                        <option *ngFor="let level of levels" value="{{level}}">{{ levelTranslations[level] }}</option>
                     </select>
                 </div>
                 <!-- ----------------- -->
@@ -143,12 +146,11 @@
                     <!-- Si on utilise TinyCME comme éditeur de texte pour enrichir la propriété details -->
                     <!-- <textarea name="details" id="" cols="50" rows="30" [ngModel]="evaluationToUpdate.details" name="details" class="form-control"
                         #details="ngModel" placeholder="Saisissez l'évaluation reçue en présentiel" required></textarea> -->
-                    <editor [init]="{ plugins: 'link image', toolbar: 'undo redo | bold italic | link image' }"
+                    <editor apiKey="ahl0yg86w69zh9viflcvku8m2k333o942kc9fpttussom153" [init]="{ plugins: 'link image', toolbar: 'undo redo | bold italic | link image' }"
                         [id]="'details'" [ngModel]="evaluationToUpdate.details" name="details"
                         placeholder="Saisissez l'évaluation reçue en présentiel"></editor>
                     <div class="valid-feedback" *ngIf="details.valid">Evaluation correctement renseignée</div>
-                    <div class="invalid-feedback" *ngIf="details.invalid">Merci de saisir votre évaluation de suivi
-                    </div>
+                    <div class="invalid-feedback" *ngIf="details.invalid">Merci de saisir votre évaluation de suivi </div>
                 </div>
                 <button type="submit" id="submit" class="btn btn-primary mt-3"
                     [ngClass]="{'disabled':followUp.invalid}">Valider</button>

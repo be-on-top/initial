@@ -37,7 +37,7 @@ export class UpdateTrainerComponent implements OnInit {
 
     // parce que j'ai besoin de récupérer la liste pour les affectations
     this.studentsService.getStudents().subscribe((students) => {
-      this.studentsList = students
+      this.studentsList = students.filter(student => student.subscriptions);
     })
 
   }

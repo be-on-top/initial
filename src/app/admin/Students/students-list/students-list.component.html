@@ -13,7 +13,7 @@
         <app-search (searchTextChanged)="onSearchTextEntered($event)"></app-search>
 
         <div class="row mt-3 text-secondary justify-content-between">
-            <p class="col-md-6">Activer un filtre additionnel</p>
+            <p class="col-md-6">Activer un filtre ou un autre</p>
             <div class="col-md-6">
                 <div class="form-check" *ngIf="userRouterLinks.user!=='external'">
                     <label class="form-check-label" for="socialCheckbox">Formulaire administratif renseigné</label>
@@ -28,11 +28,16 @@
                 <!-- <ng-container *ngIf="tradesActivated"> -->
                     <div *ngFor="let trade of trades">
                         <div class="form-check">
-                            <label class="form-check-label" for="tradeCheckbox"> {{trade}}</label>
+                            <label class="form-check-label" for="tradeCheckbox">Formation {{trade}}</label>
                             <input type="checkbox" (change)="onCheckboxChangeTrades($event, trade)" class="form-check-input">
                         </div>
                     </div>
                 <!-- </ng-container> -->
+                <div class="form-check">
+                    <label class="form-check-label" for="endedCheckbox">A terminé sa formation</label>
+                    <input type="checkbox" (change)="onCheckboxChangeEndedTraining($event)" class="form-check-input"
+                        id="endedCheckbox">
+                </div>
 
                 <hr class="border-secondary">
             </div>

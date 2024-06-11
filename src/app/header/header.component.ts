@@ -141,6 +141,8 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       console.log("partenaires récupérés", this.partners);
 
     })
+
+    // this.resetNavbar()
   }
 
   getRole(id: any) {
@@ -186,6 +188,13 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.collapsibleNavbar.nativeElement.classList.remove('show');
       this.isMenuOpen = !this.isMenuOpen;
+    }, 300)
+  }
+  resetNavbar() {
+    // Fermez la navbar en utilisant la référence obtenue via ViewChild
+    setTimeout(() => {
+      this.collapsibleNavbar.nativeElement.classList.remove('show');
+      this.isMenuOpen = false
     }, 300)
   }
 

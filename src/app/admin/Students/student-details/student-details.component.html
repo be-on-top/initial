@@ -162,7 +162,7 @@
 
         <!-- son inscription -->
         <div class="card"
-            *ngIf="(userRouterLinks.user=='admin' || userRouterLinks.user=='trainer' || userRouterLinks.user=='tutor' || userRouterLinks.user=='external' || userRouterLinks.user=='referent') && student && student.isSocialFormSent">
+            *ngIf="(userRouterLinks.user=='admin' || userRouterLinks.user=='trainer' || userRouterLinks.user=='tutor' || userRouterLinks.user=='external' || userRouterLinks.user=='referent') && student && student.subscriptions">
             <div class="card-header bg-primary d-flex justify-content-between">
                 <a class="btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseThree">
                     Inscription</a><i class="bi bi-info-square-fill fs-4 text-light"></i>
@@ -497,7 +497,7 @@
         *ngIf="userRouterLinks.user=='tutor'">Retour à la liste</a>
     <a class="btn btn-primary text-white retourList" [routerLink]="['/admin/students']"
         *ngIf="userRouterLinks.user=='admin'">Retour à la liste</a>
-    <a class="btn btn-primary text-white retourList" [routerLink]="['/admin/referent/students']"
+    <a class="btn btn-primary text-white retourList" [routerLink]="['/admin/referentStudentsList']"
         *ngIf="userRouterLinks.user=='referent'">Retour à la liste</a>
     <a class="btn btn-primary text-white retourList" [routerLink]="['/admin/externalStudentsList']"
         *ngIf="userRouterLinks.user=='external'">Retour à la liste</a>

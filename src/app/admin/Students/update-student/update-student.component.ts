@@ -30,8 +30,15 @@ export class UpdateStudentComponent implements OnInit {
   sigleIds: string[] = []
 
   levels: string[] = ['beginner', 'intermediate', 'advance', 'pro']
+  // pour traduire en bon français
+  levelTranslations: { [key: string]: string } = {
+    'beginner': 'débutant',
+    'intermediate': 'intermédiaire',
+    'advance': 'avancé',
+    'pro': 'acquise'
+  }
 
-   constructor(private service: StudentsService, private ac: ActivatedRoute, private router: Router, private settingsService: SettingsService) {
+  constructor(private service: StudentsService, private ac: ActivatedRoute, private router: Router, private settingsService: SettingsService) {
     this.userRouterLinks = this.ac.snapshot.data;
   }
 
@@ -141,24 +148,24 @@ export class UpdateStudentComponent implements OnInit {
 
   subscribeStudent(subscribeStudent: NgForm) {
     // console.log('subscribeStudent.value.sigle', subscribeStudent.value.sigle);
-    let array=[]
+    let array = []
     for (const key of subscribeStudent.value.sigle) {
       array.push(key)
 
-      }
-      alert(array)
-    
+    }
+    alert(array)
+
     this.service.activateSubscription(this.studentId, array)
 
   }
 
-  sendElearningInfo(info:NgForm){
+  sendElearningInfo(info: NgForm) {
     this.service.sendElearningInfo(this.studentId, info.value.elearning)
 
   }
 
-  addEndingDate(endSubscription:NgForm){
-    this.service.endSubscription(this.studentId,endSubscription.value.sigle )
+  addEndingDate(endSubscription: NgForm) {
+    this.service.endSubscription(this.studentId, endSubscription.value.sigle)
   }
 
 }

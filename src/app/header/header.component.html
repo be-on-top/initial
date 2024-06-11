@@ -4,8 +4,9 @@
         <!-- <a class="navbar-brand" [routerLink]="['home', userRole || '']">BE-ON-TOP</a> -->
         <!-- pour éviter les erreurs d'interprétation des segments de chemin -->
         <!-- <a class="navbar-brand" [routerLink]="['home']" [queryParams]="{ userRole: userRole }">BE-ON-TOP</a> -->
-        <a class="navbar-brand" [routerLink]="['']" [queryParams]="{ userRole: userRole }">
-            <img alt="logo BE-ON-TOP de l'application de positionnement" src="./assets/BE-ON-TOP_picto_LOGO.svg" class="logo">BE-ON-TOP</a>
+        <a class="navbar-brand" [routerLink]="['']" [queryParams]="{ userRole: userRole }" (click)="resetNavbar()">
+            <img alt="logo BE-ON-TOP de l'application de positionnement" src="./assets/BE-ON-TOP_picto_LOGO.svg"
+                class="logo">BE-ON-TOP</a>
 
         <!-- <p class="text-light">{{userRole}} Authentification</p> -->
         <!-- <a class="navbar-brand" [routerLink]="['']">BE-ON-TOP</a> -->
@@ -26,6 +27,13 @@
 
         <div class="collapse navbar-collapse" id="collapsibleNavbar" #collapsibleNavbar>
             <ul class="navbar-nav ms-auto pt-4 pt-md-0">
+
+                <!-- ajout accessoire pour accueil -->
+                <li class="nav-item" [routerLinkActive]="['active']" *ngIf="userRole==='' || userRole==='student'">
+                    <!-- <li class="nav-item dropdown" *ngIf="filteredTrades" [routerLinkActive]="['active']"> -->
+                    <a class="nav-link" role="button" data-bs-toggle="dropdown" [routerLink]="['/home']"
+                        (click)="closeNavbar()">Accueil</a>
+                </li>
                 <!-- <li class="nav-item">
                     <a class="nav-link" [routerLink]="['socialregistration']">Pré-inscription Formation</a>
                 </li> -->
@@ -34,7 +42,8 @@
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                         *ngIf="userRole.includes('admin') || userRole.includes('evaluator') || userRole.includes('trainer') || userRole.includes('tutor') || userRole.includes('external') || userRole.includes('referent') || userRole.includes('manager')">Admin</a>
                     <!-- <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Admin</a> -->
-                    <ul class="dropdown-menu" aria-label="Menu de navigation pour la création d'utilisateurs ayant des droits spécifiques">
+                    <ul class="dropdown-menu"
+                        aria-label="Menu de navigation pour la création d'utilisateurs ayant des droits spécifiques">
                         <li *ngIf="userRole.includes('admin') || userRole.includes('manager')"><a class="dropdown-item"
                                 (click)="navigateTo('/admin/settings')">Paramètres</a>
 
@@ -120,7 +129,7 @@
 
 
                 <li class="nav-item dropdown" *ngIf="trades" [routerLinkActive]="['active']">
-                <!-- <li class="nav-item dropdown" *ngIf="filteredTrades" [routerLinkActive]="['active']"> -->
+                    <!-- <li class="nav-item dropdown" *ngIf="filteredTrades" [routerLinkActive]="['active']"> -->
                     <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">Nos métiers</a>
                     <ul class="dropdown-menu mb-2">
                         <li *ngFor="let trade of trades">
@@ -145,10 +154,10 @@
                         </li>
                         <li *ngIf="!userRole || userRole==''"><a class="dropdown-item"
                                 [routerLink]="['register']">Inscription</a></li>
-                                                <!-- Inscription lien externe sans condition pour tester en local -->
-                <li *ngIf="!offline && isOneQuizzAchieved && !studentData?.isSocialFormSent">
-                    <a class="dropdown-item" [routerLink]="['socialregistration']">Inscription Formation</a>
-                </li>
+                        <!-- Inscription lien externe sans condition pour tester en local -->
+                        <li *ngIf="!offline && isOneQuizzAchieved && !studentData?.isSocialFormSent">
+                            <a class="dropdown-item" [routerLink]="['socialregistration']">Inscription Formation</a>
+                        </li>
                     </ul>
                 </li>
                 <!-- si hors ligne -->
