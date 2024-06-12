@@ -3,7 +3,8 @@
 
     <h3>Connexion Utilisateur</h3>
     <ng-template #login>
-        <app-feedback-messages [feedbackMessages]="feedbackMessages" [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
+        <app-feedback-messages [feedbackMessages]="feedbackMessages"
+            [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
         <form class="form mx-auto" [formGroup]="formLogin" (ngSubmit)="onSubmit()">
             <div class="mb-3">
                 <label class="form-label">Email</label>
@@ -17,7 +18,11 @@
         </form>
         <!-- <button class="btn btn-primary mt-4" (click)="onClick()">S'identifier avec Google</button> -->
         <hr>
-        <button class="btn btn-warning mt-4" (click)="reset(formLogin.value.email)">Réinitialiser son mot de passe</button>
+        <button class="btn btn-warning my-4" (click)="reset(formLogin.value.email)">Réinitialiser son mot de
+            passe</button>
+        <hr>
+        <p>Pas encore inscrit ?</p>
+        <button class="btn btn-primary"><a class="dropdown-item" [routerLink]="['/register']">Inscription</a></button>
     </ng-template>
 
     <hr>
