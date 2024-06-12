@@ -44,15 +44,15 @@
 
         </div>
 
-        <div class="row mt-4 d-xs-none" *ngIf="userRouterLinks.user=='admin'">
+        <div class="row mt-4 d-xs-none" *ngIf="userRouterLinks.user=='admin' || userRouterLinks.user=='referent'">
             <div class="col-sm-3 h5">Nom</div>
             <div class="col-sm-3 h5">Prénom</div>
             <div class="col-sm-3 h5">Suppression</div>
             <div class="col-sm-3 h5">Détails</div>
         </div>
 
-        <div class="row mt-4 d-xs-none justify-content-around"
-            *ngIf="userRouterLinks.user=='external' || userRouterLinks.user=='referent'">
+        <div class="row mt-4 d-xs-none justify-content-start"
+            *ngIf="userRouterLinks.user=='external'">
             <div class="col-sm-3 col-6 h5">Nom</div>
             <div class="col-sm-3 col-6 h5">Prénom</div>
             <div class="col-sm-3 col-6 h5">Détails</div>
@@ -63,6 +63,7 @@
                 <div class="row mt-4 ps-5 ps-sm-0"
                     *ngIf="searchText==='' || student.lastName.includes(searchText) || student.lastName.toLowerCase().includes(searchText) || student.firstName.includes(searchText) || student.firstName.toLowerCase().includes(searchText)">
 
+                    
                     <div class="col-sm-3 col-6">{{student.lastName}}</div>
                     <div class="col-sm-3 col-6 order-perso2">{{student.firstName}}</div>
                     <div class="col-sm-3 col-6"><button class="btn btn-danger text-white"
@@ -79,11 +80,11 @@
                 </div>
             </div>
             <ng-template #external>
-                <div class="row mt-4 justify-content-around"
+                <div class="row mt-4 justify-content-start"
                     *ngIf="searchText==='' || student.lastName.includes(searchText) || student.lastName.toLowerCase().includes(searchText) || student.firstName.includes(searchText) || student.firstName.toLowerCase().includes(searchText)">
                     <div class="col-sm-3 col-6">{{student.lastName}}</div>
                     <div class="col-sm-3 col-6">{{student.firstName}}</div>
-                    <div class="col-sm-3 col-6"><button class="btn btn-primary"><a
+                    <div class="col-sm-3 col-6 mt-3 m-sm-0"><button class="btn btn-primary"><a
                                 [routerLink]="['/admin/externalStudentDetails', student.id]" class="text-white"><i
                                     class="bi bi-person-lines-fill"></i>Détails</a></button></div>
                 </div>
