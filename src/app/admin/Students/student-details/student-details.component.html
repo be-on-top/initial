@@ -53,7 +53,8 @@
         <!-- {{tradesEvaluated}} -->
 
         <!-- zone dédiée au suivi des QCM et estimations chiffrées si elles existent -->
-        <div class="card" *ngIf="nonVide(tradesEvaluated)">
+         <!-- Hypothèse à revoir selon le statut de external !!!! -->
+        <div class="card" *ngIf="nonVide(tradesEvaluated) && userRouterLinks.user!=='external'">
             <div class="card-header bg-primary d-flex justify-content-between">
                 <a class="btn text-light" data-bs-toggle="collapse" href="#collapseTwo">
                     Questionnaire initial et positionnement
@@ -272,7 +273,7 @@
                                                     {{trades['quizz_'+evaluation.value.sigle][getCpIndex(evaluation.value.competence)]}}
                                                     ({{ evaluation.value.competence }}) <span
                                                         (click)="toggleCollapse(e)"
-                                                        *ngIf="evaluation.value.subject || evaluation.value.details"> <a
+                                                        *ngIf="(evaluation.value.subject || evaluation.value.details ) && userRouterLinks.user!=='external'"> <a
                                                             href='#collapseEvaluation{{e}}' data-bs-toggle="collapse"><i
                                                                 [ngClass]="{'bi bi-caret-down-fill': !evaluationsState[e], 'bi bi-caret-up-fill': evaluationsState[e]}"></i></a></span>
                                                 </p>
@@ -422,7 +423,7 @@
                                                 {{trades['quizz_'+tutorial.value.sigle][getCpIndex(tutorial.value.competence)]}}
                                                 ({{ tutorial.value.competence }})
                                                 <span (click)="toggleCollapse(t)"
-                                                    *ngIf="tutorial.value.subject || tutorial.value.details"> <a
+                                                    *ngIf="(tutorial.value.subject || tutorial.value.details) && userRouterLinks.user!=='external'"> <a
                                                         href='#collapseEvaluation{{t}}' data-bs-toggle="collapse"><i
                                                             [ngClass]="{'bi bi-caret-down-fill': !evaluationsState[t], 'bi bi-caret-up-fill': evaluationsState[t]}"></i></a></span>
 
