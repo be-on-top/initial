@@ -153,7 +153,7 @@
                             <a class="dropdown-item" (click)="closeNavbar()" [routerLink]="['account']">Mon compte</a>
                         </li>
                         <li *ngIf="!userRole || userRole==''"><a class="dropdown-item"
-                                [routerLink]="['register']">Inscription</a></li>
+                                [routerLink]="['register']" (click)="closeNavbar()">Inscription</a></li>
                         <!-- Inscription lien externe sans condition pour tester en local -->
                         <li *ngIf="!offline && isOneQuizzAchieved && !studentData?.isSocialFormSent">
                             <a class="dropdown-item" [routerLink]="['socialregistration']">Inscription Formation</a>
