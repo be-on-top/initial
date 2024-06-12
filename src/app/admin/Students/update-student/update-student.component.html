@@ -123,7 +123,7 @@
                         <option *ngFor="let level of levels" value="{{level}}">{{ levelTranslations[level] }}</option>
                     </select>
                 </div>
-                <!-- ----------------- -->
+
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="subject" class="form-label mt-3">Sujet *</label>
@@ -134,19 +134,11 @@
                             l'évaluation.
                         </div>
                     </div>
-                    <!-- <div class="form-group  col-md-6 disabled">
-                        <label for="date" class="form-label mt-3 desactivated" >Date pour information</label>
-                        <input type="date" name="date" [ngModel]="evaluationToUpdate.date" name="date" class="form-control" #date="ngModel" required disabled>
-                        <div class="valid-feedback" *ngIf="date.valid">Champ non sommis à modification</div>
-                        <div class="invalid-feedback" *ngIf="date.invalid">Merci de renseigner la date</div>
-                    </div> -->
                 </div>
                 <div class="form-group">
                     <label for="details" class="form-label mt-3">Details</label>
                     <!-- Si on utilise TinyCME comme éditeur de texte pour enrichir la propriété details -->
-                    <!-- <textarea name="details" id="" cols="50" rows="30" [ngModel]="evaluationToUpdate.details" name="details" class="form-control"
-                        #details="ngModel" placeholder="Saisissez l'évaluation reçue en présentiel" required></textarea> -->
-                    <editor apiKey="ahl0yg86w69zh9viflcvku8m2k333o942kc9fpttussom153" [init]="{ plugins: 'link image', toolbar: 'undo redo | bold italic | link image' }"
+                               <editor apiKey="ahl0yg86w69zh9viflcvku8m2k333o942kc9fpttussom153" [init]="{ plugins: 'link image', toolbar: 'undo redo | bold italic | link image' }"
                         [id]="'details'" [ngModel]="evaluationToUpdate.details" name="details"
                         placeholder="Saisissez l'évaluation reçue en présentiel"></editor>
                     <div class="valid-feedback" *ngIf="details.valid">Evaluation correctement renseignée</div>
@@ -164,7 +156,10 @@
         <ng-container *ngIf="userRouterLinks.user=='tutor' || userRouterLinks.user=='admin'">
             <h3>Mise à jour du suivi d'entreprise</h3>
 
-            <form class="form" #followUpTutorial="ngForm" (submit)="updateStudentTutorial(followUpTutorial)"
+
+            <!-- si finalement on fait la même chose que le formateur -->
+
+            <!-- <form class="form" #followUpTutorial="ngForm" (submit)="updateStudentTutorial(followUpTutorial)"
                 class="was-validated">
 
                 <div class="row">
@@ -177,19 +172,10 @@
                             l'évaluation.
                         </div>
                     </div>
-                    <!-- <div class="form-group  col-md-6 disabled">
-                        <label for="date" class="form-label mt-3 desactivated" >Date pour information</label>
-                        <input type="date" name="date" [ngModel]="evaluationToUpdate.date" name="date" class="form-control" #date="ngModel" required disabled>
-                        <div class="valid-feedback" *ngIf="date.valid">Champ non sommis à modification</div>
-                        <div class="invalid-feedback" *ngIf="date.invalid">Merci de renseigner la date</div>
-                    </div> -->
                 </div>
                 <div class="form-group">
                     <label for="details" class="form-label mt-3">Details *</label>
-                    <!-- Si on utilise TinyCME comme éditeur de texte pour enrichir la propriété details -->
-                    <!-- <textarea name="details" id="" cols="50" rows="30" [ngModel]="evaluationToUpdate.details" name="details" class="form-control"
-                        #details="ngModel" placeholder="Saisissez l'évaluation reçue en présentiel" required></textarea> -->
-                    <editor [init]="{ plugins: 'link image', toolbar: 'undo redo | bold italic | link image' }"
+                           <editor [init]="{ plugins: 'link image', toolbar: 'undo redo | bold italic | link image' }"
                         [id]="'details'" [ngModel]="tutorialToUpdate.details" name="details"
                         placeholder="Saisissez l'évaluation reçue en entreprise" required></editor>
                     <div class="valid-feedback" *ngIf="details.valid">Evaluation correctement renseignée</div>
@@ -198,7 +184,44 @@
                 </div>
                 <button type="submit" id="submit" class="btn btn-primary mt-3"
                     [ngClass]="{'disabled':followUpTutorial.invalid}">Valider</button>
+            </form> -->
+            <p>Compétence : {{tutorialToUpdate.competence}}</p>
+            <form class="form" #followUp="ngForm" (submit)="updateStudentTutorial(followUp)" class="was-validated">
+                <!-- ajout pour les niveaux -->
+                <div class="form-group col-sm-4">
+                    <!-- <label for="level">Niveau</label> -->
+                    <select class="form-select" name="level" id="level" [ngModel]="tutorialToUpdate.level" required
+                        #level="ngModel">
+                         <!-- pour embarquer les traductions -->
+                        <!-- <option value>Niveau</option> -->
+                        <option *ngFor="let level of levels" value="{{level}}">{{ levelTranslations[level] }}</option>
+                    </select>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="subject" class="form-label mt-3">Sujet *</label>
+                        <input type="text" [ngModel]="tutorialToUpdate.subject" name="subject" class="form-control"
+                            #subject="ngModel" required>
+                        <div class="valid-feedback" *ngIf="subject.valid">Champ correctement renseigné</div>
+                        <div class="invalid-feedback" *ngIf="subject.invalid">Merci de renseigner le sujet de
+                            l'évaluation.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="details" class="form-label mt-3">Details</label>
+                    <!-- Si on utilise TinyCME comme éditeur de texte pour enrichir la propriété details -->
+                               <editor apiKey="ahl0yg86w69zh9viflcvku8m2k333o942kc9fpttussom153" [init]="{ plugins: 'link image', toolbar: 'undo redo | bold italic | link image' }"
+                        [id]="'details'" [ngModel]="tutorialToUpdate.details" name="details"
+                        placeholder="Saisissez l'évaluation reçue en présentiel"></editor>
+                    <div class="valid-feedback" *ngIf="details.valid">Evaluation correctement renseignée</div>
+                    <div class="invalid-feedback" *ngIf="details.invalid">Merci de saisir votre évaluation de suivi </div>
+                </div>
+                <button type="submit" id="submit" class="btn btn-primary mt-3"
+                    [ngClass]="{'disabled':followUp.invalid}">Valider</button>
             </form>
+            
         </ng-container>
 
     </div>

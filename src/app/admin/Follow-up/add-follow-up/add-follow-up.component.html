@@ -44,8 +44,8 @@
                 </ng-container>
             </div>
 
-            <div class="form-group col-sm-4">
-                <!-- {{userRouterLinks=='tutor' | json}} !!!!!! -->
+            <!-- Tant qu'on faisait la distinction pour surclasser le candidat -->
+            <!-- <div class="form-group col-sm-4">
                 <select *ngIf="userRouterLinks=='trainer'" class="form-select" name="level" id="level" ngModel
                     [required]="f.value.competence!==''" #level="ngModel" [disabled]="!isRealStudent">
                     <option value>Niveau</option>
@@ -56,7 +56,17 @@
                     <option value>Niveau</option>
                     <option value="pro">Acquise</option>
                 </select>
+            </div> -->
+            <div class="form-group col-sm-4">
+                <!-- {{userRouterLinks=='tutor' | json}} !!!!!! -->
+                <select class="form-select" name="level" id="level" ngModel
+                    [required]="f.value.competence!==''" #level="ngModel" [disabled]="!isRealStudent">
+                    <option value>Niveau</option>
+                    <option *ngFor="let level of levels" value="{{level}}">{{ levelTranslations[level] }}</option>
+                </select>
+
             </div>
+
         </div>
 
 
