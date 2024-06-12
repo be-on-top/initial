@@ -113,7 +113,7 @@ export class StudentsService {
   }
 
   async register(student: any) {
-    alert(student.studentPw)
+    // alert(student.studentPw)
     let newStudent = { created: Date.now(), status: true, trainer: "Attribué ultérieurement", ...student };
 
     // enregistrement en base dans fireAuth d'une part : 
