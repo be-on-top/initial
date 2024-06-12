@@ -212,13 +212,13 @@
                         prise en charge, nous vous invitons à remplir le formulaire ci-dessous...
                     </p>
                     <div class="card-text" *ngIf="userData.subscriptions">Inscription confirmée pour :
-                        <p class="card-text d-inline fw-bold" *ngFor="let subscription of userData.subscriptions">
-                            {{subscription}}</p>
+                        <p class="card-text d-inline fw-bold" *ngFor="let subscription of userData.subscriptions; let lastSubscribe=last;let s = index">
+                            <span>{{subscription}}<span *ngIf="!lastSubscribe">, </span></span></p>
                     </div>
                     <!-- fin de formations -->
                     <div class="card-text" *ngIf="userData.endedSubscriptions">Formation terminée pour :
-                        <p class="card-text d-inline"><span class="fw-bold">
-                            {{userData.endedSubscriptions.sigle}}en date du {{userData.endedSubscriptions.date}}</span> </p>
+                        <p class="d-inline"><span class="fw-bold">
+                            {{userData.endedSubscriptions.sigle}} </span>en date du<span class="fw-bold"> {{userData.endedSubscriptions.date}}</span> </p>
                     </div>
 
                     <!-- lien e-learning -->
