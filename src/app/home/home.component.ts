@@ -280,13 +280,15 @@ export class HomeComponent implements OnInit {
 
 
   checkIfQuizzAchieved() {
-    this.isOneQuizzAchieved = Object.values(this.studentData).some((data: any) => data?.fullResults);
+    if (this.userRole==='student' && this.studentData) {      
+      this.isOneQuizzAchieved = Object.values(this.studentData).some((data: any) => data?.fullResults)
+    }    
   }
 
   checkQuizzCondition(trade: any) {
-    if (this.studentData && this.studentData['quizz_' + trade.sigle] && this.studentData['quizz_' + trade.sigle].fullResults) {
+    if (this.studentData['quizz_' + trade.sigle] && this.studentData['quizz_' + trade.sigle].fullResults) {
       this.setOneQuizzAchieved();
-      return true;
+      return true
     }
 
     return false;

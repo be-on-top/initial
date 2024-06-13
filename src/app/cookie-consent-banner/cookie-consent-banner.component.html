@@ -1,5 +1,5 @@
 <!-- si on souhaite que l'utilisateur puisse fermer la bannière quel que soit l'état de userConsent -->
-<ng-container *ngIf="showBanner || integratedBanner">
+<ng-container *ngIf="showBanner || (integratedBanner && showBanner)">
     <div class="cookie-consent-banner container-fluid"
         [ngClass]="{'fixed-bottom w-100 mb-0': consentService.hasRefusedConsent()==false}">
         <div class="container p-2">

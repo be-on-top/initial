@@ -33,7 +33,6 @@ export class ConsentService {
     localStorage.setItem(this.consentKey, consent.toString())
     console.log('Consentement enregistré dans le stockage local :', consent);
     // Désactiver la collecte de google analytics
-    !consent ? alert('Refus pris en compte') : ''
     // !consent ? alert('Refus pris en compte') : ''
     !consent ? this.deleteAllCookies():''
     !consent ? setAnalyticsCollectionEnabled(this.analytics, false):''

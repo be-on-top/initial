@@ -21,15 +21,22 @@
             <span class="visually-hidden">Loading...</span>
         </div>
     </div>
-    
+
     <!-- test alert-dismissible for mission -->
     <ng-container *ngIf="user==undefined || (!isLoading && !isOneQuizzAchieved); else yes">
-        <div *ngIf="!isLoading && !isOneQuizzAchieved && !offline"
+        <!-- <div *ngIf="!isLoading && !isOneQuizzAchieved && !offline"
             class="alert w-100 p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show fs-5">
             <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
                 aria-label="Fermer le message"></button>
             Evaluez vos connaissances et démarrez rapidement une <h1 class="d-inline fs-5">formation
                 personnalisée</h1> qui vous hissera aux portes du métier de votre choix
+        </div> -->
+        <div *ngIf="!isLoading && !isOneQuizzAchieved && !offline"
+            class="alert w-100 p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show fs-5">
+            <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
+                aria-label="Fermer le message"></button>
+            Evaluez vos connaissances et démarrez rapidement une <h1 class="d-inline fs-5">formation
+                personnalisée</h1> pour être au top des compétences du métier de vôtre choix.
         </div>
     </ng-container>
     <ng-template #yes>
@@ -48,7 +55,8 @@
     <div *ngIf="offline" class="alert w-100 p-4 pe-5 bg-danger alert-dismissible text-white mb-4 fade show fs-5">
         <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
             aria-label="Fermer le message"></button>
-        Attention, vous n'avez plus de réseau. Nous ne pouvons plus charger les données des questionnaires ou détails de votre compte. Vous pourrez
+        Attention, vous n'avez plus de réseau. Nous ne pouvons plus charger les données des questionnaires ou détails de
+        votre compte. Vous pourrez
         retrouver toutes vos fonctionnalités dès que la connexion sera rétablie.
     </div>
     <!-- fin test alert-dismissible -->
@@ -128,11 +136,12 @@
 
                                 <div class="d-flex justify-content-end"
                                     *ngIf="(studentData && !studentData['quizz_'+trade.sigle])">
-                                    
-                                    <button (click)="logStartEvaluationEvent(trade.denomination)" aria-label="Démarrer le questionnaire" class="btn btn-transparent"><i
+
+                                    <button (click)="logStartEvaluationEvent(trade.denomination)"
+                                        aria-label="Démarrer le questionnaire" class="btn btn-transparent"><i
                                             class="bi bi-clock-fill text-success"></i>
                                         Démarrer votre évaluation</button>
-                                        
+
                                 </div>
                                 <div class="d-flex justify-content-end"
                                     *ngIf="studentData && studentData['quizz_'+trade.sigle] && !studentData['quizz_'+trade.sigle].fullResults">
@@ -145,11 +154,11 @@
                             </a>
                             <div class="d-flex justify-content-end" *ngIf="checkQuizzCondition(trade)">
                                 <a [routerLink]="['/account']">
-                                <div class="btn btn-transparent border-0">
-                                    <i class="bi bi-check-square-fill text-success"></i>
-                                    Votre évaluation est terminée
-                                </div>
-                            </a>
+                                    <div class="btn btn-transparent border-0">
+                                        <i class="bi bi-check-square-fill text-success"></i>
+                                        Votre évaluation est terminée
+                                    </div>
+                                </a>
                             </div>
                         </ng-container>
 
