@@ -48,6 +48,7 @@ import { ShareButtonComponent } from './share-button/share-button.component';
 import { NgOptimizedImage } from '@angular/common';
 import { DurationPipe } from './duration.pipe';
 import { RoundPipe } from './round.pipe';
+import { FaqComponent } from './faq/faq.component';
 // import { AutoChangeDirective } from './auto-change.directive';
 
 // import { getMessaging } from 'firebase/messaging';
@@ -79,6 +80,7 @@ import { RoundPipe } from './round.pipe';
     ShareButtonComponent,
     DurationPipe,
     RoundPipe,
+    FaqComponent,
     // AutoChangeDirective,
     // TooltipComponent
   ],
