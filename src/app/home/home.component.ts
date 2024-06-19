@@ -128,6 +128,7 @@ export class HomeComponent implements OnInit {
 
 
   ngOnInit(): void {
+    alert("coucou!")
 
     this.titleService.setTitle('Accueil - BE-ON-TOP formation application'); // Mettre à jour le titre de la page
 

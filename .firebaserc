@@ -1,14 +1,16 @@
 {
+  "projects": {
+    "default": "be-on-top-beta"
+  },
   "targets": {
-      "be-on-top-beta": {
+    "be-on-top-beta": {
       "hosting": {
-        "be-on-top": [
-          "be-on-top-beta"
+        "be-on-top-reseau-cs": [
+          "be-on-top-reseau-cs"
         ]
       }
     }
-  },
-  "projects": {
-    "default": "be-on-top-beta"
   }
 }
+
+

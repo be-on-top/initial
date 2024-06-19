@@ -9,12 +9,21 @@ export const environment = {
     // appId: "1:350108679764:web:357e5a8a324da7ad0777c1"
 
     // base vierge
+    // apiKey: "AIzaSyCSumVFe5c414G6t0NlSp6LIPfXgTs5IEk",
+    // authDomain: "be-on-top-beta.firebaseapp.com",
+    // projectId: "be-on-top-beta",
+    // storageBucket: "be-on-top-beta.appspot.com",
+    // messagingSenderId: "212539373061",
+    // appId: "1:212539373061:web:ae37997ebc068516700e6c",
+    // measurementId: "G-4D90TV8L6W"
+
+    // application officielle
     apiKey: "AIzaSyCSumVFe5c414G6t0NlSp6LIPfXgTs5IEk",
     authDomain: "be-on-top-beta.firebaseapp.com",
     projectId: "be-on-top-beta",
     storageBucket: "be-on-top-beta.appspot.com",
     messagingSenderId: "212539373061",
-    appId: "1:212539373061:web:ae37997ebc068516700e6c",
-    measurementId: "G-4D90TV8L6W"
+    appId: "1:212539373061:web:425cde1b1071152e700e6c",
+    measurementId: "G-C9M2VS675H"
   }
 };

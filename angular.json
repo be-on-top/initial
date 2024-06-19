@@ -119,7 +119,7 @@
             "ssr": false,
             "browserTarget": "be-on-top:build:production",
             "firebaseProject": "be-on-top-beta",
-            "firebaseHostingSite": "be-on-top-beta"
+            "firebaseHostingSite": "be-on-top-reseau-cs"
           }
         }
       }
