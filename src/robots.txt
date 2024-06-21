@@ -1,0 +1,12 @@
+User-agent: *
+Disallow: /admin/
+Allow: /home
+Allow: /trade/prepa_cdes
+Allow: /trade/poseur_ite
+Allow: /trade/mac_vrd
+Allow: /trade/cl_vul
+Allow: /trade/caces_R489
+Allow: /trade/caces_R482
+
+Sitemap: https://be-on-top.io/assets/sitemap.xml
+

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <url>
+
+    <loc>https://be-on-top.io/home</loc>
+
+    <changefreq>daily</changefreq>
+
+    <priority>0.8</priority>
+
+  </url>
+
+   <!-- tant qu'on a aucun contenu pour la  page mission, inutile d'en mettre plus -->
+
+  <!-- Routes dynamiques -->
+
+  <url>
+
+    <loc>https://be-on-top.io/trade/prepa_cdes</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.6</priority>
+
+  </url>
+
+  <url>
+
+    <loc>https://be-on-top.io/trade/poseur_ite</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.6</priority>
+
+  </url>
+
+  <url>
+
+    <loc>https://be-on-top.io/trade/mac_vrd</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.6</priority>
+
+  </url>
+
+  <url>
+
+    <loc>https://be-on-top.io/trade/cl_vul</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.6</priority>
+
+  </url>
+
+  <url>
+
+    <loc>https://be-on-top.io/trade/caces_R489</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.6</priority>
+
+  </url>
+
+  <url>
+
+    <loc>https://be-on-top.io/trade/caces_R482</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.6</priority>
+
+  </url>
+
+
+
+</urlset>
+

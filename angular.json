@@ -24,10 +24,8 @@
               "src/favicon.ico",
               "src/assets",
               { "glob": "**/*", "input": "node_modules/tinymce", "output": "/tinymce/" },
-              "src/manifest.webmanifest",
-              "src/manifest.webmanifest",
-              "src/manifest.webmanifest",
-              "src/manifest.webmanifest",
+              { "glob": "sitemap.xml", "input": "src/assets/", "output": "/assets/" },
+              { "glob": "robots.txt", "input": "src/", "output": "/" },
               "src/manifest.webmanifest",
               "src/firebase-messaging-sw.js"
             ],
@@ -99,10 +97,6 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/manifest.webmanifest",
-              "src/manifest.webmanifest",
-              "src/manifest.webmanifest",
-              "src/manifest.webmanifest",
               "src/manifest.webmanifest",
               "src/firebase-messaging-sw.js"
             ],
