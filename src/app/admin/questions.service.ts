@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Storage, ref, uploadBytes, getDownloadURL, listAll, deleteObject } from '@angular/fire/storage';
 import { Firestore, collection, collectionData, docData, setDoc, query, orderBy, startAt, startAfter, limit, getDocs} from '@angular/fire/firestore';
 import { addDoc, doc } from 'firebase/firestore';
-import { Observable } from 'rxjs';
+import { Observable, from, map } from 'rxjs';
 
 
 
@@ -133,6 +133,16 @@ export class QuestionsService {
     return mediaQuestions
 
   }
+
+  // getMediasQuestionsForSitemap(): Observable<Promise<string[]>> {
+  //   const mediasQuestionsRef = ref(this.storage, 'images/questions');
+  //   return from(listAll(mediasQuestionsRef)).pipe(
+  //     map(async (response) => {
+  //       const urls = await Promise.all(response.items.map(item => getDownloadURL(item)));
+  //       return urls;
+  //     })
+  //   );
+  // }
 
   getMediasResponses(): any {
     const mediaResponses: string[] = []

@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { Meta } from '@angular/platform-browser';
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { Firestore, docData, doc } from '@angular/fire/firestore';
 import { DomSanitizer, Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Student } from 'src/app/admin/Students/student';
-import { AuthService } from 'src/app/admin/auth.service';
+// import { AuthService } from 'src/app/admin/auth.service';
 import { SettingsService } from 'src/app/admin/settings.service';
 import { StudentsService } from 'src/app/admin/students.service';
 import { Trade } from 'src/app/admin/trade';
@@ -32,21 +33,22 @@ export class TradeDetailsComponent implements OnInit {
   userRole: string = ""
   // pour charger l'image associée si image
   imageUrl: string = ''; // Pour stocker l'URL de l'image
-  imageUrlReduced: string = ''; 
+  imageUrlReduced: string = '';
 
   offline: boolean = false
 
 
   constructor(
-    private service: SettingsService, 
-    private ac: ActivatedRoute, 
-    private auth: Auth, 
+    private service: SettingsService,
+    private ac: ActivatedRoute,
+    private auth: Auth,
     // private authService: AuthService, 
-    private studentService: StudentsService, 
-    private firestore: Firestore, 
-    public sanitizer: DomSanitizer, 
+    private studentService: StudentsService,
+    private firestore: Firestore,
+    public sanitizer: DomSanitizer,
     private location: Location,
-    private titleService:Title
+    private titleService: Title,
+    private metaService: Meta
   ) {
     this.offline = !navigator.onLine
   }
@@ -61,6 +63,12 @@ export class TradeDetailsComponent implements OnInit {
         this.service.getSigle(this.tradeId).subscribe(data => {
           console.log("metier récupéré via le paramètre de route", data)
           this.tradeData = data
+          // pour personnaliser le metatag
+          const textForDescription = this.transform(this.tradeData.description)
+          this.addTag(`Evaluez vos compétence et démarrez une formation personnalisée de ${this.tradeData.denomination}. ${textForDescription}`)
+          // Mettre à jour le titre de la page
+          this.titleService.setTitle(`Formation ${this.tradeData.denomination}: compétences métier et emploi`)
+
 
           // Pour extraire et additionner les premières valeurs des tableaux associés aux clés spécifiques dans l'objet tradeData.durations, vous pouvez utiliser TypeScript avec Angular de la manière suivante :  
           const keysToExtractFrom = Object.keys(this.tradeData.durations)
@@ -76,20 +84,20 @@ export class TradeDetailsComponent implements OnInit {
         })
 
         // 2 récupérer l'image en ligne
-        
-    // Charge les URLs des deux versions de l'image
-    this.service.loadImage(this.tradeId).then(({ originalUrl, resizedUrl }) => {
-      this.imageUrl = originalUrl;
-      this.imageUrlReduced = resizedUrl;
-    }).catch((error) => {
-      if (error.code === 'storage/object-not-found') {
-        console.log('Aucune image n\'a encore été ajoutée.');
-      } else {
-        console.error('Erreur lors du chargement de l\'image', error);
-      }
-    });
 
-  
+        // Charge les URLs des deux versions de l'image
+        this.service.loadImage(this.tradeId).then(({ originalUrl, resizedUrl }) => {
+          this.imageUrl = originalUrl;
+          this.imageUrlReduced = resizedUrl;
+        }).catch((error) => {
+          if (error.code === 'storage/object-not-found') {
+            console.log('Aucune image n\'a encore été ajoutée.');
+          } else {
+            console.error('Erreur lors du chargement de l\'image', error);
+          }
+        });
+
+
 
       } else if (this.offline) {
 
@@ -176,8 +184,6 @@ export class TradeDetailsComponent implements OnInit {
       // fin ac.paramMap.subscribe
     })
 
-    // Mettre à jour le titre de la page
-    this.titleService.setTitle(`Formation ${this.tradeId }: compétences métier et emploi`)
 
   }
 
@@ -212,4 +218,23 @@ export class TradeDetailsComponent implements OnInit {
   }
 
 
+  addTag(description: string) {
+
+    this.metaService.updateTag({ name: 'description', content: description })
+    // this.metaService.addTag({ name: 'robots', content: 'index,follow' })
+    // this.metaService.addTag({ property: 'og:title', content: 'Content Title for social media' })
+  }
+
+  transform(value: any): string {
+    const temp = document.createElement('div');
+    temp.innerHTML = value;
+
+    return (temp.textContent || temp.innerText || '').slice(0, 120) + '...';
+  }
+
+
+
 }
+
+
+

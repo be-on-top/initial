@@ -1,5 +1,5 @@
 import { NgModule, isDevMode } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Meta } from '@angular/platform-browser';
 import { FormsModule } from "@angular/forms";
 // on test ReactiveFormsModule pour login et logout
 import { ReactiveFormsModule } from '@angular/forms';
@@ -111,7 +111,7 @@ import { FaqComponent } from './faq/faq.component';
       registrationStrategy: 'registerWhenStable:30000'
     })
   ],
-  providers: [AuthGuardService, ScreenTrackingService, UserTrackingService],
+  providers: [AuthGuardService, ScreenTrackingService, UserTrackingService, Meta],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
