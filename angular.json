@@ -25,6 +25,7 @@
               "src/assets",
               { "glob": "**/*", "input": "node_modules/tinymce", "output": "/tinymce/" },
               { "glob": "sitemap.xml", "input": "src/assets/", "output": "/assets/" },
+              { "glob": "image-sitemap.xml", "input": "src/assets/", "output": "/assets/" },
               { "glob": "robots.txt", "input": "src/", "output": "/" },
               "src/manifest.webmanifest",
               "src/firebase-messaging-sw.js"

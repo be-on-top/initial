@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Storage, ref, uploadBytes, getDownloadURL, listAll, deleteObject } from '@angular/fire/storage';
 import { Firestore, collection, collectionData, docData, setDoc, query, orderBy, startAt, startAfter, limit, getDocs} from '@angular/fire/firestore';
 import { addDoc, doc } from 'firebase/firestore';
-import { Observable, from, map } from 'rxjs';
+import { Observable, from, map, switchMap } from 'rxjs';
 
 
 
@@ -142,6 +142,28 @@ export class QuestionsService {
   //       return urls;
   //     })
   //   );
+  // }
+
+  // Dernier essai pour sitemapService...
+  
+  // getMediasQuestionsForSitemap(): Observable<string[]> {
+  //   const mediasQuestionsRef = ref(this.storage, 'images/questions');
+  //   return from(listAll(mediasQuestionsRef)).pipe(
+  //     switchMap(response => {
+  //       const urls = response.items.map(item => getDownloadURL(item));
+  //       return Promise.all(urls);
+  //     }),
+  //     map(urls => urls as string[])
+  //     // map(urls => urls.map(url => this.rewriteUrl(url)))
+  //   );
+  // }
+
+  //   private rewriteUrl(url: string): string {
+  //   // Logique de réécriture pour remplacer l'URL Firebase par votre domaine personnalisé
+  //   const firebaseUrlPrefix = 'https://firebasestorage.googleapis.com/v0/b/be-on-top-beta.appspot.com/o/';
+  //   const yourDomain = 'https://be-on-top.io/';
+
+  //   return url.replace(firebaseUrlPrefix, yourDomain);
   // }
 
   getMediasResponses(): any {
