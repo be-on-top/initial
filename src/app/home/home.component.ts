@@ -17,6 +17,7 @@ import { Subject, distinctUntilChanged, map, takeUntil } from 'rxjs';
 // import { NetworkService } from '../network.service';
 import { PRECONNECT_CHECK_BLOCKLIST } from '@angular/common';
 import { Analytics, logEvent } from '@angular/fire/analytics';
+import { SlugService } from '../slug.service';
 // import { DomSanitizer } from '@angular/platform-browser';
 
 
@@ -110,8 +111,9 @@ export class HomeComponent implements OnInit {
     private updateService: UpdateService,
     private titleService: Title,
     // private networkService: NetworkService,
-    private analytics: Analytics
+    private analytics: Analytics,
     // private networkService: NetworkService
+    public slugService:SlugService
   ) {
 
     this.offline = !navigator.onLine
@@ -128,7 +130,7 @@ export class HomeComponent implements OnInit {
 
 
   ngOnInit(): void {
-    alert("coucou!")
+    // alert("coucou!")
 
     this.titleService.setTitle('Accueil - BE-ON-TOP formation application'); // Mettre à jour le titre de la page
 
@@ -346,6 +348,36 @@ export class HomeComponent implements OnInit {
     // alert(tradeName)
     logEvent(this.analytics, 'has_started_evaluation_from_home', { trade_name: tradeName });
   }
+
+  // generateSlug(denomination: string): string {
+  //   return denomination
+  //     .toLowerCase()
+  //     .replace(/ /g, '_') // Remplace les espaces par des underscores
+  //     .replace(/[^\w\u00C0-\u017F]+/g, ''); // Conserve les caractères alphanumériques et les accents
+  // }
+
+  // generateSlug(denomination: string): string {
+  //   const accentsMap = new Map([
+  //     ['á', 'a'], ['à', 'a'], ['â', 'a'], ['ä', 'a'], ['ã', 'a'], ['å', 'a'],
+  //     ['é', 'e'], ['è', 'e'], ['ê', 'e'], ['ë', 'e'],
+  //     ['í', 'i'], ['ì', 'i'], ['î', 'i'], ['ï', 'i'],
+  //     ['ó', 'o'], ['ò', 'o'], ['ô', 'o'], ['ö', 'o'], ['õ', 'o'],
+  //     ['ú', 'u'], ['ù', 'u'], ['û', 'u'], ['ü', 'u'],
+  //     ['ý', 'y'], ['ÿ', 'y'],
+  //     ['ç', 'c'], ['ñ', 'n']
+  //   ]);
+
+  //   let slug = denomination
+  //     .toLowerCase()
+  //     .split('')
+  //     .map(char => accentsMap.get(char) || char)
+  //     .join('')
+  //     .replace(/[^a-z0-9_]+/g, '_');
+
+  //   return slug;
+  // }
+
+ 
 
 
 }

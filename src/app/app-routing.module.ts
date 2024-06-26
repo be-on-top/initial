@@ -43,6 +43,7 @@ const routes: Routes = [
   { path: 'account', component: AccountComponent, canActivate: [AuthGuardService] },
   { path: 'socialregistration', component: AdminForm},
   { path: 'quizz/:id/:indexQuestion/:scoreCounter/:hasStartedEvaluation/:studentId', component: QuizzComponent, canActivate: [AuthGuardService, historyGuard]},
+  { path: 'trade/:id/:slug', component: TradeDetailsComponent},
   { path: 'trade/:id', component: TradeDetailsComponent}
 ];
 

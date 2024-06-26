@@ -179,7 +179,7 @@ h3,
 
 .fs-5 {
     font-size: 1.10rem !important;
-    line-height: 1.20rem;
+    /* line-height: 1.20rem; */
 }
 
 .fs-6,
@@ -187,9 +187,13 @@ h3,
     font-size: 0.8rem !important;
 }
 
+.display-5{
+    font-size: 1.15rem;
+}
+
 .d-inline,
 .alert {
-    font-weight: 100;
+    font-weight: 300;
 }
 
 
@@ -435,12 +439,12 @@ p.question {
     .fs-6,
     .fs-6 span {
         width: 90%;
-        font-size: 0.8rem !important;
+        font-size: 0.7rem !important;
     }
 
     h2.h5,
     h1 {
-        font-size: 1.2rem
+        font-size: 1.1rem
     }
 
 
@@ -457,12 +461,15 @@ p.question {
     form p {
         font-size: 0.8rem ! important;
     } */
-    button.btn,
+
+
+    /* désactivé 06 2024 */
+    /* button.btn,
     button a,
-    .card-body,
-    form p {
+    .card-body p,
+    form p, .card-text {
         font-size: 0.9rem ! important;
-    }
+    } */
 
     .order-perso2 {
         order: 2;

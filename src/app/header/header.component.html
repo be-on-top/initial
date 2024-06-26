@@ -134,7 +134,7 @@
                     <ul class="dropdown-menu mb-2">
                         <li *ngFor="let trade of trades">
                             <a class="dropdown-item" (click)="closeNavbar()"
-                                [routerLink]="['/trade', trade.sigle]">{{trade.denomination}}</a>
+                                [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]">{{trade.denomination}}</a>
                         </li>
                     </ul>
                 </li>

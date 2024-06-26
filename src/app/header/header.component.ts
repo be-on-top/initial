@@ -11,6 +11,7 @@ import { StudentsService } from '../admin/students.service';
 import { Student } from '../admin/Students/student';
 import { Partner } from '../admin/partner';
 import { NetworkService } from '../network.service';
+import { SlugService } from '../slug.service';
 
 
 @Component({
@@ -50,7 +51,8 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     private tradeService: SettingsService,
     private router: Router,
     private studentService: StudentsService,
-    private networkService: NetworkService) {
+    private networkService: NetworkService,
+    public slugService: SlugService) {
     // this.userUid=this.authService.getUserId()
     // this.offline = !navigator.onLine
     // Si on passe par networkService pour une détection plus rapide
@@ -219,6 +221,8 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       this.networkSubscription.unsubscribe(); // Vérification explicite pour null
     }
   }
+
+
 
 
 }

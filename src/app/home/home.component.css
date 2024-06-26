@@ -6,7 +6,9 @@ img {
 
 }
 
-
+.card-header:hover{
+    cursor: pointer!important;
+}
 
 a .btn.btn-transparent:hover {
     box-shadow: none !important;

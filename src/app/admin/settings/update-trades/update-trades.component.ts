@@ -6,6 +6,7 @@ import { Trade } from '../../trade';
 
 // import { Denominator } from 'src/app/quizz/denominator';
 import { CPData } from '../CPData';
+import { SlugService } from 'src/app/slug.service';
 
 @Component({
   selector: 'app-update-trades',
@@ -48,7 +49,7 @@ export class UpdateTradesComponent {
   }; // list of firebase error codes to alternate error messages
 
 
-  constructor(private service: SettingsService, private ac: ActivatedRoute, private router: Router) {
+  constructor(private service: SettingsService, private ac: ActivatedRoute, private router: Router, public slugService:SlugService) {
     this.userRouterLinks = this.ac.snapshot.data;
 
   }
@@ -93,7 +94,7 @@ export class UpdateTradesComponent {
           this.isSuccessMessage = true
           setTimeout(() => {
             form.reset()
-            this.router.navigate(['/trade', this.sigleId])
+            this.router.navigate(['/trade', this.sigleId, this.slugService.generateSlug(this.trade.denomination)])
           }, 1000)
         })
         .catch((error) => {
@@ -180,7 +181,9 @@ export class UpdateTradesComponent {
           this.isSuccessMessage = true
           setTimeout(() => {
             form.reset()
-            this.router.navigate(['/trade', this.sigleId])
+            // this.router.navigate(['/trade', this.sigleId, ])
+            // avec l'ajout du slug pour SEO, pas le choix :
+            this.router.navigate(['/trade', this.sigleId, this.slugService.generateSlug(this.trade.denomination)])
           }, 1000)
         })
         .catch((error) => {

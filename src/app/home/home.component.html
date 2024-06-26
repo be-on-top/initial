@@ -32,7 +32,7 @@
                 personnalisée</h1> qui vous hissera aux portes du métier de votre choix
         </div> -->
         <div *ngIf="!isLoading && !isOneQuizzAchieved && !offline"
-            class="alert w-100 p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show fs-5">
+            class="alert w-100 p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show display-5">
             <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
                 aria-label="Fermer le message"></button>
             Evaluez vos connaissances et démarrez rapidement une <h1 class="d-inline fs-5">formation
@@ -75,10 +75,10 @@
 
                 <!-- <a [routerLink]="['/quizz/',  trade.sigle, studentData && studentData['quizz_'+trade.sigle] && studentData['quizz_'+trade.sigle].lastIndexQuestion?(studentData['quizz_'+trade.sigle].lastIndexQuestion | number)+1:0, studentData && studentData['quizz_'+trade.sigle] && studentData['quizz_'+trade.sigle].scoreCounter?studentData['quizz_'+trade.sigle].scoreCounter:0, studentData && studentData['quizz_'+trade.sigle]?true:false, studentData && studentData.id?studentData.id:'']" class="text-decoration-none text-dark"> -->
                 <div class="card my-3" (click)="selectTrade(trade.id)">
-                    <div class="card-header text-capitalize">
+                    <div class="card-header" [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]">
                         <!-- essai à conserver !!! -->
                         <!-- <h2 class="h5 text-start ps-2" [innerHTML]="trade.denomination | firstWord"></h2> -->
-                        <h2 class="h5 text-start ps-2" [innerHTML]="trade.denomination"></h2>
+                        <h2 class="h5 text-start ps-2" [innerHTML]="trade.denomination | firstWord"></h2>
                     </div>
 
                     <div class="card-body">
@@ -96,7 +96,7 @@
                         <!-- fin spinner -->
                         <ng-container *ngIf="trade.imageUrl">
                             <div class="image-container rounded mb-1">
-                                <a [routerLink]="['/trade', trade.sigle]" class="text-decoration-none">
+                                <a [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]" class="text-decoration-none">
                                     <img ngOpmizedImage class="img-fluid rounded" [ngSrc]="trade.imageUrl"
                                         *ngIf="trade.imageUrl" (load)="onImageLoad()" [width]="largeurImage"
                                         [height]="hauteurImage" [priority]="i === 0">
@@ -108,7 +108,7 @@
                             </div>
                         </ng-container>
 
-                        <div class="card-text pt-2"><a [routerLink]="['/trade', trade.sigle]"
+                        <div class="card-text pt-2"><a [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]"
                                 class="text-decoration-none fs-6">
                                 {{(truncateText(trade.description, 230) )| stripHtml }} </a></div>
 
