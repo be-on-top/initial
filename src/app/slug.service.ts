@@ -49,7 +49,13 @@ export class SlugService {
       .join('')
       .replace(/[^a-z0-9_]+/g, '_');
 
+    // Supprimer le dernier underscore, s'il est présent
+    if (slug.endsWith('_')) {
+      slug = slug.slice(0, -1);
+    }
+
     return slug;
   }
-  
+
+
 }
