@@ -16,6 +16,8 @@
                         RS)</a></span>
                 <span class="d-block" *ngIf="tradeData.isQualifying && tradeData.isQualifying==true">Formation
                     Qualifiante !</span>
+                <span class="d-block" *ngIf="tradeData.isCPF && tradeData.isCPF===true" >Finançable CPF</span>
+                <span class="d-block" *ngIf="!tradeData.isCPF" >Non Finançable CPF</span>
                 <br *ngIf="tradeData.requirements">
                 <span *ngIf="tradeData.requirements && tradeData.requirements!==''" class="text-light">Prérequis :
                     {{tradeData.requirements}}</span>

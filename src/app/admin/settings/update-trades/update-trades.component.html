@@ -33,7 +33,12 @@
 
       <div class="form-check form-switch mt-3">
         <input class="form-check-input" type="checkbox" id="statusCheckbox" name="isQualifying" [(ngModel)]="trade.isQualifying">
-        <label class="form-check-label" for="statusCheckbox">Formation qualifiante ?</label>
+        <label class="form-check-label" for="isQualifying">Formation qualifiante ?</label>
+      </div>
+      <!-- financement CPF -->
+      <div class="form-check form-switch mt-3">
+        <input class="form-check-input" type="checkbox" id="cpfCheckbox" name="isCPF" [(ngModel)]="trade.isCPF">
+        <label class="form-check-label" for="isCPF">Finançable CPF</label>
       </div>
       <!-- si prérequis -->
       <div class="mt-3">

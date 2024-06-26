@@ -29,9 +29,14 @@
       <!-- option pour formation qualifiante -->
       <label class="form-label mt-3">Formation Qualifiante :</label>
       <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="statusCheckbox" name="isQualifying"
+        <input class="form-check-input" type="checkbox" name="isQualifying"
           [(ngModel)]="sigles.isQualifying">
-        <label class="form-check-label" for="statusCheckbox">Oui</label>
+        <label class="form-check-label" for="isQualifying">Oui</label>
+      </div>
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" name="isCPF"
+          [(ngModel)]="sigles.isCPF">
+        <label class="form-check-label" for="isCPF">Oui</label>
       </div>
       <div class="mt-3">
         <label class="form-label" for="requirements">Prérequis (faculatatif) ?</label>
