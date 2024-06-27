@@ -5,6 +5,32 @@ img {
     /* aspect-ratio: auto 600 / 250; */
 
 }
+.h5{
+    width:fit-content;
+    font-size: 1.18rem;
+
+}
+h2{
+    padding-top: 5px;
+    position: relative;
+
+}
+
+h2:before{
+    position: absolute;
+    content: "";
+    background-color: #82BC00;
+    /* background-color: #0062fe; */
+    height: 1.5px;
+    width: 0; /* Initial width */
+    bottom: -7px;
+    left: 5px; /* Align to the left */
+    transition: width 0.3s ease-in-out; /* Transition effect */
+}
+.card:hover h2::before {
+    width: 95%; /* Final width on hover of .card */
+}
+
 
 .card-header:hover{
     cursor: pointer!important;
