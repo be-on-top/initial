@@ -60,7 +60,7 @@
 
     <hr>
 
-    <div id="accordion">
+    <!-- <div id="accordion">
 
         <div class="card">
           <div class="card-header">
@@ -153,6 +153,109 @@
           </div>
         </div>
       
-      </div>
+      </div> -->
+
+    <!-- accordion.component.html -->
+    <div id="accordion" class="row">
+        <div class="col-md-6">
+            <div class="card mb-2">
+                <div class="card-header">
+                    <a class="btn text-primary" data-bs-toggle="collapse" href="#collapseOne">
+                        Un parcours de formation personnalisé #1
+                    </a>
+                </div>
+                <div id="collapseOne" class="collapse">
+                    <div class="card-body">
+                        Lorem ipsum..
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-2">
+                <div class="card-header">
+                    <a class="collapsed text-primary btn" data-bs-toggle="collapse" href="#collapseTwo">
+                        Des questionnaires d'évaluation ciblés #2
+                    </a>
+                </div>
+                <div id="collapseTwo" class="collapse">
+                    <div class="card-body">
+                        Conçus par des professionnels de terrain...
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-2">
+                <div class="card-header">
+                    <a class="collapsed text-primary btn" data-bs-toggle="collapse" href="#collapseThree">
+                        Un suivi pédagogique en ligne #3
+                    </a>
+                </div>
+                <div id="collapseThree" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        Suivi facilité depuis votre compte utilisateur..
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <div class="card mb-2">
+                <div class="card-header">
+                    <a class="collapsed text-primary btn" data-bs-toggle="collapse" href="#collapseFour">
+                        Des formations professionnelles #4
+                    </a>
+                </div>
+                <div id="collapseFour" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        Dispensées par des professionnels du terrain..
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-2">
+                <div class="card-header">
+                    <a class="collapsed text-primary btn" data-bs-toggle="collapse" href="#collapseFive">
+                        Des compétences professionnelles recherchées #5
+                    </a>
+                </div>
+                <div id="collapseFive" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        Chaque compétence évaluée en début et en cours de formation correspond à des références exigées par les professionnnels et les recruteurs....
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-2">
+                <div class="card-header">
+                    <a class="collapsed text-primary btn" data-bs-toggle="collapse" href="#collapseSix">
+                        Une insertion professionnelle facilitée #6
+                    </a>
+                </div>
+                <div id="collapseSix" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        Lorem ipsum..
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div>
+
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed text-primary btn" data-bs-toggle="collapse" href="#collapseSeven">
+                        Des formations finançables #7
+                    </a>
+                </div>
+                <div id="collapseSeven" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        Lorem ipsum..
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
 
 </div>
