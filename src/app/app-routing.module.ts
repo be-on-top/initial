@@ -11,6 +11,7 @@ import { AuthGuardService } from './auth-guard.service';
 import { RgpdComponent } from './rgpd/rgpd.component';
 import { PartnersComponent } from './partners/partners.component';
 import { historyGuard } from './guards/history.guard';
+import { BenefitsComponent } from './benefits/benefits.component';
 
 // const routes: Routes = [
 //   { path: 'home', component: HomeComponent, pathMatch: 'full', canActivate: [AuthGuardService] },
@@ -42,6 +43,7 @@ const routes: Routes = [
   // { path: 'admin', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'account', component: AccountComponent, canActivate: [AuthGuardService] },
   { path: 'socialregistration', component: AdminForm},
+  { path: 'benefits', component: BenefitsComponent},
   { path: 'quizz/:id/:indexQuestion/:scoreCounter/:hasStartedEvaluation/:studentId', component: QuizzComponent, canActivate: [AuthGuardService, historyGuard]},
   { path: 'trade/:id/:slug', component: TradeDetailsComponent},
   { path: 'trade/:id', component: TradeDetailsComponent}

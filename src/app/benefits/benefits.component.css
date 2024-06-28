@@ -1,0 +1,14 @@
+#image {
+
+    /* The background image */
+    background-image: url("/assets/employes-entrepot-frappant-mains-ensemble_342744-1462.webp");
+    width: 100%; /* Largeur relative à l'écran */
+    aspect-ratio: 4 / 2; /* Maintient un ratio de 4:2 */
+
+    background-size: cover; /* Couvre entièrement le conteneur sans changer le ratio */
+    background-position: center; /* Centre l'image de fond */
+    background-repeat: no-repeat; /* Évite la répétition de l'image */
+
+}
+
+

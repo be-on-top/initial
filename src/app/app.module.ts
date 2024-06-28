@@ -50,6 +50,7 @@ import { DurationPipe } from './duration.pipe';
 import { RoundPipe } from './round.pipe';
 import { FaqComponent } from './faq/faq.component';
 import { TruncateTitlePipe } from './truncate-title.pipe';
+import { BenefitsComponent } from './benefits/benefits.component';
 // import { AutoChangeDirective } from './auto-change.directive';
 
 // import { getMessaging } from 'firebase/messaging';
@@ -83,6 +84,7 @@ import { TruncateTitlePipe } from './truncate-title.pipe';
     RoundPipe,
     FaqComponent,
     TruncateTitlePipe,
+    BenefitsComponent,
     // AutoChangeDirective,
     // TooltipComponent
   ],
