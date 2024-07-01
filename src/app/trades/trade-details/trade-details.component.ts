@@ -72,7 +72,8 @@ export class TradeDetailsComponent implements OnInit {
           // Mettre à jour le titre de la page
           this.titleService.setTitle(`Formation ${this.tradeData.denomination}: compétences métier et emploi`)
 
-
+                  // Définir l'URL canonique
+                  this.setCanonicalURL(`https://be-on-top.io/trade/${this.tradeId}/${this.tradeData.denomination}`);
           // Pour extraire et additionner les premières valeurs des tableaux associés aux clés spécifiques dans l'objet tradeData.durations, vous pouvez utiliser TypeScript avec Angular de la manière suivante :  
           const keysToExtractFrom = Object.keys(this.tradeData.durations)
           this.firstValuesSum = keysToExtractFrom.reduce((sum, key) => {
@@ -85,6 +86,7 @@ export class TradeDetailsComponent implements OnInit {
 
           // données structurées
           this.structuredData = this.generateStructuredData(this.tradeData);
+
 
           // console.log("Sum of first values:", this.firstValuesSum)
         })
@@ -102,6 +104,8 @@ export class TradeDetailsComponent implements OnInit {
             console.error('Erreur lors du chargement de l\'image', error);
           }
         });
+
+        
 
 
 
@@ -145,8 +149,7 @@ export class TradeDetailsComponent implements OnInit {
         // pour récupérer l'image locale si image locale
         this.imageUrl = `../../assets/${this.tradeId}.jpeg`
 
-        // Définir l'URL canonique
-        this.setCanonicalURL(`https://be-on-top.io/trade/${this.tradeId}/${this.tradeData.denomination}`);
+
 
       }
 
@@ -278,15 +281,15 @@ export class TradeDetailsComponent implements OnInit {
   }
 
 
-  /**
-   * Définit l'URL canonique de la page.
-   * @param url L'URL canonique à définir.
-   */
+  
+
   setCanonicalURL(url: string) {
     // Cherche un élément <link> avec l'attribut rel="canonical"
     let link: HTMLLinkElement | null = document.querySelector('link[rel="canonical"]');
     
     if (link) {
+      console.log("url mise à jour");
+      
       // Si l'élément <link> existe déjà, met à jour son attribut href avec la nouvelle URL canonique
       link.href = url;
     } else {
@@ -298,7 +301,10 @@ export class TradeDetailsComponent implements OnInit {
       link.setAttribute('href', url);
       // Ajoute l'élément <link> à la tête du document
       document.head.appendChild(link);
+
+      console.log("url mise à jour");
     }
+
   }
 
 
