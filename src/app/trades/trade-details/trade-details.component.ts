@@ -145,6 +145,9 @@ export class TradeDetailsComponent implements OnInit {
         // pour récupérer l'image locale si image locale
         this.imageUrl = `../../assets/${this.tradeId}.jpeg`
 
+        // Définir l'URL canonique
+        this.setCanonicalURL(`https://be-on-top.io/trade/${this.tradeId}/${this.tradeData.denomination}`);
+
       }
 
 
@@ -253,7 +256,7 @@ export class TradeDetailsComponent implements OnInit {
       "headline": trade.denomination,
       "description": "Formation BE-ON-TOP - fiche métier compétences et objectifs",
       "articleBody": trade.description,
-      "image": "https://be-on-top.io/assets/"+trade.sigle+".jpeg", // Utilisez une URL d'image appropriée
+      "image": "https://be-on-top.io/assets/" + trade.sigle + ".jpeg", // Utilisez une URL d'image appropriée
       "author": {
         "@type": "Person",
         "name": "M.Hervé"
@@ -272,6 +275,30 @@ export class TradeDetailsComponent implements OnInit {
       "Durée max de formation en heures": this.firstValuesSum,
     };
     return this.sanitizer.bypassSecurityTrustHtml(`<script type="application/ld+json">${JSON.stringify(data)}</script>`);
+  }
+
+
+  /**
+   * Définit l'URL canonique de la page.
+   * @param url L'URL canonique à définir.
+   */
+  setCanonicalURL(url: string) {
+    // Cherche un élément <link> avec l'attribut rel="canonical"
+    let link: HTMLLinkElement | null = document.querySelector('link[rel="canonical"]');
+    
+    if (link) {
+      // Si l'élément <link> existe déjà, met à jour son attribut href avec la nouvelle URL canonique
+      link.href = url;
+    } else {
+      // Si l'élément <link> n'existe pas, crée un nouvel élément <link>
+      link = document.createElement('link');
+      // Définit l'attribut rel à "canonical"
+      link.setAttribute('rel', 'canonical');
+      // Définit l'attribut href à l'URL canonique fournie
+      link.setAttribute('href', url);
+      // Ajoute l'élément <link> à la tête du document
+      document.head.appendChild(link);
+    }
   }
 
 
