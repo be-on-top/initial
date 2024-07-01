@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Meta } from '@angular/platform-browser';
+import { Meta, SafeHtml } from '@angular/platform-browser';
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { Firestore, docData, doc } from '@angular/fire/firestore';
 import { DomSanitizer, Title } from '@angular/platform-browser';
@@ -37,6 +37,9 @@ export class TradeDetailsComponent implements OnInit {
 
   offline: boolean = false
 
+  // pour les données structurées
+  structuredData: SafeHtml = ''; // Initialisation de structuredData
+
 
   constructor(
     private service: SettingsService,
@@ -48,7 +51,7 @@ export class TradeDetailsComponent implements OnInit {
     public sanitizer: DomSanitizer,
     private location: Location,
     private titleService: Title,
-    private metaService: Meta
+    private metaService: Meta,
   ) {
     this.offline = !navigator.onLine
   }
@@ -80,7 +83,10 @@ export class TradeDetailsComponent implements OnInit {
             return sum;
           }, 0)
 
-          console.log("Sum of first values:", this.firstValuesSum)
+          // données structurées
+          this.structuredData = this.generateStructuredData(this.tradeData);
+
+          // console.log("Sum of first values:", this.firstValuesSum)
         })
 
         // 2 récupérer l'image en ligne
@@ -127,7 +133,10 @@ export class TradeDetailsComponent implements OnInit {
               return sum;
             }, 0)
 
-            console.log("Sum of first values:", this.firstValuesSum);
+            // données structurées
+            // this.structuredData = this.generateStructuredData(this.tradeData);
+
+            // console.log("Sum of first values:", this.firstValuesSum);
 
           }
 
@@ -180,6 +189,8 @@ export class TradeDetailsComponent implements OnInit {
 
       // alert(this.hasStartedEvaluation)
 
+      // this.structuredData = this.generateStructuredData(this.tradeData);
+
 
       // fin ac.paramMap.subscribe
     })
@@ -230,6 +241,37 @@ export class TradeDetailsComponent implements OnInit {
     temp.innerHTML = value;
 
     return (temp.textContent || temp.innerText || '').slice(0, 120) + '...';
+  }
+
+
+
+
+  generateStructuredData(trade: Trade): SafeHtml {
+    const data = {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": trade.denomination,
+      "description": "Formation BE-ON-TOP - fiche métier compétences et objectifs",
+      "articleBody": trade.description,
+      "image": "https://be-on-top.io/assets/"+trade.sigle+".jpeg", // Utilisez une URL d'image appropriée
+      "author": {
+        "@type": "Person",
+        "name": "M.Hervé"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "BE-ON-TOP",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://be-on-top.io/assets/BE-ON-TOP_picto_LOGO.svg"
+        }
+      },
+      // Propriétés supplémentaires
+      "identifiant": trade.sigle,
+      "Competence": this.tradeData.competences,
+      "Durée max de formation en heures": this.firstValuesSum,
+    };
+    return this.sanitizer.bypassSecurityTrustHtml(`<script type="application/ld+json">${JSON.stringify(data)}</script>`);
   }
 
 

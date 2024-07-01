@@ -34,7 +34,7 @@
         <div *ngIf="!isLoading && !isOneQuizzAchieved && !offline"
             class="alert w-100 p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show display-5">
             <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
-                aria-label="Fermer le message"></button>
+                aria-label="Fermer le message be-on-top"></button>
             Evaluez vos connaissances et démarrez rapidement une <h1 class="d-inline fs-5">formation
                 personnalisée</h1> pour être au top des compétences du métier de vôtre choix.
         </div>
@@ -47,7 +47,7 @@
                 aria-label="Fermer le message"></button>
             <!-- Vous pourrez aussi dès maintenant finaliser votre inscription administrative -->
             Retrouvez <span class="fw-bold">tous vos résultats</span> et <span class="fw-bold">vos estimations
-                personnalisées</span> depuis <a [routerLink]="['/account']" class="text-decoration-none"> votre compte
+                personnalisées</span> depuis <a [routerLink]="['/account']" class="text-decoration-none" title="compte personnel be-on-top"> votre compte
                 personnel</a>.
         </div>
     </ng-template>
@@ -99,7 +99,7 @@
                                 <a [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]" class="text-decoration-none">
                                     <img ngOpmizedImage class="img-fluid rounded" [ngSrc]="trade.imageUrl"
                                         *ngIf="trade.imageUrl" (load)="onImageLoad()" [width]="largeurImage"
-                                        [height]="hauteurImage" [priority]="i === 0">
+                                        [height]="hauteurImage" [priority]="i === 0" alt="formation BE-ON-TOP au métier {{trade.sigle}}">
                                 </a>
                                 <!-- <a [routerLink]="['/trade', trade.sigle]" class="text-decoration-none">
                                     <img class="img-fluid rounded" [src]="trade.imageUrl" (load)="onImageLoad()"
@@ -138,7 +138,7 @@
                                     *ngIf="(studentData && !studentData['quizz_'+trade.sigle])">
 
                                     <button (click)="logStartEvaluationEvent(trade.denomination)"
-                                        aria-label="Démarrer le questionnaire" class="btn btn-transparent"><i
+                                        aria-label="Démarrer le questionnaire be-on-top" class="btn btn-transparent"><i
                                             class="bi bi-clock-fill text-success"></i>
                                         Démarrer votre évaluation</button>
 

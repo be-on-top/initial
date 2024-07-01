@@ -75,7 +75,7 @@
                     <!-- ---------------- -->
                 </a>
                 <div class="d-flex justify-content-md-end" *ngIf="isEvaluationCompleted">
-                    <a [routerLink]="['/account']">
+                    <a [routerLink]="['/account']" title="be-on-top compte personnel">
                         <p class="text-light"><i
                                 class="bi bi-check-square-fill me-3"></i>
                             Votre évaluation est terminée</p>
@@ -91,7 +91,7 @@
         <!-- <img class="rounded img-fluid mb-2 border border-1 m-auto w-100" [src]="imageUrl" *ngIf="imageUrl"> -->
         <img *ngIf="!offline" class="rounded img-fluid mb-2 border border-1 m-auto w-100" [src]="imageUrl"
             srcset="{{ imageUrlReduced }} 575w, {{ imageUrl }} 1024w" sizes="(max-width: 575px) 575px, 1024px"
-            alt="formation au métier {{tradeId}}">
+            alt="formation be-on-top au métier {{tradeId}}">
         <img *ngIf="offline" class="rounded img-fluid mb-2 border border-1 m-auto w-100" [src]="imageUrl"
             alt="formation au métier {{tradeId}}">
 
@@ -179,8 +179,6 @@
 
         </div>
     </div>
-
-
-
+    <div [innerHTML]="structuredData"></div>
 
 </div>
