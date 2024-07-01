@@ -72,8 +72,8 @@ export class TradeDetailsComponent implements OnInit {
           // Mettre à jour le titre de la page
           this.titleService.setTitle(`Formation ${this.tradeData.denomination}: compétences métier et emploi`)
 
-                  // Définir l'URL canonique
-                  this.setCanonicalURL(`https://be-on-top.io/trade/${this.tradeId}/${this.tradeData.denomination}`);
+          // Définir l'URL canonique
+          this.setCanonicalURL(`https://be-on-top.io/formation/${this.tradeId}/${this.tradeData.denomination}`);
           // Pour extraire et additionner les premières valeurs des tableaux associés aux clés spécifiques dans l'objet tradeData.durations, vous pouvez utiliser TypeScript avec Angular de la manière suivante :  
           const keysToExtractFrom = Object.keys(this.tradeData.durations)
           this.firstValuesSum = keysToExtractFrom.reduce((sum, key) => {
@@ -105,7 +105,7 @@ export class TradeDetailsComponent implements OnInit {
           }
         });
 
-        
+
 
 
 
@@ -281,15 +281,15 @@ export class TradeDetailsComponent implements OnInit {
   }
 
 
-  
+
 
   setCanonicalURL(url: string) {
     // Cherche un élément <link> avec l'attribut rel="canonical"
     let link: HTMLLinkElement | null = document.querySelector('link[rel="canonical"]');
-    
+
     if (link) {
       console.log("url mise à jour");
-      
+
       // Si l'élément <link> existe déjà, met à jour son attribut href avec la nouvelle URL canonique
       link.href = url;
     } else {

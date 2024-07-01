@@ -46,7 +46,9 @@ const routes: Routes = [
   { path: 'benefits', component: BenefitsComponent},
   { path: 'quizz/:id/:indexQuestion/:scoreCounter/:hasStartedEvaluation/:studentId', component: QuizzComponent, canActivate: [AuthGuardService, historyGuard]},
   { path: 'trade/:id/:slug', component: TradeDetailsComponent},
-  { path: 'trade/:id', component: TradeDetailsComponent}
+  { path: 'trade/:id', component: TradeDetailsComponent},
+  { path: 'formation/:id/:slug', component: TradeDetailsComponent},
+  { path: 'formation/:id', component: TradeDetailsComponent}
 ];
 
 

@@ -18,7 +18,7 @@
 
   <url>
 
-    <loc>https://be-on-top.io/trade/prepa_cdes</loc>
+    <loc>https://be-on-top.io/formation/prepa_cdes/preparateur_de_commandes</loc>
 
     <changefreq>monthly</changefreq>
 
@@ -28,7 +28,7 @@
 
   <url>
 
-    <loc>https://be-on-top.io/trade/poseur_ite</loc>
+    <loc>https://be-on-top.io/formation/poseur_ite/poseur_ite_isolation_thermique_exterieure</loc>
 
     <changefreq>monthly</changefreq>
 
@@ -38,7 +38,7 @@
 
   <url>
 
-    <loc>https://be-on-top.io/trade/mac_vrd</loc>
+    <loc>https://be-on-top.io/formation/mac_vrd/macon_vrd_voirie_et_reseaux_divers</loc>
 
     <changefreq>monthly</changefreq>
 
@@ -48,7 +48,7 @@
 
   <url>
 
-    <loc>https://be-on-top.io/trade/cl_vul</loc>
+    <loc>https://be-on-top.io/formation/cl_vul/chauffeur_livreur_vul_vehicule_utilitaire_leger</loc>
 
     <changefreq>monthly</changefreq>
 
@@ -58,7 +58,7 @@
 
   <url>
 
-    <loc>https://be-on-top.io/trade/caces_R489</loc>
+    <loc>https://be-on-top.io/trade/caces_R489/conducteur_chariot_elevateur_r489_cat_1a_3_5</loc>
 
     <changefreq>monthly</changefreq>
 
@@ -68,7 +68,7 @@
 
   <url>
 
-    <loc>https://be-on-top.io/trade/caces_R482</loc>
+    <loc>https://be-on-top.io/trade/caces_R482/conducteur_engins_de_chantier_r482_cat_a</loc>
 
     <changefreq>monthly</changefreq>
 
