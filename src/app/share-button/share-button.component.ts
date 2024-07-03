@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Meta } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-share-button',
@@ -9,17 +9,11 @@ import { Meta } from '@angular/platform-browser';
 export class ShareButtonComponent {
 
   isWebShareSupported: boolean = false;
-  @Input() imageUrl?: string; // Définir une propriété @Input() pour recevoir l'URL de l'image
+  @Input() imageUrl: string=''; // Définir une propriété @Input() pour recevoir l'URL de l'image
 
-  constructor(private metaService: Meta) {
-    alert(this.imageUrl)
-
-    // this.updateOpenGraphImage()
+  constructor() {
+    
   }
-
-  // updateOpenGraphImage() {
-  //   this.metaService.updateTag({ property: 'og:image', content: this.imageUrl });
-  // }
 
 
   ngOnInit(): void {
