@@ -1,5 +1,5 @@
-#image {
-
+#image{
+    position: relative;
     /* The background image */
     background-image: url("/assets/employes-entrepot-frappant-mains-ensemble_342744-1462.webp");
     width: 100%;
@@ -15,6 +15,29 @@
     /* Évite la répétition de l'image */
 
 }
+
+#image>img{
+    position: absolute;
+    width: 50px;
+    bottom: 10px;
+    right: 10px;
+    /* opacity: 80%; */
+    
+}
+
+@media only screen and (max-width: 576px)  {
+    img{
+        visibility: hidden;
+
+        /* opacity: 80%; */
+        
+    }
+    
+}
+
+
+
+
 
 
 

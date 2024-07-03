@@ -18,31 +18,137 @@
 
   <url>
 
+    <loc>https://be-on-top.io/trade/prepa_cdes/preparateur_de_commandes</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.5</priority>
+
+  </url>
+  <url>
+
+    <loc>https://be-on-top.io/trade/prepa_cdes</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.5</priority>
+
+  </url>
+  <url>
+
     <loc>https://be-on-top.io/formation/prepa_cdes/preparateur_de_commandes</loc>
 
     <changefreq>monthly</changefreq>
 
-    <priority>0.6</priority>
+    <priority>0.8</priority>
+
+  </url>
+  <url>
+
+    <loc>https://be-on-top.io/formation/prepa_cdes</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.8</priority>
 
   </url>
 
+  <!-- 2 -->
+
+  <url>
+
+    <loc>https://be-on-top.io/trade/poseur_ite/poseur_ite_isolation_thermique_exterieure</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.5</priority>
+
+  </url>
+  <url>
+
+    <loc>https://be-on-top.io/trade/poseur_ite</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.5</priority>
+
+  </url>
   <url>
 
     <loc>https://be-on-top.io/formation/poseur_ite/poseur_ite_isolation_thermique_exterieure</loc>
 
     <changefreq>monthly</changefreq>
 
-    <priority>0.6</priority>
+    <priority>0.8</priority>
+
+  </url>
+  <url>
+
+    <loc>https://be-on-top.io/formation/poseur_ite</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.8</priority>
 
   </url>
 
+  <!-- 3 -->
+
+  <url>
+
+    <loc>https://be-on-top.io/trade/mac_vrd/macon_vrd_voirie_et_reseaux_divers</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.5</priority>
+
+  </url>
+  <url>
+
+    <loc>https://be-on-top.io/trade/mac_vrd</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.5</priority>
+
+  </url>
   <url>
 
     <loc>https://be-on-top.io/formation/mac_vrd/macon_vrd_voirie_et_reseaux_divers</loc>
 
     <changefreq>monthly</changefreq>
 
-    <priority>0.6</priority>
+    <priority>0.8</priority>
+
+  </url>
+  <url>
+
+    <loc>https://be-on-top.io/formation/mac_vrd</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.8</priority>
+
+  </url>
+
+   <!-- 4 -->
+
+  <url>
+
+    <loc>https://be-on-top.io/trade/cl_vul/chauffeur_livreur_vul_vehicule_utilitaire_leger</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.5</priority>
+
+  </url>
+  <url>
+
+    <loc>https://be-on-top.io/trade/cl_vul</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.5</priority>
 
   </url>
 
@@ -52,9 +158,21 @@
 
     <changefreq>monthly</changefreq>
 
-    <priority>0.6</priority>
+    <priority>0.8</priority>
 
   </url>
+
+  <url>
+
+    <loc>https://be-on-top.io/formation/cl_vul</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.8</priority>
+
+  </url>
+
+   <!-- 5 -->
 
   <url>
 
@@ -62,9 +180,38 @@
 
     <changefreq>monthly</changefreq>
 
-    <priority>0.6</priority>
+    <priority>0.5</priority>
 
   </url>
+  <url>
+
+    <loc>https://be-on-top.io/trade/caces_R489</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.5</priority>
+
+  </url>
+  <url>
+
+    <loc>https://be-on-top.io/formation/caces_R489/conducteur_chariot_elevateur_r489_cat_1a_3_5</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.8</priority>
+
+  </url>
+  <url>
+
+    <loc>https://be-on-top.io/formation/caces_R489</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.8</priority>
+
+  </url>
+
+   <!-- 6 -->
 
   <url>
 
@@ -72,10 +219,36 @@
 
     <changefreq>monthly</changefreq>
 
-    <priority>0.6</priority>
+    <priority>0.5</priority>
 
   </url>
+  <url>
 
+    <loc>https://be-on-top.io/trade/caces_R482</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.5</priority>
+
+  </url>
+  <url>
+
+    <loc>https://be-on-top.io/formation/caces_R482/conducteur_engins_de_chantier_r482_cat_a</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.8</priority>
+
+  </url>
+  <url>
+
+    <loc>https://be-on-top.io/formation/caces_R482</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.8</priority>
+
+  </url>
 
 
 </urlset>

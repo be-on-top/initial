@@ -68,7 +68,7 @@ export class TradeDetailsComponent implements OnInit {
           this.tradeData = data
           // pour personnaliser le metatag
           const textForDescription = this.transform(this.tradeData.description)
-          this.addTag(`Evaluez vos compétence et démarrez une formation personnalisée de ${this.tradeData.denomination}. ${textForDescription}`)
+          this.addTag(`Evaluez vos compétences et démarrez une formation personnalisée de ${this.tradeData.denomination}. ${textForDescription}`)
           // Mettre à jour le titre de la page
           this.titleService.setTitle(`Formation ${this.tradeData.denomination}: compétences métier et emploi`)
 
@@ -97,6 +97,7 @@ export class TradeDetailsComponent implements OnInit {
         this.service.loadImage(this.tradeId).then(({ originalUrl, resizedUrl }) => {
           this.imageUrl = originalUrl;
           this.imageUrlReduced = resizedUrl;
+          this.updateOpenGraphImage()
         }).catch((error) => {
           if (error.code === 'storage/object-not-found') {
             console.log('Aucune image n\'a encore été ajoutée.');
@@ -240,6 +241,10 @@ export class TradeDetailsComponent implements OnInit {
     this.metaService.updateTag({ name: 'description', content: description })
     // this.metaService.addTag({ name: 'robots', content: 'index,follow' })
     // this.metaService.addTag({ property: 'og:title', content: 'Content Title for social media' })
+  }
+
+  updateOpenGraphImage() {
+    this.metaService.updateTag({ property: 'og:image', content: this.imageUrl });
   }
 
   transform(value: any): string {

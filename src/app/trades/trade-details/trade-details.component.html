@@ -2,7 +2,8 @@
 
     <!-- <h3>{{tradeData.denomination}}</h3> -->
     <div class="p-2 bg-primary text-white rounded row fade show mx-1">
-        <h1 class="d-flex justify-content-between mt-3">{{tradeData.denomination}} <app-share-button></app-share-button>
+        <!-- {{imageUrl}} -->
+        <h1 class="d-flex justify-content-between mt-3">{{tradeData.denomination}}<app-share-button *ngIf="imageUrl!==''" [imageUrl]="imageUrl"></app-share-button>
         </h1>
 
         <div class="col-md-7">
@@ -17,7 +18,7 @@
                 <span class="d-block" *ngIf="tradeData.isQualifying && tradeData.isQualifying==true">Formation
                     Qualifiante !</span>
                 <span class="d-block" *ngIf="tradeData.isCPF && tradeData.isCPF===true" >Finançable CPF</span>
-                <span class="d-block" *ngIf="!tradeData.isCPF" >Non Finançable CPF</span>
+                <!-- <span class="d-block" *ngIf="!tradeData.isCPF" >Non Finançable CPF</span> -->
                 <br *ngIf="tradeData.requirements">
                 <span *ngIf="tradeData.requirements && tradeData.requirements!==''" class="text-light">Prérequis :
                     {{tradeData.requirements}}</span>

@@ -1,66 +1,72 @@
 <div class="container pt-3">
 
-    <h3>Mission et Avantages</h3>
+  <h3>Mission et Avantages</h3>
 
-    <!-- <div *ngIf="!isLoading && !isOneQuizzAchieved && !offline"
+  <!-- <div *ngIf="!isLoading && !isOneQuizzAchieved && !offline"
             class="alert w-100 p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show fs-5">
             <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
                 aria-label="Fermer le message"></button>
             Evaluez vos connaissances et démarrez rapidement une <h1 class="d-inline fs-5">formation
                 personnalisée</h1> qui vous hissera aux portes du métier de votre choix
         </div> -->
-    <!-- <div lass="alert w-100 p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show display-5">
+  <!-- <div lass="alert w-100 p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show display-5">
             <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
                 aria-label="Fermer le message"></button>
             Evaluez vos connaissances et démarrez rapidement une <h1 class="d-inline fs-5">formation
                 personnalisée</h1> pour être au top des compétences du métier de vôtre choix.
         </div> -->
 
-    <!-- Carousel -->
-    <div id="demo" class="carousel slide mx-auto" data-bs-ride="carousel">
+  <!-- Carousel -->
+  <div id="demo" class="carousel slide mx-auto" data-bs-ride="carousel">
 
-        <!-- Indicators/dots -->
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
-            <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
-            <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+    <!-- Indicators/dots -->
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+      <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+      <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+      <button type="button" data-bs-target="#demo" data-bs-slide-to="3"></button>
+    </div>
+
+    <!-- The slideshow/carousel -->
+    <div class="carousel-inner mx-auto">
+      <div class="carousel-item active">
+        <div class="alert bg-primary text-white display-5 fade show text-center w-100 pb-5">
+          Evaluez vos connaissances facilement
         </div>
-
-        <!-- The slideshow/carousel -->
-        <div class="carousel-inner mx-auto">
-            <div class="carousel-item active">
-                <div class="alert bg-primary text-white display-5 fade show text-center w-100 pb-5">
-                    Evaluez vos connaissances facilement
-                </div>
-            </div>
-            <div class="carousel-item">
-                <div class="alert bg-primary text-white display-5 fade show text-center w-100 pb-5">
-                    Démarrez rapidement une formation personnalisée
-                </div>
-            </div>
-            <div class="carousel-item">
-                <div class="alert bg-primary text-white display-5 fade show text-center w-100 pb-5">
-                    Pour être au top des compétences du métier de vôtre choix.
-                </div>
-            </div>
+      </div>
+      <div class="carousel-item">
+        <div class="alert bg-primary text-white display-5 fade show text-center w-100 pb-5">
+          Démarrez rapidement une formation personnalisée
         </div>
+      </div>
+      <div class="carousel-item">
+        <div class="alert bg-primary text-white display-5 fade show text-center w-100 pb-5">
+          Développez vos compétences professionnelles
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="alert bg-primary text-white display-5 fade show text-center w-100 pb-5">
+          Faites-vous connaitre des recruteurs.
+        </div>
+      </div>
+    </div>
 
 
 
-        <!-- Left and right controls/icons -->
-        <!-- <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+    <!-- Left and right controls/icons -->
+    <!-- <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
             <span class="carousel-control-prev-icon"></span>
         </button>
         <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
             <span class="carousel-control-next-icon"></span>
         </button> -->
-    </div>
+  </div>
 
-    <div id="image"></div>
+  <div id="image"><img src="/assets/BE-ON-TOP_picto_LOGO.svg" alt=""></div>
 
-    <hr>
+  <hr>
 
-    <!-- <div id="accordion">
+  <!-- <div id="accordion">
 
         <div class="card">
           <div class="card-header">
@@ -155,107 +161,98 @@
       
       </div> -->
 
-    <!-- accordion.component.html -->
-    <div id="accordion" class="row">
-        <div class="col-md-6">
-            <div class="card mb-2">
-                <div class="card-header">
-                    <a class="btn text-primary" data-bs-toggle="collapse" href="#collapseOne">
-                        Un parcours de formation personnalisé #1
-                    </a>
-                </div>
-                <div id="collapseOne" class="collapse">
-                    <div class="card-body">
-                        Lorem ipsum..
-                    </div>
-                </div>
-            </div>
-            <div class="card mb-2">
-                <div class="card-header">
-                    <a class="collapsed text-primary btn" data-bs-toggle="collapse" href="#collapseTwo">
-                        Des questionnaires d'évaluation ciblés #2
-                    </a>
-                </div>
-                <div id="collapseTwo" class="collapse">
-                    <div class="card-body">
-                        Conçus par des professionnels de terrain...
-                    </div>
-                </div>
-            </div>
-            <div class="card mb-2">
-                <div class="card-header">
-                    <a class="collapsed text-primary btn" data-bs-toggle="collapse" href="#collapseThree">
-                        Un suivi pédagogique en ligne #3
-                    </a>
-                </div>
-                <div id="collapseThree" class="collapse" data-bs-parent="#accordion">
-                    <div class="card-body">
-                        Suivi facilité depuis votre compte utilisateur..
-                    </div>
-                </div>
-            </div>
+  <!-- accordion.component.html -->
 
+  <div class="accordion accordion-flush row" id="accordionFlushExample">
+    <div class="col-md-6">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingOne">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+            <i class="bi bi-1-square-fill me-3 text-primary"></i>Accordion Item #1
+          </button>
+        </h2>
+        <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+          data-bs-parent="#accordionFlushExample">
+          <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
+            <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
         </div>
-
-        <div class="col-md-6">
-
-            <div class="card mb-2">
-                <div class="card-header">
-                    <a class="collapsed text-primary btn" data-bs-toggle="collapse" href="#collapseFour">
-                        Des formations professionnelles #4
-                    </a>
-                </div>
-                <div id="collapseFour" class="collapse" data-bs-parent="#accordion">
-                    <div class="card-body">
-                        Dispensées par des professionnels du terrain..
-                    </div>
-                </div>
-            </div>
-            <div class="card mb-2">
-                <div class="card-header">
-                    <a class="collapsed text-primary btn" data-bs-toggle="collapse" href="#collapseFive">
-                        Des compétences professionnelles recherchées #5
-                    </a>
-                </div>
-                <div id="collapseFive" class="collapse" data-bs-parent="#accordion">
-                    <div class="card-body">
-                        Chaque compétence évaluée en début et en cours de formation correspond à des références exigées par les professionnnels et les recruteurs....
-                    </div>
-                </div>
-            </div>
-            <div class="card mb-2">
-                <div class="card-header">
-                    <a class="collapsed text-primary btn" data-bs-toggle="collapse" href="#collapseSix">
-                        Une insertion professionnelle facilitée #6
-                    </a>
-                </div>
-                <div id="collapseSix" class="collapse" data-bs-parent="#accordion">
-                    <div class="card-body">
-                        Lorem ipsum..
-                    </div>
-                </div>
-            </div>
-
-
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingTwo">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+            <i class="bi bi-2-square-fill me-3 text-primary"></i>Accordion Item #2
+          </button>
+        </h2>
+        <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
+          data-bs-parent="#accordionFlushExample">
+          <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
+            <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being
+            filled with some actual content.</div>
         </div>
-
-        <div>
-
-            <div class="card">
-                <div class="card-header">
-                    <a class="collapsed text-primary btn" data-bs-toggle="collapse" href="#collapseSeven">
-                        Des formations finançables #7
-                    </a>
-                </div>
-                <div id="collapseSeven" class="collapse" data-bs-parent="#accordion">
-                    <div class="card-body">
-                        Lorem ipsum..
-                    </div>
-                </div>
-            </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingThree">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+            <i class="bi bi-3-square-fill me-3 text-primary"></i>Accordion Item #3
+          </button>
+        </h2>
+        <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
+          data-bs-parent="#accordionFlushExample">
+          <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
+            <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting
+            happening here in terms of content, but just filling up the space to make it look, at least at first glance,
+            a bit more representative of how this would look in a real-world application.</div>
         </div>
-
+      </div>
     </div>
+    <div class="col-md-6">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingFor">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#flush-collapseFor" aria-expanded="false" aria-controls="flush-collapseFor">
+            <i class="bi bi-4-square-fill me-3 text-primary"></i>Accordion Item #4
+          </button>
+        </h2>
+        <div id="flush-collapseFor" class="accordion-collapse collapse" aria-labelledby="flush-headingFor"
+          data-bs-parent="#accordionFlushExample">
+          <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
+            <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingFive">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
+            <i class="bi bi-5-square-fill me-3 text-primary"></i>Accordion Item #5
+          </button>
+        </h2>
+        <div id="flush-collapseFive" class="accordion-collapse collapse" aria-labelledby="flush-headingFive"
+          data-bs-parent="#accordionFlushExample">
+          <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
+            <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being
+            filled with some actual content.</div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingSix">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#flush-collapseSix" aria-expanded="false" aria-controls="flush-collapseSix">
+            <i class="bi bi-6-square-fill me-3 text-primary"></i>Accordion Item #6
+          </button>
+        </h2>
+        <div id="flush-collapseSix" class="accordion-collapse collapse" aria-labelledby="flush-headingSix"
+          data-bs-parent="#accordionFlushExample">
+          <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
+            <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting
+            happening here in terms of content, but just filling up the space to make it look, at least at first glance,
+            a bit more representative of how this would look in a real-world application.</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
 </div>
