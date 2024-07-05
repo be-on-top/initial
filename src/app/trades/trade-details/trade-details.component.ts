@@ -240,11 +240,35 @@ export class TradeDetailsComponent implements OnInit {
 
     this.metaService.updateTag({ name: 'description', content: description })
     // this.metaService.addTag({ name: 'robots', content: 'index,follow' })
-    // this.metaService.addTag({ property: 'og:title', content: 'Content Title for social media' })
+    this.metaService.updateTag({ property: 'og:title', content: this.tradeData.denomination })
+    this.metaService.updateTag({ property: 'og:description', content: description })
+    this.metaService.updateTag({ property: 'og:url', content: window.location.href })
   }
 
   updateOpenGraphImage() {
     this.metaService.updateTag({ property: 'og:image', content: this.imageUrl });
+    // this.metaService.updateTag({ property: 'og:image', content: `../../assets/${this.tradeId}.jpeg` });
+this.updateLinkTags()
+
+    
+  }
+
+  updateLinkTags() {
+    const linkTags = [
+      { rel: 'image_src', href: this.imageUrl }
+    ];
+
+    linkTags.forEach(tag => {
+      let element = document.querySelector(`link[rel="${tag.rel}"]`);
+      if (element) {
+        element.setAttribute('href', tag.href);
+      } else {
+        element = document.createElement('link');
+        element.setAttribute('rel', tag.rel);
+        element.setAttribute('href', tag.href);
+        document.getElementsByTagName('head')[0].appendChild(element);
+      }
+    });
   }
 
   transform(value: any): string {
