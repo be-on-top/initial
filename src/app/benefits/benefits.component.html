@@ -175,7 +175,8 @@
         <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
           data-bs-parent="#accordionFlushExample">
           <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
-            <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
+            <code>.accordion-flush</code> class. This is the first item's accordion body.
+          </div>
         </div>
       </div>
       <div class="accordion-item">
@@ -189,7 +190,8 @@
           data-bs-parent="#accordionFlushExample">
           <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
             <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being
-            filled with some actual content.</div>
+            filled with some actual content.
+          </div>
         </div>
       </div>
       <div class="accordion-item">
@@ -204,7 +206,8 @@
           <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
             <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting
             happening here in terms of content, but just filling up the space to make it look, at least at first glance,
-            a bit more representative of how this would look in a real-world application.</div>
+            a bit more representative of how this would look in a real-world application.
+          </div>
         </div>
       </div>
     </div>
@@ -219,7 +222,8 @@
         <div id="flush-collapseFor" class="accordion-collapse collapse" aria-labelledby="flush-headingFor"
           data-bs-parent="#accordionFlushExample">
           <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
-            <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
+            <code>.accordion-flush</code> class. This is the first item's accordion body.
+          </div>
         </div>
       </div>
       <div class="accordion-item">
@@ -233,7 +237,8 @@
           data-bs-parent="#accordionFlushExample">
           <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
             <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being
-            filled with some actual content.</div>
+            filled with some actual content.
+          </div>
         </div>
       </div>
       <div class="accordion-item">
@@ -248,11 +253,45 @@
           <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
             <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting
             happening here in terms of content, but just filling up the space to make it look, at least at first glance,
-            a bit more representative of how this would look in a real-world application.</div>
+            a bit more representative of how this would look in a real-world application.
+          </div>
         </div>
       </div>
     </div>
   </div>
 
 
+  <hr>
+  <!-- collapse -->
+  <div class="container mt-5">
+    <ul class="nav row justify-content-around" id="myTab" role="tablist">
+      <li class="nav-item col-6" role="presentation">
+        <button class="btn w-100 active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button"
+          role="tab" aria-controls="info" aria-selected="true">BE-ON-TOP.io</button>
+      </li>
+      <li class="nav-item col-6" role="presentation">
+        <button class="btn w-100" id="rgpd-tab" data-bs-toggle="tab" data-bs-target="#rgpd" type="button" role="tab"
+          aria-controls="rgpd" aria-selected="false">Vie privée</button>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
+        <app-legal-info></app-legal-info>
+      </div>
+      <div class="tab-pane fade" id="rgpd" role="tabpanel" aria-labelledby="rgpd-tab">
+
+        <app-rgpd></app-rgpd>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- app.component.html -->
+
+
+
+  <!-- fin collapse -->
 </div>
+
+
+<!-- <app-legal-info></app-legal-info> -->

@@ -25,6 +25,22 @@
     
 }
 
+/* pour les tabs */
+/* styles.css */
+.nav-item .btn {
+    background-color: #6c757d; /* Couleur par défaut */
+    color: white;
+    border: none;
+  }
+  
+  .nav-item .btn.active,
+  .nav-item .btn:focus,
+  .nav-item .btn:hover {
+    background-color: #007bff; /* Couleur de l'onglet actif */
+    color: white;
+  }
+  
+
 @media only screen and (max-width: 576px)  {
     img{
         visibility: hidden;

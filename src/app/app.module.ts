@@ -51,6 +51,7 @@ import { RoundPipe } from './round.pipe';
 import { FaqComponent } from './faq/faq.component';
 import { TruncateTitlePipe } from './truncate-title.pipe';
 import { BenefitsComponent } from './benefits/benefits.component';
+import { LegalInfoComponent } from './legal-info/legal-info.component';
 // import { AutoChangeDirective } from './auto-change.directive';
 
 // import { getMessaging } from 'firebase/messaging';
@@ -85,6 +86,7 @@ import { BenefitsComponent } from './benefits/benefits.component';
     FaqComponent,
     TruncateTitlePipe,
     BenefitsComponent,
+    LegalInfoComponent,
     // AutoChangeDirective,
     // TooltipComponent
   ],
