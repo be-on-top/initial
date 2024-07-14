@@ -1,8 +1,16 @@
 <app-header></app-header>
+<!-- <router-outlet></router-outlet> -->
+
 <router-outlet></router-outlet>
+
+
+
+
+
+
+<button class="btn btn-primary btn-sm info-button pe-2" (click)="goToInfoPage()"><i
+        class="bi bi-info me-2"></i>information</button>
+
 <app-install-button></app-install-button>
 <!-- <app-cookie-consent-banner *ngIf="consentReaded"></app-cookie-consent-banner> -->
 <div #banner *ngIf="consentReaded"></div>
-
-
-

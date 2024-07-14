@@ -1,5 +1,6 @@
 import { Component, ViewChild, ViewContainerRef, AfterViewInit, OnInit } from '@angular/core';
 import { setAnalyticsCollectionEnabled, Analytics } from '@angular/fire/analytics';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -12,8 +13,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   consentReaded: boolean = false;
 
   @ViewChild('banner', { read: ViewContainerRef }) vc1!: ViewContainerRef;
-
-  constructor(private analytics:Analytics){
+  constructor(private analytics:Analytics,  private router:Router){
 
   }
 
@@ -58,5 +58,9 @@ export class AppComponent implements OnInit, AfterViewInit {
     document.cookie = 'NID=value; SameSite=None; Secure';
     document.cookie = '__Secure-3PSIDTS=value; SameSite=None; Secure';
     document.cookie = '__Secure-3PSIDCC=value; SameSite=None; Secure';
+  }
+
+  goToInfoPage() {
+    this.router.navigate(['/benefits']);
   }
 }

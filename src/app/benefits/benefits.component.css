@@ -1,4 +1,4 @@
-#image{
+#image {
     position: relative;
     /* The background image */
     background-image: url("/assets/employes-entrepot-frappant-mains-ensemble_342744-1462.webp");
@@ -16,50 +16,69 @@
 
 }
 
-#image>img{
+#image>img {
     position: absolute;
     width: 50px;
     bottom: 10px;
     right: 10px;
     /* opacity: 80%; */
-    
+
+}
+
+#image>div {
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-65%, -50%);
+    /* Centre l'élément */
+
+    color: white;
+    padding: 10px 20px;
+    /* mix-blend-mode:luminosity; */
+    letter-spacing: 0.5rem;
+}
+
+#image>div>img{
+    /* background-color: blueviolet; */
+    width: 35%;
+
+    /* background-image: url('./logo.svg');
+background-repeat: no-repeat; */
+    /* background-size: cover; */
+
 }
 
 /* pour les tabs */
 /* styles.css */
 .nav-item .btn {
-    background-color: #6c757d; /* Couleur par défaut */
+    background-color: #6c757d;
+    /* Couleur par défaut */
     color: white;
     border: none;
-  }
-  
-  .nav-item .btn.active,
-  .nav-item .btn:focus,
-  .nav-item .btn:hover {
-    background-color: #007bff; /* Couleur de l'onglet actif */
-    color: white;
-  }
-  
-
-@media only screen and (max-width: 576px)  {
-    img{
-        visibility: hidden;
-
-        /* opacity: 80%; */
-        
-    }
-    
 }
 
+.nav-item .btn.active,
+.nav-item .btn:focus,
+.nav-item .btn:hover {
+    background-color: #007bff;
+    /* Couleur de l'onglet actif */
+    color: white;
+}
 
+@media only screen and (max-width:772px) {
+    .display-4 {
+        font-size: 1.5rem !important;
+    }
 
+    #image>img {
+        display: none;
 
+    }
 
+    .accordion-button{
+        /* background-color: #007bff; */
+        font-size: 0.9rem;
+    }
 
-
-
-
-
-
-
-  
+}
