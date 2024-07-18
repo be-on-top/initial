@@ -52,6 +52,7 @@ import { FaqComponent } from './faq/faq.component';
 import { TruncateTitlePipe } from './truncate-title.pipe';
 import { BenefitsComponent } from './benefits/benefits.component';
 import { LegalInfoComponent } from './legal-info/legal-info.component';
+import { AddNbspBeforeQuestionMarkPipe } from './add-nbsp-before-question-mark.pipe';
 // import { AutoChangeDirective } from './auto-change.directive';
 
 // import { getMessaging } from 'firebase/messaging';
@@ -87,6 +88,7 @@ import { LegalInfoComponent } from './legal-info/legal-info.component';
     TruncateTitlePipe,
     BenefitsComponent,
     LegalInfoComponent,
+    AddNbspBeforeQuestionMarkPipe,
     // AutoChangeDirective,
     // TooltipComponent
   ],
