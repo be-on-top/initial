@@ -98,6 +98,9 @@ export class AccountComponent implements OnInit, OnDestroy {
   // pour détecter online et offline moins rapidement que NetWorkService
   offline: boolean = false
 
+  // POUR accéder et lire les documents liés au doc de l'utilisateur
+  documents: any[] = [];
+
   constructor(
     private auth: Auth,
     // private firestore: Firestore, 
@@ -666,12 +669,18 @@ export class AccountComponent implements OnInit, OnDestroy {
   private processStudentData(): void {
     if (!this.userData) return;
 
-    // Logique pour obtenir tradesEvaluated
+    // Logique pour obtenir tradesEvaluated + accessoirement documents
     this.tradesEvaluated = [];
     for (const key in this.userData) {
       if (key.includes('quizz')) {
         this.hasStartedEvaluation = true;
         this.tradesEvaluated.push(key);
+      }
+      // peut-être pas top de l'inclure ici...
+      if (key.includes('documents')) {
+        this.documents = this.userData.documents
+        console.log("documents liés", this.documents);
+        
       }
     }
 
