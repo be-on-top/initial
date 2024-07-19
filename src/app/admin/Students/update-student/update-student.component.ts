@@ -168,4 +168,23 @@ export class UpdateStudentComponent implements OnInit {
     this.service.endSubscription(this.studentId, endSubscription.value.sigle)
   }
 
+  selectedFile: File | null = null;
+
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+  }
+
+  onUploadFile(form:NgForm, ){
+    if (!this.selectedFile) {
+      return;
+    }
+
+
+    const filePath = `student-docs/${this.studentId}/${Date.now()}_${this.selectedFile.name}`;
+    this.service.uploadPDF(filePath, this.selectedFile, this.studentId)
+
+    form.resetForm();
+    this.selectedFile = null;
+  }
+
 }

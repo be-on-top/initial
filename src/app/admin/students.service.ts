@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 // import { NgForm } from '@angular/forms';
 import { Auth, createUserWithEmailAndPassword, deleteUser, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithRedirect } from "@angular/fire/auth";
-import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc, updateDoc, query, getDocs, where, getDoc, QuerySnapshot } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc, updateDoc, query, getDocs, where, getDoc, QuerySnapshot, arrayUnion } from '@angular/fire/firestore';
 // import { FirebaseApp } from '@angular/fire/app';
 import { Observable } from 'rxjs';
 // import { switchMap, tap } from 'rxjs/operators';
@@ -10,6 +10,9 @@ import { NgForm } from '@angular/forms';
 import { Evaluation } from './evaluation';
 import { Analytics, setUserId } from "@angular/fire/analytics";
 import { Router } from '@angular/router';
+import { Storage, getDownloadURL, ref, uploadBytes, uploadString } from '@angular/fire/storage';
+
+
 
 
 
@@ -21,7 +24,7 @@ import { Router } from '@angular/router';
 export class StudentsService {
   // private fullResults: { [key: string]: { duration: number; cost: number } }[] = [];
 
-  constructor(private auth: Auth, private firestore: Firestore, private analytics: Analytics, private router: Router) { }
+  constructor(private auth: Auth, private firestore: Firestore, private analytics: Analytics, private router: Router,  private storage:Storage) { }
 
   // createStudent(studentForm: NgForm) {
   async createStudent(student: any) {
@@ -535,9 +538,34 @@ export class StudentsService {
     return csvContent;
   }
 
+  async uploadPDF(filePath:string, selectedFile:any, studentId:string) {
+
+    const storageRef = ref(this.storage, filePath);
+
+    try {
+      const snapshot = await uploadBytes(storageRef, selectedFile);
+      const downloadURL = await getDownloadURL(snapshot.ref);
 
 
 
+      const studentDocRef = doc(this.firestore, 'students', studentId);
 
+      // Add the document metadata to the student's documents array
+      await updateDoc(studentDocRef, {
+        documents: arrayUnion({
+          fileUrl: downloadURL,
+          fileName: selectedFile.name,
+          uploadTime: new Date()
+        })
+      });
+
+      console.log('Document PDF uploadé et métadonnées enregistrées dans Firestore.');
+    } catch (error) {
+      console.error('Erreur lors de l\'upload ou de l\'enregistrement des métadonnées :', error);
+    }
+  }
 
 }
+
+
+
