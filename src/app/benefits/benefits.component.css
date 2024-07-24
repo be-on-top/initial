@@ -69,7 +69,7 @@ background-repeat: no-repeat; */
 /* .accordion-item h2, */
 .accordion-item h3 {
     font-size: inherit;
-    display: inline-block;
+    display: inline;
     margin: 0;
 }
 

@@ -8,7 +8,7 @@ import { Meta, Title } from '@angular/platform-browser';
 })
 export class BenefitsComponent implements OnInit {
 
-  constructor(private metaService: Meta,private titleService: Title) {
+  constructor(private metaService: Meta, private titleService: Title) {
 
   }
 
@@ -20,7 +20,7 @@ export class BenefitsComponent implements OnInit {
   addTag() {
     this.titleService.setTitle(`Mieux qu'un bilan de compétences, évaluez vos compétences professionnelles avec BE-ON-TOP.io`)
     this.metaService.updateTag({ name: 'description', content: 'Les questionnaires d\'évaluation en ligne, dits d\'évaluation initiale sont conçus par des experts métiers, professionnels de terrain, en connaissance des compétences professionnelles, savoir-faire professionnels, savoir-être professionnels, aptitudes et qualités requises par les recruteurs et entreprises' })
-    this.metaService.addTag({ name: 'robots', content: 'index,follow' })
+    this.metaService.addTag({ name: 'robots', content: 'index, follow' })
     this.metaService.updateTag({ property: 'og:title', content: 'Informations Utilisateurs : Formations et compétences professionnelles évaluées sur BE-ON-top.io par des professionnels de la formation' })
     this.metaService.updateTag({ property: 'og:description', content: 'Les questionnaires d\'évaluation en ligne, dits d\'évaluation initiale sont conçus par des experts métiers, professionnels de terrain, en connaissance des compétences professionnelles, savoir-faire professionnels, savoir-être professionnels, aptitudes et qualités requises par les recruteurs et entreprises' })
   }
