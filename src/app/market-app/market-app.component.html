@@ -1,0 +1,394 @@
+<div class="container pt-3">
+
+  <h3>Le défit BE-ON-TOP</h3>
+
+  <!-- <div *ngIf="!isLoading && !isOneQuizzAchieved && !offline"
+              class="alert w-100 p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show fs-5">
+              <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
+                  aria-label="Fermer le message"></button>
+              Evaluez vos connaissances et démarrez rapidement une <h1 class="d-inline fs-5">formation
+                  personnalisée</h1> qui vous hissera aux portes du métier de votre choix
+          </div> -->
+  <!-- <div lass="alert w-100 p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show display-5">
+              <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
+                  aria-label="Fermer le message"></button>
+              Evaluez vos connaissances et démarrez rapidement une <h1 class="d-inline fs-5">formation
+                  personnalisée</h1> pour être au top des compétences du métier de vôtre choix.
+          </div> -->
+
+  <!-- Carousel marche très bien -->
+  <div id="demo" class="carousel slide mx-auto" data-bs-ride="carousel">
+
+    <div class="carousel-indicators">
+      <button aria-label="Suivant" type="button" data-bs-target="#demo, #paragraphCarousel" data-bs-slide-to="0" class="active"></button>
+      <button aria-label="Suivant" type="button" data-bs-target="#demo, #paragraphCarousel" data-bs-slide-to="1"></button>
+      <button aria-label="Suivant" type="button" data-bs-target="#demo, #paragraphCarousel" data-bs-slide-to="2"></button>
+      <!-- <button aria-label="Suivant" type="button" data-bs-target="#demo" data-bs-slide-to="3"></button> -->
+    </div>
+
+    <div class="carousel-inner mx-auto">
+      <div class="carousel-item active">
+        <div class="alert bg-primary text-white display-5 fade show text-center w-100 pb-5">
+          Pour accompagner l'apprenant
+          <p class="display-4">dans un continuum de progrès</p>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="alert bg-primary text-white display-5 fade show text-center w-100 pb-5">
+          Pour accélérer la formation
+          <p class="display-4">par des méthodes innovantes</p>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="alert bg-primary text-white display-5 fade show text-center w-100 pb-5">
+          Pour des compétences individuelles
+          <p class="display-4">opérationnelles en entreprises</p>
+        </div>
+      </div>
+      <!-- <div class="carousel-item">
+          <div class="alert bg-primary text-white display-5 fade show text-center w-100 pb-5">
+            Un défit en phase avec les attentes des entreprises.
+          </div>
+        </div> -->
+    </div>
+
+  </div>
+
+  <div id="image" class="row justify-content-end align-items-center">
+    <!-- <img src="/assets/BE-ON-TOP_picto_LOGO.svg" alt=""> -->
+    <!-- <img class="col-6" src="../../assets/be-on-top-market-app.jpg" alt=""> -->
+    <!-- <div class="col-6">
+      <p><mark>...en réunissant des acteurs de la compétences (organismes de formation), entreprises, spécialistes de l'intérim, partenaires de l'accompagnement de projet (Pôle Emploi, Agefiph, GEIQ, Associations spécialisées...)</mark></p>
+      <p><mark>...en développant des outils efficaces de positionnement, par compétences ou groupes de compétences, en phase avec les attentes des entreprises...</mark></p>
+      <p><mark>...en privilégiant le smartphone et la tablette, accessibles et familiers à un large publics tout en faisant le lien entre apprenant, formateur, tuteur et partenaires...</mark></p>
+
+    </div> -->
+    <div class="col-10 col-md-6">
+      <div *ngFor="let paragraph of paragraphs; let i = index">
+        <p>
+          <mark *ngIf="i === currentIndex">{{ paragraph }}</mark>
+          <span *ngIf="i !== currentIndex">{{ paragraph }}</span>
+        </p>
+      </div>
+    </div>
+    
+
+
+    
+    
+  </div>
+
+
+  <hr>
+
+  <!-- <div id="accordion">
+  
+          <div class="card">
+            <div class="card-header">
+              <a class="btn text-primary" data-bs-toggle="collapse" href="#collapseOne">
+                Un parcours de formation personnalisé #1
+              </a>
+            </div>
+            <div id="collapseOne" class="collapse" data-bs-parent="#accordion">
+              <div class="card-body">
+                  Lorem ipsum..
+              </div>
+            </div>
+          </div>
+        
+          <div class="card">
+            <div class="card-header">
+              <a class="collapsed text-primary btn" data-bs-toggle="collapse" href="#collapseTwo">
+                Des questionnaires métiers ciblés #2
+              </a>
+            </div>
+            <div id="collapseTwo" class="collapse" data-bs-parent="#accordion">
+              <div class="card-body">
+                Conçus par des professionnels de terrain...
+              </div>
+            </div>
+          </div>
+        
+          <div class="card">
+            <div class="card-header">
+              <a class="collapsed text-primary btn" data-bs-toggle="collapse" href="#collapseThree">
+                Un suivi pédagogique facilité #3
+              </a>
+            </div>
+            <div id="collapseThree" class="collapse" data-bs-parent="#accordion">
+              <div class="card-body">
+                Lorem ipsum..
+              </div>
+            </div>
+          </div>
+  
+          <div class="card">
+            <div class="card-header">
+              <a class="collapsed text-primary btn" data-bs-toggle="collapse" href="#collapseFor">
+                Des formations professionnelles #4
+              </a>
+            </div>
+            <div id="collapseFor" class="collapse" data-bs-parent="#accordion">
+              <div class="card-body">
+                Dispensées par des professionnels du terrain..
+              </div>
+            </div>
+          </div>
+  
+          <div class="card">
+            <div class="card-header">
+              <a class="collapsed text-primary btn" data-bs-toggle="collapse" href="#collapseFive">
+                Des compétences professionnelles recherchées #5
+              </a>
+            </div>
+            <div id="collapseFive" class="collapse" data-bs-parent="#accordion">
+              <div class="card-body">
+                Lorem ipsum..
+              </div>
+            </div>
+          </div>
+  
+          <div class="card">
+            <div class="card-header">
+              <a class="collapsed text-primary btn" data-bs-toggle="collapse" href="#collapseSix">
+                Une insertion professionnelle facilité  #6
+              </a>
+            </div>
+            <div id="collapseSix" class="collapse" data-bs-parent="#accordion">
+              <div class="card-body">
+                Lorem ipsum..
+              </div>
+            </div>
+          </div>
+  
+          <div class="card">
+            <div class="card-header">
+              <a class="collapsed text-primary btn" data-bs-toggle="collapse" href="#collapseSeven">
+                Des formations finançables #7
+              </a>
+            </div>
+            <div id="collapseSeven" class="collapse" data-bs-parent="#accordion">
+              <div class="card-body">
+                Lorem ipsum..
+              </div>
+            </div>
+          </div>
+        
+        </div> -->
+
+  <!-- accordion.component.html -->
+
+  <div class="accordion accordion-flush row" id="accordionFlushExample">
+    <div class="col-md-6">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingOne">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+            <i class="bi bi-1-square-fill me-3 text-primary"></i>Qui conçoit les questionnaires&nbsp;?
+          </button>
+        </h2>
+        <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+          data-bs-parent="#accordionFlushExample">
+          <div class="accordion-body">Nos questionnaires de positionnement sont <strong>conçus
+              par des experts métiers, professionnels de terrain, en connaissance des compétences professionnelles,
+              savoir-faire professionnels, savoir-être professionnels, aptitudes et qualités requises par les recruteurs
+              et entreprises</strong>. Mieux qu'un bilan de compétences, ils permettent de cibler un niveau d'entrée
+            en
+            formation pour une formation personnalisée qui fera le focus sur les compétences et connaissances requises
+            pour être pleinnement opérationnel sur le marché de l'emploi et trouver rapidement du travail
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingTwo">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+            <i class="bi bi-2-square-fill me-3 ms-0 text-primary"></i>Y a-t-il des questions disqualifiantes&nbsp;?
+          </button>
+        </h2>
+        <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
+          data-bs-parent="#accordionFlushExample">
+          <div class="accordion-body">Non. Nos questionnaires de positionnement sont conçus pour aider à définir un
+            parcours de formation personnalisé et utile au projet professionnel du candidat. L'évaluation des connaissances,
+            aptitudes, savoir-faire et savoir-être n'est <strong>pas un test de passage</strong> mais
+            <strong>l'équivalent d'un bilan de
+              compétences</strong>, en ligne, gratuit et conçu par des professionnels. <strong>Si le candidat ne sait pas
+              répondre à une question ou répond mal, cela ne va pas le disqualifier</strong>. La
+            durée de formation s'ajustera pour lui permettre de monter en compétences, combler ses lacunes
+            professionnelles et être au top sur le marché du travail. Seules certaines formations pourraient être
+            refusées, si elles exigent un prérequis. Quand c'est le cas, le candidat en sera informé avant de démarrer le
+            questionnaire d'évaluation.
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingThree">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+            <i class="bi bi-3-square-fill me-3 text-primary"></i>Faut-il être demandeur d'emploi&nbsp;?
+          </button>
+        </h2>
+        <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
+          data-bs-parent="#accordionFlushExample">
+          <div class="accordion-body">Non le candidat n'a pas besoin d'être demandeur d'emploi, ni inscrit à France Travail.
+            Entrepreneurs ou jeunes
+            diplômés souhaitant développer un savoir-faire spécifique ou des compétences peuvent
+            également bénéficier des avantages de BE-ON-TOP.io dans le cadre de la formation continue. Les étudiants
+            aussi, dans le cadre de la formation initiale.
+            Les questionnaires de positionnement et formations métiers référencés sur BE-ON-TOP.io sont donc ouverts
+            tous<strong> ceux souhaitant bénéficier d'une formation permettant d'acquérir des compétences
+              professionnelles complémentaires
+              ou d'apprendre un nouveau métier</strong>...
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingFor">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#flush-collapseFor" aria-expanded="false" aria-controls="flush-collapseFor">
+            <i class="bi bi-4-square-fill me-3 text-primary"></i>Les formations sont-elles finançables&nbsp;?
+          </button>
+        </h2>
+        <div id="flush-collapseFor" class="accordion-collapse collapse" aria-labelledby="flush-headingFor"
+          data-bs-parent="#accordionFlushExample">
+          <div class="accordion-body">Si le candidat suit une formation validée par France Travail (anciennement Pôle
+            emploi), il peut bénéficier, sous certaines conditions, d'aides financières, selon sa situation. A
+            la fin de chaque <h3>questionnaire de positionnement</h3>, un formulaire lui sera rendu
+            accessible. <strong>Formulaire de pré-inscription administrative</strong>
+            dont <strong>l'objectif est de nous fournir toute information utile à
+              votre inscription administrative </strong>, au suivi de votre dossier avec France Travail (anciennement
+            Pôle
+            Emploi), <strong>ainsi qu'au financement de son parcours de formation</strong>.
+            <strong>Quelle que soit sa situation personnelle, un référent administratif prendra contact avec lui
+              pour
+              finaliser au mieux l'inscription et son financement</strong>.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingFive">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
+            <i class="bi bi-5-square-fill me-3 text-primary"></i>Un outil pour trouver du travail&nbsp;?
+          </button>
+        </h2>
+        <div id="flush-collapseFive" class="accordion-collapse collapse" aria-labelledby="flush-headingFive"
+          data-bs-parent="#accordionFlushExample">
+          <div class="accordion-body">En s'inscrivant sur BE-ON-TOP.io, si il est d'accord, une fois le
+            questionnaire de positionnement terminé et son entrée en formation finalisée, <strong>le candidat pourra bénéficier
+              d'un réseau de partenaires, acteurs du recrutement et de l'insertion professionnelle</strong>. Si il n'est pas déjà salarié, les évaluations de ses formateurs et tuteurs en entreprise, seront accessibles aux
+            Directions des Ressources Humaines, cabinets de
+            recrutement, agences d'intérim, conseillers France Travail... <strong>Son entrée sur le marché du travail
+              se fera donc dans des conditions favorables à
+              l'obtention d'un emploi.</strong>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingSix">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#flush-collapseSix" aria-expanded="false" aria-controls="flush-collapseSix">
+            <i class="bi bi-6-square-fill me-3 text-primary"></i>Les formations sont-elles certifiantes&nbsp;?
+          </button>
+        </h2>
+        <div id="flush-collapseSix" class="accordion-collapse collapse" aria-labelledby="flush-headingSix"
+          data-bs-parent="#accordionFlushExample">
+          <div class="accordion-body">Non toutes les formations ne sont pas certifiantes ou diplômantes. Mais la
+            majorité d'entre elles seront qualifiantes. Besoin d'acquérir de nouvelles compétences, de consolider des
+            acquis ou d'une reconvertion professionnelle, la <h3>formation qualifiante</h3> vise à obtenir ou consolider
+            des
+            compétences dans un domaine d'activité et est généralement de courte durée. En fin de formation, lui sera
+            délivré, dans la majorité des cas, une <h3>attestation de suivi ou un certificat d'aptitude</h3>.
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingSeven">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#flush-collapseSeven" aria-expanded="false" aria-controls="flush-collapseSeven">
+            <i class="bi bi-7-square-fill me-3 text-primary"></i>Comment se fait le suivi de formation&nbsp;?
+          </button>
+        </h2>
+        <div id="flush-collapseSeven" class="accordion-collapse collapse" aria-labelledby="flush-headingSeven"
+          data-bs-parent="#accordionFlushExample">
+          <div class="accordion-body">Le <h3>suivi pédagogique des apprenants</h3> sur l'application, comme <h3>
+              l'évaluation
+              initiale</h3>, permet d'apprécier, compétence par compétence, l'acquisition des connaissances théoriques
+            et
+            savoir-faire professionnels. Chaque compétence du référenciel métier, telle que décrite dans nos fiches
+            métiers, fera donc l'objet d'une
+            ou plusieurs évaluations, par votre formateur référent si <h3>formation en centre de formation</h3>, votre
+            tuteur en
+            entreprise si <h3>stage en entreprise</h3>. L'utilisateur  pourra retrouver dans son espace
+            personnel BE-ON-TOP.io chacune de ces évaluations de suivi. Elles ont pour but de conseiller et orienter les
+            axes de progression de chacun.
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingHeight">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#flush-collapseHeight" aria-expanded="false" aria-controls="flush-collapseHeight">
+            <i class="bi bi-8-square-fill me-3 text-primary"></i>{{'Qui a accès à mes résultats ?'|
+            addNbspBeforeQuestionMark}}
+          </button>
+        </h2>
+        <div id="flush-collapseHeight" class="accordion-collapse collapse" aria-labelledby="flush-headingHeight"
+          data-bs-parent="#accordionFlushExample">
+          <div class="accordion-body">Après avoir répondu à un premier questionnaire et nous avoir fourni toutes les
+            informations utiles à son incription, <strong>le référent administratif</strong> en charge de finaliser
+            le dossier du candidat doit
+            consulter ses résultats pour s'assurer que les durées et coûts de formation qui seront les siens
+            correspondent bien à ses besoins. Une fois en centre de formation, <strong>le formateur référent</strong>
+            aura accès lui aussi aux résultas des questionnaires pour apprendre à mieux le connaitre et l'accompagner dans le processus d'apprentissage. Ses évaluations de suivi pédagoqiques seront à leur tour
+            communiquées, si besoin, à <strong>son tuteur en entreprise</strong> pour le suivi tutorial. Enfin, une
+            fois la formation terminée, avec son consentement, <strong>cabinets de recrutements, agences d'interim,
+              conseillers
+              France Travail, et autres acteurs du recrutement</strong> peuvent pour sourcer des candidats demander à
+            consulter les
+            résultas, compétences par compétences... Si il est déjà salarié, ces données ne leur seront pas
+            communiquées.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <hr>
+  <!-- collapse -->
+  <div class="container mt-5">
+    <ul class="nav row justify-content-around" id="myTab" role="tablist">
+      <li class="nav-item col-6" role="presentation">
+        <button class="btn w-100 active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button"
+          role="tab" aria-controls="info" aria-selected="true">BE-ON-TOP.io</button>
+      </li>
+      <li class="nav-item col-6" role="presentation">
+        <button class="btn w-100" id="rgpd-tab" data-bs-toggle="tab" data-bs-target="#rgpd" type="button" role="tab"
+          aria-controls="rgpd" aria-selected="false">Vie privée</button>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
+        <app-legal-info></app-legal-info>
+      </div>
+      <div class="tab-pane fade" id="rgpd" role="tabpanel" aria-labelledby="rgpd-tab">
+
+        <app-rgpd></app-rgpd>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- app.component.html -->
+
+
+
+  <!-- fin collapse -->
+</div>
+
+
+<!-- <app-legal-info></app-legal-info> -->

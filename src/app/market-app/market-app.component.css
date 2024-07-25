@@ -1,0 +1,87 @@
+/* .row img{
+    object-fit: cover;
+} */
+#image {
+    position: relative;
+    /* The background image */
+    background-image: url("/assets/be-on-top-market-app.jpg");
+    width: 100%;
+    /* Largeur relative à l'écran */
+    aspect-ratio: 5 / 2;
+    /* Maintient un ratio de 4:2 */
+
+    background-size: cover;
+    /* Couvre entièrement le conteneur sans changer le ratio */
+    background-position: center;
+    /* Centre l'image de fond */
+    background-repeat: no-repeat;
+    /* Évite la répétition de l'image */
+
+}
+
+p {
+    transition: background-color 0.5s ease-in-out;
+
+}
+p mark {
+
+    background-color: #007bff;
+    color: white;
+}
+
+.display-4 {
+    font-size: 1.8rem;
+}
+
+
+/* pour les tabs */
+/* styles.css */
+.nav-item .btn {
+    background-color: #6c757d;
+    /* Couleur par défaut */
+    color: white;
+    border: none;
+}
+
+.nav-item .btn.active,
+.nav-item .btn:focus,
+.nav-item .btn:hover {
+    background-color: #007bff;
+    /* Couleur de l'onglet actif */
+    color: white;
+}
+
+/* .accordion-item h2, */
+.accordion-item h3 {
+    font-size: inherit;
+    display: inline;
+    margin: 0;
+}
+
+.accordion-item h3::before {
+    width: 0;
+    height: 0;
+}
+
+.accordion-item button {
+    margin-inline-end: 2rem;
+}
+
+
+
+@media only screen and (max-width:772px) {
+    .display-4 {
+        font-size: 1.5rem !important;
+    }
+
+    #image>img {
+        display: none;
+
+    }
+
+    .accordion-button {
+        /* background-color: #007bff; */
+        font-size: 0.9rem;
+    }
+
+}
