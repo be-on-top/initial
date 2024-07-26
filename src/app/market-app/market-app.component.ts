@@ -9,8 +9,9 @@ export class MarketAppComponent {
 
   paragraphs: string[] = [
     "...en réunissant organismes de formation, entreprises, spécialistes de l'intérim et partenaires de l'accompagnement",
-    "...en privilégiant smartphones, tablettes et interactivité pédagogique entre apprenants, formateurs, tuteurs.",
-    "...en confiant à des experts, en phase avec les entreprise, la conception d'outils d'évaluation, compétence par compétence"
+    "...en privilégiant smartphones, tablettes et interactivité entre apprenants, formateurs, tuteurs et conseillers.",
+    "...en confiant à des experts, en phase avec les entreprises, la conception d'outils d'évaluation, compétence par compétence",
+    "...en restituant, par métier et compétences, les durées préconisées selon le niveau des candidats"
   ];
 
   currentIndex: number = 0; // Index actuel du paragraphe marqué

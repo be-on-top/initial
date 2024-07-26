@@ -17,32 +17,38 @@
           </div> -->
 
   <!-- Carousel marche très bien -->
-  <div id="demo" class="carousel slide mx-auto" data-bs-ride="carousel">
+  <div id="demo" class="carousel slide mx-auto" data-bs-ride="carousel" data-bs-interval="8000">
 
     <div class="carousel-indicators">
-      <button aria-label="Suivant" type="button" data-bs-target="#demo, #paragraphCarousel" data-bs-slide-to="0" class="active"></button>
-      <button aria-label="Suivant" type="button" data-bs-target="#demo, #paragraphCarousel" data-bs-slide-to="1"></button>
-      <button aria-label="Suivant" type="button" data-bs-target="#demo, #paragraphCarousel" data-bs-slide-to="2"></button>
-      <!-- <button aria-label="Suivant" type="button" data-bs-target="#demo" data-bs-slide-to="3"></button> -->
+      <button aria-label="Suivant" type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+      <button aria-label="Suivant" type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+      <button aria-label="Suivant" type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+      <button aria-label="Suivant" type="button" data-bs-target="#demo" data-bs-slide-to="3"></button>
     </div>
 
     <div class="carousel-inner mx-auto">
       <div class="carousel-item active">
-        <div class="alert bg-primary text-white display-5 fade show text-center w-100 pb-5">
+        <div class="alert bg-primary text-white fade show text-center w-100 pb-3 display-5">
           Pour accompagner l'apprenant
           <p class="display-4">dans un continuum de progrès</p>
         </div>
       </div>
       <div class="carousel-item">
-        <div class="alert bg-primary text-white display-5 fade show text-center w-100 pb-5">
+        <div class="alert bg-primary text-white fade show text-center w-100 pb-3 display-5">
           Pour accélérer la formation
           <p class="display-4">par des méthodes innovantes</p>
         </div>
       </div>
       <div class="carousel-item">
-        <div class="alert bg-primary text-white display-5 fade show text-center w-100 pb-5">
+        <div class="alert bg-primary text-white fade show text-center w-100 pb-3 display-5">
           Pour des compétences individuelles
           <p class="display-4">opérationnelles en entreprises</p>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="alert bg-primary text-white fade show text-center w-100 pb-3 display-5">
+          Pour une evaluation de positionnement
+          <p class="display-4">automatisée et détaillée</p>
         </div>
       </div>
       <!-- <div class="carousel-item">
@@ -63,7 +69,7 @@
       <p><mark>...en privilégiant le smartphone et la tablette, accessibles et familiers à un large publics tout en faisant le lien entre apprenant, formateur, tuteur et partenaires...</mark></p>
 
     </div> -->
-    <div class="col-10 col-md-6">
+    <div class="col-11 col-md-6">
       <div *ngFor="let paragraph of paragraphs; let i = index">
         <p>
           <mark *ngIf="i === currentIndex">{{ paragraph }}</mark>
@@ -256,9 +262,7 @@
             la fin de chaque <h3>questionnaire de positionnement</h3>, un formulaire lui sera rendu
             accessible. <strong>Formulaire de pré-inscription administrative</strong>
             dont <strong>l'objectif est de nous fournir toute information utile à
-              votre inscription administrative </strong>, au suivi de votre dossier avec France Travail (anciennement
-            Pôle
-            Emploi), <strong>ainsi qu'au financement de son parcours de formation</strong>.
+              son inscription administrative </strong>, au suivi de son dossier avec France Travail, <strong>ainsi qu'au financement de son parcours de formation</strong>.
             <strong>Quelle que soit sa situation personnelle, un référent administratif prendra contact avec lui
               pour
               finaliser au mieux l'inscription et son financement</strong>.
@@ -319,7 +323,7 @@
             et
             savoir-faire professionnels. Chaque compétence du référenciel métier, telle que décrite dans nos fiches
             métiers, fera donc l'objet d'une
-            ou plusieurs évaluations, par votre formateur référent si <h3>formation en centre de formation</h3>, votre
+            ou plusieurs évaluations, par le formateur référent si <h3>formation en centre de formation</h3>, le
             tuteur en
             entreprise si <h3>stage en entreprise</h3>. L'utilisateur  pourra retrouver dans son espace
             personnel BE-ON-TOP.io chacune de ces évaluations de suivi. Elles ont pour but de conseiller et orienter les
@@ -337,7 +341,7 @@
         </h2>
         <div id="flush-collapseHeight" class="accordion-collapse collapse" aria-labelledby="flush-headingHeight"
           data-bs-parent="#accordionFlushExample">
-          <div class="accordion-body">Après avoir répondu à un premier questionnaire et nous avoir fourni toutes les
+          <div class="accordion-body">Après avoir répondu à un premier questionnaire et avoir fourni toutes les
             informations utiles à son incription, <strong>le référent administratif</strong> en charge de finaliser
             le dossier du candidat doit
             consulter ses résultats pour s'assurer que les durées et coûts de formation qui seront les siens

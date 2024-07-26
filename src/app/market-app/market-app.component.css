@@ -5,7 +5,7 @@
     position: relative;
     /* The background image */
     background-image: url("/assets/be-on-top-market-app.jpg");
-    width: 100%;
+
     /* Largeur relative à l'écran */
     aspect-ratio: 5 / 2;
     /* Maintient un ratio de 4:2 */
@@ -69,13 +69,34 @@ p mark {
 
 
 
-@media only screen and (max-width:772px) {
+@media only screen and (min-width:1200px) {
     .display-4 {
-        font-size: 1.5rem !important;
+        font-size: 2.8rem !important;
+    }
+
+    p{
+        font-size: 1.15rem;
+    }
+
+}
+
+@media only screen and (max-width:772px) {
+    .display-5, p {
+        font-size: 1rem !important;
+    }
+
+    .display-4 {
+        font-size: 1.3rem !important;
     }
 
     #image>img {
         display: none;
+
+    }
+    #image p span {
+        background-color: rgba(255, 255, 255, 0.6);
+        background-blend-mode: multiply;
+        /* opacity: 0.6; */
 
     }
 
