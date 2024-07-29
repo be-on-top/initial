@@ -64,6 +64,7 @@ import { HomeComponent } from '../home/home.component';
 import { StudentFormComponent } from '../student-form/student-form.component';
 import { AutoChangeDirective } from '../auto-change.directive';
 import { AddStudentComponent } from './Students/add-student/add-student.component';
+import { AddCentersComponent } from './Centers/add-centers/add-centers.component';
 
 
 
@@ -166,7 +167,11 @@ const routesAdmin: Routes = [
       // { path: 'addExternal', component: AddExternalComponent, data: { user: 'external' } },
       { path: 'updateExternal/:id', component: UpdateExternalComponent },
       { path: 'externalStudentsList', component: StudentsListComponent, data: { user: 'external' } },
-      { path: 'externalStudentDetails/:id', component: StudentDetailsComponent, data: { user: 'external' } }
+      { path: 'externalStudentDetails/:id', component: StudentDetailsComponent, data: { user: 'external' } },
+
+      // { path: 'addExternal', component: AddExternalComponent, data: { user: 'external' } },
+      { path: 'addCenters', component: AddCentersComponent },
+
     ],
     // canActivate: [AuthGuardService]
     canActivate: [AuthGuardService, RoleGuardGuard], data: {
@@ -227,7 +232,8 @@ const routesAdmin: Routes = [
     UpdateExternalComponent,
     StudentFormComponent,
     AutoChangeDirective,
-    AddStudentComponent
+    AddStudentComponent,
+    AddCentersComponent
   ],
   imports: [
     BrowserModule,

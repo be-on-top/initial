@@ -1,0 +1,72 @@
+<div class="container py-5">
+
+  <h3 class="mb-3">Paramètres de l'application</h3>
+  <!-- <app-feedback-messages [feedbackMessages]="feedbackMessages"
+    [isSuccessMessage]="isSuccessMessage"></app-feedback-messages> -->
+
+  <h4 class="mt-5">Ajout des métiers (sigles) et leurs compétences (AT)</h4>
+  <form #centersForm="ngForm" class="mt-4" (submit)="addCenters(centersForm)" class="was-validated">
+
+    <div class="form-group">
+      <label for="name" class="form-label mt-3">Nom</label>
+      <input id="name" type="text" name="name" ngModel #name="ngModel" class="form-control" required minlength="3">
+      <div *ngIf="name.dirty || (name.touched && name.invalid)" class="invalid-feedback">
+        Veuillez fournir un nom valide.
+      </div>
+      <div *ngIf="name.valid" class="valid-feedback">
+        Nom valide.
+      </div>
+      <!-- addresse -->
+      <label class="form-label mt-3" for="address">Adresse</label>
+      <textarea class="form-control" name="address" ngModel #address="ngModel"
+        aria-label="Veuillez fournir une adresse complète" placeholder="Renseigner l'adresse"></textarea>
+      <div *ngIf="address.dirty || (address.touched && address.invalid)" class="invalid-feedback">
+        Veuillez fournir un nom valide.
+      </div>
+      <div *ngIf="name.valid" class="valid-feedback">
+        Adresse valide.
+      </div>
+      <!-- cp -->
+      <label for="cp" class="form-label mt-3">CP</label>
+      <!-- <input type="text" required name="cp" ngModel #cp="ngModel" class="form-control" pattern="^\d{5}$"
+        title="Le code postal doit comporter exactement 5 chiffres" placeholder="Code postal à renseigner"
+         (input)="onPostalCodeChange($event)" 
+         > -->
+      <input type="text" required name="cp" ngModel #cp="ngModel" class="form-control" pattern="^\d{5}$"
+        title="Le code postal doit comporter exactement 5 chiffres" placeholder="Code postal à renseigner"
+         (ngModelChange)="onPostalCodeChange(centersForm)"
+         >
+      <!-- <div *ngIf="cp.dirty || (cp.touched && cp.invalid)" class="invalid-feedback">
+        Veuillez fournir un code à 5 chiffres.
+      </div> -->
+      <div *ngIf="cp.valid" class="valid-feedback">
+        Code Postal OK </div>
+      <!-- option pour status -->
+      <div class="form-check form-switch mt-3">
+        <label for="status" class="form-check-label">Status</label>
+        <input class="form-check-input" type="checkbox" name="status" [(ngModel)]="status"
+          aria-label="Activer ou désactiver l'état" >
+      </div>
+      <!-- ville -->
+       {{cities.length}}
+      <div class="form-control" *ngIf="cities.length === 1">
+        <label for="city" class="form-label mt-3">Ville</label>
+        <input type="text" id="city" name="city"  [(ngModel)]="selectedCity" class="form-control" [value]="selectedCity" readonly>
+      </div>
+
+
+
+      <!-- essai boutons additionnels pour ajouter des compétences à l'unité -->
+      <!-- <button (click)="addField('CP')">+</button> -->
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-4" [disabled]=centersForm.invalid>Ajouter</button>
+  </form>
+
+
+
+
+  <hr>
+
+
+</div>
