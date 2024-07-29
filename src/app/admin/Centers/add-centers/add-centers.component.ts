@@ -11,7 +11,7 @@ import { CentersService } from '../../centers.service';
 export class AddCentersComponent {
   status:boolean=true
   selectedCity:string=""
-  cities:string[]=[]
+  cities:any[]=[]
 
   constructor(private service:CentersService){}
 
@@ -69,7 +69,7 @@ export class AddCentersComponent {
   
           // Si une seule ville est retournée, elle est automatiquement sélectionnée
           if (cities.length === 1) {
-            this.selectedCity = cities[0]; // Définit la ville sélectionnée
+            this.selectedCity = cities[0].label; // Définit la ville sélectionnée
           } else {
             this.selectedCity = ''; // Réinitialise la sélection si plusieurs villes sont trouvées
           }

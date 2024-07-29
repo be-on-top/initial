@@ -48,7 +48,7 @@
           aria-label="Activer ou désactiver l'état" >
       </div>
       <!-- ville -->
-       {{cities.length}}
+       <!-- {{cities.length}} -->
       <div class="form-control" *ngIf="cities.length === 1">
         <label for="city" class="form-label mt-3">Ville</label>
         <input type="text" id="city" name="city"  [(ngModel)]="selectedCity" class="form-control" [value]="selectedCity" readonly>
