@@ -43,11 +43,22 @@ export class CentersService {
    getCitiesByPostalCode(postalCode: string): Observable<City[]> {
     return this.http.get<{ cities: City[] }>(this.dataUrl).pipe(
       map(response => {
-        // Filtrer les villes par code postal
+        // Filtrer les villes par code postal complet
         const matchedCities = response.cities.filter(city => city.zip_code === postalCode);
         return matchedCities;
       })
     )
+  }
+
+   // Récupère les villes par code postal partiel
+   getCitiesByPartialPostalCode(partialPostalCode: string): Observable<City[]> {
+    return this.http.get<{ cities: City[] }>(this.dataUrl).pipe(
+      map(response => {
+        // Filtrer les villes par le code postal partiel
+        const matchedCities = response.cities.filter(city => city.zip_code.startsWith(partialPostalCode));
+        return matchedCities;
+      })
+    );
   }
 
 
