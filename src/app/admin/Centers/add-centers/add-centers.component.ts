@@ -1,15 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Centers } from '../../centers';
 import { NgForm } from '@angular/forms';
 import { CentersService } from '../../centers.service';
-import { debounceTime, distinctUntilChanged, Subject, switchMap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, Subject, switchMap } from 'rxjs';
+import { SettingsService } from '../../settings.service';
+import { Trade } from '../../trade';
+import { LogUpdateService } from 'src/app/log-update.service';
 
 @Component({
   selector: 'app-add-centers',
   templateUrl: './add-centers.component.html',
   styleUrls: ['./add-centers.component.css']
 })
-export class AddCentersComponent {
+export class AddCentersComponent implements OnInit {
   status: boolean = true
   selectedCity: string = ""
   cities: any[] = []
@@ -17,10 +20,14 @@ export class AddCentersComponent {
   // si on veut faire apparaitre une valeur dynamique par défaut
   centerName:string=""
 
+  // pour récupérer les métiers
+  tradesData:Trade[]=[]
+  selectedSigles: string[] = []
+
   // Subject pour capturer les changements de code postal
   private postalCodeSubject = new Subject<string>();
 
-  constructor(private service: CentersService) {
+  constructor(private service: CentersService, private settingsService:SettingsService) {
     // Configuration des abonnements RxJS en amont pour réagir aux saisies partielles de l'utilisateur
     this.postalCodeSubject.pipe(
       // Limite les requêtes à l'API à chaque 300ms après la dernière saisie
@@ -41,11 +48,29 @@ export class AddCentersComponent {
     });
   }
 
+  ngOnInit(): void {
+    this.settingsService.getTrades()
+
+        .pipe(map(data => data.filter(item => item.status && item.status === true)))
+
+        .subscribe(data => {
+
+          // pour inverser temporairement
+
+          this.tradesData = data.reverse();
+
+          console.log("this.tradesData", this.tradesData);
+
+        })
+  }
+
   addCenters(form: NgForm): void {
     if (form.valid) {
-      const formData = form.value;
+      const formData = form.value
+
       console.log('Données du formulaire:', formData);
-      // Ajoutez votre logique ici pour manipuler les données du formulaire
+      // Ajouter la logique ici pour enregistrer les données du formulaire
+      
     }
   }
 
@@ -139,6 +164,12 @@ export class AddCentersComponent {
       this.postalCode = selectedCity.zip_code; // Met à jour le code postal
       this.centerName=`Centre de ${selectedCity.label}`
     }
+  }
+  
+  // pour affecation métier au centre de formation
+  checkIfSelected(sigle: any) {
+    console.log(sigle);
+    this.selectedSigles.push(sigle)
   }
   
 

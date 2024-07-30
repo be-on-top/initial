@@ -61,6 +61,15 @@
       </div>
     </div>
 
+ <!-- avec le rattachement des sigles aux centres de formaiton -->
+ <label for="sigle" class="form-label mt-3">Affectation métier(s) :</label>
+ <select class="form-select" name="sigle" id="sigle" ngModel required #sigle="ngModel"
+     (change)="checkIfSelected(sigle.value)" multiple>
+     <option>Selectionner le métier</option>
+     <option *ngFor="let s of tradesData" [value]=s.sigle>{{s.denomination}}</option>
+ </select>
+  
+
     <button type="submit" class="btn btn-primary mt-4" [disabled]=centersForm.invalid>Ajouter</button>
   </form>
 
