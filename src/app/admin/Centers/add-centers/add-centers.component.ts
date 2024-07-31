@@ -27,6 +27,11 @@ export class AddCentersComponent implements OnInit {
   // Subject pour capturer les changements de code postal
   private postalCodeSubject = new Subject<string>();
 
+  // gestion des messages de retour
+  successMessage:string = '';
+  errorMessage:string = '';
+
+
   constructor(private service: CentersService, private settingsService:SettingsService) {
     // Configuration des abonnements RxJS en amont pour réagir aux saisies partielles de l'utilisateur
     this.postalCodeSubject.pipe(
@@ -66,11 +71,24 @@ export class AddCentersComponent implements OnInit {
 
   addCenters(form: NgForm): void {
     if (form.valid) {
-      const formData = form.value
-
+      const formData = form.value;
       console.log('Données du formulaire:', formData);
-      // Ajouter la logique ici pour enregistrer les données du formulaire
-      
+
+      this.service.createCenter(formData).subscribe({
+        next: (response) => {
+          console.log('Centre créé avec succès:', response);
+          this.successMessage = 'Centre créé avec succès.';
+          this.errorMessage = ''; // Clear error message
+          form.resetForm(); // Optionally reset the form
+        },
+        error: (error) => {
+          console.error('Erreur lors de la création du centre:', error);
+          this.errorMessage = error.message; // Set error message
+          this.successMessage = ''; // Clear success message
+        },
+      });
+    } else {
+      this.errorMessage = 'Veuillez remplir correctement le formulaire avant de soumettre.';
     }
   }
 
@@ -166,11 +184,7 @@ export class AddCentersComponent implements OnInit {
     }
   }
   
-  // pour affecation métier au centre de formation
-  checkIfSelected(sigle: any) {
-    console.log(sigle);
-    this.selectedSigles.push(sigle)
-  }
+
   
 
 

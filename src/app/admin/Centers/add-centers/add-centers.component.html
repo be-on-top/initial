@@ -7,8 +7,8 @@
 
     <div class="form-group">
       <label for="name" class="form-label mt-3">Nom</label>
-      <input id="name" type="text" name="name" [(ngModel)]=centerName #name="ngModel" class="form-control" placeholder="Centre de formation..."
-     >
+      <input id="name" type="text" name="name" [(ngModel)]=centerName #name="ngModel" class="form-control"
+        placeholder="Centre de formation...">
       <!-- <div *ngIf="name.dirty || (name.touched && name.invalid)" class="invalid-feedback">
         Veuillez fournir un nom valide.
       </div> -->
@@ -31,9 +31,9 @@
         title="Le code postal doit comporter exactement 5 chiffres" placeholder="Code postal à renseigner"
          (input)="onPostalCodeChange($event)" 
          > -->
-      <input type="text" required name="cp" [(ngModel)]="postalCode" #cp="ngModel" class="form-control" pattern="^\d{5}$"
-        title="Le code postal doit comporter exactement 5 chiffres" placeholder="Code postal à renseigner"
-        (ngModelChange)="onPostalCodeChange($event)">
+      <input type="text" required name="cp" [(ngModel)]="postalCode" #cp="ngModel" class="form-control"
+        pattern="^\d{5}$" title="Le code postal doit comporter exactement 5 chiffres"
+        placeholder="Code postal à renseigner" (ngModelChange)="onPostalCodeChange($event)">
       <!-- <div *ngIf="cp.dirty || (cp.touched && cp.invalid)" class="invalid-feedback">
         Veuillez fournir un code à 5 chiffres.
       </div> -->
@@ -55,20 +55,20 @@
       <!-- alternative 2 avec mise à jour au select de la valeur par retour de cp et de name -->
       <div *ngIf="cities.length > 1" class="form-group mt-3">
         <label for="citySelect" class="form-label">Sélectionnez une ville</label>
-        <select id="citySelect" name="city" [(ngModel)]="selectedCity" class="form-control" (change)="onSelectCity($event)">
+        <select id="citySelect" name="city" [(ngModel)]="selectedCity" class="form-control"
+          (change)="onSelectCity($event)">
           <option *ngFor="let city of cities" [value]="city.label">{{ city.label }}</option>
         </select>
       </div>
     </div>
 
- <!-- avec le rattachement des sigles aux centres de formaiton -->
- <label for="sigle" class="form-label mt-3">Affectation métier(s) :</label>
- <select class="form-select" name="sigle" id="sigle" ngModel required #sigle="ngModel"
-     (change)="checkIfSelected(sigle.value)" multiple>
-     <option>Selectionner le métier</option>
-     <option *ngFor="let s of tradesData" [value]=s.sigle>{{s.denomination}}</option>
- </select>
-  
+    <!-- avec le rattachement des sigles aux centres de formaiton -->
+    <label for="sigles" class="form-label mt-3">Affectation métier(s) :</label>
+    <select class="form-select" name="sigles" id="sigles" ngModel required #sigles="ngModel" multiple>
+      <option>Selectionner le métier</option>
+      <option *ngFor="let s of tradesData" [value]=s.sigle>{{s.denomination}}</option>
+    </select>
+
 
     <button type="submit" class="btn btn-primary mt-4" [disabled]=centersForm.invalid>Ajouter</button>
   </form>
