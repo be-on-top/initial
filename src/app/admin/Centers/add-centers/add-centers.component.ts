@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Centers } from '../../centers';
 import { NgForm } from '@angular/forms';
 import { CentersService } from '../../centers.service';
-import { debounceTime, distinctUntilChanged, map, Subject, switchMap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, of, Subject, switchMap } from 'rxjs';
 import { SettingsService } from '../../settings.service';
 import { Trade } from '../../trade';
 import { LogUpdateService } from 'src/app/log-update.service';
@@ -18,35 +18,37 @@ export class AddCentersComponent implements OnInit {
   cities: any[] = []
   postalCode: string = '';
   // si on veut faire apparaitre une valeur dynamique par défaut
-  centerName:string=""
+  centerName: string = ""
 
   // pour récupérer les métiers
-  tradesData:Trade[]=[]
+  tradesData: Trade[] = []
   selectedSigles: string[] = []
 
   // Subject pour capturer les changements de code postal
   private postalCodeSubject = new Subject<string>();
 
   // gestion des messages de retour
-  successMessage:string = '';
-  errorMessage:string = '';
+  successMessage: string = '';
+  errorMessage: string = '';
 
 
-  constructor(private service: CentersService, private settingsService:SettingsService) {
-    // Configuration des abonnements RxJS en amont pour réagir aux saisies partielles de l'utilisateur
+  constructor(private service: CentersService, private settingsService: SettingsService) {
+    // Setup RxJS pipeline for capturing postal code changes
     this.postalCodeSubject.pipe(
-      // Limite les requêtes à l'API à chaque 300ms après la dernière saisie
-      debounceTime(300),
-      // Ignore les valeurs identiques successives
-      distinctUntilChanged(),
-      // Switch vers un nouvel observable basé sur la recherche
-      switchMap(postalCode => this.service.getCitiesByPartialPostalCode(postalCode))
+      debounceTime(300), // Debounce for smoother input handling
+      distinctUntilChanged(), // Ignore if the value hasn't changed
+      switchMap(postalCode => {
+        // Check for a minimum input length
+        if (postalCode.length >= 3) {
+          return this.service.getCitiesByPartialPostalCode(postalCode);
+        } else {
+          return of([]); // Return an empty array if input is too short
+        }
+      })
     ).subscribe(cities => {
       this.cities = cities;
-      // Gestion de la sélection automatique si une seule ville
-      if (cities.length === 1) {        
+      if (cities.length === 1) {
         this.selectedCity = cities[0].label;
-        console.log("partiel retour", this.selectedCity);
       } else {
         this.selectedCity = '';
       }
@@ -56,17 +58,17 @@ export class AddCentersComponent implements OnInit {
   ngOnInit(): void {
     this.settingsService.getTrades()
 
-        .pipe(map(data => data.filter(item => item.status && item.status === true)))
+      .pipe(map(data => data.filter(item => item.status && item.status === true)))
 
-        .subscribe(data => {
+      .subscribe(data => {
 
-          // pour inverser temporairement
+        // pour inverser temporairement
 
-          this.tradesData = data.reverse();
+        this.tradesData = data.reverse();
 
-          console.log("this.tradesData", this.tradesData);
+        console.log("this.tradesData", this.tradesData);
 
-        })
+      })
   }
 
   addCenters(form: NgForm): void {
@@ -167,25 +169,27 @@ export class AddCentersComponent implements OnInit {
 
   // alternative 2 si subject en amont
   onPostalCodeChange(postalCode: string): void {
+
     this.postalCodeSubject.next(postalCode);
+
   }
 
   onSelectCity(event: Event): void {
     const target = event.target as HTMLSelectElement; // Cast l'objet target en HTMLSelectElement
     const selectedLabel = target.value; // Accède à la valeur sélectionnée
-  
+
     // Trouver la ville correspondante dans la liste des villes
     const selectedCity = this.cities.find(city => city.label === selectedLabel);
-  
+
     if (selectedCity) {
       this.selectedCity = selectedCity.label;
       this.postalCode = selectedCity.zip_code; // Met à jour le code postal
-      this.centerName=`Centre de ${selectedCity.label}`
+      this.centerName = `Centre de ${selectedCity.label}`
     }
   }
-  
 
-  
+
+
 
 
 
