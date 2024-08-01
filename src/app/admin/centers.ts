@@ -1,7 +1,7 @@
 export interface Centers {
     id: string;
     name: string;
-    cp: number;
+    cp: string;
     city: string;
     address: string;
     created: Date;

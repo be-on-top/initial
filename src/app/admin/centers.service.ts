@@ -59,80 +59,80 @@ export class CentersService {
   //       // Filtrer les villes par le code postal partiel
   //       const matchedCities = response.cities.filter(city => city.zip_code.startsWith(partialPostalCode));
   //       console.log(matchedCities); // trop nombreux résultats
-        
+
   //       return matchedCities;
   //     })
   //   );
   // }
-//   getCitiesByPartialPostalCode(partialPostalCode: string): Observable<City[]> {
-//     return this.http.get<{ cities: City[] }>(this.dataUrl).pipe(
-//       map(response => {
-//         // Expression régulière pour correspondre exactement au préfixe avec une certaine longueur
-//         const regex = new RegExp(`^${partialPostalCode}\\d{0,2}$`); 
+  //   getCitiesByPartialPostalCode(partialPostalCode: string): Observable<City[]> {
+  //     return this.http.get<{ cities: City[] }>(this.dataUrl).pipe(
+  //       map(response => {
+  //         // Expression régulière pour correspondre exactement au préfixe avec une certaine longueur
+  //         const regex = new RegExp(`^${partialPostalCode}\\d{0,2}$`); 
 
-//         const matchedCities = response.cities.filter(city => {
-//           const isMatch = regex.test(city.zip_code);
-//           const isValidLength = partialPostalCode.length >= 3;
-//           return isMatch && isValidLength;
-//         });
+  //         const matchedCities = response.cities.filter(city => {
+  //           const isMatch = regex.test(city.zip_code);
+  //           const isValidLength = partialPostalCode.length >= 3;
+  //           return isMatch && isValidLength;
+  //         });
 
-//         console.log(matchedCities);
-//         return matchedCities;
-//       })
-//     );
-// }
+  //         console.log(matchedCities);
+  //         return matchedCities;
+  //       })
+  //     );
+  // }
 
-// fonctionne très bien mais est difficilement lisible (l'intention n'est pas lisible)
-// getCitiesByPartialPostalCode(partialPostalCode: string): Observable<City[]> {
-//   return this.http.get<{ cities: City[] }>(this.dataUrl).pipe(
-//     map(response => {
-//       // Filtrer les villes par le code postal partiel
-//       const matchedCities = response.cities.filter(city => {
-//         const isExactMatch = city.zip_code.indexOf(partialPostalCode) === 0;
-//         return isExactMatch && partialPostalCode.length >= 3;
-//       });
+  // fonctionne très bien mais est difficilement lisible (l'intention n'est pas lisible)
+  // getCitiesByPartialPostalCode(partialPostalCode: string): Observable<City[]> {
+  //   return this.http.get<{ cities: City[] }>(this.dataUrl).pipe(
+  //     map(response => {
+  //       // Filtrer les villes par le code postal partiel
+  //       const matchedCities = response.cities.filter(city => {
+  //         const isExactMatch = city.zip_code.indexOf(partialPostalCode) === 0;
+  //         return isExactMatch && partialPostalCode.length >= 3;
+  //       });
 
-//       // Filtrer les doublons
-//       const uniqueCities = matchedCities.filter((city, index, self) => 
-//         index === self.findIndex((c) => (
-//           c.zip_code === city.zip_code && c.label === city.label
-//         ))
-//       );
+  //       // Filtrer les doublons
+  //       const uniqueCities = matchedCities.filter((city, index, self) => 
+  //         index === self.findIndex((c) => (
+  //           c.zip_code === city.zip_code && c.label === city.label
+  //         ))
+  //       );
 
-//       console.log(uniqueCities); // Résultats filtrés et dédupliqués
-//       return uniqueCities;
-//     })
-//   );
-// }
+  //       console.log(uniqueCities); // Résultats filtrés et dédupliqués
+  //       return uniqueCities;
+  //     })
+  //   );
+  // }
 
-getCitiesByPartialPostalCode(partialPostalCode: string): Observable<City[]> {
-  return this.http.get<{ cities: City[] }>(this.dataUrl).pipe(
-    map(response => {
-      const matchedCities = response.cities.filter(city => {
-        // Utilisation de startsWith pour vérifier si le code postal commence par le code partiel
-        const isExactMatch = city.zip_code.startsWith(partialPostalCode);
-        // Limite la recherche aux codes postaux partiels de 3 caractères ou plus
-        return isExactMatch && partialPostalCode.length >= 3;
-      });
+  getCitiesByPartialPostalCode(partialPostalCode: string): Observable<City[]> {
+    return this.http.get<{ cities: City[] }>(this.dataUrl).pipe(
+      map(response => {
+        const matchedCities = response.cities.filter(city => {
+          // Utilisation de startsWith pour vérifier si le code postal commence par le code partiel
+          const isExactMatch = city.zip_code.startsWith(partialPostalCode);
+          // Limite la recherche aux codes postaux partiels de 3 caractères ou plus
+          return isExactMatch && partialPostalCode.length >= 3;
+        });
 
-      // Filtrer les doublons par code postal et label
-      const uniqueCities = matchedCities.filter((city, index, self) =>
-        index === self.findIndex((c) => (
-          c.zip_code === city.zip_code && c.label === city.label
-        ))
-      );
+        // Filtrer les doublons par code postal et label
+        const uniqueCities = matchedCities.filter((city, index, self) =>
+          index === self.findIndex((c) => (
+            c.zip_code === city.zip_code && c.label === city.label
+          ))
+        );
 
-      console.log(uniqueCities); // Résultats filtrés et dédupliqués
-      return uniqueCities;
-    })
-  );
-}
+        console.log(uniqueCities); // Résultats filtrés et dédupliqués
+        return uniqueCities;
+      })
+    );
+  }
 
 
-getCenter(id: string) {
-  let $centerRef = doc(this.firestore, "centers/" + id)
-  return docData($centerRef, { idField: 'id' }) as Observable<Centers>;
-}
+  getCenter(id: string) {
+    let $centerRef = doc(this.firestore, "centers/" + id)
+    return docData($centerRef, { idField: 'id' }) as Observable<Centers>;
+  }
 
 
 
@@ -156,7 +156,27 @@ getCenter(id: string) {
     );
   }
 
+  /**
+     * Récupère les informations de localisation (latitude et longitude) pour un code postal donné.
+     * 
+     * @param postalCode Le code postal à rechercher.
+     * @returns Un Observable contenant les informations de localisation ou null si aucune correspondance n'est trouvée.
+     */
+  getLocalisation(postalCode: string): Observable<{ latitude: string, longitude: string } | null> {
+    return this.http.get<{ cities: City[] }>(this.dataUrl).pipe(
+      map(response => {
+        // Recherche la première ville qui correspond au code postal
+        const city = response.cities.find(city => city.zip_code === postalCode);
+
+        // Retourne les coordonnées de la ville trouvée ou null si aucune ville n'est trouvée
+        return city ? { latitude: city.latitude, longitude: city.longitude } : null;
+      })
+    );
   }
+
+}
+
+
 
 
 
