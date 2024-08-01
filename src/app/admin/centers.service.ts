@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { addDoc, collection, doc, Firestore, setDoc } from '@angular/fire/firestore';
+import { addDoc, collection, doc, docData, Firestore, setDoc } from '@angular/fire/firestore';
 import { catchError, from, map, Observable, throwError } from 'rxjs';
+import { Centers } from './centers';
 
 // Définition de l'interface pour les villes
 interface City {
@@ -126,6 +127,13 @@ getCitiesByPartialPostalCode(partialPostalCode: string): Observable<City[]> {
     })
   );
 }
+
+
+getCenter(id: string) {
+  let $centerRef = doc(this.firestore, "centers/" + id)
+  return docData($centerRef, { idField: 'id' }) as Observable<Centers>;
+}
+
 
 
 

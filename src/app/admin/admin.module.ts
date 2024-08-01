@@ -65,6 +65,7 @@ import { StudentFormComponent } from '../student-form/student-form.component';
 import { AutoChangeDirective } from '../auto-change.directive';
 import { AddStudentComponent } from './Students/add-student/add-student.component';
 import { AddCentersComponent } from './Centers/add-centers/add-centers.component';
+import { CenterDetailsComponent } from './Centers/center-details/center-details.component';
 
 
 
@@ -171,6 +172,7 @@ const routesAdmin: Routes = [
 
       // { path: 'addExternal', component: AddExternalComponent, data: { user: 'external' } },
       { path: 'addCenters', component: AddCentersComponent },
+      { path: 'center/:id', component: CenterDetailsComponent },
 
     ],
     // canActivate: [AuthGuardService]
@@ -233,7 +235,8 @@ const routesAdmin: Routes = [
     StudentFormComponent,
     AutoChangeDirective,
     AddStudentComponent,
-    AddCentersComponent
+    AddCentersComponent,
+    CenterDetailsComponent
   ],
   imports: [
     BrowserModule,

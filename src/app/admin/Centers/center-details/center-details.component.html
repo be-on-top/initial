@@ -1,0 +1,38 @@
+<div class="container py-5">
+
+    <h3 class="mb-3">{{center?.name}}</h3>
+
+
+    <div *ngIf="center">
+
+        <div class="card mt-4">
+            <div class="card-header text-muted">id : {{center.id}}</div>
+            <div class="card-body">
+                <!-- <h4 class="card-title">id : {{evaluator.id}}</h4> -->
+                <p class="card-text"><span class="fw-bold">Nom</span> : {{center.name}}<br>
+                    <span class="fw-bold">Adresse</span> : {{center.address}}<br>
+                    <span class="fw-bold">CP</span> : {{center.cp}}<br>
+                    <span class="fw-bold">Ville</span> : {{center.city}}
+                </p>
+                <hr>
+                <p> <span *ngIf="center.status; else checkbox">Status : actif</span>
+                    <ng-template #checkbox> Status : inactif</ng-template>
+                </p>
+                <ng-template #checkbox> Status : inactif</ng-template>
+                <!-- affectation métiers -->
+                <p *ngIf="center.sigles">Métiers d'affectation ({{center.sigles.length}}) : 
+                    <span *ngFor="let s of center.sigles">{{s}} </span>
+                </p>
+            </div>
+  
+        </div>
+        <!-- <div class="d-flex my-4 justify-content-end gap-5">
+
+            <button class="btn btn-primary">
+                <a class="text-white" [routerLink]="['/admin/evaluators']">Retour à la liste</a>
+            </button>
+
+        </div> -->
+    </div>
+
+</div>

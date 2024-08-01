@@ -183,9 +183,19 @@ export class AddCentersComponent implements OnInit {
 
     if (selectedCity) {
       this.selectedCity = selectedCity.label;
+
       this.postalCode = selectedCity.zip_code; // Met à jour le code postal
-      this.centerName = `Centre de ${selectedCity.label}`
+      // this.centerName = `Centre de ${selectedCity.label}`
+      this.centerName = `Centre de ${this.capitalizeEachWord(selectedCity.label)}`
+
     }
+  }
+
+  capitalizeEachWord(sentence:string) {
+    if (!sentence) return ''; // Manejar el caso de cadena vacía
+    return sentence.split(' ').map(word => {
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    }).join(' ');
   }
 
 
