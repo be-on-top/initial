@@ -1,0 +1,7 @@
+#map {
+    height: 400px; /* Définir une hauteur fixe pour le conteneur */
+    width: 100%;   /* Utiliser toute la largeur disponible */
+    border: 1px solid #ccc; /* Ajout d'une bordure pour la visibilité (optionnel) */
+    border-radius: 5px;     /* Arrondir les coins pour l'apparence (optionnel) */
+}
+

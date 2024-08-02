@@ -13,6 +13,7 @@ import { PartnersComponent } from './partners/partners.component';
 import { historyGuard } from './guards/history.guard';
 import { BenefitsComponent } from './benefits/benefits.component';
 import { MarketAppComponent } from './market-app/market-app.component';
+import { CenterDetailsComponent } from './admin/Centers/center-details/center-details.component';
 
 // const routes: Routes = [
 //   { path: 'home', component: HomeComponent, pathMatch: 'full', canActivate: [AuthGuardService] },
@@ -50,7 +51,9 @@ const routes: Routes = [
   { path: 'trade/:id/:slug', component: TradeDetailsComponent},
   { path: 'trade/:id', component: TradeDetailsComponent},
   { path: 'formation/:id/:slug', component: TradeDetailsComponent},
-  { path: 'formation/:id', component: TradeDetailsComponent}
+  { path: 'formation/:id', component: TradeDetailsComponent},
+  { path: 'center/:id', component: CenterDetailsComponent},
+
 ];
 
 
