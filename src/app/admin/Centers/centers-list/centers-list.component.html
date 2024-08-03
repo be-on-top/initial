@@ -1,0 +1,46 @@
+<div class="container py-5">
+
+    <h3>Gestion des Centres de Formation</h3>
+    <hr>
+    <div *ngIf="(!allCenters)">
+        ...loading
+    </div>
+
+    <div *ngIf="allCenters">
+        <!-- on introduit un champ de recherche -->
+        <app-search (searchTextChanged)="onSearchTextEntered($event)"></app-search>
+        <!-- <div class="row mt-5"> -->
+
+        <div *ngFor="let center of allCenters">
+
+            <div class="row mt-4 ps-5 ps-sm-0"
+                *ngIf="searchText==='' || center.name.includes(searchText) || center.name.toLowerCase().includes(searchText) || center.cp.toLowerCase().includes(searchText) ">
+
+                <div class="col-sm-3 col-6">{{center.name}}</div>
+
+                <div class="col-sm-3 col-6 order-perso2">{{center.cp}}</div>
+
+                <div *ngIf="userRouterLinks.user=='admin'" class="col-sm-3 col-6"><button class="btn btn-danger"
+                        (click)="deleteCenter(center.id)"><i class="bi bi-trash-fill"></i>Suppression</button></div>
+
+                <div class="col-sm-3 col-6 order-perso4"><button class="btn btn-primary">
+
+                        <a *ngIf="userRouterLinks.user=='admin'" [routerLink]="['/admin/center', center.id]"
+                            class="text-white"><i class="bi bi-eye-fill"></i>Détails</a>
+
+                        <a *ngIf="userRouterLinks.user!=='admin'" [routerLink]="['/center', center.id]"
+                            class="text-white"><i class="bi bi-eye-fill"></i>Détails</a>
+
+                    </button></div>
+
+            </div>
+
+        </div>
+
+
+        <div class="row my-5 justify-content-end ps-5 ps-sm-0" *ngIf="userRouterLinks.user=='admin'">
+            <div class="col-sm-3"><button class="btn btn-primary"><a [routerLink]="['/admin/addCenters']"
+                        class="text-white"><i class="bi bi-plus-circle-fill"></i>Ajouter</a></button></div>
+        </div>
+    </div>
+</div>

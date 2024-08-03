@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { addDoc, collection, doc, docData, Firestore, setDoc } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc } from '@angular/fire/firestore';
 import { catchError, from, map, Observable, throwError } from 'rxjs';
 import { Centers } from './centers';
 
@@ -172,6 +172,19 @@ export class CentersService {
         return city ? { latitude: city.latitude, longitude: city.longitude } : null;
       })
     );
+  }
+
+
+  getCenters() {
+    let $centersRef = collection(this.firestore, "centers");
+    return collectionData($centersRef, { idField: "id" }) as Observable<Centers[]>
+
+  }
+
+  deleteCenter(id: any) {
+    let $centerRef = doc(this.firestore, "centers/" + id)
+    deleteDoc($centerRef);
+
   }
 
 }

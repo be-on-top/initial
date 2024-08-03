@@ -66,6 +66,7 @@ import { AutoChangeDirective } from '../auto-change.directive';
 import { AddStudentComponent } from './Students/add-student/add-student.component';
 import { AddCentersComponent } from './Centers/add-centers/add-centers.component';
 import { CenterDetailsComponent } from './Centers/center-details/center-details.component';
+import { CentersListComponent } from './Centers/centers-list/centers-list.component';
 
 
 
@@ -172,6 +173,7 @@ const routesAdmin: Routes = [
 
       // { path: 'addExternal', component: AddExternalComponent, data: { user: 'external' } },
       { path: 'addCenters', component: AddCentersComponent },
+      { path: 'centers', component: CentersListComponent, data: { user: 'admin' } },
       { path: 'center/:id', component: CenterDetailsComponent },
 
     ],
@@ -236,7 +238,8 @@ const routesAdmin: Routes = [
     AutoChangeDirective,
     AddStudentComponent,
     AddCentersComponent,
-    CenterDetailsComponent
+    CenterDetailsComponent,
+    CentersListComponent
   ],
   imports: [
     BrowserModule,

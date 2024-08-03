@@ -14,6 +14,7 @@ import { historyGuard } from './guards/history.guard';
 import { BenefitsComponent } from './benefits/benefits.component';
 import { MarketAppComponent } from './market-app/market-app.component';
 import { CenterDetailsComponent } from './admin/Centers/center-details/center-details.component';
+import { CentersListComponent } from './admin/Centers/centers-list/centers-list.component';
 
 // const routes: Routes = [
 //   { path: 'home', component: HomeComponent, pathMatch: 'full', canActivate: [AuthGuardService] },
@@ -47,6 +48,7 @@ const routes: Routes = [
   { path: 'socialregistration', component: AdminForm},
   { path: 'benefits', component: BenefitsComponent},
   { path: 'market-app', component: MarketAppComponent},  
+  { path: 'centers', component: CentersListComponent},  
   { path: 'quizz/:id/:indexQuestion/:scoreCounter/:hasStartedEvaluation/:studentId', component: QuizzComponent, canActivate: [AuthGuardService, historyGuard]},
   { path: 'trade/:id/:slug', component: TradeDetailsComponent},
   { path: 'trade/:id', component: TradeDetailsComponent},
