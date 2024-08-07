@@ -70,9 +70,18 @@
     </select>
 
 
+
+
     <button type="submit" class="btn btn-primary mt-4" [disabled]=centersForm.invalid>Ajouter</button>
   </form>
 
+  <!-- Section d'importation CSV -->
+  <h3 class="mb-3">Importer des centres de formation depuis un CSV</h3>
+  <div class="form-group">
+    <label for="csvFile" class="form-label">Choisissez un fichier CSV</label>
+       <input type="file" id="csvFile" (change)="onFileChange($event)" accept=".csv" class="form-control">
+  </div>
+  <button type="submit" class="btn btn-secondary mt-4" (click)="importCSV()" [disabled]="!csvFile">Importer</button>
 
 
 

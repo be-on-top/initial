@@ -52,6 +52,8 @@ export class CentersService {
     )
   }
 
+
+
   // Récupère les villes par code postal partiel
   // getCitiesByPartialPostalCode(partialPostalCode: string): Observable<City[]> {
   //   return this.http.get<{ cities: City[] }>(this.dataUrl).pipe(
@@ -125,21 +127,23 @@ export class CentersService {
         console.log(uniqueCities); // Résultats filtrés et dédupliqués
         return uniqueCities;
       })
-    );
+    )
+    
   }
 
 
   getCenter(id: string) {
     let $centerRef = doc(this.firestore, "centers/" + id)
-    return docData($centerRef, { idField: 'id' }) as Observable<Centers>;
+    return docData($centerRef, { idField: 'id' }) as Observable<Centers>
+
   }
 
 
 
-
-
-  createCenter(center: any) {
-    let newCenter = { created: Date.now(), status: true, ...center };
+  createCenter(center: Centers) {
+    // let newCenter = { created: Date.now(), status: true, ...center };
+    // pour plus de maitrise : 
+    let newCenter = { created: Date.now(), status: true, name:center.name, address:center.address, cp:center.cp, city:center.city, sigles:[center.sigles] };
     // enregistre dans Firestore avec un collection centers qui aura de multiples propriétés
     let $centersRef = collection(this.firestore, "centers");
     // addDoc($centersRef, newCenter)
@@ -153,7 +157,7 @@ export class CentersService {
         console.error('Erreur lors de la création du centre:', error);
         return throwError(() => new Error('Erreur d\'enregistrement')); // Return an observable error
       })
-    );
+    )
   }
 
   /**
@@ -171,19 +175,19 @@ export class CentersService {
         // Retourne les coordonnées de la ville trouvée ou null si aucune ville n'est trouvée
         return city ? { latitude: city.latitude, longitude: city.longitude } : null;
       })
-    );
+    )
+
   }
 
 
   getCenters() {
     let $centersRef = collection(this.firestore, "centers");
     return collectionData($centersRef, { idField: "id" }) as Observable<Centers[]>
-
   }
 
   deleteCenter(id: any) {
     let $centerRef = doc(this.firestore, "centers/" + id)
-    deleteDoc($centerRef);
+    deleteDoc($centerRef)
 
   }
 

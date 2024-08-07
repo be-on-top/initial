@@ -6,6 +6,9 @@ import { debounceTime, distinctUntilChanged, map, of, Subject, switchMap } from 
 import { SettingsService } from '../../settings.service';
 import { Trade } from '../../trade';
 import { LogUpdateService } from 'src/app/log-update.service';
+// import * as Papa from 'ngx-papaparse'; // Importation de PapaParse pour l'analyse CSV
+import { Papa } from 'ngx-papaparse';
+
 
 @Component({
   selector: 'app-add-centers',
@@ -31,8 +34,12 @@ export class AddCentersComponent implements OnInit {
   successMessage: string = '';
   errorMessage: string = '';
 
+  // si on envisage l'import csv
+  csvFile: File | null = null; // Variable pour stocker le fichier CSV sélectionné
+  parsedCenters: any[] = [];   // Tableau pour stocker les données analysées
 
-  constructor(private service: CentersService, private settingsService: SettingsService) {
+
+  constructor(private service: CentersService, private settingsService: SettingsService, private papa: Papa) {
     // Setup RxJS pipeline for capturing postal code changes
     this.postalCodeSubject.pipe(
       debounceTime(300), // Debounce for smoother input handling
@@ -69,6 +76,7 @@ export class AddCentersComponent implements OnInit {
         console.log("this.tradesData", this.tradesData);
 
       })
+      
   }
 
   addCenters(form: NgForm): void {
@@ -191,11 +199,73 @@ export class AddCentersComponent implements OnInit {
     }
   }
 
-  capitalizeEachWord(sentence:string) {
+  capitalizeEachWord(sentence: string) {
     if (!sentence) return ''; // Manejar el caso de cadena vacía
     return sentence.split(' ').map(word => {
       return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
     }).join(' ');
+  }
+
+
+  // Fonction pour gérer la sélection de fichier avec PapaParse
+  onFileChange(event: any): void {
+    const file = event.target.files[0]; // Récupère le fichier sélectionné depuis l'événement
+    if (file) {
+      this.csvFile = file; // Stocke le fichier dans la variable csvFile
+      console.log('Fichier CSV sélectionné:', file.name);
+    } else {
+      this.csvFile = null;
+    }
+  }
+
+  // Fonction pour importer et analyser le fichier CSV
+  importCSV(): void {
+    if (!this.csvFile) {
+      this.errorMessage = 'Veuillez sélectionner un fichier CSV avant de procéder.';
+      return;
+    }
+
+    // Analyse du fichier CSV grâce à PapaParse. 
+    this.papa.parse(this.csvFile, {
+      // Considère la première ligne comme des en-têtes
+      header: true, 
+      skipEmptyLines: true, // Ignore les lignes vides !!!
+      complete: (result) => {
+        // Filtrage des objets vides ou des champs manquants
+        this.parsedCenters = result.data.filter((center:any) => {
+          return center.name && center.address && center.cp && center.sigles && center.city && center.tel && center.contact;
+        });
+        console.log('Données analysées:', this.parsedCenters);
+        this.uploadCentersToFirestore();
+      },
+      error: (error) => {
+        console.error('Erreur lors de l\'analyse du fichier CSV:', error);
+        this.errorMessage = 'Erreur lors de l\'analyse du fichier CSV.';
+      }
+    });
+  }
+
+  // Fonction pour télécharger les données vers Firestore
+  uploadCentersToFirestore(): void {
+    if (this.parsedCenters.length === 0) {
+      this.errorMessage = 'Aucune donnée à importer depuis le fichier CSV.';
+      return;
+    }
+
+    this.parsedCenters.forEach(center => {
+      
+      this.service.createCenter(center).subscribe({
+        next: (response) => {
+          console.log('Centre créé avec succès:', response);
+          this.successMessage = 'Centres importés avec succès.';
+          this.errorMessage = '';
+        },
+        error: (error) => {
+          console.error('Erreur lors de la création du centre:', error);
+          this.errorMessage = `Erreur lors de l'importation de certains centres: ${error.message}`;
+        }
+      });
+    });
   }
 
 
@@ -210,5 +280,62 @@ export class AddCentersComponent implements OnInit {
   //   console.log('Valeur de saisie:', inputValue);
   //   // Logique immédiate, comme l'auto-complétion
   // }
+
+
+
+  // Méthode appelée lors du changement de fichier dans l'input de type file
+  // onFileChange(event: any): void {
+  //   // Récupère le premier fichier sélectionné par l'utilisateur
+  //   const file = event.target.files[0];
+
+  //   // Vérifie si un fichier a été sélectionné
+  //   if (file) {
+  //     // Création d'une instance de FileReader pour lire le contenu du fichier
+  //     const reader = new FileReader();
+
+  //     // Définit un gestionnaire d'événement lorsque le fichier est complètement chargé
+  //     reader.onload = (e) => {
+  //       // Convertit le résultat de la lecture en chaîne de caractères (le contenu du fichier CSV)
+  //       const text = e.target?.result as string;
+
+  //       // Appelle la fonction parseCSV pour traiter le texte CSV
+  //       this.parseCSV(text);
+  //     };
+
+  //     // Lit le contenu du fichier en tant que texte brut
+  //     reader.readAsText(file);
+  //   }
+  // }
+
+  // Fonction pour analyser le contenu CSV
+  // parseCSV(data: string): void {
+  //   // Divise le texte CSV en lignes, chaque ligne représentant un enregistrement
+  //   const lines = data.split('\n');
+
+  //   // Supposons que la première ligne contient les en-têtes des colonnes
+  //   const headers = lines[0].split(',');
+
+  //   // Initialise le tableau des centres analysés à partir des lignes restantes
+  //   this.parsedCenters = lines.slice(1).map(line => {
+  //     // Divise chaque ligne en valeurs séparées par des virgules
+  //     const values = line.split(',');
+
+  //     // Crée un objet centre où chaque clé est un en-tête et chaque valeur est un élément de la ligne
+  //     const center: any = {};
+
+  //     // Associe chaque valeur à son en-tête correspondant
+  //     headers.forEach((header, index) => {
+  //       // Enlève les espaces blancs autour des noms de champs et des valeurs
+  //       center[header.trim()] = values[index].trim();
+  //     });
+
+  //     // Retourne l'objet représentant le centre
+  //     return center;
+  //   });
+
+  //   // Affiche dans la console les données analysées
+  //   console.log('Données analysées:', this.parsedCenters);
+  // }
+
 
 }
