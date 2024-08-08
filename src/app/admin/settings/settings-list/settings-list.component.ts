@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SettingsService } from '../../settings.service';
+import { ThemeService } from '../theme.service';
 
 @Component({
   selector: 'app-settings-list',
@@ -20,7 +21,10 @@ export class SettingsListComponent implements OnInit {
   partners?:any
 
 
-  constructor(private router: Router, private service: SettingsService) { }
+  constructor(private router: Router, private service: SettingsService, private themeService:ThemeService) {
+        // Initialise la variable avec la couleur actuelle du thème
+        this.primaryColor = this.themeService.getPrimaryColor();
+   }
 
   ngOnInit(): void {
     this.getSettings();
@@ -32,7 +36,6 @@ export class SettingsListComponent implements OnInit {
     this.service.getTrades().subscribe(data => {
       console.log("data de getTrades()", data)
       this.trades = data
-
     })
 
     this.service.getLevelsCursors().subscribe(data => {
@@ -62,6 +65,21 @@ export class SettingsListComponent implements OnInit {
   onSearchTextEntered(searchValue: string) {
     this.searchText = searchValue
     console.log(this.searchText);
+  }
+
+  primaryColor: string='';
+
+
+
+  updatePrimaryColor(color: string): void {
+    // Mettre à jour la couleur primaire
+    this.themeService.setPrimaryColor(color);
+  }
+
+  resetColor(): void {
+    // Réinitialiser la couleur primaire par défaut
+    this.themeService.resetTheme();
+    this.primaryColor = this.themeService.getPrimaryColor();
   }
 
 }

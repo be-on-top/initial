@@ -16,6 +16,26 @@
 /* @import url('https://fonts.googleapis.com/css2?family=Encode+Sans+Condensed:wght@200;300&display=swap'); */
 
 /* juste pour essais */
+/* styles.css */
+
+:root {
+    --primary-color: #0062fe;
+    /* Couleur primaire par défaut */
+}
+
+/* Utilisation des variables CSS pour les styles concernés */
+
+.bg-primary,
+.btn-primary {
+    /* background-color: #0062fe !important; */
+    background-color: var(--primary-color) !important;
+}
+
+
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
 
 body {
     font-family: 'Plus Jakarta Sans';
@@ -23,7 +43,6 @@ body {
     /* font-size: 16px; */
     z-index: 1040;
     /* Assurez-vous que le contenu de la page est sous la bannière de consentement */
-
 }
 
 h1 {
@@ -156,7 +175,7 @@ h3::before {
 
 h3 {
     position: relative;
-    width:-moz-fit-content; 
+    width: -moz-fit-content;
     width: fit-content;
     margin-left: auto;
     margin-right: auto;
@@ -188,7 +207,7 @@ h3,
     font-size: 0.8rem !important;
 }
 
-.display-5{
+.display-5 {
     font-size: 1.15rem;
 }
 
@@ -280,11 +299,6 @@ input:checked {
     color: #82BC00 !important;
 } */
 
-.bg-primary,
-.btn-primary {
-    background-color: #0062fe !important;
-    /* background-image: linear-gradient(to right, rgb(27, 9, 106),  #0062fe); */
-}
 
 
 hr {

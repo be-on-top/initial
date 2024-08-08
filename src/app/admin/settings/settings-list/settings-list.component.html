@@ -104,6 +104,26 @@
         </div>
     </div>
 
+    <hr>
+
+    <h4 class="my-5"> Paramètres de Couleurs</h4>
+    <div class="container mt-4">
+        <form>
+        <div class="form-group mb-3">
+        <label for="primaryColor">Choisissez votre Couleur Principale</label>
+        <input 
+                type="color" 
+                id="primaryColor" 
+                class="form-control mt-2" 
+                [(ngModel)]="primaryColor" 
+                (change)="updatePrimaryColor(primaryColor)" 
+                name="primaryColor">
+        </div>
+         
+            <button type="button" class="btn btn-secondary" (click)="resetColor()">Réinitialiser la Couleur</button>
+        </form>
+        </div>
+
 
 
 </div>
