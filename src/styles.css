@@ -21,7 +21,10 @@
 :root {
     --primary-color: #0062fe;
     /* Couleur primaire par défaut */
+    --text-color: #031C44; 
+    /* Couleur du texte par défaut */
 }
+  
 
 /* Utilisation des variables CSS pour les styles concernés */
 
@@ -29,6 +32,7 @@
 .btn-primary {
     /* background-color: #0062fe !important; */
     background-color: var(--primary-color) !important;
+    color:var(--text-color) !important;
 }
 
 
