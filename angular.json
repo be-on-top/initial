@@ -16,7 +16,10 @@
             "outputPath": "dist/be-on-top",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "allowedCommonJsDependencies": ["leaflet"],
+            "allowedCommonJsDependencies": [
+              "papaparse",
+              "leaflet"
+            ],
             "polyfills": [
               "zone.js"
             ],
@@ -24,10 +27,26 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              { "glob": "**/*", "input": "node_modules/tinymce", "output": "/tinymce/" },
-              { "glob": "sitemap.xml", "input": "src/assets/", "output": "/assets/" },
-              { "glob": "image-sitemap.xml", "input": "src/assets/", "output": "/assets/" },
-              { "glob": "robots.txt", "input": "src/", "output": "/" },
+              {
+                "glob": "**/*",
+                "input": "node_modules/tinymce",
+                "output": "/tinymce/"
+              },
+              {
+                "glob": "sitemap.xml",
+                "input": "src/assets/",
+                "output": "/assets/"
+              },
+              {
+                "glob": "image-sitemap.xml",
+                "input": "src/assets/",
+                "output": "/assets/"
+              },
+              {
+                "glob": "robots.txt",
+                "input": "src/",
+                "output": "/"
+              },
               "src/manifest.webmanifest",
               "src/firebase-messaging-sw.js"
             ],
@@ -42,12 +61,12 @@
             "ngswConfigPath": "ngsw-config.json"
           },
           "configurations": {
-            "production": { 
+            "production": {
               "optimization": true,
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,                 
+              "vendorChunk": false,
               "budgets": [
                 {
                   "type": "initial",
