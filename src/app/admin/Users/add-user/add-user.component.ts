@@ -127,26 +127,38 @@ export class AddUserComponent {
       this.errorMessage = 'Veuillez sélectionner un fichier CSV avant de procéder.';
       return;
     }
-
-    // Analyse du fichier CSV grâce à PapaParse. 
+  
+    // Analyse du fichier CSV grâce à PapaParse
     this.papa.parse(this.csvFile, {
-      // Considère la première ligne comme des en-têtes
       header: true,
-      skipEmptyLines: true, // Ignore les lignes vides !!!
-      // dynamicTyping: true,
+      skipEmptyLines: true, 
       complete: (result) => {
         console.log("result data", result.data);
-        
-        // Filtrage des objets vides ou des champs manquants
-        this.parsedReferents = result.data
-        .filter((user: any) => {
-          return user.cp && user.tel && user.email;
-        })
-        .map((user:Users)=>{
-          return {cp:user.cp, tel:user.tel, email: user.email,lastname:user.lastname, firstname:user.firstname }
+  
+        // Objet pour stocker les utilisateurs uniques par email
+        const userMap: { [key: string]: any } = {};
+  
+        result.data.forEach((user: Users) => {
+          if (user.email) {
+            if (userMap[user.email]) {
+              // Si l'email existe déjà, ajouter le cp à la liste des cps
+              userMap[user.email].cp.push(user.cp);
+            } else {
+              // Sinon, créer un nouvel utilisateur avec cp comme tableau
+              userMap[user.email] = {
+                cp: [user.cp],
+                email: user.email,
+                firstname:user.firstname,
+                lastname:user.lastname
+              };
+            }
+          }
         });
-
-        console.log('Données analysées:', this.parsedReferents);
+  
+        // Convertir l'objet en tableau
+        this.parsedReferents = Object.values(userMap);
+  
+        console.log('Données analysées et fusionnées:', this.parsedReferents);
         this.uploadReferentsToFirestore();
       },
       error: (error) => {
@@ -155,6 +167,7 @@ export class AddUserComponent {
       }
     });
   }
+  
 
 
   // Fonction pour télécharger les données vers Firestore
@@ -164,22 +177,23 @@ export class AddUserComponent {
       return;
     }
 
+
     this.parsedReferents.forEach((user:Users) => {
-      const newReferent={cp:[user.cp], role:this.userRouterLinks.data ,tel:user.tel, email:user.email, lastname:user.lastname, firstname:user.firstname}
+      const newReferent={cp:user.cp, role:this.userRouterLinks.data ,tel:user.tel, email:user.email, lastname:user.lastname, firstname:user.firstname}
       console.log(newReferent);      
       
-      this.service.createUser(newReferent)
-      .then(
-        (response) => {
-          console.log('Référent créé avec succès:', response);
-          this.successMessage = 'Référents importés avec succès.';
-          this.errorMessage = '';
-        },
-        (error) => {
-          console.error('Erreur lors de la création du référent:', error);
-          this.errorMessage = `Erreur lors de l'importation de certains centres: ${error.message}`;
-        }
-      )
+      // this.service.createUser(newReferent)
+      // .then(
+      //   (response) => {
+      //     console.log('Référent créé avec succès:', response);
+      //     this.successMessage = 'Référents importés avec succès.';
+      //     this.errorMessage = '';
+      //   },
+      //   (error) => {
+      //     console.error('Erreur lors de la création du référent:', error);
+      //     this.errorMessage = `Erreur lors de l'importation de certains centres: ${error.message}`;
+      //   }
+      // )
 
     }
     );
