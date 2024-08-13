@@ -41,7 +41,7 @@
             <div class="form-group col-md-6">
                 <label for="cp" class="form-label mt-3">CP</label>
                 <input type="text" id="cp" ngModel name="cp" class="form-control"
-                    placeholder="Code Postal Optionnel...">
+                    placeholder="Code Postal Optionnel..." [required]="userRouterLinks.user == 'admin' && userRouterLinks.data == 'referents'">
             </div>
         </div>
         <!-- pour en faire un formulaire générique susceptible d'affecter un rôle ou un autre -->
@@ -66,5 +66,18 @@
         <button type="submit" id="submit" class="btn btn-primary mt-3"
             [ngClass]="{'disabled':f.invalid}">Ajouter</button>
     </form>
+
+    <hr>
+
+     <!-- Section d'importation CSV -->
+      <ng-container *ngIf="userRouterLinks.user == 'admin' && userRouterLinks.data == 'referents'">
+          <h3 class="mt-3">Importer plusieurs référents administratifs (avec le code postal qui leur sera affecté)</h3>
+          <div class="form-group">
+            <label for="csvFile" class="form-label">Choisissez un fichier CSV</label>
+               <input type="file" id="csvFile" (change)="onFileChange($event)" accept=".csv" class="form-control">
+          </div>
+          <button type="submit" class="btn btn-secondary mt-4" (click)="importCSV()" [disabled]="!csvFile">Importer</button>
+      </ng-container>
+
 
 </div>
