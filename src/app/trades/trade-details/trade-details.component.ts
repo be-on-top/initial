@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Meta, SafeHtml } from '@angular/platform-browser';
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { Firestore, docData, doc } from '@angular/fire/firestore';
@@ -11,6 +11,8 @@ import { SettingsService } from 'src/app/admin/settings.service';
 import { StudentsService } from 'src/app/admin/students.service';
 import { Trade } from 'src/app/admin/trade';
 import { Location } from '@angular/common';
+import { CentersService } from 'src/app/admin/centers.service';
+import { Centers } from 'src/app/admin/centers';
 
 
 @Component({
@@ -18,7 +20,7 @@ import { Location } from '@angular/common';
   templateUrl: './trade-details.component.html',
   styleUrls: ['./trade-details.component.css']
 })
-export class TradeDetailsComponent implements OnInit {
+export class TradeDetailsComponent implements OnInit, AfterViewInit {
 
   // si on passe effectivement des paramètres au router au lieu de faire un input 
   tradeId: string = ""
@@ -52,6 +54,7 @@ export class TradeDetailsComponent implements OnInit {
     private location: Location,
     private titleService: Title,
     private metaService: Meta,
+    private centerService: CentersService
   ) {
     this.offline = !navigator.onLine
   }
@@ -105,8 +108,6 @@ export class TradeDetailsComponent implements OnInit {
             console.error('Erreur lors du chargement de l\'image', error);
           }
         });
-
-
 
 
 
@@ -205,6 +206,10 @@ export class TradeDetailsComponent implements OnInit {
 
   }
 
+  ngAfterViewInit(): void {
+    this.fetchCenters()
+  }
+
 
 
   getRole(id: any) {
@@ -248,9 +253,9 @@ export class TradeDetailsComponent implements OnInit {
   updateOpenGraphImage() {
     this.metaService.updateTag({ property: 'og:image', content: this.imageUrl });
     // this.metaService.updateTag({ property: 'og:image', content: `../../assets/${this.tradeId}.jpeg` });
-this.updateLinkTags()
+    this.updateLinkTags()
 
-    
+
   }
 
   updateLinkTags() {
@@ -334,6 +339,16 @@ this.updateLinkTags()
       console.log("url mise à jour");
     }
 
+  }
+
+
+  async fetchCenters(): Promise<Centers[] | void> {
+    try {
+      const centers = await this.centerService.getDocsByParam(this.tradeId);
+      console.log('Centers found:', centers);
+    } catch (error) {
+      console.error('Error fetching centers:', error);
+    }
   }
 
 

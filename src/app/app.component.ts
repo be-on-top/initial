@@ -1,7 +1,7 @@
 import { Component, ViewChild, ViewContainerRef, AfterViewInit, OnInit } from '@angular/core';
 import { setAnalyticsCollectionEnabled, Analytics } from '@angular/fire/analytics';
 import { Router } from '@angular/router';
-import { ThemeService } from './admin/settings/theme.service';
+// import { ThemeService } from './admin/settings/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +14,11 @@ export class AppComponent implements OnInit, AfterViewInit {
   consentReaded: boolean = false;
 
   @ViewChild('banner', { read: ViewContainerRef }) vc1!: ViewContainerRef;
-  constructor(private analytics:Analytics,  private router:Router, private themeService:ThemeService){
+  constructor(
+    private analytics:Analytics,
+    private router:Router,
+    // private themeService:ThemeService
+  ){
 
   }
 

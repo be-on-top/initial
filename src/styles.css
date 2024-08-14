@@ -21,7 +21,8 @@
 :root {
     --primary-color: #0062fe;
     /* Couleur primaire par défaut */
-    --text-color: #031C44; 
+    --text-color: white; 
+    /* --text-color: #031C44;  */
     /* Couleur du texte par défaut */
 }
   

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, deleteDoc, doc, docData, docSnapshots, Firestore, getDocs, query, setDoc, where } from '@angular/fire/firestore';
 import { catchError, from, map, Observable, throwError } from 'rxjs';
 import { Centers } from './centers';
 
@@ -190,6 +190,23 @@ export class CentersService {
     deleteDoc($centerRef)
 
   }
+
+  async getDocsByParam(sigle: string): Promise<any[]> {
+    // Crée une référence à la collection et une requête avec le paramètre array-contains
+    const myData = query(collection(this.firestore, 'centers'), where('sigles', 'array-contains', sigle));
+    const querySnapshot = await getDocs(myData);
+  
+    // Initialise un tableau pour stocker les documents
+    const results: any[] = [];
+    
+    // Itère sur les documents retournés par la requête
+    querySnapshot.forEach((doc) => {
+      results.push({ id: doc.id, ...doc.data() }); // Stocke chaque document dans le tableau
+    });
+  
+    return results; // Retourne le tableau des résultats
+  }
+  
 
 }
 
