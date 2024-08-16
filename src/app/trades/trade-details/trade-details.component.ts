@@ -224,20 +224,30 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
     this.location.back();
   }
 
-  isDescriptionCollapsed: boolean = true;
+  isDescriptionCollapsed: boolean = false;
   isCPCollapsed: boolean = true;
+  isCentersCollapsed: boolean = false;
 
   toggleDescriptionCollapse() {
     this.isDescriptionCollapsed = !this.isDescriptionCollapsed;
-    !this.isDescriptionCollapsed && this.isCPCollapsed ? this.toggleCPCollapse() : ''
+    this.isDescriptionCollapsed && this.isCPCollapsed ? this.toggleCPCollapse() : ''
+    this.isDescriptionCollapsed && this.isCentersCollapsed ? this.toggleCentersCollapse() : ''
 
   }
 
   toggleCPCollapse() {
     this.isCPCollapsed = !this.isCPCollapsed;
     // !this.isDescriptionCollapsed?this.isCPCollapsed:''
-    !this.isDescriptionCollapsed && this.isCPCollapsed ? this.toggleDescriptionCollapse() : ''
+    // !this.isCPCollapsed && this.isDescriptionCollapsed ? this.toggleDescriptionCollapse() : ''
+    // this.isCPCollapsed && this.isCentersCollapsed ? this.toggleCentersCollapse() : ''
 
+  }
+
+  toggleCentersCollapse() {
+    this.isCentersCollapsed = !this.isCentersCollapsed;
+    // !this.isDescriptionCollapsed?this.isCPCollapsed:''
+    this.isCentersCollapsed && this.isDescriptionCollapsed ? this.toggleDescriptionCollapse() : ''
+    this.isCentersCollapsed && this.isCPCollapsed ? this.toggleCPCollapse() : ''
   }
 
 
@@ -341,11 +351,12 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
 
   }
 
-
+  tradeCenters: any
   async fetchCenters(): Promise<Centers[] | void> {
     try {
       const centers = await this.centerService.getDocsByParam(this.tradeId);
       console.log('Centers found:', centers);
+      this.tradeCenters = centers
     } catch (error) {
       console.error('Error fetching centers:', error);
     }

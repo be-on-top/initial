@@ -25,8 +25,11 @@ button.btn.btn-primary:hover {
 
 }
 
-.secund{
+.third, .secund{
   border-bottom: 0;
+}
+.third{
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 button.btn-primary:hover {

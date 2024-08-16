@@ -17,7 +17,7 @@
                         RS)</a></span>
                 <span class="d-block" *ngIf="tradeData.isQualifying && tradeData.isQualifying==true">Formation
                     Qualifiante !</span>
-                <span class="d-block" *ngIf="tradeData.isCPF && tradeData.isCPF===true" >Finançable CPF</span>
+                <span class="d-block" *ngIf="tradeData.isCPF && tradeData.isCPF===true">Finançable CPF</span>
                 <!-- <span class="d-block" *ngIf="!tradeData.isCPF" >Non Finançable CPF</span> -->
                 <br *ngIf="tradeData.requirements">
                 <span *ngIf="tradeData.requirements && tradeData.requirements!==''" class="text-light">Prérequis :
@@ -51,8 +51,7 @@
                     <ng-container *ngIf="studentData && userRole!=='editor'">
                         <!-- ScoreCounter : {{ studentData['quizz_'+this.tradeData.sigle].scoreCounter | json }} -->
                         <!-- pour switcher d'un intitulé à un autre selon que studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle -->
-                        <div class="d-flex justify-content-md-end"
-                            *ngIf="hasStartedEvaluation==false, else none">
+                        <div class="d-flex justify-content-md-end" *ngIf="hasStartedEvaluation==false, else none">
                             <p class="btn btn-transparent ps-0 fs-5 text-white"><i class="bi bi-clock"></i>
                                 Démarrer votre évaluation</p>
                         </div>
@@ -77,8 +76,7 @@
                 </a>
                 <div class="d-flex justify-content-md-end" *ngIf="isEvaluationCompleted">
                     <a [routerLink]="['/account']" title="be-on-top compte personnel">
-                        <p class="text-light"><i
-                                class="bi bi-check-square-fill me-3"></i>
+                        <p class="text-light"><i class="bi bi-check-square-fill me-3"></i>
                             Votre évaluation est terminée</p>
                     </a>
                 </div>
@@ -107,7 +105,7 @@
                     class="btn text-light text-capitalize d-flex justify-content-between border-0"
                     data-bs-toggle="collapse" href="#collapseDescription">
                     Description <i
-                        [ngClass]="{'bi-caret-down-fill': isDescriptionCollapsed, 'bi-caret-up-fill': !isDescriptionCollapsed}"
+                        [ngClass]="{'bi-caret-down-fill': !isDescriptionCollapsed, 'bi-caret-up-fill': isDescriptionCollapsed}"
                         class="bi fs-4 text-light"></i></a>
             </div>
 
@@ -134,7 +132,8 @@
                                         <div class="modal-header">
                                             <h4 class="modal-title ms-auto">Image de couverture pour
                                                 {{tradeData.sigle}}</h4>
-                                            <button aria-label="Close window" type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            <button aria-label="Close window" type="button" class="btn-close"
+                                                data-bs-dismiss="modal"></button>
                                         </div>
                                         <app-cover-image class="modal-body"
                                             [tradeId]="tradeData.sigle"></app-cover-image>
@@ -175,6 +174,32 @@
 
                 </div>
             </div>
+
+            <!-- 3 -->
+
+            <ng-container *ngIf="tradeCenters && tradeCenters.length>0">
+            <div class="card-header third bg-primary pb-0">
+                <a (click)="toggleCentersCollapse()" class="btn text-light d-flex justify-content-between border-0"
+                    data-bs-toggle="collapse" href="#collapseCenters">
+                    Lieux de formation <i
+                        [ngClass]="{'bi-caret-down-fill': !isCentersCollapsed, 'bi-caret-up-fill': isCentersCollapsed}"
+                        class="bi fs-4 text-light"></i></a>
+            </div>
+                <!-- {{isCentersCollapsed}} -->
+                <div id="collapseCenters" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body fixing px-4 bg-primary text-white border-0">
+
+                        <p *ngFor="let center of tradeCenters, let index=index">
+                            <span class="fw-bold">Centre de {{center.city}} : </span> {{center.name}} - CP :
+                            {{center.cp}} <a [routerLink]="['/center', center.id]"><i class="bi bi-geo-alt-fill ms-2 text-light"></i></a>
+                        </p>
+
+                    </div>
+                </div>
+            </ng-container>
+
+
+
             <!-- div juste pour l'arrondi -->
             <div class="rounded-bottom p-1 bg-primary fixing"></div>
 
