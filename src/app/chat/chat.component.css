@@ -1,0 +1,68 @@
+/* Messages envoyés par l'utilisateur */
+.message-sent {
+    background-color: #DCF8C6;
+    /* Couleur de fond pour les messages envoyés */
+    align-self: flex-end;
+    /* Aligner les messages envoyés à droite */
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 5px;
+    max-width: 80%;
+    position: relative;
+}
+
+/* Messages reçus par l'utilisateur */
+.message-received {
+    /* background-color: #0f0d8e; Couleur de fond pour les messages reçus */
+    align-self: flex-start;
+    /* Aligner les messages reçus à gauche */
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 5px;
+    max-width: 80%;
+    position: relative;
+
+
+}
+
+/* Ajouter un conteneur flex pour les messages */
+.message-container {
+    display: flex;
+    /* justify-content: space-between; */
+    flex-direction: column;
+}
+
+.message-sent::before,
+.message-received::before {
+    content: '';
+    position: absolute;
+    border: 10px solid transparent;
+    border-top-color: inherit;
+
+
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 0;
+    height: 0;
+
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+}
+
+.message-sent::before {
+    top: 100%;
+    right: 20px;
+    border-bottom-width: 0;
+    border-top-color: #f8f9fa;
+    /* même couleur que bg-light */
+
+}
+
+.message-received::before {
+    top: 100%;
+    left: 20px;
+    border-bottom-width: 0;
+    border-top-color: #0d6efd;
+    /* même couleur que bg-primary */
+}

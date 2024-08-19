@@ -54,6 +54,7 @@ import { BenefitsComponent } from './benefits/benefits.component';
 import { LegalInfoComponent } from './legal-info/legal-info.component';
 import { AddNbspBeforeQuestionMarkPipe } from './add-nbsp-before-question-mark.pipe';
 import { MarketAppComponent } from './market-app/market-app.component';
+import { ChatComponent } from './chat/chat.component';
 // import { AutoChangeDirective } from './auto-change.directive';
 
 // import { getMessaging } from 'firebase/messaging';
@@ -91,6 +92,7 @@ import { MarketAppComponent } from './market-app/market-app.component';
     LegalInfoComponent,
     AddNbspBeforeQuestionMarkPipe,
     MarketAppComponent,
+    ChatComponent,
     // AutoChangeDirective,
     // TooltipComponent
   ],
