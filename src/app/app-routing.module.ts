@@ -56,7 +56,7 @@ const routes: Routes = [
   { path: 'formation/:id/:slug', component: TradeDetailsComponent},
   { path: 'formation/:id', component: TradeDetailsComponent},
   { path: 'center/:id', component: CenterDetailsComponent},
-  { path: 'chat/:id', component: ChatComponent},
+  { path: 'chat/:id/:name', component: ChatComponent},
 
 
 ];

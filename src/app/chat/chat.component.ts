@@ -10,6 +10,7 @@ interface Message {
   timestamp: any; // Utilisez `any` pour permettre `Timestamp` ou `Date`
   from: string;
   to: string;
+  id?: string;   // ID du document Firestore, optionnel
 }
 
 @Component({
@@ -22,6 +23,7 @@ export class ChatComponent implements OnInit {
   newMessage: string = '';
   userUid: string = '';
   adminUid: string = 'mBUxCKgzUhXSBg5hg8Bxr2NYAo72';
+  userName:string = ''
 
   constructor(
     private chatService: ChatService,
@@ -31,6 +33,7 @@ export class ChatComponent implements OnInit {
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       this.userUid = params.get('id') || '';
+      this.userName = params.get('name') || '';
       if (this.userUid) {
         this.messages = this.chatService.getMessages(this.userUid).pipe(
           map(messages => messages.map(message => ({
@@ -56,4 +59,20 @@ export class ChatComponent implements OnInit {
       this.newMessage = '';
     }
   }
+
+  cleanUpMessages() {
+    const tenDaysAgo = new Date(Date.now() - 10 * 24 * 60 * 60 * 1000); // 10 jours en arrière
+    
+    // On s'abonne aux messages pour les parcourir
+    this.messages.subscribe(messages => {
+      messages.forEach(message => {
+        if (this.convertTimestamp(message.timestamp) <= tenDaysAgo) {
+          console.log('id message à virer', message.id);
+          
+          // this.chatService.deleteMessage(message.id);
+        }
+      });
+    });
+  }
+  
 }

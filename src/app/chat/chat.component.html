@@ -1,6 +1,8 @@
 <div class="container py-5">
     <!-- <div *ngIf="afAuth.authState | async as user"> -->
-    <h3 class="mb-3">Vos messages ({{userUid}})</h3>
+    <!-- <h3 class="mb-3">Vos messages ({{userUid}})</h3> -->
+    <!-- <h3 class="mb-3">Vos messages ({{userName}})</h3> -->
+    <h3 class="mb-3">Vos messages</h3>
 
     <ul class="list-group mt-5">
         <li *ngFor="let message of messages | async" class="message-container w-75">
@@ -22,6 +24,163 @@
         </div>
 
     </div>
+
+    <hr>
+
+    <button class="btn btn-danger mt-3" (click)="cleanUpMessages()">Supprimer les anciens messages</button>
+
     <!-- </div> -->
     <!-- <app-login></app-login> -->
 </div>
+
+<h1>R482 C1</h1>
+
+<p>Le métier de conducteur de chargeuse de chantier consiste à manipuler et à piloter des engins de chantier
+    spécifiques, notamment les chargeuses, pour effectuer diverses tâches sur les sites de construction. Ces
+    professionnels jouent un rôle essentiel dans la réalisation de travaux de terrassement, de chargement, de
+    déblaiement et de manutention de matériaux.
+</p>
+
+<h2>Les avantages du métier de conducteur d'engins de chantier</h2>
+
+<ul>
+    <li>Perspectives d'emploi stables : La demande pour les conducteurs de chargeuses est constante dans le secteur de
+        la construction, offrant des opportunités d'emploi stables.
+    </li>
+    <li>Diversité des tâches : Les missions variées sur différents types de chantiers permettent d'éviter la monotonie.
+    </li>
+    <li>Autonomie et responsabilité : Ce métier offre une certaine autonomie et des responsabilités importantes,
+        notamment en matière de sécurité et d'efficacité.
+    </li>
+    <li>Formation et progression : Les conducteurs peuvent bénéficier de formations régulières et de possibilités
+        d'évolution vers des postes à plus haute responsabilité.
+    </li>
+</ul>
+
+<h2>Missions principales</h2>
+
+<ul>
+    <li>Conduite et manipulation de la chargeuse: Opérer la chargeuse en respectant les consignes de sécurité et en
+        assurant une manipulation précise et efficace des matériaux.
+    </li>
+    <li>Préparation du terrain : Participer aux travaux de nivellement, de remblayage et de déblayage.
+    </li>
+    <li>Chargement et déchargement : Charger et décharger divers matériaux (terre, gravier, sable, etc.) en fonction des
+        besoins du chantier.
+    </li>
+    <li>Entretien de l'engin : Effectuer les vérifications quotidiennes et l'entretien de base de la chargeuse pour
+        garantir son bon fonctionnement.
+    </li>
+    <li>Coordination avec l'équipe : Collaborer avec les autres membres de l'équipe de chantier pour assurer le bon
+        déroulement des travaux.
+    </li>
+</ul>
+
+
+<h2>Des enjeux significatifs</h2>
+
+<ul>
+    <li>La sécurité : La sécurité est primordiale. Les conducteurs doivent être vigilants et respecter strictement les
+        consignes de sécurité pour éviter les accidents.
+    </li>
+    <li>L'efficacité opérationnelle : La capacité à manipuler l'engin avec précision et rapidité influence directement
+        l'efficacité des travaux de chantier.
+    </li>
+    <li>La maintenance préventive : Un entretien régulier de la chargeuse est crucial pour prévenir les pannes et
+        prolonger la durée de vie de l'engin.
+    </li>
+    <li>L'adaptation aux technologies : Avec l'évolution technologique, les conducteurs doivent se familiariser avec les
+        nouveaux équipements et systèmes de commande</li>
+</ul>
+
+
+
+<h1>482 B1</h1>
+
+<p> Le conducteur de pelle hydraulique est un professionnel essentiel dans le domaine des travaux publics et de la
+    construction.
+</p>
+
+<p>Il est chargé d'opérer des engins de chantier spécialisés pour effectuer des travaux de terrassement, d'extraction,
+    et de préparation de terrain. Il travaille principalement sur des chantiers de construction, de travaux publics, de
+    mines, de carrières ou de démolition
+</p>
+
+<h2>Les avantages du métier de conducteur d'engins de chantier</h2>
+<ul>
+    <li>Travail en extérieur et varié</li>
+    <li>Opportunités d'emploi nombreuses dans différentes régions</li>
+    <li>Possibilité d'évolution vers des postes de chef d'équipe ou de chantier</li>
+    <li>Métier accessible avec des formations courtes</li>
+</ul>
+
+<h2>Missions principales
+
+</h2>
+
+<ul>
+    <li>Préparer et déblayer le terrain avant les travaux de terrassement</li>
+    <li>Creuser des tranchées pour les fondations et les canalisations</li>
+    <li>Charger et décharger des matériaux</li>
+    <li>Niveler et dresser des plates-formes et des talus</li>
+    <li>Réaliser des enrochements</li>
+</ul>
+
+<h2>Des enjeux significatifs</h2>
+
+<ul>
+    <li>La sécurité : Le conducteur doit veiller à la sécurité des personnes travaillant dans la zone d'évolution de sa
+        machine
+    </li>
+    <li>L'environnement : Il doit intégrer les contraintes environnementales dans son travail</li>
+    <li>La polyvalence : Il doit être capable de conduire différents types d'engins, comme la pelle hydraulique et la
+        chargeuse pelleteuse
+    </li>
+</ul>
+
+
+<h1>R482 F</h1>
+
+<p>Le métier de conducteur de chariot élévateur de chantier BTP est un rôle clé dans le secteur de la construction et des travaux publics. Ce professionnel, expert en manutention, assure le déplacement et le transport de matériaux lourds et volumineux sur des terrains variés, garantissant ainsi l'efficacité et la sécurité des opérations de chantier.
+</p>
+
+<h2>Missions principales</h2>
+
+<ul>
+    <li>Manipulation de matériaux : Le conducteur de chariot élévateur utilise son engin pour transporter des matériaux tels que des poutres, des briques et des palettes à travers le chantier.
+    </li>
+    <li>Chargement et déchargement : Il est responsable du chargement et du déchargement des camions, ainsi que du stockage des matériaux dans les zones prévues.
+    </li>
+    <li>Transport sécurisé : Le conducteur veille à déplacer les matériaux de manière sûre et efficace, même sur des terrains accidentés ou difficiles.
+    </li>
+    <li> Application des consignes : Le respect strict des consignes de sécurité est essentiel pour éviter les accidents sur le chantier.
+    </li>
+    <li>Travail d'équipe : En coordination avec les chefs de chantier et les autres conducteurs d'engins, il optimise les opérations de manutention.
+    </li>
+
+
+</ul>
+
+<h2>Les avantages du métier de conducteur de chariot élévateur de chantier</h2>
+
+<ul>
+    <li>Stabilité de l'Emploi : Le secteur de la construction connaît une demande constante pour des conducteurs de chariot élévateur qualifiés, offrant ainsi une stabilité de l'emploi.
+    </li>
+    <li>Salaire Attractif : Les conducteurs expérimentés peuvent bénéficier de salaires compétitifs, souvent accompagnés de primes en fonction des projets et de la localisation.
+    </li>
+    <li>Diversité des Chantiers :Travailler sur différents types de projets, qu'ils soient résidentiels ou de grande envergure, permet au conducteur de développer une expérience professionnelle riche et variée.
+    </li>
+</ul>
+
+ <h2>Des enjeux significatifs</h2>
+
+ <p>La sécurité est une priorité absolue. Le conducteur doit être vigilant à tout moment pour éviter les accidents et garantir la sécurité de tous les travailleurs sur le chantier.
+</p>
+
+<p>La précision est essentielle pour manœuvrer des charges lourdes et parfois fragiles dans des espaces restreints. L'efficacité dans ces opérations a un impact direct sur la productivité du chantier.
+</p>
+
+<p>Une connaissance approfondie des chariots élévateurs et une maintenance régulière sont nécessaires pour assurer leur bon fonctionnement et prolonger leur durée de vie.
+</p>
+
+<p>Les conducteurs doivent s'adapter à des conditions de travail variées, incluant des terrains accidentés, des conditions météorologiques changeantes et des horaires flexibles.</p>
