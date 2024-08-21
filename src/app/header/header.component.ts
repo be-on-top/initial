@@ -37,14 +37,14 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   // utilisation de networkService pour détecter le retour du réseau
   onlineStatus: boolean = true;
   private networkSubscription: Subscription | null = null; // Initialisé à null
-  private hasCheckedInitialStatus = false;
+  // private hasCheckedInitialStatus = false;
 
 
 
   @ViewChild('collapsibleNavbar') collapsibleNavbar!: ElementRef;
 
   constructor(
-    private renderer: Renderer2,
+    // private renderer: Renderer2,
     private authService: AuthService,
     private auth: Auth,
     private firestore: Firestore,

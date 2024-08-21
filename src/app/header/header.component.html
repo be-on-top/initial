@@ -20,7 +20,7 @@
             <span *ngIf="!isMenuOpen" class="navbar-toggler-icon">&#9776;</span>
             <span *ngIf="isMenuOpen" class="navbar-toggler-icon">&#10006;</span>
         </button> -->
-        <button class="navbar-toggler" style="border-width: 0;" type="button" data-bs-toggle="collapse"
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
             data-bs-target="#collapsibleNavbar" (click)="toggleMenu()" aria-label="Fermer le menu">
             <span class="navbar-toggler-icon" [ngClass]="{'closed-menu': isMenuOpen}"></span>
         </button>
@@ -67,9 +67,9 @@
                         <li><a class="dropdown-item" [routerLink]="['/admin/externals']"
                                 *ngIf="userRole.includes('admin')">Gestion des observateurs</a></li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/students']"
-                                *ngIf="userRole.includes('admin')">Gestion des candidats</a></li>
+                                *ngIf="userRole.includes('admin')">Gestion des candidats</a><hr></li>
                         <!-- ajout d'une route pour designation du référent -->
-                        <hr *ngIf="userRole.includes('admin')">
+                        <!-- <hr *ngIf="userRole.includes('admin')"> -->
                         <li><a class="dropdown-item" [routerLink]="['/admin/managers']"
                                 *ngIf="userRole.includes('admin')">Responsable métiers (optionnel)</a></li>
 
@@ -169,8 +169,9 @@
                 <li class="nav-item" [routerLinkActive]="['partners']" *ngIf="partners && partners.length!==0">
                     <a class="nav-link" [routerLink]="['partners']" role="button">Partenaires</a>
                 </li>
-                <li class="nav-item"  [routerLinkActive]="['active']">
-                    <a class="nav-link" [routerLink]="['benefits']" role="button">Informations <i class="bi bi-info-square-fill ms-2"></i></a>
+                <li *ngIf="!userRole.includes('evaluator')"
+                    class="nav-item"  [routerLinkActive]="['active']">
+                    <a class="nav-link" [routerLink]="['benefits']" role="button">Informations<i class="bi bi-info-square-fill ms-2"></i></a>
                 </li>
 
             </ul>
