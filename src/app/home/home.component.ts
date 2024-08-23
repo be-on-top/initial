@@ -18,6 +18,7 @@ import { Subject, distinctUntilChanged, map, takeUntil } from 'rxjs';
 import { PRECONNECT_CHECK_BLOCKLIST } from '@angular/common';
 import { Analytics, logEvent } from '@angular/fire/analytics';
 import { SlugService } from '../slug.service';
+import { Trade } from '../admin/trade';
 // import { DomSanitizer } from '@angular/platform-browser';
 
 
@@ -88,6 +89,9 @@ export class HomeComponent implements OnInit {
 
   private destroy$ = new Subject<void>();
 
+  catGroup?: any
+  isFullCatItemsOpen:boolean=false
+
 
   // pour utiliser le composant de recherche
   onSearchTextEntered(searchValue: string) {
@@ -99,6 +103,16 @@ export class HomeComponent implements OnInit {
   removeAccents(str: string): string {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   }
+
+  // Fonction pour filtrer ceux dont le sigle commence par caces
+  onSearchCatEntered(catValue: string) {
+    this.catGroup = this.tradesData.filter((trade: Trade) => trade.sigle.includes(catValue))
+    console.log('catGroup', this.catGroup);
+
+
+    // console.log(this.searchText);
+  }
+
 
   constructor(
     // private notificationService: PushNotificationService, 
@@ -113,7 +127,7 @@ export class HomeComponent implements OnInit {
     // private networkService: NetworkService,
     private analytics: Analytics,
     // private networkService: NetworkService
-    public slugService:SlugService
+    public slugService: SlugService
   ) {
 
     this.offline = !navigator.onLine
@@ -197,6 +211,10 @@ export class HomeComponent implements OnInit {
           // pour inverser temporairement
           this.tradesData = data.reverse();
           console.log("this.tradesData", this.tradesData);
+          // pour tester regroupement basic
+          this.onSearchCatEntered("caces")
+
+
 
           // Charge les images pour chaque métier
           this.tradesData.forEach((trade: any) => {
@@ -212,7 +230,12 @@ export class HomeComponent implements OnInit {
                 }
               })
           })
+
+          // on supprime de tradesData ceux qui ont une catégorie commune
+          this.tradesData = this.tradesData.filter((item: Trade) => !this.catGroup.includes(item));
+
         })
+
 
 
     }
@@ -283,9 +306,9 @@ export class HomeComponent implements OnInit {
 
 
   checkIfQuizzAchieved() {
-    if (this.userRole==='student' && this.studentData) {      
+    if (this.userRole === 'student' && this.studentData) {
       this.isOneQuizzAchieved = Object.values(this.studentData).some((data: any) => data?.fullResults)
-    }    
+    }
   }
 
   checkQuizzCondition(trade: any) {
@@ -377,7 +400,10 @@ export class HomeComponent implements OnInit {
   //   return slug;
   // }
 
- 
+  openFullCatItems(){
+    
+    this.isFullCatItemsOpen=!this.isFullCatItemsOpen
+  }
 
 
 }
