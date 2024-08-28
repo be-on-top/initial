@@ -7,7 +7,7 @@
 
 
 .navbar-collapse {
-    transition :all 0.3s ease;
+    transition: all 0.3s ease;
     /* Ajoutez une transition pour la propriété "height" */
 }
 
@@ -33,7 +33,7 @@
 .navbar-toggler-icon.closed-menu::before {
     display: inline-block;
     content: "\2715";
-    font-size: 1.5rem; 
+    font-size: 1.5rem;
     /* color: #82BC00; */
     width: 30px;
     height: 4px;
@@ -47,7 +47,7 @@
     margin-right: 15px;
 }
 
-li.nav-item.social>a::before{
+li.nav-item.social>a::before {
     content: "";
     position: absolute;
     bottom: 0rem;
@@ -60,6 +60,7 @@ li.nav-item.social a {
 
     /* Opacité complète pour le texte */
 }
+
 li.nav-item.social {
     /* background-color: #82BC00; */
     position: relative;
@@ -71,6 +72,28 @@ li.nav-item.social a::before {
     background-color: #82BC00;
     opacity: 1;
     /* Opacité complète pour le soulignement */
+}
+/* 
+li.submenu{border: none;}
+
+li.submenu a[role="button"]::before {
+    display: none;
+}
+li.submenu a[role="button"]::after {
+    display: inline-block;
+    margin-left: 0.255em;
+    vertical-align: 0;
+    content: "";
+    border-top: 0.3em solid transparent;
+    border-right: 0;
+    border-bottom: 0.3em solid transparent;
+    border-left: 0.3em solid;
+} */
+
+
+.dropdown-submenu .dropdown-menu{
+    border: 0;
+
 }
 
 

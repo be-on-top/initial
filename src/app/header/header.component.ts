@@ -39,6 +39,9 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   private networkSubscription: Subscription | null = null; // Initialisé à null
   // private hasCheckedInitialStatus = false;
 
+  groupedTrades: any[] = [];  // Pour les métiers avec parentCategory
+  ungroupedTrades: any[] = [];  // Pour les métiers sans parentCategory
+
 
 
   @ViewChild('collapsibleNavbar') collapsibleNavbar!: ElementRef;
@@ -76,7 +79,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
         location.reload();  // Rafraîchir la page pour recharger les données
         this.offline = false; // Réinitialiser le flag après la reconnexion
       }
-    });
+    })
 
     // Appeler la fonction de vérification au démarrage de l'application
     this.authService.checkLastLoginDate();
@@ -115,6 +118,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
         this.trades = data
         // je n'ai plus besoin puisque je filtre à la source :
         // this.filterTradesByStatus()
+        this.groupTrades();
       })
     } else {
       const openRequest = window.indexedDB.open('my-database');
@@ -220,6 +224,29 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     if (this.networkSubscription) {
       this.networkSubscription.unsubscribe(); // Vérification explicite pour null
     }
+  }
+
+
+
+  groupTrades() {
+    console.log("Trades initiaux:", this.trades);
+   
+    const grouped = new Map<string, any[]>();
+ 
+    this.trades.forEach((trade:any) => {
+      if (trade.parentCategory) {
+        if (!grouped.has(trade.parentCategory)) {
+          grouped.set(trade.parentCategory, []);
+        }
+        grouped.get(trade.parentCategory)?.push(trade);
+      } else {
+        this.ungroupedTrades.push(trade);
+      }
+    });
+ 
+    this.groupedTrades = Array.from(grouped.entries());
+    console.log("Métiers regroupés:", this.groupedTrades);
+    console.log("Métiers non groupés:", this.ungroupedTrades);
   }
 
 

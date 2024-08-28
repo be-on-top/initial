@@ -5,41 +5,67 @@ img {
     /* aspect-ratio: auto 600 / 250; */
 
 }
-.h5{
-    width:fit-content;
+
+.h5 {
+    width: -moz-fit-content;
+    /* Pour les anciennes versions de Firefox */
+    width: -webkit-fit-content;
+    /* Préfixe pour d'autres anciens navigateurs WebKit */
+    width: fit-content;
+    /* Valeur standard pour les navigateurs modernes */
     font-size: 1.18rem;
 
 }
-h2{
+
+h2 {
     padding-top: 5px;
     position: relative;
 
 }
 
-h2:before{
+h2:before {
     position: absolute;
     content: "";
     background-color: #82BC00;
     /* background-color: #0062fe; */
     height: 1.5px;
-    width: 0; /* Initial width */
+    width: 0;
+    /* Initial width */
     bottom: -7px;
-    left: 5px; /* Align to the left */
-    transition: width 0.3s ease-in-out; /* Transition effect */
+    left: 5px;
+    /* Align to the left */
+    transition: width 0.3s ease-in-out;
+    /* Transition effect */
 }
+
 .card:hover h2::before {
-    width: 95%; /* Final width on hover of .card */
+    width: 95%;
+    /* Final width on hover of .card */
 }
 
 
-.card-header:hover{
-    cursor: pointer!important;
+.card-header:hover {
+    cursor: pointer !important;
 }
 
 a .btn.btn-transparent:hover {
     box-shadow: none !important;
     color: #82BC00;
     transform: scale(1.05);
+}
+
+/* pour éviter l'effet hover sur h3 dans l'hypothèse groupCat */
+.card h3{
+    text-align: left;
+    margin-left: 0;
+    padding-left: 0;
+}
+.card h3::before {
+    height:0;
+}
+.card h3:hover {
+    color: #82BC00;
+    cursor:pointer;
 }
 
 /* a .btn.btn-transparent {
@@ -62,6 +88,12 @@ button.btn-transparent {
     transition: .3s transform cubic-bezier(.155, 1.105, .295, 1.12), .3s box-shadow, .3s -webkit-transform cubic-bezier(.155, 1.105, .295, 1.12);
     cursor: none;
 }
+
+.card.category:hover {
+    transform: scale(1);
+    box-shadow: 0;
+}
+
 
 .card-text a {
     font-size: 1rem !important;
@@ -118,6 +150,36 @@ hr {
     width: 100%;
     /* Conserver le ratio 1:1 pour un cercle */
 }
+
+/* .marquee {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+.marquee-content {
+    display: inline-block;
+    white-space: nowrap;
+    animation: marquee 20s linear infinite;
+
+}
+
+.marquee-content span {
+    display: inline-block;
+    margin-right: 30px;
+}
+
+@keyframes marquee {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+} */
+
 
 
 @media only screen and (max-width: 765px) {

@@ -90,7 +90,7 @@ export class HomeComponent implements OnInit {
   private destroy$ = new Subject<void>();
 
   catGroup?: any
-  isFullCatItemsOpen:boolean=false
+  isFullCatItemsOpen: boolean = false
 
 
   // pour utiliser le composant de recherche
@@ -213,6 +213,34 @@ export class HomeComponent implements OnInit {
           console.log("this.tradesData", this.tradesData);
           // pour tester regroupement basic
           this.onSearchCatEntered("caces")
+
+          // pour regroupement par parentCategory
+          this.onSearchCat()
+          // // Étape 1 : Calculer les occurrences de chaque parentCategory
+          // const parentCategoryCounts = this.tradesData.reduce((acc: { [key: string]: number }, item: Trade) => {
+          //   if (item.parentCategory) {
+          //     alert("bingo")
+          //     acc[item.parentCategory] = (acc[item.parentCategory] || 0) + 1;
+          //   }
+          //   return acc;
+          // }, {} as { [key: string]: number });
+
+          // console.log('parentCategoryCounts', parentCategoryCounts);
+
+
+          // // Étape 2 : Filtrer les éléments
+          // const filteredItems = this.tradesData.filter((item: Trade) =>
+          //   item.parentCategory && parentCategoryCounts[item.parentCategory] > 1
+          // );
+
+          // const remainingItems = this.tradesData.filter((item: Trade) =>
+          //   !item.parentCategory || parentCategoryCounts[item.parentCategory] === 1
+          // );
+
+          // console.log('Filtered Items:', filteredItems);
+          // console.log('Remaining Items:', remainingItems);
+
+
 
 
 
@@ -400,10 +428,33 @@ export class HomeComponent implements OnInit {
   //   return slug;
   // }
 
-  openFullCatItems(){
-    
-    this.isFullCatItemsOpen=!this.isFullCatItemsOpen
+  openFullCatItems() {
+
+    this.isFullCatItemsOpen = !this.isFullCatItemsOpen
   }
+
+  onSearchCat(){
+    // Étape 1 : Calculer les occurrences de chaque parentCategory
+    const parentCategoryCounts = this.tradesData.reduce((acc: { [key: string]: number }, item: Trade) => {
+      if (item.parentCategory) {
+        acc[item.parentCategory] = (acc[item.parentCategory] || 0) + 1;
+      }
+      return acc;
+    }, {} as { [key: string]: number });
+
+    console.log('parentCategoryCounts', parentCategoryCounts);
+
+
+    // Étape 2 : Filtrer les éléments
+    this.catGroup = this.tradesData.filter((item: Trade) =>
+      item.parentCategory && parentCategoryCounts[item.parentCategory] > 1
+    );
+
+    console.log('catGroup with parentCategoryCounts filter:', this.catGroup );
+    // console.log('Remaining Items:', remainingItems);
+  }
+
+
 
 
 }

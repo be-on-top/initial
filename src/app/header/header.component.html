@@ -127,17 +127,55 @@
                     </ul>
                 </li>
 
-
+<!-- 
                 <li class="nav-item dropdown" *ngIf="trades" [routerLinkActive]="['active']">
-                    <!-- <li class="nav-item dropdown" *ngIf="filteredTrades" [routerLinkActive]="['active']"> -->
-                    <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">Nos métiers</a>
+                           <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">Nos métiers</a>
                     <ul class="dropdown-menu mb-2">
                         <li *ngFor="let trade of trades">
                             <a class="dropdown-item" (click)="closeNavbar()"
                                 [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]">{{trade.denomination | truncateTitle}}</a>
                         </li>
                     </ul>
-                </li>
+                </li> -->
+
+
+ 
+                <li class="nav-item dropdown" *ngIf="trades" [routerLinkActive]="['active']">
+                    <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">Nos métiers</a>
+                    <ul class="dropdown-menu mb-2">
+                      <!-- Afficher les métiers sans parentCategory -->
+                      <li *ngFor="let trade of ungroupedTrades">
+                        <a class="dropdown-item" (click)="closeNavbar()"
+                          [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]">
+                          {{ trade.denomination | truncateTitle }}
+                        </a>
+                      </li>
+                 
+                      <!-- Afficher les métiers regroupés par parentCategory -->
+                  
+                        <li class="dropdown-submenu" *ngFor="let group of groupedTrades">
+                          <a class="dropdown-item dropdown-toggle text-uppercase" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                          onclick="event.stopPropagation();">
+                            {{ group[0] }} <!-- Affichage de la parentCategory -->
+                          </a>
+                          <ul class="dropdown-menu">
+                            <!-- Afficher chaque métier sous la catégorie -->
+                            <li *ngFor="let trade of group[1]">
+                              <a class="dropdown-item" (click)="closeNavbar()"
+                                [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]">
+                                {{ trade.denomination | truncateTitle }}
+                              </a>
+                            </li>
+                          </ul>
+                        </li>
+                     
+                    </ul>
+                  </li>
+
+
+
+
+
 
                 <!-- ajout login global (on aura ultérieurement un public et privé réservé aux contributeurs et évaluateurs...) -->
                 <li *ngIf="!offline" class="nav-item dropdown" [routerLinkActive]="['active']">
@@ -178,3 +216,9 @@
         </div>
     </div>
 </nav>
+
+
+
+
+
+
