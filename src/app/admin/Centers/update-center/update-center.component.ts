@@ -17,15 +17,15 @@ export class UpdateCenterComponent implements OnInit {
   successMessage: string = '';
   errorMessage: string = '';
 
-    // essai pour connecter la collection sigles au doc de centers
-    sigleIds: string[] = []
+  // essai pour connecter la collection sigles au doc de centers
+  sigleIds: string[] = []
 
   constructor(
     private ac: ActivatedRoute,
     private router: Router,
     private service: CentersService,
     private settingsService: SettingsService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.centerId = this.ac.snapshot.paramMap.get('id')!;
@@ -38,17 +38,17 @@ export class UpdateCenterComponent implements OnInit {
       }
     });
 
-    console.log('this.center',this.center );
+    console.log('this.center', this.center);
 
     this.fetchSigleIds()
-    
+
   }
 
   updateCenter(form: NgForm): void {
     if (form.valid && this.center) {
       const updatedCenter = { ...this.center, ...form.value };
       console.log('updatedCenter', updatedCenter);
-      
+
       this.service.updateCenter(this.centerId, updatedCenter).subscribe({
         next: (response) => {
           this.successMessage = 'Centre mis à jour avec succès.';
@@ -68,7 +68,7 @@ export class UpdateCenterComponent implements OnInit {
     this.settingsService.getSigleIds()
       .then((sigleIds) => {
         this.sigleIds = sigleIds
-        alert(sigleIds);
+        // alert(sigleIds);
       })
       .catch((error) => {
         console.error('Erreur lors de la récupération des IDs de documents :', error);

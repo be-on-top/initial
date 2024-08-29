@@ -42,6 +42,8 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
   // pour les données structurées
   structuredData: SafeHtml = ''; // Initialisation de structuredData
 
+  tradeCenters: any
+
 
   constructor(
     private service: SettingsService,
@@ -207,7 +209,7 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.fetchCenters()
+    // this.fetchCenters()
   }
 
 
@@ -351,7 +353,7 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
 
   }
 
-  tradeCenters: any
+
   async fetchCenters(): Promise<Centers[] | void> {
     try {
       const centers = await this.centerService.getDocsByParam(this.tradeId);

@@ -58,7 +58,7 @@ export class UpdateEvaluatorComponent implements OnInit {
     this.settingsService.getSigleIds()
       .then((sigleIds) => {
         this.sigleIds = sigleIds
-        alert(sigleIds);
+        // alert(sigleIds);
       })
       .catch((error) => {
         console.error('Erreur lors de la récupération des IDs de documents :', error);
