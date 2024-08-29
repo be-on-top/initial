@@ -193,6 +193,11 @@ export class HomeComponent implements OnInit {
           this.authService.authStatusListener()
         }
 
+        else if((user && (this.userRole == 'editor')) ){
+          this.isEditor=true
+
+        }
+
         // pour le cas où non authentifié
         else {
           // L'utilisateur n'est pas authentifié
@@ -208,14 +213,16 @@ export class HomeComponent implements OnInit {
       this.settingsService.getTrades()
         .pipe(map(data => data.filter(item => item.status && item.status === true)))
         .subscribe(data => {
-          // pour inverser temporairement
+          // pour inverser temporairement (retarder l'appariton des CACES si parentCategory inexploitée)
           this.tradesData = data.reverse();
+          // this.tradesData = data;
           console.log("this.tradesData", this.tradesData);
           // pour tester regroupement basic
-          this.onSearchCatEntered("caces")
+          // this.onSearchCatEntered("caces")
 
           // pour regroupement par parentCategory
           this.onSearchCat()
+
           // // Étape 1 : Calculer les occurrences de chaque parentCategory
           // const parentCategoryCounts = this.tradesData.reduce((acc: { [key: string]: number }, item: Trade) => {
           //   if (item.parentCategory) {
