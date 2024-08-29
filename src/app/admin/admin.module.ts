@@ -67,6 +67,7 @@ import { AddStudentComponent } from './Students/add-student/add-student.componen
 import { AddCentersComponent } from './Centers/add-centers/add-centers.component';
 import { CenterDetailsComponent } from './Centers/center-details/center-details.component';
 import { CentersListComponent } from './Centers/centers-list/centers-list.component';
+import { UpdateCenterComponent } from './Centers/update-center/update-center.component';
 
 
 
@@ -175,6 +176,7 @@ const routesAdmin: Routes = [
       { path: 'addCenters', component: AddCentersComponent },
       { path: 'centers', component: CentersListComponent, data: { user: 'admin' } },
       { path: 'center/:id', component: CenterDetailsComponent },
+      { path: 'updateCenter/:id', component: UpdateCenterComponent },
 
     ],
     // canActivate: [AuthGuardService]
@@ -239,7 +241,8 @@ const routesAdmin: Routes = [
     AddStudentComponent,
     AddCentersComponent,
     CenterDetailsComponent,
-    CentersListComponent
+    CentersListComponent,
+    UpdateCenterComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,33 @@
+<div class="container py-5">
+    <h3 class="mb-3">Modification du centre de formation</h3>
+  
+    <form #editForm="ngForm" (submit)="updateCenter(editForm)" class="mt-4">
+      <div class="form-group">
+        <label for="name" class="form-label">Nom</label>
+        <input id="name" type="text" name="name" [(ngModel)]="center.name" class="form-control" required>
+  
+        <label for="address" class="form-label mt-3">Adresse</label>
+        <textarea id="address" name="address" [(ngModel)]="center.address" class="form-control" required></textarea>
+  
+        <label for="cp" class="form-label mt-3">CP</label>
+        <input id="cp" type="text" name="cp" [(ngModel)]="center.cp" class="form-control" pattern="^\d{5}$" required>
+  
+        <label for="city" class="form-label mt-3">Ville</label>
+        <input id="city" type="text" name="city" [(ngModel)]="center.city" class="form-control" required>
+  
+        <label for="sigles" class="form-label mt-3">Affectation métier(s)</label>
+        <select id="sigles" name="sigles" [(ngModel)]="center.sigles" class="form-control" multiple required>
+          <option *ngFor="let trade of sigleIds" [value]="trade">{{trade}}</option>
+        </select>
+
+
+        
+  
+        <button type="submit" class="btn btn-primary mt-4" [disabled]="editForm.invalid">Mettre à jour</button>
+      </div>
+    </form>
+  
+    <div *ngIf="successMessage" class="alert alert-success mt-3">{{ successMessage }}</div>
+    <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
+  </div>
+  

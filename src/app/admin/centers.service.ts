@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, deleteDoc, doc, docData, docSnapshots, Firestore, getDocs, query, setDoc, where } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, deleteDoc, doc, docData, docSnapshots, Firestore, getDocs, query, setDoc, updateDoc, where } from '@angular/fire/firestore';
 import { catchError, from, map, Observable, throwError } from 'rxjs';
 import { Centers } from './centers';
 
@@ -206,6 +206,30 @@ export class CentersService {
   
     return results; // Retourne le tableau des résultats
   }
+
+
+  // Méthode pour mettre à jour un centre existant
+updateCenter(id: string, updatedCenter: Partial<Centers>) {
+  
+  // Référence au document Firestore correspondant à l'ID du centre à mettre à jour
+  const docRef = doc(this.firestore, `centers/${id}`);
+  
+  // Exécute la mise à jour du document dans Firestore
+  return from(updateDoc(docRef, updatedCenter)).pipe(
+    
+    // Retourne l'objet mis à jour avec son ID
+    // Notez que `updatedCenter` contient les champs modifiés du centre,
+    // combinés ici avec l'ID pour former un objet complet
+    map(() => ({ id, ...updatedCenter })),  
+    
+    // Gestion des erreurs : en cas d'échec de la mise à jour, une erreur est capturée et retournée
+    catchError((error) => {
+      console.error('Erreur lors de la mise à jour du centre:', error);
+      return throwError(() => new Error('Erreur lors de la mise à jour'));
+    })
+  );
+}
+
   
 
 }
