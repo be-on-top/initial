@@ -3,10 +3,10 @@ import { Meta, SafeHtml } from '@angular/platform-browser';
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { Firestore, docData, doc } from '@angular/fire/firestore';
 import { DomSanitizer, Title } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Student } from 'src/app/admin/Students/student';
-// import { AuthService } from 'src/app/admin/auth.service';
+import { AuthService } from 'src/app/admin/auth.service';
 import { SettingsService } from 'src/app/admin/settings.service';
 import { StudentsService } from 'src/app/admin/students.service';
 import { Trade } from 'src/app/admin/trade';
@@ -49,14 +49,15 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
     private service: SettingsService,
     private ac: ActivatedRoute,
     private auth: Auth,
-    // private authService: AuthService, 
+    private authService: AuthService, 
     private studentService: StudentsService,
     private firestore: Firestore,
     public sanitizer: DomSanitizer,
     private location: Location,
     private titleService: Title,
     private metaService: Meta,
-    private centerService: CentersService
+    private centerService: CentersService,
+    private router : Router
   ) {
     this.offline = !navigator.onLine
   }
@@ -363,6 +364,31 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
       console.error('Error fetching centers:', error);
     }
   }
+
+  public onLogin(): void {
+    // Log de l'URL actuelle avant de la stocker
+    console.log('URL actuelle (avant login):', this.router.url);
+
+    // Stocker l'URL actuelle avant de rediriger
+    this.authService.setRedirectUrl(this.router.url);
+
+    // Log pour confirmer que l'URL est bien stockée
+    console.log('URL stockée pour redirection après login:', this.authService.getRedirectUrl());
+
+    // Rediriger vers la page de login
+    this.router.navigate(['/login']).then(() => {
+        console.log('Redirection vers /login effectuée.');
+    });
+}
+
+
+  public onRegister(): void {
+    // Stocker l'URL actuelle avant de rediriger
+    this.authService.setRedirectUrl(this.router.url);
+    // Rediriger vers la page d'enregistrement
+    this.router.navigate(['/register']);
+  }
+  
 
 
 

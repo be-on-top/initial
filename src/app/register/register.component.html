@@ -7,7 +7,7 @@
 
     <div class="form-group mb-3">
       <label for="lastname">Nom</label>
-      <input type="text" id="lastName" name="lastName" ngModel #lastName="ngModel" class="form-control" required
+      <input id="lastname" title="Nom de famille" type="text" id="lastName" name="lastName" ngModel #lastName="ngModel" class="form-control" required
         minlength="3">
       <div *ngIf="lastName.dirty || (lastName.touched && lastName.invalid)" class="invalid-feedback">
         Veuillez fournir un nom valide.
@@ -19,7 +19,7 @@
 
     <div class="form-group mb-3">
       <label for="firstName">Prénom</label>
-      <input type="text" id="firstName" name="firstName" ngModel class="form-control" #firstName="ngModel" required
+      <input id="firstName" title="Prénom" type="text" id="firstName" name="firstName" ngModel class="form-control" #firstName="ngModel" required
         minlength="3">
       <div *ngIf="firstName.dirty || (firstName.touched && firstName.invalid)" class="invalid-feedback">
         Veuillez fournir un prénom valide.
@@ -33,7 +33,7 @@
       <label for="studentMail">Email</label>
       <!-- puisqu'on peut balancer le regex dans l'attribut pattern="" -->
       <!-- <input type="email" id="studentMail" name="email" ngModel class="form-control" #mail="ngModel" (keyup)="validateEmail(mail.value)" required>   -->
-      <input type="email" minlength="6" id="email" name="email" ngModel class="form-control" #email="ngModel" required>
+      <input id="studentMail" title="Votre email de connexion" type="email" minlength="6" id="email" name="email" ngModel class="form-control" #email="ngModel" required>
       <div *ngIf="email.invalid && (email.dirty || email.touched)" class="invalid-feedback">
         Veuillez fournir un E-mail valide.
       </div>

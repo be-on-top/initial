@@ -31,11 +31,20 @@
             </p>
         </div>
         <!-- il faut différencier le cas d'un userRole=none...  -->
-        <div *ngIf="userRole==='none' else switch" class="col-md-5 text-white mt-md-5">
+        <!-- <div *ngIf="userRole==='none' else switch" class="col-md-5 text-white mt-md-5">
             <p class="text-md-left fs-5">Afin de commencer un QCM, merci de <a [routerLink]="[
                 '/login']" class="text-white fw-bold">vous authentifier</a> ou <a [routerLink]="[
                 '/register']" class="text-white fw-bold">vous enregister</a></p>
-        </div>
+        </div> -->
+        <!-- pour tenter les méthodes onLogin  et onRegister qui enregistrent l'url actuelle-->
+        <div *ngIf="userRole === 'none' else switch" class="col-md-5 text-white mt-md-5">
+            <p class="text-md-left fs-5">
+                Afin de commencer un QCM, merci de
+            <a (click)="onLogin()" class="text-white fw-bold">vous authentifier</a>
+                ou
+                <a (click)="onRegister()" class="text-white fw-bold">vous enregistrer</a>
+            </p>
+            </div>
         <!-- ...des autres cas -->
         <ng-template #switch>
             <div class="col-md-5 text-white mt-md-5">

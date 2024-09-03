@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { StudentsService } from '../admin/students.service';
 import { ActivatedRoute, Route, Router } from '@angular/router';
+import { AuthService } from '../admin/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -24,7 +25,7 @@ export class RegisterComponent {
  
 
   // recuperation code sv
-  constructor(private service: StudentsService, private router:Router) { }
+  constructor(private service: StudentsService, private router:Router, private authService:AuthService) { }
 
   async addStudent(form: any) {
     // on vérifie la validité du formulaire
@@ -40,7 +41,10 @@ export class RegisterComponent {
       this.feedbackMessages = `Enregistrement OK`;
       this.isSuccessMessage = true
       setTimeout(() => {
-        this.router.navigate([''])
+        // Appeler la méthode de redirection d'AuthService
+        this.authService.redirectAfterLogin(); // Redirection après inscription réussie
+
+        // this.router.navigate([''])
       }, 2000)
     })
       .catch((error) => {

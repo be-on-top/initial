@@ -16,18 +16,17 @@ h1 {
 
 .btn.btn-transparent {
   font-size: 0.9rem ! important;
-
 }
 
 button.btn.btn-primary:hover {
   /* background-color: none; */
   transform: scale(1.05);
-
 }
 
 .third, .secund{
   border-bottom: 0;
 }
+
 .third{
   border-top: 1px solid rgba(0, 0, 0, 0.2);
 }

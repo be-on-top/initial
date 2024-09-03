@@ -50,30 +50,50 @@ export class LoginComponent {
     })
   }
 
+  // onSubmit() {
+  //   this.service.login(this.formLogin.value)
+  //     .then(response => {
+  //       console.log(response);
+  //       // pour ajout confirmation feedback avant redirection
+  //       this.feedbackMessages="Login Success !"
+  //       // alert("Login Success ! ");
+  //       // isAuthentificated ne sert plus à rien. c'est l'uid qui conditionne l'affichage du bouton de login ou logout
+  //       // this.isAuthentificated = true;
+  //       // console.log("isAuthenticated", this.isAuthentificated);
+  //       setTimeout(() => {
+  //         this.router.navigate(['home'])
+  //       }, 2000)
+  //       // this.router.navigate(['']);
+  //     })
+  //     .catch(error => {
+  //       // this.firebaseErrors[error.code] || error.message,
+  //       console.log(error)
+  //       this.feedbackMessages=error;
+  //       // this.feedbackMessages=this.firebaseErrors[error.code];
+  //       this.isSuccessMessage=false;
+  //       // mise à jour variables à passer à feedbackMessags component      
+  //     });
+  // }
+
   onSubmit() {
     this.service.login(this.formLogin.value)
       .then(response => {
         console.log(response);
-        // pour ajout confirmation feedback avant redirection
-        this.feedbackMessages="Login Success !"
-        // alert("Login Success ! ");
-        // isAuthentificated ne sert plus à rien. c'est l'uid qui conditionne l'affichage du bouton de login ou logout
-        // this.isAuthentificated = true;
-        // console.log("isAuthenticated", this.isAuthentificated);
-        setTimeout(() => {
-          this.router.navigate(['home'])
-        }, 2000)
-        // this.router.navigate(['']);
+        this.feedbackMessages = "Login Success !";
+        
+        // Supprime la redirection vers 'home'
+        // setTimeout(() => {
+        //   this.router.navigate(['home']);
+        // }, 2000);
+
       })
       .catch(error => {
-        // this.firebaseErrors[error.code] || error.message,
-        console.log(error)
-        this.feedbackMessages=error;
-        // this.feedbackMessages=this.firebaseErrors[error.code];
-        this.isSuccessMessage=false;
-        // mise à jour variables à passer à feedbackMessags component      
+        console.log(error);
+        this.feedbackMessages = error;
+        this.isSuccessMessage = false;
       });
   }
+  
 
   onClick() {
     this.service.loginWithGoogle()

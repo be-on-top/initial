@@ -21,6 +21,8 @@ export class AuthService {
   // rappel : on utilise par convention le suffixxe $ pour préciser que c'est un observable
   // user$ :Observable<any>;
 
+  private redirectUrl: string | null = null;
+
   constructor(
     private auth: Auth, 
     private evaluatorService: EvaluatorsService, 
@@ -83,18 +85,28 @@ export class AuthService {
   //   this.loggedIn = true;
   //   return signInWithEmailAndPassword(this.auth, email, password);
   // }
-
   async login({ email, password }: any) {
+    try {
+        const result = await signInWithEmailAndPassword(this.auth, email, password);
+        console.log("User signed in successfully:", result.user.uid);
 
-    const result = await signInWithEmailAndPassword(this.auth, email, password);
-    console.log("User signed in successfully:", result.user.uid);
-    // Enregistrer la date de la dernière connexion dans le localStorage
-    const lastLoginDate = new Date();
-    localStorage.setItem('lastLoginDate', lastLoginDate.toString());
+        // Enregistrer la date de la dernière connexion dans le localStorage
+        const lastLoginDate = new Date();
+        localStorage.setItem('lastLoginDate', lastLoginDate.toString());
 
-    return result
+        // Log avant redirection
+        console.log("Redirection après login...");
 
-  }
+        // Spécifiquement développé pour connexion depuis tradeDetails, mais peut servir globalement
+        this.redirectAfterLogin();
+
+        return result;
+    } catch (error) {
+        console.error("Erreur lors de la connexion:", error);
+        throw error; // Vous pouvez gérer les erreurs ici
+    }
+}
+
 
 
 
@@ -241,6 +253,39 @@ export class AuthService {
       this.logout();
     }
   }
+
+
+
+
+
+  public setRedirectUrl(url: string): void {
+    this.redirectUrl = url;
+  }
+
+  public getRedirectUrl(): string | null {
+    return this.redirectUrl;
+  }
+
+
+
+  // private redirectAfterLogin(): void {
+  //   const url = this.getRedirectUrl() || '/home';
+  //   this.router.navigate([url]);
+  // }
+
+  public redirectAfterLogin(): void {
+    alert("appelée")
+    const url = this.getRedirectUrl() || '/home';
+    console.log('Redirection après login vers:', url);
+
+    this.router.navigate([url]).then(() => {
+        console.log('Redirection réussie.');
+        // Réinitialiser l'URL de redirection après l'utilisation
+        this.redirectUrl = null;
+    });
+}
+
+
 
 
 
