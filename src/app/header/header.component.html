@@ -209,7 +209,7 @@
                 </li>
                 <li *ngIf="!userRole.includes('evaluator')"
                     class="nav-item"  [routerLinkActive]="['active']">
-                    <a class="nav-link" [routerLink]="['benefits']" role="button">Informations<i class="bi bi-info-square-fill ms-2"></i></a>
+                    <a class="nav-link" [routerLink]="['benefits']" role="button" (click)="closeNavbar()">Informations<i class="bi bi-info-square-fill ms-2"></i></a>
                 </li>
 
             </ul>

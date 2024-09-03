@@ -35,7 +35,7 @@
             class="alert w-100 p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show display-5">
             <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
                 aria-label="Fermer le message be-on-top"></button>
-            Evaluez vos connaissances et démarrez rapidement une <h1 class="d-inline fs-5">formation
+            Evaluez vos connaissances et démarrez rapidement une <h1 class="d-inline">formation
                 personnalisée</h1> pour être au top des compétences du métier de vôtre choix.
         </div>
     </ng-container>
@@ -62,8 +62,9 @@
     <!-- fin test alert-dismissible -->
 
     <!-- on introduit un champ de recherche -->
-    <app-search *ngIf="tradesData && tradesData.length>4"
-        (searchTextChanged)="onSearchTextEntered($event)"></app-search>
+    <!-- <app-search *ngIf="tradesData && tradesData.length>4"
+        (searchTextChanged)="onSearchTextEntered($event)"></app-search> -->
+    <app-search (searchTextChanged)="onSearchTextEntered($event)"></app-search>
 
     <div *ngIf="tradesData" class="rounded row column-gap-1">
 
@@ -183,11 +184,11 @@
 
     <!-- essai pour forcer le regroupement de certains métiers  -->
 
-    <div *ngIf="catGroup" class="card pb-0 category">
+    <div *ngIf="catGroup" class="card pb-0 category mt-3">
 
         <div class="card-header">
 
-            <h2 class="h2">Catégorie CACES ({{catGroup.length}})</h2>
+            <h2 class="h2">CACES® ({{catGroup.length}})</h2>
         </div>
         <div class="card-body row column-gap-1">
             <ng-container *ngFor="let trade of catGroup, let i = index">

@@ -201,6 +201,11 @@ h3,
     text-align: center;
 }
 
+h1.d-inline {
+    font-size: inherit;
+    /* background-color: #E21937; */
+}
+
 
 .fs-5 {
     font-size: 1.10rem !important;
@@ -463,7 +468,7 @@ p.question {
     }
 
     h2.h5,
-    h1 {
+    h1{
         font-size: 1.1rem
     }
 
@@ -508,13 +513,23 @@ p.question {
     } */
 
 
+    
     h1 {
         font-size: 1.5rem !important;
     }
 
+    
+    h1.d-inline{
+        /* font-size: inherit; */
+        font-size: 1.2rem !important;
+    }
+
+
     h2.h3 {
         font-size: 1.2rem !important;
     }
+
+
 
     li.nav-item.dropdown.active a::before {
         width: 100%;
@@ -533,6 +548,10 @@ p.question {
 
     i.text-choiced.fs-5 {
         display: none;
+    }
+
+    .nav-link{
+        font-size: 1rem;
     }
 
 

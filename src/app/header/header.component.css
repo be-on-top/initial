@@ -91,18 +91,27 @@ li.submenu a[role="button"]::after {
 } */
 
 
-.dropdown-submenu .dropdown-menu{
-    border: 0;
-
-}
 
 
 
-@media screen and (max-width=750px) {
+@media screen and (max-width:750px) {
 
-    .logo {
+    /* .logo {
         max-height: 8vw;
         margin-right: 8px;
+    } */
+
+    .dropdown-submenu .dropdown-menu{
+        border: 0;
+    
+    }
+}
+
+@media screen and (max-width:400px) {
+
+
+    .dropdown-submenu .dropdown-menu .dropdown-item{
+        font-size: 0.8rem;    
     }
 
 

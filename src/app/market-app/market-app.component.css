@@ -104,5 +104,29 @@ p mark {
         /* background-color: #007bff; */
         font-size: 0.9rem;
     }
+    /* .accordion {
+        --bs-accordion-border-color: transparent;
+    } */
+
+    .accordion .col-md-6 .accordion-item:last-child {
+        /* background-color: blueviolet; */
+        border-bottom: 1px solid var(--bs-accordion-border-color);
+        margin-bottom: 0;
+        padding-bottom: 0;
+        height: auto ! important;
+    }
+    /* .accordion .col-md-6 {
+
+        margin-bottom: 0!important;
+        padding-bottom: 0!important;
+
+    } */
+
+
+    
+    
+    
+    
+    
 
 }
