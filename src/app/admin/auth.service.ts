@@ -274,7 +274,6 @@ export class AuthService {
   // }
 
   public redirectAfterLogin(): void {
-    alert("appelée")
     const url = this.getRedirectUrl() || '/home';
     console.log('Redirection après login vers:', url);
 
