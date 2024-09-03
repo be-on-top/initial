@@ -214,8 +214,8 @@ export class HomeComponent implements OnInit {
         .pipe(map(data => data.filter(item => item.status && item.status === true)))
         .subscribe(data => {
           // pour inverser temporairement (retarder l'appariton des CACES si parentCategory inexploitée)
-          this.tradesData = data.reverse();
-          // this.tradesData = data;
+          // this.tradesData = data.reverse();
+          this.tradesData = data;
           console.log("this.tradesData", this.tradesData);
           // pour tester regroupement basic
           // this.onSearchCatEntered("caces")
@@ -360,24 +360,40 @@ export class HomeComponent implements OnInit {
   }
 
 
+  // truncateText(text: string, limit: number): string {
+  //   if (!text || text.length <= limit) {
+  //     return text;
+  //   }
+
+  //   const words = text.split(' ');
+  //   let truncatedText = '';
+
+  //   for (const word of words) {
+  //     if ((truncatedText + word).length <= limit) {
+  //       truncatedText += word + ' ';
+  //     } else {
+  //       break;
+  //     }
+  //   }
+
+  //   return truncatedText.trim() + '...';
+  // }
   truncateText(text: string, limit: number): string {
     if (!text || text.length <= limit) {
       return text;
     }
-
-    const words = text.split(' ');
-    let truncatedText = '';
-
-    for (const word of words) {
-      if ((truncatedText + word).length <= limit) {
-        truncatedText += word + ' ';
-      } else {
-        break;
-      }
+  
+    // Troncature stricte basée sur le nombre de caractères
+    let truncatedText = text.slice(0, limit).trim();
+  
+    // Ajouter "..." si le texte a été tronqué
+    if (text.length > limit) {
+      truncatedText += '...';
     }
-
-    return truncatedText.trim() + '...';
+  
+    return truncatedText;
   }
+  
 
   isLoading: boolean = true
 
