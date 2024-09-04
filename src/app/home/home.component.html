@@ -303,7 +303,7 @@
                 <!-- affichera normalement tous les items dès que isFullCatItempsOpen -->
                 <!-- <div *ngIf="isFullCatItemsOpen" class="col-md-6 pt-3"> -->
 
-                <div *ngIf="isFullCatItemsOpen" class="pt-3"
+                <div *ngIf="isFullCatItemsOpen &&(searchText==='' || trade.denomination.includes(searchText) || removeAccents(trade.denomination).toLowerCase().includes(removeAccents(searchText).toLowerCase()) || trade.denomination.includes(searchText) || trade.denomination.toLowerCase().includes(searchText))" class="pt-3"
                     [ngClass]="{'col-md-6': !(i === catGroup.length - 1 && catGroup.length % 2 !== 0)}">
 
 

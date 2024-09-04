@@ -106,7 +106,7 @@ export class HomeComponent implements OnInit {
     )) {
       // Si oui, forcer l'ouverture pour charger tous les éléments
       this.isFullCatItemsOpen = true;
-    } else { this.isFullCatItemsOpen = false }
+    }
     this.searchText = searchValue
     console.log(this.searchText);
   }
