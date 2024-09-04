@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 // je ne vois pas l'utilité de cette méthode pour le moment, donc on désactive !!!!
@@ -91,6 +91,10 @@ export class HomeComponent implements OnInit {
 
   catGroup?: any
   isFullCatItemsOpen: boolean = false
+
+  isLargeScreen?: boolean
+
+  
 
 
   // pour utiliser le composant de recherche
@@ -222,6 +226,9 @@ export class HomeComponent implements OnInit {
 
           // pour regroupement par parentCategory
           this.onSearchCat()
+
+          // pour surveiller la taille de l'écran
+          this.checkScreenSize();
 
           // // Étape 1 : Calculer les occurrences de chaque parentCategory
           // const parentCategoryCounts = this.tradesData.reduce((acc: { [key: string]: number }, item: Trade) => {
@@ -475,6 +482,13 @@ export class HomeComponent implements OnInit {
 
     console.log('catGroup with parentCategoryCounts filter:', this.catGroup );
     // console.log('Remaining Items:', remainingItems);
+  }
+
+
+
+
+  checkScreenSize() {
+    this.isLargeScreen = window.innerWidth > 950;
   }
 
 

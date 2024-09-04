@@ -40,11 +40,11 @@
         <div *ngIf="userRole === 'none' else switch" class="col-md-5 text-white mt-md-5">
             <p class="text-md-left fs-5">
                 Afin de commencer un QCM, merci de
-            <a (click)="onLogin()" class="text-white fw-bold">vous authentifier</a>
+                <a (click)="onLogin()" class="text-white fw-bold">vous authentifier</a>
                 ou
                 <a (click)="onRegister()" class="text-white fw-bold">vous enregistrer</a>
             </p>
-            </div>
+        </div>
         <!-- ...des autres cas -->
         <ng-template #switch>
             <div class="col-md-5 text-white mt-md-5">
@@ -97,12 +97,15 @@
     {{tradeData | json}} -->
     <div class="mt-4 p-2">
         <!-- <img class="rounded img-fluid mb-2 border border-1 m-auto w-100" [src]="imageUrl" *ngIf="imageUrl"> -->
-        <img *ngIf="!offline" class="rounded img-fluid mb-2 border border-1 m-auto w-100" [src]="imageUrl"
+        <!-- <img *ngIf="!offline" class="rounded img-fluid mb-2 border border-1 m-auto w-100" [src]="imageUrl"
             srcset="{{ imageUrlReduced }} 575w, {{ imageUrl }} 1024w" sizes="(max-width: 575px) 575px, 1024px"
-            alt="formation be-on-top au métier {{tradeId}}">
+            alt="formation be-on-top au métier {{tradeId}}"> -->
+        <img *ngIf="!offline" class="rounded img-fluid mb-2 border border-1 m-auto w-100" [src]="imageUrl"
+            srcset="{{ imageUrlReduced ? imageUrlReduced : imageUrl }} 575w, {{ imageUrl }} 1024w"
+            sizes="(max-width: 575px) 575px, 1024px" alt="formation be-on-top au métier {{tradeId}}">
+
         <img *ngIf="offline" class="rounded img-fluid mb-2 border border-1 m-auto w-100" [src]="imageUrl"
             alt="formation au métier {{tradeId}}">
-
     </div>
 
     <!-- à faire -->
@@ -187,20 +190,21 @@
             <!-- 3 -->
 
             <ng-container *ngIf="tradeCenters && tradeCenters.length>0">
-            <div class="card-header third bg-primary pb-0">
-                <a (click)="toggleCentersCollapse()" class="btn text-light d-flex justify-content-between border-0"
-                    data-bs-toggle="collapse" href="#collapseCenters">
-                    Lieux de formation <i
-                        [ngClass]="{'bi-caret-down-fill': !isCentersCollapsed, 'bi-caret-up-fill': isCentersCollapsed}"
-                        class="bi fs-4 text-light"></i></a>
-            </div>
+                <div class="card-header third bg-primary pb-0">
+                    <a (click)="toggleCentersCollapse()" class="btn text-light d-flex justify-content-between border-0"
+                        data-bs-toggle="collapse" href="#collapseCenters">
+                        Lieux de formation <i
+                            [ngClass]="{'bi-caret-down-fill': !isCentersCollapsed, 'bi-caret-up-fill': isCentersCollapsed}"
+                            class="bi fs-4 text-light"></i></a>
+                </div>
                 <!-- {{isCentersCollapsed}} -->
                 <div id="collapseCenters" class="collapse" data-bs-parent="#accordion">
                     <div class="card-body fixing px-4 bg-primary text-white border-0">
 
                         <p *ngFor="let center of tradeCenters, let index=index">
                             <span class="fw-bold">Centre de {{center.city}} : </span> {{center.name}} - CP :
-                            {{center.cp}} <a [routerLink]="['/center', center.id]"><i class="bi bi-geo-alt-fill ms-2 text-light"></i></a>
+                            {{center.cp}} <a [routerLink]="['/center', center.id]"><i
+                                    class="bi bi-geo-alt-fill ms-2 text-light"></i></a>
                         </p>
 
                     </div>

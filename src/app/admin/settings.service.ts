@@ -303,6 +303,10 @@ export class SettingsService {
     const imageRef = ref(this.storage, 'images/trades/' + tradeId + '_resized.jpeg');
     return getDownloadURL(imageRef)
   }
+  loadFullImage(tradeId: string) {
+    const imageRef = ref(this.storage, 'images/trades/' + tradeId);
+    return getDownloadURL(imageRef)
+  }
 
   // pour les cover images des métiers si 2 versions attention !!!!
   loadImage(tradeId: string): Promise<{ originalUrl: string, resizedUrl: string }> {

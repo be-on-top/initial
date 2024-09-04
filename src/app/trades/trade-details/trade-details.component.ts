@@ -224,7 +224,8 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
   }
 
   backToPrevious() {
-    this.location.back();
+    // this.location.back();
+    this.router.navigate(['/home']);  // Remplacez '/home' par le chemin correspondant à votre page d'accueil
   }
 
   isDescriptionCollapsed: boolean = false;
