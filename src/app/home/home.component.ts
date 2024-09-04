@@ -94,11 +94,19 @@ export class HomeComponent implements OnInit {
 
   isLargeScreen?: boolean
 
-  
+
 
 
   // pour utiliser le composant de recherche
   onSearchTextEntered(searchValue: string) {
+    // Vérifier si un élément non visible correspond au terme de recherche
+    if (!this.isFullCatItemsOpen && this.catGroup.some((trade: any) =>
+      trade.denomination.toLowerCase().includes(searchValue.toLowerCase()) ||
+      this.removeAccents(trade.denomination).toLowerCase().includes(this.removeAccents(searchValue).toLowerCase())
+    )) {
+      // Si oui, forcer l'ouverture pour charger tous les éléments
+      this.isFullCatItemsOpen = true;
+    } else { this.isFullCatItemsOpen = false }
     this.searchText = searchValue
     console.log(this.searchText);
   }
@@ -197,8 +205,8 @@ export class HomeComponent implements OnInit {
           this.authService.authStatusListener()
         }
 
-        else if((user && (this.userRole == 'editor')) ){
-          this.isEditor=true
+        else if ((user && (this.userRole == 'editor'))) {
+          this.isEditor = true
 
         }
 
@@ -389,18 +397,18 @@ export class HomeComponent implements OnInit {
     if (!text || text.length <= limit) {
       return text;
     }
-  
+
     // Troncature stricte basée sur le nombre de caractères
     let truncatedText = text.slice(0, limit).trim();
-  
+
     // Ajouter "..." si le texte a été tronqué
     if (text.length > limit) {
       truncatedText += '...';
     }
-  
+
     return truncatedText;
   }
-  
+
 
   isLoading: boolean = true
 
@@ -463,7 +471,7 @@ export class HomeComponent implements OnInit {
     this.isFullCatItemsOpen = !this.isFullCatItemsOpen
   }
 
-  onSearchCat(){
+  onSearchCat() {
     // Étape 1 : Calculer les occurrences de chaque parentCategory
     const parentCategoryCounts = this.tradesData.reduce((acc: { [key: string]: number }, item: Trade) => {
       if (item.parentCategory) {
@@ -480,7 +488,7 @@ export class HomeComponent implements OnInit {
       item.parentCategory && parentCategoryCounts[item.parentCategory] > 1
     );
 
-    console.log('catGroup with parentCategoryCounts filter:', this.catGroup );
+    console.log('catGroup with parentCategoryCounts filter:', this.catGroup);
     // console.log('Remaining Items:', remainingItems);
   }
 
