@@ -73,6 +73,7 @@ li.nav-item.social a::before {
     opacity: 1;
     /* Opacité complète pour le soulignement */
 }
+
 /* 
 li.submenu{border: none;}
 
@@ -91,34 +92,53 @@ li.submenu a[role="button"]::after {
 } */
 
 .break-before-parenthesis {
-    display: inline;         /* Permet de garder cette partie sur la même ligne sans bloquer le comportement */
-    white-space: normal;     /* Assure que le texte peut se casser si nécessaire */
-    color: #666;            /* Exemple de style, changer la couleur du texte si nécessaire */
-    font-style: italic;     /* Exemple d'utilisation, peut mettre le texte en italique */
+    display: inline;
+    /* Permet de garder cette partie sur la même ligne sans bloquer le comportement */
+    white-space: normal;
+    /* Assure que le texte peut se casser si nécessaire */
+    color: #666;
+    /* Exemple de style, changer la couleur du texte si nécessaire */
+    font-style: italic;
+    /* Exemple d'utilisation, peut mettre le texte en italique */
     text-transform: none;
 }
 
+@media screen and (min-width:576px) and (max-width:768px) {
+
+    li.home {
+        display: none !important;
+    }
+}
 
 
-
-@media screen and (max-width:750px) {
+@media screen and (max-width:767px) {
 
     /* .logo {
         max-height: 8vw;
         margin-right: 8px;
     } */
 
-    .dropdown-submenu .dropdown-menu{
+    .dropdown-submenu .dropdown-menu {
         border: 0;
-    
     }
+
+    /* li.home {
+        display: none !important;
+
+    } */
+
+    
+
 }
+
+
+  
 
 @media screen and (max-width:400px) {
 
 
-    .dropdown-submenu .dropdown-menu .dropdown-item{
-        font-size: 0.8rem;    
+    .dropdown-submenu .dropdown-menu .dropdown-item {
+        font-size: 0.8rem;
     }
 
 

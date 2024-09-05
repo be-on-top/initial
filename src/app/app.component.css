@@ -21,7 +21,7 @@
     background-color: #0056b3;
   }
 
-  @media screen and (max-width:772px) {
+  @media screen and (max-width:768px) {
     .info-button {
         display: none;
     }
