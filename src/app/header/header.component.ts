@@ -250,6 +250,12 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   }
 
 
+    // Fonction pour ajouter une cassure avant la parenthèse
+    getFormattedMenuItem(item: string): string {
+      return item.replace('(', '&shy;(');  // Ajoute une soft hyphen avant la parenthèse
+    }
+
+
 
 
 }

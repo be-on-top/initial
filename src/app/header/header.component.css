@@ -90,6 +90,13 @@ li.submenu a[role="button"]::after {
     border-left: 0.3em solid;
 } */
 
+.break-before-parenthesis {
+    display: inline;         /* Permet de garder cette partie sur la même ligne sans bloquer le comportement */
+    white-space: normal;     /* Assure que le texte peut se casser si nécessaire */
+    color: #666;            /* Exemple de style, changer la couleur du texte si nécessaire */
+    font-style: italic;     /* Exemple d'utilisation, peut mettre le texte en italique */
+    text-transform: none;
+}
 
 
 

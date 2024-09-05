@@ -154,10 +154,17 @@
                       <!-- Afficher les métiers regroupés par parentCategory -->
                   
                         <li class="dropdown-submenu" *ngFor="let group of groupedTrades">
-                          <a class="dropdown-item dropdown-toggle text-uppercase" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                            <!-- Affichage de la parentCategory -->
+                          <!-- <a class="dropdown-item dropdown-toggle text-uppercase" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"
                           onclick="event.stopPropagation();">
-                            {{ group[0] }} <!-- Affichage de la parentCategory -->
-                          </a>
+                            {{ group[0] }}
+                          </a> -->
+                          <a class="dropdown-item dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="event.stopPropagation();">
+                            {{ group[0] | slice:0:group[0].indexOf('(') }}<br>
+                            <span class="break-before-parenthesis">
+                              {{ group[0] | slice:group[0].indexOf('(') }}
+                            </span>                                             
+                          </a> 
                           <ul class="dropdown-menu">
                             <!-- Afficher chaque métier sous la catégorie -->
                             <li *ngFor="let trade of group[1]">
