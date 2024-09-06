@@ -118,13 +118,22 @@ export class HomeComponent implements OnInit {
   //   return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   // }
 
-  removeAccents(text: string): string {
-    return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-  }
-  
+  // removeAccents(text: string): string {
+  //   return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  // }
 
-  
-  
+  removeAccents(text: string): string {
+    return text
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')  // Supprime les accents
+        .replace(/®/g, '')              // Supprime le symbole ®
+        .replace("'", '');               // Supprime l'appostrophe'
+}
+
+
+  cleanText(text: string): string {
+    return this.removeAccents(text).toLowerCase().replace(/®/g, '');
+}  
 
   
 
@@ -386,39 +395,39 @@ export class HomeComponent implements OnInit {
   }
 
 
-  // truncateText(text: string, limit: number): string {
-  //   if (!text || text.length <= limit) {
-  //     return text;
-  //   }
-
-  //   const words = text.split(' ');
-  //   let truncatedText = '';
-
-  //   for (const word of words) {
-  //     if ((truncatedText + word).length <= limit) {
-  //       truncatedText += word + ' ';
-  //     } else {
-  //       break;
-  //     }
-  //   }
-
-  //   return truncatedText.trim() + '...';
-  // }
   truncateText(text: string, limit: number): string {
     if (!text || text.length <= limit) {
       return text;
     }
 
-    // Troncature stricte basée sur le nombre de caractères
-    let truncatedText = text.slice(0, limit).trim();
+    const words = text.split(' ');
+    let truncatedText = '';
 
-    // Ajouter "..." si le texte a été tronqué
-    if (text.length > limit) {
-      truncatedText += '...';
+    for (const word of words) {
+      if ((truncatedText + word).length <= limit) {
+        truncatedText += word + ' ';
+      } else {
+        break;
+      }
     }
 
-    return truncatedText;
+    return truncatedText.trim() + '...';
   }
+  // truncateText(text: string, limit: number): string {
+  //   if (!text || text.length <= limit) {
+  //     return text;
+  //   }
+
+  //   // Troncature stricte basée sur le nombre de caractères
+  //   let truncatedText = text.slice(0, limit).trim();
+
+  //   // Ajouter "..." si le texte a été tronqué
+  //   if (text.length > limit) {
+  //     truncatedText += '...';
+  //   }
+
+  //   return truncatedText;
+  // }
 
 
   isLoading: boolean = true
@@ -502,8 +511,6 @@ export class HomeComponent implements OnInit {
     console.log('catGroup with parentCategoryCounts filter:', this.catGroup);
     // console.log('Remaining Items:', remainingItems);
   }
-
-
 
 
   checkScreenSize() {
