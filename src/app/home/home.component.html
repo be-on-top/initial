@@ -106,21 +106,20 @@
                                         *ngIf="trade.imageUrl" (load)="onImageLoad()" [width]="largeurImage"
                                         [height]="hauteurImage" [priority]="i === 0"
                                         alt="formation BE-ON-TOP au métier {{trade.sigle}}"> -->
-                                        <ng-container *ngIf="trade.imageUrl">
-                                            <div class="image-container rounded mb-1">
-                                              <a [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]"
-                                                 class="text-decoration-none">
-                                                <img ngOpmizedImage class="img-fluid rounded"
-                                                     [ngSrc]="(i === tradesData.length - 1 && tradesData.length % 2 !== 0 && isLargeScreen)
+                                    <ng-container *ngIf="trade.imageUrl">
+                                        <div class="image-container rounded mb-1">
+                                            <a [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]"
+                                                class="text-decoration-none">
+                                                <img ngOpmizedImage class="img-fluid rounded" [ngSrc]="(i === tradesData.length - 1 && tradesData.length % 2 !== 0 && isLargeScreen)
                                                               ? trade.imageUrl.replace('_resized.jpeg', '.jpeg') 
-                                                              : trade.imageUrl"
-                                                     (load)="onImageLoad()" [width]="largeurImage" [height]="hauteurImage" [priority]="i === 0"
-                                                     alt="formation BE-ON-TOP au métier {{trade.sigle}}">
-                                              </a>
-                                            </div>
-                                          </ng-container>
-                                          
-                                                                 </a>
+                                                              : trade.imageUrl" (load)="onImageLoad()"
+                                                    [width]="largeurImage" [height]="hauteurImage" [priority]="i === 0"
+                                                    alt="formation BE-ON-TOP au métier {{trade.sigle}}">
+                                            </a>
+                                        </div>
+                                    </ng-container>
+
+                                </a>
                                 <!-- <a [routerLink]="['/trade', trade.sigle]" class="text-decoration-none">
                                     <img class="img-fluid rounded" [src]="trade.imageUrl" (load)="onImageLoad()"
                                         alt="formation au métier {{trade.sigle}}">
@@ -303,8 +302,8 @@
                 <!-- affichera normalement tous les items dès que isFullCatItempsOpen -->
                 <!-- <div *ngIf="isFullCatItemsOpen" class="col-md-6 pt-3"> -->
 
-                <div *ngIf="isFullCatItemsOpen &&(searchText==='' || trade.denomination.includes(searchText) || removeAccents(trade.denomination).toLowerCase().includes(removeAccents(searchText).toLowerCase()) || trade.denomination.includes(searchText) || trade.denomination.toLowerCase().includes(searchText))" class="pt-3"
-                    [ngClass]="{'col-md-6': !(i === catGroup.length - 1 && catGroup.length % 2 !== 0)}">
+                <div *ngIf="isFullCatItemsOpen &&(searchText==='' || trade.denomination.includes(searchText) || removeAccents(trade.denomination).toLowerCase().includes(removeAccents(searchText).toLowerCase()) || trade.denomination.includes(searchText) || trade.denomination.toLowerCase().includes(searchText))"
+                    class="pt-3" [ngClass]="{'col-md-6': !(i === catGroup.length - 1 && catGroup.length % 2 !== 0)}">
 
 
                     <div (click)="selectTrade(trade.id)">
@@ -408,14 +407,15 @@
             </div>
           </div> -->
 
-
-        <button class="btn btn-success mt-3 w-100" (click)="openFullCatItems()" *ngIf="catGroup.length>2">
-            <span *ngIf="!isFullCatItemsOpen">
-                Toutes les formations ({{catGroup.length}})
-            </span>
-            <span *ngIf="isFullCatItemsOpen">
-                Fermer
-            </span>
-        </button>
+        <div class="card-footer">
+            <button class="btn btn-success w-100 mx-auto" (click)="openFullCatItems()" *ngIf="catGroup.length>2">
+                <span *ngIf="!isFullCatItemsOpen">
+                    Toutes les formations ({{catGroup.length}})
+                </span>
+                <span *ngIf="isFullCatItemsOpen">
+                    Fermer
+                </span>
+            </button>
+        </div>
     </div>
 </div>
