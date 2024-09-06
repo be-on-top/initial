@@ -71,8 +71,10 @@
         <ng-container *ngFor="let trade of tradesData, let i = index">
 
             <!-- la directive structurelle ngClass est pour cibler le dernier item de la liste si listes impaire -->
+            <!-- <div [ngClass]="{'col-md-6': !(i === tradesData.length - 1 && tradesData.length % 2 !== 0)}"
+                *ngIf="searchText===''|| trade.denomination.includes(searchText) || removeAccents(trade.denomination).toLowerCase().includes(removeAccents(searchText).toLowerCase()) || trade.denomination.includes(searchText) || trade.denomination.toLowerCase().includes(searchText)"> -->
             <div [ngClass]="{'col-md-6': !(i === tradesData.length - 1 && tradesData.length % 2 !== 0)}"
-                *ngIf="searchText==='' || trade.denomination.includes(searchText) || removeAccents(trade.denomination).toLowerCase().includes(removeAccents(searchText).toLowerCase()) || trade.denomination.includes(searchText) || trade.denomination.toLowerCase().includes(searchText)">
+            *ngIf="searchText === '' || removeAccents(trade.denomination).toLowerCase().includes(removeAccents(searchText).toLowerCase()) || trade.description.toLowerCase().includes(searchText.toLowerCase())">
 
                 <!-- <a [routerLink]="['/quizz/',  trade.sigle, studentData && studentData['quizz_'+trade.sigle] && studentData['quizz_'+trade.sigle].lastIndexQuestion?(studentData['quizz_'+trade.sigle].lastIndexQuestion | number)+1:0, studentData && studentData['quizz_'+trade.sigle] && studentData['quizz_'+trade.sigle].scoreCounter?studentData['quizz_'+trade.sigle].scoreCounter:0, studentData && studentData['quizz_'+trade.sigle]?true:false, studentData && studentData.id?studentData.id:'']" class="text-decoration-none text-dark"> -->
                 <div class="card my-3" (click)="selectTrade(trade.id)">
@@ -302,18 +304,20 @@
                 <!-- affichera normalement tous les items dès que isFullCatItempsOpen -->
                 <!-- <div *ngIf="isFullCatItemsOpen" class="col-md-6 pt-3"> -->
 
-                <div *ngIf="isFullCatItemsOpen &&(searchText==='' || trade.denomination.includes(searchText) || removeAccents(trade.denomination).toLowerCase().includes(removeAccents(searchText).toLowerCase()) || trade.denomination.includes(searchText) || trade.denomination.toLowerCase().includes(searchText))"
-                    class="pt-3" [ngClass]="{'col-md-6': !(i === catGroup.length - 1 && catGroup.length % 2 !== 0)}">
-
+                <div *ngIf="isFullCatItemsOpen && (searchText===''
+                || trade.denomination.includes(searchText)
+                || removeAccents(trade.denomination).toLowerCase().includes(removeAccents(searchText).toLowerCase())
+                || trade.denomination.includes(searchText)
+                || trade.denomination.toLowerCase().includes(searchText.toLowerCase())
+                || trade.description.toLowerCase().includes(searchText.toLowerCase()))"
+                class="pt-3" [ngClass]="{'col-md-6': !(i === catGroup.length - 1 && catGroup.length % 2 !== 0)}">
 
                     <div (click)="selectTrade(trade.id)">
                         <div [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]">
-
                             <h3 class="h5 text-start ps-2">
                                 <i class="bi bi-{{i+1}}-square-fill text-success me-2"></i>
                                 <span [innerHTML]="trade.denomination | firstWord | truncateTitle"></span>
                             </h3>
-
                         </div>
 
                         <!-- spinner essai -->

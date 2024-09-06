@@ -99,28 +99,39 @@ export class HomeComponent implements OnInit {
 
   // pour utiliser le composant de recherche
   onSearchTextEntered(searchValue: string) {
+    
     // Vérifier si un élément non visible correspond au terme de recherche
     if (!this.isFullCatItemsOpen && this.catGroup.some((trade: any) =>
       trade.denomination.toLowerCase().includes(searchValue.toLowerCase()) ||
       this.removeAccents(trade.denomination).toLowerCase().includes(this.removeAccents(searchValue).toLowerCase())
     )) {
       // Si oui, forcer l'ouverture pour charger tous les éléments
-      this.isFullCatItemsOpen = true;
+      this.isFullCatItemsOpen = true
     }
     this.searchText = searchValue
-    console.log(this.searchText);
+    console.log(this.searchText)
   }
 
   // Fonction pour supprimer les accents d'une chaîne de caractères
-  removeAccents(str: string): string {
-    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+  // removeAccents(text: string): string {
+  //   return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  // }
+
+  removeAccents(text: string): string {
+    return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   }
+  
+
+  
+  
+
+  
 
   // Fonction pour filtrer ceux dont le sigle commence par caces
   onSearchCatEntered(catValue: string) {
     this.catGroup = this.tradesData.filter((trade: Trade) => trade.sigle.includes(catValue))
-    console.log('catGroup', this.catGroup);
-
+    console.log('catGroup', this.catGroup)
 
     // console.log(this.searchText);
   }
@@ -500,7 +511,9 @@ export class HomeComponent implements OnInit {
   }
 
 
-
+  
+  
+  
 
 }
 
