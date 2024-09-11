@@ -97,53 +97,6 @@ export class HomeComponent implements OnInit {
 
 
 
-  // pour utiliser le composant de recherche
-  onSearchTextEntered(searchValue: string) {
-    
-    // Vérifier si un élément non visible correspond au terme de recherche
-    if (!this.isFullCatItemsOpen && this.catGroup.some((trade: any) =>
-      trade.denomination.toLowerCase().includes(searchValue.toLowerCase()) ||
-      this.removeAccents(trade.denomination).toLowerCase().includes(this.removeAccents(searchValue).toLowerCase())
-    )) {
-      // Si oui, forcer l'ouverture pour charger tous les éléments
-      this.isFullCatItemsOpen = true
-    }
-    this.searchText = searchValue
-    console.log(this.searchText)
-  }
-
-  // Fonction pour supprimer les accents d'une chaîne de caractères
-
-  // removeAccents(text: string): string {
-  //   return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-  // }
-
-  // removeAccents(text: string): string {
-  //   return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-  // }
-
-  removeAccents(text: string): string {
-    return text
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')  // Supprime les accents
-        .replace(/®/g, '')              // Supprime le symbole ®
-        .replace("'", '');               // Supprime l'appostrophe'
-}
-
-
-  cleanText(text: string): string {
-    return this.removeAccents(text).toLowerCase().replace(/®/g, '');
-}  
-
-  
-
-  // Fonction pour filtrer ceux dont le sigle commence par caces
-  onSearchCatEntered(catValue: string) {
-    this.catGroup = this.tradesData.filter((trade: Trade) => trade.sigle.includes(catValue))
-    console.log('catGroup', this.catGroup)
-
-    // console.log(this.searchText);
-  }
 
 
   constructor(
@@ -558,6 +511,70 @@ export class HomeComponent implements OnInit {
 
 
   
+  // pour utiliser le composant de recherche
+  onSearchTextEntered(searchValue: string) {
+    const normalizedSearchValue = this.removeAccents(searchValue).toLowerCase().trim(); // Normalisation de la recherche
+
+    // Vérifiez si un élément non visible correspond au terme de recherche
+    if (!this.isFullCatItemsOpen && this.catGroup.some((trade: any) => {
+        // Normalisez les descriptions pour la comparaison
+        const normalizedDenomination = this.removeAccents(trade.denomination).toLowerCase();
+        const normalizedDescription = this.removeAccents(trade.description).toLowerCase();
+        console.log(normalizedDescription);
+        
+
+        // Comparez avec la valeur de recherche normalisée
+        return normalizedDenomination.includes(normalizedSearchValue) || normalizedDescription.includes(normalizedSearchValue);
+    })) {
+        // Ouvrez si une correspondance est trouvée
+        this.isFullCatItemsOpen = true;
+    }
+
+    this.searchText = searchValue; // Gardez cela pour l'affichage
+    console.log("Search Value:", searchValue);
+    console.log("Normalized Search Value:", normalizedSearchValue);
+}
+
+
+
+
+  // Fonction pour supprimer les accents d'une chaîne de caractères
+
+  // removeAccents(text: string): string {
+  //   return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  // }
+
+  // removeAccents(text: string): string {
+  //   return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  // }
+
+  removeAccents(text: string): string {
+    return text
+        .normalize('NFD')                         // Normalisation
+        .replace(/[\u0300-\u036f]/g, '')         // Supprime les accents
+        .replace(/®/g, '')                       // Supprime le symbole ®
+        .replace(/&reg;/g, '')                   // Supprime la représentation HTML du symbole ®
+        .replace(/\s*\(\s*/g, ' ')               // Ignore les parenthèses (enlève les espaces autour)
+        .replace(/\s*\)\s*/g, ' ')               // Ignore les parenthèses
+        .replace(/\s+/g, ' ')                     // Remplace les espaces multiples par un seul espace
+        .trim();                                  // Supprime les espaces de début et de fin
+}
+
+
+
+  cleanText(text: string): string {
+    return this.removeAccents(text).toLowerCase().replace(/®/g, '');
+}  
+
+  
+
+  // Fonction pour filtrer ceux dont le sigle commence par caces
+  onSearchCatEntered(catValue: string) {
+    this.catGroup = this.tradesData.filter((trade: Trade) => trade.sigle.includes(catValue))
+    console.log('catGroup', this.catGroup)
+
+    // console.log(this.searchText);
+  }
   
   
 
