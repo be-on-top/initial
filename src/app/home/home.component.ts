@@ -394,25 +394,64 @@ export class HomeComponent implements OnInit {
     this.isOneQuizzAchieved = true;
   }
 
-
   truncateText(text: string, limit: number): string {
     if (!text || text.length <= limit) {
       return text;
     }
-
+  
     const words = text.split(' ');
     let truncatedText = '';
-
+  
     for (const word of words) {
-      if ((truncatedText + word).length <= limit) {
-        truncatedText += word + ' ';
+      // Vérifier si ajouter le prochain mot dépasserait la limite
+      if ((truncatedText + (truncatedText ? ' ' : '') + word).length <= limit) {
+        truncatedText += (truncatedText ? ' ' : '') + word;
       } else {
         break;
       }
     }
-
-    return truncatedText.trim() + '...';
+  
+    return truncatedText + '...';
   }
+  
+  
+  // mieux pour le nombre de lignes générées
+  // truncateText(text: string, limit: number): string {
+  //   if (!text || text.length <= limit) {
+  //     return text;
+  //   }
+
+  //   const words = text.split(' ');
+  //   let truncatedText = '';
+
+  //   for (const word of words) {
+  //     if ((truncatedText + word).length <= limit) {
+  //       truncatedText += word + ' ';
+  //     } else {
+  //       break;
+  //     }
+  //   }
+
+  //   return truncatedText.trim() + '...';
+  // }
+  // truncateText(text: string, limit: number): string {
+  //   if (!text || text.length <= limit) {
+  //     return text;
+  //   }
+
+  //   const words = text.split(' ');
+  //   let truncatedText = '';
+
+  //   for (const word of words) {
+  //     if ((truncatedText + word).length <= limit) {
+  //       truncatedText += word + ' ';
+  //     } else {
+  //       break;
+  //     }
+  //   }
+
+  //   return truncatedText.trim() + '...';
+  // }
   // truncateText(text: string, limit: number): string {
   //   if (!text || text.length <= limit) {
   //     return text;

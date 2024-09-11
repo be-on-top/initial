@@ -144,7 +144,6 @@ hr {
     /* Assurez-vous que l'image est au-dessus du pseudo-élément */
 }
 
-
 .loading {
     display: flex;
     /* background-color: black; */
@@ -155,6 +154,50 @@ hr {
     width: 100%;
     /* Conserver le ratio 1:1 pour un cercle */
 }
+
+
+
+
+
+
+
+
+/* Pour les navigateurs modernes qui supportent le standard */
+/* .card-text {
+
+        display: block;                     
+        overflow: hidden;                  
+        text-overflow: ellipsis;           
+        line-height: 1.2;                   
+        max-height: calc(1.4em * 2);     
+        overflow-wrap: break-word;          
+        white-space: normal;               
+        width: 100%;                        
+    
+    
+ 
+} */
+.card-text {
+
+
+        display: -webkit-box;
+        -webkit-line-clamp: 3; /* Propriété spécifique à WebKit */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      
+        /* Ajoute la version standard, en anticipation de la prise en charge future */
+        line-clamp: 3; /* Propriété standard */
+        
+        /* Fallback pour les navigateurs non compatibles */
+        max-height: 4.5em; /* Pour limiter le nombre de lignes visuellement */
+        line-height: 1.4em; /* Ajustement selon la taille de la ligne */
+                            
+    
+    
+ 
+}
+
 
 /* .marquee {
     width: 100%;
@@ -193,5 +236,5 @@ hr {
         width: 100%;
         object-fit: cover;
     }
-    
 }
+

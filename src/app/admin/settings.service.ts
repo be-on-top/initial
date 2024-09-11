@@ -121,10 +121,33 @@ export class SettingsService {
   //   return collectionData(tradesRef, { idField: "id" }) as Observable<Trade[]>;
   // }
 
-  getTrades() {
-    const tradesRef = collection(this.firestore, 'sigles');
-    const trades$ = collectionData(tradesRef, { idField: 'id' }) as Observable<Trade[]>;
+  // getTrades() {
+  //   const tradesRef = collection(this.firestore, 'sigles');
+  //   const trades$ = collectionData(tradesRef, { idField: 'id' }) as Observable<Trade[]>;
 
+  //   trades$.subscribe({
+  //     next: (trades) => {
+  //       trades.forEach((trade) => {
+  //         this.saveToIndexedDB(trade.sigle, trade); // Enregistrer chaque sigle dans IndexedDB
+  //       });
+  //     },
+  //     error: (error) => {
+  //       console.error('Erreur lors de la récupération des sigles :', error);
+  //     }
+  //   });
+
+  //   return trades$; // Retourner l'observable des sigles
+  // }
+  getTrades(): Observable<Trade[]> {
+    const tradesRef = collection(this.firestore, 'sigles');
+  
+    // Créer une requête pour trier les documents par createdAt (ordre chronologique croissant)
+    const tradesQuery = query(tradesRef, orderBy('createdAt', 'asc'));
+  
+    // Récupérer les données de la collection en fonction de cette requête
+    const trades$ = collectionData(tradesQuery, { idField: 'id' }) as Observable<Trade[]>;
+  
+    // Abonnement pour stocker dans IndexedDB
     trades$.subscribe({
       next: (trades) => {
         trades.forEach((trade) => {
@@ -135,7 +158,7 @@ export class SettingsService {
         console.error('Erreur lors de la récupération des sigles :', error);
       }
     });
-
+  
     return trades$; // Retourner l'observable des sigles
   }
 
