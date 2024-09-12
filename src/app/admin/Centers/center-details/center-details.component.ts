@@ -2,6 +2,7 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Centers } from '../../centers';
 import { CentersService } from '../../centers.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 import * as L from 'leaflet';
 
 @Component({
@@ -17,8 +18,11 @@ export class CenterDetailsComponent implements AfterViewInit {
   localisation: { latitude: string, longitude: string } | null = null;
   map: L.Map | undefined;
 
-  constructor(private service: CentersService, private ac: ActivatedRoute, private router: Router) {
+  userRouterLinks:any
+
+  constructor(private service: CentersService, private ac: ActivatedRoute, private router: Router, private location:Location) {
     this.centerId = this.ac.snapshot.params["id"];
+    this.userRouterLinks = this.ac.snapshot.data;
     this.service.getCenter(this.centerId).subscribe(data => {
       console.log("data de getCenter", data);
       this.center = data;
@@ -71,5 +75,10 @@ export class CenterDetailsComponent implements AfterViewInit {
       .addTo(this.map)
       .bindPopup('Centre Localisation')
       .openPopup();
+  }
+
+  backToPrevious() {
+    this.location.back();
+    // this.router.navigate(['/home']);  // Remplacez '/home' par le chemin correspondant à votre page d'accueil
   }
 }

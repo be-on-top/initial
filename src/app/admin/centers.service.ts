@@ -141,24 +141,31 @@ export class CentersService {
 
 
   createCenter(center: Centers) {
-    // let newCenter = { created: Date.now(), status: true, ...center };
-    // pour plus de maitrise : 
-    let newCenter = { created: Date.now(), status: true, name:center.name, address:center.address, cp:center.cp, city:center.city, sigles:[center.sigles] };
-    // enregistre dans Firestore avec un collection centers qui aura de multiples propriétés
+    let newCenter = { 
+      created: Date.now(), 
+      status: true, 
+      name: center.name, 
+      address: center.address, 
+      cp: center.cp, 
+      city: center.city, 
+      sigles: center.sigles // Utilisez directement center.sigles
+    };
+  
+    // Enregistre dans Firestore avec une collection centers qui aura de multiples propriétés
     let $centersRef = collection(this.firestore, "centers");
-    // addDoc($centersRef, newCenter)
-
-    // Convert addDoc promise to observable
+  
+    // Convertit la promesse addDoc en observable
     return from(addDoc($centersRef, newCenter)).pipe(
       map((docRef) => {
-        return { id: docRef.id, ...newCenter }; // Return the new center with its id
+        return { id: docRef.id, ...newCenter }; // Retourne le nouveau centre avec son id
       }),
       catchError((error) => {
         console.error('Erreur lors de la création du centre:', error);
-        return throwError(() => new Error('Erreur d\'enregistrement')); // Return an observable error
+        return throwError(() => new Error('Erreur d\'enregistrement')); // Retourne une erreur observable
       })
-    )
+    );
   }
+  
 
   /**
      * Récupère les informations de localisation (latitude et longitude) pour un code postal donné.
@@ -185,16 +192,24 @@ export class CentersService {
     return collectionData($centersRef, { idField: "id" }) as Observable<Centers[]>
   }
 
-  deleteCenter(id: any) {
-    let $centerRef = doc(this.firestore, "centers/" + id)
-    deleteDoc($centerRef)
+  // deleteCenter(id: any) {
+  //   let $centerRef = doc(this.firestore, "centers/" + id)
+  //   deleteDoc($centerRef)
 
+  // }
+  deleteCenter(centerId: string): Promise<void> {
+    const centerRef = doc(this.firestore, 'centers', centerId);
+    return deleteDoc(centerRef); // Supprime le document et renvoie une promesse
   }
+  
 
   async getDocsByParam(sigle: string): Promise<any[]> {
+    console.log('Sigle recherché:', sigle); // Vérifie ce qui est passé comme sigle
     // Crée une référence à la collection et une requête avec le paramètre array-contains
     const myData = query(collection(this.firestore, 'centers'), where('sigles', 'array-contains', sigle));
     const querySnapshot = await getDocs(myData);
+    console.log('querySnapshot',querySnapshot);
+    
   
     // Initialise un tableau pour stocker les documents
     const results: any[] = [];

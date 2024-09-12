@@ -20,8 +20,8 @@
                 </p>
                 <ng-template #checkbox> Status : inactif</ng-template>
                 <!-- affectation métiers -->
-                <p *ngIf="center.sigles">Métiers d'affectation ({{center.sigles.length}}) : 
-                    <span *ngFor="let s of center.sigles">{{s}} </span>
+                <p *ngIf="center.sigles">Formations métiers ({{center.sigles.length}}) : 
+                    <span *ngFor="let s of center.sigles" class="badge bg-secondary me-2"><a class="text-white text-decoration-none" [routerLink]="[('/trade'),s]" >{{s}}</a></span>
                 </p>
             </div>
   
@@ -35,13 +35,17 @@
 
 
 
-        <!-- <div class="d-flex my-4 justify-content-end gap-5">
+        <div class="d-flex my-4 justify-content-end gap-5">
 
-            <button class="btn btn-primary">
-                <a class="text-white" [routerLink]="['/admin/evaluators']">Retour à la liste</a>
+            <button *ngIf="userRouterLinks.user==='admin'" class="btn btn-primary">
+                <a class="text-white" [routerLink]="['/admin/centers']">Retour à la liste</a>
             </button>
 
-        </div> -->
+            <button *ngIf="userRouterLinks.user!=='admin'" class="btn btn-primary">
+                <a class="text-white" (click)="backToPrevious()">Retour à la liste</a>
+            </button>
+
+        </div>
     </div>
 
 </div>

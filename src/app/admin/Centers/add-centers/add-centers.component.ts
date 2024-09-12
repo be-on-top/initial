@@ -218,36 +218,46 @@ export class AddCentersComponent implements OnInit {
     }
   }
 
-  // Fonction pour importer et analyser le fichier CSV
-  importCSV(): void {
-    if (!this.csvFile) {
-      this.errorMessage = 'Veuillez sélectionner un fichier CSV avant de procéder.';
-      return;
-    }
 
-    // Analyse du fichier CSV grâce à PapaParse. 
-    this.papa.parse(this.csvFile, {
-      // Considère la première ligne comme des en-têtes
-      header: true, 
-      skipEmptyLines: true, // Ignore les lignes vides !!!
-      complete: (result) => {
-        // Filtrage des objets vides ou des champs manquants
-        this.parsedCenters = result.data.filter((center:any) => {
-          return center.name && center.address && center.cp && center.sigles && center.city && center.tel && center.contact;
-        });
-        console.log('Données analysées:', this.parsedCenters);
-        this.uploadCentersToFirestore();
-      },
-      error: (error) => {
-        console.error('Erreur lors de l\'analyse du fichier CSV:', error);
-        this.errorMessage = 'Erreur lors de l\'analyse du fichier CSV.';
-      }
-    });
+// Fonction pour importer et analyser le fichier CSV
+importCSV(): void {
+  if (!this.csvFile) {
+    this.errorMessage = 'Veuillez sélectionner un fichier CSV avant de procéder.';
+    return;
   }
+
+  // Analyse du fichier CSV grâce à PapaParse. 
+  this.papa.parse(this.csvFile, {
+    // Considère la première ligne comme des en-têtes
+    header: true, 
+    skipEmptyLines: true, // Ignore les lignes vides !!!
+    complete: (result) => {
+      // Filtrage des objets vides ou des champs manquants
+      this.parsedCenters = result.data.filter((center: any) => {
+        return center.name && center.address && center.cp && center.sigles && center.city && center.tel && center.contact;
+      }).map((center: any) => {
+        // Transformation de la colonne sigles en tableau
+        center.sigles = center.sigles.split(',').map((sigle: string) => sigle.trim()); // Nettoyage des espaces
+        return center; // On retourne l'objet modifié
+      });
+
+      console.log('Données analysées:', this.parsedCenters);
+      this.uploadCentersToFirestore();
+    },
+    error: (error) => {
+      console.error('Erreur lors de l\'analyse du fichier CSV:', error);
+      this.errorMessage = 'Erreur lors de l\'analyse du fichier CSV.';
+    }
+  });
+}
+
+
 
   // Fonction pour télécharger les données vers Firestore
   uploadCentersToFirestore(): void {
     if (this.parsedCenters.length === 0) {
+      console.log("aucune donnée à importer");
+      
       this.errorMessage = 'Aucune donnée à importer depuis le fichier CSV.';
       return;
     }

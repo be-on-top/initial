@@ -210,7 +210,7 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // this.fetchCenters()
+    this.fetchCenters()
   }
 
 
@@ -234,7 +234,7 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
 
   toggleDescriptionCollapse() {
     this.isDescriptionCollapsed = !this.isDescriptionCollapsed;
-    this.isDescriptionCollapsed && this.isCPCollapsed ? this.toggleCPCollapse() : ''
+    this.isDescriptionCollapsed && this.isCPCollapsed && this.isCentersCollapsed ? this.toggleCPCollapse() : ''
     this.isDescriptionCollapsed && this.isCentersCollapsed ? this.toggleCentersCollapse() : ''
 
   }

@@ -36,17 +36,21 @@ export class CentersListComponent {
   }
 
   deleteCenter(centerId: string) {
-    console.log(centerId);
-
-    this.service.deleteCenter(centerId)
-    this.router.navigate(['/centers'])
-    // .then(()=>{
-
-    // })
-    // .catch(()=>{
-
-    // })
+    // Demande de confirmation à l'utilisateur
+    const confirmed = window.confirm('Êtes-vous sûr de vouloir supprimer ce centre ?');
+    if (confirmed) {
+      // Si l'utilisateur confirme, procéder à la suppression
+      this.service.deleteCenter(centerId).then(() => {
+        console.log('Centre supprimé avec succès');
+        this.router.navigate(['/admin/centers']); // Naviguer vers la liste des centres
+      }).catch((error) => {
+        console.error('Erreur lors de la suppression du centre:', error);
+        // Vous pouvez afficher un message d'erreur à l'utilisateur si nécessaire
+      });
+    }
+    
   }
+  
 
   // pour utiliser le composant de recherche
   onSearchTextEntered(searchValue: string) {

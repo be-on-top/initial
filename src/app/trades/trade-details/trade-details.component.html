@@ -122,7 +122,7 @@
             </div>
 
             <div id="collapseDescription" class="collapse" data-bs-parent="#accordion">
-                <div class="card-body">
+                <div class="card-body fs-5">
 
                     <ng-container *ngIf="tradeData.description">
                         <div class="p-2 trade" [innerHTML]="sanitizer.bypassSecurityTrustHtml(tradeData.description)">
@@ -201,8 +201,14 @@
                 <div id="collapseCenters" class="collapse" data-bs-parent="#accordion">
                     <div class="card-body fixing px-4 bg-primary text-white border-0">
 
-                        <p *ngFor="let center of tradeCenters, let index=index">
+                        <!-- le nom du centre n'est pas nécessaire -->
+                        <!-- <p *ngFor="let center of tradeCenters, let index=index">
                             <span class="fw-bold">Centre de {{center.city}} : </span> {{center.name}} - CP :
+                            {{center.cp}} <a [routerLink]="['/center', center.id]"><i
+                                    class="bi bi-geo-alt-fill ms-2 text-light"></i></a>
+                        </p> -->
+                        <p *ngFor="let center of tradeCenters, let index=index">
+                            <span class="fw-bold">Centre de {{center.city}} : </span> CP :
                             {{center.cp}} <a [routerLink]="['/center', center.id]"><i
                                     class="bi bi-geo-alt-fill ms-2 text-light"></i></a>
                         </p>
