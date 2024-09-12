@@ -175,7 +175,7 @@ const routesAdmin: Routes = [
       // { path: 'addExternal', component: AddExternalComponent, data: { user: 'external' } },
       { path: 'addCenters', component: AddCentersComponent },
       { path: 'centers', component: CentersListComponent, data: { user: 'admin' } },
-      { path: 'center/:id', component: CenterDetailsComponent },
+      { path: 'center/:id', component: CenterDetailsComponent, data: { user: 'admin' } },
       { path: 'updateCenter/:id', component: UpdateCenterComponent },
 
     ],

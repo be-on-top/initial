@@ -56,26 +56,61 @@ export class CenterDetailsComponent implements AfterViewInit {
     });
   }
 
+  // private loadMap(): void {
+  //   if (!this.localisation) {
+  //     console.error('Les coordonnées de localisation ne sont pas disponibles.');
+  //     return;
+  //   }
+
+  //   this.map = L.map('map').setView(
+  //     [Number(this.localisation.latitude), Number(this.localisation.longitude)],
+  //     13 // Niveau de zoom initial
+  //   );
+
+  //   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  //     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  //   }).addTo(this.map);
+
+  //   L.marker([Number(this.localisation.latitude), Number(this.localisation.longitude)])
+  //     .addTo(this.map)
+  //     .bindPopup('Localisation')
+  //     .openPopup();
+  // }
   private loadMap(): void {
     if (!this.localisation) {
       console.error('Les coordonnées de localisation ne sont pas disponibles.');
       return;
     }
-
+  
     this.map = L.map('map').setView(
       [Number(this.localisation.latitude), Number(this.localisation.longitude)],
-      13 // Niveau de zoom initial
+      12 // Zoom plus large pour une meilleure vue globale
     );
-
+  
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(this.map);
-
-    L.marker([Number(this.localisation.latitude), Number(this.localisation.longitude)])
+  
+    const icon = L.icon({
+      iconUrl: 'assets/leaflet/marker-icon.png',
+      shadowUrl: 'assets/leaflet/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    });
+  
+    L.marker([Number(this.localisation.latitude), Number(this.localisation.longitude)], { icon })
       .addTo(this.map)
-      .bindPopup('Centre Localisation')
+      .bindPopup('Localisation')
       .openPopup();
   }
+  
+
+  
+
+
+
 
   backToPrevious() {
     this.location.back();

@@ -15,10 +15,11 @@
                     <span class="fw-bold">Ville</span> : {{center.city}}
                 </p>
                 <hr>
-                <p> <span *ngIf="center.status; else checkbox">Status : actif</span>
-                    <ng-template #checkbox> Status : inactif</ng-template>
-                </p>
-                <ng-template #checkbox> Status : inactif</ng-template>
+                <!-- puisque cette vue est partagée entre admin et utilisateur final -->
+                     <p *ngIf="userRouterLinks.user && userRouterLinks.user==='admin'"> <span *ngIf="center.status; else checkbox">Status : actif</span>
+                         <ng-template #checkbox> Status : inactif</ng-template>
+                     </p>
+
                 <!-- affectation métiers -->
                 <p *ngIf="center.sigles">Formations métiers ({{center.sigles.length}}) : 
                     <span *ngFor="let s of center.sigles" class="badge bg-secondary me-2"><a class="text-white text-decoration-none" [routerLink]="[('/trade'),s]" >{{s}}</a></span>

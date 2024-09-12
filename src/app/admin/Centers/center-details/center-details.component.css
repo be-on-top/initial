@@ -5,3 +5,16 @@
     border-radius: 5px;     /* Arrondir les coins pour l'apparence (optionnel) */
 }
 
+/* Personnalise la bulle du popup (taille, couleur, etc.) */
+.leaflet-popup-content-wrapper {
+    background-color: #3498db; /* Couleur de fond */
+    color: white; /* Couleur du texte */
+    border-radius: 10px; /* Coins arrondis */
+    padding: 10px;
+  }
+  
+  .leaflet-popup-tip {
+    background: #3498db; /* Couleur de la pointe de la bulle */
+  }
+  
+
