@@ -101,9 +101,6 @@ p.btn:hover {
 
 @media only screen and (max-width:575px) {
 
-
-
-
   .btn.btn-transparent.border-0 {
     border: 0;
   }
@@ -112,6 +109,10 @@ p.btn:hover {
   .card-body span {
     font-size: 1rem !important;
 
+  }
+
+  .responsive{
+    display: none;
   }
 
 }
