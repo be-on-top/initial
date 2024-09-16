@@ -9,12 +9,43 @@ Tests OK. Sur une  partie. A finir.
     <h3 class="text-capitalize">Pré-inscription Formation {{userData.firstName}} {{userData.lastName}}</h3>
     <div class="alert alert-light p-4 alert-dismissible mb-4 fade show pe-5" *ngIf="!isReadOnly">
         <!-- <button type="button" class="btn-close btn-close-light" data-bs-dismiss="alert"></button> -->
-        <button type="button" class="btn-close btn-close mt-2" data-bs-dismiss="alert"></button>
+        <button aria-label="Fermer le message be-on-top" type="button" class="btn-close btn-close mt-2"
+            data-bs-dismiss="alert"></button>
         <!-- Vous pourrez aussi dès maintenant finaliser votre inscription administrative -->
         Pour faciliter votre inscription et le financement de votre formation, <strong>merci de renseigner un maximum
             d'informations</strong>. Tant que vous n'avez pas soumis le formulaire, vous pourrez interrompre ou modifier
         vos saisies.
     </div>
+
+
+    <p *ngIf="tradesEvaluated.length>1">Vous avez terminé plusieurs questionnaires métiers. Merci d'indiquer vos préférences</p>
+    <form #target="ngForm" (ngSubmit)="onSubmit(target)" class="mt-3" [ngClass]="{'read-only-form': isReadOnly}">
+
+        <div class="col-sm-6 col-md-3 mb-1">
+          <!-- Premier select -->
+          <select id="priorTrade" class="form-select" name="priorTrade" [(ngModel)]="priorTrade" required #sigle="ngModel" (change)="checkIfSelected(sigle.value)">
+            <option value="">Sélectionnez la formation</option>
+            <option *ngFor="let element of tradesEvaluated" [value]="element">
+              {{element}}
+            </option>
+          </select>
+        </div>
+      
+        <div class="col-sm-6 col-md-3 mb-1">
+          <!-- Deuxième select: lié aux données filtrées -->
+          <ng-container *ngIf="dataFiltered && dataFiltered.length > 0">
+            <select class="form-select" name="competence" id="competence" ngModel required #competence="ngModel">
+              <option value="">Sélectionnez un centre</option>
+              <option *ngFor="let center of dataFiltered" [value]="center.cp">
+                {{ center.cp }} - {{ center.name }}
+              </option>
+            </select>
+          </ng-container>
+        </div>
+      
+      </form>
+      
+
     <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)" class="mt-3" [ngClass]="{'read-only-form': isReadOnly}">
 
 
@@ -27,7 +58,7 @@ Tests OK. Sur une  partie. A finir.
                         <span>Votre identité</span><i class="bi bi-person-vcard-fill text-light fs-4"></i>
                     </a>
                 </div>
-            <!-- {{userData.id}} -->
+                <!-- {{userData.id}} -->
                 <div id="collapseOne" class="collapse show" data-bs-parent="#accordion">
                     <div class="card-body">
                         <div class="form-group row">
@@ -160,7 +191,7 @@ Tests OK. Sur une  partie. A finir.
                                 autre
                                 permis valide ?</label>
                             <div class="col-md-7">
-                                <select name="otherDrivingLicense" appAutoChange
+                                <select title="drivingLicense" name="otherDrivingLicense" appAutoChange
                                     [(ngModel)]="socialData.otherDrivingLicense" class="form-control">
                                     <option value="">Choisir une option</option>
                                     <option value="BE">Permis BE</option>
@@ -613,7 +644,8 @@ Tests OK. Sur une  partie. A finir.
                             <!-- <div class="text-decoration-underline pt-3 pb-2">Possédez-vous la reconnaissance de la
                                 qualité de travailleur handicapé (RQTH)
                             </div> -->
-                            <div class="text-decoration-underline pt-3 pb-2">Avez-vous une reconnaissance administrative du handicap ?
+                            <div class="text-decoration-underline pt-3 pb-2">Avez-vous une reconnaissance administrative
+                                du handicap ?
                             </div>
                             <div class="d-flex  align-items-center gap-3">
                                 <div class="form-check">

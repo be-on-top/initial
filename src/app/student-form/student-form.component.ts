@@ -8,6 +8,9 @@ import { getDoc } from 'firebase/firestore';
 import { Observable, from, map } from 'rxjs';
 import { StudentsService } from 'src/app/admin/students.service';
 import { Student } from '../admin/Students/student';
+import { SettingsService } from '../admin/settings.service';
+import { CentersService } from '../admin/centers.service';
+import { Centers } from '../admin/centers';
 
 @Component({
   selector: 'app-student-form',
@@ -33,7 +36,7 @@ export class StudentFormComponent implements OnInit, OnChanges {
   // demandeFinancement?: string = '';
   requestFinancing: boolean | undefined;
   employmentPromise: boolean | null = null;
-  sentCompanyEmployee:boolean | null = null
+  sentCompanyEmployee: boolean | null = null
   // MoyenDeTransport: boolean | undefined;
   // MoyenDeTransport: boolean | undefined;
   // selectedOrientation?: string = '';
@@ -47,9 +50,23 @@ export class StudentFormComponent implements OnInit, OnChanges {
   @Input() studentData: any;
   isReadOnly: boolean = false;
 
+  // tradesData?: any
+  tradesEvaluated: Array<any> = [];
+  priorTrade:string=''
 
+  // on ne peut pas savoir si un quizz est terminé sans interroger tous les quizz, 
+  // ce qu'on ne veut pas côté template, donc on crée un bolean
+  isOneQuizzAchieved: boolean = false;
 
-  constructor(private router: Router, private service: StudentsService, private auth: Auth, private firestore: Firestore) { }
+  relatedCenters: any = []
+
+  constructor(
+    private router: Router, 
+    private service: StudentsService, 
+    private auth: Auth, 
+    private firestore: Firestore, 
+    private settingsService: SettingsService,
+  private centersService:CentersService) { }
 
 
   async ngOnInit() {
@@ -70,6 +87,15 @@ export class StudentFormComponent implements OnInit, OnChanges {
         console.log("Personne n'est authentifié actuellement !");
       }
     })
+
+    // pour récupérer les métiers (sigles) enregistrés en base une fois studentData mis à jour :
+    // this.settingsService.getTrades().subscribe(data => {
+    //   this.tradesData = data;
+    //   console.log("this.tradesData", this.tradesData)
+    // })
+
+
+
 
   }
 
@@ -109,7 +135,7 @@ export class StudentFormComponent implements OnInit, OnChanges {
       // Mise à jour du document dans la collection "students"
       await setDoc(doc(studentRef, this.uid), { isSocialFormSent: true }, { merge: true });
       form.reset();
-      this.router.navigate(['/account'], {queryParams: this.userData.id});
+      this.router.navigate(['/account'], { queryParams: this.userData.id });
     } catch (error) {
       console.error('Erreur lors de l\'enregistrement des données: ', error);
     }
@@ -144,6 +170,7 @@ export class StudentFormComponent implements OnInit, OnChanges {
     this.service.getStudentById(user).subscribe(data => {
       console.log("userData from students 0...", data);
       this.userData = data
+      this.processStudentData();
     })
     // on récupère la data de la collection SocialForm
     const docRef = doc(this.firestore, 'SocialForm', user);
@@ -171,6 +198,96 @@ export class StudentFormComponent implements OnInit, OnChanges {
     }
   }
 
+  processStudentData(): void {
+
+    // Logique pour obtenir tradesEvaluated + accessoirement documents
+    this.tradesEvaluated = [];
+    for (const key in this.userData) {
+      if (key.includes('quizz')) {
+        this.tradesEvaluated.push(key.replace('quizz_',''));
+        console.log('this.tradesEvaluated', this.tradesEvaluated);
+      }
+
+    }
+
+    // Logique pour récupérer isOneQuizzAchieved
+    // const achievedArray: any[] = [];
+    // for (const item of this.tradesEvaluated) {
+    //   if (this.userData[item].fullResults) {
+    //     achievedArray.push(item);
+    //     this.isOneQuizzAchieved = true;
+    //   }
+    // }
+
+
+  }
+
+  dataFiltered:Centers[]=[]
+
+  // checkIfSelected(sigle: any) {
+  //   console.log(sigle);
+  //   this.priorTrade = sigle
+
+
+
+  //   // c'est l'endroit pour récupérer la liste des centres qui contiennent sigle dans leur tableau sigles
+  //   // puis boucler dessus pour extraire le cp de chacun
+  //   this.centersService.getCenters().subscribe(data => {
+  //     console.log('data dans checkIfSelected', data);
+      
+  //     this.dataFiltered = data.filter(reducedData => {
+  //       // tous les console log sont corrects !!!
+  //       console.log("sigle de comparaison", sigle);
+        
+  //       console.log("reducedDat!!!!!", reducedData.sigles);
+  //       console.log(reducedData.sigles.includes(sigle));
+  //       return reducedData.sigles.includes(sigle)
+  //     });
+
+  //     console.log(this.dataFiltered);
+      
+
+      
+
+
+  //     // attention : c'est la différence avec prior-form, on ne veut pas afficher les 20 premières questions dans le dénombre
+  //     // for (let n of dataFiltered) {
+  //     //   // console.log("n.number", n.number);
+  //     //   this.registryNumbers.push(n.number)
+  //     //   // Triez les numéros dans l'ordre croissant
+  //     //   this.registryNumbers.sort((a, b) => a - b);
+  //     //   this.numbers = this.numbers.filter(element => element != n.number)
+  //     //   // console.log("result", this.numbers);
+  //     // }
+
+  //   })
+  // }
+
+  checkIfSelected(sigle: string) {
+    console.log("Sigle sélectionné :", sigle);
+    this.priorTrade = sigle;
+  
+    // Récupération des centres contenant le sigle sélectionné
+    this.centersService.getCenters().subscribe(data => {
+      console.log('Data récupérée dans checkIfSelected:', data);
+      
+      // Filtrage des centres basés sur le sigle
+      this.dataFiltered = data.filter(center => {
+        console.log("Centre retourné :", center);
+        console.log("Sigles du centre :", center.sigles);
+        return center.sigles.includes(sigle);
+      });
+  
+      console.log("Données filtrées :", this.dataFiltered);
+    });
+  }
+  
+
+
+
+  getKeys(obj: any): string[] {
+    return obj ? Object.keys(obj) : [];
+  }
 
 
 }
