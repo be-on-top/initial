@@ -63,6 +63,8 @@ export class StudentFormComponent implements OnInit, OnChanges {
   isLoading: boolean = false;  // Initialiser l'indicateur de chargement
   errorMessage: string = '';   // Pour stocker le message d'erreur
 
+  dataFiltered:Centers[]=[]
+
   constructor(
     private router: Router, 
     private service: StudentsService, 
@@ -210,7 +212,6 @@ export class StudentFormComponent implements OnInit, OnChanges {
         this.tradesEvaluated.push(key.replace('quizz_',''));
         console.log('this.tradesEvaluated', this.tradesEvaluated);
       }
-
     }
 
     // Logique pour récupérer isOneQuizzAchieved
@@ -222,10 +223,15 @@ export class StudentFormComponent implements OnInit, OnChanges {
     //   }
     // }
 
+   // logique pour gérer les selects si un seul quizz terminé
+   this.tradesEvaluated.length===1?(this.dataFiltered=this.tradesEvaluated, this.checkIfSelected(this.tradesEvaluated[0])):''
+   console.log('dataFiltered si unique', this.dataFiltered);
+   
+
 
   }
 
-  dataFiltered:Centers[]=[]
+
 
   // checkIfSelected(sigle: any) {
   //   console.log(sigle);

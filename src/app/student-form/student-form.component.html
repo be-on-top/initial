@@ -19,10 +19,11 @@ Tests OK. Sur une  partie. A finir.
 
 
     <p *ngIf="tradesEvaluated.length>1">Vous avez terminé plusieurs questionnaires métiers. Merci d'indiquer vos préférences.</p>
+    <p *ngIf="tradesEvaluated.length===1">Merci d'indiquer vos préférences.</p>
     <form #target="ngForm" (ngSubmit)="onSubmit(target)" class="mt-3" [ngClass]="{'read-only-form': isReadOnly}">
         <div class="row">
 
-            <div class="col-sm-6 col-md-3 mb-1">
+            <div class="col-sm-6 col-md-3 mb-1" *ngIf="tradesEvaluated.length!==1">
                 <!-- Premier select -->
                 <select id="priorTrade" class="form-select" name="priorTrade" [(ngModel)]="priorTrade" required #sigle="ngModel" (change)="checkIfSelected(sigle.value)">
                   <option value="">Sélectionnez la formation</option>
@@ -31,8 +32,8 @@ Tests OK. Sur une  partie. A finir.
                   </option>
                 </select>
               </div>
-            
-              <div class="col-sm-6 col-md-3 mb-1">
+            <!-- {{tradesEvaluated.length}} -->
+              <div class="mb-1" [ngClass]="{'col-sm-6':tradesEvaluated.length!==1}">
                 <!-- Deuxième select: lié aux données filtrées -->
                 <ng-container *ngIf="dataFiltered && dataFiltered.length > 0">
                   <select class="form-select" name="competence" id="competence" ngModel required #competence="ngModel">
