@@ -60,6 +60,9 @@ export class StudentFormComponent implements OnInit, OnChanges {
 
   relatedCenters: any = []
 
+  isLoading: boolean = false;  // Initialiser l'indicateur de chargement
+  errorMessage: string = '';   // Pour stocker le message d'erreur
+
   constructor(
     private router: Router, 
     private service: StudentsService, 
@@ -263,22 +266,48 @@ export class StudentFormComponent implements OnInit, OnChanges {
   //   })
   // }
 
+  // checkIfSelected(sigle: string) {
+  //   console.log("Sigle sélectionné :", sigle);
+  //   this.priorTrade = sigle;
+  
+  //   // Récupération des centres contenant le sigle sélectionné
+  //   this.centersService.getCenters().subscribe(data => {
+  //     console.log('Data récupérée dans checkIfSelected:', data);
+      
+  //     // Filtrage des centres basés sur le sigle
+  //     this.dataFiltered = data.filter(center => {
+  //       console.log("Centre retourné :", center);
+  //       console.log("Sigles du centre :", center.sigles);
+  //       return center.sigles.includes(sigle);
+  //     });
+  
+  //     console.log("Données filtrées :", this.dataFiltered);
+  //   });
+  // }
+
   checkIfSelected(sigle: string) {
     console.log("Sigle sélectionné :", sigle);
     this.priorTrade = sigle;
-  
+    
+    // Début du chargement
+    this.isLoading = true;
+
     // Récupération des centres contenant le sigle sélectionné
-    this.centersService.getCenters().subscribe(data => {
-      console.log('Data récupérée dans checkIfSelected:', data);
-      
-      // Filtrage des centres basés sur le sigle
-      this.dataFiltered = data.filter(center => {
-        console.log("Centre retourné :", center);
-        console.log("Sigles du centre :", center.sigles);
-        return center.sigles.includes(sigle);
-      });
-  
-      console.log("Données filtrées :", this.dataFiltered);
+    this.centersService.getCenters().subscribe({
+      next: (data) => {
+        console.log('Data récupérée dans checkIfSelected:', data);
+        
+        // Filtrage des centres basés sur le sigle
+        this.dataFiltered = data.filter(center => center.sigles.includes(sigle));
+        console.log("Données filtrées :", this.dataFiltered);
+        
+        // Arrêter le chargement dès que les données sont chargées
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Erreur lors de la récupération des centres:', err);
+        this.isLoading = false;  // Arrêter le chargement en cas d'erreur
+      }
     });
   }
   
