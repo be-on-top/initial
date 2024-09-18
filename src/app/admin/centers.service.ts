@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, deleteDoc, doc, docData, docSnapshots, Firestore, getDocs, query, setDoc, updateDoc, where } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, deleteDoc, doc, docData, docSnapshots, Firestore, getDocs, query, setDoc, updateDoc, where, QuerySnapshot, DocumentData } from '@angular/fire/firestore';
 import { catchError, from, map, Observable, throwError } from 'rxjs';
 import { Centers } from './centers';
 
@@ -243,6 +243,32 @@ updateCenter(id: string, updatedCenter: Partial<Centers>) {
       return throwError(() => new Error('Erreur lors de la mise à jour'));
     })
   );
+}
+
+// Méthode pour récupérer l'ID d'un document à partir de 'cp' et 'name'
+async getCenterIdByCpAndName(cp: string, name: string): Promise<string | null> {
+  const centersRef = collection(this.firestore, 'centers');
+  
+  // Créer la requête pour chercher un doc avec le 'cp' et 'name' spécifiés
+  const q = query(centersRef, where('cp', '==', cp), where('name', '==', name));
+  
+  try {
+    // Exécuter la requête
+    const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      // Si un document correspondant est trouvé, on retourne son ID
+      const doc = querySnapshot.docs[0];  // On prend le premier document s'il y en a plusieurs
+      return doc.id;
+    } else {
+      // Aucun document trouvé
+      console.log('Aucun document correspondant trouvé.');
+      return null;
+    }
+  } catch (error) {
+    console.error('Erreur lors de la récupération du document:', error);
+    return null;
+  }
 }
 
   

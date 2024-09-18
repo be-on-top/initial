@@ -52,7 +52,7 @@ export class StudentFormComponent implements OnInit, OnChanges {
 
   // tradesData?: any
   tradesEvaluated: Array<any> = [];
-  priorTrade:string=''
+  priorTrade: string = ''
 
   // on ne peut pas savoir si un quizz est terminé sans interroger tous les quizz, 
   // ce qu'on ne veut pas côté template, donc on crée un bolean
@@ -63,15 +63,15 @@ export class StudentFormComponent implements OnInit, OnChanges {
   isLoading: boolean = false;  // Initialiser l'indicateur de chargement
   errorMessage: string = '';   // Pour stocker le message d'erreur
 
-  dataFiltered:Centers[]=[]
+  dataFiltered: Centers[] = []
 
   constructor(
-    private router: Router, 
-    private service: StudentsService, 
-    private auth: Auth, 
-    private firestore: Firestore, 
+    private router: Router,
+    private service: StudentsService,
+    private auth: Auth,
+    private firestore: Firestore,
     private settingsService: SettingsService,
-  private centersService:CentersService) { }
+    private centersService: CentersService) { }
 
 
   async ngOnInit() {
@@ -209,7 +209,7 @@ export class StudentFormComponent implements OnInit, OnChanges {
     this.tradesEvaluated = [];
     for (const key in this.userData) {
       if (key.includes('quizz')) {
-        this.tradesEvaluated.push(key.replace('quizz_',''));
+        this.tradesEvaluated.push(key.replace('quizz_', ''));
         console.log('this.tradesEvaluated', this.tradesEvaluated);
       }
     }
@@ -223,10 +223,10 @@ export class StudentFormComponent implements OnInit, OnChanges {
     //   }
     // }
 
-   // logique pour gérer les selects si un seul quizz terminé
-   this.tradesEvaluated.length===1?(this.dataFiltered=this.tradesEvaluated, this.checkIfSelected(this.tradesEvaluated[0])):''
-   console.log('dataFiltered si unique', this.dataFiltered);
-   
+    // logique pour gérer les selects si un seul quizz terminé
+    this.tradesEvaluated.length === 1 ? (this.dataFiltered = this.tradesEvaluated, this.checkIfSelected(this.tradesEvaluated[0])) : ''
+    console.log('dataFiltered si unique', this.dataFiltered);
+
 
 
   }
@@ -243,20 +243,20 @@ export class StudentFormComponent implements OnInit, OnChanges {
   //   // puis boucler dessus pour extraire le cp de chacun
   //   this.centersService.getCenters().subscribe(data => {
   //     console.log('data dans checkIfSelected', data);
-      
+
   //     this.dataFiltered = data.filter(reducedData => {
   //       // tous les console log sont corrects !!!
   //       console.log("sigle de comparaison", sigle);
-        
+
   //       console.log("reducedDat!!!!!", reducedData.sigles);
   //       console.log(reducedData.sigles.includes(sigle));
   //       return reducedData.sigles.includes(sigle)
   //     });
 
   //     console.log(this.dataFiltered);
-      
 
-      
+
+
 
 
   //     // attention : c'est la différence avec prior-form, on ne veut pas afficher les 20 premières questions dans le dénombre
@@ -275,18 +275,18 @@ export class StudentFormComponent implements OnInit, OnChanges {
   // checkIfSelected(sigle: string) {
   //   console.log("Sigle sélectionné :", sigle);
   //   this.priorTrade = sigle;
-  
+
   //   // Récupération des centres contenant le sigle sélectionné
   //   this.centersService.getCenters().subscribe(data => {
   //     console.log('Data récupérée dans checkIfSelected:', data);
-      
+
   //     // Filtrage des centres basés sur le sigle
   //     this.dataFiltered = data.filter(center => {
   //       console.log("Centre retourné :", center);
   //       console.log("Sigles du centre :", center.sigles);
   //       return center.sigles.includes(sigle);
   //     });
-  
+
   //     console.log("Données filtrées :", this.dataFiltered);
   //   });
   // }
@@ -294,7 +294,7 @@ export class StudentFormComponent implements OnInit, OnChanges {
   checkIfSelected(sigle: string) {
     console.log("Sigle sélectionné :", sigle);
     this.priorTrade = sigle;
-    
+
     // Début du chargement
     this.isLoading = true;
 
@@ -302,11 +302,11 @@ export class StudentFormComponent implements OnInit, OnChanges {
     this.centersService.getCenters().subscribe({
       next: (data) => {
         console.log('Data récupérée dans checkIfSelected:', data);
-        
+
         // Filtrage des centres basés sur le sigle
         this.dataFiltered = data.filter(center => center.sigles.includes(sigle));
         console.log("Données filtrées :", this.dataFiltered);
-        
+
         // Arrêter le chargement dès que les données sont chargées
         this.isLoading = false;
       },
@@ -316,13 +316,53 @@ export class StudentFormComponent implements OnInit, OnChanges {
       }
     });
   }
-  
+
 
 
 
   getKeys(obj: any): string[] {
     return obj ? Object.keys(obj) : [];
   }
+
+  onSubmitChoice(form: NgForm) {
+    this.searchCenter(form.value.center.cp, form.value.center.name)
+  }
+
+  async searchCenter(cp: string, name: string) {
+    const centerId = await this.centersService.getCenterIdByCpAndName(cp, name);
+    if (centerId) {
+      console.log('ID du centre trouvé:', centerId);
+    }
+    else {
+      console.log('Aucun centre trouvé pour ces critères.');
+    }
+
+  }
+
+  // Méthode appelée quand un centre est sélectionné
+  onCenterSelected(event: Event) {
+    // Caster l'événement pour indiquer qu'il s'agit d'un <select>
+    const target = event.target as HTMLSelectElement;
+    const centerData = target.value;
+  
+    const [cp, name] = centerData.split('|');  // Sépare 'cp' et 'name'
+  
+    console.log('CP:', cp);
+    console.log('Name:', name);
+  
+    // Appel du service pour obtenir l'ID du centre
+    this.centersService.getCenterIdByCpAndName(cp, name).then(centerId => {
+      if (centerId) {
+        console.log('ID du centre trouvé:', centerId);
+        // Vous pouvez maintenant utiliser cet ID pour d'autres actions
+      } else {
+        console.log('Aucun centre trouvé pour ces critères.');
+      }
+    }).catch(error => {
+      console.error('Erreur lors de la recherche du centre:', error);
+    });
+  }
+  
 
 
 }
