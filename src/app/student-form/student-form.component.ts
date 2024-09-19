@@ -65,6 +65,8 @@ export class StudentFormComponent implements OnInit, OnChanges {
 
   dataFiltered: Centers[] = []
 
+  centerChoiced?: Centers
+
   constructor(
     private router: Router,
     private service: StudentsService,
@@ -184,6 +186,15 @@ export class StudentFormComponent implements OnInit, OnChanges {
       stData ? this.socialData = stData : ''
       // stData?alert(stData):''
 
+      if (this.socialData.center) {
+        this.centersService.getCenter(this.socialData.center).subscribe((data: Centers) => {
+          this.centerChoiced = data;
+        });
+      }
+
+      // si choix de la formation déjà enregistré
+      this.socialData.priorTrade ? this.priorTrade = this.socialData.priorTrade : ''
+
     })
 
   }
@@ -213,6 +224,7 @@ export class StudentFormComponent implements OnInit, OnChanges {
         console.log('this.tradesEvaluated', this.tradesEvaluated);
       }
     }
+
 
     // Logique pour récupérer isOneQuizzAchieved
     // const achievedArray: any[] = [];
@@ -294,6 +306,9 @@ export class StudentFormComponent implements OnInit, OnChanges {
   checkIfSelected(sigle: string) {
     console.log("Sigle sélectionné :", sigle);
     this.priorTrade = sigle;
+    // On peut maintenant utiliser priorTrade pour mettre à jour socialForm
+    this.onInputChange('priorTrade', this.priorTrade)
+    console.log('modification ok formation prioritaire');
 
     // Début du chargement
     this.isLoading = true;
@@ -344,17 +359,21 @@ export class StudentFormComponent implements OnInit, OnChanges {
     // Caster l'événement pour indiquer qu'il s'agit d'un <select>
     const target = event.target as HTMLSelectElement;
     const centerData = target.value;
-  
+
+
     const [cp, name] = centerData.split('|');  // Sépare 'cp' et 'name'
-  
+
     console.log('CP:', cp);
     console.log('Name:', name);
-  
+
     // Appel du service pour obtenir l'ID du centre
     this.centersService.getCenterIdByCpAndName(cp, name).then(centerId => {
       if (centerId) {
         console.log('ID du centre trouvé:', centerId);
-        // Vous pouvez maintenant utiliser cet ID pour d'autres actions
+        // On peut maintenant utiliser cet ID pour d'autres actions
+        this.onInputChange('center', centerId)
+        console.log('modification ok');
+
       } else {
         console.log('Aucun centre trouvé pour ces critères.');
       }
@@ -362,7 +381,7 @@ export class StudentFormComponent implements OnInit, OnChanges {
       console.error('Erreur lors de la recherche du centre:', error);
     });
   }
-  
+
 
 
 }
