@@ -128,7 +128,7 @@ export class CentersService {
         return uniqueCities;
       })
     )
-    
+
   }
 
 
@@ -141,19 +141,19 @@ export class CentersService {
 
 
   createCenter(center: Centers) {
-    let newCenter = { 
-      created: Date.now(), 
-      status: true, 
-      name: center.name, 
-      address: center.address, 
-      cp: center.cp, 
-      city: center.city, 
+    let newCenter = {
+      created: Date.now(),
+      status: true,
+      name: center.name,
+      address: center.address,
+      cp: center.cp,
+      city: center.city,
       sigles: center.sigles // Utilisez directement center.sigles
     };
-  
+
     // Enregistre dans Firestore avec une collection centers qui aura de multiples propriétés
     let $centersRef = collection(this.firestore, "centers");
-  
+
     // Convertit la promesse addDoc en observable
     return from(addDoc($centersRef, newCenter)).pipe(
       map((docRef) => {
@@ -165,7 +165,7 @@ export class CentersService {
       })
     );
   }
-  
+
 
   /**
      * Récupère les informations de localisation (latitude et longitude) pour un code postal donné.
@@ -201,77 +201,136 @@ export class CentersService {
     const centerRef = doc(this.firestore, 'centers', centerId);
     return deleteDoc(centerRef); // Supprime le document et renvoie une promesse
   }
-  
+
 
   async getDocsByParam(sigle: string): Promise<any[]> {
     console.log('Sigle recherché:', sigle); // Vérifie ce qui est passé comme sigle
     // Crée une référence à la collection et une requête avec le paramètre array-contains
     const myData = query(collection(this.firestore, 'centers'), where('sigles', 'array-contains', sigle));
     const querySnapshot = await getDocs(myData);
-    console.log('querySnapshot',querySnapshot);
-    
-  
+    console.log('querySnapshot', querySnapshot);
+
+
     // Initialise un tableau pour stocker les documents
     const results: any[] = [];
-    
+
     // Itère sur les documents retournés par la requête
     querySnapshot.forEach((doc) => {
       results.push({ id: doc.id, ...doc.data() }); // Stocke chaque document dans le tableau
     });
-  
+
     return results; // Retourne le tableau des résultats
   }
 
 
   // Méthode pour mettre à jour un centre existant
-updateCenter(id: string, updatedCenter: Partial<Centers>) {
-  
-  // Référence au document Firestore correspondant à l'ID du centre à mettre à jour
-  const docRef = doc(this.firestore, `centers/${id}`);
-  
-  // Exécute la mise à jour du document dans Firestore
-  return from(updateDoc(docRef, updatedCenter)).pipe(
-    
-    // Retourne l'objet mis à jour avec son ID
-    // Notez que `updatedCenter` contient les champs modifiés du centre,
-    // combinés ici avec l'ID pour former un objet complet
-    map(() => ({ id, ...updatedCenter })),  
-    
-    // Gestion des erreurs : en cas d'échec de la mise à jour, une erreur est capturée et retournée
-    catchError((error) => {
-      console.error('Erreur lors de la mise à jour du centre:', error);
-      return throwError(() => new Error('Erreur lors de la mise à jour'));
-    })
-  );
-}
+  updateCenter(id: string, updatedCenter: Partial<Centers>) {
 
-// Méthode pour récupérer l'ID d'un document à partir de 'cp' et 'name'
-async getCenterIdByCpAndName(cp: string, name: string): Promise<string | null> {
-  const centersRef = collection(this.firestore, 'centers');
-  
-  // Créer la requête pour chercher un doc avec le 'cp' et 'name' spécifiés
-  const q = query(centersRef, where('cp', '==', cp), where('name', '==', name));
-  
-  try {
-    // Exécuter la requête
-    const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(q);
+    // Référence au document Firestore correspondant à l'ID du centre à mettre à jour
+    const docRef = doc(this.firestore, `centers/${id}`);
 
-    if (!querySnapshot.empty) {
-      // Si un document correspondant est trouvé, on retourne son ID
-      const doc = querySnapshot.docs[0];  // On prend le premier document s'il y en a plusieurs
-      return doc.id;
-    } else {
-      // Aucun document trouvé
-      console.log('Aucun document correspondant trouvé.');
+    // Exécute la mise à jour du document dans Firestore
+    return from(updateDoc(docRef, updatedCenter)).pipe(
+
+      // Retourne l'objet mis à jour avec son ID
+      // Notez que `updatedCenter` contient les champs modifiés du centre,
+      // combinés ici avec l'ID pour former un objet complet
+      map(() => ({ id, ...updatedCenter })),
+
+      // Gestion des erreurs : en cas d'échec de la mise à jour, une erreur est capturée et retournée
+      catchError((error) => {
+        console.error('Erreur lors de la mise à jour du centre:', error);
+        return throwError(() => new Error('Erreur lors de la mise à jour'));
+      })
+    );
+  }
+
+  // Méthode pour récupérer l'ID d'un document à partir de 'cp' et 'name'
+  async getCenterIdByCpAndName(cp: string, name: string): Promise<string | null> {
+    const centersRef = collection(this.firestore, 'centers');
+
+    // Créer la requête pour chercher un doc avec le 'cp' et 'name' spécifiés
+    const q = query(centersRef, where('cp', '==', cp), where('name', '==', name));
+
+    try {
+      // Exécuter la requête
+      const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        // Si un document correspondant est trouvé, on retourne son ID
+        const doc = querySnapshot.docs[0];  // On prend le premier document s'il y en a plusieurs
+        return doc.id;
+      } else {
+        // Aucun document trouvé
+        console.log('Aucun document correspondant trouvé.');
+        return null;
+      }
+    } catch (error) {
+      console.error('Erreur lors de la récupération du document:', error);
       return null;
     }
-  } catch (error) {
-    console.error('Erreur lors de la récupération du document:', error);
-    return null;
   }
-}
 
+
+  async addIdToExistingCenters(): Promise<void> {
+    console.log("Début de la mise à jour des centres avec leur ID...");
   
+    // Récupérer la référence de la collection "centers"
+    const centersRef = collection(this.firestore, 'centers');
+    
+    try {
+      // Utilisation de getDocs pour récupérer les données
+      const querySnapshot = await getDocs(centersRef);
+      
+      // Vérification si des documents ont été récupérés
+      if (querySnapshot.empty) {
+        console.log('Aucun centre trouvé.');
+        return;
+      }
+  
+      console.log('Données récupérées : ', querySnapshot.size);
+  
+      // Parcourir chaque document récupéré
+      const updatePromises = querySnapshot.docs.map(async (doc) => {
+        // Récupération des données du document
+        const center = doc.data();
+        
+        // Récupération de l'ID du document Firestore
+        const centerId = doc.id;
+        console.log('Centre à mettre à jour : ', center);
+  
+        // Vérifier si le champ 'id' est déjà présent dans les données du document
+        if (!center['id']) {
+          console.log(`L'ID est manquant pour le centre : ${center['name']}, ajout de l'ID...`);
+          
+          // Référence au document actuel
+          const centerDocRef = doc.ref;
+          
+          // Ajout du champ 'id' dans le document !!!!!!!!
+          // await updateDoc(centerDocRef, { id: centerId });
+          console.log(`ID ajouté au centre : ${centerId}`);
+        } else {
+          console.log(`Le centre ${center['name']} possède déjà un ID : ${center['id']}`);
+        }
+      });
+  
+      // Attendre que toutes les mises à jour soient terminées
+      await Promise.all(updatePromises);
+      console.log('Tous les centres ont été mis à jour avec leurs IDs.');
+  
+    } catch (error) {
+      console.error("Erreur lors de la récupération des centres : ", error);
+    }
+  }
+  
+  
+
+
+
+
+
+
+
 
 }
 

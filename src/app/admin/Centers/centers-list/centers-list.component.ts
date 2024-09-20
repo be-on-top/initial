@@ -21,7 +21,11 @@ export class CentersListComponent {
   }
 
   ngOnInit(): void {
-    this.getCenters();
+    this.getCenters()
+    // n'a été utilisé qu'une fois pour ajouter un d'ID du doc dans chaque doc
+    // this.updateCentersWithId()
+
+
   }
 
   getCenters() {
@@ -56,6 +60,16 @@ export class CentersListComponent {
   onSearchTextEntered(searchValue: string) {
     this.searchText = searchValue
     console.log(this.searchText);
+  }
+
+  // mettre ponctuellement à jour chaque doc avec son ID en paramètre
+  async updateCentersWithId() {
+    try {
+      await this.service.addIdToExistingCenters();
+      console.log('Mise à jour des centres réussie.');
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour des centres:', error);
+    }
   }
 
 }
