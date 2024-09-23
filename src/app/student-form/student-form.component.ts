@@ -67,6 +67,8 @@ export class StudentFormComponent implements OnInit, OnChanges {
 
   centerChoiced?: Centers
 
+  reset: boolean = false
+
   constructor(
     private router: Router,
     private service: StudentsService,
@@ -193,7 +195,32 @@ export class StudentFormComponent implements OnInit, OnChanges {
       }
 
       // si choix de la formation déjà enregistré
-      this.socialData.priorTrade ? this.priorTrade = this.socialData.priorTrade : ''
+      if (this.socialData.priorTrade) {
+        // alert("il a déjà un centre favoris)
+        this.priorTrade = this.socialData.priorTrade
+        // Récupération des centres contenant le sigle priorTrade sélectionné
+        this.centersService.getCenters().subscribe({
+          next: (data) => {
+            console.log('Data récupérée dans checkIfSelected:', data);
+
+            // Filtrage des centres basés sur le sigle
+            this.dataFiltered = data.filter(center => center.sigles.includes(this.socialData.priorTrade));
+            console.log("Données filtrées :", this.dataFiltered);
+
+            // Arrêter le chargement dès que les données sont chargées
+            this.isLoading = false;
+          },
+          error: (err) => {
+            console.error('Erreur lors de la récupération des centres:', err);
+            this.isLoading = false;  // Arrêter le chargement en cas d'erreur
+          }
+        });
+
+      }
+
+
+
+
 
     })
 
@@ -237,7 +264,11 @@ export class StudentFormComponent implements OnInit, OnChanges {
 
     // logique pour gérer les selects si un seul quizz terminé
     this.tradesEvaluated.length === 1 ? (this.dataFiltered = this.tradesEvaluated, this.checkIfSelected(this.tradesEvaluated[0])) : ''
-    console.log('dataFiltered si unique', this.dataFiltered);
+    console.log('dataFiltered si unique quizz', this.dataFiltered);
+
+    // logique pour gérer l'affichage si choix déjà enregistrés
+
+    this.priorTrade !== '' ? this.dataFiltered = this.tradesEvaluated : ''
 
 
 
@@ -304,16 +335,27 @@ export class StudentFormComponent implements OnInit, OnChanges {
   // }
 
   checkIfSelected(sigle: string) {
-    console.log("Sigle sélectionné :", sigle);
+    console.log("Sigle sélectionné dans checkIfSelected :", sigle);
     this.priorTrade = sigle;
     // On peut maintenant utiliser priorTrade pour mettre à jour socialForm
+    // en appelant onInputChange ici au lieu de l'appeler fin de méthode
+    // cela met à jour la liste normalement... 
+    // mais n'efface pas  pour autant l'enregistrement du choix de center
+    // ce qui n'est pas cohérent dans l'absolu
+    // au minima, faudrait revoir côté template l'affichage avec une alerte :
+    // ou effacer le choix initial pour tout réinitialiser...
     this.onInputChange('priorTrade', this.priorTrade)
     console.log('modification ok formation prioritaire');
+    // et si le checkIfSelected n'est déclenché QUE à l'évènement onChange, réinitialiser l'affichage
 
+    // ATTENTION pour réinitialiser
+    // faudra faire un delete ici de socialData.center !!!!!
+    
     // Début du chargement
     this.isLoading = true;
 
-    // Récupération des centres contenant le sigle sélectionné
+    // Récupération des centres contenant le sigle sélectionné pour les afficher
+    // on pourrait en faire une méthode à part : displayRelatedCenters
     this.centersService.getCenters().subscribe({
       next: (data) => {
         console.log('Data récupérée dans checkIfSelected:', data);
@@ -330,6 +372,9 @@ export class StudentFormComponent implements OnInit, OnChanges {
         this.isLoading = false;  // Arrêter le chargement en cas d'erreur
       }
     });
+
+
+
   }
 
 
@@ -346,42 +391,59 @@ export class StudentFormComponent implements OnInit, OnChanges {
   async searchCenter(cp: string, name: string) {
     const centerId = await this.centersService.getCenterIdByCpAndName(cp, name);
     if (centerId) {
-      console.log('ID du centre trouvé:', centerId);
+      console.log('ID du centre trouvé:', centerId)
     }
     else {
-      console.log('Aucun centre trouvé pour ces critères.');
+      console.log('Aucun centre trouvé pour ces critères.')
     }
 
   }
 
-  // Méthode appelée quand un centre est sélectionné
+  // Méthode appelée quand un centre est sélectionné si pas d'id DANS le doc
+  // onCenterSelected(event: Event) {
+  //   // Caster l'événement pour indiquer qu'il s'agit d'un <select>
+  //   const target = event.target as HTMLSelectElement;
+  //   const centerData = target.value;
+
+
+  //   const [cp, name] = centerData.split('|');  // Sépare 'cp' et 'name'
+
+  //   console.log('CP:', cp);
+  //   console.log('Name:', name);
+
+  //   // Appel du service pour obtenir l'ID du centre
+  //   this.centersService.getCenterIdByCpAndName(cp, name).then(centerId => {
+  //     if (centerId) {
+  //       console.log('ID du centre trouvé:', centerId);
+  //       // On peut maintenant utiliser cet ID pour d'autres actions
+  //       this.onInputChange('center', centerId)
+  //       console.log('modification ok');
+
+  //     } else {
+  //       console.log('Aucun centre trouvé pour ces critères.');
+  //     }
+  //   }).catch(error => {
+  //     console.error('Erreur lors de la recherche du centre:', error);
+  //   });
+  // }
+
+
   onCenterSelected(event: Event) {
     // Caster l'événement pour indiquer qu'il s'agit d'un <select>
+    console.log('reste inchangé', this.priorTrade);
+
     const target = event.target as HTMLSelectElement;
+    // alert(target.value)
     const centerData = target.value;
+    console.log('ID:', centerData)
+    // On peut maintenant utiliser cet ID pour d'autres actions
+    this.onInputChange('center', centerData)
+    console.log('reste inchangé 2', this.priorTrade);
 
 
-    const [cp, name] = centerData.split('|');  // Sépare 'cp' et 'name'
+    // this.socialData.center=''
 
-    console.log('CP:', cp);
-    console.log('Name:', name);
-
-    // Appel du service pour obtenir l'ID du centre
-    this.centersService.getCenterIdByCpAndName(cp, name).then(centerId => {
-      if (centerId) {
-        console.log('ID du centre trouvé:', centerId);
-        // On peut maintenant utiliser cet ID pour d'autres actions
-        this.onInputChange('center', centerId)
-        console.log('modification ok');
-
-      } else {
-        console.log('Aucun centre trouvé pour ces critères.');
-      }
-    }).catch(error => {
-      console.error('Erreur lors de la recherche du centre:', error);
-    });
   }
-
 
 
 }
