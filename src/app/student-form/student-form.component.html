@@ -64,7 +64,8 @@ Tests OK. Sur une  partie. A finir.
                         <!-- <option *ngFor="let center of dataFiltered" [value]="center.cp + '|' + center.name"> -->
                         <!-- n'est plus nécessaire si on récupère center.id en base -->
                         <option *ngFor="let center of dataFiltered" [value]="center.id">
-                            {{ center.cp }} - {{ center.name }}
+                            <!-- {{ center.cp }} - {{ center.name }} -->
+                            {{ center.cp }} - {{ center.city }}
                         </option>
                     </select>
 
@@ -79,13 +80,15 @@ Tests OK. Sur une  partie. A finir.
                         <!-- Options pour tous les centres filtrés -->
                         <!-- <option *ngFor="let center of dataFiltered" [value]="center.cp + '|' + center.name"> -->
                         <!-- n'est plus nécessaire si on récupère center.id en base -->
-                        <option *ngFor="let center of dataFiltered" [value]="center.id" class="bg-warning">
-                            {{ center.cp }} - {{ center.name }}
+                        <option *ngFor="let center of dataFiltered" [value]="center.id">
+                            <!-- {{ center.cp }} - {{ center.name }} -->
+                            {{ center.cp }} - {{ center.city }}
                         </option>
 
                         <!-- Si un centre est déjà sélectionné, afficher le centre sélectionné en haut -->
                         <option *ngIf="socialData.center" [value]="socialData.center" selected>
-                            {{ centerChoiced?.cp }} - {{ centerChoiced?.name }}
+                            <!-- {{ centerChoiced?.cp }} - {{ centerChoiced?.name }} -->
+                            {{ centerChoiced?.cp }} - {{ centerChoiced?.city }}
                         </option>
                     </select>
 

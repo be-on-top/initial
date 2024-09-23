@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, deleteDoc, doc, docData, docSnapshots, Firestore, getDocs, query, setDoc, updateDoc, where, QuerySnapshot, DocumentData } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, deleteDoc, doc, docData, docSnapshots, Firestore, getDocs, query, setDoc, updateDoc, where, QuerySnapshot, DocumentData, orderBy } from '@angular/fire/firestore';
 import { catchError, from, map, Observable, throwError } from 'rxjs';
 import { Centers } from './centers';
 
@@ -187,10 +187,24 @@ export class CentersService {
   }
 
 
+  // getCenters() {
+  //   let $centersRef = collection(this.firestore, "centers");
+  //   return collectionData($centersRef, { idField: "id" }) as Observable<Centers[]>
+  // }
+
+  // Méthode modifiée avec tri par cp ascendant :
   getCenters() {
+    // Référence à la collection "centers"
     let $centersRef = collection(this.firestore, "centers");
-    return collectionData($centersRef, { idField: "id" }) as Observable<Centers[]>
+
+    // Appliquer le tri par cp en ordre ascendant avec orderBy
+    let centersQuery = query($centersRef, orderBy("cp", "asc"));
+
+    // Retourner les données triées avec l'ID inclus
+    return collectionData(centersQuery, { idField: "id" }) as Observable<Centers[]>;
   }
+
+
 
   // deleteCenter(id: any) {
   //   let $centerRef = doc(this.firestore, "centers/" + id)
@@ -274,38 +288,38 @@ export class CentersService {
 
   async addIdToExistingCenters(): Promise<void> {
     console.log("Début de la mise à jour des centres avec leur ID...");
-  
+
     // Récupérer la référence de la collection "centers"
     const centersRef = collection(this.firestore, 'centers');
-    
+
     try {
       // Utilisation de getDocs pour récupérer les données
       const querySnapshot = await getDocs(centersRef);
-      
+
       // Vérification si des documents ont été récupérés
       if (querySnapshot.empty) {
         console.log('Aucun centre trouvé.');
         return;
       }
-  
+
       console.log('Données récupérées : ', querySnapshot.size);
-  
+
       // Parcourir chaque document récupéré
       const updatePromises = querySnapshot.docs.map(async (doc) => {
         // Récupération des données du document
         const center = doc.data();
-        
+
         // Récupération de l'ID du document Firestore
         const centerId = doc.id;
         console.log('Centre à mettre à jour : ', center);
-  
+
         // Vérifier si le champ 'id' est déjà présent dans les données du document
         if (!center['id']) {
           console.log(`L'ID est manquant pour le centre : ${center['name']}, ajout de l'ID...`);
-          
+
           // Référence au document actuel
           const centerDocRef = doc.ref;
-          
+
           // Ajout du champ 'id' dans le document !!!!!!!!
           // await updateDoc(centerDocRef, { id: centerId });
           console.log(`ID ajouté au centre : ${centerId}`);
@@ -313,17 +327,17 @@ export class CentersService {
           console.log(`Le centre ${center['name']} possède déjà un ID : ${center['id']}`);
         }
       });
-  
+
       // Attendre que toutes les mises à jour soient terminées
       await Promise.all(updatePromises);
       console.log('Tous les centres ont été mis à jour avec leurs IDs.');
-  
+
     } catch (error) {
       console.error("Erreur lors de la récupération des centres : ", error);
     }
   }
-  
-  
+
+
 
 
 
