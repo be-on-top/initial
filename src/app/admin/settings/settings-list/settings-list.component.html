@@ -107,22 +107,40 @@
     <hr>
 
     <h4 class="my-5"> Paramètres de Couleurs</h4>
-    <div class="container mt-4">
+    <div class="container my-4">
         <form>
-        <div class="form-group mb-3">
-        <label for="primaryColor">Choisissez votre Couleur Principale</label>
-        <input 
-                type="color" 
-                id="primaryColor" 
-                class="form-control mt-2" 
-                [(ngModel)]="primaryColor" 
-                (change)="updatePrimaryColor(primaryColor)" 
-                name="primaryColor">
-        </div>
-         
+            <div class="form-group mb-3">
+                <label for="primaryColor">Choisissez votre Couleur Principale</label>
+                <input type="color" id="primaryColor" class="form-control mt-2" [(ngModel)]="primaryColor"
+                    (change)="updatePrimaryColor(primaryColor)" name="primaryColor">
+            </div>
+
             <button type="button" class="btn btn-secondary" (click)="resetColor()">Réinitialiser la Couleur</button>
         </form>
+    </div>
+
+    <hr>
+
+
+    <h4 class="my-5"> Affichage des tarifs (montants) </h4>
+
+    <!-- Tooggle Switch for Price Display status -->
+    <div class="form-check form-switch my-3 d-flex mx-auto justify-content-center">
+        <div>
+
+            <input class="form-check-input" type="checkbox" id="status" name="status"
+            [checked]="displayPrices"
+            (change)="toggleDisplayPrices($event)">
         </div>
+        <div class="ms-3">
+            <label class="form-check-label" for="status">Status :</label>
+                <span *ngIf="displayPrices; else elseBlock" class="fw-bold"> Actif</span>
+                <ng-template #elseBlock> <span class="fw-bold"> Inactif</span></ng-template>
+        </div>
+ 
+        
+    </div>
+    
 
 
 

@@ -21,6 +21,8 @@ import { orderBy } from 'firebase/firestore';
 })
 export class SettingsService {
 
+  private settingsCollection = collection(this.firestore, 'settings');
+
 
   constructor(private firestore: Firestore, private storage: Storage) {
   }
@@ -101,7 +103,7 @@ export class SettingsService {
   // Méthode pour récupérer tous les métiers avec status=true
   getTradesWithStatusTrue(): Observable<Trade[]> {
     const tradesRef = collection(this.firestore, 'sigles');
-    
+
     const statusQuery = query(tradesRef, where('status', '==', true));
 
     return from(getDocs(statusQuery)).pipe(
@@ -140,13 +142,13 @@ export class SettingsService {
   // }
   getTrades(): Observable<Trade[]> {
     const tradesRef = collection(this.firestore, 'sigles');
-  
+
     // Créer une requête pour trier les documents par createdAt (ordre chronologique croissant)
     const tradesQuery = query(tradesRef, orderBy('createdAt', 'asc'));
-  
+
     // Récupérer les données de la collection en fonction de cette requête
     const trades$ = collectionData(tradesQuery, { idField: 'id' }) as Observable<Trade[]>;
-  
+
     // Abonnement pour stocker dans IndexedDB
     trades$.subscribe({
       next: (trades) => {
@@ -158,7 +160,7 @@ export class SettingsService {
         console.error('Erreur lors de la récupération des sigles :', error);
       }
     });
-  
+
     return trades$; // Retourner l'observable des sigles
   }
 
@@ -564,9 +566,24 @@ export class SettingsService {
     } catch (error) {
       console.error('Erreur lors de la sauvegarde des sigles localement :', error);
     }
+
+
   }
 
 
+
+
+  // Récupérer l'état de displayPrices
+  getDisplayPrices(): Observable<DocumentData> {
+    const displayDocRef = doc(this.firestore, 'settings/display');
+    return docData(displayDocRef) as Observable<DocumentData>;
+  }
+
+  // Mettre à jour displayPrices dans Firestore
+  async setDisplayPrices(status: boolean): Promise<void> {
+    const displayDocRef = doc(this.firestore, 'settings/display');
+    await setDoc(displayDocRef, { prices: status }, { merge: true });
+  }
 
 
 

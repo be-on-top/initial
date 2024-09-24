@@ -19,6 +19,7 @@ export class SettingsListComponent implements OnInit {
   searchText: string = ''
 
   partners?:any
+  displayPrices:boolean=true
 
 
   constructor(private router: Router, private service: SettingsService, private themeService:ThemeService) {
@@ -59,6 +60,14 @@ export class SettingsListComponent implements OnInit {
     this.service.fetchPartners().subscribe(data=>{
       this.partners=data
     })
+
+    // Récupérer la valeur initiale de displayPrices depuis Firestore
+    this.service.getDisplayPrices().subscribe((data: any) => {
+      if (data && data.prices !== undefined) {
+        this.displayPrices = data.prices;
+      }
+    })
+
   }
 
   // pour utiliser le composant de recherche
@@ -81,5 +90,17 @@ export class SettingsListComponent implements OnInit {
     this.themeService.resetTheme();
     this.primaryColor = this.themeService.getPrimaryColor();
   }
+
+ // Mettre à jour displayPrices dans Firestore
+ toggleDisplayPrices(event: Event): void {
+  const inputElement = event.target as HTMLInputElement;
+  this.displayPrices = inputElement.checked;  // Récupère l'état de la checkbox
+  console.log("this.displayPrices", this.displayPrices);
+  
+  this.service.setDisplayPrices(this.displayPrices)
+    .then(() => console.log('displayPrices mis à jour dans Firestore'))
+    .catch(error => console.error('Erreur de mise à jour', error));
+}
+
 
 }
