@@ -1,5 +1,5 @@
 import { query } from '@angular/animations';
-import { Component, OnInit, Directive, HostListener, Input, OnChanges, SimpleChanges, } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, } from '@angular/core';
 import { Auth, onAuthStateChanged, user } from '@angular/fire/auth';
 import { DocumentSnapshot, Firestore, addDoc, collection, doc, docData, getDocs, setDoc, where } from '@angular/fire/firestore';
 import { NgForm } from '@angular/forms';
@@ -351,7 +351,7 @@ export class StudentFormComponent implements OnInit, OnChanges {
 
     // ATTENTION pour réinitialiser
     // faudra faire un delete ici de socialData.center !!!!!
-    
+
     // Début du chargement
     this.isLoading = true;
 
@@ -400,34 +400,6 @@ export class StudentFormComponent implements OnInit, OnChanges {
 
   }
 
-  // Méthode appelée quand un centre est sélectionné si pas d'id DANS le doc
-  // onCenterSelected(event: Event) {
-  //   // Caster l'événement pour indiquer qu'il s'agit d'un <select>
-  //   const target = event.target as HTMLSelectElement;
-  //   const centerData = target.value;
-
-
-  //   const [cp, name] = centerData.split('|');  // Sépare 'cp' et 'name'
-
-  //   console.log('CP:', cp);
-  //   console.log('Name:', name);
-
-  //   // Appel du service pour obtenir l'ID du centre
-  //   this.centersService.getCenterIdByCpAndName(cp, name).then(centerId => {
-  //     if (centerId) {
-  //       console.log('ID du centre trouvé:', centerId);
-  //       // On peut maintenant utiliser cet ID pour d'autres actions
-  //       this.onInputChange('center', centerId)
-  //       console.log('modification ok');
-
-  //     } else {
-  //       console.log('Aucun centre trouvé pour ces critères.');
-  //     }
-  //   }).catch(error => {
-  //     console.error('Erreur lors de la recherche du centre:', error);
-  //   });
-  // }
-
 
   onCenterSelected(event: Event) {
     // Caster l'événement pour indiquer qu'il s'agit d'un <select>
@@ -441,44 +413,31 @@ export class StudentFormComponent implements OnInit, OnChanges {
     this.onInputChange('center', centerData)
     console.log('reste inchangé 2', this.priorTrade);
 
-
-    // this.socialData.center=''
-
   }
 
-    // Méthode pour récupérer la dénomination du métier côté composant
-    denominationMap: Map<string, Observable<string | null>> = new Map();
-
-    // getDenomination(trade: string): Observable<string | null> {
-     
-    //   if (!this.denominationMap.has(trade)) {
-    //     this.denominationMap.set(trade, this.settingsService.getDenomination(trade))
-
-    //      // Split the title at the first occurrence of ' ('
-
-    //   }
-    //   return (this.denominationMap.get(trade)) || of(null)
-    // }
+  // Méthode pour récupérer la dénomination du métier côté composant
+  denominationMap: Map<string, Observable<string | null>> = new Map();
 
 
-getDenomination(trade: string): Observable<string | null> {
-  if (!this.denominationMap.has(trade)) {
-    // Appel au service pour obtenir la dénomination et transformation
-    const denomination$ = this.settingsService.getDenomination(trade).pipe(
-      map(denomination => {
-        if (denomination) {
-          // Supprimer tout ce qui suit la première parenthèse ouvrante " ("
-          const index = denomination.indexOf(' (');
-          return index !== -1 ? denomination.substring(0, index) : denomination;
-        }
-        return denomination;
-      })
-    );
 
-    this.denominationMap.set(trade, denomination$);
+  getDenomination(trade: string): Observable<string | null> {
+    if (!this.denominationMap.has(trade)) {
+      // Appel au service pour obtenir la dénomination et transformation
+      const denomination$ = this.settingsService.getDenomination(trade).pipe(
+        map(denomination => {
+          if (denomination) {
+            // Supprimer tout ce qui suit la première parenthèse ouvrante " ("
+            const index = denomination.indexOf(' (');
+            return index !== -1 ? denomination.substring(0, index) : denomination;
+          }
+          return denomination;
+        })
+      );
+
+      this.denominationMap.set(trade, denomination$);
+    }
+    return this.denominationMap.get(trade) || of(null);
   }
-  return this.denominationMap.get(trade) || of(null);
-}
 
 
 
