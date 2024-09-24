@@ -5,12 +5,13 @@ import { DocumentSnapshot, Firestore, addDoc, collection, doc, docData, getDocs,
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { getDoc } from 'firebase/firestore';
-import { Observable, from, map } from 'rxjs';
+import { Observable, from, map, of } from 'rxjs';
 import { StudentsService } from 'src/app/admin/students.service';
 import { Student } from '../admin/Students/student';
 import { SettingsService } from '../admin/settings.service';
 import { CentersService } from '../admin/centers.service';
 import { Centers } from '../admin/centers';
+
 
 @Component({
   selector: 'app-student-form',
@@ -444,6 +445,41 @@ export class StudentFormComponent implements OnInit, OnChanges {
     // this.socialData.center=''
 
   }
+
+    // Méthode pour récupérer la dénomination du métier côté composant
+    denominationMap: Map<string, Observable<string | null>> = new Map();
+
+    // getDenomination(trade: string): Observable<string | null> {
+     
+    //   if (!this.denominationMap.has(trade)) {
+    //     this.denominationMap.set(trade, this.settingsService.getDenomination(trade))
+
+    //      // Split the title at the first occurrence of ' ('
+
+    //   }
+    //   return (this.denominationMap.get(trade)) || of(null)
+    // }
+
+
+getDenomination(trade: string): Observable<string | null> {
+  if (!this.denominationMap.has(trade)) {
+    // Appel au service pour obtenir la dénomination et transformation
+    const denomination$ = this.settingsService.getDenomination(trade).pipe(
+      map(denomination => {
+        if (denomination) {
+          // Supprimer tout ce qui suit la première parenthèse ouvrante " ("
+          const index = denomination.indexOf(' (');
+          return index !== -1 ? denomination.substring(0, index) : denomination;
+        }
+        return denomination;
+      })
+    );
+
+    this.denominationMap.set(trade, denomination$);
+  }
+  return this.denominationMap.get(trade) || of(null);
+}
+
 
 
 }

@@ -35,11 +35,13 @@ Tests OK. Sur une  partie. A finir.
                     <option value="">Sélectionnez la formation</option>
                     <!-- Si un choix déjà enregistré, afficher le choix en haut -->
                     <option *ngIf="priorTrade!==''" [value]="priorTrade" selected>
-                        {{ priorTrade }}
+                        <!-- {{ priorTrade }} -->
+                        {{ getDenomination(priorTrade) | async }}
                     </option>
 
                     <option *ngFor="let element of tradesEvaluated" [value]="element">
-                        {{element }}
+                        <!-- {{element }} -->
+                        {{ getDenomination(element) | async }}
                     </option>
                 </select>
 
