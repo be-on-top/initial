@@ -6,6 +6,8 @@
     <p class="bg-primary text-light p-2 my-3 fs-4 fw-light rounded">Bonjour et bienvenue <span
             class="text-capitalize">{{userData.firstName}}</span></p>
 
+            <!-- <div class="alert alert-dark display-5">Etat de displayPrices pour voir si je parviens à récupérer l'état de ce paramètre additinnel depuis un compte utilisateur : {{displayPrices}}</div> -->
+
     <!-- ici, c'est en tout début, seul l'onglet informations est actif -->
     <div *ngIf="!isOneQuizzAchieved && !hasStartedEvaluation"
         class="alert alert-light p-4 alert-dismissible mb-4 fade show pe-5">
@@ -189,17 +191,29 @@
                                 <div class="card-text"
                                     *ngFor="let result of getSortedResults(trade); let lastEstimate=last; let i = index">
                                     <ng-container *ngFor="let item of objectEntries(result)">
-                                        <div class="d-flex align-items-center">
+                                        <!-- partie si on masque  les coûts -->
+                                        <div *ngIf="displayPrices==false" class="d-flex align-items-center">
                                             <span class="fw-bold">{{ item[0] }}</span>
                                             <i class="bi fs-4 bi-arrow-right-short"></i>
-                                            <span class="fw-bolder">Durée: </span>{{ item[1].duration | duration }}.
+                                            <span class="fw-bolder">Durée : </span>{{ item[1].duration | duration }}.
+                                        </div>
+                                        <!-- partie si on affiche les coûts -->
+                                        <div *ngIf="displayPrices==true" class="d-flex align-items-center">
+                                            <span class="fw-bold">{{ item[0] }}</span>
+                                            <i class="bi fs-4 bi-arrow-right-short"></i>
+                                            <span class="fw-bolder">Durée : </span>{{ item[1].duration | duration }}.
                                             <!-- attention si on fait du fractionné à l'enregistrement, faire un arrondi à la restitution ici -->
                                             <span class="fw-bolder"> Coût: </span>{{ item[1].cost | round }}€
                                         </div>
                                         <em *ngIf="trades[trade]" class="text-primary fs-6">{{ trades[trade][i] }}</em>
                                     </ng-container>
                                     <hr *ngIf="lastEstimate">
-                                    <div *ngIf="lastEstimate" class="mb-5"><span class="fw-bolder">Total estimé: {{
+                                    <!-- partie si on masque le total de couts -->
+                                    <div *ngIf="lastEstimate && displayPrices==false" class="mb-5"><span class="fw-bolder">Total estimé: {{
+                                            calculateSubtotal(trade) | duration }}</span>/{{ calculateTotalTime(trade) |
+                                        duration }} <span class="fw-bolder">de formation</span></div>
+                                        <!-- partie si on affiche tout  -->
+                                    <div *ngIf="lastEstimate && displayPrices==true" class="mb-5"><span class="fw-bolder">Total estimé: {{
                                             calculateSubtotal(trade) | duration }}</span>/{{ calculateTotalTime(trade) |
                                         duration }} <span class="fw-bolder">de formation</span> pour <span
                                             class="fw-bolder">{{ calculateSubtotalCost(trade) }}€</span>/{{

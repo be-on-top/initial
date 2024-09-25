@@ -91,6 +91,8 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   tradesData?: any
 
+  displayPrices:boolean=true
+
   public notificationPermissionGranted = false;
   // pour la gestion du consentement à l'utilisation des cookies
   consentStatus: boolean;
@@ -129,6 +131,16 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
+    
+    // Récupérer la valeur initiale de displayPrices depuis Firestore
+    this.settingsService.getDisplayPrices().subscribe((data: any) => {
+      if (data && data.prices !== undefined) {
+        this.displayPrices = data.prices;
+        console.log("displayPrices depuis ngOnInit !!!!!!!!!!!!!!!!!!!!!!!", this.displayPrices);
+        
+      }
+    })
+
     if (this.offline) {
       alert("Sans connexion réseau vous ne pouvez pas accéder aux dernières mises à jour de vos données. ")
       this.router.navigate(['/home'])
@@ -159,11 +171,6 @@ export class AccountComponent implements OnInit, OnDestroy {
       }
     })
 
-
-
-
-
-
     // this.authService.getToken()?.then(res => console.log("token authentification depuis authService", res.token));
 
     // console.log('this.tradesEvaluated', this.tradesEvaluated);
@@ -179,6 +186,7 @@ export class AccountComponent implements OnInit, OnDestroy {
     })
 
     // this.checkNotificationPermission()
+
 
 
   }
