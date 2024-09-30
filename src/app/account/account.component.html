@@ -209,11 +209,11 @@
                                     </ng-container>
                                     <hr *ngIf="lastEstimate">
                                     <!-- partie si on masque le total de couts -->
-                                    <div *ngIf="lastEstimate && displayPrices==false" class="mb-5"><span class="fw-bolder">Total estimé: {{
+                                    <div *ngIf="lastEstimate && displayPrices==false && trade?.durations" class="mb-5"><span class="fw-bolder">Total estimé: {{
                                             calculateSubtotal(trade) | duration }}</span>/{{ calculateTotalTime(trade) |
                                         duration }} <span class="fw-bolder">de formation</span></div>
                                         <!-- partie si on affiche tout  -->
-                                    <div *ngIf="lastEstimate && displayPrices==true" class="mb-5"><span class="fw-bolder">Total estimé: {{
+                                    <div *ngIf="lastEstimate && displayPrices==true && trade?.durations" class="mb-5"><span class="fw-bolder">Total estimé: {{
                                             calculateSubtotal(trade) | duration }}</span>/{{ calculateTotalTime(trade) |
                                         duration }} <span class="fw-bolder">de formation</span> pour <span
                                             class="fw-bolder">{{ calculateSubtotalCost(trade) }}€</span>/{{

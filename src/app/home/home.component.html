@@ -1,5 +1,7 @@
 <div class="container pt-3">
 
+    <!-- userRole{{userRole | json}} -->
+
     <!-- <h3>Accueil</h3> -->
 
     <!-- tests OK à voir pour campagnes notification -->
@@ -204,75 +206,114 @@
 
     <!-- essai pour forcer le regroupement de certains métiers  -->
 
-    <div *ngIf="catGroup" class="card pb-0 category mt-3">
+    <ng-container *ngIf="catGroup">
 
-        <div class="card-header">
+        <!-- tests OK -->
 
-            <!-- <h2 class="h2">CACES® ({{catGroup.length}})</h2> -->
-            <!-- <h2 class="h2">Conducteur d'engin (Réf. CACES®) ({{catGroup.length}})</h2> -->
-            <h2 class="h2">Conducteur d'engin (Certification&nbsp;CACES®)</h2>
-        </div>
-        <div class="card-body row column-gap-1">
-            <ng-container *ngFor="let trade of catGroup, let i = index">
-                <!-- n'affichera que les 2 premiers de la liste catGroup tant que !isFullCatItempsOpen -->
-                <div *ngIf="!isFullCatItemsOpen && i <= 1" class="col-md-6 pt-3">
+        <!-- <div *ngFor="let group of groupedTrades; let j = index">
+            <h2 class="h2" *ngFor="let group of groupedTrades">{{group[0] | slice:0:group[0].indexOf('(') }}<br>
+                <span>
+                    {{ group[0] | slice:group[0].indexOf('(') }}
+                </span>
+            </h2>
+            <div *ngFor="let trade of group[1]; let i = index">
+                <h4>Élément {{ i + 1 }}</h4>
+                <p>Dénomination: {{ trade.denomination }}</p>
+                <p>Compétences: {{ trade.competences | json }}</p>
+                <p>Durées: {{ trade.durations | json }}</p>
+                <p>Coûts: {{ trade.costs | json }}</p>
+                <p>Sigle: {{ trade.sigle }}</p>
+                <p>Description: {{ trade.description }}</p>
+                <p>Statut: {{ trade.status }}</p>
+            </div>
+        </div> -->
 
-                    <div (click)="selectTrade(trade.id)">
-                        <div [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]">
+        <!-- fin tests -->
 
-                            <h3 class="h5 text-start ps-2">
-                                <i class="bi bi-{{i+1}}-square-fill text-success me-2"></i>
-                                <span [innerHTML]="trade.denomination | firstWord | truncateTitle"></span>
-                            </h3>
+        <!-- début boucle dynamique si plusieurs catégories -->
+        <div *ngFor="let group of groupedTrades; let j = index">
+            <div class="card pb-0 category mt-3">
 
-                        </div>
 
-                        <!-- spinner essai -->
-                        <div *ngIf="isLoading && !offline"
-                            class="d-flex justify-content-center align-items-center mt-5">
-                            <div class="spinner-border text-success" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </div>
-                        <!-- fin spinner -->
-                        <ng-container *ngIf="trade.imageUrl">
-                            <div class="image-container rounded mb-1">
-                                <a [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]"
-                                    class="text-decoration-none">
-                                    <img ngOpmizedImage class="img-fluid rounded" [ngSrc]="trade.imageUrl"
-                                        *ngIf="trade.imageUrl" (load)="onImageLoad()" [width]="largeurImage"
-                                        [height]="hauteurImage" [priority]="i === 0"
-                                        alt="formation BE-ON-TOP au métier {{trade.sigle}}">
-                                </a>
-                            </div>
-                        </ng-container>
+                <!-- Affichage de la catégorie (group[0] contient le nom de la catégorie) -->
+                <div class="card-header">
+                    <!-- <h2 class="h2">CACES® ({{catGroup.length}})</h2> -->
+                    <!-- <h2 class="h2">Conducteur d'engin (Réf. CACES®) ({{catGroup.length}})</h2> -->
+                    <!-- <h2 class="h2">Conducteur d'engin (Certification&nbsp;CACES®)</h2> -->
 
-                        <!-- si on laisse le css faire la troncature -->
-                        <!-- <div class="card-text pt-2"><a
+                    <h2 class="h2">
+                        {{ group[0].indexOf('(') !== -1 ? (group[0] | slice:0:group[0].indexOf('(')) : group[0] }}<br>
+                        <span *ngIf="group[0].indexOf('(') !== -1">
+                            {{ group[0] | slice:group[0].indexOf('(') }}
+                        </span>
+                    </h2>
+
+                </div>
+
+
+                <div class="card-body row column-gap-1">
+                    <!-- Deuxième niveau d'itération pour afficher les éléments du groupe (group[1] est le tableau des objets) -->
+                    <ng-container *ngFor="let trade of group[1], let i = index">
+                        <!-- n'affichera que les 2 premiers de la liste catGroup tant que !isFullCatItempsOpen -->
+                        <div *ngIf="!isFullCatItemsOpen && i <= 1" class="col-md-6 pt-3">
+
+                            <div (click)="selectTrade(trade.id)">
+                                <div
+                                    [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]">
+
+                                    <h3 class="h5 text-start ps-2">
+                                        <i class="bi bi-{{i+1}}-square-fill text-success me-2"></i>
+                                        <span [innerHTML]="trade.denomination | firstWord | truncateTitle"></span>
+                                    </h3>
+
+                                </div>
+
+                                <!-- spinner essai -->
+                                <div *ngIf="isLoading && !offline"
+                                    class="d-flex justify-content-center align-items-center mt-5">
+                                    <div class="spinner-border text-success" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                                <!-- fin spinner -->
+                                <ng-container *ngIf="trade.imageUrl">
+                                    <div class="image-container rounded mb-1">
+                                        <a [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]"
+                                            class="text-decoration-none">
+                                            <img ngOpmizedImage class="img-fluid rounded" [ngSrc]="trade.imageUrl"
+                                                *ngIf="trade.imageUrl" (load)="onImageLoad()" [width]="largeurImage"
+                                                [height]="hauteurImage" [priority]="i === 0"
+                                                alt="formation BE-ON-TOP au métier {{trade.sigle}}">
+                                        </a>
+                                    </div>
+                                </ng-container>
+
+                                <!-- si on laisse le css faire la troncature -->
+                                <!-- <div class="card-text pt-2"><a
                                 [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]"
                                 class="text-decoration-none fs-6">
                                 {{(truncateText(trade.description, 200) )| stripHtml }} </a></div> -->
-                        <div class="card-text pt-2"><a
-                                [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]"
-                                class="text-decoration-none fs-6">
-                                {{trade.description | stripHtml }} </a></div>
+                                <div class="card-text pt-2"><a
+                                        [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]"
+                                        class="text-decoration-none fs-6">
+                                        {{trade.description | stripHtml }} </a></div>
 
-                        <!-- si on utilise l'éditeur de texte, pour récupérer le texte tronqué et brut -->
-                        <!-- <div class="card-text"><a [routerLink]="['/trade', trade.sigle]" class="text-decoration-none" [innerHTML]="sanitizer.bypassSecurityTrustHtml((trade.description | slice:0:100) +'...')"></a></div> -->
+                                <!-- si on utilise l'éditeur de texte, pour récupérer le texte tronqué et brut -->
+                                <!-- <div class="card-text"><a [routerLink]="['/trade', trade.sigle]" class="text-decoration-none" [innerHTML]="sanitizer.bypassSecurityTrustHtml((trade.description | slice:0:100) +'...')"></a></div> -->
 
-                        <div *ngIf="isEditor" class="d-flex justify-content-end">
-                            <hr>
-                            <button class="btn btn-transparent mt-3" aria-label="Edition du métier">
-                                <a class="text-dark" [routerLink]="['/admin/updateDescription', trade.sigle]">
-                                    <i class="bi bi-pencil-square"></i>
-                                    Editer</a>
-                            </button>
-                        </div>
+                                <div *ngIf="isEditor" class="d-flex justify-content-end">
+                                    <hr>
+                                    <button class="btn btn-transparent mt-3" aria-label="Edition du métier">
+                                        <a class="text-dark" [routerLink]="['/admin/updateDescription', trade.sigle]">
+                                            <i class="bi bi-pencil-square"></i>
+                                            Editer</a>
+                                    </button>
+                                </div>
 
-                        <!-- pour switcher d'un intitulé à un autre selon que studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle -->
-                        <ng-container *ngIf="studentData && !offline">
-                            <hr>
-                            <a [routerLink]="[
+                                <!-- pour switcher d'un intitulé à un autre selon que studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle -->
+                                <ng-container *ngIf="studentData && !offline">
+                                    <hr>
+                                    <a [routerLink]="[
                     '/quizz/',
                     trade.sigle,studentData?.['quizz_'+trade.sigle]?((studentData?.['quizz_'+trade.sigle]?.lastIndexQuestion) + 1 | number):0,
                     ((studentData?.['quizz_'+trade.sigle]?.scoreCounter || 0 | number)),
@@ -280,102 +321,105 @@
                     studentData?.id ? studentData.id : ''
                   ]" class="text-decoration-none text-dark" alt="questionnaire de positionnement">
 
-                                <div class="d-flex justify-content-end"
-                                    *ngIf="(studentData && !studentData['quizz_'+trade.sigle])">
+                                        <div class="d-flex justify-content-end"
+                                            *ngIf="(studentData && !studentData['quizz_'+trade.sigle])">
 
-                                    <button (click)="logStartEvaluationEvent(trade.denomination)"
-                                        aria-label="Démarrer le questionnaire be-on-top" class="btn btn-transparent"><i
-                                            class="bi bi-clock-fill text-success"></i>
-                                        Démarrer votre évaluation</button>
-                                </div>
-                                <div class="d-flex justify-content-end"
-                                    *ngIf="studentData && studentData['quizz_'+trade.sigle] && !studentData['quizz_'+trade.sigle].fullResults">
+                                            <button (click)="logStartEvaluationEvent(trade.denomination)"
+                                                aria-label="Démarrer le questionnaire be-on-top"
+                                                class="btn btn-transparent"><i
+                                                    class="bi bi-clock-fill text-success"></i>
+                                                Démarrer votre évaluation</button>
+                                        </div>
+                                        <div class="d-flex justify-content-end"
+                                            *ngIf="studentData && studentData['quizz_'+trade.sigle] && !studentData['quizz_'+trade.sigle].fullResults">
 
-                                    <button aria-label="Poursuivre le questionnaire" class="btn btn-transparent"><i
-                                            class="bi bi-clock-history fw-bold"></i>
-                                        <!-- Reprendre à la question {{studentData.lastIndexQuestion+1}}</button></div> -->
-                                        Poursuivre l'évaluation</button>
-                                </div>
-                            </a>
-                            <div class="d-flex justify-content-end" *ngIf="checkQuizzCondition(trade)">
-                                <a [routerLink]="['/account']">
-                                    <div class="btn btn-transparent border-0">
-                                        <i class="bi bi-check-square-fill text-success"></i>
-                                        Votre évaluation est terminée
+                                            <button aria-label="Poursuivre le questionnaire"
+                                                class="btn btn-transparent"><i class="bi bi-clock-history fw-bold"></i>
+                                                <!-- Reprendre à la question {{studentData.lastIndexQuestion+1}}</button></div> -->
+                                                Poursuivre l'évaluation</button>
+                                        </div>
+                                    </a>
+                                    <div class="d-flex justify-content-end" *ngIf="checkQuizzCondition(trade)">
+                                        <a [routerLink]="['/account']">
+                                            <div class="btn btn-transparent border-0">
+                                                <i class="bi bi-check-square-fill text-success"></i>
+                                                Votre évaluation est terminée
+                                            </div>
+                                        </a>
                                     </div>
-                                </a>
+                                </ng-container>
+
                             </div>
-                        </ng-container>
 
-                    </div>
+                        </div>
 
-                </div>
+                        <!-- affichera normalement tous les items dès que isFullCatItempsOpen -->
+                        <!-- <div *ngIf="isFullCatItemsOpen" class="col-md-6 pt-3"> -->
 
-                <!-- affichera normalement tous les items dès que isFullCatItempsOpen -->
-                <!-- <div *ngIf="isFullCatItemsOpen" class="col-md-6 pt-3"> -->
-
-                <div *ngIf="isFullCatItemsOpen && (searchText===''
+                        <div *ngIf="isFullCatItemsOpen && (searchText===''
                 || trade.denomination.includes(searchText)
                 || removeAccents(trade.denomination).toLowerCase().includes(removeAccents(searchText).toLowerCase())
                 || trade.denomination.includes(searchText)
                 || trade.denomination.toLowerCase().includes(searchText.toLowerCase())
                 || removeAccents(trade.description).toLowerCase().includes(removeAccents(searchText).toLowerCase()))"
-                    class="pt-3" [ngClass]="{'col-md-6': !(i === catGroup.length - 1 && catGroup.length % 2 !== 0)}">
+                            class="pt-3"
+                            [ngClass]="{'col-md-6': !(i === catGroup.length - 1 && catGroup.length % 2 !== 0)}">
 
-                    <div (click)="selectTrade(trade.id)">
-                        <div [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]">
-                            <h3 class="h5 text-start ps-2">
-                                <i class="bi bi-{{i+1}}-square-fill text-success me-2"></i>
-                                <span [innerHTML]="trade.denomination | firstWord | truncateTitle"></span>
-                            </h3>
-                        </div>
+                            <div (click)="selectTrade(trade.id)">
+                                <div
+                                    [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]">
+                                    <h3 class="h5 text-start ps-2">
+                                        <i class="bi bi-{{i+1}}-square-fill text-success me-2"></i>
+                                        <span [innerHTML]="trade.denomination | firstWord | truncateTitle"></span>
+                                    </h3>
+                                </div>
 
-                        <!-- spinner essai -->
-                        <div *ngIf="isLoading && !offline"
-                            class="d-flex justify-content-center align-items-center mt-5">
-                            <div class="spinner-border text-success" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </div>
-                        <!-- fin spinner -->
-                        <ng-container *ngIf="trade.imageUrl">
-                            <div class="image-container rounded mb-1">
-                                <a [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]"
-                                    class="text-decoration-none">
-                                    <img ngOpmizedImage class="img-fluid rounded" [ngSrc]="trade.imageUrl"
-                                        *ngIf="trade.imageUrl" (load)="onImageLoad()" [width]="largeurImage"
-                                        [height]="hauteurImage" [priority]="i === 0"
-                                        alt="formation BE-ON-TOP au métier {{trade.sigle}}">
-                                </a>
-                            </div>
-                        </ng-container>
+                                <!-- spinner essai -->
+                                <div *ngIf="isLoading && !offline"
+                                    class="d-flex justify-content-center align-items-center mt-5">
+                                    <div class="spinner-border text-success" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                                <!-- fin spinner -->
+                                <ng-container *ngIf="trade.imageUrl">
+                                    <div class="image-container rounded mb-1">
+                                        <a [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]"
+                                            class="text-decoration-none">
+                                            <img ngOpmizedImage class="img-fluid rounded" [ngSrc]="trade.imageUrl"
+                                                *ngIf="trade.imageUrl" (load)="onImageLoad()" [width]="largeurImage"
+                                                [height]="hauteurImage" [priority]="i === 0"
+                                                alt="formation BE-ON-TOP au métier {{trade.sigle}}">
+                                        </a>
+                                    </div>
+                                </ng-container>
 
-                        <!-- si on laisse le css faire la troncature -->
-                        <!-- <div class="card-text pt-2"><a
+                                <!-- si on laisse le css faire la troncature -->
+                                <!-- <div class="card-text pt-2"><a
                                 [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]"
                                 class="text-decoration-none fs-6">
                                 {{(truncateText(trade.description, 230) )| stripHtml }} </a></div> -->
-                        <div class="card-text pt-2"><a
-                                [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]"
-                                class="text-decoration-none fs-6">
-                                {{ trade.description| stripHtml }} </a></div>
+                                <div class="card-text pt-2"><a
+                                        [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]"
+                                        class="text-decoration-none fs-6">
+                                        {{ trade.description| stripHtml }} </a></div>
 
-                        <!-- si on utilise l'éditeur de texte, pour récupérer le texte tronqué et brut -->
-                        <!-- <div class="card-text"><a [routerLink]="['/trade', trade.sigle]" class="text-decoration-none" [innerHTML]="sanitizer.bypassSecurityTrustHtml((trade.description | slice:0:100) +'...')"></a></div> -->
+                                <!-- si on utilise l'éditeur de texte, pour récupérer le texte tronqué et brut -->
+                                <!-- <div class="card-text"><a [routerLink]="['/trade', trade.sigle]" class="text-decoration-none" [innerHTML]="sanitizer.bypassSecurityTrustHtml((trade.description | slice:0:100) +'...')"></a></div> -->
 
-                        <div *ngIf="isEditor" class="d-flex justify-content-end">
-                            <hr>
-                            <button class="btn btn-transparent mt-3" aria-label="Edition du métier">
-                                <a class="text-dark" [routerLink]="['/admin/updateDescription', trade.sigle]">
-                                    <i class="bi bi-pencil-square"></i>
-                                    Editer</a>
-                            </button>
-                        </div>
+                                <div *ngIf="isEditor" class="d-flex justify-content-end">
+                                    <hr>
+                                    <button class="btn btn-transparent mt-3" aria-label="Edition du métier">
+                                        <a class="text-dark" [routerLink]="['/admin/updateDescription', trade.sigle]">
+                                            <i class="bi bi-pencil-square"></i>
+                                            Editer</a>
+                                    </button>
+                                </div>
 
-                        <!-- pour switcher d'un intitulé à un autre selon que studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle -->
-                        <ng-container *ngIf="studentData && !offline">
-                            <hr>
-                            <a [routerLink]="[
+                                <!-- pour switcher d'un intitulé à un autre selon que studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle -->
+                                <ng-container *ngIf="studentData && !offline">
+                                    <hr>
+                                    <a [routerLink]="[
                                     '/quizz/',
                                     trade.sigle,studentData?.['quizz_'+trade.sigle]?((studentData?.['quizz_'+trade.sigle]?.lastIndexQuestion) + 1 | number):0,
                                     ((studentData?.['quizz_'+trade.sigle]?.scoreCounter || 0 | number)),
@@ -383,58 +427,79 @@
                                     studentData?.id ? studentData.id : ''
                                   ]" class="text-decoration-none text-dark" alt="questionnaire de positionnement">
 
-                                <div class="d-flex justify-content-end"
-                                    *ngIf="(studentData && !studentData['quizz_'+trade.sigle])">
+                                        <div class="d-flex justify-content-end"
+                                            *ngIf="(studentData && !studentData['quizz_'+trade.sigle])">
 
-                                    <button (click)="logStartEvaluationEvent(trade.denomination)"
-                                        aria-label="Démarrer le questionnaire be-on-top" class="btn btn-transparent"><i
-                                            class="bi bi-clock-fill text-success"></i>
-                                        Démarrer votre évaluation</button>
-                                </div>
-                                <div class="d-flex justify-content-end"
-                                    *ngIf="studentData && studentData['quizz_'+trade.sigle] && !studentData['quizz_'+trade.sigle].fullResults">
+                                            <button (click)="logStartEvaluationEvent(trade.denomination)"
+                                                aria-label="Démarrer le questionnaire be-on-top"
+                                                class="btn btn-transparent"><i
+                                                    class="bi bi-clock-fill text-success"></i>
+                                                Démarrer votre évaluation</button>
+                                        </div>
+                                        <div class="d-flex justify-content-end"
+                                            *ngIf="studentData && studentData['quizz_'+trade.sigle] && !studentData['quizz_'+trade.sigle].fullResults">
 
-                                    <button aria-label="Poursuivre le questionnaire" class="btn btn-transparent"><i
-                                            class="bi bi-clock-history fw-bold"></i>
-                                        <!-- Reprendre à la question {{studentData.lastIndexQuestion+1}}</button></div> -->
-                                        Poursuivre l'évaluation</button>
-                                </div>
-                            </a>
-                            <div class="d-flex justify-content-end" *ngIf="checkQuizzCondition(trade)">
-                                <a [routerLink]="['/account']">
-                                    <div class="btn btn-transparent border-0">
-                                        <i class="bi bi-check-square-fill text-success"></i>
-                                        Votre évaluation est terminée
+                                            <button aria-label="Poursuivre le questionnaire"
+                                                class="btn btn-transparent"><i class="bi bi-clock-history fw-bold"></i>
+                                                <!-- Reprendre à la question {{studentData.lastIndexQuestion+1}}</button></div> -->
+                                                Poursuivre l'évaluation</button>
+                                        </div>
+                                    </a>
+                                    <div class="d-flex justify-content-end" *ngIf="checkQuizzCondition(trade)">
+                                        <a [routerLink]="['/account']">
+                                            <div class="btn btn-transparent border-0">
+                                                <i class="bi bi-check-square-fill text-success"></i>
+                                                Votre évaluation est terminée
+                                            </div>
+                                        </a>
                                     </div>
-                                </a>
+                                </ng-container>
+
                             </div>
-                        </ng-container>
 
-                    </div>
+                        </div>
 
+
+                    </ng-container>
                 </div>
 
+                <!-- fin du deuxième niveau d'itération -->
 
-            </ng-container>
-        </div>
-        <!-- accès au reste -->
-        <!-- si on voulait faire défiler les  autres métiers, pour mémo, je n'aime pas -->
-        <!-- <div class="marquee">
+
+                <!-- accès au reste -->
+                <!-- si on voulait faire défiler les  autres métiers, pour mémo, je n'aime pas -->
+                <!-- <div class="marquee">
             <div class="marquee-content">
               <span *ngFor="let trade of catGroup; let j = index">{{trade.denomination}}</span>
               <span *ngFor="let trade of catGroup; let j = index">{{trade.denomination}}</span>
             </div>
           </div> -->
 
-        <div class="card-footer">
-            <button class="btn btn-success w-100 mx-auto" (click)="openFullCatItems()" *ngIf="catGroup.length>2">
-                <span *ngIf="!isFullCatItemsOpen">
-                    Toutes les formations ({{catGroup.length}})
-                </span>
-                <span *ngIf="isFullCatItemsOpen">
-                    Fermer
-                </span>
-            </button>
+                <!-- refacto si catégories multiples -->
+                <div class="card-footer" *ngIf="group[1].length>2">
+                    <button class="btn btn-success w-100 mx-auto" (click)="openFullCatItems()">
+                        <span *ngIf="!isFullCatItemsOpen">
+                            Toutes les formations ({{group[1].length}})
+                        </span>
+                        <span *ngIf="isFullCatItemsOpen">
+                            Fermer
+                        </span>
+                    </button>
+                </div>
+                <!-- <div class="card-footer">
+                <button class="btn btn-success w-100 mx-auto" (click)="openFullCatItems()" *ngIf="catGroup.length>2">
+                    <span *ngIf="!isFullCatItemsOpen">
+                        Toutes les formations ({{catGroup.length}})
+                    </span>
+                    <span *ngIf="isFullCatItemsOpen">
+                        Fermer
+                    </span>
+                </button>
+            </div> -->
+
+            </div>
         </div>
-    </div>
+
+        <!-- fin de boucle additionnelle si plusieurs catégories -->
+    </ng-container>
 </div>

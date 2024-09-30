@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 // je ne vois pas l'utilité de cette méthode pour le moment, donc on désactive !!!!
@@ -95,8 +95,8 @@ export class HomeComponent implements OnInit {
   isLargeScreen?: boolean
 
 
-
-
+  groupedTrades: any[] = [];  // Pour les métiers avec parentCategory
+  ungroupedTrades: any[] = [];  // Pour les métiers sans parentCategory
 
 
   constructor(
@@ -112,7 +112,8 @@ export class HomeComponent implements OnInit {
     // private networkService: NetworkService,
     private analytics: Analytics,
     // private networkService: NetworkService
-    public slugService: SlugService
+    public slugService: SlugService,
+    private cdr: ChangeDetectorRef
   ) {
 
     this.offline = !navigator.onLine
@@ -168,6 +169,9 @@ export class HomeComponent implements OnInit {
               this.studentData = data
               this.checkIfQuizzAchieved()
               this.dataLoading = false
+
+              // Forcer la détection de changement
+              this.cdr.detectChanges();
             })
           this.authService.getUserId();
           // retourne this.ui tout de suite après la connexion. undefined plus tard, donc ne convient pas...
@@ -202,6 +206,9 @@ export class HomeComponent implements OnInit {
           // this.tradesData = data.reverse();
           this.tradesData = data;
           console.log("this.tradesData", this.tradesData);
+
+          // si on méthode à l'identique de header pour le cas où plusieurs catégories
+          this.groupTrades()
           // pour tester regroupement basic
           // this.onSearchCatEntered("caces")
 
@@ -309,13 +316,14 @@ export class HomeComponent implements OnInit {
     trade.imageUrl = './assets/images-presentation-metiers-vide.jpg';
   }
 
-  wrapFirstWord(text: string): string {
-    const words = text.split(' ');
-    if (words.length > 1) {
-      words[0] = `<span class="first-word">${words[0]}</span>`;
-    }
-    return words.join(' ');
-  }
+  // pensé initialement pour des effets de couleurs
+  // wrapFirstWord(text: string): string {
+  //   const words = text.split(' ');
+  //   if (words.length > 1) {
+  //     words[0] = `<span class="first-word">${words[0]}</span>`;
+  //   }
+  //   return words.join(' ');
+  // }
 
 
   redirectToAccount() {
@@ -339,7 +347,6 @@ export class HomeComponent implements OnInit {
       this.setOneQuizzAchieved();
       return true
     }
-
     return false;
   }
 
@@ -351,10 +358,10 @@ export class HomeComponent implements OnInit {
     if (!text || text.length <= limit) {
       return text;
     }
-  
+
     const words = text.split(' ');
     let truncatedText = '';
-  
+
     for (const word of words) {
       // Vérifier si ajouter le prochain mot dépasserait la limite
       if ((truncatedText + (truncatedText ? ' ' : '') + word).length <= limit) {
@@ -363,11 +370,11 @@ export class HomeComponent implements OnInit {
         break;
       }
     }
-  
+
     return truncatedText + '...';
   }
-  
-  
+
+
   // mieux pour le nombre de lignes générées
   // truncateText(text: string, limit: number): string {
   //   if (!text || text.length <= limit) {
@@ -510,30 +517,30 @@ export class HomeComponent implements OnInit {
   }
 
 
-  
+
   // pour utiliser le composant de recherche
   onSearchTextEntered(searchValue: string) {
     const normalizedSearchValue = this.removeAccents(searchValue).toLowerCase().trim(); // Normalisation de la recherche
 
     // Vérifiez si un élément non visible correspond au terme de recherche
     if (!this.isFullCatItemsOpen && this.catGroup.some((trade: any) => {
-        // Normalisez les descriptions pour la comparaison
-        const normalizedDenomination = this.removeAccents(trade.denomination).toLowerCase();
-        const normalizedDescription = this.removeAccents(trade.description).toLowerCase();
-        console.log(normalizedDescription);
-        
+      // Normalisez les descriptions pour la comparaison
+      const normalizedDenomination = this.removeAccents(trade.denomination).toLowerCase();
+      const normalizedDescription = this.removeAccents(trade.description).toLowerCase();
+      console.log(normalizedDescription);
 
-        // Comparez avec la valeur de recherche normalisée
-        return normalizedDenomination.includes(normalizedSearchValue) || normalizedDescription.includes(normalizedSearchValue);
+
+      // Comparez avec la valeur de recherche normalisée
+      return normalizedDenomination.includes(normalizedSearchValue) || normalizedDescription.includes(normalizedSearchValue);
     })) {
-        // Ouvrez si une correspondance est trouvée
-        this.isFullCatItemsOpen = true;
+      // Ouvrez si une correspondance est trouvée
+      this.isFullCatItemsOpen = true;
     }
 
     this.searchText = searchValue; // Gardez cela pour l'affichage
     console.log("Search Value:", searchValue);
     console.log("Normalized Search Value:", normalizedSearchValue);
-}
+  }
 
 
 
@@ -550,33 +557,56 @@ export class HomeComponent implements OnInit {
 
   removeAccents(text: string): string {
     return text
-        .normalize('NFD')                         // Normalisation
-        .replace(/[\u0300-\u036f]/g, '')         // Supprime les accents
-        .replace(/®/g, '')                       // Supprime le symbole ®
-        .replace(/&reg;/g, '')                   // Supprime la représentation HTML du symbole ®
-        .replace(/\s*\(\s*/g, ' ')               // Ignore les parenthèses (enlève les espaces autour)
-        .replace(/\s*\)\s*/g, ' ')               // Ignore les parenthèses
-        .replace(/\s+/g, ' ')                     // Remplace les espaces multiples par un seul espace
-        .trim();                                  // Supprime les espaces de début et de fin
-}
+      .normalize('NFD')                         // Normalisation
+      .replace(/[\u0300-\u036f]/g, '')         // Supprime les accents
+      .replace(/®/g, '')                       // Supprime le symbole ®
+      .replace(/&reg;/g, '')                   // Supprime la représentation HTML du symbole ®
+      .replace(/\s*\(\s*/g, ' ')               // Ignore les parenthèses (enlève les espaces autour)
+      .replace(/\s*\)\s*/g, ' ')               // Ignore les parenthèses
+      .replace(/\s+/g, ' ')                     // Remplace les espaces multiples par un seul espace
+      .trim();                                  // Supprime les espaces de début et de fin
+  }
 
 
 
   cleanText(text: string): string {
     return this.removeAccents(text).toLowerCase().replace(/®/g, '');
-}  
+  }
 
-  
 
-  // Fonction pour filtrer ceux dont le sigle commence par caces
+
+  // Fonction pour filtrer ceux dont le sigle commence par la valeur de parentCategory (exemple caces)
   onSearchCatEntered(catValue: string) {
     this.catGroup = this.tradesData.filter((trade: Trade) => trade.sigle.includes(catValue))
     console.log('catGroup', this.catGroup)
-
     // console.log(this.searchText);
   }
-  
-  
+
+  groupTrades() {
+    console.log("Trades initiaux:", this.tradesData);
+
+    const grouped = new Map<string, any[]>();
+
+    this.tradesData.forEach((trade: any) => {
+      if (trade.parentCategory) {
+        if (!grouped.has(trade.parentCategory)) {
+          grouped.set(trade.parentCategory, []);
+        }
+        grouped.get(trade.parentCategory)?.push(trade);
+      } else {
+        this.ungroupedTrades.push(trade);
+      }
+    });
+
+    this.groupedTrades = Array.from(grouped.entries());
+    // j'obtiens [Array(2)] dont 0 est parentCategory et 1 le tableau d'objets
+    console.log("Métiers regroupés:", this.groupedTrades);
+
+    console.log("Métiers non groupés:", this.ungroupedTrades);
+
+  }
+
+
 
 }
 
