@@ -18,7 +18,8 @@ Tests OK. Sur une  partie. A finir.
     </div>
 
 
-    <p *ngIf="tradesEvaluated.length>1 && !socialData.priorTrade">Vous avez terminé plusieurs questionnaires métiers. Merci d'indiquer vos
+    <p *ngIf="tradesEvaluated.length>1 && !socialData.priorTrade">Vous avez terminé plusieurs questionnaires métiers.
+        Merci d'indiquer vos
         préférences.</p>
     <p *ngIf="tradesEvaluated.length>1 && socialData.priorTrade">Vos préférences enregistrées.</p>
     <p *ngIf="tradesEvaluated.length===1 && !socialData.center">Merci d'indiquer vos préférences.</p>
@@ -27,7 +28,7 @@ Tests OK. Sur une  partie. A finir.
     <form #target="ngForm" (ngSubmit)="onSubmitChoice(target)" class="mt-3" [ngClass]="{'read-only-form': isReadOnly}">
         <div class="row">
 
-            <div class="col-sm-6 mb-1" *ngIf="tradesEvaluated.length!==1">
+            <div class="col-sm-5 mb-1" *ngIf="tradesEvaluated.length!==1">
                 <!-- Premier select -->
                 <!-- {{priorTrade| json}} -->
                 <select class="form-select" name="priorTrade" [(ngModel)]="priorTrade" required #sigle="ngModel"
@@ -50,11 +51,13 @@ Tests OK. Sur une  partie. A finir.
                     Veuillez préciser la formation souhaitée.
                   </div> -->
                 <div *ngIf="sigle.value!==''" class="valid mt-2">
-                    Choix enregistré.
+                    Choix formation enregistré.
                 </div>
             </div>
             <!-- {{tradesEvaluated.length}} -->
-            <div class="mb-1" [ngClass]="{'col-sm-6':tradesEvaluated.length!==1}">
+            <!-- <div class="mb-1" [ngClass]="{'col-sm-6':tradesEvaluated.length!==1}"> -->
+            <div class="mb-1 mt-2" [ngClass]="{'col-sm-5 mt-0':tradesEvaluated.length!==1}">
+
                 <!-- Deuxième select: lié aux données filtrées -->
                 <ng-container *ngIf="dataFiltered && dataFiltered.length > 0">
 
@@ -67,9 +70,15 @@ Tests OK. Sur une  partie. A finir.
                         <!-- n'est plus nécessaire si on récupère center.id en base -->
                         <option *ngFor="let center of dataFiltered" [value]="center.id">
                             <!-- {{ center.cp }} - {{ center.name }} -->
-                            {{ center.cp }} - {{ center.city }}
+                            {{ center.city }}
+                            <span class="main-city" *ngIf="center.mainCity && center.mainCity !== center.city">
+                                (Proche {{ center.mainCity }})
+                            </span>
+                            <!-- {{ center.cp }} - {{ getResponsiveText(center.city, center.mainCity)}} -->
                         </option>
+
                     </select>
+
 
                     <!-- Sélecteur pour le cas où un centre a déjà été sélectionné -->
                     <select *ngIf="socialData.center" class="form-select" aria-label="Selected center" name="center"
@@ -83,16 +92,33 @@ Tests OK. Sur une  partie. A finir.
                         <!-- <option *ngFor="let center of dataFiltered" [value]="center.cp + '|' + center.name"> -->
                         <!-- n'est plus nécessaire si on récupère center.id en base -->
                         <option *ngFor="let center of dataFiltered" [value]="center.id">
-                            <!-- {{ center.cp }} - {{ center.name }} -->
-                            {{ center.cp }} - {{ center.city }}
+                            {{ center.city }}
+                            <span class="main-city" *ngIf="center.mainCity && center.mainCity !== center.city">
+                                (Proche {{ center.mainCity }})
+                            </span>
+
                         </option>
+
+
+
+
 
                         <!-- Si un centre est déjà sélectionné, afficher le centre sélectionné en haut -->
                         <option *ngIf="socialData.center" [value]="socialData.center" selected>
                             <!-- {{ centerChoiced?.cp }} - {{ centerChoiced?.name }} -->
-                            {{ centerChoiced?.cp }} - {{ centerChoiced?.city }}
+                            <!-- {{ centerChoiced?.cp }} - {{ centerChoiced?.city }} -->
+                            {{ centerChoiced?.city }}
+                            <span class="main-city"
+                                *ngIf="centerChoiced?.mainCity && centerChoiced?.mainCity !== centerChoiced?.city">
+                                (Proche {{ centerChoiced?.mainCity }})
+                            </span>
                         </option>
                     </select>
+
+                    <div *ngIf="target.value.center!==''" class="valid mt-2">
+                        Choix du centre enregistré.
+                    </div>
+
 
                 </ng-container>
 
@@ -101,6 +127,7 @@ Tests OK. Sur une  partie. A finir.
                 <div *ngIf="isLoading" class="spinner-border text-primary" role="status">
                     <span class="visually-hidden">Chargement...</span> <!-- Accessible -->
                 </div>
+
             </div>
 
         </div>

@@ -58,6 +58,40 @@
   font-size: smaller;
 }
 
+
+
+/* @media only screen and (max-width: 600px) {
+  option select span.rwd {
+    background-color: lightblue;
+    color: red!important;
+  }
+} */
+
+select option {
+  white-space: nowrap; /* Empêche le retour à la ligne */
+  overflow: hidden;    /* Cache le texte qui dépasse */
+  text-overflow: ellipsis; /* Ajoute "..." pour le texte trop long */
+}
+
+.main-city {
+  color: #555;
+  font-style: italic;
+}
+
+
+
+@media only screen and (max-width: 430px) {
+  ::ng-deep select option span {
+    background-color: lightblue;
+    color: red!important;
+  }
+
+  select option{
+    font-size: smaller;
+  }
+}
+
+
   
 
 

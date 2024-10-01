@@ -439,6 +439,19 @@ export class StudentFormComponent implements OnInit, OnChanges {
     return this.denominationMap.get(trade) || of(null);
   }
 
+  // Méthode pour obtenir le texte selon la taille de l'écran
+  getResponsiveText(city: string, mainCity?: string): string {
+    const screenWidth = window.innerWidth;
+
+    // Si l'écran est inférieur à 430px et que mainCity existe
+    if (screenWidth <= 430 && mainCity && city !== mainCity) {
+      return `Proche ${mainCity}`; // Affiche uniquement la mainCity
+    }
+
+    // Affiche city et mainCity si elles sont différentes
+    return mainCity && city !== mainCity ? `${city} (Proche ${mainCity})` : city;
+  }
+
 
 
 }

@@ -6,5 +6,6 @@ export interface Centers {
     address: string;
     created: Date;
     status: boolean;
-    sigles: string[]
+    sigles: string[];
+    mainCity?:string
 }
