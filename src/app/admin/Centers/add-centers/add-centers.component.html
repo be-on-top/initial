@@ -70,6 +70,12 @@
     </select>
 
 
+    <!-- pour pouvoir remonter mainCity : ville la plus proche -->
+    <!-- <div class="form-control mt-5"> -->
+      <label for="mainCity" class="form-label mt-3">Ville la plus proche</label>
+      <input type="text" id="city" name="mainCity" ngModel class="form-control">
+    <!-- </div> -->
+
 
 
     <button type="submit" class="btn btn-primary mt-4" [disabled]=centersForm.invalid>Ajouter</button>
@@ -79,7 +85,7 @@
   <h3 class="my-3">Importer des centres de formation depuis un CSV</h3>
   <div class="form-group mt-3">
     <label for="csvFile" class="form-label">Choisissez un fichier CSV</label>
-       <input type="file" id="csvFile" (change)="onFileChange($event)" accept=".csv" class="form-control">
+    <input type="file" id="csvFile" (change)="onFileChange($event)" accept=".csv" class="form-control">
   </div>
   <button type="submit" class="btn btn-secondary mt-4" (click)="importCSV()" [disabled]="!csvFile">Importer</button>
 

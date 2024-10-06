@@ -14,11 +14,13 @@
         <div *ngFor="let center of allCenters">
 
             <div class="row mt-4 ps-5 ps-sm-0"
-                *ngIf="searchText==='' || center.name.includes(searchText) || center.name.toLowerCase().includes(searchText) || center.cp.toLowerCase().includes(searchText) ">
+                *ngIf="searchText==='' || center.name.includes(searchText) || center.name.toLowerCase().includes(searchText) || center.cp.toLowerCase().includes(searchText) || center.id.includes(searchText) ">
 
                 <div class="col-sm-3 col-6">{{center.name}}</div>
 
                 <div class="col-sm-3 col-6 order-perso2">{{center.cp}}</div>
+
+                <!-- <div class="col-sm-3 col-6 order-perso2">{{center.id}}</div> -->
 
                 <div *ngIf="userRouterLinks.user=='admin'" class="col-sm-3 col-6"><button class="btn btn-danger"
                         (click)="deleteCenter(center.id)"><i class="bi bi-trash-fill"></i>Suppression</button></div>

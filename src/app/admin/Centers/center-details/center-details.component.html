@@ -13,7 +13,7 @@
                     <span class="fw-bold">Adresse</span> : {{center.address}}<br>
                     <span class="fw-bold">CP</span> : {{center.cp}}<br>
                     <span class="fw-bold">Ville</span> : {{center.city}}
-                </p>
+                    <span *ngIf="center.mainCity && center.mainCity!=='center.city'"> (Proche de : {{center.mainCity}})</span></p>
                 <hr>
                 <!-- puisque cette vue est partagée entre admin et utilisateur final -->
                      <p *ngIf="userRouterLinks.user && userRouterLinks.user==='admin'"> <span *ngIf="center.status; else checkbox">Status : actif</span>
@@ -37,6 +37,10 @@
 
 
         <div class="d-flex my-4 justify-content-end gap-5">
+
+            <button *ngIf="userRouterLinks.user==='admin'" class="btn btn-warning">
+                <a class="text-white" [routerLink]="['/admin/updateCenter', center.id]">Modifier</a>
+            </button>
 
             <button *ngIf="userRouterLinks.user==='admin'" class="btn btn-primary">
                 <a class="text-white" [routerLink]="['/admin/centers']">Retour à la liste</a>
