@@ -179,6 +179,7 @@ export class AuthService {
         // Si utilisateur authentifié, le doc ci-dessous référence toutes les propriétés accessibles
         // https://firebase.google.com/docs/reference/js/firebase.User
         uid = user.uid;
+
         console.log("uid!!!!!!!!!!!!!!!!!!!", uid);
         isAuthenticated = true;
         return uid
@@ -286,7 +287,11 @@ export class AuthService {
 
 
 
-
+// Méthode pour obtenir l'UID de l'utilisateur connecté (en admin)
+getCurrentUserUid(): string | null {
+  const user = this.auth.currentUser;  // Utilise currentUser pour obtenir l'utilisateur actuel
+  return user ? user.uid : null;  // Retourne l'UID si l'utilisateur est connecté, sinon null
+}
 
 
 

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 // import { NgForm } from '@angular/forms';
 import { Auth, createUserWithEmailAndPassword, deleteUser, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithRedirect } from "@angular/fire/auth";
-import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc, updateDoc, query, getDocs, where, getDoc, QuerySnapshot, arrayUnion } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc, updateDoc, query, getDocs, where, getDoc, QuerySnapshot, arrayUnion, CollectionReference, DocumentData } from '@angular/fire/firestore';
 // import { FirebaseApp } from '@angular/fire/app';
-import { Observable } from 'rxjs';
+import { from, map, Observable, of, switchMap, tap } from 'rxjs';
 // import { switchMap, tap } from 'rxjs/operators';
 import { Student } from './Students/student';
 import { NgForm } from '@angular/forms';
@@ -11,6 +11,7 @@ import { Evaluation } from './evaluation';
 import { Analytics, setUserId } from "@angular/fire/analytics";
 import { Router } from '@angular/router';
 import { Storage, getDownloadURL, ref, uploadBytes, uploadString } from '@angular/fire/storage';
+import { Users } from './Users/users';
 
 
 
@@ -24,7 +25,7 @@ import { Storage, getDownloadURL, ref, uploadBytes, uploadString } from '@angula
 export class StudentsService {
   // private fullResults: { [key: string]: { duration: number; cost: number } }[] = [];
 
-  constructor(private auth: Auth, private firestore: Firestore, private analytics: Analytics, private router: Router,  private storage:Storage) { }
+  constructor(private auth: Auth, private firestore: Firestore, private analytics: Analytics, private router: Router, private storage: Storage) { }
 
   // createStudent(studentForm: NgForm) {
   async createStudent(student: any) {
@@ -37,7 +38,7 @@ export class StudentsService {
 
 
       // let newEvaluator = { id: Date.now(), ...evaluator };
-      let newStudent :Student = { created: Date.now(), status: true, trainer: "Attribué ultérieurement", innerStudent:true, ...student };
+      let newStudent: Student = { created: Date.now(), status: true, trainer: "Attribué ultérieurement", innerStudent: true, ...student };
       // on va lui affecter un password aléatoire en fonction de la date
       // let password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
       // juste le temps du test, let password sera le même pour tous : password
@@ -62,8 +63,8 @@ export class StudentsService {
           });
         // enregistre dans Firestore d'autre part le role attribué dans une collection roles qui regroupera tous les roles de tous les utilisateurs avec comme idDoc uid d'authentification là aussi
         let $rolesRef = collection(this.firestore, "roles");
-       
-       await setDoc(doc($rolesRef, newStudent.id), { role: 'student' })
+
+        await setDoc(doc($rolesRef, newStudent.id), { role: 'student' })
 
         // envoie un mail de réinitialisation du mot de passe
         await sendPasswordResetEmail(this.auth, student.email)
@@ -89,16 +90,16 @@ export class StudentsService {
       // Attendre que la déconnexion soit terminée
       this.auth.onAuthStateChanged(async (user) => {
         if (!user) {
-      // Demander à l'administrateur de se reconnecter
-      const adminPassword = prompt('Veuillez entrer votre mot de passe pour vous reconnecter.');
+          // Demander à l'administrateur de se reconnecter
+          const adminPassword = prompt('Veuillez entrer votre mot de passe pour vous reconnecter.');
 
-      if (adminPassword) {
-        await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
-        console.log('Reconnexion automatique en tant qu\'administrateur réussie.', adminPassword);
-        this.router.navigate(['/admin/student', newStudent.id]);
-      } else {
-        console.error('Mot de passe non fourni.');
-      }
+          if (adminPassword) {
+            await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
+            console.log('Reconnexion automatique en tant qu\'administrateur réussie.', adminPassword);
+            this.router.navigate(['/admin/student', newStudent.id]);
+          } else {
+            console.error('Mot de passe non fourni.');
+          }
         }
       });
 
@@ -538,7 +539,7 @@ export class StudentsService {
     return csvContent;
   }
 
-  async uploadPDF(filePath:string, selectedFile:any, studentId:string) {
+  async uploadPDF(filePath: string, selectedFile: any, studentId: string) {
 
     const storageRef = ref(this.storage, filePath);
 
@@ -564,6 +565,123 @@ export class StudentsService {
       console.error('Erreur lors de l\'upload ou de l\'enregistrement des métadonnées :', error);
     }
   }
+
+
+  /**
+   * Méthode pour vérifier le CP d'un utilisateur par son ID (credential.uid),
+   * puis récupérer les centerID et returnedPrior correspondants.
+   */
+
+  // Définir les références aux collections Firestore
+  // On ne  va pas définir les références aux collections Firestore en amont, même si c'est élégant... 
+  // private usersRef: CollectionReference;
+  // private centersRef: CollectionReference;
+  // private socialFormRef: CollectionReference;
+  // getCentersAndSocialFormByUserId(userId: string) {
+  //   const usersRef = collection(this.firestore, 'users');
+  //   const centersRef = collection(this.firestore, 'centers');
+  //   const socialFormRef = collection(this.firestore, 'SocialForm');
+  //   // Récupère le document utilisateur dans la collection 'users' en fonction de l'ID donné
+  //   const userDocRef = doc(usersRef, userId);
+
+  //   return from(getDoc(userDocRef)).pipe(
+
+  //     // Définir les références aux collections Firestore
+
+  //     switchMap(userDocSnapshot => {
+  //       const userDocData = userDocSnapshot.data() as Users | undefined;
+      
+  //       if (userDocData && userDocData.cp) {
+  //         const cp = userDocData.cp; // On suppose ici que `cp` est une chaîne
+  //         console.log('utilisateur référent de', cp);
+      
+  //         const centersQuery = query(centersRef, where('cp', '==', cp));
+  //         console.log('Exécution de la requête Firestore pour CP:', cp);
+          
+  //         return from(getDocs(centersQuery)).pipe(
+  //           tap(querySnapshot => {
+  //             console.log('Résultats de la requête centers:', querySnapshot.docs.map(doc => doc.data()));
+  //           }),
+  //           map(querySnapshot => {
+  //             const centerIDs = querySnapshot.docs.map(doc => doc.id);
+  //             return centerIDs;
+  //           }),
+  //           switchMap(centerIDs => {
+  //             if (centerIDs.length > 0) {
+  //               const socialFormQuery = query(socialFormRef, where('center', 'in', centerIDs));
+  //               return from(getDocs(socialFormQuery));
+  //             } else {
+  //               return of([]);
+  //             }
+  //           }),
+  //           map((socialFormQuerySnapshot: any) => {
+  //             const returnedPriors = socialFormQuerySnapshot.docs.map((doc: any) => doc.id);
+  //             return returnedPriors;
+  //           })
+  //         );
+  //       } else {
+  //         return of([]);
+  //       }
+  //     })
+      
+  //   );
+  // }
+
+  getCentersAndSocialFormByUserId(userId: string) {
+    const usersRef = collection(this.firestore, 'users');
+    const centersRef = collection(this.firestore, 'centers');
+    const socialFormRef = collection(this.firestore, 'SocialForm');
+  
+    // Récupère le document utilisateur dans la collection 'users' en fonction de l'ID donné
+    const userDocRef = doc(usersRef, userId);
+  
+    return from(getDoc(userDocRef)).pipe(
+      switchMap(userDocSnapshot => {
+        const userDocData = userDocSnapshot.data() as Users | undefined;
+        console.log('userDocData.cp', userDocData);
+        
+        
+        // Si `cp` dans `userDocData` est un tableau de chaînes de caractères
+        if (userDocData && Array.isArray(userDocData.cp) && userDocData.cp.length > 0) {
+          const cpArray = userDocData.cp; // Le tableau de CPs dans le document de l'utilisateur
+          console.log('utilisateur référent de', cpArray);
+  
+          // Requête pour trouver tous les centres dont le `cp` est dans le tableau `cpArray`
+          const centersQuery = query(centersRef, where('cp', 'in', cpArray));
+          console.log('Exécution de la requête Firestore pour CPs:', cpArray);
+  
+          return from(getDocs(centersQuery)).pipe(
+            tap(querySnapshot => {
+              console.log('Résultats de la requête centers:', querySnapshot.docs.map(doc => doc.data()));
+            }),
+            map(querySnapshot => {
+              // Récupère les IDs des centres correspondant aux CPs
+              const centerIDs = querySnapshot.docs.map(doc => doc.id);
+              return centerIDs;
+            }),
+            switchMap(centerIDs => {
+              if (centerIDs.length > 0) {
+                // Requête pour les documents SocialForm en fonction des centerIDs obtenus
+                const socialFormQuery = query(socialFormRef, where('center', 'in', centerIDs));
+                return from(getDocs(socialFormQuery));
+              } else {
+                return of([]); // Aucun centre trouvé
+              }
+            }),
+            map((socialFormQuerySnapshot: any) => {
+              const returnedPriors = socialFormQuerySnapshot.docs.map((doc: any) => doc.id);
+              return returnedPriors;
+            })
+          );
+        } else {
+          return of([]); // Si l'utilisateur n'a pas de CP
+        }
+      })
+    );
+  }
+  
+  
+  
 
 }
 

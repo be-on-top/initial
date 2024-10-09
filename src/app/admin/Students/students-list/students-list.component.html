@@ -23,15 +23,16 @@
                 <div class="form-check">
                     <label class="form-check-label" for="subscriptionsCheckbox">Inscription finalisée</label>
                     <input type="checkbox" (change)="onCheckboxChangeSubscriptions($event)" class="form-check-input"
-                    id="subscriptionsCheckbox">
+                        id="subscriptionsCheckbox">
                 </div>
                 <!-- <ng-container *ngIf="tradesActivated"> -->
-                    <div *ngFor="let trade of trades">
-                        <div class="form-check">
-                            <label class="form-check-label" for="tradeCheckbox">Formation {{trade}}</label>
-                            <input type="checkbox" (change)="onCheckboxChangeTrades($event, trade)" class="form-check-input">
-                        </div>
+                <div *ngFor="let trade of trades">
+                    <div class="form-check">
+                        <label class="form-check-label" for="tradeCheckbox">Formation {{trade}}</label>
+                        <input type="checkbox" (change)="onCheckboxChangeTrades($event, trade)"
+                            class="form-check-input">
                     </div>
+                </div>
                 <!-- </ng-container> -->
                 <div class="form-check">
                     <label class="form-check-label" for="endedCheckbox">A terminé sa formation</label>
@@ -51,8 +52,7 @@
             <div class="col-sm-3 h5">Détails</div>
         </div>
 
-        <div class="row mt-4 d-xs-none justify-content-start"
-            *ngIf="userRouterLinks.user=='external'">
+        <div class="row mt-4 d-xs-none justify-content-start" *ngIf="userRouterLinks.user=='external'">
             <div class="col-sm-3 col-6 h5">Nom</div>
             <div class="col-sm-3 col-6 h5">Prénom</div>
             <div class="col-sm-3 col-6 h5">Détails</div>
@@ -63,7 +63,7 @@
                 <div class="row mt-4 ps-5 ps-sm-0"
                     *ngIf="searchText==='' || student.lastName.includes(searchText) || student.lastName.toLowerCase().includes(searchText) || student.firstName.includes(searchText) || student.firstName.toLowerCase().includes(searchText)">
 
-                    
+
                     <div class="col-sm-3 col-6">{{student.lastName}}</div>
                     <div class="col-sm-3 col-6 order-perso2">{{student.firstName}}</div>
                     <div class="col-sm-3 col-6"><button class="btn btn-danger text-white"
@@ -93,8 +93,9 @@
         </div>
         <!-- {{userRouterLinks.user}} -->
         <button class="btn btn-primary mt-5" *ngIf="userRouterLinks.user!=='external'"><a
-                    [routerLink]="['/admin/addStudent']" class="text-white"><i class="bi bi-person-fill-add me-2"></i>Ajouter</a></button>
-        
+                [routerLink]="['/admin/addStudent']" class="text-white"><i
+                    class="bi bi-person-fill-add me-2"></i>Ajouter</a></button>
+
 
         <div class="row gap-3" *ngIf="userRouterLinks.user!=='external'">
             <button class="btn btn-primary mt-5 col-10 col-md-5" (click)="exportStudentsCollection()"><i
