@@ -98,17 +98,15 @@
     <!-- 
     {{tradeData | json}} -->
     <div class="mt-4 p-2">
-        <!-- <img class="rounded img-fluid mb-2 border border-1 m-auto w-100" [src]="imageUrl" *ngIf="imageUrl"> -->
-        <!-- <img *ngIf="!offline" class="rounded img-fluid mb-2 border border-1 m-auto w-100" [src]="imageUrl"
-            srcset="{{ imageUrlReduced }} 575w, {{ imageUrl }} 1024w" sizes="(max-width: 575px) 575px, 1024px"
-            alt="formation be-on-top au métier {{tradeId}}"> -->
         <img *ngIf="!offline" class="rounded img-fluid mb-2 border border-1 m-auto w-100" [src]="imageUrl"
-            srcset="{{ imageUrlReduced ? imageUrlReduced : imageUrl }} 575w, {{ imageUrl }} 1024w"
-            sizes="(max-width: 575px) 575px, 1024px" alt="formation be-on-top au métier {{tradeId}}">
-
+             [attr.srcset]="imageUrlReduced ? imageUrlReduced + ' 575w, ' + imageUrl + ' 1024w' : imageUrl"
+             sizes="(max-width: 575px) 575px, 1024px"
+             alt="formation be-on-top au métier {{tradeId}}">
+    
         <img *ngIf="offline" class="rounded img-fluid mb-2 border border-1 m-auto w-100" [src]="imageUrl"
-            alt="formation au métier {{tradeId}}">
+             alt="formation au métier {{tradeId}}">
     </div>
+    
 
     <!-- à faire -->
     <div id="accordion">
