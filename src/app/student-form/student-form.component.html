@@ -92,9 +92,9 @@ Tests OK. Sur une  partie. A finir.
                         <!-- <option *ngFor="let center of dataFiltered" [value]="center.cp + '|' + center.name"> -->
                         <!-- n'est plus nécessaire si on récupère center.id en base -->
                         <option *ngFor="let center of dataFiltered" [value]="center.id">
-                            {{ center.city }}
+                            {{ center.cp }} - {{ center.city }}
                             <span class="main-city" *ngIf="center.mainCity && center.mainCity !== center.city">
-                                (Proche {{ center.mainCity }})
+                                ({{ center.mainCity }})
                             </span>
 
                         </option>
