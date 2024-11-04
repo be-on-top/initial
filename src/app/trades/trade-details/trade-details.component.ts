@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, OnInit } from '@angular/core';
 import { Meta, SafeHtml } from '@angular/platform-browser';
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { Firestore, docData, doc } from '@angular/fire/firestore';
@@ -13,6 +13,8 @@ import { Trade } from 'src/app/admin/trade';
 import { Location } from '@angular/common';
 import { CentersService } from 'src/app/admin/centers.service';
 import { Centers } from 'src/app/admin/centers';
+
+import * as L from 'leaflet';
 
 
 @Component({
@@ -44,12 +46,16 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
 
   tradeCenters: any
 
+  private map: L.Map | undefined;
+
+  isMapVisible = false;
+
 
   constructor(
     private service: SettingsService,
     private ac: ActivatedRoute,
     private auth: Auth,
-    private authService: AuthService, 
+    private authService: AuthService,
     private studentService: StudentsService,
     private firestore: Firestore,
     public sanitizer: DomSanitizer,
@@ -57,7 +63,7 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
     private titleService: Title,
     private metaService: Meta,
     private centerService: CentersService,
-    private router : Router
+    private router: Router
   ) {
     this.offline = !navigator.onLine
   }
@@ -92,6 +98,7 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
 
           // données structurées
           this.structuredData = this.generateStructuredData(this.tradeData);
+          // this.fetchCenters();
 
 
           // console.log("Sum of first values:", this.firstValuesSum)
@@ -156,6 +163,8 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
 
 
 
+
+
       }
 
 
@@ -209,9 +218,30 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
 
   }
 
-  ngAfterViewInit(): void {
-    this.fetchCenters()
+
+
+  // ngAfterViewChecked(): void {
+  //   const mapContainer = document.getElementById('mapId');
+
+  //   if (mapContainer) {
+  //     this.loadMapWithCenters();
+  //     this.mapInitialized = true; // Empêche les appels répétés
+  //   }
+  // }
+
+  private mapInitialized = false;
+
+  async ngAfterViewInit(): Promise<void> {
+    // Récupère les centres, puis charge la carte
+    await this.fetchCenters();
+
+    // Après chargement des centres, initialiser la carte une fois le conteneur DOM prêt
+    this.initializeMapWhenReady();
   }
+
+
+
+
 
 
 
@@ -247,16 +277,34 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
 
   }
 
+
+
+
   toggleCentersCollapse() {
     this.isCentersCollapsed = !this.isCentersCollapsed;
     // !this.isDescriptionCollapsed?this.isCPCollapsed:''
     this.isCentersCollapsed && this.isDescriptionCollapsed ? this.toggleDescriptionCollapse() : ''
     this.isCentersCollapsed && this.isCPCollapsed ? this.toggleCPCollapse() : ''
+
+    // Affiche la carte si l'onglet est ouvert
+    if (this.isCentersCollapsed) {
+      // Affiche la carte
+      this.isMapVisible = true;
+  
+      // Donne un délai pour s'assurer que le DOM est mis à jour avant l'appel de `invalidateSize`
+      setTimeout(() => {
+        this.map?.invalidateSize();
+      }, 100);
+    } else {
+      // Masque la carte si le collapse est fermé
+      this.isMapVisible = false;
+    }
+
+
   }
 
 
   addTag(description: string) {
-
     this.metaService.updateTag({ name: 'description', content: description })
     // this.metaService.addTag({ name: 'robots', content: 'index,follow' })
     this.metaService.updateTag({ property: 'og:title', content: this.tradeData.denomination })
@@ -268,7 +316,6 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
     this.metaService.updateTag({ property: 'og:image', content: this.imageUrl });
     // this.metaService.updateTag({ property: 'og:image', content: `../../assets/${this.tradeId}.jpeg` });
     this.updateLinkTags()
-
 
   }
 
@@ -356,15 +403,36 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
   }
 
 
-  async fetchCenters(): Promise<Centers[] | void> {
+  private async fetchCenters(): Promise<void> {
     try {
       const centers = await this.centerService.getDocsByParam(this.tradeId);
-      console.log('Centers found:', centers);
+      console.log('Centres récupérés:', centers);
       this.tradeCenters = centers
+      this.addMarkers(centers); // Ajoute les marqueurs après que la carte soit initialisée
     } catch (error) {
-      console.error('Error fetching centers:', error);
+      console.error('Erreur lors de la récupération des centres:', error);
     }
   }
+
+  private async addMarkers(centers: any[]): Promise<void> {
+    if (!this.map) return;
+
+    for (const center of centers) {
+      const localisation = await this.getLocalisation(center.cp);
+      if (localisation) {
+        const marker = L.marker([Number(localisation.latitude), Number(localisation.longitude)]).addTo(this.map);
+        marker.bindTooltip(`<b>CP:</b> ${center.cp}<br><b>Ville:</b> ${center.city}`, {
+          permanent: false,
+          direction: "top",
+          offset: L.point(0, -10)
+        });
+      }
+    }
+
+    // Ajuste la taille de la carte pour éviter tout problème de rendu
+    this.map.invalidateSize();
+  }
+
 
   public onLogin(): void {
     // Log de l'URL actuelle avant de la stocker
@@ -378,9 +446,9 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
 
     // Rediriger vers la page de login
     this.router.navigate(['/login']).then(() => {
-        console.log('Redirection vers /login effectuée.');
+      console.log('Redirection vers /login effectuée.');
     });
-}
+  }
 
 
   public onRegister(): void {
@@ -389,7 +457,137 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
     // Rediriger vers la page d'enregistrement
     this.router.navigate(['/register']);
   }
-  
+
+
+  // private async loadMapWithCenters(): Promise<void> {
+  //   const defaultLatitude = 46.603354; // Centre de la France
+  //   const defaultLongitude = 1.888334;
+
+  //   // Initialise la carte si elle n'existe pas encore
+  //   if (!this.map) {
+  //     console.log('Chargement de la carte...');
+  //     this.map = L.map('mapId').setView([defaultLatitude, defaultLongitude], 6);
+
+  //     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  //       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  //     }).addTo(this.map);
+  //   }
+
+  //   // Ajoute un marqueur pour chaque centre après récupération des coordonnées
+  //   for (const center of this.tradeCenters) {
+  //     const localisation = await this.getLocalisation(center.cp); // Attend la localisation
+  //     if (localisation) {
+  //       console.log('Ajout d\'un marqueur pour le centre:', center);
+  //       const marker = L.marker([Number(localisation.latitude), Number(localisation.longitude)]).addTo(this.map);
+
+  //       marker.bindTooltip(`<b>CP:</b> ${center.cp}<br><b>Ville:</b> ${center.city}`, {
+  //         permanent: false,
+  //         direction: "top",
+  //         offset: L.point(0, -10)
+  //       });
+  //     } else {
+  //       console.warn('Coordonnées non disponibles pour le centre avec CP:', center.cp);
+  //     }
+  //   }
+  // }
+
+  // Méthode asynchrone pour attendre que le conteneur et les centres soient prêts
+  private initializeMapWhenReady(): void {
+    const mapContainer = document.getElementById('mapId');
+
+    if (mapContainer && this.tradeCenters && this.tradeCenters.length > 0 && !this.mapInitialized) {
+      this.loadMapWithCenters(); // Initialiser la carte avec les centres
+      this.mapInitialized = true; // Marquer la carte comme initialisée
+    } else {
+      // Reessaie après un court délai si le conteneur ou les centres ne sont pas encore prêts
+      setTimeout(() => this.initializeMapWhenReady(), 100);
+    }
+  }
+
+  // Méthode pour charger la carte avec les centres
+  private loadMapWithCenters(): void {
+    const defaultLatitude = 46.603354; // Centre de la France
+    const defaultLongitude = 1.888334;
+
+    // Définir les icônes par défaut de Leaflet avant d'initialiser la carte
+    L.Icon.Default.mergeOptions({
+      iconRetinaUrl: 'assets/leaflet/marker-icon-2x.png',
+      iconUrl: 'assets/leaflet/marker-icon.png',
+      shadowUrl: 'assets/leaflet/marker-shadow.png',
+    });
+
+    if (!this.map) {
+      console.log('Initialisation de la carte...');
+      this.map = L.map('mapId').setView([defaultLatitude, defaultLongitude], 6);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(this.map);
+
+      console.log("Carte initialisée avec succès");
+    }
+
+    // Ajoute des marqueurs pour chaque centre, si la carte est bien initialisée (fonctionne très bien)
+    // if (this.map) {
+    //   this.tradeCenters.forEach((center:any) => {
+    //     this.getLocalisation(center.cp).then(localisation => {
+    //       if (localisation) {
+    //         const marker = L.marker([Number(localisation.latitude), Number(localisation.longitude)]).addTo(this.map!);
+    //         marker.bindTooltip(`<b>CP:</b> ${center.cp}<br><b>Ville:</b> ${center.city}`, {
+    //           permanent: false,
+    //           direction: "top",
+    //           offset: L.point(0, -10)
+    //         });
+    //       }
+    //     });
+    //   });
+    // }
+
+    if (this.map) {
+      this.tradeCenters.forEach((center: any) => {
+        this.getLocalisation(center.cp).then(localisation => {
+          if (localisation) {
+            const marker = L.marker([Number(localisation.latitude), Number(localisation.longitude)]).addTo(this.map!);
+
+            // Contenu de la pop-up avec le lien cliquable
+            const popupContent = `
+            <div>
+              <b>CP:</b> ${center.cp}<br>
+              <b>Ville:</b> ${center.city}<br>
+              <a href="/center/${center.id}" style="color: blue; text-decoration: underline;">
+                Voir le détail
+              </a>
+            </div>`;
+
+            // Bind la pop-up au lieu du tooltip
+            marker.bindPopup(popupContent);
+          }
+        });
+      });
+    }
+
+
+
+
+  }
+
+
+  // Méthode pour obtenir les coordonnées d'un centre à partir de son code postal
+  private async getLocalisation(cp: string): Promise<{ latitude: string; longitude: string } | null> {
+    return new Promise((resolve, reject) => {
+      this.centerService.getLocalisation(cp).subscribe(
+        data => resolve(data),
+        // Appelle loadMapWithCenters seulement après avoir récupéré les données
+        // this.loadMapWithCenters();
+        error => {
+          console.error('Erreur lors de la récupération des coordonnées:', error);
+          resolve(null); // Renvoie null en cas d'erreur pour continuer l'exécution
+        }
+      );
+    });
+  }
+
+
 
 
 

@@ -87,6 +87,16 @@ p.btn:hover {
 
 
 
+#mapId {
+  height: 500px; /* Assurez-vous que cette valeur est suffisante */
+  width: 100%;   /* Assurez-vous que cela s'applique bien au parent */
+  
+}
+
+
+
+
+
 @media only screen and (max-width:992px) {
   h1 {
     font-size: 1.8rem;

@@ -189,7 +189,14 @@
 
             <!-- 3 -->
 
+            <!-- <div id="mapId"></div> -->
+
+            <!-- Div carte en dehors du collapse, initialement caché -->
+
+
+
             <ng-container *ngIf="tradeCenters && tradeCenters.length>0">
+        
                 <div class="card-header third bg-primary pb-0">
                     <a (click)="toggleCentersCollapse()" class="btn text-light d-flex justify-content-between border-0"
                         data-bs-toggle="collapse" href="#collapseCenters">
@@ -199,6 +206,7 @@
                 </div>
                 <!-- {{isCentersCollapsed}} -->
                 <div id="collapseCenters" class="collapse" data-bs-parent="#accordion">
+                    <div *ngIf="isMapVisible" id="mapId"></div>
                     <div class="card-body fixing px-4 bg-primary text-white border-0">
 
                         <!-- le nom du centre n'est pas nécessaire -->
@@ -207,14 +215,23 @@
                             {{center.cp}} <a [routerLink]="['/center', center.id]"><i
                                     class="bi bi-geo-alt-fill ms-2 text-light"></i></a>
                         </p> -->
-                        <p *ngFor="let center of tradeCenters, let index=index"><a [routerLink]="['/center', center.id]" class="text-decoration-none text-light">
+                        <!-- <p *ngFor="let center of tradeCenters, let index=index"><a [routerLink]="['/center', center.id]" class="text-decoration-none text-light">
                             <span class="fw-bold">Centre de {{center.city}} </span><span class="responsive">: {{center.name}} - CP</span> {{center.cp}} <i
                                     class="bi bi-geo-alt-fill ms-2 text-light"></i></a>
-                        </p>
+                        </p> -->
+                          <!-- <div id="mapId"></div> -->
+
+                        
 
                     </div>
+                    
                 </div>
             </ng-container>
+
+
+
+            
+
 
 
 
