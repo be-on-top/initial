@@ -236,7 +236,8 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
     await this.fetchCenters();
 
     // Après chargement des centres, initialiser la carte une fois le conteneur DOM prêt
-    this.initializeMapWhenReady();
+    // Cette partie est désactivée tant qu'on n'a pas procédé à des tests à grande échelle...
+    // this.initializeMapWhenReady();
   }
 
 
@@ -408,7 +409,8 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
       const centers = await this.centerService.getDocsByParam(this.tradeId);
       console.log('Centres récupérés:', centers);
       this.tradeCenters = centers
-      this.addMarkers(centers); // Ajoute les marqueurs après que la carte soit initialisée
+      // on désactive tant qu'on n'a pas pu tester à grande échelle...
+      // this.addMarkers(centers); // Ajoute les marqueurs après que la carte soit initialisée
     } catch (error) {
       console.error('Erreur lors de la récupération des centres:', error);
     }

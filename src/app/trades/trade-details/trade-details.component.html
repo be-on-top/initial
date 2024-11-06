@@ -23,7 +23,8 @@
                 <span *ngIf="tradeData.requirements && tradeData.requirements!==''" class="text-light">Prérequis :
                     {{tradeData.requirements}}</span>
                 <br *ngIf="tradeData.parentCategory">
-                <span *ngIf="tradeData.parentCategory && tradeData.parentCategory!==''" class="text-light">{{tradeData.parentCategory}}</span>
+                <span *ngIf="tradeData.parentCategory && tradeData.parentCategory!==''"
+                    class="text-light">{{tradeData.parentCategory}}</span>
 
                 <!-- <p class="rounded bg-dark p-2 mt-2 small">Pour vérification du rôle récupéré : {{userRole}}</p> -->
                 <br>
@@ -99,14 +100,13 @@
     {{tradeData | json}} -->
     <div class="mt-4 p-2">
         <img *ngIf="!offline" class="rounded img-fluid mb-2 border border-1 m-auto w-100" [src]="imageUrl"
-             [attr.srcset]="imageUrlReduced ? imageUrlReduced + ' 575w, ' + imageUrl + ' 1024w' : imageUrl"
-             sizes="(max-width: 575px) 575px, 1024px"
-             alt="formation be-on-top au métier {{tradeId}}">
-    
+            [attr.srcset]="imageUrlReduced ? imageUrlReduced + ' 575w, ' + imageUrl + ' 1024w' : imageUrl"
+            sizes="(max-width: 575px) 575px, 1024px" alt="formation be-on-top au métier {{tradeId}}">
+
         <img *ngIf="offline" class="rounded img-fluid mb-2 border border-1 m-auto w-100" [src]="imageUrl"
-             alt="formation au métier {{tradeId}}">
+            alt="formation au métier {{tradeId}}">
     </div>
-    
+
 
     <!-- à faire -->
     <div id="accordion">
@@ -196,7 +196,7 @@
 
 
             <ng-container *ngIf="tradeCenters && tradeCenters.length>0">
-        
+
                 <div class="card-header third bg-primary pb-0">
                     <a (click)="toggleCentersCollapse()" class="btn text-light d-flex justify-content-between border-0"
                         data-bs-toggle="collapse" href="#collapseCenters">
@@ -206,7 +206,7 @@
                 </div>
                 <!-- {{isCentersCollapsed}} -->
                 <div id="collapseCenters" class="collapse" data-bs-parent="#accordion">
-                    <div *ngIf="isMapVisible" id="mapId"></div>
+                    <!-- <div *ngIf="isMapVisible" id="mapId"></div> -->
                     <div class="card-body fixing px-4 bg-primary text-white border-0">
 
                         <!-- le nom du centre n'est pas nécessaire -->
@@ -215,22 +215,21 @@
                             {{center.cp}} <a [routerLink]="['/center', center.id]"><i
                                     class="bi bi-geo-alt-fill ms-2 text-light"></i></a>
                         </p> -->
-                        <!-- <p *ngFor="let center of tradeCenters, let index=index"><a [routerLink]="['/center', center.id]" class="text-decoration-none text-light">
-                            <span class="fw-bold">Centre de {{center.city}} </span><span class="responsive">: {{center.name}} - CP</span> {{center.cp}} <i
-                                    class="bi bi-geo-alt-fill ms-2 text-light"></i></a>
-                        </p> -->
-                          <!-- <div id="mapId"></div> -->
 
-                        
+                        <p *ngFor="let center of tradeCenters, let index=index"><a [routerLink]="['/center', center.id]"
+                                class="text-decoration-none text-light">
+                                <span class="fw-bold">Centre de {{center.city}} </span><span class="responsive">:
+                                    {{center.name}} - CP</span> {{center.cp}} <i
+                                    class="bi bi-geo-alt-fill ms-2 text-light"></i></a>
+                        </p>
 
                     </div>
-                    
                 </div>
             </ng-container>
 
 
 
-            
+
 
 
 
