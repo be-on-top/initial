@@ -61,7 +61,9 @@
         <div *ngFor="let student of allStudents">
             <div *ngIf="userRouterLinks.user=='admin' || userRouterLinks.user=='referent', else external">
                 <div class="row mt-4 ps-5 ps-sm-0"
-                    *ngIf="searchText==='' || student.lastName.includes(searchText) || student.lastName.toLowerCase().includes(searchText) || student.firstName.includes(searchText) || student.firstName.toLowerCase().includes(searchText)">
+                    *ngIf="searchText==='' || student.lastName.includes(searchText) || student.lastName.toLowerCase().includes(searchText) 
+                    || student.firstName.includes(searchText) || student.firstName.toLowerCase().includes(searchText)
+                    || student.email.includes(searchText) || student.email.toLowerCase().includes(searchText)">
 
 
                     <div class="col-sm-3 col-6">{{student.lastName}}</div>
@@ -81,7 +83,9 @@
             </div>
             <ng-template #external>
                 <div class="row mt-4 justify-content-start"
-                    *ngIf="searchText==='' || student.lastName.includes(searchText) || student.lastName.toLowerCase().includes(searchText) || student.firstName.includes(searchText) || student.firstName.toLowerCase().includes(searchText)">
+                    *ngIf="searchText==='' || student.lastName.includes(searchText) || student.lastName.toLowerCase().includes(searchText)
+                    || student.firstName.includes(searchText) || student.firstName.toLowerCase().includes(searchText)
+                    || student.email.includes(searchText) || student.email.toLowerCase().includes(searchText)">
                     <div class="col-sm-3 col-6">{{student.lastName}}</div>
                     <div class="col-sm-3 col-6">{{student.firstName}}</div>
                     <div class="col-sm-3 col-6 mt-3 m-sm-0"><button class="btn btn-primary"><a
