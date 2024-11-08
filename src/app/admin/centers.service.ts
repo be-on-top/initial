@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { addDoc, collection, collectionData, deleteDoc, doc, docData, docSnapshots, Firestore, getDocs, query, setDoc, updateDoc, where, QuerySnapshot, DocumentData, orderBy } from '@angular/fire/firestore';
-import { catchError, from, map, Observable, throwError } from 'rxjs';
+import { catchError, from, map, Observable, of, throwError } from 'rxjs';
 import { Centers } from './centers';
 
 // Définition de l'interface pour les villes
@@ -202,6 +202,26 @@ export class CentersService {
 
     // Retourner les données triées avec l'ID inclus
     return collectionData(centersQuery, { idField: "id" }) as Observable<Centers[]>;
+  }
+
+  getCenterName(id: string): Observable<string | undefined> {
+    // Vérifie si l'ID est valide avant de continuer
+    if (!id) {
+      console.error("L'ID du centre est vide ou non valide.");
+      return of(undefined); // Retourne un Observable avec `undefined` si l'ID est incorrect
+    }
+
+    // Crée la référence au document
+    const centerDocRef = doc(collection(this.firestore, 'centers'), id);
+    
+    // Récupère les données et retourne uniquement le champ `name`
+    // return docData(centerDocRef).pipe(
+    //   map(data => data ? data['name'] : undefined)
+    // );
+    // Récupère les données et retourne uniquement le champ `name` et son CP
+    return docData(centerDocRef).pipe(
+      map(data => data ? data['name']  + '-' + data['cp'] : undefined)
+    );
   }
 
 

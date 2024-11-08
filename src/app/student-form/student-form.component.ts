@@ -1,5 +1,5 @@
 import { query } from '@angular/animations';
-import { Component, OnInit, Input, OnChanges, SimpleChanges, } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, AfterViewInit, } from '@angular/core';
 import { Auth, onAuthStateChanged, user } from '@angular/fire/auth';
 import { DocumentSnapshot, Firestore, addDoc, collection, doc, docData, getDocs, setDoc, where } from '@angular/fire/firestore';
 import { NgForm } from '@angular/forms';
@@ -20,7 +20,7 @@ import { Centers } from '../admin/centers';
 })
 
 
-export class StudentFormComponent implements OnInit, OnChanges {
+export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
   // authId?: any;
   // userData?: any;
   userData: any = {};
@@ -106,7 +106,6 @@ export class StudentFormComponent implements OnInit, OnChanges {
 
 
 
-
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -120,6 +119,11 @@ export class StudentFormComponent implements OnInit, OnChanges {
         console.log('ID not available in studentData');
       }
     }
+  }
+
+  ngAfterViewInit(){
+
+    // this.getCenterName()
   }
 
 
@@ -206,7 +210,7 @@ export class StudentFormComponent implements OnInit, OnChanges {
 
             // Filtrage des centres basés sur le sigle
             this.dataFiltered = data.filter(center => center.sigles.includes(this.socialData.priorTrade));
-            console.log("Données filtrées :", this.dataFiltered);
+            console.log("Données filtrées !!!!!!!!!!!!! :", this.dataFiltered);
 
             // Arrêter le chargement dès que les données sont chargées
             this.isLoading = false;
@@ -453,5 +457,30 @@ export class StudentFormComponent implements OnInit, OnChanges {
   }
 
 
+  private centerNameCache = new Map<string, Observable<string | undefined>>();
+  getCenterName(id: string): Observable<string | undefined> {
+    // Si le nom du centre est déjà dans le cache, retourne l'Observable en cache
+    if (this.centerNameCache.has(id)) {
+      return this.centerNameCache.get(id)!;
+    }
 
+    // Sinon, interroge Firestore pour obtenir le nom du centre
+    const centerName$ = this.centersService.getCenterName(id).pipe(
+      map(name => name || 'Nom non trouvé')
+    );
+
+    // Ajoute l'Observable au cache
+    this.centerNameCache.set(id, centerName$);
+
+    return centerName$;
+  }
+    
+
+
+
+  
 }
+
+
+
+
