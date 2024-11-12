@@ -1,5 +1,7 @@
 <div class="container py-5">
 
+    <!-- {{userRouterLinks.user}} -->
+
     <h3 *ngIf="userRouterLinks.user=='admin' || userRouterLinks.user=='referent'">Gestion des candidats (apprenants)
     </h3>
     <h3 *ngIf="userRouterLinks.user=='external'">Annuaire étudiants</h3>
@@ -9,14 +11,29 @@
     </div>
 
     <div *ngIf="allStudents">
+
+        <!-- Tests préalables à l'activation du nouveau filtre, maintenant inutiles -->
+        <!-- <div *ngFor="let dedicated of filteredStudents" >
+            <p>{{dedicated.firstName}} {{dedicated.lastName}} {{dedicated.id}}</p>
+        </div> -->
+
         <!-- on introduit un champ de recherche -->
         <app-search (searchTextChanged)="onSearchTextEntered($event)"></app-search>
 
         <div class="row mt-3 text-secondary justify-content-between">
-            <p class="col-md-6">Activer un filtre ou un autre</p>
+            <p class="col-md-6">Activer un filtre ou un autre > <br>
+                <span class="small">
+                    Ont expressément choisi votre centre pour le suivi de leur
+                    dossier d'inscription *</span>
+            </p>
             <div class="col-md-6">
-                <div class="form-check" *ngIf="userRouterLinks.user!=='external'">
-                    <label class="form-check-label" for="socialCheckbox">Formulaire administratif renseigné</label>
+                <div class="form-check" *ngIf="userRouterLinks.user!=='external' || userRouterLinks.user!=='admin'">
+                    <label class="form-check-label" for="priorCheckbox">Candidats désignés *</label>
+                    <input type="checkbox" (change)="onCheckboxChangePrior($event)" class="form-check-input"
+                        id="priorCheckbox">
+                </div>
+                <div class="form-check" *ngIf="userRouterLinks.user==='admin'">
+                    <label class="form-check-label" for="socialCheckbox">Formulaire administratif renseigné !!!!</label>
                     <input type="checkbox" (change)="onCheckboxChangeSocial($event)" class="form-check-input"
                         id="socialCheckbox">
                 </div>
@@ -26,13 +43,13 @@
                         id="subscriptionsCheckbox">
                 </div>
                 <!-- <ng-container *ngIf="tradesActivated"> -->
-                <div *ngFor="let trade of trades">
+                <!-- <div *ngFor="let trade of trades">
                     <div class="form-check">
                         <label class="form-check-label" for="tradeCheckbox">Formation {{trade}}</label>
                         <input type="checkbox" (change)="onCheckboxChangeTrades($event, trade)"
                             class="form-check-input">
                     </div>
-                </div>
+                </div> -->
                 <!-- </ng-container> -->
                 <div class="form-check">
                     <label class="form-check-label" for="endedCheckbox">A terminé sa formation</label>
@@ -60,8 +77,7 @@
 
         <div *ngFor="let student of allStudents">
             <div *ngIf="userRouterLinks.user=='admin' || userRouterLinks.user=='referent', else external">
-                <div class="row mt-4 ps-5 ps-sm-0"
-                    *ngIf="searchText==='' || student.lastName.includes(searchText) || student.lastName.toLowerCase().includes(searchText) 
+                <div class="row mt-4 ps-5 ps-sm-0" *ngIf="searchText==='' || student.lastName.includes(searchText) || student.lastName.toLowerCase().includes(searchText) 
                     || student.firstName.includes(searchText) || student.firstName.toLowerCase().includes(searchText)
                     || student.email.includes(searchText) || student.email.toLowerCase().includes(searchText)">
 
@@ -82,8 +98,7 @@
                 </div>
             </div>
             <ng-template #external>
-                <div class="row mt-4 justify-content-start"
-                    *ngIf="searchText==='' || student.lastName.includes(searchText) || student.lastName.toLowerCase().includes(searchText)
+                <div class="row mt-4 justify-content-start" *ngIf="searchText==='' || student.lastName.includes(searchText) || student.lastName.toLowerCase().includes(searchText)
                     || student.firstName.includes(searchText) || student.firstName.toLowerCase().includes(searchText)
                     || student.email.includes(searchText) || student.email.toLowerCase().includes(searchText)">
                     <div class="col-sm-3 col-6">{{student.lastName}}</div>

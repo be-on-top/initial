@@ -141,6 +141,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   isTradeFilter: boolean = false
   tradesActivated: boolean = false
   isQualifiedFilter: boolean = false
+  isPriorFilter:boolean = false
 
   // applyFilters() {
   //   // Restaurer l'état initial avant de filtrer
@@ -168,10 +169,17 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       this.allStudents = this.initialStudents.filter(student => student.subscriptions && student.subscriptions.includes(trade));
     } else if (this.isQualifiedFilter) {
       this.allStudents = this.initialStudents.filter(student => student.endedSubscriptions);
+    } else if (this.isPriorFilter) {
+      this.allStudents = this.filteredStudents;
     } else {
       this.allStudents = [...this.initialStudents];
       this.tradesActivated = false
     }
+  }
+
+  onCheckboxChangePrior(event: any) {
+    this.isPriorFilter = event.target.checked;
+    this.applyFilters();
   }
 
   onCheckboxChangeSocial(event: any) {
