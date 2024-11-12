@@ -104,12 +104,54 @@ export class LoginComponent {
       .catch(error => console.log(error))
   }
   
-  reset(email: string): any {
-    this.service.passwordReset(email)    
-    // return this.fireAgent.firebase.auth().sendPasswordResetEmail(email, {
-    //   url: 'http://localhost:4200/',
-    //   handleCodeInApp: true
-  }  
+  // reset(email: string): any {
+  //   this.service.passwordReset(email)    
+  //   // return this.fireAgent.firebase.auth().sendPasswordResetEmail(email, {
+  //   //   url: 'http://localhost:4200/',
+  //   //   handleCodeInApp: true
+  // }  
+
+  // pour optimiser les feedbacks
+  //  reset(email: string): void {
+  //   if (!email) {
+  //     this.feedbackMessages = "Veuillez entrer un email pour réinitialiser le mot de passe.";
+  //     this.isSuccessMessage = false;
+  //     return;
+  //   }
+
+  //   this.service.passwordReset(email)
+  //     .then(() => {
+  //       this.feedbackMessages = "Un lien de réinitialisation a été envoyé à votre adresse email.";
+  //       this.isSuccessMessage = true;
+  //     })
+  //     .catch(error => {
+  //       this.feedbackMessages = this.firebaseErrors[error.code] || error.message || "Une erreur est survenue.";
+  //       this.isSuccessMessage = false;
+  //     });
+  // }
+
+  // Appel pour réinitialiser le mot de passe
+  reset(email: string): void {
+    if (!email) {
+      this.feedbackMessages = "Veuillez entrer un email pour réinitialiser le mot de passe.";
+      this.isSuccessMessage = false;
+      return;
+    }
+
+    // Réinitialiser les messages avant d'envoyer le lien de réinitialisation
+    this.feedbackMessages = '';
+    this.isSuccessMessage = true;
+
+    this.service.passwordReset(email)
+      .then(() => {
+        this.feedbackMessages = "Un lien de réinitialisation a été envoyé à votre adresse email.";
+        this.isSuccessMessage = true;
+      })
+      .catch(error => {
+        this.feedbackMessages = this.firebaseErrors[error.code] || error.message || "Une erreur est survenue.";
+        this.isSuccessMessage = false;
+      });
+  }
   
 
   logOut(){
@@ -117,6 +159,12 @@ export class LoginComponent {
     alert("Déconnection ok")
     this.router.navigate(['home']);
   } 
+
+  closeAlert() {
+    // Réinitialiser l'état pour la fermeture de l'alerte
+    this.feedbackMessages = '';
+    this.isSuccessMessage = true;
+  }
 
 
 }

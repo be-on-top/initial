@@ -13,6 +13,7 @@ import { EvaluatorsService } from './evaluators.service';
 @Injectable({
   providedIn: 'root'
 })
+
 export class AuthService {
   loggedIn: boolean = false;
   currentUser?: any;
@@ -152,21 +153,34 @@ export class AuthService {
 
 
 
+  // Méthode pour envoyer l'email de réinitialisation
+  // passwordReset(email: string) {
 
-  passwordReset(email: string) {
+  //   sendPasswordResetEmail(this.auth, email)
+  //     .then(() => {
+  //       // Password reset email sent!
+  //       // ..
+  //     })
+  //     .catch((error) => {
+  //       const errorCode = error.code;
+  //       const errorMessage = error.message;
+  //       // ..
+  //     })
+  // }
 
-    sendPasswordResetEmail(this.auth, email)
+  // pour optimiser les retours
+
+  passwordReset(email: string): Promise<void> {
+    return sendPasswordResetEmail(this.auth, email)
       .then(() => {
-        // Password reset email sent!
-        // ..
+        console.log('Email de réinitialisation envoyé.');
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        // ..
+        console.error('Erreur lors de la réinitialisation :', errorMessage);
+        throw error; // Relance l'erreur pour être gérée dans le composant
       });
-
-
   }
 
 
