@@ -180,10 +180,6 @@
                   </li>
 
 
-
-
-
-
                 <!-- ajout login global (on aura ultérieurement un public et privé réservé aux contributeurs et évaluateurs...) -->
                 <li *ngIf="!offline" class="nav-item dropdown" [routerLinkActive]="['active']">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Utilisateur <i
@@ -194,9 +190,10 @@
                         <li *ngIf="userRole || userRole!=''"><a class="dropdown-item" (click)="logOut()">Déconnexion</a>
                         </li>
                         <li
-                            *ngIf="userRole && userRole!='' && !userRole.includes('evaluator') && !userRole.includes('editor')">
+                            *ngIf="userRole && userRole!='' && !userRole.includes('evaluator') && !userRole.includes('editor') && !userRole.includes('referent') && !userRole.includes('tutor') && !userRole.includes('trainer') && !userRole.includes('external')">
                             <a class="dropdown-item" (click)="closeNavbar()" [routerLink]="['account']">Mon compte</a>
                         </li>
+
                         <li *ngIf="!userRole || userRole==''"><a class="dropdown-item"
                                 [routerLink]="['register']" (click)="closeNavbar()">Inscription</a></li>
                         <!-- Inscription lien externe sans condition pour tester en local -->
