@@ -22,7 +22,7 @@
         <span> Retrouvez l'état d'avancement de votre questionnaire</span>...
     </div>
     <!-- ici, c'est une fois qu'ils ont terminés un questionnaire dans son intégralité, avec 3 nouveaux onglets -->
-    <div *ngIf="isOneQuizzAchieved && !userData.isSocialFormSent && !userData.subscriptions"
+    <div *ngIf="isOneQuizzAchieved && !userData.isSocialFormSent && !userData.subscriptions && userData.innerStudent!==true"
         class="alert alert-light p-4 alert-dismissible mb-4 fade show pe-5">
         <button type="button" class="btn-close mt-2" data-bs-dismiss="alert" aria-label="Fermer le message be-on-top"></button>
         <span> Tous vos résultats et estimations chiffrées sont disponibles ci-dessous. Votre <a
@@ -229,7 +229,8 @@
         <!-- fin estimation seule -->
 
         <!-- bouton d'accès au formulaire de préinscription administrative -->
-        <div class="card" *ngIf="isOneQuizzAchieved==true && !userData.isInnerStudent">
+        <!-- {{userData.innerStudent===true | json}} -->
+        <div class="card" *ngIf="isOneQuizzAchieved==true && userData.innerStudent!==true">
             <div class="card-header bg-primary d-flex justify-content-between">
                 <a class="collapsed btn text-light text-capitalize" data-bs-toggle="collapse" href="#collapseFor">
                     Inscription Formation
