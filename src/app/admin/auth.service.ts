@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 // import { stringify } from '@firebase/util';
 // import { collection, Firestore } from '@angular/fire/firestore';
 
-import { BehaviorSubject, Observable} from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { EvaluatorsService } from './evaluators.service';
 // import { setPersistence, browserSessionPersistence } from 'firebase/auth';
 // import { ConsentService } from '../consent.service';
@@ -25,10 +25,10 @@ export class AuthService {
   private redirectUrl: string | null = null;
 
   constructor(
-    private auth: Auth, 
-    private evaluatorService: EvaluatorsService, 
-    private firestore: Firestore, 
-    private router: Router 
+    private auth: Auth,
+    private evaluatorService: EvaluatorsService,
+    private firestore: Firestore,
+    private router: Router
     // private consentService: ConsentService
   ) {
     // si finalement, on ne détériore pas l'expérience utilisateur de celui qui n'a pas consenti à l'utilation de cookies
@@ -88,25 +88,25 @@ export class AuthService {
   // }
   async login({ email, password }: any) {
     try {
-        const result = await signInWithEmailAndPassword(this.auth, email, password);
-        console.log("User signed in successfully:", result.user.uid);
+      const result = await signInWithEmailAndPassword(this.auth, email, password);
+      console.log("User signed in successfully:", result.user.uid);
 
-        // Enregistrer la date de la dernière connexion dans le localStorage
-        const lastLoginDate = new Date();
-        localStorage.setItem('lastLoginDate', lastLoginDate.toString());
+      // Enregistrer la date de la dernière connexion dans le localStorage
+      const lastLoginDate = new Date();
+      localStorage.setItem('lastLoginDate', lastLoginDate.toString());
 
-        // Log avant redirection
-        console.log("Redirection après login...");
+      // Log avant redirection
+      console.log("Redirection après login...");
 
-        // Spécifiquement développé pour connexion depuis tradeDetails, mais peut servir globalement
-        this.redirectAfterLogin();
+      // Spécifiquement développé pour connexion depuis tradeDetails, mais peut servir globalement
+      this.redirectAfterLogin();
 
-        return result;
+      return result;
     } catch (error) {
-        console.error("Erreur lors de la connexion:", error);
-        throw error; // Vous pouvez gérer les erreurs ici
+      console.error("Erreur lors de la connexion:", error);
+      throw error; // Vous pouvez gérer les erreurs ici
     }
-}
+  }
 
 
 
@@ -168,20 +168,29 @@ export class AuthService {
   //     })
   // }
 
-  // pour optimiser les retours
+  // pour optimiser les retours ++++
+  // passwordReset(email: string): Promise<void> {
+  //   return sendPasswordResetEmail(this.auth, email)
+  //     .then(() => {
+  //       console.log('Email de réinitialisation envoyé.');
+  //     })
+  //     .catch((error) => {
+  //       const errorCode = error.code;
+  //       const errorMessage = error.message;
+  //       console.error('Erreur lors de la réinitialisation :', errorMessage);
+  //       throw error; // Relance l'erreur pour être gérée dans le composant
+  //     });
+  // }
 
-  passwordReset(email: string): Promise<void> {
-    return sendPasswordResetEmail(this.auth, email)
-      .then(() => {
-        console.log('Email de réinitialisation envoyé.');
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.error('Erreur lors de la réinitialisation :', errorMessage);
-        throw error; // Relance l'erreur pour être gérée dans le composant
-      });
+  // Cette version de la méthode passwordReset dans le service met simplement à jour l'URL de redirection vers la page de login. 
+  // En ajoutant l’option handleCodeInApp: true, cette configuration indique à Firebase de rediriger l'utilisateur après la réinitialisation réussie du mot de passe.
+  passwordReset(email: string) {
+    return sendPasswordResetEmail(this.auth, email, {
+      url: 'https://be-on-top.io/login', // Redirige directement vers la page de login
+      handleCodeInApp: true,
+    });
   }
+
 
 
 
@@ -293,19 +302,19 @@ export class AuthService {
     console.log('Redirection après login vers:', url);
 
     this.router.navigate([url]).then(() => {
-        console.log('Redirection réussie.');
-        // Réinitialiser l'URL de redirection après l'utilisation
-        this.redirectUrl = null;
+      console.log('Redirection réussie.');
+      // Réinitialiser l'URL de redirection après l'utilisation
+      this.redirectUrl = null;
     });
-}
+  }
 
 
 
-// Méthode pour obtenir l'UID de l'utilisateur connecté (en admin)
-getCurrentUserUid(): string | null {
-  const user = this.auth.currentUser;  // Utilise currentUser pour obtenir l'utilisateur actuel
-  return user ? user.uid : null;  // Retourne l'UID si l'utilisateur est connecté, sinon null
-}
+  // Méthode pour obtenir l'UID de l'utilisateur connecté (en admin)
+  getCurrentUserUid(): string | null {
+    const user = this.auth.currentUser;  // Utilise currentUser pour obtenir l'utilisateur actuel
+    return user ? user.uid : null;  // Retourne l'UID si l'utilisateur est connecté, sinon null
+  }
 
 
 
