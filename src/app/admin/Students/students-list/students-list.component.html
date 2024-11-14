@@ -58,6 +58,10 @@
                 </div>
 
                 <hr class="border-secondary">
+
+                <div><button class="btn btn-primary" (click)="toggleOrder()">
+                    {{ ascending ? 'Afficher les plus récents' : 'Afficher les plus anciens' }}
+                  </button></div>
             </div>
 
         </div>
@@ -74,6 +78,8 @@
             <div class="col-sm-3 col-6 h5">Prénom</div>
             <div class="col-sm-3 col-6 h5">Détails</div>
         </div>
+
+
 
         <div *ngFor="let student of allStudents">
             <div *ngIf="userRouterLinks.user=='admin' || userRouterLinks.user=='referent', else external">

@@ -17,6 +17,9 @@ import { User } from 'firebase/auth';
 export class StudentsListComponent implements OnInit, AfterViewInit {
 
   allStudents: any[] = [];
+
+
+
   // pour différencier la vue si user external
   userRouterLinks: any;
 
@@ -30,6 +33,14 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   userUid: string | null = null;
 
   filteredStudents: Student[] = []; // Liste des étudiants filtrée
+
+  isSocialFormSentFilter: boolean = false;
+  isSubscriptionFilter: boolean = false
+  initialStudents: any[] = []; // Copie initiale des étudiants
+  isTradeFilter: boolean = false
+  tradesActivated: boolean = false
+  isQualifiedFilter: boolean = false
+  isPriorFilter:boolean = false
 
   constructor(private service: StudentsService, private activatedRoute: ActivatedRoute, private tradeService: SettingsService, private authService: AuthService) {
     this.userRouterLinks = this.activatedRoute.snapshot.data;
@@ -86,8 +97,22 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   //   });
   // }
 
+  // getStudents() {
+  //   this.service.getStudents().pipe(
+  //     map(students => students.filter(student => this.hasFullResults(student)))
+  //   ).subscribe(filteredStudents => {
+  //     this.initialStudents = filteredStudents; // Stocker la liste initiale
+  //     this.allStudents = [...this.initialStudents]; // Initialiser allStudents
+  //     this.applyFilters();
+  //   });
+  // }
+
+  ascending = false; // Variable pour gérer l'ordre de tri
+
+  // pour intégrer l'état de ascending
   getStudents() {
-    this.service.getStudents().pipe(
+    const order = this.ascending ? 'asc' : 'desc';
+    this.service.getStudents(order).pipe(
       map(students => students.filter(student => this.hasFullResults(student)))
     ).subscribe(filteredStudents => {
       this.initialStudents = filteredStudents; // Stocker la liste initiale
@@ -95,6 +120,14 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       this.applyFilters();
     });
   }
+
+  // indissociable du précédent
+
+  toggleOrder() {
+    this.ascending = !this.ascending; // Inverser l'ordre
+    this.getStudents(); // Rafraîchir la liste avec le nouvel ordre
+  }
+
 
   hasFullResults(obj: any): boolean {
     for (const key in obj) {
@@ -135,13 +168,13 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   }
 
 
-  isSocialFormSentFilter: boolean = false;
-  isSubscriptionFilter: boolean = false
-  initialStudents: any[] = []; // Copie initiale des étudiants
-  isTradeFilter: boolean = false
-  tradesActivated: boolean = false
-  isQualifiedFilter: boolean = false
-  isPriorFilter:boolean = false
+  // isSocialFormSentFilter: boolean = false;
+  // isSubscriptionFilter: boolean = false
+  // initialStudents: any[] = []; // Copie initiale des étudiants
+  // isTradeFilter: boolean = false
+  // tradesActivated: boolean = false
+  // isQualifiedFilter: boolean = false
+  // isPriorFilter:boolean = false
 
   // applyFilters() {
   //   // Restaurer l'état initial avant de filtrer

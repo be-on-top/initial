@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 // import { NgForm } from '@angular/forms';
 import { Auth, createUserWithEmailAndPassword, deleteUser, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithRedirect } from "@angular/fire/auth";
-import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc, updateDoc, query, getDocs, where, getDoc, QuerySnapshot, arrayUnion, CollectionReference, DocumentData } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc, updateDoc, query, getDocs, where, getDoc, QuerySnapshot, arrayUnion, CollectionReference, DocumentData, orderBy } from '@angular/fire/firestore';
 // import { FirebaseApp } from '@angular/fire/app';
 import { from, map, Observable, of, switchMap, tap } from 'rxjs';
 // import { switchMap, tap } from 'rxjs/operators';
@@ -138,9 +138,15 @@ export class StudentsService {
   }
 
 
-  getStudents() {
+  // getStudents() {
+  //   const studentsRef = collection(this.firestore, "students");
+  //   return collectionData(studentsRef, { idField: "id" }) as Observable<Student[]>;
+  // }
+  // pour ordonner le retour
+  getStudents(order: 'asc' | 'desc' = 'desc') {
     const studentsRef = collection(this.firestore, "students");
-    return collectionData(studentsRef, { idField: "id" }) as Observable<Student[]>;
+    const studentsQuery = query(studentsRef, orderBy("created", order)); // Tri par la date "created"
+    return collectionData(studentsQuery, { idField: "id" }) as Observable<Student[]>;
   }
 
   getStudentById(studentId: string) {
