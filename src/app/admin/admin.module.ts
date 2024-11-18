@@ -181,7 +181,7 @@ const routesAdmin: Routes = [
     ],
     // canActivate: [AuthGuardService]
     canActivate: [AuthGuardService, RoleGuardGuard], data: {
-      expectedRoles: ['evaluator', 'admin', 'trainer', 'tutor', 'editor', 'external']
+      expectedRoles: ['evaluator', 'admin', 'trainer', 'tutor', 'editor', 'external', 'referent']
     }
   },
   { path: 'login', component: LoginComponent },

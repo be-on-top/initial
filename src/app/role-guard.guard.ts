@@ -4,57 +4,46 @@ import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree } fro
 import { Observable } from 'rxjs';
 import { EvaluatorsService } from './admin/evaluators.service';
 import { Firestore, doc, docData } from '@angular/fire/firestore';
-Firestore
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoleGuardGuard implements CanActivate {
 
-  // https://www.youtube.com/watch?v=g3pq8WamEmE&t=3s
-
   constructor(private auth: Auth, private evaluatorService: EvaluatorsService, private firestore: Firestore) { }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): any {
-    // return true;
-    return this.isAuthorized(route)
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+    return this.isAuthorized(route);
   }
-
-  private isAuthorized(route: any) {
-
-    // const roles: any = []
-    onAuthStateChanged(this.auth, (user: any) => {
-      if (user) {
-
-        console.log("log user uid depuis role guard", user.uid);
-        // à finir...
-        // this.getRole(user.uid).subscribe(data => {
-        //   console.log("data de l'utilisateur depuis header", data);
-        //   console.log("roles depuis role guard", data.role);
-
-
-        //   const expectedRoles = route.data['expectedRoles']
-        //   console.log(expectedRoles);
-          
-        //   const rolesMatches = data.role.findIndex((role: any) => expectedRoles.indexOf(role))
-        //   rolesMatches < 0 || rolesMatches ? false : true
-
-        //   console.log(rolesMatches);
-          
-
-        // })
-
-      }
-    })
-
+  
+  private isAuthorized(route: any): Observable<boolean> | Promise<boolean> | boolean {
+    const expectedRoles = route.data['expectedRoles'];
+    
+    return new Observable<boolean>((observer) => {
+      onAuthStateChanged(this.auth, (user: any) => {
+        if (user) {
+          this.getRole(user.uid).subscribe((data) => {
+            // Convertir userRole en tableau si c'est une chaîne de caractères
+            const userRoles = Array.isArray(data.role) ? data.role : [data.role];
+            
+            const isAuthorized = userRoles.some((role: string) => expectedRoles.includes(role));
+            
+            observer.next(isAuthorized);
+            observer.complete();
+          });
+        } else {
+          observer.next(false);
+          observer.complete();
+        }
+      });
+    });
   }
+  
 
-  getRole(id: any) {
-    // finalement, compte tenu du fait que les evaluators peuvent potentiellement aussi être des tuteurs (formateurs) roles sera un tableau
-    // au niveau de getRole, cela ne change pas grand chose
-    let $roleRef = doc(this.firestore, "roles/" + id)
-    return docData($roleRef) as Observable<any>;
 
+  getRole(id: string): Observable<any> {
+    let roleRef = doc(this.firestore, `roles/${id}`);
+    return docData(roleRef) as Observable<any>;
   }
-
 }
