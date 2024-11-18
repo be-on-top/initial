@@ -250,6 +250,160 @@
 
   </url>
 
+  <!-- 7 -->
+
+  <url>
+
+
+    <loc>https://be-on-top.io/trade/caces_R482F/conducteur_engins_de_chantier_r482_cat_f</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.5</priority>
+
+  </url>
+  <url>
+
+    <loc>https://be-on-top.io/trade/caces_R482F</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.5</priority>
+
+  </url>
+  <url>
+
+    <loc>https://be-on-top.io/formation/caces_R482F/conducteur_engins_de_chantier_r482_cat_f</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.8</priority>
+
+  </url>
+  <url>
+
+    <loc>https://be-on-top.io/formation/caces_R482F</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.8</priority>
+
+  </url>
+
+  <!-- 8 -->
+
+  <url>
+    <loc>https://be-on-top.io/trade/caces_R482C1/conducteur_engins_de_chantier_r482_cat_c1</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.5</priority>
+
+  </url>
+  <url>
+
+    <loc>https://be-on-top.io/trade/caces_R482C1</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.5</priority>
+
+  </url>
+  <url>
+
+    <loc>https://be-on-top.io/formation/caces_R482C1/conducteur_engins_de_chantier_r482_cat_c1</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.8</priority>
+
+  </url>
+  <url>
+
+    <loc>https://be-on-top.io/formation/caces_R482C1</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.8</priority>
+
+  </url>
+
+  <!-- 9 -->
+
+  <url>
+    <loc>https://be-on-top.io/trade/caces_R482B1/conducteur_engins_de_chantier_r482_cat_b1</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.5</priority>
+
+  </url>
+  <url>
+
+    <loc>https://be-on-top.io/trade/caces_R482B1</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.5</priority>
+
+  </url>
+  <url>
+
+    <loc>https://be-on-top.io/formation/caces_R482B1/conducteur_engins_de_chantier_r482_cat_b1</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.8</priority>
+
+  </url>
+  <url>
+
+    <loc>https://be-on-top.io/formation/caces_R482B1</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.8</priority>
+
+  </url>
+
+  <!-- 10 -->
+
+  <url>
+    <loc>https://be-on-top.io/trade/ctrmp/conducteur_routier_ctrmp_conducteur_routier_en_transport_de_marchandises_sur_porteur</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.5</priority>
+
+  </url>
+  <url>
+
+    <loc>https://be-on-top.io/trade/ctrmp</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.5</priority>
+
+  </url>
+  <url>
+
+    <loc>https://be-on-top.io/formation/ctrmp/conducteur_routier_ctrmp_conducteur_routier_en_transport_de_marchandises_sur_porteur</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.8</priority>
+
+  </url>
+  <url>
+
+    <loc>https://be-on-top.io/formation/ctrmp</loc>
+
+    <changefreq>monthly</changefreq>
+
+    <priority>0.8</priority>
+
+  </url>
+
 
 </urlset>
 
