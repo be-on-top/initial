@@ -146,7 +146,7 @@
                       <!-- Afficher les métiers sans parentCategory -->
                       <li *ngFor="let trade of ungroupedTrades">
                         <a class="dropdown-item" (click)="closeNavbar()"
-                          [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]">
+                          [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]">
                           {{ trade.denomination | truncateTitle }}
                         </a>
                       </li>
@@ -169,7 +169,7 @@
                             <!-- Afficher chaque métier sous la catégorie -->
                             <li *ngFor="let trade of group[1]">
                               <a class="dropdown-item" (click)="closeNavbar()"
-                                [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]">
+                                [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]">
                                 {{ trade.denomination | truncateTitle }}
                               </a>
                             </li>

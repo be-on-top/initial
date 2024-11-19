@@ -82,7 +82,7 @@
                 <div class="card my-3" (click)="selectTrade(trade.id)">
 
                     <div class="card-header"
-                        [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]">
+                        [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]">
                         <!-- essai à conserver !!! -->
                         <!-- <h2 class="h5 text-start ps-2" [innerHTML]="trade.denomination | firstWord"></h2> -->
                         <h2 class="h5 text-start ps-2" [innerHTML]="trade.denomination | firstWord | truncateTitle">
@@ -104,7 +104,7 @@
                         <!-- fin spinner -->
                         <ng-container *ngIf="trade.imageUrl">
                             <div class="image-container rounded mb-1">
-                                <a [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]"
+                                <a [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]"
                                     class="text-decoration-none">
                                     <!-- <img ngOpmizedImage class="img-fluid rounded" [ngSrc]="trade.imageUrl"
                                         *ngIf="trade.imageUrl" (load)="onImageLoad()" [width]="largeurImage"
@@ -112,7 +112,7 @@
                                         alt="formation BE-ON-TOP au métier {{trade.sigle}}"> -->
                                     <ng-container *ngIf="trade.imageUrl">
                                         <div class="image-container rounded mb-1">
-                                            <a [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]"
+                                            <a [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]"
                                                 class="text-decoration-none">
                                                 <img ngOpmizedImage class="img-fluid rounded" [ngSrc]="(i === tradesData.length - 1 && tradesData.length % 2 !== 0 && isLargeScreen)
                                                               ? trade.imageUrl.replace('_resized.jpeg', '.jpeg') 
@@ -137,7 +137,7 @@
                                 {{(truncateText(trade.description, 200) )| stripHtml }} </a></div> -->
                         <!-- je laisse le css faire la troncature -->
                         <div class="card-text pt-2"><a
-                                [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]"
+                                [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]"
                                 class="text-decoration-none fs-6">
                                 {{trade.description| stripHtml }} </a></div>
 
@@ -259,7 +259,7 @@
 
                             <div (click)="selectTrade(trade.id)">
                                 <div
-                                    [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]">
+                                    [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]">
 
                                     <h3 class="h5 text-start ps-2">
                                         <i class="bi bi-{{i+1}}-square-fill text-success me-2"></i>
@@ -278,7 +278,7 @@
                                 <!-- fin spinner -->
                                 <ng-container *ngIf="trade.imageUrl">
                                     <div class="image-container rounded mb-1">
-                                        <a [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]"
+                                        <a [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]"
                                             class="text-decoration-none">
                                             <img ngOpmizedImage class="img-fluid rounded" [ngSrc]="trade.imageUrl"
                                                 *ngIf="trade.imageUrl" (load)="onImageLoad()" [width]="largeurImage"
@@ -294,7 +294,7 @@
                                 class="text-decoration-none fs-6">
                                 {{(truncateText(trade.description, 200) )| stripHtml }} </a></div> -->
                                 <div class="card-text pt-2"><a
-                                        [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]"
+                                        [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]"
                                         class="text-decoration-none fs-6">
                                         {{trade.description | stripHtml }} </a></div>
 
@@ -367,7 +367,7 @@
 
                             <div (click)="selectTrade(trade.id)">
                                 <div
-                                    [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]">
+                                    [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]">
                                     <h3 class="h5 text-start ps-2">
                                         <i class="bi bi-{{i+1}}-square-fill text-success me-2"></i>
                                         <span [innerHTML]="trade.denomination | firstWord | truncateTitle"></span>
@@ -384,7 +384,7 @@
                                 <!-- fin spinner -->
                                 <ng-container *ngIf="trade.imageUrl">
                                     <div class="image-container rounded mb-1">
-                                        <a [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]"
+                                        <a [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]"
                                             class="text-decoration-none">
                                             <img ngOpmizedImage class="img-fluid rounded" [ngSrc]="trade.imageUrl"
                                                 *ngIf="trade.imageUrl" (load)="onImageLoad()" [width]="largeurImage"
@@ -400,7 +400,7 @@
                                 class="text-decoration-none fs-6">
                                 {{(truncateText(trade.description, 230) )| stripHtml }} </a></div> -->
                                 <div class="card-text pt-2"><a
-                                        [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]"
+                                        [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]"
                                         class="text-decoration-none fs-6">
                                         {{ trade.description| stripHtml }} </a></div>
 

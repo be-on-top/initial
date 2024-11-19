@@ -22,7 +22,7 @@
 
                 <!-- affectation métiers -->
                 <p *ngIf="center.sigles">Formations métiers ({{center.sigles.length}}) : 
-                    <span *ngFor="let s of center.sigles" class="badge bg-secondary me-2"><a class="text-white text-decoration-none" [routerLink]="[('/trade'),s]" >{{s}}</a></span>
+                    <span *ngFor="let s of center.sigles" class="badge bg-secondary me-2"><a class="text-white text-decoration-none" [routerLink]="[('/formation'),s]" >{{s}}</a></span>
                 </p>
             </div>
   
@@ -33,8 +33,6 @@
                 <div id="map"></div> <!-- Conteneur de la carte -->
             </div>
         </div>
-
-
 
         <div class="d-flex my-4 justify-content-end gap-5">
 
