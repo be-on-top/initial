@@ -78,8 +78,15 @@
                 <hr class="border-secondary">
 
                 <div><button class="btn btn-primary" (click)="toggleOrder()">
-                    {{ ascending ? 'Afficher les plus récents' : 'Afficher les plus anciens' }}
-                  </button></div>
+                        {{ ascending ? 'Afficher les plus récents' : 'Afficher les plus anciens' }}
+                    </button></div>
+
+                <hr class="border-secondary" *ngIf="userRouterLinks.user==='admin'">
+                <!-- si il faut relancer (l'admin décidera à qui l'honneur) -->
+                <button button class="btn btn-primary" *ngIf="userRouterLinks.user==='admin'"
+                    (click)="getStudentsWithNoInterest()">{{showNoInterestStudents ? 'Masquer les prospects à relancer' : 'Afficher les prospects à relancer' }}
+                </button>
+
             </div>
 
         </div>
@@ -90,14 +97,58 @@
             <div class="col-sm-3 h5">Suppression</div>
             <div class="col-sm-3 h5">Détails</div>
         </div>
+        <!-- Liste conditionnelle -->
+        <div *ngIf="showNoInterestStudents" class="bg-light">
+            <div class="alert alert-warning mx-0">Prospects à relancer (inscrits mais inactifs)</div>
+            <div *ngFor="let student of studentsWithNoInterest">
+                <div *ngIf="userRouterLinks.user=='admin' || userRouterLinks.user=='referent', else external">
+                    <div class="row mt-4 ps-5 ps-sm-0"
+                        *ngIf="searchText==='' || student.lastName.includes(searchText) || student.lastName.toLowerCase().includes(searchText) 
+                                                  || student.firstName.includes(searchText) || student.firstName.toLowerCase().includes(searchText)
+                                                  || student.email.includes(searchText) || student.email.toLowerCase().includes(searchText)">
+
+
+                        <div class="col-sm-3 col-6">{{student.lastName}}</div>
+                        <div class="col-sm-3 col-6 order-perso2">{{student.firstName}}</div>
+                        <div class="col-sm-3 col-6"><button class="btn btn-danger text-white"
+                                [ngClass]="{'disabled':userRouterLinks.user=='referent'}"
+                                (click)="deleteStudent(student)"><i
+                                    class="bi bi-person-dash-fill"></i>Suppression</button>
+                        </div>
+                        <div class="col-sm-3 col-6 order-perso4"><button class="btn btn-primary">
+                                <a *ngIf="userRouterLinks.user=='admin'" [routerLink]="['/admin/student', student.id]"
+                                    class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
+                                <a *ngIf="userRouterLinks.user=='referent'"
+                                    [routerLink]="['/admin/referent/studentDetails', student.id]" class="text-white"><i
+                                        class="bi bi-person-lines-fill"></i>Détails</a>
+                            </button></div>
+                    </div>
+                </div>
+                <ng-template #external>
+                    <div class="row mt-4 justify-content-start"
+                        *ngIf="searchText==='' || student.lastName.includes(searchText) || student.lastName.toLowerCase().includes(searchText)
+                                                  || student.firstName.includes(searchText) || student.firstName.toLowerCase().includes(searchText)
+                                                  || student.email.includes(searchText) || student.email.toLowerCase().includes(searchText)">
+                        <div class="col-sm-3 col-6">{{student.lastName}}</div>
+                        <div class="col-sm-3 col-6">{{student.firstName}}</div>
+                        <div class="col-sm-3 col-6 mt-3 m-sm-0"><button class="btn btn-primary"><a
+                                    [routerLink]="['/admin/externalStudentDetails', student.id]" class="text-white"><i
+                                        class="bi bi-person-lines-fill"></i>Détails</a></button></div>
+                    </div>
+                </ng-template>
+
+            </div>
+
+            <!-- fin des prospects à relancer -->
+            <hr>
+        </div>
+
 
         <div class="row mt-4 d-xs-none justify-content-start" *ngIf="userRouterLinks.user=='external'">
             <div class="col-sm-3 col-6 h5">Nom</div>
             <div class="col-sm-3 col-6 h5">Prénom</div>
             <div class="col-sm-3 col-6 h5">Détails</div>
         </div>
-
-
 
         <div *ngFor="let student of allStudents">
             <div *ngIf="userRouterLinks.user=='admin' || userRouterLinks.user=='referent', else external">

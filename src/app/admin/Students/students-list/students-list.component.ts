@@ -37,6 +37,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   isSocialFormSentFilter: boolean = false;
   isSubscriptionFilter: boolean = false
   initialStudents: any[] = []; // Copie initiale des étudiants
+
   isTradeFilter: boolean = false
   tradesActivated: boolean = false
   isQualifiedFilter: boolean = false
@@ -44,6 +45,9 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   // puisqu'il faut compliquer
   isTradeQCMStarted: boolean = false
   isTradeFullQCM: boolean = false
+
+  showNoInterestStudents: boolean = false;
+  studentsWithNoInterest: any[] = [];
 
   constructor(private service: StudentsService, private activatedRoute: ActivatedRoute, private tradeService: SettingsService, private authService: AuthService) {
     this.userRouterLinks = this.activatedRoute.snapshot.data;
@@ -65,11 +69,6 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.getStudents();
     this.onSearchTextEntered("")
-
-
-
-
-
 
   }
 
@@ -123,6 +122,44 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       this.applyFilters();
     });
   }
+
+  // puisqu'il faut compliquer et théoriquement relancer... 
+  // getStudentsWithNoInterest() {
+  //   const order = this.ascending ? 'asc' : 'desc';
+  //   this.service.getStudents(order).subscribe(data => {
+  //     // Soustraction : trouver les étudiants qui ne sont pas dans `initialStudents`
+  //     this.studentsWithNoInterest = data.filter(student =>
+  //       !this.initialStudents.some(interestedStudent => interestedStudent.id === student.id)
+  //     );
+
+  //     console.log('Étudiants sans intérêt :', this.studentsWithNoInterest);
+
+  //     // Mettre à jour l'affichage en fonction du bouton
+  //     this.showNoInterestStudents = true;
+  //   });
+  // }
+
+  getStudentsWithNoInterest() {
+    if (this.showNoInterestStudents) {
+      // Si les étudiants sans intérêt sont affichés, les masquer
+      this.showNoInterestStudents = false;
+      this.studentsWithNoInterest = []; // Optionnel : Réinitialiser la liste
+    } else {
+      // Sinon, les récupérer et les afficher
+      const order = this.ascending ? 'asc' : 'desc';
+      this.service.getStudents(order).subscribe(data => {
+        // Soustraction : trouver les étudiants qui ne sont pas dans `initialStudents`
+        this.studentsWithNoInterest = data.filter(student => 
+          !this.initialStudents.some(interestedStudent => interestedStudent.id === student.id)
+        );
+  
+        console.log('Étudiants sans intérêt :', this.studentsWithNoInterest);
+  
+        this.showNoInterestStudents = true;
+      });
+    }
+  }
+  
 
   // indissociable du précédent
 
