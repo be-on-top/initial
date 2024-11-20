@@ -22,18 +22,19 @@
 
         <div class="row mt-3 text-secondary justify-content-between">
             <p class="col-md-6">Activer un filtre ou un autre > <br>
-                <span class="small">
+                <span class="small" *ngIf="userRouterLinks.user==='referent'">
                     Ont expressément choisi votre centre pour le suivi de leur
                     dossier d'inscription *</span>
             </p>
             <div class="col-md-6">
-                <div class="form-check" *ngIf="userRouterLinks.user!=='external' || userRouterLinks.user!=='admin'">
+                <!-- <div class="form-check" *ngIf="userRouterLinks.user!=='external' || userRouterLinks.user!=='admin'"> -->
+                <div class="form-check" *ngIf="userRouterLinks.user==='referent'">
                     <label class="form-check-label" for="priorCheckbox">Candidats désignés *</label>
                     <input type="checkbox" (change)="onCheckboxChangePrior($event)" class="form-check-input"
                         id="priorCheckbox">
                 </div>
                 <div class="form-check" *ngIf="userRouterLinks.user==='admin'">
-                    <label class="form-check-label" for="socialCheckbox">Formulaire administratif renseigné !!!!</label>
+                    <label class="form-check-label" for="socialCheckbox">Formulaire administratif renseigné</label>
                     <input type="checkbox" (change)="onCheckboxChangeSocial($event)" class="form-check-input"
                         id="socialCheckbox">
                 </div>
@@ -42,14 +43,31 @@
                     <input type="checkbox" (change)="onCheckboxChangeSubscriptions($event)" class="form-check-input"
                         id="subscriptionsCheckbox">
                 </div>
+                <!-- puisqu'il faut compliquer -->
+                <div *ngFor="let trade of trades">
+                    <div class="form-check">
+                        <label class="form-check-label" for="tradeCheckbox">Questionnaire en cours {{trade}}</label>
+                        <input type="checkbox" (change)="onCheckboxChangeTradesForStartedQCM($event, trade)"
+                            class="form-check-input">
+                    </div>
+                </div>
+                <div *ngFor="let trade of trades">
+                    <div class="form-check">
+                        <label class="form-check-label" for="tradeCheckbox">Questionnaire terminé {{trade}}</label>
+                        <input type="checkbox" (change)="onCheckboxChangeTradesForFullQCM($event, trade)"
+                            class="form-check-input">
+                    </div>
+                </div>
+
+                <!-- fin filtres additionnels pour compliquer -->
                 <!-- <ng-container *ngIf="tradesActivated"> -->
-                <!-- <div *ngFor="let trade of trades">
+                <div *ngFor="let trade of trades">
                     <div class="form-check">
                         <label class="form-check-label" for="tradeCheckbox">Formation {{trade}}</label>
                         <input type="checkbox" (change)="onCheckboxChangeTrades($event, trade)"
                             class="form-check-input">
                     </div>
-                </div> -->
+                </div>
                 <!-- </ng-container> -->
                 <div class="form-check">
                     <label class="form-check-label" for="endedCheckbox">A terminé sa formation</label>

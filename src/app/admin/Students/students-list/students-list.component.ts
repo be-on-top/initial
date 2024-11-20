@@ -40,7 +40,10 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   isTradeFilter: boolean = false
   tradesActivated: boolean = false
   isQualifiedFilter: boolean = false
-  isPriorFilter:boolean = false
+  isPriorFilter: boolean = false
+  // puisqu'il faut compliquer
+  isTradeQCMStarted: boolean = false
+  isTradeFullQCM: boolean = false
 
   constructor(private service: StudentsService, private activatedRoute: ActivatedRoute, private tradeService: SettingsService, private authService: AuthService) {
     this.userRouterLinks = this.activatedRoute.snapshot.data;
@@ -200,6 +203,12 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       this.tradesActivated = true
     } else if (this.isTradeFilter) {
       this.allStudents = this.initialStudents.filter(student => student.subscriptions && student.subscriptions.includes(trade));
+
+    } else if (this.isTradeQCMStarted) {
+      this.allStudents = this.initialStudents.filter(student => student['quizz_' + trade] && !student['quizz_' + trade].fullResults);
+    }
+    else if (this.isTradeFullQCM) {
+      this.allStudents = this.initialStudents.filter(student => student['quizz_' + trade] && student['quizz_' + trade].fullResults);
     } else if (this.isQualifiedFilter) {
       this.allStudents = this.initialStudents.filter(student => student.endedSubscriptions);
     } else if (this.isPriorFilter) {
@@ -225,10 +234,22 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     this.applyFilters();
   }
 
+  // inititalement destiné aux inscriptions officielles
   onCheckboxChangeTrades(event: any, trade: string) {
     this.isTradeFilter = event.target.checked;
     this.applyFilters(trade);
   }
+
+  // puisqu'il faut compliquer
+  onCheckboxChangeTradesForStartedQCM(event: any, trade: string) {
+    this.isTradeQCMStarted = event.target.checked;
+    this.applyFilters(trade);
+  }
+  onCheckboxChangeTradesForFullQCM(event: any, trade: string) {
+    this.isTradeFullQCM = event.target.checked;
+    this.applyFilters(trade);
+  }
+
 
   onCheckboxChangeEndedTraining(event: any) {
     this.isQualifiedFilter = event.target.checked;
