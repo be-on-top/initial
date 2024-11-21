@@ -157,8 +157,13 @@
             </div>
 
 
-            <div class="alert alert-info mx-0 fw-regular fs-auto">Prospects inscrits et actifs<span
-                    class="badge bg-dark ms-2">{{allStudents.length}}</span> </div>
+            <!-- <div class="alert alert-info mx-0 fw-regular fs-auto">Prospects inscrits et actifs<span
+                    class="badge bg-dark ms-2">{{allStudents.length}}</span> </div> -->
+                    <!-- parce que isTradeFilter initialement était réservé aux formations métiers -->
+            <div class="alert alert-info mx-0 fw-regular fs-auto">
+                {{isSubscriptionFilter || isTradeFilter ? "Inscriptions formation finalisées":isTradeQCMStarted || isTradeFullQCM ? "Prospects concernés":"Prospects inscrits et actifs"}}
+                <span class="badge bg-dark ms-2">{{allStudents.length}}</span>
+            </div>
 
         </div>
 
