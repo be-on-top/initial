@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { StudentsService } from '../../students.service';
 import { Student } from '../student';
 import { ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs';
+import { map, tap } from 'rxjs';
 import { SettingsService } from '../../settings.service';
 import { Trade } from '../../trade';
 import { Users } from '../../Users/users';
@@ -15,6 +15,9 @@ import { User } from 'firebase/auth';
   styleUrls: ['./students-list.component.css']
 })
 export class StudentsListComponent implements OnInit, AfterViewInit {
+
+  // Nouvelle propriété pour stocker les données brutes
+  collectionStudents: any[] = [];
 
   allStudents: any[] = [];
 
@@ -111,10 +114,15 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
 
   ascending = false; // Variable pour gérer l'ordre de tri
 
-  // pour intégrer l'état de ascending
+  // pour intégrer l'état de ascending, et collecter les données brutes pour les totaux
   getStudents() {
     const order = this.ascending ? 'asc' : 'desc';
     this.service.getStudents(order).pipe(
+      tap(students => {
+        // Stocker les données brutes avant toute transformation
+        this.collectionStudents = students;
+        console.log('Données brutes (collectionStudents) :', this.collectionStudents);
+      }),
       map(students => students.filter(student => this.hasFullResults(student)))
     ).subscribe(filteredStudents => {
       this.initialStudents = filteredStudents; // Stocker la liste initiale
@@ -149,17 +157,17 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       const order = this.ascending ? 'asc' : 'desc';
       this.service.getStudents(order).subscribe(data => {
         // Soustraction : trouver les étudiants qui ne sont pas dans `initialStudents`
-        this.studentsWithNoInterest = data.filter(student => 
+        this.studentsWithNoInterest = data.filter(student =>
           !this.initialStudents.some(interestedStudent => interestedStudent.id === student.id)
         );
-  
+
         console.log('Étudiants sans intérêt :', this.studentsWithNoInterest);
-  
+
         this.showNoInterestStudents = true;
       });
     }
   }
-  
+
 
   // indissociable du précédent
 
@@ -233,6 +241,9 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   // }
 
   applyFilters(trade?: string) {
+    // puisqu'il faut désactiver la vue additionnelle des non actifs dès qu'un filtre est actif...
+    this.showNoInterestStudents = false
+    
     if (this.isSocialFormSentFilter) {
       this.allStudents = this.initialStudents.filter(student => student.isSocialFormSent);
     } else if (this.isSubscriptionFilter) {
