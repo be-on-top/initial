@@ -215,6 +215,49 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     this.service.exportCollectionAsCSV("students")
   }
 
+  // exportInactifsCSV() {
+  //   this.service.exportCollectionAsCSV("studentsWithNoInterest")
+  // }
+
+  // pour tester la méthode directement dans le composant
+
+  exportInactifsCSV() {
+    if (this.studentsWithNoInterest.length === 0) {
+      console.warn("Aucune donnée à exporter !");
+      return;
+    }
+  
+    // Construire les données CSV
+    const headers = ['Name', 'Firstname', 'Email']; // Titres des colonnes
+    const rows = this.studentsWithNoInterest.map(student => [
+      student.lastName,
+      student.firstName,
+      student.email
+    ]);
+  
+    // Créer une chaîne CSV
+    const csvContent = [headers, ...rows]
+      .map(e => e.join(',')) // Convertir chaque ligne en texte CSV
+      .join('\n'); // Joindre les lignes par des sauts de ligne
+  
+    // Créer un fichier Blob pour le téléchargement
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+  
+    // Créer un lien de téléchargement
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'Etudiants_inactifs.csv');
+    document.body.appendChild(link);
+    link.click();
+  
+    // Nettoyer après le téléchargement
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
+  
+  
+
 
   // isSocialFormSentFilter: boolean = false;
   // isSubscriptionFilter: boolean = false

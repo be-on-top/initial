@@ -2,7 +2,8 @@
 
     <!-- {{userRouterLinks.user}} -->
 
-    <h3 *ngIf="userRouterLinks.user=='admin' || userRouterLinks.user=='referent'">Gestion des candidats <span  class="badge bg-primary ms-2">{{collectionStudents.length}}</span> 
+    <h3 *ngIf="userRouterLinks.user=='admin' || userRouterLinks.user=='referent'">Gestion des candidats <span
+            class="badge bg-primary ms-2">{{collectionStudents.length}}</span>
     </h3>
     <h3 *ngIf="userRouterLinks.user=='external'">Annuaire étudiants</h3>
     <!-- <hr> -->
@@ -83,21 +84,22 @@
 
                 <hr class="border-secondary" *ngIf="userRouterLinks.user==='admin'">
                 <!-- si il faut relancer (l'admin décidera à qui l'honneur) -->
-                <button button class="btn btn-primary position-relative" *ngIf="userRouterLinks.user==='admin'"
+                <button button class="btn btn-primary position-relative me-sm-2" *ngIf="userRouterLinks.user==='admin'"
                     (click)="getStudentsWithNoInterest()">{{showNoInterestStudents ? 'Masquer les prospects à relancer'
                     : 'Afficher les prospects à relancer' }}
-                                      <span *ngIf="showNoInterestStudents" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                        {{studentsWithNoInterest.length}}
-                                      
-                                      </span>
-                </button>
-                <!-- <button type="button" class="btn btn-primary position-relative">
-                    Inbox
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                      99+
-                      <span class="visually-hidden">unread messages</span>
+                    <span *ngIf="showNoInterestStudents"
+                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        {{studentsWithNoInterest.length}}
+
                     </span>
-                  </button> -->
+                </button>
+                <!-- pour exporter la liste à relancer -->
+                <button *ngIf="showNoInterestStudents" type="button" class="btn btn-danger mt-sm-2 mt-xl-0"
+                    (click)="exportInactifsCSV()">
+                    Exporter au format csv
+                </button>
+
+
             </div>
 
         </div>
@@ -159,9 +161,10 @@
 
             <!-- <div class="alert alert-info mx-0 fw-regular fs-auto">Prospects inscrits et actifs<span
                     class="badge bg-dark ms-2">{{allStudents.length}}</span> </div> -->
-                    <!-- parce que isTradeFilter initialement était réservé aux formations métiers -->
+            <!-- parce que isTradeFilter initialement était réservé aux formations métiers -->
             <div class="alert alert-info mx-0 fw-regular fs-auto">
-                {{isSubscriptionFilter || isTradeFilter ? "Inscriptions formation finalisées":isTradeQCMStarted || isTradeFullQCM ? "Prospects concernés":"Prospects inscrits et actifs"}}
+                {{isSubscriptionFilter || isTradeFilter ? "Inscriptions formation finalisées":isTradeQCMStarted ||
+                isTradeFullQCM ? "Prospects concernés":"Prospects inscrits et actifs"}}
                 <span class="badge bg-dark ms-2">{{allStudents.length}}</span>
             </div>
 
