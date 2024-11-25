@@ -571,3 +571,34 @@ p.question {
     }
 
 } */
+
+
+@media print {
+    .no-print {
+      display: none !important;
+    }
+  
+  
+    /* Keep collapsible sections expanded */
+    .collapse {
+      display: block !important;
+    }
+  
+    /* Improve visibility of selected options */
+    input[type="radio"]:checked + label {
+      font-weight: bold;
+      text-decoration: underline;
+    }
+  
+    /* Style text inputs for emphasis */
+    input[type="text"] {
+      font-weight: bold;
+      background-color: #42A948;
+    }
+  
+    /* Hide the print button */
+    #print {
+      display: none;
+    }
+  }
+  

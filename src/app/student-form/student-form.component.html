@@ -1,4 +1,6 @@
-<div class="container py-5">
+<div class="container py-5" id="printForm">
+
+
     <!-- Et du coup, tous les simples ngModel parce qu'on n'a pas besoin d'autre chose que ngModel pour enregistrer un formulaire en bonne et due forme, RIEN D'AUTRE vont devoir pour pouvoir être récupérés en base en l'état de la saisie être remplacés par du two way binding genre : [(ngModel)]="socialData.permisB"
  
 Tests OK. Sur une  partie. A finir. 
@@ -150,9 +152,10 @@ Tests OK. Sur une  partie. A finir.
 
 
 
-
+    <button (click)="print()" id="print"  class="btn btn-primary">Imprimer</button>
 
     <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)" class="mt-3" [ngClass]="{'read-only-form': isReadOnly}">
+      
 
 
         <div id="accordion" class="w-100">

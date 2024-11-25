@@ -474,7 +474,36 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
 
     return centerName$;
   }
-    
+
+
+  // print () {
+  //   const contenu = document.getElementById('printForm')?.innerHTML || '';
+  // // const originalContent = document.body.innerHTML;
+
+  // document.body.innerHTML = contenu;
+  // window.print();
+  // // document.body.innerHTML = originalContent;
+  // }
+
+
+
+  print() {
+    // Rendre tous les collapses visibles pour l'impression
+    const collapses = document.querySelectorAll('.collapse');
+    collapses.forEach((collapse) => collapse.classList.add('show'));
+  
+    // Lancer l'impression
+    window.print();
+  
+    // Restaurer l'état initial après impression
+    setTimeout(() => {
+      collapses.forEach((collapse) => collapse.classList.remove('show'));
+    }, 0);
+  }  
+
+
+  
+  
 
 
 
