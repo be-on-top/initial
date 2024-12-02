@@ -81,8 +81,7 @@
             Vous êtes parvenu au
             terme du
             questionnaire...</p>
-        <button class="btn btn-primary m-md-auto" disabled><i class="bi bi-check text-light"></i>QCM
-            d'accroche terminé&nbsp;!</button>
+        <button class="btn btn-primary m-md-auto" disabled><i class="bi bi-check text-light"></i>Questionnaire terminé&nbsp;!</button>
         <!-- on peut essayer d'englober ici le text de fin de QUIZZ -->
         <p class="alert bg-light text-dark p-3 m-3 w-75 mx-auto">
             En fonction des réponses que vous avez données, nous sommes en mesure de vous fournir une
@@ -91,8 +90,8 @@
         <!-- fullResults : {{fullResults.length}} -->
         <button *ngIf="fullResults.length==0" data-bs-toggle="modal" data-bs-target="#myModal"
             (click)="generateFullResults()" class="btn btn-lg bg-primary text-light"><i
-                class="me-3 bi bi-arrow-right-circle-fill text-light"></i>Découvrez votre
-            parcours personnalisé&nbsp;!</button>
+                class="me-3 bi bi-arrow-right-circle-fill text-light"></i>Accédez à votre
+            parcours de formation&nbsp;!</button>
         </div>
     </ng-template>
 

@@ -2,9 +2,9 @@
 
     <!-- {{userRouterLinks.user}} -->
 
-    <h3 *ngIf="userRouterLinks.user=='admin' || userRouterLinks.user=='referent'">Gestion des candidats <span
-            class="badge bg-primary ms-2">{{collectionStudents.length}}</span>
-    </h3>
+    <h3 *ngIf="userRouterLinks.user=='admin'">Gestion des candidats <span
+            class="badge bg-primary ms-2">{{collectionStudents.length}}</span></h3>
+    <h3 *ngIf="userRouterLinks.user=='referent'">Suivi administratif des candidats</h3>
     <h3 *ngIf="userRouterLinks.user=='external'">Annuaire étudiants</h3>
     <!-- <hr> -->
     <div *ngIf="(!allStudents)">

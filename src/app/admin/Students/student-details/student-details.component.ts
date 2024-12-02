@@ -391,5 +391,35 @@ export class StudentDetailsComponent {
 
   // }
 
+  print() {
+    // Rendre tous les collapses visibles pour l'impression
+    // const collapses = document.querySelectorAll('.collapse');
+    // collapses.forEach((collapse) => collapse.classList.add('show'));
+  
+    // Lancer l'impression
+    window.print();
+  
+    // Restaurer l'état initial après impression
+    // setTimeout(() => {
+    //   collapses.forEach((collapse) => collapse.classList.remove('show'));
+    // }, 0);
+  }  
+
+  hideAndPrint() {
+    // Sélectionner tous les éléments avec la classe "cost"
+    const costElements = document.querySelectorAll('.cost') as NodeListOf<HTMLElement>;
+  
+    // Cacher les éléments avec la classe "cost"
+    costElements.forEach((el) => (el.style.display = 'none'));
+  
+    // Lancer l'impression
+    window.print();
+  
+    // Restaurer l'état initial après impression
+    setTimeout(() => {
+      costElements.forEach((el) => (el.style.display = ''));
+    }, 0);
+  }
+
 
 }

@@ -24,11 +24,17 @@ import { Users } from './Users/users';
 })
 export class StudentsService {
   // private fullResults: { [key: string]: { duration: number; cost: number } }[] = [];
+  users: any[] = [];
+  result: any;
 
-  constructor(private auth: Auth, private firestore: Firestore, private analytics: Analytics, private router: Router, private storage: Storage) { }
+  actualRoute: string = ""
+
+  constructor(private auth: Auth, private firestore: Firestore, private analytics: Analytics, private router: Router, private storage: Storage) {
+    this.actualRoute = this.router.url
+   }
 
   // createStudent(studentForm: NgForm) {
-  async createStudent(student: any) {
+  async createStudentInitialMethod(student: any) {
 
     // Vérifier si currentUser est défini
     if (this.auth.currentUser && this.auth.currentUser.email) {
@@ -40,9 +46,9 @@ export class StudentsService {
       // let newEvaluator = { id: Date.now(), ...evaluator };
       let newStudent: Student = { created: Date.now(), status: true, trainer: "Attribué ultérieurement", innerStudent: true, ...student };
       // on va lui affecter un password aléatoire en fonction de la date
-      // let password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
+      let password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
       // juste le temps du test, let password sera le même pour tous : password
-      let password = "password"
+      // let password = "password"
 
       // enregistrement en base dans fireAuth d'une part : 
       const result = await createUserWithEmailAndPassword(this.auth, student.email, password);
@@ -66,19 +72,18 @@ export class StudentsService {
 
         await setDoc(doc($rolesRef, newStudent.id), { role: 'student' })
 
-        // envoie un mail de réinitialisation du mot de passe
-        await sendPasswordResetEmail(this.auth, student.email)
-          .then((result) => {
-            // Password reset email sent!
-            console.log("result sentPasswordReset", result)
 
+        // envoie un mail de réinitialisation du mot de passe et url de redirection après reset
+        await sendPasswordResetEmail(this.auth, student.email, {
+          url: 'https://be-on-top.io/login', // URL de redirection après personnalisation du mot de passe
+          handleCodeInApp: true, // Utiliser l'application pour traiter l'action
+        })
+          .then(() => {
+            console.log("Email de réinitialisation envoyé avec succès à l'étudiant.");
           })
           .catch((error) => {
-            // const errorCode = error.code;
-            const errorMessage = error.message;
-            return errorMessage
-            // ..
-          });
+            console.error("Erreur lors de l'envoi de l'email de réinitialisation : ", error.message);
+          })
 
       }
 
@@ -115,6 +120,82 @@ export class StudentsService {
 
 
   }
+
+
+  async createStudent(student: any) {
+    alert(this.actualRoute);
+
+    // Vérifier si currentUser est défini
+    if (this.auth.currentUser && this.auth.currentUser.email) {
+        // Récupérer l'email de l'administrateur
+        const adminEmail = this.auth.currentUser.email;
+
+        // Créer un nouvel étudiant avec les propriétés nécessaires
+        let newStudent = {
+            created: Date.now(),
+            role: 'student',
+            status: true,
+            trainer: "Attribué ultérieurement",
+            innerStudent: true,
+            ...student
+        };
+
+        // Génération du mot de passe aléatoire
+        let password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
+
+        try {
+            // Création de l'utilisateur dans Firebase Authentication
+            const result = await createUserWithEmailAndPassword(this.auth, student.email, password);
+
+            if (result && result.user) {
+                newStudent.id = result.user.uid;
+
+                // Enregistrement dans Firestore
+                let $studentsRef = collection(this.firestore, "students");
+                await setDoc(doc($studentsRef, newStudent.id), newStudent);
+
+                // Enregistrement du rôle dans une collection dédiée
+                let $rolesRef = collection(this.firestore, "roles");
+                await setDoc(doc($rolesRef, newStudent.id), { role: 'student' });
+
+                // Envoi d'un email de réinitialisation avec URL personnalisée
+                await sendPasswordResetEmail(this.auth, newStudent.email, {
+                    url: 'https://be-on-top.io/login', // URL de redirection après personnalisation du mot de passe
+                    handleCodeInApp: true // Utilisation de l'application pour traiter cette action
+                })
+                .then(() => {
+                    console.log("Email de réinitialisation envoyé avec succès.");
+                })
+                .catch((error) => {
+                    console.error("Erreur lors de l'envoi de l'email de réinitialisation :", error.message);
+                });
+            }
+
+            // Déconnexion de l'administrateur
+            await this.auth.signOut();
+
+            // Reconnexion de l'administrateur
+            this.auth.onAuthStateChanged(async (user) => {
+                if (!user) {
+                    const adminPassword = prompt('Veuillez entrer votre mot de passe pour vous reconnecter.');
+                    if (adminPassword) {
+                        await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
+                        console.log('Reconnexion automatique en tant qu\'administrateur réussie.');
+                        this.router.navigate(['/admin/student', newStudent.id]);
+                    } else {
+                        console.error('Mot de passe non fourni.');
+                    }
+                }
+            });
+        } catch (error: any) {
+            console.error("Erreur lors de la création de l'étudiant :", error.message);
+        }
+    } else {
+        console.error('Administrateur non connecté.');
+    }
+}
+
+
 
   async register(student: any) {
     // alert(student.studentPw)
@@ -596,14 +677,14 @@ export class StudentsService {
 
   //     switchMap(userDocSnapshot => {
   //       const userDocData = userDocSnapshot.data() as Users | undefined;
-      
+
   //       if (userDocData && userDocData.cp) {
   //         const cp = userDocData.cp; // On suppose ici que `cp` est une chaîne
   //         console.log('utilisateur référent de', cp);
-      
+
   //         const centersQuery = query(centersRef, where('cp', '==', cp));
   //         console.log('Exécution de la requête Firestore pour CP:', cp);
-          
+
   //         return from(getDocs(centersQuery)).pipe(
   //           tap(querySnapshot => {
   //             console.log('Résultats de la requête centers:', querySnapshot.docs.map(doc => doc.data()));
@@ -629,7 +710,7 @@ export class StudentsService {
   //         return of([]);
   //       }
   //     })
-      
+
   //   );
   // }
 
@@ -637,25 +718,25 @@ export class StudentsService {
     const usersRef = collection(this.firestore, 'users');
     const centersRef = collection(this.firestore, 'centers');
     const socialFormRef = collection(this.firestore, 'SocialForm');
-  
+
     // Récupère le document utilisateur dans la collection 'users' en fonction de l'ID donné
     const userDocRef = doc(usersRef, userId);
-  
+
     return from(getDoc(userDocRef)).pipe(
       switchMap(userDocSnapshot => {
         const userDocData = userDocSnapshot.data() as Users | undefined;
         console.log('userDocData.cp', userDocData);
-        
-        
+
+
         // Si `cp` dans `userDocData` est un tableau de chaînes de caractères
         if (userDocData && Array.isArray(userDocData.cp) && userDocData.cp.length > 0) {
           const cpArray = userDocData.cp; // Le tableau de CPs dans le document de l'utilisateur
           console.log('utilisateur référent de', cpArray);
-  
+
           // Requête pour trouver tous les centres dont le `cp` est dans le tableau `cpArray`
           const centersQuery = query(centersRef, where('cp', 'in', cpArray));
           console.log('Exécution de la requête Firestore pour CPs:', cpArray);
-  
+
           return from(getDocs(centersQuery)).pipe(
             tap(querySnapshot => {
               console.log('Résultats de la requête centers:', querySnapshot.docs.map(doc => doc.data()));
@@ -685,9 +766,9 @@ export class StudentsService {
       })
     );
   }
-  
-  
-  
+
+
+
 
 }
 
