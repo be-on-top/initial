@@ -31,7 +31,7 @@ export class StudentsService {
 
   constructor(private auth: Auth, private firestore: Firestore, private analytics: Analytics, private router: Router, private storage: Storage) {
     this.actualRoute = this.router.url
-   }
+  }
 
   // createStudent(studentForm: NgForm) {
   async createStudentInitialMethod(student: any) {
@@ -122,33 +122,115 @@ export class StudentsService {
   }
 
 
-  async createStudent(student: any) {
+  // async createStudent(student: any) {
+  //   alert(this.actualRoute);
+
+  //   // Vérifier si currentUser est défini
+  //   if (this.auth.currentUser && this.auth.currentUser.email) {
+  //     // Récupérer l'email de l'administrateur
+  //     const adminEmail = this.auth.currentUser.email;
+
+  //     // Créer un nouvel étudiant avec les propriétés nécessaires
+  //     let newStudent = {
+  //       created: Date.now(),
+  //       role: 'student',
+  //       status: true,
+  //       trainer: "Attribué ultérieurement",
+  //       innerStudent: true,
+  //       ...student
+  //     };
+
+  //     // Génération du mot de passe aléatoire
+  //     let password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
+
+  //     try {
+  //       // Création de l'utilisateur dans Firebase Authentication
+  //       const result = await createUserWithEmailAndPassword(this.auth, student.email, password);
+
+  //       if (result && result.user) {
+  //         newStudent.id = result.user.uid;
+
+  //         // Enregistrement dans Firestore
+  //         let $studentsRef = collection(this.firestore, "students");
+  //         await setDoc(doc($studentsRef, newStudent.id), newStudent);
+
+  //         // Enregistrement du rôle dans une collection dédiée
+  //         let $rolesRef = collection(this.firestore, "roles");
+  //         await setDoc(doc($rolesRef, newStudent.id), { role: 'student' });
+
+  //         // Envoi d'un email de réinitialisation avec URL personnalisée
+  //         await sendPasswordResetEmail(this.auth, newStudent.email)
+  //           .then(() => {
+  //             console.log("Email de réinitialisation envoyé avec succès.");
+  //           })
+  //           .catch((error) => {
+  //             console.error("Erreur lors de l'envoi de l'email de réinitialisation :", error.message);
+  //           });
+  //       }
+
+  //       // Déconnexion de l'administrateur
+  //       await this.auth.signOut();
+
+  //       // Reconnexion de l'administrateur
+  //       this.auth.onAuthStateChanged(async (user) => {
+  //         if (!user) {
+  //           const adminPassword = prompt('Veuillez entrer votre mot de passe pour vous reconnecter.');
+  //           if (adminPassword) {
+  //             await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
+  //             console.log('Reconnexion automatique en tant qu\'administrateur réussie.');
+  //             this.router.navigate(['/admin/student', newStudent.id]);
+  //           } else {
+  //             console.error('Mot de passe non fourni.');
+  //           }
+  //         }
+  //       });
+  //     } catch (error: any) {
+  //       console.error("Erreur lors de la création de l'étudiant :", error.message);
+  //     }
+  //   } else {
+  //     console.error('Administrateur non connecté.');
+  //   }
+  // }
+
+  // pour import en nombre fonctionne et redirection convenable
+
+  async createStudents(students: any[]) {
     alert(this.actualRoute);
 
     // Vérifier si currentUser est défini
     if (this.auth.currentUser && this.auth.currentUser.email) {
-        // Récupérer l'email de l'administrateur
-        const adminEmail = this.auth.currentUser.email;
+      // Récupérer l'email de l'administrateur
+      const adminEmail = this.auth.currentUser.email;
 
-        // Créer un nouvel étudiant avec les propriétés nécessaires
-        let newStudent = {
-            created: Date.now(),
+      try {
+        // Parcours de chaque étudiant pour les ajouter un par un
+        for (let student of students) {
+          // Créer un nouvel étudiant avec les propriétés nécessaires
+          let newStudent: Partial<Student> = {
+            created: new Date(),
             role: 'student',
             status: true,
             trainer: "Attribué ultérieurement",
             innerStudent: true,
-            ...student
-        };
+            firstName: student.firstName?.trim() || '',
+            lastName: student.lastName?.trim() || '',
+            email: student.email?.trim() || '',
+            roles: [],   // Assurez-vous que vous gérez les rôles correctement
+            details: "",  // Ajoutez des détails ou initialisez-les en fonction du modèle
+          };
 
-        // Génération du mot de passe aléatoire
-        let password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
+          // Vérification si l'email est valide
+          if (newStudent.email) {
+            // Génération du mot de passe aléatoire
+            let password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
 
-        try {
-            // Création de l'utilisateur dans Firebase Authentication
-            const result = await createUserWithEmailAndPassword(this.auth, student.email, password);
+            try {
+              // Création de l'utilisateur dans Firebase Authentication
+              const result = await createUserWithEmailAndPassword(this.auth, newStudent.email, password);
 
-            if (result && result.user) {
-                newStudent.id = result.user.uid;
+              if (result && result.user) {
+                // Une fois l'utilisateur créé, ajouter l'ID dans l'objet
+                newStudent.id = result.user.uid;  // Ajoutez ici l'id généré par Firebase
 
                 // Enregistrement dans Firestore
                 let $studentsRef = collection(this.firestore, "students");
@@ -159,41 +241,54 @@ export class StudentsService {
                 await setDoc(doc($rolesRef, newStudent.id), { role: 'student' });
 
                 // Envoi d'un email de réinitialisation avec URL personnalisée
-                await sendPasswordResetEmail(this.auth, newStudent.email, {
-                    url: 'https://be-on-top.io/login', // URL de redirection après personnalisation du mot de passe
-                    handleCodeInApp: true // Utilisation de l'application pour traiter cette action
-                })
-                .then(() => {
+                await sendPasswordResetEmail(this.auth, newStudent.email)
+                  .then(() => {
                     console.log("Email de réinitialisation envoyé avec succès.");
-                })
-                .catch((error) => {
+                  })
+                  .catch((error) => {
                     console.error("Erreur lors de l'envoi de l'email de réinitialisation :", error.message);
-                });
+                  });
+              }
+            } catch (error: any) {
+              console.error(`Erreur lors de la création de l'étudiant ${student.email}:`, error.message);
             }
-
-            // Déconnexion de l'administrateur
-            await this.auth.signOut();
-
-            // Reconnexion de l'administrateur
-            this.auth.onAuthStateChanged(async (user) => {
-                if (!user) {
-                    const adminPassword = prompt('Veuillez entrer votre mot de passe pour vous reconnecter.');
-                    if (adminPassword) {
-                        await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
-                        console.log('Reconnexion automatique en tant qu\'administrateur réussie.');
-                        this.router.navigate(['/admin/student', newStudent.id]);
-                    } else {
-                        console.error('Mot de passe non fourni.');
-                    }
-                }
-            });
-        } catch (error: any) {
-            console.error("Erreur lors de la création de l'étudiant :", error.message);
+          } else {
+            console.error('Email manquant pour un étudiant. L\'importation pour cet étudiant est ignorée.');
+          }
         }
+
+        // Déconnexion de l'administrateur après l'importation
+        await this.auth.signOut();
+
+        // Demande du mot de passe pour reconnecter l'administrateur
+        const adminPassword = prompt('Veuillez entrer votre mot de passe pour vous reconnecter.');
+        if (adminPassword) {
+          try {
+            // Reconnexion de l'administrateur
+            await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
+            console.log('Reconnexion réussie.');
+
+            // Naviguer vers la page des étudiants avant de recharger la page
+            this.router.navigate(['/admin/students']);  // Redirection vers la page des étudiants
+
+            // Utiliser setTimeout pour permettre à la navigation de se produire avant de recharger la page
+            setTimeout(() => {
+              window.location.reload();  // Recharge la page après la redirection
+            }, 500);  // Un délai de 500ms pour s'assurer que la navigation a lieu avant le rechargement
+
+          } catch (error) {
+            console.error('Erreur lors de la reconnexion de l\'administrateur:', error);
+          }
+        } else {
+          console.error('Mot de passe non fourni.');
+        }
+      } catch (error) {
+        console.error("Erreur lors du traitement de l'importation :", error);
+      }
     } else {
-        console.error('Administrateur non connecté.');
+      console.error('Administrateur non connecté.');
     }
-}
+  }
 
 
 
@@ -767,6 +862,95 @@ export class StudentsService {
     );
   }
 
+
+
+
+      async createStudent(student: any) {
+        if (!this.auth.currentUser || !this.auth.currentUser.email) {
+          console.error('Administrateur non connecté.');
+          return;
+        }
+      
+        const adminEmail = this.auth.currentUser.email;
+      
+        // Initialiser un nouvel étudiant avec des champs par défaut
+        const newStudent: Student = {
+          created: Date.now(),
+          status: true,
+          trainer: "Attribué ultérieurement",
+          innerStudent: true,
+          ...student,
+        };
+      
+        // Générer un mot de passe aléatoire pour le nouvel étudiant
+        const password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
+      
+        try {
+          // Créer l'utilisateur dans Firebase Authentication
+          const result = await createUserWithEmailAndPassword(this.auth, student.email, password);
+      
+          if (!result || !result.user) {
+            throw new Error("Échec de la création de l'utilisateur Firebase.");
+          }
+      
+          // Ajouter l'UID généré à l'objet étudiant
+          newStudent.id = result.user.uid;
+      
+          // Ajouter les informations de l'étudiant dans Firestore
+          const studentsRef = collection(this.firestore, "students");
+          await setDoc(doc(studentsRef, newStudent.id), newStudent);
+          console.log("Étudiant ajouté avec succès dans Firestore.");
+      
+          // Ajouter le rôle de l'étudiant dans la collection des rôles
+          const rolesRef = collection(this.firestore, "roles");
+          await setDoc(doc(rolesRef, newStudent.id), { role: 'student' });
+          console.log("Rôle de l'étudiant ajouté avec succès.");
+      
+          // Envoyer un e-mail de réinitialisation du mot de passe
+          await sendPasswordResetEmail(this.auth, student.email
+        //     ,{
+        //        // URL de redirection après personnalisation du mot de passe
+        //     url: 'https://be-on-top.io/login',
+        //     // Utilisation de l'application pour traiter cette action
+        //     handleCodeInApp: true 
+        // }
+      );
+          console.log("E-mail de réinitialisation du mot de passe envoyé.");
+        } catch (error: any) {
+          console.error("Erreur lors de la création de l'étudiant :", error.message);
+          return; // Arrêtez le processus si une erreur se produit
+        }
+      
+        // Déconnexion de l'administrateur après la création de l'étudiant
+        try {
+          await this.auth.signOut();
+          console.log("Administrateur déconnecté après la création.");
+        } catch (error) {
+          console.error("Erreur lors de la déconnexion de l'administrateur :", error);
+        }
+      
+        // Reconnexion de l'administrateur
+        this.auth.onAuthStateChanged(async (user) => {
+          if (!user) {
+            const adminPassword = prompt('Veuillez entrer votre mot de passe pour vous reconnecter.');
+            if (!adminPassword) {
+              console.error('Mot de passe non fourni.');
+              return;
+            }
+      
+            try {
+              await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
+              console.log('Reconnexion réussie.');
+      
+              // Rediriger vers la page des détails de l'étudiant
+              this.router.navigate(['/admin/student', newStudent.id]);
+            } catch (error: any) {
+              console.error('Erreur lors de la reconnexion de l\'administrateur :', error.message);
+            }
+          }
+        });
+      }
+      
 
 
 

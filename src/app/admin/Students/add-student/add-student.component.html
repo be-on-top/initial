@@ -1,7 +1,8 @@
 <div class="container py-5">
 
     <h3>Inscrire un apprenant à BE-ON-TOP</h3>
-    <app-feedback-messages [feedbackMessages]="feedbackMessages" [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
+    <app-feedback-messages [feedbackMessages]="feedbackMessages"
+        [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
 
     <!-- pour les messages de retour/validation des champs du formulaire ou form validation, on utilisera BOOTSTRAP plutôt que des directives structurelles -->
     <form class="form" #f="ngForm" (submit)="addStudent(f)" class="was-validated">
@@ -29,7 +30,7 @@
             <div class="form-group col-md-6">
                 <label for="email" class="form-label mt-3">Email *</label>
                 <div class="input-group">
-                    <span class="input-group-text" id="inputGroupPrepend2">@</span>
+                    <span class="input-group-text" id="inputGroupPrepend2">&#64;</span>
                     <input type="email" id="email" ngModel name="email" class="form-control" #email="ngModel"
                         placeholder="Email" required>
                     <div class="valid-feedback" *ngIf="email.valid">Email Valide </div>
@@ -41,7 +42,7 @@
                 <input type="text" id="cp" ngModel name="cp" class="form-control"
                     placeholder="Code Postal Optionnel...">
             </div>
-        </div>     
+        </div>
 
 
         <!-- <label for="details" class="form-label mt-3">Commentaires optionnels</label> -->
@@ -51,5 +52,21 @@
         <button type="submit" id="submit" class="btn btn-primary mt-3"
             [ngClass]="{'disabled':f.invalid}">Ajouter</button>
     </form>
+
+    <!-- Section d'importation CSV -->
+
+    <h3 class="mt-3">Importer plusieurs apprenants déjà en centre de formation</h3>
+    <div class="form-group">
+        <label for="csvFile" class="form-label">Choisissez un fichier CSV</label>
+        <input type="file" id="csvFile" (change)="onFileChange($event)" accept=".csv" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-secondary mt-4" (click)="importCSV()" [disabled]="!csvFile">Importer</button>
+
+
+
+    <div class="alert alert-warning mt-5 text-light">Votre fichier CSV devrait contenir des colonnes correspondant aux
+        propriétés nécessaires, comme : <br>firstName,lastName,email <br>John,Doe,john.doe@example.com
+        <br>Jane,Smith,jane.smith@example.com </div>
+
 
 </div>
