@@ -148,8 +148,12 @@ export class CentersService {
       address: center.address,
       cp: center.cp,
       city: center.city,
-      sigles: center.sigles // Utilisez directement center.sigles
+      sigles: center.sigles, // Utilisez directement center.sigles
+      mainCity: center.mainCity
     };
+
+    // console.log('newCenter côté service', newCenter);
+    
 
     // Enregistre dans Firestore avec une collection centers qui aura de multiples propriétés
     let $centersRef = collection(this.firestore, "centers");
@@ -163,7 +167,7 @@ export class CentersService {
         console.error('Erreur lors de la création du centre:', error);
         return throwError(() => new Error('Erreur d\'enregistrement')); // Retourne une erreur observable
       })
-    );
+    )
   }
 
 
