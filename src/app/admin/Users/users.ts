@@ -1,11 +1,12 @@
 export interface Users {
     id: string;
-    firstname: string;
-    lastname: number;
+    firstName: string;
+    lastName: string;
     password: string,
     cp?: string[];
     email: string;
     created: Date;
     status: boolean;
     tel?: string;
+    role?:string
 }

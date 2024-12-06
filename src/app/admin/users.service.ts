@@ -39,7 +39,7 @@ export class UsersService {
       // let newUser = { created: Date.now(), roles: 'editor', status: true, ...user };
       let newUser = { created: Date.now(), role: user.role, status: true, ...user };
       this.users = [newUser, ...this.users];
-      console.log(this.users);
+      console.log('this.users!!!!!!!!!!!', this.users);
       // on va lui affecter un password aléatoire en fonction de la date
       // mais pour le moment, je fais un password à la con pour pouvoir faire mes tests : ATTENTION !!!!!!!!!!!!!!!!!!!
       let password = "password";
@@ -48,6 +48,8 @@ export class UsersService {
       // enregistrement en base dans fireAuth d'une part : 
       this.result = await createUserWithEmailAndPassword(this.auth, user.email, password);
 
+
+      // c'est ici que ça ne suit pas !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       if (this.result && this.result.user) {
         // ATTENTION : compte tenu du fait qu'on enregistre maintenant AVEC uid comme id du doc, ajouter l'uid en propriété du doc n'a plus vraiment d'intérêt
         newUser.id = this.result.user.uid
@@ -112,6 +114,70 @@ export class UsersService {
 
 
   }
+ 
+
+  // version simplifiée de createUsers
+  async createUsers(users: any[]): Promise<void> {
+    const adminEmail = this.auth.currentUser?.email;
+  
+    if (!adminEmail) {
+      console.error('Administrateur non connecté.');
+      return;
+    }
+  
+    // Initialisation des erreurs et succès
+    const errors: string[] = [];
+    const successes: string[] = [];
+  
+    // Boucle sur chaque utilisateur pour traitement
+    for (const user of users) {
+      try {
+        // Génération d’un mot de passe aléatoire (ou utiliser un mot de passe fixe pour les tests)
+        const password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
+  
+        // Création dans Firebase Auth
+        const result = await createUserWithEmailAndPassword(this.auth, user.email, password);
+  
+        if (!result || !result.user) {
+          throw new Error(`Échec de la création d'un utilisateur pour l'email ${user.email}`);
+        }
+  
+        const newUser = {
+          ...user,
+          id: result.user.uid,
+          created: Date.now(),
+          status: true,
+        };
+  
+        // Enregistrement dans Firestore (collection "users")
+        const $usersRef = collection(this.firestore, "users");
+        await setDoc(doc($usersRef, newUser.id), newUser);
+  
+        // Enregistrement dans Firestore (collection "roles")
+        const $rolesRef = collection(this.firestore, "roles");
+        await setDoc(doc($rolesRef, newUser.id), { role: user.role });
+  
+        // Envoi d'un email de réinitialisation du mot de passe
+        await sendPasswordResetEmail(this.auth, user.email);
+  
+        // Ajout à la liste des succès
+        successes.push(user.email);
+      } catch (error: any) {
+        console.error(`Erreur pour l'utilisateur ${user.email}:`, error.message);
+        errors.push(`Email: ${user.email}, Erreur: ${error.message}`);
+      }
+    }
+  
+    // Résumé des résultats
+    console.log('Utilisateurs créés avec succès:', successes);
+    if (errors.length > 0) {
+      console.error('Erreurs lors de la création des utilisateurs:', errors);
+    }
+  
+    // Déconnexion de l'administrateur
+    await this.auth.signOut();
+  }
+  
 
  
   // gettrainers(): Observable<trainers[]> {

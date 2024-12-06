@@ -148,8 +148,10 @@ export class AddUserComponent {
               userMap[user.email] = {
                 cp: [user.cp],
                 email: user.email,
-                firstname:user.firstname,
-                lastname:user.lastname
+                firstName:user.firstName,
+                lastName:user.lastName,
+                role:'referent',
+                tel:user.tel
               };
             }
           }
@@ -171,32 +173,55 @@ export class AddUserComponent {
 
 
   // Fonction pour télécharger les données vers Firestore
-  uploadReferentsToFirestore(): void {
+  // uploadReferentsToFirestore(): void {
+
+  //   console.log("on execute uploadReferentsToFirestore");
+    
+  //   if (this.parsedReferents.length === 0) {
+  //     this.errorMessage = 'Aucune donnée à importer depuis le fichier CSV.';
+  //     return;
+  //   }
+
+
+  //   this.parsedReferents.forEach((user:Users) => {
+  //     // const newReferent={cp:user.cp, role:this.userRouterLinks.data ,tel:user.tel, email:user.email, lastName:user.lastName, firstName:user.firstName}
+  //     const newReferent={cp:user.cp, role:user.role ,tel:user.tel, email:user.email, lastName:user.lastName, firstName:user.firstName}
+  //     console.log(newReferent);      
+      
+  //     this.service.createUsers(newReferent)
+  //     .then(
+  //       (response) => {
+  //         console.log('Référent créé avec succès:', response);
+  //         this.successMessage = 'Référents importés avec succès.';
+  //         this.errorMessage = '';
+  //       },
+  //       (error) => {
+  //         console.error('Erreur lors de la création du référent:', error);
+  //         this.errorMessage = `Erreur lors de l'importation de certains centres: ${error.message}`;
+  //       }
+  //     )
+
+  //   }
+  //   );
+  // }
+
+  async uploadReferentsToFirestore(): Promise<void> {
+    console.log("Exécution de uploadReferentsToFirestore");
+  
     if (this.parsedReferents.length === 0) {
       this.errorMessage = 'Aucune donnée à importer depuis le fichier CSV.';
       return;
     }
-
-
-    this.parsedReferents.forEach((user:Users) => {
-      const newReferent={cp:user.cp, role:this.userRouterLinks.data ,tel:user.tel, email:user.email, lastname:user.lastname, firstname:user.firstname}
-      console.log(newReferent);      
-      
-      // this.service.createUser(newReferent)
-      // .then(
-      //   (response) => {
-      //     console.log('Référent créé avec succès:', response);
-      //     this.successMessage = 'Référents importés avec succès.';
-      //     this.errorMessage = '';
-      //   },
-      //   (error) => {
-      //     console.error('Erreur lors de la création du référent:', error);
-      //     this.errorMessage = `Erreur lors de l'importation de certains centres: ${error.message}`;
-      //   }
-      // )
-
+  
+    try {
+      await this.service.createUsers(this.parsedReferents);
+      this.successMessage = 'Référents importés avec succès.';
+      this.errorMessage = '';
+    } catch (error: any) {
+      console.error('Erreur lors de l\'importation des référents:', error.message);
+      this.errorMessage = `Erreur lors de l'importation : ${error.message}`;
     }
-    );
   }
+  
 
 }
