@@ -30,9 +30,14 @@
             <div class="col-md-6">
                 <!-- <div class="form-check" *ngIf="userRouterLinks.user!=='external' || userRouterLinks.user!=='admin'"> -->
                 <div class="form-check" *ngIf="userRouterLinks.user==='referent'">
-                    <label class="form-check-label" for="priorCheckbox">Mes prospects*</label>
+                    <label class="form-check-label" for="priorCheckbox">Qui ont choisi mon centre*</label>
                     <input type="checkbox" (change)="onCheckboxChangePrior($event)" class="form-check-input"
                         id="priorCheckbox">
+                </div>
+                <div class="form-check" *ngIf="userRouterLinks.user==='referent'">
+                    <label class="form-check-label" for="onCheckboxChangeMyInitialStudents">Que j'ai ajouté</label>
+                    <input type="checkbox" (change)="onCheckboxChangeMyInitialStudents($event)" class="form-check-input"
+                        id="myCenterStudents">
                 </div>
                 <div class="form-check" *ngIf="userRouterLinks.user==='admin'">
                     <label class="form-check-label" for="socialCheckbox">Formulaire administratif renseigné</label>

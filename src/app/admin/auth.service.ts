@@ -315,6 +315,11 @@ export class AuthService {
     const user = this.auth.currentUser;  // Utilise currentUser pour obtenir l'utilisateur actuel
     return user ? user.uid : null;  // Retourne l'UID si l'utilisateur est connecté, sinon null
   }
+  // Méthode pour obtenir l'UID de l'utilisateur connecté (en admin)
+  getCurrentUserEmail(): string | null {
+    const user = this.auth.currentUser;  // Utilise currentUser pour obtenir l'utilisateur actuel
+    return user ? user.email : null;  // Retourne l'UID si l'utilisateur est connecté, sinon null
+  }
 
 
 

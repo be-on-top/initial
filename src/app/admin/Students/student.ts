@@ -17,6 +17,7 @@ export interface Student {
     trainer: string;
     tutor?: string;
     anpe?: boolean;
+    referent?:string;
     tradesEvaluated?: string[];
     subscriptions?:[];
     isSocialFormSent?:boolean;

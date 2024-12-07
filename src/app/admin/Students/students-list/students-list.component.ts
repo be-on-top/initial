@@ -52,6 +52,8 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   showNoInterestStudents: boolean = false;
   studentsWithNoInterest: any[] = [];
 
+  myCenterStudents:boolean=false
+
   constructor(private service: StudentsService, private activatedRoute: ActivatedRoute, private tradeService: SettingsService, private authService: AuthService) {
     this.userRouterLinks = this.activatedRoute.snapshot.data;
 
@@ -70,8 +72,9 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.getStudents();
-    this.onSearchTextEntered("")
+
+      this.getStudents();
+      this.onSearchTextEntered("")
 
   }
 
@@ -130,6 +133,36 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       this.applyFilters();
     });
   }
+
+  // getStudents() {
+  //   const order = this.ascending ? 'asc' : 'desc';
+
+  //   // c'est là qu'il faudrait introduire une distinction dans le getStudents selon qu'ils portent l'email du référent ou
+  //   this.service.getStudents(order).pipe(
+  //     tap(students => {
+  //       // Stocker les données brutes avant toute transformation
+  //       this.collectionStudents = students;
+  //       console.log('Données brutes (collectionStudents) :', this.collectionStudents);
+  //     }),
+  //     map(students => {
+  //       // Filtrer les étudiants ayant des résultats complets
+  //       let filteredStudents = students.filter(student => this.hasFullResults(student));
+  
+  //       // Si l'utilisateur est un référent, appliquer un filtre supplémentaire
+  //       if (this.userRouterLinks.user==='referent') {
+  //         alert(this.authService.getCurrentUserEmail())
+  //         filteredStudents = filteredStudents.filter(student => student.referent === this.authService.getCurrentUserUid());
+  //       }
+  
+  //       return filteredStudents;
+  //     })
+  //   ).subscribe(filteredStudents => {
+  //     this.initialStudents = filteredStudents; // Stocker la liste initiale
+  //     this.allStudents = [...this.initialStudents]; // Initialiser allStudents
+  //     alert(this.allStudents)
+  //     this.applyFilters();
+  //   });
+  // }
 
   // puisqu'il faut compliquer et théoriquement relancer... 
   // getStudentsWithNoInterest() {
@@ -304,6 +337,8 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       this.allStudents = this.initialStudents.filter(student => student.endedSubscriptions);
     } else if (this.isPriorFilter) {
       this.allStudents = this.filteredStudents;
+    } else if (this.myCenterStudents) {
+      this.allStudents =  this.initialStudents.filter(student => student.referent==this.userUid);
     } else {
       this.allStudents = [...this.initialStudents];
       this.tradesActivated = false
@@ -346,6 +381,10 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     this.isQualifiedFilter = event.target.checked;
     this.applyFilters();
   }
+  onCheckboxChangeMyInitialStudents(event: any) {
+    this.myCenterStudents = event.target.checked;
+    this.applyFilters();
+  }
 
   /**
    * Méthode pour vérifier le CP d'un utilisateur par son ID (credential.uid),
@@ -373,6 +412,31 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   filterStudentsByPriorCenter(students: Student[], returnedPriors: string[]): Student[] {
     return students.filter(student => returnedPriors.includes(student.id));
   }
+
+  // si on veut à terme afficher exclusivement les étudiants inscrits par le référent
+
+  getReferentStudents() {
+    const order = this.ascending ? 'asc' : 'desc';
+    const referentUid = this.authService.getCurrentUserUid(); // Assurez-vous que cette méthode est bien synchrone ou ajustez si asynchrone.
+  
+    if (!referentUid) {
+      console.error('Impossible de récupérer UID du référent.');
+      return;
+    }
+    this.service.getStudents(order).pipe(
+      tap(students => {
+        // Stocker les données brutes avant toute transformation
+        this.collectionStudents = students;
+        console.log('Données brutes (collectionStudents) :', this.collectionStudents);
+      }),
+      map(students => students.filter(student => student.referent === referentUid))
+    ).subscribe(filteredStudents => {
+      this.initialStudents = filteredStudents; // Stocker la liste initiale
+      this.allStudents = [...this.initialStudents]; // Initialiser allStudents
+      this.applyFilters();
+    });
+  }
+
 
 
 }

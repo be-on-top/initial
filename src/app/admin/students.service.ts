@@ -872,13 +872,16 @@ export class StudentsService {
         }
       
         const adminEmail = this.auth.currentUser.email;
+        const adminUid = this.auth.currentUser.uid
       
-        // Initialiser un nouvel étudiant avec des champs par défaut
+        // Initialiser un nouvel étudiant avec des champs par défaut + celui du referent qui l'a inscrit
         const newStudent: Student = {
           created: Date.now(),
           status: true,
           trainer: "Attribué ultérieurement",
           innerStudent: true,
+          // referent:adminEmail,
+          referent:adminUid,
           ...student,
         };
       
