@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { addDoc, collection, collectionData, deleteDoc, doc, docData, docSnapshots, Firestore, getDocs, query, setDoc, updateDoc, where, QuerySnapshot, DocumentData, orderBy } from '@angular/fire/firestore';
-import { catchError, from, map, Observable, of, throwError } from 'rxjs';
+import { catchError, from, map, mergeMap, Observable, of, throwError } from 'rxjs';
 import { Centers } from './centers';
 
 // Définition de l'interface pour les villes
@@ -139,8 +139,41 @@ export class CentersService {
   }
 
 
+  // createCenter(center: Centers) {
+  //   let newCenter = {
+  //     created: Date.now(),
+  //     status: true,
+  //     name: center.name,
+  //     address: center.address,
+  //     cp: center.cp,
+  //     city: center.city,
+  //     sigles: center.sigles, // Utilisez directement center.sigles
+  //     mainCity: center.mainCity
+  //   }
+
+  //   // console.log('newCenter côté service', newCenter);
+    
+
+  //   // Enregistre dans Firestore avec une collection centers qui aura de multiples propriétés
+  //   let $centersRef = collection(this.firestore, "centers");
+
+  //   // Convertit la promesse addDoc en observable
+  //   return from(addDoc($centersRef, newCenter)).pipe(
+  //     map((docRef) => {
+  //       return { id: docRef.id, ...newCenter }; // Retourne le nouveau centre avec son id
+  //     }),
+  //     catchError((error) => {
+  //       console.error('Erreur lors de la création du centre:', error);
+  //       return throwError(() => new Error('Erreur d\'enregistrement')); // Retourne une erreur observable
+  //     })
+  //   )
+  // }
+
 
   createCenter(center: Centers) {
+    let $centersRef = collection(this.firestore, "centers");
+  
+    // Crée un objet center sans l'ID pour l'instant
     let newCenter = {
       created: Date.now(),
       status: true,
@@ -148,27 +181,28 @@ export class CentersService {
       address: center.address,
       cp: center.cp,
       city: center.city,
-      sigles: center.sigles, // Utilisez directement center.sigles
+      sigles: center.sigles, 
+      // Utilisez directement center.sigles
       mainCity: center.mainCity
-    };
-
-    // console.log('newCenter côté service', newCenter);
-    
-
-    // Enregistre dans Firestore avec une collection centers qui aura de multiples propriétés
-    let $centersRef = collection(this.firestore, "centers");
-
-    // Convertit la promesse addDoc en observable
+    }
+  
     return from(addDoc($centersRef, newCenter)).pipe(
-      map((docRef) => {
-        return { id: docRef.id, ...newCenter }; // Retourne le nouveau centre avec son id
+      mergeMap((docRef) => {
+        // Ajoute l'id au document lui-même
+        const updatedCenter = { ...newCenter, id: docRef.id };
+  
+        // Met à jour le document pour inclure l'ID
+        return from(setDoc(doc($centersRef, docRef.id), updatedCenter)).pipe(
+          map(() => updatedCenter) // Retourne le centre mis à jour
+        );
       }),
       catchError((error) => {
-        console.error('Erreur lors de la création du centre:', error);
-        return throwError(() => new Error('Erreur d\'enregistrement')); // Retourne une erreur observable
+        console.error("Erreur lors de la création du centre :", error);
+        return throwError(() => new Error("Erreur d'enregistrement")); // Retourne une erreur observable
       })
-    )
+    );
   }
+  
 
 
   /**
