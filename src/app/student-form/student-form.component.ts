@@ -135,8 +135,11 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
     // const socialFormData = form.value; 
     // if (form.value.MoyenDeTransport !== undefined) 
 
-    // Cloner les données du formulaire pour éviter de modifier directement form.value
-    const socialFormData = { ...form.value };
+    // Cloner les données du formulaire pour éviter de modifier directement form.value !!!!!!!!!!!!!!!!
+    // ne suffisait pas à faire que priorTrade et center persistent sur la durée une fois le formulaire soumi
+    // const socialFormData = { ...form.value };
+    
+    const socialFormData = {center:this.centerChoiced?.id,priorTrade:this.priorTrade, ...form.value };
 
     // Nettoyer l'objet des champs undefined
     Object.keys(socialFormData).forEach(key => socialFormData[key] === undefined && delete socialFormData[key]);
