@@ -7,5 +7,6 @@ export interface Centers {
     created: Date;
     status: boolean;
     sigles: string[];
-    mainCity?:string
+    mainCity?:string;
+    tel?:string
 }

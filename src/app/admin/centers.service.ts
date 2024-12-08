@@ -183,7 +183,8 @@ export class CentersService {
       city: center.city,
       sigles: center.sigles, 
       // Utilisez directement center.sigles
-      mainCity: center.mainCity
+      mainCity: center.mainCity, 
+      tel:center.tel
     }
   
     return from(addDoc($centersRef, newCenter)).pipe(

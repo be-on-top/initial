@@ -13,7 +13,9 @@
                     <span class="fw-bold">Adresse</span> : {{center.address}}<br>
                     <span class="fw-bold">CP</span> : {{center.cp}}<br>
                     <span class="fw-bold">Ville</span> : {{center.city}}
-                    <span *ngIf="center.mainCity && center.mainCity!=='center.city'"> (Proche de : {{center.mainCity}})</span></p>
+                    <span *ngIf="center.mainCity && center.city.trim().toLowerCase() !== center.mainCity?.trim()?.toLowerCase()"> (Proche de
+                        {{ center.mainCity }})
+                      </span>
                 <hr>
                 <!-- puisque cette vue est partagée entre admin et utilisateur final -->
                      <p *ngIf="userRouterLinks.user && userRouterLinks.user==='admin'"> <span *ngIf="center.status; else checkbox">Status : actif</span>

@@ -238,7 +238,7 @@ export class AddCentersComponent implements OnInit {
       complete: (result) => {
         // Filtrage des objets vides ou des champs manquants
         this.parsedCenters = result.data.filter((center: any) => {
-          return center.name && center.address && center.cp && center.sigles && center.city && center.tel && center.contact;
+          return center.name && center.address && center.cp && center.sigles && center.city && center.tel && center.email && center.mainCity;
         }).map((center: any) => {
           // Transformation de la colonne sigles en tableau
           center.sigles = center.sigles.split(',').map((sigle: string) => sigle.trim()); // Nettoyage des espaces
