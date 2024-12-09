@@ -54,37 +54,44 @@ export class UsersService {
         // ATTENTION : compte tenu du fait qu'on enregistre maintenant AVEC uid comme id du doc, ajouter l'uid en propriété du doc n'a plus vraiment d'intérêt
         newUser.id = this.result.user.uid
 
-          // enregistre dans Firestore d'autre part avec un collection trainers qui elle aura de multiples propriétés
-      let $usersRef = collection(this.firestore, "users");
-      // addDoc($trainersRef, newTrainer)
-      setDoc(doc($usersRef, newUser.id), newUser)
+        // enregistre dans Firestore d'autre part avec un collection trainers qui elle aura de multiples propriétés
+        let $usersRef = collection(this.firestore, "users");
+        // addDoc($trainersRef, newTrainer)
+        setDoc(doc($usersRef, newUser.id), newUser)
 
-      // enregistre dans Firestore d'autre part le role attribué dans une collection roles qui regroupera tous les roles de tous les utilisateurs avec comme idDoc uid d'authentification là aussi
-      let $rolesRef = collection(this.firestore, "roles");
-      // addDoc($trainersRef, newTrainer)
-      // setDoc(doc($rolesRef, newUser.id), { role: 'editor' })
-      await setDoc(doc($rolesRef, newUser.id), { role: user.role })
+        // enregistre dans Firestore d'autre part le role attribué dans une collection roles qui regroupera tous les roles de tous les utilisateurs avec comme idDoc uid d'authentification là aussi
+        let $rolesRef = collection(this.firestore, "roles");
+        // addDoc($trainersRef, newTrainer)
+        // setDoc(doc($rolesRef, newUser.id), { role: 'editor' })
+        await setDoc(doc($rolesRef, newUser.id), { role: user.role })
 
-      // envoie un mail de réinitialisation du mot de passe
-      await sendPasswordResetEmail(this.auth, newUser.email)
-        .then(() => {
-          // Password reset email sent!
-          // ..
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          return errorMessage
-          // ..
-        });
+        // envoie un mail de réinitialisation du mot de passe
+        await sendPasswordResetEmail(this.auth, newUser.email
+          //     ,{
+          //        // URL de redirection après personnalisation du mot de passe
+          //     url: 'https://be-on-top.io/login',
+          //     // Utilisation de l'application pour traiter cette action
+          //     handleCodeInApp: true 
+          // }
+        )
+          .then(() => {
+            // Password reset email sent!
+            // ..
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            return errorMessage
+            // ..
+          });
 
 
 
       }
 
-    
-    
-    
+
+
+
 
       ///////////////
       // Déconnexion de l'administrateur après la création de l'utilisateur
@@ -93,16 +100,16 @@ export class UsersService {
       // Attendre que la déconnexion soit terminée
       this.auth.onAuthStateChanged(async (user) => {
         if (!user) {
-      // Demander à l'administrateur de se reconnecter
-      const adminPassword = prompt('Veuillez entrer votre mot de passe pour vous reconnecter.');
+          // Demander à l'administrateur de se reconnecter
+          const adminPassword = prompt('Veuillez entrer votre mot de passe pour vous reconnecter.');
 
-      if (adminPassword) {
-        await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
-        console.log('Reconnexion automatique en tant qu\'administrateur réussie.', adminPassword);
-        this.router.navigate([this.actualRoute]);
-      } else {
-        console.error('Mot de passe non fourni.');
-      }
+          if (adminPassword) {
+            await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
+            console.log('Reconnexion automatique en tant qu\'administrateur réussie.', adminPassword);
+            this.router.navigate([this.actualRoute]);
+          } else {
+            console.error('Mot de passe non fourni.');
+          }
         }
       });
 
@@ -114,52 +121,65 @@ export class UsersService {
 
 
   }
- 
+
 
   // version simplifiée de createUsers
   async createUsers(users: any[]): Promise<void> {
     const adminEmail = this.auth.currentUser?.email;
-  
+
     if (!adminEmail) {
       console.error('Administrateur non connecté.');
       return;
     }
-  
+
     // Initialisation des erreurs et succès
     const errors: string[] = [];
     const successes: string[] = [];
-  
+
     // Boucle sur chaque utilisateur pour traitement
     for (const user of users) {
       try {
         // Génération d’un mot de passe aléatoire (ou utiliser un mot de passe fixe pour les tests)
-        const password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
-  
+        // const password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
+        // juste pour tests en intern
+        const password = "password"
+
+
         // Création dans Firebase Auth
         const result = await createUserWithEmailAndPassword(this.auth, user.email, password);
-  
+
         if (!result || !result.user) {
           throw new Error(`Échec de la création d'un utilisateur pour l'email ${user.email}`);
         }
-  
+
         const newUser = {
           ...user,
           id: result.user.uid,
           created: Date.now(),
           status: true,
         };
-  
+
         // Enregistrement dans Firestore (collection "users")
         const $usersRef = collection(this.firestore, "users");
         await setDoc(doc($usersRef, newUser.id), newUser);
-  
+
         // Enregistrement dans Firestore (collection "roles")
         const $rolesRef = collection(this.firestore, "roles");
         await setDoc(doc($rolesRef, newUser.id), { role: user.role });
-  
+
         // Envoi d'un email de réinitialisation du mot de passe
-        await sendPasswordResetEmail(this.auth, user.email);
-  
+        await sendPasswordResetEmail(this.auth, user.email
+
+              ,{
+                 // URL de redirection après personnalisation du mot de passe
+              url: 'https://be-on-top.io/login',
+              // Utilisation de l'application pour traiter cette action
+              handleCodeInApp: true 
+          }
+
+
+        );
+
         // Ajout à la liste des succès
         successes.push(user.email);
       } catch (error: any) {
@@ -167,19 +187,19 @@ export class UsersService {
         errors.push(`Email: ${user.email}, Erreur: ${error.message}`);
       }
     }
-  
+
     // Résumé des résultats
     console.log('Utilisateurs créés avec succès:', successes);
     if (errors.length > 0) {
       console.error('Erreurs lors de la création des utilisateurs:', errors);
     }
-  
+
     // Déconnexion de l'administrateur
     await this.auth.signOut();
   }
-  
 
- 
+
+
   // gettrainers(): Observable<trainers[]> {
   getUsers() {
     let $trainersRef = collection(this.firestore, "users");

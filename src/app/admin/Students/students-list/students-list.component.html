@@ -2,8 +2,10 @@
 
     <!-- {{userRouterLinks.user}} -->
 
-    <h3 *ngIf="userRouterLinks.user=='admin'">Gestion des candidats <span
+    <h3 *ngIf="userRouterLinks.user=='admin'">Gestion des candidats<span
             class="badge bg-primary ms-2">{{collectionStudents.length}}</span></h3>
+    <!-- pour vérifier userUid du référent et le comparer au champ student.referent facilement -->
+    <!-- <h3 *ngIf="userRouterLinks.user=='referent'">Suivi administratif des candidats ({{userUid}})</h3> -->
     <h3 *ngIf="userRouterLinks.user=='referent'">Suivi administratif des candidats</h3>
     <h3 *ngIf="userRouterLinks.user=='external'">Annuaire étudiants</h3>
     <!-- <hr> -->
@@ -35,7 +37,7 @@
                         id="priorCheckbox">
                 </div>
                 <div class="form-check" *ngIf="userRouterLinks.user==='referent'">
-                    <label class="form-check-label" for="onCheckboxChangeMyInitialStudents">Que j'ai ajouté</label>
+                    <label class="form-check-label" for="myCenterStudents">Que j'ai ajouté</label>
                     <input type="checkbox" (change)="onCheckboxChangeMyInitialStudents($event)" class="form-check-input"
                         id="myCenterStudents">
                 </div>

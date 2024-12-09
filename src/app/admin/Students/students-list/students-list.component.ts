@@ -338,7 +338,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     } else if (this.isPriorFilter) {
       this.allStudents = this.filteredStudents;
     } else if (this.myCenterStudents) {
-      this.allStudents =  this.initialStudents.filter(student => student.referent==this.userUid);
+      this.allStudents =  this.initialStudents.filter(student => student.referent===this.userUid);
     } else {
       this.allStudents = [...this.initialStudents];
       this.tradesActivated = false

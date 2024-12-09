@@ -214,6 +214,8 @@ export class AddUserComponent {
     }
   
     try {
+      // console.log("this.parsedReferents", this.parsedReferents);
+      
       await this.service.createUsers(this.parsedReferents);
       this.successMessage = 'Référents importés avec succès.';
       this.errorMessage = '';
