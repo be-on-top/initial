@@ -82,9 +82,9 @@ Tests OK. Sur une  partie. A finir.
                             <!-- n'est plus nécessaire si on récupère center.id en base -->
                             <option *ngFor="let center of dataFiltered" [value]="center.id">
                                 <!-- {{ center.cp }} - {{ center.name }} -->
-                                {{ center.city }}
+                                {{ center.cp }}-{{ center.city }}
                                 <span class="main-city" *ngIf="center.mainCity && center.mainCity !== center.city">
-                                    (Proche {{ center.mainCity }})
+                                    ({{ center.mainCity }})
                                 </span>
                                 <!-- {{ center.cp }} - {{ getResponsiveText(center.city, center.mainCity)}} -->
                             </option>
@@ -192,7 +192,8 @@ Tests OK. Sur une  partie. A finir.
                                 Date de naissance :
                             </label>
                             <div class="col-md-9">
-                                <input appAutoChange type="date" name="dateOfBirth" [(ngModel)]="userData.dateOfBirth"
+                                <!-- dateOfBirth !!!!!!!!!!!!!!!!!!!!!!!! -->
+                                <input appAutoChange type="date" name="dateOfBirth" [(ngModel)]="socialData.dateOfBirth"
                                     class="form-control">
                             </div>
                         </div>

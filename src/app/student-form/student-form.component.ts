@@ -132,6 +132,8 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
   async onSubmit(form: NgForm) {
     console.log("form value", form.value);
 
+
+
     // const socialFormData = form.value; 
     // if (form.value.MoyenDeTransport !== undefined) 
 
@@ -139,7 +141,16 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
     // ne suffisait pas à faire que priorTrade et center persistent sur la durée une fois le formulaire soumi
     // const socialFormData = { ...form.value };
 
-    const socialFormData = { center: this.centerChoiced?.id, priorTrade: this.priorTrade, ...form.value };
+    // const socialFormData = { center: this.centerChoiced?.id, priorTrade: this.priorTrade, ...form.value };
+    const socialFormData = { center: this.socialData.center, priorTrade: this.priorTrade, ...form.value };
+
+    // attention. pour obliger center à être renseigné
+    // Vérifier si le champ "center" est renseigné
+    // alert(this.socialData.center)
+    if (!this.socialData.center) {
+      alert("Veuillez sélectionner un centre avant de soumettre le formulaire.");
+      return; // Arrêter l'exécution de la méthode si le champ n'est pas renseigné
+    }
 
     // Nettoyer l'objet des champs undefined
     Object.keys(socialFormData).forEach(key => socialFormData[key] === undefined && delete socialFormData[key]);
@@ -239,15 +250,15 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
 
   }
 
-// Méthode utilitaire pour garantir le bon format
-formatDate(date: any): string {
-  if (!date) return ''; // Gérer les valeurs nulles ou vides
-  if (typeof date === 'string' && date.match(/^\d{4}-\d{2}-\d{2}$/)) {
-    return date; // Si déjà formaté correctement
+  // Méthode utilitaire pour garantir le bon format
+  formatDate(date: any): string {
+    if (!date) return ''; // Gérer les valeurs nulles ou vides
+    if (typeof date === 'string' && date.match(/^\d{4}-\d{2}-\d{2}$/)) {
+      return date; // Si déjà formaté correctement
+    }
+    const parsedDate = new Date(date); // Conversion depuis d'autres formats (ex. Timestamp)
+    return parsedDate.toISOString().split('T')[0]; // Retourne YYYY-MM-DD
   }
-  const parsedDate = new Date(date); // Conversion depuis d'autres formats (ex. Timestamp)
-  return parsedDate.toISOString().split('T')[0]; // Retourne YYYY-MM-DD
-}
 
   processNonStudentData(studentDataRetrived: Student) {
     console.log('user properties from parent StudentData', studentDataRetrived);
@@ -258,6 +269,7 @@ formatDate(date: any): string {
         this.socialData = data;
 
         // additionnel ????
+        alert(this.socialData.dateOfBirth)
         if (this.socialData.dateOfBirth) {
           this.socialData.dateOfBirth = this.formatDate(this.socialData.dateOfBirth);
         }
