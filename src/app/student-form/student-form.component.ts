@@ -121,7 +121,7 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
 
     // this.getCenterName()
   }
@@ -138,8 +138,8 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
     // Cloner les données du formulaire pour éviter de modifier directement form.value !!!!!!!!!!!!!!!!
     // ne suffisait pas à faire que priorTrade et center persistent sur la durée une fois le formulaire soumi
     // const socialFormData = { ...form.value };
-    
-    const socialFormData = {center:this.centerChoiced?.id,priorTrade:this.priorTrade, ...form.value };
+
+    const socialFormData = { center: this.centerChoiced?.id, priorTrade: this.priorTrade, ...form.value };
 
     // Nettoyer l'objet des champs undefined
     Object.keys(socialFormData).forEach(key => socialFormData[key] === undefined && delete socialFormData[key]);
@@ -196,11 +196,14 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
       stData ? this.socialData = stData : ''
       // stData?alert(stData):''
 
-      if (this.socialData.center) {
-        this.centersService.getCenter(this.socialData.center).subscribe((data: Centers) => {
-          this.centerChoiced = data;
-        });
+      // Pour s'assurer que dateOfBirth est au bon format (YYYY-MM-DD) !!!
+      if (this.socialData.dateOfBirth) {
+        // alert(this.socialData.dateOfBirth)
+        this.socialData.dateOfBirth = this.formatDate(this.socialData.dateOfBirth);
+        this.userData.dateOfBirth = this.formatDate(this.socialData.dateOfBirth);
       }
+
+
 
       // si choix de la formation déjà enregistré
       if (this.socialData.priorTrade) {
@@ -224,6 +227,8 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
           }
         });
 
+
+
       }
 
 
@@ -234,6 +239,16 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
 
   }
 
+// Méthode utilitaire pour garantir le bon format
+formatDate(date: any): string {
+  if (!date) return ''; // Gérer les valeurs nulles ou vides
+  if (typeof date === 'string' && date.match(/^\d{4}-\d{2}-\d{2}$/)) {
+    return date; // Si déjà formaté correctement
+  }
+  const parsedDate = new Date(date); // Conversion depuis d'autres formats (ex. Timestamp)
+  return parsedDate.toISOString().split('T')[0]; // Retourne YYYY-MM-DD
+}
+
   processNonStudentData(studentDataRetrived: Student) {
     console.log('user properties from parent StudentData', studentDataRetrived);
 
@@ -241,6 +256,13 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
       const docRef = doc(this.firestore, 'SocialForm', studentDataRetrived.id);
       docData(docRef).subscribe((data: any) => {
         this.socialData = data;
+
+        // additionnel ????
+        if (this.socialData.dateOfBirth) {
+          this.socialData.dateOfBirth = this.formatDate(this.socialData.dateOfBirth);
+        }
+
+
       });
       this.userData = studentDataRetrived
       this.isReadOnly = true
@@ -250,6 +272,11 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   processStudentData(): void {
+
+    // additionnel
+    // if (this.userData.dateOfBirth) {
+    //   this.userData.dateOfBirth = this.formatDate(this.userData.dateOfBirth);
+    // }
 
     // Logique pour obtenir tradesEvaluated + accessoirement documents
     this.tradesEvaluated = [];
@@ -494,23 +521,19 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
     // Rendre tous les collapses visibles pour l'impression
     const collapses = document.querySelectorAll('.collapse');
     collapses.forEach((collapse) => collapse.classList.add('show'));
-  
+
     // Lancer l'impression
     window.print();
-  
+
     // Restaurer l'état initial après impression
     setTimeout(() => {
       collapses.forEach((collapse) => collapse.classList.remove('show'));
     }, 0);
-  }  
-
-
-  
-  
+  }
 
 
 
-  
+
 }
 
 

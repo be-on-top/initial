@@ -32,8 +32,8 @@ Tests OK. Sur une  partie. A finir.
             métiers.
             Merci d'indiquer vos
             préférences.</p>
-        <p *ngIf="tradesEvaluated.length>1 && socialData.priorTrade">Vos préférences enregistrées.</p>
-        <p *ngIf="tradesEvaluated.length===1 && !socialData.center">Merci d'indiquer vos préférences.</p>
+        <p *ngIf="tradesEvaluated.length>1 && socialData.priorTrade" class="fw-bold">Vos préférences enregistrées.</p>
+        <p *ngIf="tradesEvaluated.length===1 && !socialData.center" class="fw-bold">Merci d'indiquer vos préférences.</p>
         <p *ngIf="tradesEvaluated.length===1 && socialData.center">Vos préférences enregistrées.</p>
         <!-- dataFiltered {{dataFiltered | json}}  !!!!!!!!!!!!!!-->
         <form #target="ngForm" (ngSubmit)="onSubmitChoice(target)" class="mt-3"
@@ -193,7 +193,7 @@ Tests OK. Sur une  partie. A finir.
                             </label>
                             <div class="col-md-9">
                                 <input appAutoChange type="date" name="dateOfBirth" [(ngModel)]="userData.dateOfBirth"
-                                    required class="form-control">
+                                    class="form-control">
                             </div>
                         </div>
                         <div class="form-group row">
