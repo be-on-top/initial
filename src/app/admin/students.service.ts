@@ -953,8 +953,8 @@ export class StudentsService {
           await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
           console.log('Reconnexion réussie.');
 
-          // Rediriger vers la page des détails de l'étudiant
-          this.router.navigate(['/admin/student', newStudent.id]);
+          // Rediriger vers la page des détails de l'étudiant (attention faudrait vérifier routerLink.user pour faire cette redirection)
+          this.router.navigate(['/admin/referent/studentDetails', newStudent.id]);
         } catch (error: any) {
           console.error('Erreur lors de la reconnexion de l\'administrateur :', error.message);
         }
