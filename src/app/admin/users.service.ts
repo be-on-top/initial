@@ -42,7 +42,7 @@ export class UsersService {
       console.log('this.users!!!!!!!!!!!', this.users);
       // on va lui affecter un password aléatoire en fonction de la date
       // mais pour le moment, je fais un password à la con pour pouvoir faire mes tests : ATTENTION !!!!!!!!!!!!!!!!!!!
-      let password = "password";
+      let password = "password2025#";
       // let password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
 
       // enregistrement en base dans fireAuth d'une part : 
@@ -67,12 +67,12 @@ export class UsersService {
 
         // envoie un mail de réinitialisation du mot de passe
         await sendPasswordResetEmail(this.auth, newUser.email
-          //     ,{
-          //        // URL de redirection après personnalisation du mot de passe
-          //     url: 'https://be-on-top.io/login',
-          //     // Utilisation de l'application pour traiter cette action
-          //     handleCodeInApp: true 
-          // }
+              ,{
+                 // URL de redirection après personnalisation du mot de passe
+              url: 'https://be-on-top.io/login',
+              // Utilisation de l'application pour traiter cette action
+              handleCodeInApp: true 
+          }
         )
           .then(() => {
             // Password reset email sent!
