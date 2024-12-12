@@ -269,7 +269,7 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
         this.socialData = data;
 
         // additionnel ????
-        alert(this.socialData.dateOfBirth)
+        // alert(this.socialData.dateOfBirth)
         if (this.socialData.dateOfBirth) {
           this.socialData.dateOfBirth = this.formatDate(this.socialData.dateOfBirth);
         }

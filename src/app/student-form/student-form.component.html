@@ -1,5 +1,4 @@
-<div class="container py-5" id="printForm">
-
+<div class="container py-5" id="printForm" *ngIf="userData.isSocialFormSent">
 
     <!-- Et du coup, tous les simples ngModel parce qu'on n'a pas besoin d'autre chose que ngModel pour enregistrer un formulaire en bonne et due forme, RIEN D'AUTRE vont devoir pour pouvoir être récupérés en base en l'état de la saisie être remplacés par du two way binding genre : [(ngModel)]="socialData.permisB"
  

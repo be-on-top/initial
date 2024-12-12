@@ -58,8 +58,13 @@
         </form>
 
         <!-- spécifiquement, pour la validation de son inscription -->
+
+
         <ng-container *ngIf="userRouterLinks.user=='admin' || userRouterLinks.user=='referent'">
-            <div class="mb-5">
+            <!-- le formulaire pré-inscription formation -->
+            <app-student-form [studentData]="student"></app-student-form>
+
+            <div class="mb-5" *ngIf="student.isSocialFormSent || student.innerStudent">
                 <!-- test intégration comme composant enfant du formulaire désormais déclaré dans admin.module -->
                 <h3>Inscription Formation</h3>
                 <p *ngIf="student.subscriptions && student.subscriptions.length!==0">Inscriptions actuelles :
@@ -87,8 +92,9 @@
 
                     <button type="submit" id="submit" class="btn btn-primary mt-3">Valider</button>
                 </form>
+                <!-- ---------- -->
 
-                <app-student-form [studentData]="student"></app-student-form>
+                <h3>Fin de formation</h3>
 
                 <form class="form mb-5" #endSubscription="ngForm" (submit)="addEndingDate(endSubscription)"
                     class="was-validated">
@@ -113,11 +119,13 @@
                     <input id="studentId" name="studentId" ngModel required>
                     </div> -->
 
-                        <label class="form-label" for="pdfFile">Fichier PDF (Attestion de suivi ou autre document utile...) :</label>
-                        <input class="form-control"  id="pdfFile" type="file" (change)="onFileSelected($event)" accept="application/pdf"
-                            required>
-   
-                    <button class="btn btn-primary mt-3" type="submit" [disabled]="!uploadForm.valid || !selectedFile">Uploader</button>
+                    <label class="form-label" for="pdfFile">Fichier PDF (Attestion de suivi ou autre document utile...)
+                        :</label>
+                    <input class="form-control" id="pdfFile" type="file" (change)="onFileSelected($event)"
+                        accept="application/pdf" required>
+
+                    <button class="btn btn-primary mt-3" type="submit"
+                        [disabled]="!uploadForm.valid || !selectedFile">Uploader</button>
                 </form>
 
             </div>
