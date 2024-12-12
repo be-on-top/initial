@@ -139,22 +139,25 @@ export class AddStudentComponent {
       this.errorMessage = 'Aucun étudiant valide à importer.';
       return;
     }
-  
+
     // Appeler createStudentsFromImport avec l'ensemble des étudiants
     this.service.createStudents(this.parsedStudents)
       .then(() => {
         console.log('Tous les étudiants ont été importés avec succès.');
+        this.router.navigate(['/admin/referentStudentsList']);
+        this.feedbackMessages = "Tous les étudiants ont été importés avec succès";
+        this.isSuccessMessage = true
       })
       .catch(error => {
         console.error('Erreur lors de l\'importation des étudiants :', error.message);
         this.errorMessage = 'Erreur lors de l\'importation des étudiants.';
       });
   }
-  
 
 
-  
-  
+
+
+
 
 
   // uploadStudentsToFirestore(): void {
@@ -162,7 +165,7 @@ export class AddStudentComponent {
   //     this.errorMessage = 'Aucun étudiant valide à importer.';
   //     return;
   //   }
-  
+
   //   // Préparer les étudiants avant import
   //   const studentsToCreate = this.parsedStudents.map(student => ({
   //     ...student,
@@ -172,7 +175,7 @@ export class AddStudentComponent {
   //     trainer: "Attribué ultérieurement",
   //     innerStudent: true,
   //   }));
-  
+
   //   // Appeler la méthode d'import dans le service
   //   this.service.createStudent(studentsToCreate)
   //     .then(() => {
@@ -183,11 +186,11 @@ export class AddStudentComponent {
   //       this.errorMessage = 'Erreur lors de l\'importation des étudiants.';
   //     });
   // }
-  
 
 
-  
-  
+
+
+
 
 
 
