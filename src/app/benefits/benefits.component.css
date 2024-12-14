@@ -13,6 +13,7 @@
     /* Centre l'image de fond */
     background-repeat: no-repeat;
     /* Évite la répétition de l'image */
+    max-height: 500px;
 
 }
 
@@ -21,6 +22,7 @@
     width: 50px;
     bottom: 10px;
     right: 10px;
+
     /* opacity: 80%; */
 
 }
