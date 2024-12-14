@@ -24,11 +24,24 @@
         <app-search (searchTextChanged)="onSearchTextEntered($event)"></app-search>
 
         <div class="row mt-3 text-secondary justify-content-between">
-            <p class="col-md-6">Activer un filtre ou un autre > <br>
-                <span class="small" *ngIf="userRouterLinks.user==='referent'">
+            <div class="col-md-6 d-flex flex-column justify-content-between">Activer un filtre ou un autre > <br>
+                <p class="small" *ngIf="userRouterLinks.user==='referent'">
                     Ont expressément choisi votre centre pour le suivi de leur
-                    dossier d'inscription *</span>
-            </p>
+                    dossier d'inscription *</p>
+
+                    <!-- ici dessous -->
+
+                    <button class="btn btn-primary mt-5 align-self-start" *ngIf="userRouterLinks.user!=='external'"><a
+                        [routerLink]="['/admin/addStudent']" class="text-white"><i
+                            class="bi bi-person-fill-add me-2"></i>Ajouter</a></button>
+                </div>
+
+
+
+
+
+
+
             <div class="col-md-6">
                 <!-- <div class="form-check" *ngIf="userRouterLinks.user!=='external' || userRouterLinks.user!=='admin'"> -->
                 <div class="form-check" *ngIf="userRouterLinks.user==='referent'">
@@ -92,7 +105,7 @@
 
                 <hr class="border-secondary">
 
-                <div><button class="btn btn-primary" (click)="toggleOrder()">
+                <div><button *ngIf="userRouterLinks=='admin'" class="btn btn-primary" (click)="toggleOrder()">
                         {{ ascending ? 'Afficher les plus récents' : 'Afficher les plus anciens' }}
                     </button></div>
 

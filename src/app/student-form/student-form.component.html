@@ -51,7 +51,7 @@ Tests OK. Sur une  partie. A finir.
                             {{ getDenomination(priorTrade) | async }}
                         </option>
 
-                        <option *ngFor="let element of tradesEvaluated" [value]="element">
+                        <option *ngFor="let element of tradesEvaluated" [value]="element" class="bg-light">
                             <!-- {{element }} -->
                             {{ getDenomination(element) | async }}
                         </option>

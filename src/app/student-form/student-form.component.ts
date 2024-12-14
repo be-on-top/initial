@@ -291,13 +291,39 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
     // }
 
     // Logique pour obtenir tradesEvaluated + accessoirement documents
-    this.tradesEvaluated = [];
+    // this.tradesEvaluated = [];
+    // for (const key in this.userData) {
+    //   if (key.includes('quizz')) {
+    //     this.tradesEvaluated.push(key.replace('quizz_', ''));
+    //     console.log('this.tradesEvaluated', this.tradesEvaluated);
+    //   }
+    // }
+
+    // tri plus selectif. fonctionne bien 
+    // for (const key in this.userData) {
+    //   if (key.includes('quizz')) {
+    //     const trade = key.replace('quizz_', '');
+    //     this.tradesEvaluated.push(trade); // Ajout direct comme dans la méthode initiale
+    
+    //     // Filtrage inspiré de isOneQuizzAchieved
+    //     const associatedData = this.userData[key];
+    //     if (!associatedData || !associatedData.fullResults) {
+    //       // Retirer les éléments sans fullResult
+    //       this.tradesEvaluated = this.tradesEvaluated.filter(t => t !== trade);
+    //     }
+    //   }
+    // }    
+    // console.log('this.tradesEvaluated (après filtrage inspiré de isOneQuizzAchieved):', this.tradesEvaluated);
+
     for (const key in this.userData) {
       if (key.includes('quizz')) {
-        this.tradesEvaluated.push(key.replace('quizz_', ''));
-        console.log('this.tradesEvaluated', this.tradesEvaluated);
+        const associatedData = this.userData[key];
+        if (associatedData && associatedData.fullResults) { // Vérifiez avant d'ajouter
+          this.tradesEvaluated.push(key.replace('quizz_', ''));
+        }
       }
     }
+    
 
 
     // Logique pour récupérer isOneQuizzAchieved
