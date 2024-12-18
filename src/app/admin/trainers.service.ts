@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 
 // à vérifier
 import { Auth, createUserWithEmailAndPassword, sendPasswordResetEmail, deleteUser } from '@angular/fire/auth';
-import { Firestore, collectionData, collection, docData, setDoc, query, where,  updateDoc, getDoc } from '@angular/fire/firestore';
+import { Firestore, collectionData, collection, docData, setDoc, query, where, updateDoc, getDoc } from '@angular/fire/firestore';
 import { deleteDoc, doc, getDocs } from 'firebase/firestore';
 import { Observable, pipe } from 'rxjs';
 import { StudentsService } from './students.service';
@@ -20,13 +20,25 @@ export class TrainersService {
   trainers: any[] = [];
   result: any;
 
-  constructor(private auth: Auth, private firestore: Firestore, private studentsService:StudentsService, private notificationsService:PushNotificationService) {
+  constructor(private auth: Auth, private firestore: Firestore, private studentsService: StudentsService, private notificationsService: PushNotificationService) {
   }
 
   async createTrainer(trainer: any) {
 
+    // Suppression des espaces et découpage en tableau
+    const cpArray = trainer.cp
+      .split(',')           // Sépare la chaîne en fonction des virgules
+      .map((cp: string) => cp.trim()) // Supprime les espaces inutiles autour des codes
+      .filter((cp: string) => cp);    // Retire les chaînes vides s'il y en a
+
+    // Affichage des codes postaux sous forme de tableau
+    console.log(cpArray); // Pour vérifier dans la console
+
     // let newTrainer = { id: Date.now(), ...trainer };
-    let newTrainer = { created: Date.now(), roles: 'trainer', status: true, ...trainer };
+    trainer.cp=cpArray
+    let newTrainer = { created: Date.now(), roles: 'trainer', status: true, cp:cpArray, ...trainer};
+    console.log(newTrainer);
+    
     this.trainers = [newTrainer, ...this.trainers];
     console.log(this.trainers);
     // on va lui affecter un password aléatoire en fonction de la date
@@ -105,12 +117,25 @@ export class TrainersService {
 
 
   updateTrainer(id: string, trainer: any) {
+
+     // Suppression des espaces et découpage en tableau
+     const cpArray = trainer.cp
+     .split(',')           // Sépare la chaîne en fonction des virgules
+     .map((cp: string) => cp.trim()) // Supprime les espaces inutiles autour des codes
+     .filter((cp: string) => cp);    // Retire les chaînes vides s'il y en a
+
+   // Affichage des codes postaux sous forme de tableau
+   console.log(cpArray); // Pour vérifier dans la console
+
+   // let newTrainer = { id: Date.now(), ...trainer };
+   trainer.cp=cpArray
+
     let $trainerRef = doc(this.firestore, "trainers/" + id);
     setDoc($trainerRef, trainer)
     // plutôt que d'utiliser ma fonction notifyStudent depuis le ts de updateTrainer, on profite de la boucle sur les candidats affectés pour les notifier
-    for (let student of trainer.students){
+    for (let student of trainer.students) {
       let $studentRef = doc(this.firestore, "students/" + student);
-      updateDoc($studentRef,{trainer:trainer.lastName} )
+      updateDoc($studentRef, { trainer: trainer.lastName })
       // +++ notifyStudent
       alert(`notification à envoyer à ${student}`)
       // this.notificationsService.newNotifyUser(student)
@@ -119,21 +144,21 @@ export class TrainersService {
 
   }
 
-  
+
   // methode à tester pour récupérer le nom
   getLinkedStudentName(id: string) {
-      let $studentRef = doc(this.firestore, "students/" + id);
-      return docData($studentRef) as Observable<any>;
+    let $studentRef = doc(this.firestore, "students/" + id);
+    return docData($studentRef) as Observable<any>;
 
   }
 
-  addRoleToEvaluator(id:string){
+  addRoleToEvaluator(id: string) {
     // console.log("id récupéré depuis addRoleToEvaluator", id);
-    
-        // enregistre dans Firestore d'autre part le role attribué dans une collection roles qui regroupera tous les roles de tous les utilisateurs avec comme idDoc uid d'authentification là aussi
-        let $rolesRef = collection(this.firestore, "roles");
-        // addDoc($trainersRef, newTrainer)
-        setDoc(doc($rolesRef, id), { role: ['trainer', 'evaluator'] })
+
+    // enregistre dans Firestore d'autre part le role attribué dans une collection roles qui regroupera tous les roles de tous les utilisateurs avec comme idDoc uid d'authentification là aussi
+    let $rolesRef = collection(this.firestore, "roles");
+    // addDoc($trainersRef, newTrainer)
+    setDoc(doc($rolesRef, id), { role: ['trainer', 'evaluator'] })
   }
 
   // async getStudentByParam(uid: string) {

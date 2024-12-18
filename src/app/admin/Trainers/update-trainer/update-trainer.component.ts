@@ -32,6 +32,9 @@ export class UpdateTrainerComponent implements OnInit {
     this.service.getTrainer(this.userId).subscribe((data) => {
       console.log("data depuis update-user component", data);
       this.user = data;
+      // pour récupérer ce qui est à l'état de tableau dans le doc firestore
+      this.user.cp=data.cp.join(', ')
+      
       this.selectedStudent = this.user.students
     })
 
