@@ -8,6 +8,7 @@ import { deleteDoc, doc, getDocs } from 'firebase/firestore';
 import { Observable, pipe } from 'rxjs';
 import { StudentsService } from './students.service';
 import { PushNotificationService } from '../push-notification.service';
+import { Users } from './Users/users';
 pipe
 
 
@@ -99,6 +100,12 @@ export class TrainersService {
     //   console.log("problème à la suppression sur Auth");
     // });
   }
+
+  
+    getReferentData(id: string) {
+      let $userRef = doc(this.firestore, "users/" + id)
+      return docData($userRef, { idField: 'id' }) as Observable<Users>;
+    }
 
   getTrainer(id: string) {
     let $trainerRef = doc(this.firestore, "trainers/" + id)

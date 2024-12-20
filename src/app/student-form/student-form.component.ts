@@ -1,5 +1,5 @@
 import { query } from '@angular/animations';
-import { Component, OnInit, Input, OnChanges, SimpleChanges, AfterViewInit, } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, AfterViewInit, Output, EventEmitter, } from '@angular/core';
 import { Auth, onAuthStateChanged, user } from '@angular/fire/auth';
 import { DocumentSnapshot, Firestore, addDoc, collection, doc, docData, getDocs, setDoc, where } from '@angular/fire/firestore';
 import { NgForm } from '@angular/forms';
@@ -69,6 +69,12 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
   centerChoiced?: Centers
 
   reset: boolean = false
+
+  // @Output() socialDataChange = new EventEmitter<any>();
+
+  @Output() centerChange = new EventEmitter<string>(); // On émet seulement le center
+
+
 
   constructor(
     private router: Router,
@@ -207,6 +213,7 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
       stData ? this.socialData = stData : ''
       // stData?alert(stData):''
 
+
       // Pour s'assurer que dateOfBirth est au bon format (YYYY-MM-DD) !!!
       if (this.socialData.dateOfBirth) {
         // alert(this.socialData.dateOfBirth)
@@ -250,6 +257,17 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
 
   }
 
+
+
+
+  
+  emitCenter() {
+    console.log('Émission de socialData.center :', this.socialData.center);
+    this.centerChange.emit(this.socialData.center); // Envoyer uniquement `center`
+  }
+
+
+
   // Méthode utilitaire pour garantir le bon format
   formatDate(date: any): string {
     if (!date) return ''; // Gérer les valeurs nulles ou vides
@@ -267,6 +285,9 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
       const docRef = doc(this.firestore, 'SocialForm', studentDataRetrived.id);
       docData(docRef).subscribe((data: any) => {
         this.socialData = data;
+
+        // pour faire remonter au parent l'id du centre choisi,  ça fonctionne bien si besoin !!!!
+        this.emitCenter()
 
         // additionnel ????
         // alert(this.socialData.dateOfBirth)

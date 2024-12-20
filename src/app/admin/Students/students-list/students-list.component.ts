@@ -8,6 +8,7 @@ import { Trade } from '../../trade';
 import { Users } from '../../Users/users';
 import { AuthService } from '../../auth.service';
 import { User } from 'firebase/auth';
+import { TrainersService } from '../../trainers.service';
 
 @Component({
   selector: 'app-students-list',
@@ -52,9 +53,14 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   showNoInterestStudents: boolean = false;
   studentsWithNoInterest: any[] = [];
 
-  myCenterStudents:boolean=false
+  myCenterStudents: boolean = false
 
-  constructor(private service: StudentsService, private activatedRoute: ActivatedRoute, private tradeService: SettingsService, private authService: AuthService) {
+  constructor(
+    private service: StudentsService,
+    private activatedRoute: ActivatedRoute,
+    private tradeService: SettingsService,
+    private authService: AuthService,
+    private trainerService: TrainersService) {
     this.userRouterLinks = this.activatedRoute.snapshot.data;
 
     // implémenter la méthode conçue pour les "conseillers projets" qui n'en sont pas puisqu'ils se font concurrence (référents admin)
@@ -66,6 +72,15 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     if (this.userUid) {
       // Exécuter la méthode interminable pour le changement de paradigme
       this.getCentersAndSocialFormByUserId(this.userUid)
+
+      // Une méthode qui s'en inspière mais va me retourner
+      // la liste des formateurs et ceux qui ont le même tableau de cp
+      // ou ceux dont un des cp du tableau est contenu dans le tableau des cp du compte authentifié
+      // this.getTrainersWithSameCp(this.userUid)
+
+
+
+
     }
 
 
@@ -73,8 +88,8 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
 
-      this.getStudents();
-      this.onSearchTextEntered("")
+    this.getStudents();
+    this.onSearchTextEntered("")
 
   }
 
@@ -147,13 +162,13 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   //     map(students => {
   //       // Filtrer les étudiants ayant des résultats complets
   //       let filteredStudents = students.filter(student => this.hasFullResults(student));
-  
+
   //       // Si l'utilisateur est un référent, appliquer un filtre supplémentaire
   //       if (this.userRouterLinks.user==='referent') {
   //         alert(this.authService.getCurrentUserEmail())
   //         filteredStudents = filteredStudents.filter(student => student.referent === this.authService.getCurrentUserUid());
   //       }
-  
+
   //       return filteredStudents;
   //     })
   //   ).subscribe(filteredStudents => {
@@ -259,7 +274,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       console.warn("Aucune donnée à exporter !");
       return;
     }
-  
+
     // Construire les données CSV
     const headers = ['Name', 'Firstname', 'Email']; // Titres des colonnes
     const rows = this.studentsWithNoInterest.map(student => [
@@ -267,29 +282,29 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       student.firstName,
       student.email
     ]);
-  
+
     // Créer une chaîne CSV
     const csvContent = [headers, ...rows]
       .map(e => e.join(',')) // Convertir chaque ligne en texte CSV
       .join('\n'); // Joindre les lignes par des sauts de ligne
-  
+
     // Créer un fichier Blob pour le téléchargement
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
-  
+
     // Créer un lien de téléchargement
     const link = document.createElement('a');
     link.href = url;
     link.setAttribute('download', 'Etudiants_inactifs.csv');
     document.body.appendChild(link);
     link.click();
-  
+
     // Nettoyer après le téléchargement
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
   }
-  
-  
+
+
 
 
   // isSocialFormSentFilter: boolean = false;
@@ -319,7 +334,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   applyFilters(trade?: string) {
     // puisqu'il faut désactiver la vue additionnelle des non actifs dès qu'un filtre est actif...
     this.showNoInterestStudents = false
-    
+
     if (this.isSocialFormSentFilter) {
       this.allStudents = this.initialStudents.filter(student => student.isSocialFormSent);
     } else if (this.isSubscriptionFilter) {
@@ -338,7 +353,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     } else if (this.isPriorFilter) {
       this.allStudents = this.filteredStudents;
     } else if (this.myCenterStudents) {
-      this.allStudents =  this.initialStudents.filter(student => student.referent===this.userUid);
+      this.allStudents = this.initialStudents.filter(student => student.referent === this.userUid);
     } else {
       this.allStudents = [...this.initialStudents];
       this.tradesActivated = false
@@ -418,7 +433,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   getReferentStudents() {
     const order = this.ascending ? 'asc' : 'desc';
     const referentUid = this.authService.getCurrentUserUid(); // Assurez-vous que cette méthode est bien synchrone ou ajustez si asynchrone.
-  
+
     if (!referentUid) {
       console.error('Impossible de récupérer UID du référent.');
       return;
@@ -436,6 +451,35 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       this.applyFilters();
     });
   }
+
+  // myCp: string[] = []
+  // filteredTrainers : string[] = []
+
+  
+  // getTrainersWithSameCp(userId: string) {
+  //   this.trainerService.getReferentData(userId).subscribe(referentData => {
+  //     this.myCp = referentData.cp || []; // Garantir que `this.myCp` est un tableau
+  
+  //     console.log("Mes codes postaux :", this.myCp);
+  
+  //     // Étape 2 : Récupérer les formateurs et les filtrer
+  //     this.trainerService.getTrainers().subscribe(trainers => {
+  //       // Appliquer le filtre et assigner le résultat à `filteredTrainers`
+  //       this.filteredTrainers = trainers.filter((trainer: any) => {
+  //         // Vérifier si le formateur a au moins un code postal correspondant
+  //         return trainer.cp?.some((cp: string) => this.myCp.includes(cp));
+  //       });
+  
+  //       console.log("Trainers correspondants :", this.filteredTrainers);
+  //     });
+  //   });
+  // }
+  
+  
+
+
+  
+
 
 
 

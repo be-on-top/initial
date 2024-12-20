@@ -5,6 +5,10 @@ import { NgForm } from '@angular/forms';
 import { Evaluation } from '../../evaluation';
 import { SettingsService } from '../../settings.service';
 import { formatDate } from '@angular/common';
+import { TrainersService } from '../../trainers.service';
+import { AuthService } from '../../auth.service';
+import { Trainer } from '../../trainer';
+import { CentersService } from '../../centers.service';
 // import { AnimationKeyframesSequenceMetadata } from '@angular/animations';
 
 @Component({
@@ -38,7 +42,18 @@ export class UpdateStudentComponent implements OnInit {
     'pro': 'acquise'
   }
 
-  constructor(private service: StudentsService, private ac: ActivatedRoute, private router: Router, private settingsService: SettingsService) {
+  // pour récupérer côté composant l'uid dont on va avoir besoin pour le changement de paradigme...
+  userUid: string | null = '';
+
+  constructor(
+    private service: StudentsService,
+    private ac: ActivatedRoute,
+    private router: Router,
+    private settingsService: SettingsService,
+    private trainerService: TrainersService,
+    private authService: AuthService,
+    private centersService:CentersService
+  ) {
     this.userRouterLinks = this.ac.snapshot.data;
   }
 
@@ -68,6 +83,31 @@ export class UpdateStudentComponent implements OnInit {
 
     this.getUsers()
     this.fetchSigleIds()
+
+    // implémenter la méthode conçue pour les "conseillers projets" qui n'en sont pas puisqu'ils se font concurrence (référents admin)
+    // Récupérer l'UID de manière synchrone
+    this.userUid = this.authService.getCurrentUserUid();
+    console.log('UID de l\'utilisateur authentifié dans le composant :', this.userUid);
+
+
+    // On peut maintenant utiliser cet UID pour d'autres opérations
+    if (this.userUid) {
+      // Une méthode qui s'en inspière mais va me retourner
+      // la liste des formateurs et ceux qui ont le même tableau de cp
+      // ou ceux dont un des cp du tableau est contenu dans le tableau des cp du compte authentifié
+
+
+// this.getCenterPostalCode(id:string){
+
+
+// }
+
+      this.getTrainersWithSameCp(this.userUid)
+      // this.getDedicatedTrainer()
+
+
+    }
+
 
   }
 
@@ -174,7 +214,7 @@ export class UpdateStudentComponent implements OnInit {
     this.selectedFile = event.target.files[0];
   }
 
-  onUploadFile(form:NgForm, ){
+  onUploadFile(form: NgForm,) {
     if (!this.selectedFile) {
       return;
     }
@@ -186,5 +226,74 @@ export class UpdateStudentComponent implements OnInit {
     form.resetForm();
     this.selectedFile = null;
   }
+
+  myCp: string[] = []
+  filteredTrainers: Trainer[] = []
+
+
+  getTrainersWithSameCp(userId: string) {
+    this.trainerService.getReferentData(userId).subscribe(referentData => {
+      this.myCp = referentData.cp || []; // Garantir que `this.myCp` est un tableau
+
+      console.log("Mes codes postaux :", this.myCp);
+
+      // Étape 2 : Récupérer les formateurs et les filtrer
+      this.trainerService.getTrainers().subscribe(trainers => {
+        // Appliquer le filtre et assigner le résultat à `filteredTrainers`
+        this.filteredTrainers = trainers.filter((trainer: any) => {
+          // Vérifier si le formateur a au moins un code postal correspondant
+          return trainer.cp?.some((cp: string) => this.myCp.includes(cp));
+        });
+
+        console.log("Trainers correspondants :", this.filteredTrainers);
+        this.getDedicatedTrainer()
+      });
+    });
+
+
+
+
+  }
+
+
+
+  filteredTrainer?: Trainer; // Si vous utilisez `find`
+
+  getDedicatedTrainer() {
+    // Trouver un seul formateur correspondant
+    this.filteredTrainer = this.filteredTrainers.find((trainer: Trainer) => {
+      return trainer.sigle?.some((sigle: string) => this.student.subscriptions.includes(sigle));
+    });
+  
+    console.log("Trainer correspondant :", this.filteredTrainer);
+  }
+
+
+
+
+  priorCenterPostalCode:string=''
+
+  // si on avait besoin de faire remonter des informations, ici l'id du centre choisi, depuis le composant enfant
+  center: string | undefined; // Stocker uniquement le `center`
+  onCenterChanged(updatedCenter: string) {
+    this.center = updatedCenter; // Met à jour la variable avec `center`
+    console.log('Center reçu :', this.center); // Vérifiez qu'il contient `doc-center-id`
+
+    // je doute de l'emplacement pour appeler la méthode
+    this. getCenterPostalCode(this.center)
+  }
+
+    getCenterPostalCode(id:any){
+    this.centersService.getCenter(id).subscribe(data=>{
+      alert(data.cp)
+      this.priorCenterPostalCode=data.cp
+      console.log('this.priorCenterPostalCode !!!!!!!!!!!', this.priorCenterPostalCode);
+
+    })
+
+    
+  }
+  
+
 
 }

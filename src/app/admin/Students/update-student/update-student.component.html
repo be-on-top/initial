@@ -1,6 +1,10 @@
 <div *ngIf="student">
     <div class="container py-5">
 
+           myCp : {{myCp}} - FilteredTrainers : {{filteredTrainers  | json}}
+
+           student.subscription : {{student.subscriptions}}
+
         <h3>Mise à jour du statut de <span class="text-capitalize">{{student.lastName}} {{student.firstName}}</span>
         </h3>
 
@@ -62,7 +66,9 @@
 
         <ng-container *ngIf="userRouterLinks.user=='admin' || userRouterLinks.user=='referent'">
             <!-- le formulaire pré-inscription formation -->
-            <app-student-form [studentData]="student"></app-student-form>
+            <!-- <app-student-form  [studentData]="student"></app-student-form> -->
+            <!-- si besoin de récupérer informations (centre choisi) depuis le composant enfant -->
+            <app-student-form  (centerChange)="onCenterChanged($event)" [studentData]="student"></app-student-form>
 
             <div class="mb-5" *ngIf="student.isSocialFormSent || student.innerStudent">
                 <!-- test intégration comme composant enfant du formulaire désormais déclaré dans admin.module -->
