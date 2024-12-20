@@ -293,6 +293,17 @@ export class UpdateStudentComponent implements OnInit {
 
     
   }
+
+  trainingClass:string=""
+
+  setClassId(startingDate:NgForm){
+
+    console.log('startingDate',startingDate.value)
+    this.trainingClass=`${this.student.subscriptions[0]}_${this.priorCenterPostalCode}_${startingDate.value.startingDate}`
+    console.log('Une classe normée générée', this.trainingClass);   
+    console.log('Trainer à mettre à jour', this.filteredTrainer);
+    console.log('Student à mettre à jour', this.student);
+  }
   
 
 

@@ -89,6 +89,20 @@
                         [ngClass]="{'disabled':subscription.invalid}">Valider</button>
                 </form>
 
+                <!-- C'est là qu'on peut insérer un champ pour début de formation > génération de classe -->
+                <h3 class="mt-5">Date de début effectif de formation </h3>
+
+                <div class="alert alert-info">Va servir pour attribuer automatiquement une classe normée</div>
+
+                <form class="form mb-5" #trainingClass="ngForm" (submit)="setClassId(trainingClass)">
+                    <label for="date">Renseigner la date de début de présentiel:</label>
+                    <input type="date" name="startingDate" ngModel class="form-control mt-3">
+                    <button type="submit" id="submit" class="btn btn-primary mt-3">Valider</button>
+                </form>
+                <!--  fin -->
+
+
+
                 <h3>Plateform E-learning</h3>
 
                 <form class="form mb-5" #info="ngForm" (submit)="sendElearningInfo(info)" class="was-validated">
