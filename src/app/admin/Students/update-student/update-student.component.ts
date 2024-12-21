@@ -52,7 +52,7 @@ export class UpdateStudentComponent implements OnInit {
     private settingsService: SettingsService,
     private trainerService: TrainersService,
     private authService: AuthService,
-    private centersService:CentersService
+    private centersService: CentersService
   ) {
     this.userRouterLinks = this.ac.snapshot.data;
   }
@@ -97,10 +97,10 @@ export class UpdateStudentComponent implements OnInit {
       // ou ceux dont un des cp du tableau est contenu dans le tableau des cp du compte authentifié
 
 
-// this.getCenterPostalCode(id:string){
+      // this.getCenterPostalCode(id:string){
 
 
-// }
+      // }
 
       this.getTrainersWithSameCp(this.userUid)
       // this.getDedicatedTrainer()
@@ -193,7 +193,7 @@ export class UpdateStudentComponent implements OnInit {
       array.push(key)
 
     }
-    alert(array)
+    // alert(array)
 
     this.service.activateSubscription(this.studentId, array)
 
@@ -257,21 +257,22 @@ export class UpdateStudentComponent implements OnInit {
 
 
 
-  filteredTrainer?: Trainer; // Si vous utilisez `find`
+  // filteredTrainer?: Trainer; // Si vous utilisez `find`
+  filteredTrainer: Trainer | undefined;
 
   getDedicatedTrainer() {
     // Trouver un seul formateur correspondant
     this.filteredTrainer = this.filteredTrainers.find((trainer: Trainer) => {
       return trainer.sigle?.some((sigle: string) => this.student.subscriptions.includes(sigle));
     });
-  
+
     console.log("Trainer correspondant :", this.filteredTrainer);
   }
 
 
 
 
-  priorCenterPostalCode:string=''
+  priorCenterPostalCode: string = ''
 
   // si on avait besoin de faire remonter des informations, ici l'id du centre choisi, depuis le composant enfant
   center: string | undefined; // Stocker uniquement le `center`
@@ -280,31 +281,68 @@ export class UpdateStudentComponent implements OnInit {
     console.log('Center reçu :', this.center); // Vérifiez qu'il contient `doc-center-id`
 
     // je doute de l'emplacement pour appeler la méthode
-    this. getCenterPostalCode(this.center)
+    this.getCenterPostalCode(this.center)
   }
 
-    getCenterPostalCode(id:any){
-    this.centersService.getCenter(id).subscribe(data=>{
-      alert(data.cp)
-      this.priorCenterPostalCode=data.cp
+  getCenterPostalCode(id: any) {
+    this.centersService.getCenter(id).subscribe(data => {
+      // alert(data.cp)
+      this.priorCenterPostalCode = data.cp
       console.log('this.priorCenterPostalCode !!!!!!!!!!!', this.priorCenterPostalCode);
 
     })
 
-    
+
   }
 
-  trainingClass:string=""
+  trainingClass: string = ""
 
-  setClassId(startingDate:NgForm){
+  // essai initial
+  // setClassId(startingDate:NgForm){
+  //   console.log('startingDate',startingDate.value)
+  //   this.trainingClass=`${this.student.subscriptions[0]}_${this.priorCenterPostalCode}_${startingDate.value.startingDate.toString()}`
+  //   console.log('Une classe normée générée', this.trainingClass);   
+  //   console.log('Student à mettre à jour', this.student);
+  //   this.service.updateStudentClass(this.student.id,this.trainingClass)
+  //   console.log('Trainer à mettre à jour', this.filteredTrainer);
+  //   this.trainerService.updateTrainerClass(this.student.id,this.trainingClass)
+  // }
 
-    console.log('startingDate',startingDate.value)
-    this.trainingClass=`${this.student.subscriptions[0]}_${this.priorCenterPostalCode}_${startingDate.value.startingDate}`
-    console.log('Une classe normée générée', this.trainingClass);   
-    console.log('Trainer à mettre à jour', this.filteredTrainer);
+
+
+  setClassId(startingDate: NgForm) {
+    console.log('startingDate', startingDate.value);
+  
+    // Formater la date au format DDMMYYYY
+    const formattedDate = this.formatDate(startingDate.value.startingDate);
+  
+    // Créer la classe normée
+    this.trainingClass = `${this.student.subscriptions[0]}_${this.priorCenterPostalCode}_${formattedDate}`;
+    console.log('Une classe normée générée', this.trainingClass);
+  
     console.log('Student à mettre à jour', this.student);
+    console.log('Trainer à mettre à jour', this.filteredTrainer);
+  
+    // Appeler les méthodes de mise à jour comme avant
+    this.service.updateStudentClass(this.student.id, this.trainingClass);
+    alert(this.filteredTrainer)
+    this.filteredTrainer? this.trainerService.updateTrainerClass(this.filteredTrainer.id, this.trainingClass):''
   }
   
+  // Méthode pour formater une date au format DDMMYYYY
+  private formatDate(date: string): string {
+    const parsedDate = new Date(date);
+    const day = parsedDate.getDate().toString().padStart(2, '0');
+    const month = (parsedDate.getMonth() + 1).toString().padStart(2, '0');
+    const year = parsedDate.getFullYear();
+    return `${day}${month}${year}`;
+  }
+  
+  
+
+
+
+
 
 
 }

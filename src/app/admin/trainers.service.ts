@@ -180,4 +180,35 @@ export class TrainersService {
   // }
 
 
+  async updateTrainerClass(id: string, trainingClass: string) {
+    const $trainerRef = doc(this.firestore, "trainers/" + id);
+  
+    try {
+      // Récupérer le document
+      const docSnap = await getDoc($trainerRef);
+  
+      if (docSnap.exists()) {
+        // Obtenir la propriété `class` (si elle existe)
+        const data = docSnap.data();
+        let classArray: string[] = data['class'] || []; // Utilise un tableau vide si `class` est inexistant
+  
+        // Ajouter `trainingClass` si elle n'est pas déjà présente
+        if (!classArray.includes(trainingClass)) {
+          classArray.push(trainingClass);
+        }
+  
+        // Mettre à jour le document
+        await updateDoc($trainerRef, { class: classArray });
+        console.log("Document mis à jour avec succès");
+      } else {
+        // Si le document n'existe pas, on peut le signaler ou le créer
+        console.error("Document non trouvé, assurez-vous qu'il existe");
+      }
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour :", error);
+    }
+  }
+  
+
+
 }

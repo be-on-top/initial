@@ -5,4 +5,5 @@ export interface Trainer {
     sigle: string[]; // Les métiers ou domaines du formateur
     cp?: string[]; // Les codes postaux associés (facultatif)
     students?: string[]; // Les codes postaux associés (facultatif)
+    class:string[]
   }
