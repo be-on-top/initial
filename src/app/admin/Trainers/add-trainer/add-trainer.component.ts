@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { EvaluatorsService } from '../../evaluators.service';
 import { NgForm } from '@angular/forms';
 
+import { Papa} from 'ngx-papaparse';
+
 @Component({
   selector: 'app-add-trainer',
   templateUrl: './add-trainer.component.html',
@@ -28,7 +30,7 @@ export class AddTrainerComponent {
     'auth/invalid-email': 'Aucun enregistrement ne correspond au mail fourni'
   }; // list of firebase error codes to alternate error messages
 
-  constructor(private service: TrainersService, private router: Router, private evaluatorsService:EvaluatorsService) { }
+  constructor(private service: TrainersService, private router: Router, private evaluatorsService:EvaluatorsService, private papa:Papa) { }
 
   ngOnInit(): void {
     this.evaluatorsService.getEvaluators().subscribe(data => {
@@ -90,6 +92,138 @@ export class AddTrainerComponent {
     this.service.addRoleToEvaluator(form.value.idEval)
 
   }
+
+
+  // gestion des imports en masse
+  async importTrainersFromCSV(file: File): Promise<void> {
+    return new Promise((resolve, reject) => {
+      // Lecture du fichier
+      const reader = new FileReader();
+  
+      reader.onload = () => {
+        const csvData = reader.result as string;
+  
+        // Parser avec 'Papa'
+        const result = this.papa.parse(csvData, {
+          header: true,          // Utilise les en-têtes comme clés
+          skipEmptyLines: true, // Ignore les lignes vides
+        });
+  
+        try {
+          // Formatage des données
+          const trainersToImport = result.data.map((trainer: any) => ({
+            lastName: trainer['lastName']?.trim(),
+            firstName: trainer['firstName']?.trim(),
+            email: trainer['email']?.trim(),
+            cp: trainer['cp']?.trim(),
+            sigle: trainer['sigles']?.trim(),
+          }));
+  
+          console.log('Données formatées :', trainersToImport);
+  
+          // Appel à la méthode de création en masse
+          this.service.createTrainers(trainersToImport)
+            .then(() => {
+              console.log('Importation réussie !');
+              resolve();
+            })
+            .catch((error) => {
+              console.error('Erreur de création :', error);
+              reject(error);
+            });
+        } catch (error) {
+          console.error('Erreur de traitement des données CSV :', error);
+          reject(error);
+        }
+      };
+  
+      reader.onerror = (error) => {
+        console.error('Erreur de lecture du fichier :', error);
+        reject(error);
+      };
+  
+      reader.readAsText(file); // Lire le fichier en texte brut
+    });
+    
+  }
+
+  // pour des tests en console exclusivement
+  // async importTrainersFromCSV(file: File): Promise<void> {
+  //   return new Promise((resolve, reject) => {
+  //     // Lecture du fichier
+  //     const reader = new FileReader();
+  
+  //     reader.onload = () => {
+  //       const csvData = reader.result as string;
+  
+  //       // Parser avec 'Papa'
+  //       const result = this.papa.parse(csvData, {
+  //         header: true,          // Utilise les en-têtes comme clés
+  //         skipEmptyLines: true, // Ignore les lignes vides
+  //       });
+  
+  //       try {
+  //         // Formatage des données
+  //         const trainersToImport = result.data.map((trainer: any) => ({
+  //           lastName: trainer['lastName']?.trim(),
+  //           firstName: trainer['firstName']?.trim(),
+  //           email: trainer['email']?.trim(),
+  //           cp: trainer['cp']?.trim(),
+  //           sigle: trainer['sigles']?.trim(),
+  //         }));
+  
+  //         console.log('Données formatées :', trainersToImport);
+  
+  //         // TEMPORAIREMENT désactivé pour test
+  //         /*
+  //         this.service.createTrainers(trainersToImport)
+  //           .then(() => {
+  //             console.log('Importation réussie !');
+  //             resolve();
+  //           })
+  //           .catch((error) => {
+  //             console.error('Erreur de création :', error);
+  //             reject(error);
+  //           });
+  //         */
+
+  //         // Simuler la résolution de la promesse
+  //         resolve();
+  //       } catch (error) {
+  //         console.error('Erreur de traitement des données CSV :', error);
+  //         reject(error);
+  //       }
+  //     };
+  
+  //     reader.onerror = (error) => {
+  //       console.error('Erreur de lecture du fichier :', error);
+  //       reject(error);
+  //     };
+  
+  //     reader.readAsText(file); // Lire le fichier en texte brut
+  //   });
+  // }
+
+  
+  
+
+
+  selectedFile: File | null = null;
+
+onFileSelected(event: any) {
+  this.selectedFile = event.target.files[0];
+}
+
+uploadCSV() {
+  if (this.selectedFile) {
+    this.importTrainersFromCSV(this.selectedFile).then(() => {
+      console.log('Import terminé.');
+    }).catch((err) => {
+      console.error('Erreur lors de l\'import :', err);
+    });
+  }
+}
+
 
 }
 

@@ -1176,22 +1176,24 @@ export class StudentsService {
     }
   }
 
-  updateStudentClass(id: string, trainingClass: string) {
-    const $studentRef = doc(this.firestore, "students/" + id);
+  
+  // fonctionne pour une  propriété class qui n'est pas un tableau class[] OK
+  // updateStudentClass(id: string, trainingClass: string) {
+  //   const $studentRef = doc(this.firestore, "students/" + id);
     
-    updateDoc($studentRef, { class: trainingClass })
-      .then(() => console.log("Document mis à jour avec succès"))
-      .catch((error) => {
-        if (error.code === "not-found") {
-          console.error("Document non trouvé, assurez-vous qu'il existe");
-        } else {
-          console.error("Erreur de mise à jour :", error);
-        }
-      });
-  }
+  //   updateDoc($studentRef, { class: trainingClass })
+  //     .then(() => console.log("Document mis à jour avec succès"))
+  //     .catch((error) => {
+  //       if (error.code === "not-found") {
+  //         console.error("Document non trouvé, assurez-vous qu'il existe");
+  //       } else {
+  //         console.error("Erreur de mise à jour :", error);
+  //       }
+  //     });
+  // }
 
 
-
+// ne sait  plus qour quoi ce test avait été ajouté - donc à virer a priori
   // async updateStudentClass(id: string, trainingClass: string) {
   //   const $studentRef = doc(this.firestore, "students/" + id);
   
@@ -1220,6 +1222,36 @@ export class StudentsService {
   //     console.error("Erreur lors de la mise à jour :", error);
   //   }
   // }
+
+  // pour gérer class comme un tableau dans students
+  async updateStudentClass(id: string, trainingClass: string) {
+    const $studentRef = doc(this.firestore, "students/" + id);
+  
+    try {
+      // Récupérer le document
+      const docSnap = await getDoc($studentRef);
+  
+      if (docSnap.exists()) {
+        // Obtenir la propriété class (si elle existe)
+        const data = docSnap.data();
+        let classArray: string[] = data['class'] || []; // Initialise à un tableau vide si inexistant
+  
+        // Ajouter trainingClass si elle n'est pas déjà présente
+        if (!classArray.includes(trainingClass)) {
+          classArray.push(trainingClass);
+        }
+  
+        // Mettre à jour le document
+        await updateDoc($studentRef, { class: classArray });
+        console.log("Document mis à jour avec succès :", classArray);
+      } else {
+        console.error("Document étudiant non trouvé, vérifiez l'ID :", id);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour :", error);
+    }
+  }
+  
   
   
 

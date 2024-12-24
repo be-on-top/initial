@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 
 // à vérifier
 import { Auth, createUserWithEmailAndPassword, sendPasswordResetEmail, deleteUser } from '@angular/fire/auth';
-import { Firestore, collectionData, collection, docData, setDoc, query, where, updateDoc, getDoc } from '@angular/fire/firestore';
+import { Firestore, collectionData, collection, docData, setDoc, query, where, updateDoc, getDoc, writeBatch } from '@angular/fire/firestore';
 import { deleteDoc, doc, getDocs } from 'firebase/firestore';
 import { Observable, pipe } from 'rxjs';
 import { StudentsService } from './students.service';
 import { PushNotificationService } from '../push-notification.service';
 import { Users } from './Users/users';
+import { Trainer } from './trainer';
 pipe
 
 
@@ -180,34 +181,143 @@ export class TrainersService {
   // }
 
 
-  async updateTrainerClass(id: string, trainingClass: string) {
+  
+  // marche bien pour ajouter une  propriété class []
+  // async updateTrainerClass(id: string, trainingClass: string) {
+  //   const $trainerRef = doc(this.firestore, "trainers/" + id);
+  
+  //   try {
+  //     // Récupérer le document
+  //     const docSnap = await getDoc($trainerRef);
+  
+  //     if (docSnap.exists()) {
+  //       // Obtenir la propriété `class` (si elle existe)
+  //       const data = docSnap.data();
+  //       let classArray: string[] = data['class'] || []; // Utilise un tableau vide si `class` est inexistant
+  
+  //       // Ajouter `trainingClass` si elle n'est pas déjà présente
+  //       if (!classArray.includes(trainingClass)) {
+  //         classArray.push(trainingClass);
+  //       }
+  
+  //       // Mettre à jour le document
+  //       await updateDoc($trainerRef, { class: classArray });
+  //       console.log("Document mis à jour avec succès");
+  //     } else {
+  //       // Si le document n'existe pas, on peut le signaler ou le créer
+  //       console.error("Document non trouvé, assurez-vous qu'il existe");
+  //     }
+  //   } catch (error) {
+  //     console.error("Erreur lors de la mise à jour :", error);
+  //   }
+  // }
+
+  // Plus complet pour mettre aussi à jour students[] ATTENTION !!!! pas encore testée
+  async updateTrainerClass(id: string, trainingClass: string, studentId: string) {
     const $trainerRef = doc(this.firestore, "trainers/" + id);
   
     try {
-      // Récupérer le document
+      // Récupérer le document du formateur
       const docSnap = await getDoc($trainerRef);
   
       if (docSnap.exists()) {
-        // Obtenir la propriété `class` (si elle existe)
         const data = docSnap.data();
-        let classArray: string[] = data['class'] || []; // Utilise un tableau vide si `class` est inexistant
   
-        // Ajouter `trainingClass` si elle n'est pas déjà présente
+        // Mise à jour du tableau 'class[]' (gestion des classes normées)
+        let classArray: string[] = data['class'] || [];
         if (!classArray.includes(trainingClass)) {
           classArray.push(trainingClass);
         }
   
-        // Mettre à jour le document
-        await updateDoc($trainerRef, { class: classArray });
-        console.log("Document mis à jour avec succès");
+        // Mise à jour du tableau 'students[]' (gestion des étudiants affectés)
+        let studentsArray: string[] = data['students'] || [];
+        if (!studentsArray.includes(studentId)) {
+          studentsArray.push(studentId);
+        }
+  
+        // Mettre à jour le document avec les deux tableaux
+        await updateDoc($trainerRef, {
+          class: classArray,
+          students: studentsArray // Ajout automatique des étudiants
+        });
+  
+        console.log("Document formateur mis à jour avec succès.");
       } else {
-        // Si le document n'existe pas, on peut le signaler ou le créer
-        console.error("Document non trouvé, assurez-vous qu'il existe");
+        console.error("Document formateur non trouvé, assurez-vous qu'il existe.");
       }
     } catch (error) {
-      console.error("Erreur lors de la mise à jour :", error);
+      console.error("Erreur lors de la mise à jour du formateur :", error);
     }
   }
+
+
+  // Méthode pour importer les formateurs depuis un fichier CSV
+  async createTrainers(trainers: any[]): Promise<void> {
+    const failedEntries: any[] = []; // Stocke les erreurs
+    const batch = writeBatch(this.firestore); // Prépare un lot d'écritures Firestore
+  
+    for (const trainer of trainers) {
+      try {
+        // Nettoyage des données
+        const cpArray = trainer.cp.split(',').map((cp: string) => cp.trim()).filter((cp: string) => cp);
+        const sigleArray = trainer.sigle.split(',').map((sigle: string) => sigle.trim()).filter((sigle: string) => sigle);
+  
+        // Prépare les données
+        const newTrainer = {
+          created: Date.now(),
+          roles: 'trainer',
+          status: true,
+          cp: cpArray,
+          sigle: sigleArray,
+          students: [],
+          class: [],
+          lastName: trainer.lastName.trim(),
+          firstName: trainer.firstName.trim(),
+          email: trainer.email.trim(),
+          id:''
+        };
+  
+        // Création de l'utilisateur Firebase Auth
+        const password = "password"; // Temporaire
+        const result = await createUserWithEmailAndPassword(this.auth, newTrainer.email, password);
+        newTrainer.id = result.user.uid;
+  
+        // Ajoute au lot d'écritures Firestore
+        const trainerRef = doc(collection(this.firestore, "trainers"), newTrainer.id);
+        batch.set(trainerRef, newTrainer);
+  
+        // Ajoute au lot d'écritures pour la collection roles
+        const roleRef = doc(collection(this.firestore, "roles"), newTrainer.id);
+        batch.set(roleRef, { role: 'trainer' });
+  
+      } catch (error:any) {
+        console.error(`Erreur pour ${trainer.email}:`, error);
+        failedEntries.push({ trainer, error: error.message });
+      }
+    }
+  
+    // Applique le lot d'écritures en une seule fois
+    try {
+      await batch.commit();
+      console.log('Importation terminée avec succès !');
+  
+      // Envoie les emails pour les entrées réussies
+      for (const trainer of trainers) {
+        sendPasswordResetEmail(this.auth, trainer.email).catch(err => {
+          console.warn(`Email non envoyé à ${trainer.email}: ${err.message}`);
+        });
+      }
+    } catch (batchError) {
+      console.error('Erreur lors du commit du lot :', batchError);
+    }
+  
+    // Rapport des erreurs
+    if (failedEntries.length > 0) {
+      console.warn('Certaines entrées ont échoué :', failedEntries);
+    }
+  }
+  
+  
   
 
 
