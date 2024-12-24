@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 // import { trainers } from './trainers';
 
 // à vérifier
-import { Auth, createUserWithEmailAndPassword, sendPasswordResetEmail, deleteUser } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, sendPasswordResetEmail, deleteUser, signInWithEmailAndPassword } from '@angular/fire/auth';
 import { Firestore, collectionData, collection, docData, setDoc, query, where, updateDoc, getDoc, writeBatch } from '@angular/fire/firestore';
 import { deleteDoc, doc, getDocs } from 'firebase/firestore';
 import { Observable, pipe } from 'rxjs';
@@ -10,6 +10,7 @@ import { StudentsService } from './students.service';
 import { PushNotificationService } from '../push-notification.service';
 import { Users } from './Users/users';
 import { Trainer } from './trainer';
+import { Router } from '@angular/router';
 pipe
 
 
@@ -22,7 +23,7 @@ export class TrainersService {
   trainers: any[] = [];
   result: any;
 
-  constructor(private auth: Auth, private firestore: Firestore, private studentsService: StudentsService, private notificationsService: PushNotificationService) {
+  constructor(private auth: Auth, private firestore: Firestore, private studentsService: StudentsService, private notificationsService: PushNotificationService, private router: Router) {
   }
 
   async createTrainer(trainer: any) {
@@ -37,10 +38,10 @@ export class TrainersService {
     console.log(cpArray); // Pour vérifier dans la console
 
     // let newTrainer = { id: Date.now(), ...trainer };
-    trainer.cp=cpArray
-    let newTrainer = { created: Date.now(), roles: 'trainer', status: true, cp:cpArray, ...trainer};
+    trainer.cp = cpArray
+    let newTrainer = { created: Date.now(), roles: 'trainer', status: true, cp: cpArray, ...trainer };
     console.log(newTrainer);
-    
+
     this.trainers = [newTrainer, ...this.trainers];
     console.log(this.trainers);
     // on va lui affecter un password aléatoire en fonction de la date
@@ -102,11 +103,11 @@ export class TrainersService {
     // });
   }
 
-  
-    getReferentData(id: string) {
-      let $userRef = doc(this.firestore, "users/" + id)
-      return docData($userRef, { idField: 'id' }) as Observable<Users>;
-    }
+
+  getReferentData(id: string) {
+    let $userRef = doc(this.firestore, "users/" + id)
+    return docData($userRef, { idField: 'id' }) as Observable<Users>;
+  }
 
   getTrainer(id: string) {
     let $trainerRef = doc(this.firestore, "trainers/" + id)
@@ -126,17 +127,17 @@ export class TrainersService {
 
   updateTrainer(id: string, trainer: any) {
 
-     // Suppression des espaces et découpage en tableau
-     const cpArray = trainer.cp
-     .split(',')           // Sépare la chaîne en fonction des virgules
-     .map((cp: string) => cp.trim()) // Supprime les espaces inutiles autour des codes
-     .filter((cp: string) => cp);    // Retire les chaînes vides s'il y en a
+    // Suppression des espaces et découpage en tableau
+    const cpArray = trainer.cp
+      .split(',')           // Sépare la chaîne en fonction des virgules
+      .map((cp: string) => cp.trim()) // Supprime les espaces inutiles autour des codes
+      .filter((cp: string) => cp);    // Retire les chaînes vides s'il y en a
 
-   // Affichage des codes postaux sous forme de tableau
-   console.log(cpArray); // Pour vérifier dans la console
+    // Affichage des codes postaux sous forme de tableau
+    console.log(cpArray); // Pour vérifier dans la console
 
-   // let newTrainer = { id: Date.now(), ...trainer };
-   trainer.cp=cpArray
+    // let newTrainer = { id: Date.now(), ...trainer };
+    trainer.cp = cpArray
 
     let $trainerRef = doc(this.firestore, "trainers/" + id);
     setDoc($trainerRef, trainer)
@@ -181,25 +182,25 @@ export class TrainersService {
   // }
 
 
-  
+
   // marche bien pour ajouter une  propriété class []
   // async updateTrainerClass(id: string, trainingClass: string) {
   //   const $trainerRef = doc(this.firestore, "trainers/" + id);
-  
+
   //   try {
   //     // Récupérer le document
   //     const docSnap = await getDoc($trainerRef);
-  
+
   //     if (docSnap.exists()) {
   //       // Obtenir la propriété `class` (si elle existe)
   //       const data = docSnap.data();
   //       let classArray: string[] = data['class'] || []; // Utilise un tableau vide si `class` est inexistant
-  
+
   //       // Ajouter `trainingClass` si elle n'est pas déjà présente
   //       if (!classArray.includes(trainingClass)) {
   //         classArray.push(trainingClass);
   //       }
-  
+
   //       // Mettre à jour le document
   //       await updateDoc($trainerRef, { class: classArray });
   //       console.log("Document mis à jour avec succès");
@@ -215,32 +216,32 @@ export class TrainersService {
   // Plus complet pour mettre aussi à jour students[] ATTENTION !!!! pas encore testée
   async updateTrainerClass(id: string, trainingClass: string, studentId: string) {
     const $trainerRef = doc(this.firestore, "trainers/" + id);
-  
+
     try {
       // Récupérer le document du formateur
       const docSnap = await getDoc($trainerRef);
-  
+
       if (docSnap.exists()) {
         const data = docSnap.data();
-  
+
         // Mise à jour du tableau 'class[]' (gestion des classes normées)
         let classArray: string[] = data['class'] || [];
         if (!classArray.includes(trainingClass)) {
           classArray.push(trainingClass);
         }
-  
+
         // Mise à jour du tableau 'students[]' (gestion des étudiants affectés)
         let studentsArray: string[] = data['students'] || [];
         if (!studentsArray.includes(studentId)) {
           studentsArray.push(studentId);
         }
-  
+
         // Mettre à jour le document avec les deux tableaux
         await updateDoc($trainerRef, {
           class: classArray,
           students: studentsArray // Ajout automatique des étudiants
         });
-  
+
         console.log("Document formateur mis à jour avec succès.");
       } else {
         console.error("Document formateur non trouvé, assurez-vous qu'il existe.");
@@ -253,15 +254,21 @@ export class TrainersService {
 
   // Méthode pour importer les formateurs depuis un fichier CSV
   async createTrainers(trainers: any[]): Promise<void> {
+
+            // pour reconnecter l'admin
+    // Récupérer l'email de l'administrateur
+    const adminEmail = this.auth.currentUser?.email;
+
+
     const failedEntries: any[] = []; // Stocke les erreurs
     const batch = writeBatch(this.firestore); // Prépare un lot d'écritures Firestore
-  
+
     for (const trainer of trainers) {
       try {
         // Nettoyage des données
         const cpArray = trainer.cp.split(',').map((cp: string) => cp.trim()).filter((cp: string) => cp);
         const sigleArray = trainer.sigle.split(',').map((sigle: string) => sigle.trim()).filter((sigle: string) => sigle);
-  
+
         // Prépare les données
         const newTrainer = {
           created: Date.now(),
@@ -274,33 +281,41 @@ export class TrainersService {
           lastName: trainer.lastName.trim(),
           firstName: trainer.firstName.trim(),
           email: trainer.email.trim(),
-          id:''
+          id: ''
         };
-  
+
         // Création de l'utilisateur Firebase Auth
         const password = "password"; // Temporaire
         const result = await createUserWithEmailAndPassword(this.auth, newTrainer.email, password);
         newTrainer.id = result.user.uid;
-  
+
         // Ajoute au lot d'écritures Firestore
         const trainerRef = doc(collection(this.firestore, "trainers"), newTrainer.id);
         batch.set(trainerRef, newTrainer);
-  
+
         // Ajoute au lot d'écritures pour la collection roles
         const roleRef = doc(collection(this.firestore, "roles"), newTrainer.id);
         batch.set(roleRef, { role: 'trainer' });
-  
-      } catch (error:any) {
+
+
+
+
+
+
+
+        
+
+      } catch (error: any) {
         console.error(`Erreur pour ${trainer.email}:`, error);
         failedEntries.push({ trainer, error: error.message });
       }
     }
-  
+
     // Applique le lot d'écritures en une seule fois
     try {
       await batch.commit();
       console.log('Importation terminée avec succès !');
-  
+
       // Envoie les emails pour les entrées réussies
       for (const trainer of trainers) {
         sendPasswordResetEmail(this.auth, trainer.email).catch(err => {
@@ -310,15 +325,46 @@ export class TrainersService {
     } catch (batchError) {
       console.error('Erreur lors du commit du lot :', batchError);
     }
-  
+
     // Rapport des erreurs
     if (failedEntries.length > 0) {
       console.warn('Certaines entrées ont échoué :', failedEntries);
     }
+
+    // partie additionnelle pour reconnecter
+
+    // Déconnexion de l'administrateur après l'importation
+    await this.auth.signOut();
+
+    // Demande du mot de passe pour reconnecter l'administrateur
+    const adminPassword = prompt('Veuillez entrer votre mot de passe pour vous reconnecter.');
+    if (adminPassword && adminEmail) {
+      try {
+        // Reconnexion de l'administrateur
+        await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
+        console.log('Reconnexion réussie.');
+
+        // Naviguer vers la page des étudiants avant de recharger la page
+        this.router.navigate(['/admin/trainers']); // Redirection vers la page des étudiants
+
+        // Utiliser setTimeout pour permettre à la navigation de se produire avant de recharger la page
+        setTimeout(() => {
+          window.location.reload(); // Recharge la page après la redirection
+        }, 500); // Un délai de 500ms pour s'assurer que la navigation a lieu avant le rechargement
+      } catch (error) {
+        console.error('Erreur lors de la reconnexion de l\'administrateur:', error);
+      }
+    } else {
+      console.error('Mot de passe non fourni.');
+    }
+
+
+    
+
   }
-  
-  
-  
+
+
+
 
 
 }
