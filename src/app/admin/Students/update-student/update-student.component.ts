@@ -102,8 +102,11 @@ export class UpdateStudentComponent implements OnInit {
 
       // }
 
-      this.getTrainersWithSameCp(this.userUid)
+      // this.getTrainersWithSameCp(this.userUid)
       // this.getDedicatedTrainer()
+
+      // SI JE VEUX FAIRE un DEUX EN UN
+      this.getTrainersWithSameCpAndSigle(this.userUid)
 
 
     }
@@ -250,23 +253,48 @@ export class UpdateStudentComponent implements OnInit {
       });
     });
 
-
-
-
   }
 
 
 
   // filteredTrainer?: Trainer; // Si vous utilisez `find`
   filteredTrainer: Trainer | undefined;
-
   getDedicatedTrainer() {
     // Trouver un seul formateur correspondant
     this.filteredTrainer = this.filteredTrainers.find((trainer: Trainer) => {
       return trainer.sigle?.some((sigle: string) => this.student.subscriptions.includes(sigle));
     });
-
     console.log("Trainer correspondant :", this.filteredTrainer);
+  }
+
+  // méthode deux en un pour test !!!!!!!
+  getTrainersWithSameCpAndSigle(userId: string) {
+    this.trainerService.getReferentData(userId).subscribe(referentData => {
+      this.myCp = referentData.cp || []; // Garantir que `this.myCp` est un tableau
+
+      console.log("Mes codes postaux :", this.myCp);
+
+      // Étape 2 : Récupérer les formateurs et les filtrer
+      this.trainerService.getTrainers().subscribe(trainers => {
+        // Appliquer le filtre et assigner le résultat à `filteredTrainers`
+        this.filteredTrainers = trainers.filter((trainer: any) => {
+          // Vérifier si le formateur a au moins un code postal correspondant
+          return trainer.cp?.some((cp: string) => this.myCp.includes(cp));
+        });
+
+        // ATTENTION VIRER TEST pour cumule des filtres en un
+        this.filteredTrainers = trainers.filter((trainer: any) => {
+          // Vérifier si le formateur a au moins un code postal correspondant
+          return trainer.sigle?.some((sigle: string) => this.student.subscriptions.includes(sigle));
+      
+        });
+
+        console.log("Trainers correspondants :", this.filteredTrainers);
+        this.getDedicatedTrainer()
+      });
+    });
+
+
   }
 
 
@@ -393,6 +421,7 @@ export class UpdateStudentComponent implements OnInit {
     this.service.updateStudentClass(this.student.id, this.trainingClass);
   
     // Mettre à jour le trainer (classes et étudiants)
+    // ATTENTION si DEUX EN UN c'est selectedTrainer qui remplace filteredTrainer !!!!
     if (this.filteredTrainer) {
       this.trainerService.updateTrainerClass(
         this.filteredTrainer.id,
@@ -413,6 +442,17 @@ export class UpdateStudentComponent implements OnInit {
     const year = parsedDate.getFullYear();
     return `${day}${month}${year}`;
   }
+
+
+
+  selectedTrainer: any;  // Cette variable contiendra le formateur sélectionné
+
+  // Méthode appelée lors de la sélection d'un formateur
+  selectTrainer() {
+    // console.log('Formateur sélectionné:', this.selectedTrainer);
+    console.log('Formateur sélectionné:', this.selectedTrainer);
+  }
+  
   
   
   

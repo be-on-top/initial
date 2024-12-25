@@ -103,6 +103,17 @@
                 <ng-container *ngIf="student.subscriptions && student.subscriptions.length > 0">
                     <h3 class="mt-5">Date de début effectif de formation </h3>
 
+                    <label for="trainer">Sélectionner un formateur (si plusieurs formateurs affectés à votre centre pour la même spécialisation) :</label>
+                    <select id="trainer" class="form-select mt-3" [(ngModel)]="selectedTrainer" (change)="selectTrainer()">
+                      <option *ngFor="let trainer of filteredTrainers" [ngValue]="trainer">
+                        {{ trainer.firstName }}
+                      </option>
+                    </select>
+                    
+
+
+
+
                     <p *ngIf="student.class && student.class.length > 0" class="text-info">
                         Classe déjà attribuée : {{ student.class[student.class.length - 1] }}
                     </p>
