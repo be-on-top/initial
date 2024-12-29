@@ -23,6 +23,8 @@
                 <p *ngIf="user.sigle">Métiers d'affectation ({{user.sigle.length}}) :
                     <span *ngFor="let s of user.sigle">{{s}} </span>
                 </p>
+                <p *ngIf="user.comment && user.comment!=''">Commentaire : <span class="fst-italic">{{user.comment}}</span> 
+                </p>
                 <!-- option au plus simple où on ne fait qu'une requête dans trainers -->
                 <!-- <p *ngIf="user.students">Etudiants en cours de suivi ({{user.students.length}}) :
                    {{user.students}}

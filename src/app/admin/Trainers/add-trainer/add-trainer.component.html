@@ -1,25 +1,43 @@
 <div class="container py-5">
 
-    <h3>Ajouter un formateur à la liste des formateurs</h3>
     <app-feedback-messages [feedbackMessages]="feedbackMessages"
         [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
-    <div class="alert alert-info mt-3">Si vous souhaitez ajouter un évaluateur existant à la liste des formateurs en
-        charge du suivi
-        pédagogique des futurs apprenants, merci de les sélectionner dans la liste suivante</div>
-    <form class="form row mx-1" #reg="ngForm" (submit)="addRole(reg)">
-        <div class="form-group col-md-6">
-            <select name="idEval" *ngIf="registryEvaluators" class="form-select" name="idEval" ngModel
-                #idEval="ngModel">
-                <option value="">Evaluateurs inscrits</option>
-                <option *ngFor="let evaluator of registryEvaluators" value="{{evaluator.id}}">{{evaluator.email}}
+
+
+    <h3>Ajouter un évaluateur existant comme formateur</h3>
+
+    <form #reg="ngForm" (submit)="addEvaluatorAsTrainer(reg)" class="form">
+        <div class="form-group">
+            <select class="form-select" name="idEval" ngModel #idEval="ngModel"
+                (change)="onEvaluatorSelected(idEval.value)">
+                <option value="">Sélectionner un évaluateur</option>
+                <option *ngFor="let evaluator of registryEvaluators" [value]="evaluator.id">
+                   {{evaluator.firstName}}-{{ evaluator.email }}
                 </option>
             </select>
         </div>
-        <button type="submit" class="btn btn-primary col-md-6">Les ajouter à la liste</button>
+        <button type="submit" class="btn btn-primary mt-3">  {{ selectedEvaluator ? 'Choix validé' : 'Valider le choix' }}</button>
     </form>
+
+    <!-- Mise à jour des métiers pour l’évaluateur existant (inscrits en dur pour tests,  qui seront requêtés plus tard) -->
+    <div *ngIf="isExistingEvaluatorSelected">
+        <!-- <h4>Affectation métier :</h4> -->
+        <form #expertiseForm="ngForm" (submit)="addEvaluatorAsTrainer(expertiseForm)">
+            <label for="sigle" class="form-label mt-3">Affectation métier :</label>
+            <select class="form-select" name="sigle" ngModel multiple required>
+                <option value="prepa_cdes">PREPA CDES</option>
+                <option value="poseur_ite">POSEUR ITE</option>
+                <option value="macon_vrd">MACON VRD</option>
+                <option value="cl_vul">CL VUL</option>
+            </select>
+            <button type="submit" class="btn btn-primary mt-3">Ajouter</button>
+        </form>
+    </div>
+
     <hr>
 
-    <div class="alert alert-info">Pour tout nouveau formateur, procéder normalement</div>
+    <h3>Ajouter un formateur à la liste des formateurs</h3>
+
     <!-- pour les messages de retour/validation des champs du formulaire ou form validation, on utilisera BOOTSTRAP plutôt que des directives structurelles -->
     <form class="form" #f="ngForm" (submit)="addTrainer(f)" class="was-validated">
 
@@ -65,7 +83,7 @@
             (change)="checkIfSelected(sigle.value)" multiple>
             <option value>Selectionner le métier</option>
             <option value="prepa_cdes">PREPA CDES</option>
-            <option value="poser_ite">POSEUR ITE</option>
+            <option value="poseur_ite">POSEUR ITE</option>
             <option value="macon_vrd">MACON VRD</option>
             <option value="cl_vul">CLVUL</option>
         </select>
@@ -86,7 +104,8 @@
         <label for="csvFile" class="form-label">Choisissez un fichier CSV</label>
         <input type="file" id="csvFile" (change)="onFileSelected($event)" accept=".csv" class="form-control">
     </div>
-    <button type="submit" class="btn btn-secondary mt-4" (click)="uploadCSV()"  [disabled]="!selectedFile">Importer</button>
+    <button type="submit" class="btn btn-secondary mt-4" (click)="uploadCSV()"
+        [disabled]="!selectedFile">Importer</button>
 
 
 </div>

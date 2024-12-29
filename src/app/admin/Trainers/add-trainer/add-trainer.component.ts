@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { EvaluatorsService } from '../../evaluators.service';
 import { NgForm } from '@angular/forms';
 
-import { Papa} from 'ngx-papaparse';
+import { Papa } from 'ngx-papaparse';
 
 @Component({
   selector: 'app-add-trainer',
@@ -30,19 +30,35 @@ export class AddTrainerComponent {
     'auth/invalid-email': 'Aucun enregistrement ne correspond au mail fourni'
   }; // list of firebase error codes to alternate error messages
 
-  constructor(private service: TrainersService, private router: Router, private evaluatorsService:EvaluatorsService, private papa:Papa) { }
+  constructor(private service: TrainersService, private router: Router, private evaluatorsService: EvaluatorsService, private papa: Papa) { }
 
   ngOnInit(): void {
     this.evaluatorsService.getEvaluators().subscribe(data => {
+      // marche bien mais ne fait pas de double vérification si évaluateur déjà dans les 2 collections...
       // console.log(data);
-      for (let e of data) {
-        // console.log(this.registryNumbers);
-        this.registryEvaluators = [...this.registryEvaluators, e]
-        console.log("result des évaluateurs", this.registryEvaluators);
-      }
+      // for (let e of data) {
+      //   // console.log(this.registryNumbers);
+      //   this.registryEvaluators = [...this.registryEvaluators, e]
+      //   console.log("result des évaluateurs", this.registryEvaluators);
+      // }
+
+
+      // Vérifier pour chaque évaluateur s'il est déjà formateur !!!!!!!!!
+      // Donc double les requêtes... 
+      this.service.getTrainers().subscribe(trainers => {
+        const trainerIds = trainers.map(t => t.id); // Récupérer les IDs des formateurs
+        // Filtrer les évaluateurs qui ne sont pas encore formateurs
+        for (let e of data) {
+          // console.log(this.registryNumbers);
+          this.registryEvaluators = [...this.registryEvaluators, e]
+          console.log("result des évaluateurs", this.registryEvaluators);
+        }
+        this.registryEvaluators = data.filter(e => !trainerIds.includes(e.id));
+      });
+
+
       // return this.registryNumbers
     })
-
 
   }
 
@@ -87,8 +103,8 @@ export class AddTrainerComponent {
     this.selectedSigles = [...this.selectedSigles, sigle]
   }
 
-  addRole(form:NgForm){
-    console.log(form.value.idEval)    
+  addRole(form: NgForm) {
+    console.log(form.value.idEval)
     this.service.addRoleToEvaluator(form.value.idEval)
 
   }
@@ -99,16 +115,20 @@ export class AddTrainerComponent {
     return new Promise((resolve, reject) => {
       // Lecture du fichier
       const reader = new FileReader();
-  
+
+      // Forcer l'encodage en UTF-8
+      // reader.readAsText(file, 'UTF-8'); // Ajout explicite de l'encodage UTF-8 
+
+
       reader.onload = () => {
         const csvData = reader.result as string;
-  
+
         // Parser avec 'Papa'
         const result = this.papa.parse(csvData, {
           header: true,          // Utilise les en-têtes comme clés
           skipEmptyLines: true, // Ignore les lignes vides
         });
-  
+
         try {
           // Formatage des données
           const trainersToImport = result.data.map((trainer: any) => ({
@@ -117,10 +137,11 @@ export class AddTrainerComponent {
             email: trainer['email']?.trim(),
             cp: trainer['cp']?.trim(),
             sigle: trainer['sigles']?.trim(),
+            comment: trainer['status']?.trim()
           }));
-  
+
           console.log('Données formatées :', trainersToImport);
-  
+
           // Appel à la méthode de création en masse
           this.service.createTrainers(trainersToImport)
             .then(() => {
@@ -136,15 +157,15 @@ export class AddTrainerComponent {
           reject(error);
         }
       };
-  
+
       reader.onerror = (error) => {
         console.error('Erreur de lecture du fichier :', error);
         reject(error);
       };
-  
+
       reader.readAsText(file); // Lire le fichier en texte brut
     });
-    
+
   }
 
   // pour des tests en console exclusivement
@@ -152,16 +173,16 @@ export class AddTrainerComponent {
   //   return new Promise((resolve, reject) => {
   //     // Lecture du fichier
   //     const reader = new FileReader();
-  
+
   //     reader.onload = () => {
   //       const csvData = reader.result as string;
-  
+
   //       // Parser avec 'Papa'
   //       const result = this.papa.parse(csvData, {
   //         header: true,          // Utilise les en-têtes comme clés
   //         skipEmptyLines: true, // Ignore les lignes vides
   //       });
-  
+
   //       try {
   //         // Formatage des données
   //         const trainersToImport = result.data.map((trainer: any) => ({
@@ -171,9 +192,9 @@ export class AddTrainerComponent {
   //           cp: trainer['cp']?.trim(),
   //           sigle: trainer['sigles']?.trim(),
   //         }));
-  
+
   //         console.log('Données formatées :', trainersToImport);
-  
+
   //         // TEMPORAIREMENT désactivé pour test
   //         /*
   //         this.service.createTrainers(trainersToImport)
@@ -194,35 +215,88 @@ export class AddTrainerComponent {
   //         reject(error);
   //       }
   //     };
-  
+
   //     reader.onerror = (error) => {
   //       console.error('Erreur de lecture du fichier :', error);
   //       reject(error);
   //     };
-  
+
   //     reader.readAsText(file); // Lire le fichier en texte brut
   //   });
   // }
 
-  
-  
+
+
 
 
   selectedFile: File | null = null;
 
-onFileSelected(event: any) {
-  this.selectedFile = event.target.files[0];
-}
-
-uploadCSV() {
-  if (this.selectedFile) {
-    this.importTrainersFromCSV(this.selectedFile).then(() => {
-      console.log('Import terminé.');
-    }).catch((err) => {
-      console.error('Erreur lors de l\'import :', err);
-    });
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
   }
-}
+
+  uploadCSV() {
+    if (this.selectedFile) {
+      this.importTrainersFromCSV(this.selectedFile).then(() => {
+        console.log('Import terminé.');
+      }).catch((err) => {
+        console.error('Erreur lors de l\'import :', err);
+      });
+    }
+  }
+
+
+
+
+
+
+
+  // registryEvaluators: any[] = [];
+  selectedEvaluator: any = null;
+  isExistingEvaluatorSelected: boolean = false;
+
+  // Sélection d’un évaluateur
+  onEvaluatorSelected(evaluatorId: string) {
+    this.isExistingEvaluatorSelected = !!evaluatorId;
+    this.selectedEvaluator = this.registryEvaluators.find(e => e.id === evaluatorId);
+    this.service.addRoleToEvaluator(evaluatorId);
+
+  }
+
+  // Ajouter un évaluateur comme formateur
+  async addEvaluatorAsTrainer(form: NgForm) {
+    if (!form.valid) return;
+
+    // const evaluatorId = form.value.idEval;
+    const evaluator = this.selectedEvaluator;
+
+    try {
+      evaluator.sigles = form.value.sigle;
+      await this.service.addEvaluatorAsTrainer(evaluator);
+      // alert('Évaluateur ajouté en tant que formateur avec succès.');
+    } catch (error) {
+      console.error(error);
+      // alert('Erreur lors de l’ajout.');
+    }
+  }
+
+  // Mettre à jour les expertises : juste  une mise à jour. Ne convient pas donc...
+  // async updateTrainerExpertises(form: NgForm) {
+  //   if (!form.valid || !this.selectedEvaluator) return;
+
+  //   const sigles = form.value.sigle;
+
+  //   try {
+  //     await this.service.updateTrainerExpertises(this.selectedEvaluator.id, sigles);
+  //     alert('Expertises mises à jour avec succès.');
+  //   } catch (error) {
+  //     console.error(error);
+  //     alert('Erreur lors de la mise à jour des expertises.');
+  //   }
+  // }
+
+
+
 
 
 }

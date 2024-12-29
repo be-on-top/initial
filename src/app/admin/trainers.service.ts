@@ -24,6 +24,10 @@ export class TrainersService {
   result: any;
 
   constructor(private auth: Auth, private firestore: Firestore, private studentsService: StudentsService, private notificationsService: PushNotificationService, private router: Router) {
+  
+  
+  
+  
   }
 
   async createTrainer(trainer: any) {
@@ -272,7 +276,7 @@ export class TrainersService {
         // Prépare les données
         const newTrainer = {
           created: Date.now(),
-          roles: 'trainer',
+          // roles: 'trainer',
           status: true,
           cp: cpArray,
           sigle: sigleArray,
@@ -281,11 +285,12 @@ export class TrainersService {
           lastName: trainer.lastName.trim(),
           firstName: trainer.firstName.trim(),
           email: trainer.email.trim(),
+          comment:trainer.comment,
           id: ''
         };
 
         // Création de l'utilisateur Firebase Auth
-        const password = "password"; // Temporaire
+        const password = "password2025#"; // Temporaire
         const result = await createUserWithEmailAndPassword(this.auth, newTrainer.email, password);
         newTrainer.id = result.user.uid;
 
@@ -295,13 +300,7 @@ export class TrainersService {
 
         // Ajoute au lot d'écritures pour la collection roles
         const roleRef = doc(collection(this.firestore, "roles"), newTrainer.id);
-        batch.set(roleRef, { role: 'trainer' });
-
-
-
-
-
-
+        batch.set(roleRef, { role: ['trainer'] });
 
         
 
@@ -318,7 +317,18 @@ export class TrainersService {
 
       // Envoie les emails pour les entrées réussies
       for (const trainer of trainers) {
-        sendPasswordResetEmail(this.auth, trainer.email).catch(err => {
+        sendPasswordResetEmail(this.auth, trainer.email
+
+
+          ,{
+            // URL de redirection après personnalisation du mot de passe
+         url: 'https://be-on-top.io/login',
+         // Utilisation de l'application pour traiter cette action
+         handleCodeInApp: true 
+     }
+
+
+        ).catch(err => {
           console.warn(`Email non envoyé à ${trainer.email}: ${err.message}`);
         });
       }
@@ -359,9 +369,86 @@ export class TrainersService {
     }
 
 
+
+
+
+
+
+    
+
+
     
 
   }
+
+
+
+
+
+
+
+
+   // Ajouter un rôle 'trainer' à un évaluateur existant
+  //  async addRoleToEvaluator(evaluatorId: string): Promise<void> {
+  //   const rolesRef = doc(this.firestore, 'roles', evaluatorId);
+  //   await setDoc(rolesRef, { role: 'trainer' }, { merge: true }); // Ajoute ou met à jour
+  // }
+
+  // Vérifier si l’évaluateur existe déjà dans la collection 'trainers'
+  async checkTrainerExists(evaluatorId: string): Promise<boolean> {
+    const trainerRef = doc(this.firestore, 'trainers', evaluatorId);
+    const trainerSnapshot = await getDoc(trainerRef);
+    return trainerSnapshot.exists(); // Renvoie true s’il existe
+  }
+
+  // Ajouter un évaluateur dans la collection 'trainers' (sans créer de compte Auth)
+  async addEvaluatorAsTrainer(evaluator: any): Promise<void> {
+    const trainerRef = doc(this.firestore, 'trainers', evaluator.id);
+  
+    try {
+      // Vérifie si le formateur existe déjà dans trainers
+      const trainerDoc = await getDoc(trainerRef);
+  
+      if (trainerDoc.exists()) {
+        console.log('Ce formateur existe déjà dans la collection trainers.');
+        alert('Ce formateur est déjà enregistré comme formateur.');
+        return; // Stoppe l'exécution si l'entrée existe déjà
+      }
+  
+      // Prépare les données pour le nouveau formateur
+      const trainerData = {
+        id: evaluator.id,
+        firstName: evaluator.firstName,
+        lastName: evaluator.lastName,
+        email: evaluator.email,
+        sigles: evaluator.sigles || [], // Initialise vide ou conserve les sigles
+        roles: ['trainer'],
+        created: Date.now(),
+      };
+  
+      console.log('Ajout du formateur :', trainerData);
+  
+      // Ajoute l'évaluateur dans trainers
+      await setDoc(trainerRef, trainerData);
+  
+      // Ajoute également le rôle dans la collection roles (en fusionnant si besoin)
+      const rolesRef = doc(this.firestore, 'roles', evaluator.id);
+      await setDoc(rolesRef, { role: 'trainer' }, { merge: true });
+  
+      alert('Évaluateur ajouté avec succès en tant que formateur.');
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout du formateur :', error);
+      alert('Une erreur est survenue lors de l\'ajout du formateur.');
+    }
+  }
+  
+  
+
+  // Mettre à jour les expertises métier (sigles) dans la collection 'trainers'
+  // async updateTrainerExpertises(trainerId: string, sigles: string[]): Promise<void> {
+  //   const trainerRef = doc(this.firestore, 'trainers', trainerId);
+  //   await updateDoc(trainerRef, { sigles: sigles }); // Mise à jour des sigles
+  // }
 
 
 
