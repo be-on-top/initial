@@ -536,9 +536,9 @@ Tests OK. Sur une  partie. A finir.
                             <hr>
                             <div class="text-decoration-underline pt-3 pb-2">Salarié en CDI ? </div>
                             <!-- <div class="d-flex  align-items-center gap-3">
-                                <label for="cdiDuration" class="form-label">Depuis combien d'années ?</label>
-                                <input appAutoChange type="number" class="form-control"
-                                    [(ngModel)]="socialData.cdiDuration" name="cdiDuration">
+                                <label for="cdi" class="form-label">oui ?</label>
+                                <input appAutoChange type="radio" class="form-control"
+                                    [(ngModel)]="socialData.cdi" name="cdi" value=true>
                             </div> -->
                             <!-- envoyé par entreprise -->
                             <div class="fst-italic pt-3 pb-2">Vous êtes envoyé(e) par votre entreprise ?</div>
@@ -633,7 +633,7 @@ Tests OK. Sur une  partie. A finir.
                             </div>
 
                             <hr>
-
+                            <!-- pour que ça se désactive si salarié en cdi -->
                             <div class="text-decoration-underline pt-3 pb-2">Êtes-vous intérimaire ?</div>
                             <div class="d-flex  align-items-center gap-3">
                                 <div class="form-check">
