@@ -72,8 +72,8 @@
 
 
         <!-- <label for="email" class="form-label mt-3">Commentaires optionnels</label> -->
-        <textarea name="details" id="details" [(ngModel)]="user.details" name="details" cols="100" rows="10"
-            class="form-control mt-3" #details="ngModel" [ngClass]="{'.is-valid':details.value && details.touched}"
+        <textarea name="comment" id="comment" [(ngModel)]="user.comment" name="comment" cols="100" rows="10"
+            class="form-control mt-3" #comment="ngModel" [ngClass]="{'.is-valid':comment.value && comment.touched}"
             placeholder="Commentaires optionnels...">Détails / Remarques & Objectifs...</textarea>
         <button type="submit" id="submit" class="btn btn-primary mt-3"
             [ngClass]="{'disabled':f.invalid}">Valider</button>

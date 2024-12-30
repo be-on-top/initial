@@ -26,16 +26,18 @@
         <app-search (searchTextChanged)="onSearchTextEntered($event)"></app-search>
 
         <div class="row mt-3 text-secondary justify-content-between">
-            <div class="col-md-6 d-flex flex-column justify-content-between">Activer un filtre ou un autre > <br>
+            <div class="col-md-6 d-flex flex-column justify-content-between">Activer un filtre OU un autre > <br>
                 <p class="small" *ngIf="userRouterLinks.user==='referent'">
                     Ont expressément choisi votre centre pour le suivi de leur
                     dossier d'inscription *</p>
 
                     <!-- ici dessous -->
 
+                    <!-- ajoute un bouton d'ajout en haut du composant j'aime  pas sur petits écrans !!!! -->
                     <button class="btn btn-primary mt-5 align-self-start" *ngIf="userRouterLinks.user!=='external'"><a
                         [routerLink]="['/admin/addStudent']" class="text-white"><i
                             class="bi bi-person-fill-add me-2"></i>Ajouter</a></button>
+                            
                 </div>
 
 
@@ -111,7 +113,7 @@
                         {{ ascending ? 'Afficher les plus récents' : 'Afficher les plus anciens' }}
                     </button></div>
 
-                <hr class="border-secondary" *ngIf="userRouterLinks.user==='admin'">
+                <!-- <hr class="border-secondary" *ngIf="userRouterLinks.user==='admin'"> -->
                 <!-- si il faut relancer (l'admin décidera à qui l'honneur) -->
                 <button button class="btn btn-primary position-relative me-sm-2" *ngIf="userRouterLinks.user==='admin'"
                     (click)="getStudentsWithNoInterest()">{{showNoInterestStudents ? 'Masquer les prospects à relancer'
@@ -133,7 +135,11 @@
 
         </div>
 
-        <div class="row mt-4 d-xs-none ps-2" *ngIf="userRouterLinks.user=='admin' || userRouterLinks.user=='referent'">
+        <!-- userRouterLinks.user {{userRouterLinks.user}} -->
+
+        <!-- pourquoi d-xs-none ???? -->
+        <!-- <div class="row mt-4 d-xs-none ps-2" *ngIf="userRouterLinks.user=='admin' || userRouterLinks.user=='referent'"> -->
+        <div class="row mt-4 ps-2" *ngIf="userRouterLinks.user=='admin' || userRouterLinks.user=='referent'">
 
             <div class="col-sm-3 h5">Nom</div>
             <div class="col-sm-3 h5">Prénom</div>
