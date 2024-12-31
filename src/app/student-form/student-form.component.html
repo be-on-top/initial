@@ -24,6 +24,14 @@ Tests OK. Sur une  partie. A finir.
             Centre : {{ getCenterName(socialData.center) | async }}</p>
     </ng-container>
 
+    <div class="alert bg-primary p-4 alert-dismissible mb-4 fade show pe-5 text-light">
+        <!-- <button type="button" class="btn-close btn-close-light" data-bs-dismiss="alert"></button> -->
+        <button aria-label="Fermer le message be-on-top" type="button" class="btn-close btn-close mt-2"
+            data-bs-dismiss="alert"></button>
+        <!-- Parce que soit disant des onglets on sait pas que c'est cliquable... -->
+        Destinés à faciliter le regroupement des informations et votre navigation, les onglets bleus sont cliquables !
+    </div>
+
 
     <ng-container *ngIf="!isReadOnly">
         <!-- début de partie concernant les  préférences à masquer pour referent -->
@@ -161,8 +169,13 @@ Tests OK. Sur une  partie. A finir.
             <div class="card">
                 <div class="card-header bg-primary">
                     <a class="btn text-light text-capitalize d-flex justify-content-between align-items-center"
-                        data-bs-toggle="collapse" href="#collapseOne">
-                        <span>Votre identité</span><i class="bi bi-person-vcard-fill text-light fs-4"></i>
+                        data-bs-toggle="collapse" href="#collapseOne" aria-expanded="true">
+                        <!-- <span>Votre identité</span> -->
+                        <div class="d-flex align-items-center gap-2">                        
+                            <span class="text-nowrap">Votre identité</span>
+                            <i class="bi bi-caret-down-fill toggle-arrow fs-6"></i>
+                        </div>                        
+                        <i class="bi bi-person-vcard-fill text-light fs-4"></i>
                     </a>
                 </div>
                 <!-- {{userData.id}} -->
@@ -253,7 +266,12 @@ Tests OK. Sur une  partie. A finir.
                 <div class="card-header bg-primary">
                     <a class="collapsed btn text-light text-capitalize d-flex justify-content-between align-items-center"
                         data-bs-toggle="collapse" href="#collapseTwo">
-                        <span>Permis de Conduire</span> <i class="bi bi-sign-turn-left-fill text-light fs-4"></i>
+                        <!-- pour doubler les icônes parce qu'il parait que certains ignorent qu'un bouton ou un onglet c'est cliquable -->
+                        <div class="d-flex align-items-center gap-2">                        
+                            <span class="text-nowrap">Permis de Conduire</span>
+                            <i class="bi bi-caret-down-fill toggle-arrow fs-6"></i>
+                        </div>
+                        <i class="bi bi-sign-turn-left-fill text-light fs-4"></i>
                     </a>
                 </div>
                 <div id="collapseTwo" class="collapse" data-bs-parent="#accordion">
@@ -318,7 +336,12 @@ Tests OK. Sur une  partie. A finir.
                 <div class="card-header bg-primary">
                     <a class="collapsed btn text-light text-capitalize d-flex justify-content-between align-items-center"
                         data-bs-toggle="collapse" href="#collapseThree">
-                        <span>Nationalité</span> <i class="bi bi-globe-europe-africa text-light fs-4"></i>
+                        <!-- <span>Nationalité</span> <i class="bi bi-globe-europe-africa text-light fs-4"></i> -->
+                        <div class="d-flex align-items-center gap-2">                        
+                            <span>Nationalité</span>
+                            <i class="bi bi-caret-down-fill toggle-arrow fs-6"></i>
+                        </div>
+                        <i class="bi bi-globe-europe-africa text-light fs-4"></i>
                     </a>
                 </div>
 
@@ -462,7 +485,13 @@ Tests OK. Sur une  partie. A finir.
                 <div class="card-header bg-primary">
                     <a class="collapsed btn text-light text-capitalize d-flex justify-content-between align-items-center"
                         data-bs-toggle="collapse" href="#collapseFor">
-                        <span>Historique emploi</span> <i class="bi bi-journal text-light fs-4"></i>
+                        <!-- <span>Historique emploi</span> -->
+                        <div class="d-flex align-items-center gap-2">                        
+                            <span class="text-nowrap">Historique emploi</span>
+                            <i class="bi bi-caret-down-fill toggle-arrow fs-6"></i>
+                        </div>
+                        
+                        <i class="bi bi-journal text-light fs-4"></i>
                     </a>
                 </div>
 
@@ -804,9 +833,15 @@ Tests OK. Sur une  partie. A finir.
             <!-------->
             <div class="card">
                 <div class="card-header bg-primary">
-                    <a class="collapsed btn text-light text-capitalize d-flex justify-content-between align-items-center"
+                    <a class="collapsed btn text-light text-capitalize d-flex gap-0 justify-content-between align-items-center"
                         data-bs-toggle="collapse" href="#collapseFive">
-                        <span>Historique formation</span> <i class="bi bi-journal-bookmark-fill text-light fs-4"></i>
+                        <!-- <span>Historique formation</span>  -->
+                        <div class="d-flex align-items-center gap-2">                      
+                            <span class="text-nowrap">Historique Formation</span>
+                            <i class="bi bi-caret-down-fill toggle-arrow fs-6"></i>
+                        </div>
+                        
+                        <i class="bi bi-journal-bookmark-fill text-light fs-4"></i>
                     </a>
                 </div>
                 <div id="collapseFive" class="collapse" data-bs-parent="#accordion">
@@ -980,7 +1015,12 @@ Tests OK. Sur une  partie. A finir.
                 <div class="card-header bg-primary">
                     <a class="collapsed btn text-light text-capitalize d-flex justify-content-between align-items-center"
                         data-bs-toggle="collapse" href="#collapseSix">
-                        <span>Notre accompagnement</span> <i class="bi bi-people-fill text-light fs-4"></i>
+                        <!-- <span>Notre accompagnement</span>  -->
+                        <div class="d-flex align-items-center gap-2">                        
+                            <span>Accompagnement</span>
+                            <i class="bi bi-caret-down-fill toggle-arrow fs-6"></i>
+                        </div>                        
+                        <i class="bi bi-people-fill text-light fs-4"></i>
                     </a>
                 </div>
                 <div id="collapseSix" class="collapse" data-bs-parent="#accordion">
@@ -1270,7 +1310,12 @@ Tests OK. Sur une  partie. A finir.
             <div class="card-header bg-primary">
                 <a class="collapsed btn text-light text-capitalize d-flex justify-content-between align-items-center"
                     data-bs-toggle="collapse" href="#collapseSeven">
-                    <span>Mobilité</span> <i class="bi bi-geo-alt-fill text-light fs-4"></i>
+                    <!-- <span>Mobilité</span> -->
+                    <div class="d-flex align-items-center gap-2">                        
+                        <span>Mobilité</span>
+                        <i class="bi bi-caret-down-fill toggle-arrow fs-6"></i>
+                    </div>                    
+                    <i class="bi bi-geo-alt-fill text-light fs-4"></i>
                 </a>
             </div>
             <div id="collapseSeven" class="collapse" data-bs-parent="#accordion">

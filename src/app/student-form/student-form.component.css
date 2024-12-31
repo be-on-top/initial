@@ -79,6 +79,22 @@ select option {
 }
 
 
+.toggle-arrow {
+  margin-top: 2px;
+  margin-left:0;
+  margin-right:0;
+  transition: transform 0.3s ease; /* Animation fluide */
+}
+
+/* Tourner la flèche de l'onglet cliqué */
+a[aria-expanded="true"] .toggle-arrow {
+  transform: rotate(180deg);
+}
+/* a[aria-expanded="true"] .toggle-arrow {
+  display: none;
+} */
+
+
 
 @media only screen and (max-width: 430px) {
   ::ng-deep select option span {
@@ -88,6 +104,10 @@ select option {
 
   select option{
     font-size: smaller;
+  }
+
+  .card-header {
+    padding: 0;
   }
 }
 
