@@ -149,33 +149,91 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     });
   }
 
+//  pour faire toutes les requêtes nécessaires illico si c'est le referent qui est connecté
+// fonctionne bien sans faire de distinguo selon l'utilisateur
   // getStudents() {
   //   const order = this.ascending ? 'asc' : 'desc';
+  //   const referentUid = this.authService.getCurrentUserUid(); // UID du référent.
+  
+  //   if (!referentUid) {
+  //     console.error('Impossible de récupérer UID du référent.');
+  //     return;
+  //   }
+  
+  //   // Étape 1 : Charger tous les étudiants
+  //   this.service.getStudents(order).subscribe(allStudents => {
+  //     console.log('Tous les étudiants chargés :', allStudents);
+  
+  //     // Étape 2 : Récupérer les étudiants prior (via service)
+  //     this.service.getCentersAndSocialFormByUserId(referentUid)
+  //       .subscribe(returnedPriors => {
+  //         console.log('IDs prior récupérés :', returnedPriors);
+  
+  //         // Filtrer les étudiants en fonction de deux critères (référent + prior)
+  //         const filteredStudents = allStudents.filter(student => 
+  //           student.referent === referentUid || returnedPriors.includes(student.id)
+  //         );
+  //         console.log('Étudiants filtrés (référent + prior) :', filteredStudents);
+  
+  //         // Initialisation de la base de données
+  //         this.initialStudents = [...filteredStudents]; // Base par défaut
+  //         this.allStudents = [...this.initialStudents]; // Pré-remplissage pour affichage
+  
+  //         // Mise à jour des filtres dynamiques
+  //         this.filteredStudents = filteredStudents.filter(student => returnedPriors.includes(student.id)); // Garde uniquement les prior pour filtres dynamiques
+  //         console.log('Filtered Prior Students :', this.filteredStudents);
+  
+  //         this.applyFilters(); // Appliquer les filtres actuels
+  //       });
+  //   });
+  // }
 
-  //   // c'est là qu'il faudrait introduire une distinction dans le getStudents selon qu'ils portent l'email du référent ou
-  //   this.service.getStudents(order).pipe(
-  //     tap(students => {
-  //       // Stocker les données brutes avant toute transformation
-  //       this.collectionStudents = students;
-  //       console.log('Données brutes (collectionStudents) :', this.collectionStudents);
-  //     }),
-  //     map(students => {
-  //       // Filtrer les étudiants ayant des résultats complets
-  //       let filteredStudents = students.filter(student => this.hasFullResults(student));
-
-  //       // Si l'utilisateur est un référent, appliquer un filtre supplémentaire
-  //       if (this.userRouterLinks.user==='referent') {
-  //         alert(this.authService.getCurrentUserEmail())
-  //         filteredStudents = filteredStudents.filter(student => student.referent === this.authService.getCurrentUserUid());
-  //       }
-
-  //       return filteredStudents;
-  //     })
-  //   ).subscribe(filteredStudents => {
-  //     this.initialStudents = filteredStudents; // Stocker la liste initiale
-  //     this.allStudents = [...this.initialStudents]; // Initialiser allStudents
-  //     alert(this.allStudents)
-  //     this.applyFilters();
+// en cours...
+  // getStudents() {
+  //   const order = this.ascending ? 'asc' : 'desc';
+  //   const referentUid = this.authService.getCurrentUserUid(); // Récupérer l'UID de l'utilisateur connecté.
+  
+  //   if (!referentUid) {
+  //     console.error('Impossible de récupérer UID de l\'utilisateur.');
+  //     return;
+  //   }
+  
+  //   // Étape 1 : Charger tous les étudiants
+  //   this.service.getStudents(order).subscribe(allStudents => {
+  //     console.log('Tous les étudiants chargés :', allStudents);
+  
+  //     // Vérifie le rôle utilisateur
+  //     if (this.userRouterLinks.user === 'admin') {
+  //       // Si super admin, affiche tous les étudiants
+  //       this.initialStudents = [...allStudents]; 
+  //       this.allStudents = [...this.initialStudents];
+  //       this.applyFilters();
+  //     } 
+  //     else if (this.userRouterLinks.user === 'referent') {
+  //       // Si référent, applique les filtres (référent et prior)
+  //       this.service.getCentersAndSocialFormByUserId(referentUid)
+  //         .subscribe(returnedPriors => {
+  //           console.log('IDs prior récupérés :', returnedPriors);
+  
+  //           // Étape 2 : Filtrer les étudiants par référent ou prior
+  //           const filteredStudents = allStudents.filter(student =>
+  //             student.referent === referentUid || returnedPriors.includes(student.id)
+  //           );
+  //           console.log('Étudiants filtrés (référent + prior) :', filteredStudents);
+  
+  //           // Initialisation pour le référent
+  //           this.initialStudents = [...filteredStudents]; 
+  //           this.allStudents = [...this.initialStudents];
+  
+  //           // Mise à jour des filtres dynamiques pour prior uniquement
+  //           this.filteredStudents = filteredStudents.filter(student => 
+  //             returnedPriors.includes(student.id)
+  //           );
+  //           console.log('Filtered Prior Students :', this.filteredStudents);
+  
+  //           this.applyFilters(); // Appliquer les filtres actuels
+  //         });
+  //     }
   //   });
   // }
 
