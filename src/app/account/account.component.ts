@@ -91,7 +91,7 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   tradesData?: any
 
-  displayPrices:boolean=true
+  displayPrices: boolean = true
 
   public notificationPermissionGranted = false;
   // pour la gestion du consentement à l'utilisation des cookies
@@ -102,6 +102,9 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   // POUR accéder et lire les documents liés au doc de l'utilisateur
   documents: any[] = [];
+
+  // pour ceux qui ne savent pas qu'un onglet est cliquable
+  showCollapsesAlert: boolean = true;
 
   constructor(
     private auth: Auth,
@@ -131,13 +134,13 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    
+
     // Récupérer la valeur initiale de displayPrices depuis Firestore
     this.settingsService.getDisplayPrices().subscribe((data: any) => {
       if (data && data.prices !== undefined) {
         this.displayPrices = data.prices;
         console.log("displayPrices depuis ngOnInit !!!!!!!!!!!!!!!!!!!!!!!", this.displayPrices);
-        
+
       }
     })
 
@@ -186,6 +189,13 @@ export class AccountComponent implements OnInit, OnDestroy {
     })
 
     // this.checkNotificationPermission()
+
+
+    // Vérifie si l'alerte a déjà été affichée
+    const isDismissed = localStorage.getItem('alertDismissed');
+    if (isDismissed === 'true') {
+      this.showCollapsesAlert = false;
+    }
 
 
 
@@ -688,7 +698,7 @@ export class AccountComponent implements OnInit, OnDestroy {
       if (key.includes('documents')) {
         this.documents = this.userData.documents
         console.log("documents liés", this.documents);
-        
+
       }
     }
 
@@ -734,6 +744,18 @@ export class AccountComponent implements OnInit, OnDestroy {
     }
 
     this.triggerContextualNotification();
+  }
+
+
+
+
+
+
+
+  dismissAlert(): void {
+    this.showCollapsesAlert = false;
+    // Enregistre l'état dans le localStorage pour éviter de réafficher l'alerte
+    localStorage.setItem('alertDismissed', 'true');
   }
 
 

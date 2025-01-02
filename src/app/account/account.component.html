@@ -72,6 +72,12 @@
         </ul>
     </div> -->
 
+
+    <div *ngIf="showCollapsesAlert && isOneQuizzAchieved" class="alert bg-primary alert-dismissible fade show text-center" role="alert">
+        Tous les onglets bleus destinés à faciliter votre navigation sont cliquables<br>
+        <button type="button" class="btn btn-light mt-3 text-dark" (click)="dismissAlert()">J'ai compris</button>
+      </div>
+
     <!-- à faire -->
     <div id="accordion">
 
@@ -276,7 +282,7 @@
                     <button class="btn bg-success" [disabled]="userData.isSocialFormSent"
                         [ngClass]="{'disabled':userData.isSocialFormSent}"><a class="text-light"
                             [routerLink]="['/socialregistration']">
-                            Formulaire de pré-inscription</a>
+                            {{ userData.isSocialFormSent ? 'Formulaire pré-inscription envoyé' : 'Formulaire de pré-inscription' }}</a>
                     </button>
 
                 </div>
