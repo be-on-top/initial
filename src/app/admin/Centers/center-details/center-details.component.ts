@@ -4,6 +4,8 @@ import { CentersService } from '../../centers.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import * as L from 'leaflet';
+import { SettingsService } from '../../settings.service';
+import { Trade } from '../../trade';
 
 @Component({
   selector: 'app-center-details',
@@ -20,10 +22,18 @@ export class CenterDetailsComponent implements OnInit, AfterViewInit, OnDestroy 
 
   userRouterLinks: any
 
+  activeTrades:string[]=[]
+
   // flag  pour s'assurer que centerDetails est bien le composant actif
   private isActive: boolean = false;
 
-  constructor(private service: CentersService, private ac: ActivatedRoute, private router: Router, private location: Location) {
+  constructor(
+    private service: CentersService, 
+    private ac: ActivatedRoute, 
+    private router: Router, 
+    private location: Location,
+    private tradeService:SettingsService
+  ) {
     this.centerId = this.ac.snapshot.params["id"];
     this.userRouterLinks = this.ac.snapshot.data;
     // this.service.getCenter(this.centerId).subscribe(data => {
@@ -35,6 +45,17 @@ export class CenterDetailsComponent implements OnInit, AfterViewInit, OnDestroy 
 
   ngOnInit(): void {
     this.isActive = true;
+
+    // pour récupérer la liste des métiers publiés
+    this.tradeService.getTradesWithStatusTrue().subscribe(data => {
+      data
+      data.forEach(element => {
+        this.activeTrades.push(element.sigle)
+        
+      });
+      console.log('activeTrades', this.activeTrades );
+      
+    })
   }
 
   ngAfterViewInit(): void {
