@@ -9,6 +9,7 @@
     <!-- pour vérifier userUid du référent et le comparer au champ student.referent facilement -->
     <!-- <h3 *ngIf="userRouterLinks.user=='referent'">Suivi administratif des candidats ({{userUid}})</h3> -->
     <h3 *ngIf="userRouterLinks.user=='referent'">Suivi administratif des candidats</h3>
+    <p *ngIf="userRouterLinks.user=='referent'" class="small primary text-center mt-0">Pour rappel, vous sont associés : {{cpArray}}</p>
     <h3 *ngIf="userRouterLinks.user=='external'">Annuaire étudiants</h3>
     <!-- <hr> -->
     <div *ngIf="(!allStudents)">

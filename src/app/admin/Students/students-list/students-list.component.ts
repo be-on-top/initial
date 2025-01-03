@@ -9,6 +9,7 @@ import { Users } from '../../Users/users';
 import { AuthService } from '../../auth.service';
 import { User } from 'firebase/auth';
 import { TrainersService } from '../../trainers.service';
+import { UsersService } from '../../users.service';
 
 @Component({
   selector: 'app-students-list',
@@ -55,12 +56,15 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
 
   myCenterStudents: boolean = false
 
+  cpArray:string[]=[]
+
   constructor(
     private service: StudentsService,
     private activatedRoute: ActivatedRoute,
     private tradeService: SettingsService,
     private authService: AuthService,
-    private trainerService: TrainersService) {
+    private trainerService: TrainersService,
+  private userService:UsersService) {
     this.userRouterLinks = this.activatedRoute.snapshot.data;
 
     // implémenter la méthode conçue pour les "conseillers projets" qui n'en sont pas puisqu'ils se font concurrence (référents admin)
@@ -72,6 +76,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     if (this.userUid) {
       // Exécuter la méthode interminable pour le changement de paradigme
       this.getCentersAndSocialFormByUserId(this.userUid)
+      this.userService.getUser(this.userUid).subscribe(data=>this.cpArray=data.cp)
 
       // Une méthode qui s'en inspière mais va me retourner
       // la liste des formateurs et ceux qui ont le même tableau de cp
@@ -132,22 +137,22 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
 
   ascending = false; // Variable pour gérer l'ordre de tri
 
-  // pour intégrer l'état de ascending, et collecter les données brutes pour les totaux
-  getStudents() {
-    const order = this.ascending ? 'asc' : 'desc';
-    this.service.getStudents(order).pipe(
-      tap(students => {
-        // Stocker les données brutes avant toute transformation
-        this.collectionStudents = students;
-        console.log('Données brutes (collectionStudents) :', this.collectionStudents);
-      }),
-      map(students => students.filter(student => this.hasFullResults(student)))
-    ).subscribe(filteredStudents => {
-      this.initialStudents = filteredStudents; // Stocker la liste initiale
-      this.allStudents = [...this.initialStudents]; // Initialiser allStudents
-      this.applyFilters();
-    });
-  }
+  // pour intégrer l'état de ascending, et collecter les données brutes pour les totaux OK
+  // getStudents() {
+  //   const order = this.ascending ? 'asc' : 'desc';
+  //   this.service.getStudents(order).pipe(
+  //     tap(students => {
+  //       // Stocker les données brutes avant toute transformation
+  //       this.collectionStudents = students;
+  //       console.log('Données brutes (collectionStudents) :', this.collectionStudents);
+  //     }),
+  //     map(students => students.filter(student => this.hasFullResults(student)))
+  //   ).subscribe(filteredStudents => {
+  //     this.initialStudents = filteredStudents; // Stocker la liste initiale
+  //     this.allStudents = [...this.initialStudents]; // Initialiser allStudents
+  //     this.applyFilters();
+  //   });
+  // }
 
 //  pour faire toutes les requêtes nécessaires illico si c'est le referent qui est connecté
 // fonctionne bien sans faire de distinguo selon l'utilisateur
@@ -188,54 +193,61 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   //   });
   // }
 
-// en cours...
-  // getStudents() {
-  //   const order = this.ascending ? 'asc' : 'desc';
-  //   const referentUid = this.authService.getCurrentUserUid(); // Récupérer l'UID de l'utilisateur connecté.
+// en cours... pour ajouter la détection des roles 
+  getStudents() {
+    const order = this.ascending ? 'asc' : 'desc';
+    const referentUid = this.authService.getCurrentUserUid(); // Récupérer l'UID de l'utilisateur connecté.
   
-  //   if (!referentUid) {
-  //     console.error('Impossible de récupérer UID de l\'utilisateur.');
-  //     return;
-  //   }
+    if (!referentUid) {
+      console.error('Impossible de récupérer UID de l\'utilisateur.');
+      return;
+    }
   
-  //   // Étape 1 : Charger tous les étudiants
-  //   this.service.getStudents(order).subscribe(allStudents => {
-  //     console.log('Tous les étudiants chargés :', allStudents);
+    // Étape 1 : Charger tous les étudiants
+      this.service.getStudents(order).pipe(
+        tap(students => {
+          // Stocker les données brutes avant toute transformation
+          this.collectionStudents = students;
+          console.log('Données brutes (collectionStudents) :', this.collectionStudents);
+        }),
+        // A condition qu'ils aient au minimum terminé UN questionnaire...
+        map(students => students.filter(student => this.hasFullResults(student)))
+      ).subscribe(filteredStudents => {
+
+       this.initialStudents = filteredStudents; // Stocker la liste initiale
+        this.allStudents = [...this.initialStudents]; // Initialiser allStudents
+
+        // Vérifie le rôle utilisateur
+        if (this.userRouterLinks.user === 'admin') {
+        this.applyFilters();
+      }
+      else if (this.userRouterLinks.user === 'referent') {
+        // Si référent, applique les filtres (référent et prior)
+        this.service.getCentersAndSocialFormByUserId(referentUid)
+          .subscribe(returnedPriors => {
+            console.log('IDs prior récupérés :', returnedPriors);
   
-  //     // Vérifie le rôle utilisateur
-  //     if (this.userRouterLinks.user === 'admin') {
-  //       // Si super admin, affiche tous les étudiants
-  //       this.initialStudents = [...allStudents]; 
-  //       this.allStudents = [...this.initialStudents];
-  //       this.applyFilters();
-  //     } 
-  //     else if (this.userRouterLinks.user === 'referent') {
-  //       // Si référent, applique les filtres (référent et prior)
-  //       this.service.getCentersAndSocialFormByUserId(referentUid)
-  //         .subscribe(returnedPriors => {
-  //           console.log('IDs prior récupérés :', returnedPriors);
+            // Étape 2 : Filtrer les étudiants par référent ou prior
+            const filteredStudents = this.allStudents.filter(student =>
+              student.referent === referentUid || returnedPriors.includes(student.id)
+            );
+            console.log('Étudiants filtrés (référent + prior) :', filteredStudents);
   
-  //           // Étape 2 : Filtrer les étudiants par référent ou prior
-  //           const filteredStudents = allStudents.filter(student =>
-  //             student.referent === referentUid || returnedPriors.includes(student.id)
-  //           );
-  //           console.log('Étudiants filtrés (référent + prior) :', filteredStudents);
+            // Initialisation pour le référent
+            this.initialStudents = [...filteredStudents]; 
+            this.allStudents = [...this.initialStudents];
   
-  //           // Initialisation pour le référent
-  //           this.initialStudents = [...filteredStudents]; 
-  //           this.allStudents = [...this.initialStudents];
+            // Mise à jour des filtres dynamiques pour prior uniquement
+            this.filteredStudents = filteredStudents.filter(student => 
+              returnedPriors.includes(student.id)
+            );
+            console.log('Filtered Prior Students :', this.filteredStudents);
   
-  //           // Mise à jour des filtres dynamiques pour prior uniquement
-  //           this.filteredStudents = filteredStudents.filter(student => 
-  //             returnedPriors.includes(student.id)
-  //           );
-  //           console.log('Filtered Prior Students :', this.filteredStudents);
-  
-  //           this.applyFilters(); // Appliquer les filtres actuels
-  //         });
-  //     }
-  //   });
-  // }
+            this.applyFilters(); // Appliquer les filtres actuels
+          });
+      }
+    });
+  }
 
   // puisqu'il faut compliquer et théoriquement relancer... 
   // getStudentsWithNoInterest() {
