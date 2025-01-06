@@ -541,10 +541,10 @@ p.question {
     }
 
     /* report des classes ci-dessous */
-    .col-sm-6 {
+    /* .col-sm-6 {
         width: 50%;
         padding: 2px;
-    }
+    } */
 
     i.text-choiced.fs-5 {
         display: none;
