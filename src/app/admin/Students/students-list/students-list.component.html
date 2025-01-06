@@ -2,14 +2,15 @@
 
     <!-- {{userRouterLinks.user}} -->
 
-   <!-- myCp : {{myCp}} - FilteredTrainers : {{filteredTrainers  | json}} -->
+    <!-- myCp : {{myCp}} - FilteredTrainers : {{filteredTrainers  | json}} -->
 
     <h3 *ngIf="userRouterLinks.user=='admin'">Gestion des candidats<span
             class="badge bg-primary ms-2">{{collectionStudents.length}}</span></h3>
     <!-- pour vérifier userUid du référent et le comparer au champ student.referent facilement -->
     <!-- <h3 *ngIf="userRouterLinks.user=='referent'">Suivi administratif des candidats ({{userUid}})</h3> -->
     <h3 *ngIf="userRouterLinks.user=='referent'">Suivi administratif des candidats</h3>
-    <p *ngIf="userRouterLinks.user=='referent'" class="small primary text-center mt-0">Pour rappel, vous sont associés : {{cpArray}}</p>
+    <p *ngIf="userRouterLinks.user=='referent'" class="small primary text-center mt-0">Pour rappel, vous sont associés :
+        {{cpArray}}</p>
     <h3 *ngIf="userRouterLinks.user=='external'">Annuaire étudiants</h3>
     <!-- <hr> -->
     <div *ngIf="(!allStudents)">
@@ -25,27 +26,18 @@
 
         <!-- on introduit un champ de recherche -->
         <app-search (searchTextChanged)="onSearchTextEntered($event)"></app-search>
+        <!-- ajoute un bouton d'ajout en haut du composant j'aime  pas sur petits écrans !!!! -->
+        <button class="btn btn-primary mt-5 w-auto" *ngIf="userRouterLinks.user!=='external'"><a
+                [routerLink]="['/admin/addStudent']" class="text-white"><i
+                    class="bi bi-person-fill-add me-2"></i>Ajouter</a></button>
 
         <div class="row mt-3 text-secondary justify-content-between">
-            <div class="col-md-6 d-flex flex-column justify-content-between">Activer un filtre OU un autre > <br>
+
+            <div class="col-md-6">Activer un filtre OU un autre > <br>
                 <p class="small" *ngIf="userRouterLinks.user==='referent'">
                     Ont expressément choisi votre centre pour le suivi de leur
-                    dossier d'inscription *</p>
-
-                    <!-- ici dessous -->
-
-                    <!-- ajoute un bouton d'ajout en haut du composant j'aime  pas sur petits écrans !!!! -->
-                    <button class="btn btn-primary mt-5 align-self-start" *ngIf="userRouterLinks.user!=='external'"><a
-                        [routerLink]="['/admin/addStudent']" class="text-white"><i
-                            class="bi bi-person-fill-add me-2"></i>Ajouter</a></button>
-                            
-                </div>
-
-
-
-
-
-
+                    dossier d'inscription&nbsp;*</p>
+            </div>
 
             <div class="col-md-6">
                 <!-- <div class="form-check" *ngIf="userRouterLinks.user!=='external' || userRouterLinks.user!=='admin'"> -->
@@ -142,10 +134,10 @@
         <!-- <div class="row mt-4 d-xs-none ps-2" *ngIf="userRouterLinks.user=='admin' || userRouterLinks.user=='referent'"> -->
         <div class="row mt-4 ps-2" *ngIf="userRouterLinks.user=='admin' || userRouterLinks.user=='referent'">
 
-            <div class="col-sm-3 h5">Nom</div>
-            <div class="col-sm-3 h5">Prénom</div>
-            <div class="col-sm-3 h5">Suppression</div>
-            <div class="col-sm-3 h5">Détails</div>
+            <div class="col-sm-3 h5 d-none d-md-inline">Nom</div>
+            <div class="col-sm-3 h5 d-none d-md-inline">Prénom</div>
+            <div class="col-sm-3 h5 d-none d-md-inline">Suppression</div>
+            <div class="col-sm-3 h5 d-none d-md-inline">Détails</div>
             <!-- Liste conditionnelle qui doit être désactivée dès l'application d'un filtre pour plus de lisibilité -->
             <div *ngIf="showNoInterestStudents">
                 <div class="alert alert-warning mx-0 fw-regular fs-auto">Prospects inscrits mais inactifs<span
@@ -162,7 +154,7 @@
                             <div class="col-sm-3 col-6"><button class="btn btn-danger text-white"
                                     [ngClass]="{'disabled':userRouterLinks.user=='referent'}"
                                     (click)="deleteStudent(student)"><i
-                                        class="bi bi-person-dash-fill"></i>Suppression</button>
+                                        class="bi bi-person-dash-fill"></i><span class="d-md-none">Sup.</span><span class="d-none d-md-inline">Suppression</span></button>
                             </div>
                             <div class="col-sm-3 col-6 order-perso4"><button class="btn btn-primary">
                                     <a *ngIf="userRouterLinks.user=='admin'"
@@ -227,7 +219,7 @@
                     <div class="col-sm-3 col-6 order-perso2">{{student.firstName}}</div>
                     <div class="col-sm-3 col-6"><button class="btn btn-danger text-white"
                             [ngClass]="{'disabled':userRouterLinks.user=='referent'}"
-                            (click)="deleteStudent(student)"><i class="bi bi-person-dash-fill"></i>Suppression</button>
+                            (click)="deleteStudent(student)"><i class="bi bi-person-dash-fill"></i><span class="d-md-none">Sup.</span><span class="d-none d-md-inline">Suppression</span></button>
                     </div>
                     <div class="col-sm-3 col-6 order-perso4"><button class="btn btn-primary">
                             <a *ngIf="userRouterLinks.user=='admin'" [routerLink]="['/admin/student', student.id]"

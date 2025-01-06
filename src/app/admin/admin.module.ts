@@ -68,6 +68,9 @@ import { AddCentersComponent } from './Centers/add-centers/add-centers.component
 import { CenterDetailsComponent } from './Centers/center-details/center-details.component';
 import { CentersListComponent } from './Centers/centers-list/centers-list.component';
 import { UpdateCenterComponent } from './Centers/update-center/update-center.component';
+import { CollapsesAlertComponent } from '../collapses-alert/collapses-alert.component';
+
+
 
 
 
@@ -242,7 +245,8 @@ const routesAdmin: Routes = [
     AddCentersComponent,
     CenterDetailsComponent,
     CentersListComponent,
-    UpdateCenterComponent
+    UpdateCenterComponent,
+    CollapsesAlertComponent
   ],
   imports: [
     BrowserModule,
@@ -259,7 +263,8 @@ const routesAdmin: Routes = [
     CoverImageComponent,
     StudentFormComponent,
     AutoChangeDirective,
-    SearchComponent
+    SearchComponent,
+    CollapsesAlertComponent
   ]
 })
 

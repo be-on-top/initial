@@ -1,0 +1,11 @@
+<!-- <div class="alert bg-primary p-4 alert-dismissible mb-4 fade show pe-5 text-light">
+    <button aria-label="Fermer le message be-on-top" type="button" class="btn-close btn-close mt-2"
+        data-bs-dismiss="alert"></button>
+    Destinés à faciliter le regroupement des informations et votre navigation, les onglets bleus sont cliquables !
+</div> -->
+
+<div *ngIf="showCollapsesAlert" class="alert bg-primary alert-dismissible fade show text-center" role="alert">
+    Destinés à faciliter le regroupement des informations et votre navigation, les onglets bleus sont cliquables !<br>
+    <button type="button" class="btn btn-light mt-3 text-dark" (click)="dismissAlert()">J'ai compris</button>
+  </div>
+

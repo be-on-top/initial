@@ -103,8 +103,8 @@ export class AccountComponent implements OnInit, OnDestroy {
   // POUR accéder et lire les documents liés au doc de l'utilisateur
   documents: any[] = [];
 
-  // pour ceux qui ne savent pas qu'un onglet est cliquable
-  showCollapsesAlert: boolean = true;
+  // pour ceux qui ne savent pas qu'un onglet est cliquable > transféré au composant enfant
+  // showCollapsesAlert: boolean = true;
 
   constructor(
     private auth: Auth,
@@ -191,11 +191,11 @@ export class AccountComponent implements OnInit, OnDestroy {
     // this.checkNotificationPermission()
 
 
-    // Vérifie si l'alerte a déjà été affichée
-    const isDismissed = localStorage.getItem('alertDismissed');
-    if (isDismissed === 'true') {
-      this.showCollapsesAlert = false;
-    }
+    // Vérifie si l'alerte a déjà été affichée > transféré au composant enfant...
+    // const isDismissed = localStorage.getItem('alertDismissed');
+    // if (isDismissed === 'true') {
+    //   this.showCollapsesAlert = false;
+    // }
 
 
 
@@ -751,12 +751,12 @@ export class AccountComponent implements OnInit, OnDestroy {
 
 
 
-
-  dismissAlert(): void {
-    this.showCollapsesAlert = false;
-    // Enregistre l'état dans le localStorage pour éviter de réafficher l'alerte
-    localStorage.setItem('alertDismissed', 'true');
-  }
+// on va transférer ça à un composant enfant
+  // dismissAlert(): void {
+  //   this.showCollapsesAlert = false;
+  //   // Enregistre l'état dans le localStorage pour éviter de réafficher l'alerte
+  //   localStorage.setItem('alertDismissed', 'true');
+  // }
 
 
 

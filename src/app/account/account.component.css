@@ -70,3 +70,32 @@ button:disabled,
     border: 0;
     opacity: 50%!important;
 }
+
+i{
+  margin-right: 0;
+}
+
+.toggle-arrow {
+  margin-top: 2px;
+  /* margin-left:0; */
+  margin-right:0;
+  transition: transform 0.3s ease; /* Animation fluide */
+}
+
+/* Tourner la flèche de l'onglet cliqué */
+a[aria-expanded="true"] .toggle-arrow {
+  transform: rotate(180deg);
+  /* display: none; */
+}
+/* a[aria-expanded="true"] .toggle-arrow {
+  display: none;
+} */
+
+
+@media screen and (max-width:575px) {
+
+  .d-flex.align-items-center.gap-2.justify-content-between{
+    width: 100%;
+  }
+  
+}
