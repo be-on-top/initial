@@ -286,7 +286,7 @@ export class UpdateStudentComponent implements OnInit {
         this.filteredTrainers = trainers.filter((trainer: any) => {
           // Vérifier si le formateur a au moins un code postal correspondant
           return trainer.sigle?.some((sigle: string) => this.student.subscriptions.includes(sigle));
-      
+
         });
 
         console.log("Trainers correspondants :", this.filteredTrainers);
@@ -341,23 +341,23 @@ export class UpdateStudentComponent implements OnInit {
   // FONCTIONNE bien pour class:string côté students et gestion des seules  propriétés class pour trainer et student
   // setClassId(startingDate: NgForm) {
   //   console.log('startingDate', startingDate.value);
-  
+
   //   // Formater la date au format DDMMYYYY
   //   const formattedDate = this.formatDate(startingDate.value.startingDate);
-  
+
   //   // Créer la classe normée
   //   this.trainingClass = `${this.student.subscriptions[0]}_${this.priorCenterPostalCode}_${formattedDate}`;
   //   console.log('Une classe normée générée', this.trainingClass);
-  
+
   //   console.log('Student à mettre à jour', this.student);
   //   console.log('Trainer à mettre à jour', this.filteredTrainer);
-  
+
   //   // Appeler les méthodes de mise à jour comme avant
   //   this.service.updateStudentClass(this.student.id, this.trainingClass);
   //   alert(this.filteredTrainer)
   //   this.filteredTrainer? this.trainerService.updateTrainerClass(this.filteredTrainer.id, this.trainingClass):''
   // }
-  
+
 
 
 
@@ -366,20 +366,20 @@ export class UpdateStudentComponent implements OnInit {
   //   console.log('startingDate', startingDate.value);
   //   // const lastSubscription = this.student.subscriptions[this.student.subscriptions.length - 1];
 
-  
+
   //   // Formater la date au format DDMMYYYY
   //   const formattedDate = this.formatDate(startingDate.value.startingDate);
-  
+
   //   // Créer la classe normée
   //   this.trainingClass = `${this.student.subscriptions[0]}_${this.priorCenterPostalCode}_${formattedDate}`;
   //   console.log('Une classe normée générée', this.trainingClass);
-  
+
   //   console.log('Student à mettre à jour', this.student);
   //   console.log('Trainer à mettre à jour', this.filteredTrainer);
-  
+
   //   // Mettre à jour le student
   //   this.service.updateStudentClass(this.student.id, this.trainingClass);
-  
+
   //   // Mettre à jour le trainer (classes et étudiants)
   //   if (this.filteredTrainer) {
   //     this.trainerService.updateTrainerClass(
@@ -392,56 +392,57 @@ export class UpdateStudentComponent implements OnInit {
   //   }
   // }
 
-  // méthode encore augmentée d'une vérification additionnelle : que subscriptions[] soit préalablement renseigné
 
-  setClassId(startingDate: NgForm) {
-    console.log('startingDate', startingDate.value);
-  
-    // Vérifier si l'étudiant a des souscriptions
-    if (!this.student.subscriptions || this.student.subscriptions.length === 0) {
-      console.error("Aucune inscription trouvée pour générer la classe.");
-      alert("Veuillez sélectionner une formation avant de définir la date de début.");
-      return;
-    }
-  
-    // Formater la date au format DDMMYYYY
-    const formattedDate = this.formatDate(startingDate.value.startingDate);
-  
-    // Récupérer la dernière souscription
-    const lastSubscription = this.student.subscriptions[this.student.subscriptions.length - 1];
-  
-    // Créer la classe normée
-    this.trainingClass = `${lastSubscription}_${this.priorCenterPostalCode}_${formattedDate}`;
-    console.log('Une classe normée générée', this.trainingClass);
-  
-    console.log('Student à mettre à jour', this.student);
-    console.log('Trainer à mettre à jour', this.filteredTrainer);
-  
-    // Mettre à jour le student
-    this.service.updateStudentClass(this.student.id, this.trainingClass);
-  
-    // Mettre à jour le trainer (classes et étudiants)
-    // ATTENTION si DEUX EN UN c'est selectedTrainer qui remplace filteredTrainer !!!!
-    if (this.filteredTrainer) {
-      this.trainerService.updateTrainerClass(
-        this.filteredTrainer.id,
-        this.trainingClass,
-        this.student.id // Ajouter automatiquement l'étudiant
-      );
-    } else {
-      console.warn("Aucun formateur sélectionné.");
-    }
-  }
-  
 
-    // // Méthode pour formater une date au format DDMMYYYY
-  private formatDate(date: string): string {
-    const parsedDate = new Date(date);
-    const day = parsedDate.getDate().toString().padStart(2, '0');
-    const month = (parsedDate.getMonth() + 1).toString().padStart(2, '0');
-    const year = parsedDate.getFullYear();
-    return `${day}${month}${year}`;
-  }
+  // méthode encore augmentée d'une vérification additionnelle : que subscriptions[] soit préalablement renseigné (désactivé puisque prématuré....)
+
+  // setClassId(startingDate: NgForm) {
+  //   console.log('startingDate', startingDate.value);
+
+  //   // Vérifier si l'étudiant a des souscriptions
+  //   if (!this.student.subscriptions || this.student.subscriptions.length === 0) {
+  //     console.error("Aucune inscription trouvée pour générer la classe.");
+  //     alert("Veuillez sélectionner une formation avant de définir la date de début.");
+  //     return;
+  //   }
+
+  //   // Formater la date au format DDMMYYYY
+  //   const formattedDate = this.formatDate(startingDate.value.startingDate);
+
+  //   // Récupérer la dernière souscription
+  //   const lastSubscription = this.student.subscriptions[this.student.subscriptions.length - 1];
+
+  //   // Créer la classe normée
+  //   this.trainingClass = `${lastSubscription}_${this.priorCenterPostalCode}_${formattedDate}`;
+  //   console.log('Une classe normée générée', this.trainingClass);
+
+  //   console.log('Student à mettre à jour', this.student);
+  //   console.log('Trainer à mettre à jour', this.filteredTrainer);
+
+  //   // Mettre à jour le student
+  //   this.service.updateStudentClass(this.student.id, this.trainingClass);
+
+  //   // Mettre à jour le trainer (classes et étudiants)
+  //   // ATTENTION si DEUX EN UN c'est selectedTrainer qui remplace filteredTrainer !!!!
+  //   if (this.filteredTrainer) {
+  //     this.trainerService.updateTrainerClass(
+  //       this.filteredTrainer.id,
+  //       this.trainingClass,
+  //       this.student.id // Ajouter automatiquement l'étudiant
+  //     );
+  //   } else {
+  //     console.warn("Aucun formateur sélectionné.");
+  //   }
+  // }
+
+  // // Méthode pour formater une date au format DDMMYYYY
+  // private formatDate(date: string): string {
+  //   const parsedDate = new Date(date);
+  //   const day = parsedDate.getDate().toString().padStart(2, '0');
+  //   const month = (parsedDate.getMonth() + 1).toString().padStart(2, '0');
+  //   const year = parsedDate.getFullYear();
+  //   return `${day}${month}${year}`;
+  // }
 
 
 
@@ -452,10 +453,10 @@ export class UpdateStudentComponent implements OnInit {
     // console.log('Formateur sélectionné:', this.selectedTrainer);
     console.log('Formateur sélectionné:', this.selectedTrainer);
   }
-  
-  
-  
-  
+
+
+
+
 
 
 

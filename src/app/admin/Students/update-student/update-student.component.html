@@ -1,9 +1,9 @@
 <div *ngIf="student">
     <div class="container py-5">
-
+<!-- 
         myCp : {{myCp}} - FilteredTrainers : {{filteredTrainers | json}}
 
-        student.subscription : {{student.subscriptions}}
+        student.subscription : {{student.subscriptions}} -->
 
         <h3>Mise à jour du statut de <span class="text-capitalize">{{student.lastName}} {{student.firstName}}</span>
         </h3>
@@ -100,7 +100,7 @@
                 </form>
 
                 <!-- C'est là qu'on peut insérer un champ pour début de formation > génération de classe -->
-                <ng-container *ngIf="student.subscriptions && student.subscriptions.length > 0">
+                <!-- <ng-container *ngIf="student.subscriptions && student.subscriptions.length > 0">
                     <h3 class="mt-5">Date de début effectif de formation </h3>
 
                     <label for="trainer">Sélectionner un formateur (si plusieurs formateurs affectés à votre centre pour la même spécialisation) :</label>
@@ -108,11 +108,7 @@
                       <option *ngFor="let trainer of filteredTrainers" [ngValue]="trainer">
                         {{ trainer.firstName }}
                       </option>
-                    </select>
-                    
-
-
-
+                    </select> 
 
                     <p *ngIf="student.class && student.class.length > 0" class="text-info">
                         Classe déjà attribuée : {{ student.class[student.class.length - 1] }}
@@ -126,7 +122,7 @@
                         <input type="date" name="startingDate" ngModel class="form-control mt-3">
                         <button type="submit" id="submit" class="btn btn-primary mt-3">Valider</button>
                     </form>
-                </ng-container>
+                </ng-container> -->
                 <!--  fin -->
 
 
