@@ -84,12 +84,15 @@
         <button type="button" class="btn btn-light mt-3 text-dark" (click)="dismissAlert()">J'ai compris</button>
       </div> -->
 
+    <app-collapses-alert *ngIf="isOneQuizzAchieved"></app-collapses-alert>
+
     <!-- à faire -->
     <div id="accordion">
 
         <div class="card" *ngIf="userData">
             <div class="card-header bg-primary">
-                <a class="btn text-light text-capitalize d-flex justify-content-between px-0" data-bs-toggle="collapse" href="#collapseOne" aria-expanded="true">
+                <a class="btn text-light text-capitalize d-flex justify-content-between px-0" data-bs-toggle="collapse"
+                    href="#collapseOne" aria-expanded="true">
                     <div class="d-flex align-items-center gap-2 justify-content-between">
                         <span class="text-nowrap">Données personnelles</span>
                         <i class="bi bi-caret-down-fill toggle-arrow fs-7"></i>
