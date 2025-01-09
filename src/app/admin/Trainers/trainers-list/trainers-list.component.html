@@ -1,12 +1,14 @@
 <div class="container py-5">
 
-    <h3>Gestion des Formateurs</h3>
+    {{userRouterLinks.user}}
+
+    <h3>Gestion des Formateurs ({{trainersList.length}})</h3>
     <hr>
-    <div *ngIf="(!allUsers)">
+    <div *ngIf="(!trainersList)">
         ...loading
     </div>
 
-    <div *ngIf="allUsers">
+    <div *ngIf="trainersList">
         <!-- on introduit un champ de recherche -->
         <app-search (searchTextChanged)="onSearchTextEntered($event)"></app-search>
         <!-- <div class="row mt-5"> -->
@@ -17,7 +19,7 @@
             <div class="col-sm-3 h5">Détails</div>
         </div>
 
-        <div *ngFor="let user of allUsers">
+        <div *ngFor="let user of trainersList">
             <div class="row mt-4 ps-5 ps-sm-0" *ngIf="searchText==='' || user.lastName.toLowerCase().includes(searchText) || user.firstName.toLowerCase().includes(searchText) ">
                 <div class="col-sm-3 col-6">{{user.lastName}}</div>
                 <div class="col-sm-3 col-6 order-perso2">{{user.firstName}}</div>

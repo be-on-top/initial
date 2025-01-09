@@ -21,10 +21,10 @@
         <div class="invalid-feedback" *ngIf="lastName.invalid">Merci de renseigner le champ nom.</div>
 
         <label for="email" class="form-label mt-3">Email *</label>
-        <div class="input-group">
+        <div class="input-group disabled">
             <span class="input-group-text" id="inputGroupPrepend2">@</span>
-            <input type="email" id="email" [(ngModel)]="user.email" name="email" class="form-control" #email="ngModel"
-                placeholder="Email" required>
+            <input type="email" id="email" [(ngModel)]="user.email" name="email" class="form-control text-white" #email="ngModel"
+                placeholder="Email" required disabled>
         </div>
         <div class="valid-feedback" *ngIf="email.valid">Email Valide </div>
         <div class="invalid-feedback" *ngIf="email.invalid">Merci de renseigner le champ email.</div>
@@ -44,15 +44,19 @@
         </div>
 
         <!-- modification des sigles métiers -->
-
         <label for="sigle" class="form-label mt-3">Affectation métier :</label>
-        <select class="form-select" name="sigle" id="sigle" [ngModel]="user.sigle" required #sigle="ngModel"
+        <!-- <select class="form-select" name="sigle" id="sigle" [ngModel]="user.sigle" required #sigle="ngModel"
             (change)="checkIfSelected(sigle.value)" multiple>
             <option value>Selectionner le métier</option>
             <option value="prepa_cdes">PREPA CDES</option>
             <option value="poser_ite">POSEUR ITE</option>
             <option value="macon_vrd">MACON VRD</option>
             <option value="cl_vul">CLVUL</option>
+        </select> -->
+        <select class="form-select" name="sigle" id="sigle" [ngModel]="user.sigle" required #sigle="ngModel"
+            (change)="checkIfSelected(sigle.value)" multiple>
+            <option value>Selectionner le métier</option>
+            <option *ngFor="let trade of tradesData" value="{{trade}}">{{trade}}</option>
         </select>
 
         <!-- modification des étudiants qui lui sont affectés -->

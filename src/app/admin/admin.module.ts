@@ -84,9 +84,10 @@ const routesAdmin: Routes = [
       { path: 'addEvaluator', component: AddEvaluatorComponent },
       { path: 'evaluator/:id', component: EvaluatorDetailsComponent },
       { path: 'updateEvaluator/:id', component: UpdateEvaluatorComponent, data: { user: 'evaluator' } },
-      // essai mutualisation des vues pour la liste des formateurs + trainers
-      // { path: 'trainers', component: TrainersListComponent },
-      { path: 'trainers', component: UsersListComponent, data: { user: 'trainer' } },
+      // essai mutualisation des vues pour la liste des formateurs + trainers (pas pertinent pour la gestion de trainers par referents)
+      { path: 'trainers', component: TrainersListComponent, data: { user: 'admin' }  },
+      { path: 'myTrainers', component: TrainersListComponent, data: { user: 'referent' }  },
+      // { path: 'trainers', component: UsersListComponent, data: { user: 'trainer' } },
       { path: 'addTrainer', component: AddTrainerComponent },
       // essai mutualisation des vues pour le détail depuis la liste des evaluateurs + formateurs
       // { path: 'trainer/:id', component: TrainerDetailsComponent },
