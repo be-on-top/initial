@@ -5,6 +5,9 @@ import { EvaluatorsService } from '../../evaluators.service';
 import { NgForm } from '@angular/forms';
 
 import { Papa } from 'ngx-papaparse';
+import { SettingsService } from '../../settings.service';
+import { Trade } from '../../trade';
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-add-trainer',
@@ -30,7 +33,16 @@ export class AddTrainerComponent {
     'auth/invalid-email': 'Aucun enregistrement ne correspond au mail fourni'
   }; // list of firebase error codes to alternate error messages
 
-  constructor(private service: TrainersService, private router: Router, private evaluatorsService: EvaluatorsService, private papa: Papa) { }
+  // pour aller chercher les métiers en base (ce qui n'était pas possible en 2023)
+  tradesData: string[] = []
+
+  constructor(
+    private service: TrainersService,
+    private router: Router,
+    private evaluatorsService: EvaluatorsService,
+    private settinsService: SettingsService,
+    private authService:AuthService,
+    private papa: Papa) { }
 
   ngOnInit(): void {
     this.evaluatorsService.getEvaluators().subscribe(data => {
@@ -60,6 +72,13 @@ export class AddTrainerComponent {
       // return this.registryNumbers
     })
 
+    this.settinsService.getTrades().subscribe((trades: any) => {
+      trades.forEach((trade: Trade) => this.tradesData.push(trade.sigle))
+      console.log('this.tradesData', this.tradesData);
+    })
+
+
+
   }
 
 
@@ -77,9 +96,9 @@ export class AddTrainerComponent {
       this.feedbackMessages = `Enregistrement OK`;
 
       // alert("registration ok")
-      setTimeout(() => {
-        this.router.navigate(['/admin/trainers'])
-      }, 2000)
+      // setTimeout(() => {
+      //   this.router.navigate(['/admin/trainers'])
+      // }, 2000)
       // this.router.navigate(['/admin/trainers']);
       // ...
     })

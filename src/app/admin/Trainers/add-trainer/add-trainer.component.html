@@ -79,13 +79,18 @@
 
         <!-- affectation métier -->
         <label for="sigle" class="form-label mt-3">Affectation métier :</label>
-        <select class="form-select" name="sigle" id="sigle" ngModel required #sigle="ngModel"
+        <!-- <select class="form-select" name="sigle" id="sigle" ngModel required #sigle="ngModel"
             (change)="checkIfSelected(sigle.value)" multiple>
             <option value>Selectionner le métier</option>
             <option value="prepa_cdes">PREPA CDES</option>
             <option value="poseur_ite">POSEUR ITE</option>
             <option value="macon_vrd">MACON VRD</option>
             <option value="cl_vul">CLVUL</option>
+        </select> -->
+        <select class="form-select" name="sigle" id="sigle" ngModel required #sigle="ngModel"
+            (change)="checkIfSelected(sigle.value)" multiple>
+            <option value>Selectionner le métier</option>
+            <option *ngFor="let trade of tradesData" value="{{trade}}">{{trade}}</option>
         </select>
 
         <!-- <label for="details" class="form-label mt-3">Commentaires optionnels</label> -->

@@ -24,67 +24,163 @@ export class TrainersService {
   result: any;
 
   constructor(private auth: Auth, private firestore: Firestore, private studentsService: StudentsService, private notificationsService: PushNotificationService, private router: Router) {
-  
-  
-  
-  
+
+
+
+
   }
+
+  // async createTrainer(trainer: any) {
+  //   // if (!this.auth.currentUser || !this.auth.currentUser.email) {
+  //   //   console.error('Administrateur non connecté.');
+  //   //   return;
+  //   // }
+
+  //   // const adminEmail = this.auth.currentUser.email;
+  //   // console.log(adminEmail);
+    
+
+
+  //   // Suppression des espaces et découpage en tableau
+  //   const cpArray = trainer.cp
+  //     .split(',')           // Sépare la chaîne en fonction des virgules
+  //     .map((cp: string) => cp.trim()) // Supprime les espaces inutiles autour des codes
+  //     .filter((cp: string) => cp);    // Retire les chaînes vides s'il y en a
+
+  //   // Affichage des codes postaux sous forme de tableau
+  //   console.log(cpArray); // Pour vérifier dans la console
+
+  //   // let newTrainer = { id: Date.now(), ...trainer };
+  //   trainer.cp = cpArray
+  //   let newTrainer = { created: Date.now(), roles: 'trainer', status: true, cp: cpArray, ...trainer };
+  //   console.log(newTrainer);
+
+  //   this.trainers = [newTrainer, ...this.trainers];
+  //   console.log(this.trainers);
+  //   // on va lui affecter un password aléatoire en fonction de la date
+  //   // mais pour le moment, je fais un password à la con pour pouvoir faire mes tests
+  //   let password = "password";
+  //   // let password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
+
+  //   // enregistrement en base dans fireAuth d'une part : 
+  //   this.result = await createUserWithEmailAndPassword(this.auth, trainer.email, password);
+
+  //   if (this.result && this.result.user) {
+  //     // const { uid, emailVerified } = this.result.user;
+  //     newTrainer.id = this.result.user.uid
+  //   }
+
+  //   // enregistre dans Firestore d'autre part avec un collection trainers qui elle aura de multiples propriétés
+  //   let $trainersRef = collection(this.firestore, "trainers");
+  //   // addDoc($trainersRef, newTrainer)
+  //   setDoc(doc($trainersRef, newTrainer.id), newTrainer)
+
+  //   // enregistre dans Firestore d'autre part le role attribué dans une collection roles qui regroupera tous les roles de tous les utilisateurs avec comme idDoc uid d'authentification là aussi
+  //   let $rolesRef = collection(this.firestore, "roles");
+  //   // addDoc($trainersRef, newTrainer)
+  //   setDoc(doc($rolesRef, newTrainer.id), { role: 'trainer' })
+
+  //   // envoie un mail de réinitialisation du mot de passe
+  //   sendPasswordResetEmail(this.auth, newTrainer.email)
+  //     .then(() => {
+  //       // Password reset email sent!
+  //       // ..
+  //     })
+  //     .catch((error) => {
+  //       const errorCode = error.code;
+  //       const errorMessage = error.message;
+  //       return errorMessage
+  //       // ..
+  //     });
+
+  //   // partie additionnelle
+  //   // await this.auth.signOut();
+  //   // console.log("Déconnexion de l'utilisateur étudiant.");
+
+  //   // const adminPassword = prompt('Veuillez entrer votre mot de passe administrateur pour continuer.');
+  //   // if (!adminPassword) {
+  //   //   console.error('Mot de passe administrateur non fourni.');
+  //   //   return;
+  //   // }
+
+  //   // // Reconnexion de l'administrateur
+  //   // const adminResult = await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
+  //   // if (!adminResult || !adminResult.user) {
+  //   //   throw new Error('Échec de la reconnexion de l\'administrateur.');
+  //   // }
+
+  //   // console.log("Administrateur reconnecté avec succès.");
+
+  //   // // Redirection vers la page des détails de l'étudiant
+  //   // this.router.navigate(['/admin/trainer', newTrainer.id]);
+  //   // console.log("Redirection vers la page des détails du formateur.");
+
+  // }
+
 
   async createTrainer(trainer: any) {
-
-    // Suppression des espaces et découpage en tableau
-    const cpArray = trainer.cp
-      .split(',')           // Sépare la chaîne en fonction des virgules
-      .map((cp: string) => cp.trim()) // Supprime les espaces inutiles autour des codes
-      .filter((cp: string) => cp);    // Retire les chaînes vides s'il y en a
-
-    // Affichage des codes postaux sous forme de tableau
-    console.log(cpArray); // Pour vérifier dans la console
-
-    // let newTrainer = { id: Date.now(), ...trainer };
-    trainer.cp = cpArray
-    let newTrainer = { created: Date.now(), roles: 'trainer', status: true, cp: cpArray, ...trainer };
-    console.log(newTrainer);
-
-    this.trainers = [newTrainer, ...this.trainers];
-    console.log(this.trainers);
-    // on va lui affecter un password aléatoire en fonction de la date
-    // mais pour le moment, je fais un password à la con pour pouvoir faire mes tests
-    let password = "password";
-    // let password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
-
-    // enregistrement en base dans fireAuth d'une part : 
-    this.result = await createUserWithEmailAndPassword(this.auth, trainer.email, password);
-
-    if (this.result && this.result.user) {
-      // const { uid, emailVerified } = this.result.user;
-      newTrainer.id = this.result.user.uid
+  try {
+    // Vérifier si l'administrateur est connecté
+    if (!this.auth.currentUser || !this.auth.currentUser.email) {
+      console.error('Administrateur non connecté.');
+      return;
     }
 
-    // enregistre dans Firestore d'autre part avec un collection trainers qui elle aura de multiples propriétés
-    let $trainersRef = collection(this.firestore, "trainers");
-    // addDoc($trainersRef, newTrainer)
-    setDoc(doc($trainersRef, newTrainer.id), newTrainer)
+    // Récupérer l'email de l'administrateur AVANT toute autre action
+    const adminEmail = this.auth.currentUser.email;
+    console.log(`Email de l'administrateur : ${adminEmail}`);
 
-    // enregistre dans Firestore d'autre part le role attribué dans une collection roles qui regroupera tous les roles de tous les utilisateurs avec comme idDoc uid d'authentification là aussi
-    let $rolesRef = collection(this.firestore, "roles");
-    // addDoc($trainersRef, newTrainer)
-    setDoc(doc($rolesRef, newTrainer.id), { role: 'trainer' })
+    // Préparation des données
+    const cpArray = trainer.cp
+      .split(',')
+      .map((cp: string) => cp.trim())
+      .filter((cp: string) => cp);
 
-    // envoie un mail de réinitialisation du mot de passe
-    sendPasswordResetEmail(this.auth, newTrainer.email)
-      .then(() => {
-        // Password reset email sent!
-        // ..
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        return errorMessage
-        // ..
-      });
+    trainer.cp = cpArray;
+    let newTrainer = { created: Date.now(), status: true, cp: cpArray, ...trainer };
+    let password = "password";
 
+    // Création dans Firebase Auth
+    this.result = await createUserWithEmailAndPassword(this.auth, trainer.email, password);
+    if (this.result && this.result.user) {
+      newTrainer.id = this.result.user.uid;
+    }
+
+    // Enregistrement dans Firestore
+    const $trainersRef = collection(this.firestore, "trainers");
+    await setDoc(doc($trainersRef, newTrainer.id), newTrainer);
+
+    const $rolesRef = collection(this.firestore, "roles");
+    await setDoc(doc($rolesRef, newTrainer.id), { role: 'trainer' });
+
+    // Envoi du mail de réinitialisation
+    await sendPasswordResetEmail(this.auth, newTrainer.email);
+
+    // Déconnexion de l'administrateur
+    await this.auth.signOut();
+    console.log("Administrateur déconnecté.");
+
+    // Demander le mot de passe administrateur
+    const adminPassword = prompt('Veuillez entrer votre mot de passe administrateur pour continuer.');
+    if (!adminPassword) {
+      throw new Error("Mot de passe administrateur non fourni.");
+    }
+
+    // Reconnexion de l'administrateur
+    const adminResult = await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
+    if (!adminResult || !adminResult.user) {
+      throw new Error("Échec de la reconnexion de l'administrateur.");
+    }
+
+    console.log("Administrateur reconnecté avec succès.");
+
+    // Redirection vers la page du formateur
+    this.router.navigate(['/admin/trainer', newTrainer.id]);
+  } catch (error) {
+    console.error("Erreur lors de la création du formateur :", error);
   }
+}
+
 
   // gettrainers(): Observable<trainers[]> {
   getTrainers() {
@@ -129,33 +225,71 @@ export class TrainersService {
   }
 
 
-  updateTrainer(id: string, trainer: any) {
+  // ne gère  pas le cas où comment est undefined
+  // updateTrainer(id: string, trainer: any) {
+  //   // Suppression des espaces et découpage en tableau
+  //   const cpArray = trainer.cp
+  //     .split(',')           // Sépare la chaîne en fonction des virgules
+  //     .map((cp: string) => cp.trim()) // Supprime les espaces inutiles autour des codes
+  //     .filter((cp: string) => cp);    // Retire les chaînes vides s'il y en a
 
+  //   // Affichage des codes postaux sous forme de tableau
+  //   console.log(cpArray); // Pour vérifier dans la console
+
+  //   // let newTrainer = { id: Date.now(), ...trainer };
+  //   trainer.cp = cpArray
+
+  //   let $trainerRef = doc(this.firestore, "trainers/" + id);
+  //   setDoc($trainerRef, trainer)
+  //   // plutôt que d'utiliser ma fonction notifyStudent depuis le ts de updateTrainer, on profite de la boucle sur les candidats affectés pour les notifier
+  //   for (let student of trainer.students) {
+  //     let $studentRef = doc(this.firestore, "students/" + student);
+  //     updateDoc($studentRef, { trainer: trainer.lastName })
+  //     // +++ notifyStudent
+  //     alert(`notification à envoyer à ${student}`)
+  //     // this.notificationsService.newNotifyUser(student)
+  //     // this.notificationsService.sendNotificationToUser(student)
+  //   }
+
+  // }
+  updateTrainer(id: string, trainer: any) {
     // Suppression des espaces et découpage en tableau
     const cpArray = trainer.cp
-      .split(',')           // Sépare la chaîne en fonction des virgules
-      .map((cp: string) => cp.trim()) // Supprime les espaces inutiles autour des codes
-      .filter((cp: string) => cp);    // Retire les chaînes vides s'il y en a
-
-    // Affichage des codes postaux sous forme de tableau
-    console.log(cpArray); // Pour vérifier dans la console
-
-    // let newTrainer = { id: Date.now(), ...trainer };
-    trainer.cp = cpArray
-
+      .split(',')
+      .map((cp: string) => cp.trim())
+      .filter((cp: string) => cp);
+  
+    // Mise à jour des codes postaux
+    trainer.cp = cpArray;
+  
+    // Supprimer uniquement la propriété "comment" si elle est undefined
+    if (trainer.comment === undefined) {
+      delete trainer.comment;
+    }
+  
+    // Référence du document dans Firestore
     let $trainerRef = doc(this.firestore, "trainers/" + id);
     setDoc($trainerRef, trainer)
-    // plutôt que d'utiliser ma fonction notifyStudent depuis le ts de updateTrainer, on profite de la boucle sur les candidats affectés pour les notifier
+      .then(() => {
+        console.log("Trainer mis à jour avec succès !");
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la mise à jour du trainer :", error);
+      });
+  
+    // Mise à jour et notification des étudiants
     for (let student of trainer.students) {
       let $studentRef = doc(this.firestore, "students/" + student);
       updateDoc($studentRef, { trainer: trainer.lastName })
-      // +++ notifyStudent
-      alert(`notification à envoyer à ${student}`)
-      // this.notificationsService.newNotifyUser(student)
-      // this.notificationsService.sendNotificationToUser(student)
+        .then(() => {
+          console.log(`Notification à envoyer à ${student}`);
+        })
+        .catch((error) => {
+          console.error(`Erreur lors de la mise à jour du student ${student} :`, error);
+        });
     }
-
   }
+  
 
 
   // methode à tester pour récupérer le nom
@@ -259,7 +393,7 @@ export class TrainersService {
   // Méthode pour importer les formateurs depuis un fichier CSV
   async createTrainers(trainers: any[]): Promise<void> {
 
-            // pour reconnecter l'admin
+    // pour reconnecter l'admin
     // Récupérer l'email de l'administrateur
     const adminEmail = this.auth.currentUser?.email;
 
@@ -285,7 +419,7 @@ export class TrainersService {
           lastName: trainer.lastName.trim(),
           firstName: trainer.firstName.trim(),
           email: trainer.email.trim(),
-          comment:trainer.comment,
+          comment: trainer.comment,
           id: ''
         };
 
@@ -302,7 +436,7 @@ export class TrainersService {
         const roleRef = doc(collection(this.firestore, "roles"), newTrainer.id);
         batch.set(roleRef, { role: ['trainer'] });
 
-        
+
 
       } catch (error: any) {
         console.error(`Erreur pour ${trainer.email}:`, error);
@@ -320,12 +454,12 @@ export class TrainersService {
         sendPasswordResetEmail(this.auth, trainer.email
 
 
-          ,{
+          , {
             // URL de redirection après personnalisation du mot de passe
-         url: 'https://be-on-top.io/login',
-         // Utilisation de l'application pour traiter cette action
-         handleCodeInApp: true 
-     }
+            url: 'https://be-on-top.io/login',
+            // Utilisation de l'application pour traiter cette action
+            handleCodeInApp: true
+          }
 
 
         ).catch(err => {
@@ -374,10 +508,10 @@ export class TrainersService {
 
 
 
-    
 
 
-    
+
+
 
   }
 
@@ -388,7 +522,7 @@ export class TrainersService {
 
 
 
-   // Ajouter un rôle 'trainer' à un évaluateur existant
+  // Ajouter un rôle 'trainer' à un évaluateur existant
   //  async addRoleToEvaluator(evaluatorId: string): Promise<void> {
   //   const rolesRef = doc(this.firestore, 'roles', evaluatorId);
   //   await setDoc(rolesRef, { role: 'trainer' }, { merge: true }); // Ajoute ou met à jour
@@ -404,17 +538,17 @@ export class TrainersService {
   // Ajouter un évaluateur dans la collection 'trainers' (sans créer de compte Auth)
   async addEvaluatorAsTrainer(evaluator: any): Promise<void> {
     const trainerRef = doc(this.firestore, 'trainers', evaluator.id);
-  
+
     try {
       // Vérifie si le formateur existe déjà dans trainers
       const trainerDoc = await getDoc(trainerRef);
-  
+
       if (trainerDoc.exists()) {
         console.log('Ce formateur existe déjà dans la collection trainers.');
         alert('Ce formateur est déjà enregistré comme formateur.');
         return; // Stoppe l'exécution si l'entrée existe déjà
       }
-  
+
       // Prépare les données pour le nouveau formateur
       const trainerData = {
         id: evaluator.id,
@@ -425,24 +559,24 @@ export class TrainersService {
         roles: ['trainer'],
         created: Date.now(),
       };
-  
+
       console.log('Ajout du formateur :', trainerData);
-  
+
       // Ajoute l'évaluateur dans trainers
       await setDoc(trainerRef, trainerData);
-  
+
       // Ajoute également le rôle dans la collection roles (en fusionnant si besoin)
       const rolesRef = doc(this.firestore, 'roles', evaluator.id);
       await setDoc(rolesRef, { role: 'trainer' }, { merge: true });
-  
+
       alert('Évaluateur ajouté avec succès en tant que formateur.');
     } catch (error) {
       console.error('Erreur lors de l\'ajout du formateur :', error);
       alert('Une erreur est survenue lors de l\'ajout du formateur.');
     }
   }
-  
-  
+
+
 
   // Mettre à jour les expertises métier (sigles) dans la collection 'trainers'
   // async updateTrainerExpertises(trainerId: string, sigles: string[]): Promise<void> {
@@ -450,6 +584,37 @@ export class TrainersService {
   //   await updateDoc(trainerRef, { sigles: sigles }); // Mise à jour des sigles
   // }
 
+
+  async isCurrentUserReferent(): Promise<boolean> {
+    try {
+      // Récupérer l'utilisateur actuellement authentifié
+      const currentUser = this.auth.currentUser;
+      if (!currentUser || !currentUser.uid) {
+        console.error("Aucun utilisateur authentifié.");
+        return false;
+      }
+
+      const userId = currentUser.uid;
+
+      // Accéder au document de la collection "roles" correspondant à l'utilisateur
+      const rolesDocRef = doc(this.firestore, `roles/${userId}`);
+      const rolesDocSnap = await getDoc(rolesDocRef);
+
+      if (rolesDocSnap.exists()) {
+        const roleData = rolesDocSnap.data();
+        console.log("Role Data:", roleData);
+
+        // Vérifier si le rôle est "referent"
+        return roleData['role'] === 'referent';
+      } else {
+        console.warn("Aucun rôle trouvé pour cet utilisateur.");
+        return false;
+      }
+    } catch (error) {
+      console.error("Erreur lors de la récupération du rôle :", error);
+      return false;
+    }
+  }
 
 
 

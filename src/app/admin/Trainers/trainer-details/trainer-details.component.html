@@ -23,7 +23,8 @@
                 <p *ngIf="user.sigle">Métiers d'affectation ({{user.sigle.length}}) :
                     <span *ngFor="let s of user.sigle">{{s}} </span>
                 </p>
-                <p *ngIf="user.comment && user.comment!=''">Commentaire : <span class="fst-italic">{{user.comment}}</span> 
+                <p *ngIf="user.comment && user.comment!=''">Commentaire : <span
+                        class="fst-italic">{{user.comment}}</span>
                 </p>
                 <!-- option au plus simple où on ne fait qu'une requête dans trainers -->
                 <!-- <p *ngIf="user.students">Etudiants en cours de suivi ({{user.students.length}}) :
@@ -39,9 +40,23 @@
         </div>
         <div class="d-flex my-4 justify-content-end gap-5">
 
-            <button class="btn btn-primary">
+            <!-- <button class="btn btn-primary">
                 <a class="text-white" [routerLink]="['/admin/trainers']">Retour à la liste</a>
-            </button>
+            </button> -->
+
+            <a class="btn btn-primary text-white" [routerLink]="isReferent ? '/admin/myTrainers' : '/admin/trainers'">
+                Retour à la liste
+            </a>
+
+            <!-- équivalent de habituellement utilisé -->
+
+            <!-- <button *ngIf="isReferent" class="btn btn-primary">
+                <a class="text-white" [routerLink]="'/admin/myTrainers'">Retour à la liste des formateurs</a>
+              </button>
+              <button *ngIf="!isReferent" class="btn btn-primary">
+                <a class="text-white" [routerLink]="'/admin/trainers'">Retour à la liste générale</a>
+              </button> -->
+
 
             <button class="btn btn-warning">
                 <a class="text-white" [routerLink]="['/admin/updateTrainer', user.id]">Modifier</a>
