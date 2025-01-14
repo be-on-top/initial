@@ -24,6 +24,7 @@ export interface Student {
     endedSubscriptions?:{"date":string; "sigle":string}
     elearning?:string;
     isInnerStudent?:boolean;
+    localTraining?:string;
      // Index signature
      [key: string]: any; // Index signature for dynamic properties
 }

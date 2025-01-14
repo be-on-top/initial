@@ -1,6 +1,6 @@
 <div *ngIf="student">
     <div class="container py-5">
-<!-- 
+        <!-- 
         myCp : {{myCp}} - FilteredTrainers : {{filteredTrainers | json}}
 
         student.subscription : {{student.subscriptions}} -->
@@ -76,15 +76,15 @@
                 <!-- <p *ngIf="student.subscriptions && student.subscriptions.length!==0">Inscriptions actuelles :
                     {{student.subscriptions}}</p> -->
 
-                    <p *ngIf="student.subscriptions && student.subscriptions.length !== 0">
-                        Inscriptions en cours :
-                        <span *ngFor="let sub of student.subscriptions">
-                            <span *ngIf="!student.endedSubscriptions?.includes(sub)">
-                                {{sub}}
-                            </span>
+                <p *ngIf="student.subscriptions && student.subscriptions.length !== 0">
+                    Inscriptions en cours :
+                    <span *ngFor="let sub of student.subscriptions">
+                        <span *ngIf="!student.endedSubscriptions?.includes(sub)">
+                            {{sub}}
                         </span>
-                    </p>
-                    
+                    </span>
+                </p>
+
                 <form class="form mb-5" #subscription="ngForm" (submit)="subscribeStudent(subscription)"
                     class="was-validated">
                     <select class="form-select" name="sigle" [(ngModel)]="student.subscriptions" required
@@ -94,7 +94,15 @@
                             {{element}}
                         </option>
                     </select>
-
+                    <!-- ajout pour renforcer la localisation  -->
+                    <!-- utile si candidat inscrit par le conseiller projet OU si changement de lieu d'affectation suite à entretien -->
+                    <!-- devra être réinitialiser à chaque fin de formation pour obtenir un filtre plus spécifique lors de l'affectation de candidats au formateur -->
+                    <label class="form-label mt-3" for="localTraining">Modifier ou préciser le lieu de la formation *</label>
+                    <div class="small fst-italic"> si
+                        vous ne précisez rien, c'est le choix initial du candidat qui sera automatiquement associé à son inscription</div>
+                    <input type="text" class="form-control mt-3" name="localTraining" [(ngModel)]="student.localTraining"
+                        placeholder="code postal du centre">
+                    <!-- fin -->
                     <button type="submit" id="submit" class="btn btn-primary mt-3"
                         [ngClass]="{'disabled':subscription.invalid}">Valider</button>
                 </form>

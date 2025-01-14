@@ -54,19 +54,31 @@ export class UpdateTrainerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // on fait appel à geTrainer pour récupérer les entrées de l'existant. méthode qui pour memo renvoie un observable
+    // Appel à `getTrainer` pour récupérer les données de l'utilisateur
     this.service.getTrainer(this.userId).subscribe((data) => {
-      console.log("data depuis update-user component", data);
-      this.user = data;
-      // pour récupérer ce qui est à l'état de tableau dans le doc firestore
+      console.log("data depuis update-user component", data)
+      this.user = data
+      // Transformer le champ `cp` en chaîne de caractères
       this.user.cp = data.cp.join(', ')
+      // Stocker les étudiants assignés à l'utilisateur
       this.selectedStudent = this.user.students
-    })
 
-    // parce que j'ai besoin de récupérer la liste pour les affectations
-    this.studentsService.getStudents().subscribe((students) => {
-      this.studentsList = students.filter(student => student.subscriptions);
+      // Appel à `getStudents` après avoir obtenu `this.user.sigle`
+      this.studentsService.getStudents().subscribe((students) => {
+        this.studentsList = students.filter(student =>
+          // qu'il soit inscrit
+          student.subscriptions &&
+          // que le tableau de ses inscriptions contienne un des métiers du formateur
+          student.subscriptions.some(subscription => this.user.sigle.includes(subscription))
+          // que le tableau du formateur contienne le localTraining candidat
+          // &&   this.user.cp.includes(student['localTraining'])
+          &&  this.user.cp.includes(student.localTraining)
+          // que la fin de formation ne soit pas actéé
+          && !student.endedSubscriptions 
+        )
+      })
     })
+  
 
     // essai > a été transféré à la liste trainersList component...
     // Récupérer l'UID de manière synchrone
@@ -80,33 +92,33 @@ export class UpdateTrainerComponent implements OnInit {
 
     // essai pour récupérer une liste des métiers 
     this.settingsService.getTrades().subscribe(trades => {
-      trades.forEach(trade => this.tradesData?.push(trade.sigle))
-    })
+    trades.forEach(trade => this.tradesData?.push(trade.sigle))
+  })
 
   }
 
 
 
-  updateUser(form: NgForm) {
-    // on vérifie la validité du formulaire
-    if (!form.valid) {
-      console.log('form non valid')
-      return
-    }
-
-    console.log("form update values", form.value);
-    this.service.updateTrainer(this.userId, form.value)
-    // pour notifier le(s) candidat(s) concerné(s)
-    // this.notificationsService.notifyStudent(form.value)
-    // puis redirection
-    this.router.navigate(['/admin/trainer', this.userId])
+updateUser(form: NgForm) {
+  // on vérifie la validité du formulaire
+  if (!form.valid) {
+    console.log('form non valid')
+    return
   }
 
-  // pour affecation métiers
-  checkIfSelected(sigle: any) {
-    console.log(sigle);
-    this.selectedSigles = [...this.selectedSigles, sigle]
-  }
+  console.log("form update values", form.value);
+  this.service.updateTrainer(this.userId, form.value)
+  // pour notifier le(s) candidat(s) concerné(s)
+  // this.notificationsService.notifyStudent(form.value)
+  // puis redirection
+  this.router.navigate(['/admin/trainer', this.userId])
+}
+
+// pour affecation métiers
+checkIfSelected(sigle: any) {
+  console.log(sigle);
+  this.selectedSigles = [...this.selectedSigles, sigle]
+}
 
 
   // myCp: string[] = []

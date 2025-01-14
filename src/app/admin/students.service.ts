@@ -723,18 +723,22 @@ export class StudentsService {
     if (tokenSnapshot.exists()) {
       const tokenData = tokenSnapshot.data()?.['key'];
       console.log('tokenData', tokenData);
-
       return tokenData;
     }
 
     return null;
   }
 
-  async activateSubscription(id: string, sigle: any) {
+  async activateSubscription(id: string, sigle: any, localTraining:string) {
     const studentRef = doc(this.firestore, "students/" + id)
     const updateStudent = {
-      subscriptions: sigle
+      subscriptions: sigle,
+      // si on veut localiser la formation en cours...
+      localTraining:localTraining
     }
+
+    console.log("updateStudent", updateStudent);
+    
     setDoc(studentRef, updateStudent, { merge: true })
   }
 

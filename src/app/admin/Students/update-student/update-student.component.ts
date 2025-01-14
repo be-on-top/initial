@@ -78,13 +78,12 @@ export class UpdateStudentComponent implements OnInit {
         } console.log("tutorialToUpdate", this.tutorialToUpdate)
       }
 
-
     })
 
     this.getUsers()
     this.fetchSigleIds()
 
-    // implémenter la méthode conçue pour les "conseillers projets" qui n'en sont pas puisqu'ils se font concurrence (référents admin)
+    // implémenter la méthode conçue pour les "conseillers projets" (référents admin)
     // Récupérer l'UID de manière synchrone
     this.userUid = this.authService.getCurrentUserUid();
     console.log('UID de l\'utilisateur authentifié dans le composant :', this.userUid);
@@ -105,8 +104,8 @@ export class UpdateStudentComponent implements OnInit {
       // this.getTrainersWithSameCp(this.userUid)
       // this.getDedicatedTrainer()
 
-      // SI JE VEUX FAIRE un DEUX EN UN
-      this.getTrainersWithSameCpAndSigle(this.userUid)
+      // SI JE VEUX FAIRE un DEUX EN UN n'est plus utile si pas de classe normée
+      // this.getTrainersWithSameCpAndSigle(this.userUid)
 
 
     }
@@ -191,6 +190,13 @@ export class UpdateStudentComponent implements OnInit {
 
   subscribeStudent(subscribeStudent: NgForm) {
     // console.log('subscribeStudent.value.sigle', subscribeStudent.value.sigle);
+    console.log('this.priorCenterPostalCode', this.priorCenterPostalCode)
+    console.log('localTraining du formulaire', subscribeStudent.value.localTraining)
+
+    let localTraining=''
+  
+    subscribeStudent.value.localTraining!=undefined?localTraining=subscribeStudent.value.localTraining:localTraining=this.priorCenterPostalCode
+    
     let array = []
     for (const key of subscribeStudent.value.sigle) {
       array.push(key)
@@ -198,7 +204,9 @@ export class UpdateStudentComponent implements OnInit {
     }
     // alert(array)
 
-    this.service.activateSubscription(this.studentId, array)
+    // this.service.activateSubscription(this.studentId, array)
+    // si on veut profiter de l'inscription pour enregistrer une variable qui localise la formation directement dans compte utilisateur
+    this.service.activateSubscription(this.studentId, array, localTraining)
 
   }
 
@@ -294,10 +302,7 @@ export class UpdateStudentComponent implements OnInit {
       });
     });
 
-
   }
-
-
 
 
   priorCenterPostalCode: string = ''
@@ -319,7 +324,6 @@ export class UpdateStudentComponent implements OnInit {
       console.log('this.priorCenterPostalCode !!!!!!!!!!!', this.priorCenterPostalCode);
 
     })
-
 
   }
 
@@ -453,13 +457,6 @@ export class UpdateStudentComponent implements OnInit {
     // console.log('Formateur sélectionné:', this.selectedTrainer);
     console.log('Formateur sélectionné:', this.selectedTrainer);
   }
-
-
-
-
-
-
-
 
 
 
