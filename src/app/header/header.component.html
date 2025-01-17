@@ -57,6 +57,9 @@
                         </li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/trainers']"
                                 *ngIf="userRole.includes('admin')">Gestion des formateurs</a></li>
+                                <!-- exceptionnellement -->
+                        <li><a class="dropdown-item" [routerLink]="['/admin/myTrainers']"
+                                *ngIf="userRole.includes('referent')">Gestion des formateurs</a></li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/tutors']"
                                 *ngIf="userRole.includes('admin')">Gestion des tuteurs</a></li>
                         <!-- pour mémo, pour l'instant on utilise le simple contributeur comme utilisateur générique -->
