@@ -61,10 +61,16 @@
 
         <!-- modification des étudiants qui lui sont affectés -->
 
-        <label for="students" class="form-label mt-3">Affectation étudiants :</label>
+        <label for="students" class="form-label mt-5">Affectation étudiants :</label><br>
 
         <!-- <input type="text" class="form-control mb-2" name="searchText" [(ngModel)]="searchText"
             placeholder="Rechercher un étudiant"> -->
+
+            <!-- pour lister ceux déjà inscrits -->
+             <ng-container *ngFor="let student of studentsList">
+                <span *ngIf="selectedStudent.includes(student.id)" >{{student.lastName}} {{student.firstName}}<button type="button" class="btn" title="remove student" (click)="delete(student.id)"><i class="bi bi-x-square-fill mx-0"></i></button></span>
+             </ng-container>
+
 
         <select #studentSelect class="form-select" name="students" id="students" [(ngModel)]="selectedStudent" multiple>
             <option value>Selectionner l'étudiant</option>

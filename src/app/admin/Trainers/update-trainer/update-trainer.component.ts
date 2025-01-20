@@ -36,6 +36,8 @@ export class UpdateTrainerComponent implements OnInit {
   // si on se contente de récupérer le sigle
   tradesData?: string[] = []
 
+  trainerStudents: any = []
+
 
 
   constructor(
@@ -58,6 +60,7 @@ export class UpdateTrainerComponent implements OnInit {
     this.service.getTrainer(this.userId).subscribe((data) => {
       console.log("data depuis update-user component", data)
       this.user = data
+      this.trainerStudents = data.students
       // Transformer le champ `cp` en chaîne de caractères
       this.user.cp = data.cp.join(', ')
       // Stocker les étudiants assignés à l'utilisateur
@@ -97,6 +100,25 @@ export class UpdateTrainerComponent implements OnInit {
 
   }
 
+
+  delete(studentUid:string){
+    console.log('Student à supprimer :', studentUid);
+
+    // Trouver l'index de l'étudiant correspondant
+    const index = this.studentsList.findIndex((student:any) => student.id === studentUid);
+  
+    if (index !== -1) {
+      // Supprimer l'étudiant du tableau
+      this.studentsList.splice(index, 1);
+      console.log('this.studentsList mis à jour :', this.studentsList);
+    } else {
+      console.log('Étudiant non trouvé dans la liste');
+    }
+    
+    
+    this.service.deleteStudentFromTrainer(this.userId, studentUid)
+
+  }
 
 
 updateUser(form: NgForm) {

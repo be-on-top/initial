@@ -225,6 +225,50 @@ export class TrainersService {
   }
 
 
+  deleteStudentFromTrainer(trainerId: string, studentUid: string) {
+    // Référence au document Trainer dans Firestore
+    const $trainerRef = doc(this.firestore, "trainers/" + trainerId);
+  
+    // Lire le document actuel pour récupérer la liste des étudiants
+    getDoc($trainerRef)
+      .then((docSnapshot) => {
+        if (docSnapshot.exists()) {
+          const trainerData = docSnapshot.data(); // Obtenir les données du document
+  
+          // Vérifier que 'students' est un tableau valide
+          if (trainerData['students'] && Array.isArray(trainerData['students'] )) {
+            // Supprimer le studentUid de la liste des étudiants
+            const updatedStudents = trainerData['students'] .filter((id: string) => id !== studentUid);
+  
+            // Mettre à jour uniquement le champ 'students' dans Firestore
+            return updateDoc($trainerRef, { students: updatedStudents });
+          } else {
+            console.error("Le champ 'students' est absent ou invalide.");
+            return Promise.reject("Propriété 'students' invalide.");
+          }
+        } else {
+          console.error("Le document trainer n'existe pas.");
+          return Promise.reject("Document introuvable.");
+        }
+      })
+      .then(() => {
+        console.log("Le champ 'students' a été mis à jour avec succès !");
+  
+        // Réinitialiser la propriété 'trainer' dans le document de l'étudiant
+        const $studentRef = doc(this.firestore, "students/" + studentUid);
+        return updateDoc($studentRef, { trainer: "attribué ultérieurement" });
+      })
+      .then(() => {
+        console.log(`La propriété 'trainer' de l'étudiant ${studentUid} a été réinitialisée avec succès !`);
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la mise à jour :", error);
+      });
+  }
+  
+  
+
+
   // ne gère  pas le cas où comment est undefined
   // updateTrainer(id: string, trainer: any) {
   //   // Suppression des espaces et découpage en tableau
@@ -252,14 +296,56 @@ export class TrainersService {
   //   }
 
   // }
+
+  // le champ email doit être préservé. mieux vaut faire de l'updateDoc
+  // updateTrainer(id: string, trainer: any) {
+  //   // Suppression des espaces et découpage en tableau
+  //   const cpArray = trainer.cp
+  //     .split(',')
+  //     .map((cp: string) => cp.trim())
+  //     .filter((cp: string) => cp);
+  
+  //   // Mise à jour des codes postaux
+  //   trainer.cp = cpArray;
+  
+  //   // Supprimer uniquement la propriété "comment" si elle est undefined
+  //   if (trainer.comment === undefined) {
+  //     delete trainer.comment;
+  //   }
+  
+  //   // Référence du document dans Firestore
+  //   let $trainerRef = doc(this.firestore, "trainers/" + id);
+  //   setDoc($trainerRef, trainer)
+  //     .then(() => {
+  //       console.log("Trainer mis à jour avec succès !");
+  //     })
+  //     .catch((error) => {
+  //       console.error("Erreur lors de la mise à jour du trainer :", error);
+  //     });
+  
+  //   // Mise à jour et notification des étudiants
+  //   for (let student of trainer.students) {
+  //     let $studentRef = doc(this.firestore, "students/" + student);
+  //     updateDoc($studentRef, { trainer: trainer.lastName })
+  //       .then(() => {
+  //         console.log(`Notification à envoyer à ${student}`);
+  //       })
+  //       .catch((error) => {
+  //         console.error(`Erreur lors de la mise à jour du student ${student} :`, error);
+  //       });
+  //   }
+  // }
+
   updateTrainer(id: string, trainer: any) {
+    // Référence du document dans Firestore
+    const $trainerRef = doc(this.firestore, "trainers/" + id);
+  
     // Suppression des espaces et découpage en tableau
     const cpArray = trainer.cp
       .split(',')
       .map((cp: string) => cp.trim())
       .filter((cp: string) => cp);
   
-    // Mise à jour des codes postaux
     trainer.cp = cpArray;
   
     // Supprimer uniquement la propriété "comment" si elle est undefined
@@ -267,9 +353,8 @@ export class TrainersService {
       delete trainer.comment;
     }
   
-    // Référence du document dans Firestore
-    let $trainerRef = doc(this.firestore, "trainers/" + id);
-    setDoc($trainerRef, trainer)
+    // Mettre à jour uniquement les champs spécifiés
+    updateDoc($trainerRef, trainer)
       .then(() => {
         console.log("Trainer mis à jour avec succès !");
       })
@@ -279,7 +364,7 @@ export class TrainersService {
   
     // Mise à jour et notification des étudiants
     for (let student of trainer.students) {
-      let $studentRef = doc(this.firestore, "students/" + student);
+      const $studentRef = doc(this.firestore, "students/" + student);
       updateDoc($studentRef, { trainer: trainer.lastName })
         .then(() => {
           console.log(`Notification à envoyer à ${student}`);
@@ -289,6 +374,7 @@ export class TrainersService {
         });
     }
   }
+  
   
 
 
