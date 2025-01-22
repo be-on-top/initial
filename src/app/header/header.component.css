@@ -103,10 +103,38 @@ li.submenu a[role="button"]::after {
     text-transform: none;
 }
 
+
+
+.info-button {
+    position: fixed;
+    top: 65%; /* Milieu de l'écran verticalement */
+    right: 2vw;
+    letter-spacing: 0.1rem;
+    transform: translateY(-65%) rotate(-90deg); /* Centrer verticalement et rotation à -45 degrés */
+    transform-origin: bottom right; /* Point d'origine de la rotation */
+    /* background-color: #007bff; */
+    /* color: white; */
+    border: none;
+    /* padding: 10px 20px; */
+    cursor: pointer;
+    z-index: 1000;
+  }
+
+  
+  .info-button:hover {
+    background-color: #0056b3;
+  }
+
+
+
 @media screen and (min-width:576px) and (max-width:768px) {
 
     li.home {
         display: none !important;
+    }
+
+    .info-button {
+        display: none;
     }
 }
 

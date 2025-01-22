@@ -20,8 +20,8 @@
             <span *ngIf="!isMenuOpen" class="navbar-toggler-icon">&#9776;</span>
             <span *ngIf="isMenuOpen" class="navbar-toggler-icon">&#10006;</span>
         </button> -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-            data-bs-target="#collapsibleNavbar" (click)="toggleMenu()" aria-label="Fermer le menu">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar"
+            (click)="toggleMenu()" aria-label="Fermer le menu">
             <span class="navbar-toggler-icon" [ngClass]="{'closed-menu': isMenuOpen}"></span>
         </button>
 
@@ -57,7 +57,7 @@
                         </li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/trainers']"
                                 *ngIf="userRole.includes('admin')">Gestion des formateurs</a></li>
-                                <!-- exceptionnellement -->
+                        <!-- exceptionnellement -->
                         <li><a class="dropdown-item" [routerLink]="['/admin/myTrainers']"
                                 *ngIf="userRole.includes('referent')">Gestion des formateurs</a></li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/tutors']"
@@ -70,7 +70,10 @@
                         <li><a class="dropdown-item" [routerLink]="['/admin/externals']"
                                 *ngIf="userRole.includes('admin')">Gestion des observateurs</a></li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/students']"
-                                *ngIf="userRole.includes('admin')">Gestion des candidats</a><hr></li>
+                                *ngIf="userRole.includes('admin')">Gestion des candidats</a>
+                            <!-- pour virer le hr si trainer seul -->
+                            <hr *ngIf="!userRole.includes('trainer')">
+                        </li>
                         <!-- ajout d'une route pour designation du référent -->
                         <!-- <hr *ngIf="userRole.includes('admin')"> -->
                         <li><a class="dropdown-item" [routerLink]="['/admin/managers']"
@@ -114,7 +117,8 @@
                                 *ngIf="userRole.includes('evaluator') || userRole.includes('admin')">Liste des questions
                                 type soft skills</a>
                         </li>
-                        <li *ngIf="userRole.includes('admin')">
+                        <li
+                            *ngIf="userRole.includes('admin') || (userRole.includes('trainer') && userRole.includes('evaluator'))">
                             <hr>
                         </li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/myStudents']"
@@ -130,7 +134,7 @@
                     </ul>
                 </li>
 
-<!-- 
+                <!-- 
                 <li class="nav-item dropdown" *ngIf="trades" [routerLinkActive]="['active']">
                            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">Nos métiers</a>
                     <ul class="dropdown-menu mb-2">
@@ -142,45 +146,46 @@
                 </li> -->
 
 
- 
+
                 <li class="nav-item dropdown" *ngIf="trades" [routerLinkActive]="['active']">
                     <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">Nos métiers</a>
                     <ul class="dropdown-menu mb-2">
-                      <!-- Afficher les métiers sans parentCategory -->
-                      <li *ngFor="let trade of ungroupedTrades">
-                        <a class="dropdown-item" (click)="closeNavbar()"
-                          [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]">
-                          {{ trade.denomination | truncateTitle }}
-                        </a>
-                      </li>
-                 
-                      <!-- Afficher les métiers regroupés par parentCategory -->
-                  
+                        <!-- Afficher les métiers sans parentCategory -->
+                        <li *ngFor="let trade of ungroupedTrades">
+                            <a class="dropdown-item" (click)="closeNavbar()"
+                                [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]">
+                                {{ trade.denomination | truncateTitle }}
+                            </a>
+                        </li>
+
+                        <!-- Afficher les métiers regroupés par parentCategory -->
+
                         <li class="dropdown-submenu" *ngFor="let group of groupedTrades">
                             <!-- Affichage de la parentCategory -->
-                          <!-- <a class="dropdown-item dropdown-toggle text-uppercase" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                            <!-- <a class="dropdown-item dropdown-toggle text-uppercase" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"
                           onclick="event.stopPropagation();">
                             {{ group[0] }}
                           </a> -->
-                          <a class="dropdown-item dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="event.stopPropagation();">
-                            {{ group[0] | slice:0:group[0].indexOf('(') }}<br>
-                            <span class="break-before-parenthesis">
-                              {{ group[0] | slice:group[0].indexOf('(') }}
-                            </span>                                             
-                          </a> 
-                          <ul class="dropdown-menu">
-                            <!-- Afficher chaque métier sous la catégorie -->
-                            <li *ngFor="let trade of group[1]">
-                              <a class="dropdown-item" (click)="closeNavbar()"
-                                [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]">
-                                {{ trade.denomination | truncateTitle }}
-                              </a>
-                            </li>
-                          </ul>
+                            <a class="dropdown-item dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false" onclick="event.stopPropagation();">
+                                {{ group[0] | slice:0:group[0].indexOf('(') }}<br>
+                                <span class="break-before-parenthesis">
+                                    {{ group[0] | slice:group[0].indexOf('(') }}
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- Afficher chaque métier sous la catégorie -->
+                                <li *ngFor="let trade of group[1]">
+                                    <a class="dropdown-item" (click)="closeNavbar()"
+                                        [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]">
+                                        {{ trade.denomination | truncateTitle }}
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
-                     
+
                     </ul>
-                  </li>
+                </li>
 
 
                 <!-- ajout login global (on aura ultérieurement un public et privé réservé aux contributeurs et évaluateurs...) -->
@@ -196,9 +201,14 @@
                             *ngIf="userRole && userRole!='' && !userRole.includes('evaluator') && !userRole.includes('editor') && !userRole.includes('referent') && !userRole.includes('tutor') && !userRole.includes('trainer') && !userRole.includes('external')">
                             <a class="dropdown-item" (click)="closeNavbar()" [routerLink]="['account']">Mon compte</a>
                         </li>
+                        <!-- si formateur connecté -->
+                        <li *ngIf="userRole && userRole!='' && userRole.includes('trainer') ">
+                            <a class="dropdown-item" (click)="closeNavbar()"
+                                [routerLink]="['/admin/myTrainerAccount']">Mon compte Formateur</a>
+                        </li>
 
-                        <li *ngIf="!userRole || userRole==''"><a class="dropdown-item"
-                                [routerLink]="['register']" (click)="closeNavbar()">Inscription</a></li>
+                        <li *ngIf="!userRole || userRole==''"><a class="dropdown-item" [routerLink]="['register']"
+                                (click)="closeNavbar()">Inscription</a></li>
                         <!-- Inscription lien externe sans condition pour tester en local -->
                         <li *ngIf="!offline && isOneQuizzAchieved && !studentData?.isSocialFormSent">
                             <a class="dropdown-item" [routerLink]="['socialregistration']">Inscription Formation</a>
@@ -214,18 +224,47 @@
                 <li class="nav-item" [routerLinkActive]="['partners']" *ngIf="partners && partners.length!==0">
                     <a class="nav-link" [routerLink]="['partners']" role="button">Partenaires</a>
                 </li>
-                <li *ngIf="!userRole.includes('evaluator')"
-                    class="nav-item"  [routerLinkActive]="['active']">
-                    <a class="nav-link" [routerLink]="['benefits']" role="button" (click)="closeNavbar()">Informations<i class="bi bi-info-square-fill ms-2"></i></a>
+                <li *ngIf="!userRole.includes('evaluator') && !userRole.includes('referent') && !userRole.includes('trainer')" class="nav-item"
+                    [routerLinkActive]="['active']">
+                    <a class="nav-link" [routerLink]="['benefits']" role="button" (click)="closeNavbar()">Information<i
+                            class="bi bi-info-square-fill ms-2"></i></a>
                 </li>
-
+                <!-- pour traitement différencié si referent -->
+                <!-- fonctionne bien mais manque market-app -->
+                <!-- <li *ngIf="userRole.includes('referent')" class="nav-item" [routerLinkActive]="['active']">
+                    <a class="nav-link" href="https://xd.adobe.com/view/75e0818e-ab1b-4464-8b05-ff2988454cba-20b3"
+                        role="button" (click)="closeNavbar()">Documentation<i
+                            class="bi bi-info-square-fill ms-2"></i></a>
+                </li> -->
+                <li *ngIf="userRole.includes('referent')" class="nav-item dropdown" [routerLinkActive]="['active']">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Informations
+                        <!-- <i class="bi bi-info-square-fill ms-2"></i> -->
+                    </a>
+                    <ul class="dropdown-menu mb-2">
+                        <li class="nav-item" [routerLinkActive]="['active']">
+                            <a class="dropdown-item"
+                                href="https://firebasestorage.googleapis.com/v0/b/be-on-top-beta.appspot.com/o/admin-docs%2FformationCP.pdf?alt=media&token=58038bf1-38fa-4673-8aa5-57cc147d4fe0"
+                                role="button" (click)="closeNavbar()">Support PDF</a>
+                        </li>
+                        <!-- <li><a class="dropdown-item" (click)="logOut()" [routerLink]="['']">Logout</a></li> -->
+                        <li><a class="dropdown-item" (click)="closeNavbar()" [routerLink]="['market-app']">Mission
+                                BE-ON-TOP</a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- fin de l'alternative -->
+                <!-- pour formateurs momentanné -->
+                <li *ngIf="userRole.includes('trainer')" class="nav-item" [routerLinkActive]="['active']">
+                    <a class="nav-link"  [routerLink]="['market-app']"
+                        role="button" (click)="closeNavbar()">Information<i
+                            class="bi bi-info-square-fill ms-2"></i></a>
+                </li>
+                <!-- fin formateurs -->
             </ul>
         </div>
     </div>
 </nav>
 
-
-
-
-
-
+<!-- après plusieurs essais, information reste ce qu'il y a de mieux -->
+<button class="btn btn-primary btn-sm info-button pe-2" (click)="goToInfoPage()"><i
+        class="bi bi-info me-2"></i>{{userRole.includes('referent')?'Informations':'information'}}</button>

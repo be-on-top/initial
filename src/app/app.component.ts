@@ -66,7 +66,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     document.cookie = '__Secure-3PSIDCC=value; SameSite=None; Secure';
   }
 
-  goToInfoPage() {
-    this.router.navigate(['/benefits']);
-  }
+  // transféré à header
+  // goToInfoPage() {
+  //   this.router.navigate(['/benefits']);
+  // }
 }

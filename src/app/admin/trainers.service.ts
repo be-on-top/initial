@@ -365,7 +365,8 @@ export class TrainersService {
     // Mise à jour et notification des étudiants
     for (let student of trainer.students) {
       const $studentRef = doc(this.firestore, "students/" + student);
-      updateDoc($studentRef, { trainer: trainer.lastName })
+      // updateDoc($studentRef, { trainer: trainer.lastName })
+      updateDoc($studentRef, { trainer: trainer.lastName + " " + trainer.firstName })
         .then(() => {
           console.log(`Notification à envoyer à ${student}`);
         })

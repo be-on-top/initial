@@ -3,6 +3,7 @@ import { TrainersService } from '../../trainers.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StudentsService } from '../../students.service';
 import { forkJoin, Subscription } from 'rxjs';
+import { AuthService } from '../../auth.service';
 // import { StudentDetailsComponent } from '../../Students/student-details/student-details.component';
 // import { pipe } from 'rxjs';
 
@@ -24,9 +25,17 @@ export class TrainerDetailsComponent implements OnInit {
   private trainerSubscription: Subscription = new Subscription();  // Abonnement pour le formateur
   private studentsSubscriptions: Subscription[] = [];  // Tableau pour les abonnements des étudiants
 
+    // pour différencier la vue si user trainer
+    userRouterLinks:any
 
-  constructor(private service: TrainersService, private ac: ActivatedRoute, private router: Router, private studentsService: StudentsService) {
-    this.userId = this.ac.snapshot.params["id"];
+
+
+
+  constructor(private service: TrainersService, private ac: ActivatedRoute, private router: Router, private studentsService: StudentsService, private authService:AuthService) {
+    // this.userId = this.ac.snapshot.params["id"];
+    this.ac.snapshot.params["id"]?this.userId = this.ac.snapshot.params["id"]:this.userId=this.authService.getCurrentUserUid();
+    this.userRouterLinks = this.ac.snapshot.data;
+    
 
   }
 
@@ -74,7 +83,8 @@ export class TrainerDetailsComponent implements OnInit {
         // On attend que tous les abonnements des étudiants soient terminés
         this.user.students.forEach((student: any, index: number) => {
           this.service.getLinkedStudentName(student).subscribe(dataStudent => {
-            list.push(dataStudent.lastName);
+            // list.push(dataStudent.lastName);
+            list.push(dataStudent.lastName + " " + dataStudent.firstName);
 
             // Quand tous les abonnements sont terminés, on met à jour studentsList
             if (list.length === this.user.students.length) {

@@ -92,6 +92,7 @@ const routesAdmin: Routes = [
       // essai mutualisation des vues pour le détail depuis la liste des evaluateurs + formateurs
       // { path: 'trainer/:id', component: TrainerDetailsComponent },
       { path: 'trainer/:id', component: TrainerDetailsComponent },
+      { path: 'myTrainerAccount', component: TrainerDetailsComponent, data: { user: 'trainer' }  },
       { path: 'updateTrainer/:id', component: UpdateTrainerComponent },
       // { path: 'tutors', component: TutorsListComponent },
       { path: 'tutors', component: UsersListComponent, data: { user: 'tutor' } },
