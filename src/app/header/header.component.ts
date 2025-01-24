@@ -272,7 +272,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
         window.open('https://xd.adobe.com/view/75e0818e-ab1b-4464-8b05-ff2988454cba-20b3/?fullscreen', '_blank');
       } else if(this.userRole.includes('trainer'))  {
         // Rediriger vers support Formateurs
-        window.open('hhttps://xd.adobe.com/view/a41e35e0-6af3-4001-8ba8-3c856993d99a-f14d/?fullscreen', '_blank');
+        window.open('https://xd.adobe.com/view/a41e35e0-6af3-4001-8ba8-3c856993d99a-f14d/?fullscreen', '_blank');
       } else {
         // Rediriger vers une route interne de l'application
         this.router.navigate(['/benefits']);
