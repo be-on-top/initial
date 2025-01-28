@@ -163,7 +163,9 @@
                     ((studentData?.['quizz_'+trade.sigle]?.scoreCounter || 0 | number)),
                     studentData?.['quizz_'+trade.sigle] ? true : false,
                     studentData?.id ? studentData.id : ''
-                  ]" class="text-decoration-none text-dark" alt="questionnaire de positionnement">
+                  ]" class="text-decoration-none text-dark"  [attr.aria-label]="'Questionnaire de positionnement pour ' + trade.sigle"
+   title="Questionnaire de positionnement pour {{trade.sigle}}">
+
 
                                 <div class="d-flex justify-content-end"
                                     *ngIf="(studentData && !studentData['quizz_'+trade.sigle])">
@@ -319,7 +321,8 @@
                     ((studentData?.['quizz_'+trade.sigle]?.scoreCounter || 0 | number)),
                     studentData?.['quizz_'+trade.sigle] ? true : false,
                     studentData?.id ? studentData.id : ''
-                  ]" class="text-decoration-none text-dark" alt="questionnaire de positionnement">
+                  ]" class="text-decoration-none text-dark"  [attr.aria-label]="'Questionnaire de positionnement pour ' + trade.sigle"
+   title="Questionnaire de positionnement pour {{trade.sigle}}">
 
                                         <div class="d-flex justify-content-end"
                                             *ngIf="(studentData && !studentData['quizz_'+trade.sigle])">
@@ -425,7 +428,8 @@
                                     ((studentData?.['quizz_'+trade.sigle]?.scoreCounter || 0 | number)),
                                     studentData?.['quizz_'+trade.sigle] ? true : false,
                                     studentData?.id ? studentData.id : ''
-                                  ]" class="text-decoration-none text-dark" alt="questionnaire de positionnement">
+                                  ]" class="text-decoration-none text-dark"  [attr.aria-label]="'Questionnaire de positionnement pour ' + trade.sigle"
+   title="Questionnaire de positionnement pour {{trade.sigle}}">
 
                                         <div class="d-flex justify-content-end"
                                             *ngIf="(studentData && !studentData['quizz_'+trade.sigle])">
@@ -477,7 +481,7 @@
 
                 <!-- refacto si catégories multiples -->
                 <div class="card-footer" *ngIf="group[1].length>2">
-                    <button class="btn btn-success w-100 mx-auto" (click)="openFullCatItems()">
+                    <button class="btn btn-primary w-100 mx-auto" (click)="openFullCatItems()">
                         <span *ngIf="!isFullCatItemsOpen">
                             Toutes les formations ({{group[1].length}})
                         </span>
