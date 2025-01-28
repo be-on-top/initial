@@ -21,9 +21,23 @@
             <label for="email" class="form-label mt-3 disabled text">Email *</label>
             <div class="input-group">
                 <span class="input-group-text" id="inputGroupPrepend2">@</span>
-                <input type="email" id="email" [(ngModel)]="student.email" name="email" class="form-control text-white"
-                    #email="ngModel" placeholder="Email" disabled>
+                <input type="email" id="email" [(ngModel)]="student.email" name="email" class="form-control"
+                    #email="ngModel" placeholder="Email" >
             </div>
+            <div>
+                <label for="currentPassword" class="form-label mt-3">Mot de passe actuel *</label>
+                <input
+                  type="password"
+                  id="currentPassword"
+                  [(ngModel)]="currentPassword"
+                  name="currentPassword"
+                  class="form-control"
+                  placeholder="Entrez votre mot de passe actuel"
+                  required
+                />
+              </div>
+        
+
 
             <!-- <label for="cp" class="form-label mt-3">CP</label>
             <input type="text" id="cp" [(ngModel)]="student.cp" name="cp" class="form-control"

@@ -31,23 +31,45 @@ export class UpdateAccountComponent {
   //   'auth/invalid-email' : 'Aucun enregistrement ne correspond au mail fourni'
   // }; // list of firebase error codes to alternate error messages
 
-
+  currentPassword?: string
   constructor(private service: StudentsService, private router: Router) {
+    this.currentPassword=''
 
   }
+
+  // updateStudent(form: NgForm) {
+  //   if (!form.valid) {
+  //     return;
+  //   }
+  
+  //   const currentPassword = this.currentPassword; // Assurez-vous que ce champ est défini dans le composant
+  //   this.service.updateStudent(this.student.id, form.value)
+  //     .then(() => {
+  //       console.log("Update successful");
+  //     })
+  //     .catch((error) => {
+  //       console.error("Update failed", error);
+  //     });
+  // }
 
   updateStudent(form: NgForm) {
-    // on vérifie la validité du formulaire
     if (!form.valid) {
-      /* console.log('form valid'); */
-      return
+      return;
     }
-    console.log("form update values", form.value);
+  
+    console.log("Form value before sending to service !!!!!!!!!!!!!!!:", form.value);
+  
     this.service.updateStudent(this.student.id, form.value)
-
-    // this.feedbackMessages = `Enregistrement OK`;
-    // this.isSuccessMessage = true
-
+      .then(() => {
+        console.log("Update successful");
+      })
+      .catch((error) => {
+        console.error("Update failed", error);
+      });
   }
+  
+  
+  
+
 
 }

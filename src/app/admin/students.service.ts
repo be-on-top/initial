@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 // import { NgForm } from '@angular/forms';
-import { Auth, createUserWithEmailAndPassword, deleteUser, fetchSignInMethodsForEmail, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithRedirect } from "@angular/fire/auth";
+import { Auth, reauthenticateWithCredential, createUserWithEmailAndPassword, deleteUser, fetchSignInMethodsForEmail, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithRedirect, updateEmail, EmailAuthProvider } from "@angular/fire/auth";
 import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc, updateDoc, query, getDocs, where, getDoc, QuerySnapshot, arrayUnion, CollectionReference, DocumentData, orderBy } from '@angular/fire/firestore';
 // import { FirebaseApp } from '@angular/fire/app';
 import { from, map, Observable, of, switchMap, tap } from 'rxjs';
@@ -479,35 +479,131 @@ export class StudentsService {
 
   }
 
-
   async deleteAccount() {
-
-    try {
-      if (this.auth.currentUser) {
-        await this.auth.currentUser.delete();
-        console.log('Compte utilisateur auth supprimé.');
+    // Affichage d'une alerte de confirmation avant la suppression
+    const confirmDelete = window.confirm('Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.');
+  
+    if (confirmDelete) {
+      try {
+        if (this.auth.currentUser) {
+          // Suppression du compte utilisateur
+          await this.auth.currentUser.delete();
+          console.log('Compte utilisateur auth supprimé.');
+        }
+      } catch (error) {
+        console.error('Erreur lors de la suppression du compte utilisateur :', error);
       }
-
-    } catch (error) {
-      console.log(error);
-
+    } else {
+      console.log('Suppression annulée.');
     }
-
-    // try {
-    //   await deleteDoc(studentRef);
-    //   console.log(`Student with id=${student.id} deleted from firebase successfully`);
-    // } catch (error) {
-    //   console.error(`Error deleting student from firebase with id=${student.id}: `, error);
-    // }
-
   }
+  
 
-  updateStudent(id: string, student: any) {
-    // let $studentRef = doc(this.firestore, "students/" + id);
-    // setDoc($studentRef, student);
-    let $studentRef = doc(this.firestore, "students/" + id);
-    updateDoc($studentRef, student);
+
+  // async deleteAccount() {
+
+  //   try {
+  //     if (this.auth.currentUser) {
+  //       await this.auth.currentUser.delete();
+  //       console.log('Compte utilisateur auth supprimé.');
+  //     }
+
+  //   } catch (error) {
+  //     console.log(error);
+
+  //   }
+
+  //   // try {
+  //   //   await deleteDoc(studentRef);
+  //   //   console.log(`Student with id=${student.id} deleted from firebase successfully`);
+  //   // } catch (error) {
+  //   //   console.error(`Error deleting student from firebase with id=${student.id}: `, error);
+  //   // }
+
+  // }
+
+//  OK mais ne prenait pas en considération l'update du compte
+  // updateStudent(id: string, student: any) {
+  //   // let $studentRef = doc(this.firestore, "students/" + id);
+  //   // setDoc($studentRef, student);
+  //   let $studentRef = doc(this.firestore, "students/" + id);
+  //   updateDoc($studentRef, student);
+  // }
+  // async updateStudent(id: string, student: any): Promise<void> {
+  //   // const auth = getAuth();
+  //   const user = this.auth.currentUser;
+
+  //   if (!user) {
+  //     throw new Error("User is not authenticated");
+  //   }
+
+  //   try 
+    
+  //   {
+  //     // Vérification si l'email a changé
+  //     if (student.email && student.email !== user.email) {
+  //       await updateEmail(user, student.email); // Met à jour l'email dans Firebase         
+  //       // alert(user.uid)
+  //       // alert(student.email && student.email !== user.email)
+  //       console.log("Email updated successfully in Firebase Auth");
+  //     }
+
+  //     // Mise à jour des autres champs dans Firestore
+  //     const studentRef = doc(this.firestore, "students", id);
+  //     await updateDoc(studentRef, student);
+  //     console.log("Student updated successfully in Firestore");
+  //   } catch (error) {
+  //     console.error("Error updating student: ", error);
+  //     throw error; // Relancer l'erreur pour la capturer dans le composant
+  //   }
+
+  // }
+
+
+  async updateStudent(id: string, student: any): Promise<void> {
+    const user = this.auth.currentUser;
+  
+    if (!user) {
+      throw new Error("User is not authenticated");
+    }
+  
+    try {
+      // Vérification si l'email a changé
+      if (student.email && student.email !== user.email) {
+        if (!user.email) {
+          throw new Error("User email is null, cannot update email");
+        }
+  
+        const currentPassword = student.currentPassword; // Récupère le mot de passe depuis les données du formulaire
+        if (!currentPassword) {
+          throw new Error("Current password is required for updating the email");
+        }
+  
+        // Ré-authentification avec le mot de passe actuel
+        const credential = EmailAuthProvider.credential(user.email, currentPassword);
+        await reauthenticateWithCredential(user, credential);
+        console.log("User re-authenticated successfully");
+  
+        // Mise à jour de l'email dans Firebase Auth
+        await updateEmail(user, student.email);
+        console.log("Email updated successfully in Firebase Auth");
+      }
+  
+      // Mise à jour du document dans Firestore
+      const studentRef = doc(this.firestore, "students", id);
+      await updateDoc(studentRef, student);
+      console.log("Student updated successfully in Firestore");
+  
+    } catch (error) {
+      console.error("Error updating student: ", error);
+      throw error; // Relancer l'erreur pour la capturer dans le composant
+    }
   }
+  
+  
+  
+  
+  
 
   updateStudentEvaluation(id: string, evaluations: {}) {
     // let $studentRef = doc(this.firestore, "students/" + id);
