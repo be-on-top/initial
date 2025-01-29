@@ -69,6 +69,7 @@ import { CenterDetailsComponent } from './Centers/center-details/center-details.
 import { CentersListComponent } from './Centers/centers-list/centers-list.component';
 import { UpdateCenterComponent } from './Centers/update-center/update-center.component';
 import { CollapsesAlertComponent } from '../collapses-alert/collapses-alert.component';
+import { ProfessionalsListComponent } from './professionals-list/professionals-list.component';
 
 
 
@@ -183,6 +184,9 @@ const routesAdmin: Routes = [
       { path: 'center/:id', component: CenterDetailsComponent, data: { user: 'admin' } },
       { path: 'updateCenter/:id', component: UpdateCenterComponent },
 
+      // pour décompte total
+      { path: 'professionalsList', component: ProfessionalsListComponent }
+
     ],
     // canActivate: [AuthGuardService]
     canActivate: [AuthGuardService, RoleGuardGuard], data: {
@@ -248,7 +252,8 @@ const routesAdmin: Routes = [
     CenterDetailsComponent,
     CentersListComponent,
     UpdateCenterComponent,
-    CollapsesAlertComponent
+    CollapsesAlertComponent,
+    ProfessionalsListComponent
   ],
   imports: [
     BrowserModule,
