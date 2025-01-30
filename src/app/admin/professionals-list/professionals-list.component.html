@@ -1,1 +1,19 @@
-<p>professionals-list works!</p>
+<div *ngIf="isLoading">Chargement...</div>
+
+<div *ngIf="!isLoading">
+  <h2>Total des comptes professionnels : {{ totalProAccounts.length }}</h2>
+
+  <!-- Filtres dynamiques -->
+  <div>
+    <button *ngFor="let type of getUniqueTypes()" (click)="filterByType(type)">
+      {{ type | titlecase }} ({{ countByType(type) }})
+    </button>
+  </div>
+
+  <!-- Liste filtrée des professionnels -->
+  <ul>
+    <li *ngFor="let pro of totalProAccountsFiltered">
+      {{ pro.firstName }} {{ pro.lastName }} - <strong>{{ pro.type | titlecase }}</strong> - UID: {{ pro.id }}
+    </li>
+  </ul>
+</div>
