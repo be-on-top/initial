@@ -1,14 +1,13 @@
 button {
     margin: 5px;
     padding: 8px 12px;
-    border: none;
-    background-color: lightgray;
+
     cursor: pointer;
   }
   
-  button.active {
+  /* button.active {
     background-color: steelblue;
     color: white;
     font-weight: bold;
-  }
+  } */
   
