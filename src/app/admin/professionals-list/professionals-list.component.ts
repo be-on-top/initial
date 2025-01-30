@@ -60,6 +60,9 @@ export class ProfessionalsListComponent implements OnInit {
           }
         });
 
+        this.totalProAccountsFiltered = this.totalProAccounts.filter(pro => pro.type === this.activeFilter);
+
+
         // Vérification de l'ensemble des données
         console.log("✅ TotalProAccounts après ajout des utilisateurs:", this.totalProAccounts);
 
@@ -81,8 +84,17 @@ export class ProfessionalsListComponent implements OnInit {
     return uniqueTypes;
   }
 
-  // Méthode pour filtrer selon un type
+  // Méthode pour filtrer selon un type fonctionne bien mais si on veut rajouter une couleur si type actif
+  // filterByType(type: string): void {
+  //   this.totalProAccountsFiltered = this.totalProAccounts.filter(pro => pro.type === type);
+  // }
+
+  // activeFilter: string | null = null;
+  activeFilter: string | null = 'trainer'; // Par défaut, on affiche les formateurs
+
+
   filterByType(type: string): void {
+    this.activeFilter = type; // Stocke le type actif
     this.totalProAccountsFiltered = this.totalProAccounts.filter(pro => pro.type === type);
   }
 
@@ -90,4 +102,26 @@ export class ProfessionalsListComponent implements OnInit {
   countByType(type: string): number {
     return this.totalProAccounts.filter(pro => pro.type === type).length;
   }
+
+
+  typeLabels: { [key: string]: string } = {
+    referent: 'Conseiller Projet',
+    trainer: 'Formateur',
+    editor: 'Éditeur (Marketing)',
+    external: 'Observateur Externe',
+    evaluator: 'Évaluateur',
+    manager:'Responsable Métier'
+  };
+
+
+  
+  // Méthode pour obtenir le label affiché
+  getTypeLabel(type: string): string {
+    return this.typeLabels[type] || type; // Retourne le label ou le type brut si non trouvé
+  }
+
+
+
+
+
 }

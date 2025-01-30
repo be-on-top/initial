@@ -1,19 +1,35 @@
 <div *ngIf="isLoading">Chargement...</div>
 
 <div *ngIf="!isLoading">
-  <h2>Total des comptes professionnels : {{ totalProAccounts.length }}</h2>
+  <h2 class="mt-5">Total des comptes professionnels : {{ totalProAccounts.length }}</h2>
 
-  <!-- Filtres dynamiques -->
-  <div>
-    <button *ngFor="let type of getUniqueTypes()" (click)="filterByType(type)">
-      {{ type | titlecase }} ({{ countByType(type) }})
+  <div class="container">
+
+    <!-- Filtres dynamiques -->
+    <!-- <div class="mb-3">
+    <button *ngFor="let type of getUniqueTypes()" class="btn btn-outline-primary me-2" (click)="filterByType(type)">
+      {{ getTypeLabel(type) }} ({{ countByType(type) }})
     </button>
-  </div>
+  </div> -->
+    <!-- Filtres dynamiques -->
+    <div class="mb-3">
+      <button *ngFor="let type of getUniqueTypes()" class="btn me-2"
+        [ngClass]="{ 'btn-primary': activeFilter === type, 'btn-outline-primary': activeFilter !== type }"
+        (click)="filterByType(type)">
+        {{ getTypeLabel(type) }} ({{ countByType(type) }})
+      </button>
+    </div>
 
-  <!-- Liste filtrée des professionnels -->
-  <ul>
-    <li *ngFor="let pro of totalProAccountsFiltered">
-      {{ pro.firstName }} {{ pro.lastName }} - <strong>{{ pro.type | titlecase }}</strong> - UID: {{ pro.id }}
-    </li>
-  </ul>
+    <!-- Liste comptable sous forme de tableau Bootstrap -->
+
+    <div class="row fw-bold border-bottom pb-2 mb-2">
+      <div class="col-md-6">Nom</div>
+      <div class="col-md-6">UID</div>
+    </div>
+
+    <div *ngFor="let pro of totalProAccountsFiltered" class="row align-items-center border-bottom py-2">
+      <div class="col-md-6">{{ pro.firstName }} {{ pro.lastName }}</div>
+      <div class="col-md-6">{{ pro.id }}</div>
+    </div>
+  </div>
 </div>
