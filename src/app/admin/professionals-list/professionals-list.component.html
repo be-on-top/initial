@@ -1,7 +1,7 @@
 <div *ngIf="isLoading">Chargement...</div>
 
 <div *ngIf="!isLoading">
-  <h2 class="mt-5">Total des comptes professionnels : {{ totalProAccounts.length }}</h2>
+  <h2 class="my-3">Total des comptes professionnels : {{ totalProAccounts.length }}</h2>
 
   <div class="container">
 
@@ -13,7 +13,7 @@
   </div> -->
     <!-- Filtres dynamiques -->
     <div class="mb-3">
-      <button *ngFor="let type of getUniqueTypes()" class="btn me-2"
+      <button *ngFor="let type of getUniqueTypes()" class="btn btn-sm me-2"
         [ngClass]="{ 'btn-primary': activeFilter === type, 'btn-outline-primary': activeFilter !== type }"
         (click)="filterByType(type)">
         {{ getTypeLabel(type) }} ({{ countByType(type) }})
@@ -27,9 +27,24 @@
       <div class="col-md-6">UID</div>
     </div> -->
 
-    <div *ngFor="let pro of totalProAccountsFiltered" class="row align-items-center border-bottom py-2">
+    <!-- <div *ngFor="let pro of totalProAccountsFiltered" class="row align-items-center border-bottom py-2">
       <div class="col-md-6">{{ pro.firstName }} {{ pro.lastName }}</div>
       <div class="col-md-6">{{ pro.id }}</div>
+    </div> -->
+
+    <!-- Liste filtrée des professionnels -->
+  <div class="row">
+    <div *ngFor="let pro of totalProAccountsFiltered" class="col-md-6 col-lg-4 mb-3">
+      <div class="card shadow-sm border-0 p-3">
+        <h5 class="card-title">{{ pro.firstName }} {{ pro.lastName }}</h5>
+        <p class="card-text">
+          <strong>{{ getTypeLabel(pro.type) }}</strong><br>
+          <small class="text-muted">UID: {{ pro.id }}</small>
+        </p>
+      </div>
     </div>
+  </div>
+
+  
   </div>
 </div>
