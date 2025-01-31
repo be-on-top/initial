@@ -1,4 +1,5 @@
-<div *ngIf="isLoading">Chargement...</div>
+<div *ngIf="isLoading" aria-live="polite">Chargement...</div>
+
 
 <div *ngIf="!isLoading">
   <h2 class="my-3">Total des comptes professionnels : {{ totalProAccounts.length }}</h2>
@@ -12,13 +13,16 @@
     </button>
   </div> -->
     <!-- Filtres dynamiques -->
-    <div class="mb-3">
-      <button *ngFor="let type of getUniqueTypes()" class="btn btn-sm me-2"
-        [ngClass]="{ 'btn-primary': activeFilter === type, 'btn-outline-primary': activeFilter !== type }"
-        (click)="filterByType(type)">
-        {{ getTypeLabel(type) }} ({{ countByType(type) }})
-      </button>
-    </div>
+    <button 
+    *ngFor="let type of getUniqueTypes()" 
+    class="btn btn-sm me-2"
+    [ngClass]="{ 'btn-primary': activeFilter === type, 'btn-outline-primary': activeFilter !== type }"
+    (click)="filterByType(type)"
+    [attr.aria-pressed]="activeFilter === type"
+  >
+    {{ getTypeLabel(type) }} ({{ countByType(type) }})
+  </button>
+  
 
     <!-- Liste comptable sous forme de tableau Bootstrap -->
 
