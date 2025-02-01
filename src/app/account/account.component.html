@@ -29,8 +29,9 @@
         <button type="button" class="btn-close mt-2" data-bs-dismiss="alert"
             aria-label="Fermer le message be-on-top"></button>
         <span> Tous vos résultats et estimations chiffrées sont disponibles ci-dessous. Votre <a
-                class="text-decoration-none" [routerLink]="['/socialregistration']">incription formation</a> peut
-            également commencer !</span>
+                class="text-decoration-none" [routerLink]="['/socialregistration']">incription en formation</a> peut
+            également commencer. Ce <a
+            class="text-decoration-none" [routerLink]="['/socialregistration']">formulaire</a> vous permettra d'être rapidement contacté par le centre de votre choix.</span>
     </div>
     <!-- ici, c'est une fois le formulaire de pré-inscription envoyé, en attendans que l'inscription soit officialisée  -->
     <div *ngIf="userData && userData.isSocialFormSent && !userData.subscriptions"
