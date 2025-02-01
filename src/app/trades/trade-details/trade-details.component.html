@@ -3,7 +3,8 @@
     <!-- <h3>{{tradeData.denomination}}</h3> -->
     <div class="p-2 bg-primary text-white rounded row fade show mx-1">
         <!-- {{imageUrl}} -->
-        <h1 class="d-flex justify-content-between mt-3">{{tradeData.denomination}}<app-share-button></app-share-button>
+        <!-- <h1 class="d-flex justify-content-between mt-3">{{tradeData.denomination}}<app-share-button></app-share-button> -->
+        <h1 class="d-flex justify-content-between mt-3"><span [innerHTML]="processDenomination(tradeData.denomination)"></span> <app-share-button></app-share-button>
         </h1>
 
         <div class="col-md-7">

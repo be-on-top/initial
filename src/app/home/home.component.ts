@@ -606,6 +606,15 @@ export class HomeComponent implements OnInit {
 
   }
 
+  processDenomination(denomination: string): string {
+    const acronymRegex = /(\b[A-Z]+\b)\s?\((.*?)\)/g;
+    
+    return denomination.replace(acronymRegex, (match, acronym, meaning) => {
+      return `<abbr title="${meaning}">${acronym}</abbr>`;
+    });
+  }
+  
+
 
 
 }

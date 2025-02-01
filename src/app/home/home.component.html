@@ -85,7 +85,8 @@
                         [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]">
                         <!-- essai à conserver !!! -->
                         <!-- <h2 class="h5 text-start ps-2" [innerHTML]="trade.denomination | firstWord"></h2> -->
-                        <h2 class="h5 text-start ps-2" [innerHTML]="trade.denomination | firstWord | truncateTitle">
+                        <!-- <h2 class="h5 text-start ps-2" [innerHTML]="trade.denomination | firstWord | truncateTitle"> -->
+                        <h2 class="h5 text-start ps-2"  [innerHTML]="processDenomination(trade.denomination) | firstWord | truncateTitle">
                         </h2>
                     </div>
 

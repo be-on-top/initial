@@ -50,6 +50,8 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
 
   isMapVisible = false;
 
+  tradeDataDenominationRGAA?: any
+
 
   constructor(
     private service: SettingsService,
@@ -78,6 +80,9 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
         this.service.getSigle(this.tradeId).subscribe(data => {
           console.log("metier récupéré via le paramètre de route", data)
           this.tradeData = data
+
+
+          this.tradeDataDenominationRGAA = this.processDenomination(data.denomination)
           // pour personnaliser le metatag
           const textForDescription = this.transform(this.tradeData.description)
           this.addTag(`Evaluez vos compétences et démarrez une formation personnalisée de ${this.tradeData.denomination}. ${textForDescription}`)
@@ -291,7 +296,7 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
     if (this.isCentersCollapsed) {
       // Affiche la carte
       this.isMapVisible = true;
-  
+
       // Donne un délai pour s'assurer que le DOM est mis à jour avant l'appel de `invalidateSize`
       setTimeout(() => {
         this.map?.invalidateSize();
@@ -589,6 +594,26 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
     });
   }
 
+  // processDenomination(denomination: string): string {
+  //   const acronymRegex = /(\b[A-Z]+\b)\s?\((.*?)\)/g;
+
+  //   return denomination.replace(acronymRegex, (match, acronym, meaning) => {
+  //     return `<abbr title="${meaning}">${acronym}</abbr>`;
+  //   });
+  // }
+
+  processDenomination(denomination: string): string {
+    // Expression régulière pour détecter les acronymes en majuscules suivis de la signification entre parenthèses
+    const acronymRegex = /(\b[A-Z]+\b)\s?\((.*?)\)/g;
+  
+    return denomination.replace(acronymRegex, (match, acronym, meaning) => {
+      // On remplace l'acronyme par <abbr>, mais on garde les parenthèses et leur contenu visibles
+      return `<abbr title="${meaning}">${acronym}</abbr> (${meaning})`;
+    });
+
+    
+  }
+  
 
 
 

@@ -420,6 +420,27 @@ p.question {
     animation: fade-zoom-out 0.8s;
 }
 
+
+abbr { 
+    text-decoration-thickness: 1px;
+    text-underline-offset: 6px;
+  }
+
+  abbr:hover::after {
+    content: attr(title); /* Affiche le texte du title en tant que tooltip */
+    position: absolute;
+    background-color: #333; /* Fond sombre pour la bulle */
+    color: white; /* Couleur du texte */
+    padding: 5px 10px; /* Espacement autour du texte */
+    border-radius: 4px; /* Coins arrondis */
+    font-size: 14px; /* Taille du texte */
+    white-space: nowrap; /* Empêche la coupure du texte */
+    z-index: 9999; /* Assure que la bulle soit au-dessus des autres éléments */
+    top: -30px; /* Positionne la bulle un peu au-dessus de l'acronyme */
+    left: 0; /* Aligne la bulle à gauche du mot */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Ombre portée pour plus de lisibilité */
+  }
+
 @keyframes fade-zoom-out {
     from {
         opacity: 0;
@@ -604,5 +625,7 @@ p.question {
     button{
         display: none !important;
     }
+
+
   }
   
