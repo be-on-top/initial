@@ -611,7 +611,7 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
       return `<abbr title="${meaning}">${acronym}</abbr> (${meaning})`;
     });
 
-    
+
   }
   
 

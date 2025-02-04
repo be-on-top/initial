@@ -25,15 +25,16 @@
     </div>
     <!-- ici, c'est une fois qu'ils ont terminés un questionnaire dans son intégralité, avec 3 nouveaux onglets -->
     <div *ngIf="isOneQuizzAchieved && !userData.isSocialFormSent && !userData.subscriptions && userData.innerStudent!==true"
-        class="alert alert-light p-4 alert-dismissible mb-4 fade show pe-5">
+        class="alert bg-warning p-4 alert-dismissible mb-4 fade show pe-5 animate">
         <button type="button" class="btn-close mt-2" data-bs-dismiss="alert"
             aria-label="Fermer le message be-on-top"></button>
-        <span> Tous vos résultats et estimations chiffrées sont disponibles ci-dessous. Votre <a
+        <!-- <span> Vos résultats et estimations sont disponibles ci-dessous. L'<a
                 class="text-decoration-none" [routerLink]="['/socialregistration']">incription en formation</a> peut
-            également commencer. Ce <a
-            class="text-decoration-none" [routerLink]="['/socialregistration']">formulaire</a> vous permettra d'être rapidement contacté par le centre de votre choix.</span>
+            maintenant commencer.</span> -->
+        <span> <i class="bi bi-info-square-fill pe-2"></i>Vos <span class="fw-bold">résultats et estimations</span> sont affichés <span class="fw-bold">ci-dessous</span>. Pour <span class="fw-bold">être accompagné dans votre projet </span>et <span class="fw-bold">vous rapprocher du centre de votre choix,</span> compléter le <a
+            class="text-decoration-none" [routerLink]="['/socialregistration']"> formulaire d'inscription à nos formations</a>.</span>
     </div>
-    <!-- ici, c'est une fois le formulaire de pré-inscription envoyé, en attendans que l'inscription soit officialisée  -->
+    <!-- ici, c'est une fois le formulaire de pré-inscription envoyé, en attendant que l'inscription soit officialisée  -->
     <div *ngIf="userData && userData.isSocialFormSent && !userData.subscriptions"
         class="alert alert-light p-4 alert-dismissible mb-4 fade show pe-5">
         <button type="button" class="btn-close mt-2" data-bs-dismiss="alert"
@@ -194,6 +195,15 @@
                         <hr *ngIf="!last">
                     </div>
                 </div>
+
+                <!-- répétition message d'alerte -->
+                <div *ngIf="isOneQuizzAchieved && !userData.isSocialFormSent && !userData.subscriptions && userData.innerStudent!==true"
+                class="alert bg-warning p-4 mb-4 fade show m-2 assistant">
+
+                <span> <i class="bi bi-info-square-fill pe-2 danger"></i>Pour <strong> contacter le centre de votre choix,</strong> n'oubliez pas de compléter notre <a
+                     [routerLink]="['/socialregistration']"> formulaire d'inscription en formation</a>.</span>
+            </div>
+
             </div>
         </div>
 
@@ -256,6 +266,14 @@
                         </div>
                     </div>
                 </div>
+
+                                <!-- répétition message d'alerte -->
+                                <div *ngIf="isOneQuizzAchieved && !userData.isSocialFormSent && !userData.subscriptions && userData.innerStudent!==true"
+                                class="alert bg-warning p-4 mb-4 fade show m-2 assistant">
+                
+                                <span> <i class="bi bi-info-square-fill pe-2 danger"></i>Pour <strong> contacter le centre de votre choix,</strong> n'oubliez pas de compléter notre <a
+                                     [routerLink]="['/socialregistration']"> formulaire d'inscription en formation</a>.</span>
+                            </div>
             </div>
         </div>
 

@@ -125,6 +125,17 @@ li.submenu a[role="button"]::after {
     background-color: #0056b3;
   }
 
+  @media screen and (max-width:1140px) {
+
+
+    .info-button{
+        display: none;
+    }
+
+    
+
+}
+
 
 
 @media screen and (min-width:576px) and (max-width:768px) {
