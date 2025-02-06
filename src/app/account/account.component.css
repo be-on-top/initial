@@ -102,6 +102,13 @@ a[aria-expanded="true"] .toggle-arrow {
 
 
 
+.alert.bg-warning a{
+  color: black;
+  text-decoration: underline!important;
+}
+
+
+
 
 
 
@@ -147,8 +154,18 @@ a[aria-expanded="true"] .toggle-arrow {
 
 @media (min-width: 1140px) {
   .assistant {
-    padding-left: 8%!important; /* Confortable sur grands écrans */
+    min-height:120px;
+    padding-left: 10%!important; /* Confortable sur grands écrans */
+    display: flex;
+    align-items: center; /* Centre verticalement */
+
+
   }
+
+
+  
+
+
 }
 
 @media (max-width: 1139px) and (min-width: 961px) {
@@ -172,7 +189,7 @@ a[aria-expanded="true"] .toggle-arrow {
 
   .assistant {
     background-size: auto 50%;
-    padding-left: 46% !important; 
+    padding-left: 45% !important; 
   }
 }
 

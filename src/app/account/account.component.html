@@ -31,8 +31,11 @@
         <!-- <span> Vos résultats et estimations sont disponibles ci-dessous. L'<a
                 class="text-decoration-none" [routerLink]="['/socialregistration']">incription en formation</a> peut
             maintenant commencer.</span> -->
-        <span> <i class="bi bi-info-square-fill pe-2"></i>Vos <span class="fw-bold">résultats et estimations</span> sont affichés <span class="fw-bold">ci-dessous</span>. Pour <span class="fw-bold">être accompagné dans votre projet </span>et <span class="fw-bold">vous rapprocher du centre de votre choix,</span> compléter le <a
-            class="text-decoration-none" [routerLink]="['/socialregistration']"> formulaire d'inscription à nos formations</a>.</span>
+        <span> <i class="bi bi-info-square-fill pe-2"></i>Vos <span class="fw-bold">résultats et estimations</span> sont
+            affichés <span class="fw-bold">ci-dessous</span>. Pour <span class="fw-bold">être accompagné dans votre
+                projet </span>et <span class="fw-bold">vous rapprocher du centre de votre choix,</span> compléter le <a
+                class="text-decoration-none" [routerLink]="['/socialregistration']"> formulaire d'inscription à nos
+                formations</a>.</span>
     </div>
     <!-- ici, c'est une fois le formulaire de pré-inscription envoyé, en attendant que l'inscription soit officialisée  -->
     <div *ngIf="userData && userData.isSocialFormSent && !userData.subscriptions"
@@ -168,7 +171,7 @@
                             <button class="btn bg-success pe-5 d-flex align-items-center">
                                 <a class="text-light"
                                     [routerLink]="['/quizz/', trade.slice(6), userData[trade].lastIndexQuestion + 1 | number, userData[trade].scoreCounter, true, user]">
-                                    <i class="bi fs-5 bi-clock-history"></i> Poursuivre
+                                    <i class="bi fs-5 bi-clock-history me-2"></i> Poursuivre
                                 </a>
                             </button>
                         </div>
@@ -198,11 +201,12 @@
 
                 <!-- répétition message d'alerte -->
                 <div *ngIf="isOneQuizzAchieved && !userData.isSocialFormSent && !userData.subscriptions && userData.innerStudent!==true"
-                class="alert bg-warning p-4 mb-4 fade show m-2 assistant">
+                    class="alert bg-warning p-4 mb-4 fade show m-2 assistant">
 
-                <span> <i class="bi bi-info-square-fill pe-2 danger"></i>Pour <strong> contacter le centre de votre choix,</strong> n'oubliez pas de compléter notre <a
-                     [routerLink]="['/socialregistration']"> formulaire d'inscription en formation</a>.</span>
-            </div>
+                    <span> <i class="bi bi-info-square-fill pe-2 danger"></i>Pour <strong> contacter le centre de votre
+                            choix,</strong> n'oubliez pas de compléter notre <a [routerLink]="['/socialregistration']">
+                            formulaire d'inscription en formation</a>.</span>
+                </div>
 
             </div>
         </div>
@@ -249,10 +253,42 @@
                                     </ng-container>
                                     <hr *ngIf="lastEstimate">
                                     <!-- partie si on masque le total de couts -->
-                                    <div *ngIf="lastEstimate && displayPrices==false" class="mb-5"><span
+                                    <!-- <div *ngIf="lastEstimate && displayPrices==false" class="mb-5"><span
                                             class="fw-bolder">Total estimé: {{
                                             calculateSubtotal(trade) | duration }}</span>/{{ calculateTotalTime(trade) |
-                                        duration }} <span class="fw-bolder">de formation</span></div>
+                                        duration }} <span class="fw-bolder">de formation</span>
+
+                                        <span
+                                            *ngIf="calculateSubtotal(trade) % 7 !== 0 && roundToNearestMultipleOf7(calculateSubtotal(trade)) !== calculateSubtotal(trade)"
+                                            class="text-danger">
+                                            <br>La formation la plus proche adaptée à votre besoin sera donc de {{
+                                            roundToNearestMultipleOf7(calculateSubtotal(trade)) | duration }} car nos
+                                            journées de formation sont de 7 heures.
+                                        </span> -->
+
+                                        
+                                        <div *ngIf="lastEstimate && displayPrices==false" class="mb-5">
+                                            <span class="fw-bolder">
+                                                Total estimé: {{ calculateSubtotal(trade) | duration }}
+                                            </span> / {{ calculateTotalTime(trade) | duration }} 
+                                            <span class="fw-bolder">de formation</span>
+                                        
+                                            <!-- Valeur brute et arrondie pour le débogage -->
+                                            <!-- <p>Valeur brute : {{ calculateSubtotal(trade) }}</p>
+                                            <p>Valeur arrondie : {{ roundToNearestMultipleOf7(calculateSubtotal(trade)) }}</p> -->
+                                        
+                                            <!-- Si l'arrondi dépasse le total, on force l'arrondi inférieur -->
+                                            <span *ngIf="calculateSubtotal(trade) % 7 !== 0" class="text-danger">
+                                                <br>La formation la plus proche adaptée à votre besoin sera donc de 
+                                                {{ getAdjustedTrainingTime(calculateSubtotal(trade), calculateTotalTime(trade)) }}h 
+                                                car nos journées de formation sont de 7 heures.
+                                            </span>
+                                            
+                                            
+                                            
+                                        </div>
+
+                                    
                                     <!-- partie si on affiche tout  -->
                                     <div *ngIf="lastEstimate && displayPrices==true && trade?.durations" class="mb-5">
                                         <span class="fw-bolder">Total estimé: {{
@@ -267,13 +303,14 @@
                     </div>
                 </div>
 
-                                <!-- répétition message d'alerte -->
-                                <div *ngIf="isOneQuizzAchieved && !userData.isSocialFormSent && !userData.subscriptions && userData.innerStudent!==true"
-                                class="alert bg-warning p-4 mb-4 fade show m-2 assistant">
-                
-                                <span> <i class="bi bi-info-square-fill pe-2 danger"></i>Pour <strong> contacter le centre de votre choix,</strong> n'oubliez pas de compléter notre <a
-                                     [routerLink]="['/socialregistration']"> formulaire d'inscription en formation</a>.</span>
-                            </div>
+                <!-- répétition message d'alerte -->
+                <div *ngIf="isOneQuizzAchieved && !userData.isSocialFormSent && !userData.subscriptions && userData.innerStudent!==true"
+                    class="alert bg-warning p-4 mb-4 fade show m-2 assistant">
+
+                    <span> <i class="bi bi-info-square-fill pe-2 danger"></i>Pour <strong> contacter le centre de votre
+                            choix,</strong> n'oubliez pas de compléter notre <a [routerLink]="['/socialregistration']">
+                            formulaire d'inscription en formation</a>.</span>
+                </div>
             </div>
         </div>
 

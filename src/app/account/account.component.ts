@@ -135,6 +135,7 @@ export class AccountComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
 
 
+
     // Récupérer la valeur initiale de displayPrices depuis Firestore
     this.settingsService.getDisplayPrices().subscribe((data: any) => {
       if (data && data.prices !== undefined) {
@@ -547,6 +548,8 @@ export class AccountComponent implements OnInit, OnDestroy {
         }
       }
     }
+
+
     return subtotalTime;
   }
 
@@ -745,6 +748,54 @@ export class AccountComponent implements OnInit, OnDestroy {
 
     this.triggerContextualNotification();
   }
+
+  // roundToNearestMultipleOf7(duration: number): number {
+  //   return Math.round(duration / 7) * 7;
+  // }
+
+  // roundToNearestMultipleOf7(duration: number): number {
+  //   return Math.floor((duration + 3.5) / 7) * 7;
+  // }
+
+//   roundDownToMultipleOf7(duration: number): number {
+//   return Math.floor(duration / 7) * 7;
+// }
+
+roundToNearestMultipleOf7(duration: number): number {
+  return Math.round((duration + 0.1) / 7) * 7;
+
+  
+}
+
+
+
+getAdjustedTrainingTime(subtotal: number, total: number): number {
+  const rounded = this.roundToNearestMultipleOf7(subtotal);
+  return rounded > total ? Math.floor(subtotal / 7) * 7 : rounded;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
