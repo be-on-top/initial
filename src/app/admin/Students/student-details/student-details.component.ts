@@ -68,6 +68,10 @@ export class StudentDetailsComponent {
   // pour rajouter une classe au formulaire si c'est l'admin qui regarde
   isReadOnly = false;
 
+
+  // pour récupérer durées max si exigé
+  // tradesData?: any
+
   constructor(
     private service: StudentsService,
     private route: ActivatedRoute,
@@ -88,6 +92,11 @@ export class StudentDetailsComponent {
     this.getStudentDetails(this.studentId)
     this.getUsers()
 
+    // pour récupérer les métiers (sigles) enregistrés en base qui détermineront les maximums couts et durée si exigé !!!!!!!!!!!!
+    // this.settingsService.getTrades().subscribe(data => {
+    //   this.tradesData = data;
+    //   console.log("this.tradesData", this.tradesData)
+    // })
 
   }
 
@@ -227,6 +236,8 @@ export class StudentDetailsComponent {
       map(data => this.tradeName = data)
     );
   }
+
+
 
   // pour modulariser la méthode de récupération de l'info-bulle avec des termes génériques
   getMoreInfo(tradeId: string) {
@@ -395,31 +406,64 @@ export class StudentDetailsComponent {
     // Rendre tous les collapses visibles pour l'impression
     // const collapses = document.querySelectorAll('.collapse');
     // collapses.forEach((collapse) => collapse.classList.add('show'));
-  
+
     // Lancer l'impression
     window.print();
-  
+
     // Restaurer l'état initial après impression
     // setTimeout(() => {
     //   collapses.forEach((collapse) => collapse.classList.remove('show'));
     // }, 0);
-  }  
+  }
 
   hideAndPrint() {
     // Sélectionner tous les éléments avec la classe "cost"
     const costElements = document.querySelectorAll('.cost') as NodeListOf<HTMLElement>;
-  
+
     // Cacher les éléments avec la classe "cost"
     costElements.forEach((el) => (el.style.display = 'none'));
-  
+
     // Lancer l'impression
     window.print();
-  
+
     // Restaurer l'état initial après impression
     setTimeout(() => {
       costElements.forEach((el) => (el.style.display = ''));
     }, 0);
   }
+
+
+
+  roundToNearestMultipleOf7(duration: number): number {
+    return Math.round((duration + 0.1) / 7) * 7;
+
+
+  }
+
+
+
+  getAdjustedTrainingTime(subtotal: number, total: number): number {
+    const rounded = this.roundToNearestMultipleOf7(subtotal);
+    return rounded > total ? Math.floor(subtotal / 7) * 7 : rounded;
+  }
+
+  // si exigé pour récupérer la durée totale max !!!!!!!!!!!
+  // calculateTotalTime(trade: string): any {
+  //   const keyTrade = trade.replace('quizz_', '')
+  //   console.log("trade", keyTrade)
+
+  //   const filteredData = this.tradesData.filter((item: any) => item.sigle === keyTrade);
+
+  //   console.log('filteredData!!!!!!!!!!!!!!!!!', filteredData)
+  //   let total = 0
+  //   Object.values(filteredData[0].durations).forEach((value: any) => {
+  //     total += value[0]
+  //   })
+
+  //   return total
+
+  // }
+
 
 
 }
