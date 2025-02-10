@@ -72,6 +72,9 @@ export class StudentDetailsComponent {
   // pour récupérer durées max si exigé
   // tradesData?: any
 
+  // pour les settings application display
+  isTrainingTimeMultiple7:boolean=false
+
   constructor(
     private service: StudentsService,
     private route: ActivatedRoute,
@@ -97,6 +100,8 @@ export class StudentDetailsComponent {
     //   this.tradesData = data;
     //   console.log("this.tradesData", this.tradesData)
     // })
+
+    this.settingsService.getDisplayPrices().subscribe(element=>this.isTrainingTimeMultiple7=element['isMultiple7TrainingTime'])
 
   }
 

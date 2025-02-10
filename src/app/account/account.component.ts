@@ -106,6 +106,9 @@ export class AccountComponent implements OnInit, OnDestroy {
   // pour ceux qui ne savent pas qu'un onglet est cliquable > transféré au composant enfant
   // showCollapsesAlert: boolean = true;
 
+  // pour les settings application display
+  isTrainingTimeMultiple7: boolean = false
+
   constructor(
     private auth: Auth,
     // private firestore: Firestore, 
@@ -140,8 +143,9 @@ export class AccountComponent implements OnInit, OnDestroy {
     this.settingsService.getDisplayPrices().subscribe((data: any) => {
       if (data && data.prices !== undefined) {
         this.displayPrices = data.prices;
+        // je rajoute de quoi récupérer l'état de l'autre propriété de display
+        this.isTrainingTimeMultiple7=data.isMultiple7TrainingTime
         console.log("displayPrices depuis ngOnInit !!!!!!!!!!!!!!!!!!!!!!!", this.displayPrices);
-
       }
     })
 
@@ -757,24 +761,22 @@ export class AccountComponent implements OnInit, OnDestroy {
   //   return Math.floor((duration + 3.5) / 7) * 7;
   // }
 
-//   roundDownToMultipleOf7(duration: number): number {
-//   return Math.floor(duration / 7) * 7;
-// }
+  //   roundDownToMultipleOf7(duration: number): number {
+  //   return Math.floor(duration / 7) * 7;
+  // }
 
-roundToNearestMultipleOf7(duration: number): number {
-  return Math.round((duration + 0.1) / 7) * 7;
-
-  
-}
+  roundToNearestMultipleOf7(duration: number): number {
+    return Math.round((duration + 0.1) / 7) * 7;
 
 
-
-getAdjustedTrainingTime(subtotal: number, total: number): number {
-  const rounded = this.roundToNearestMultipleOf7(subtotal);
-  return rounded > total ? Math.floor(subtotal / 7) * 7 : rounded;
-}
+  }
 
 
+
+  getAdjustedTrainingTime(subtotal: number, total: number): number {
+    const rounded = this.roundToNearestMultipleOf7(subtotal);
+    return rounded > total ? Math.floor(subtotal / 7) * 7 : rounded;
+  }
 
 
 
@@ -802,7 +804,9 @@ getAdjustedTrainingTime(subtotal: number, total: number): number {
 
 
 
-// on va transférer ça à un composant enfant
+
+
+  // on va transférer ça à un composant enfant
   // dismissAlert(): void {
   //   this.showCollapsesAlert = false;
   //   // Enregistre l'état dans le localStorage pour éviter de réafficher l'alerte

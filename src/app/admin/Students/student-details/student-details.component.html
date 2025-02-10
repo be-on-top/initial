@@ -9,7 +9,8 @@
 
         <div class="card" *ngIf="student">
             <div class="card-header bg-primary">
-                <a class="btn text-light d-flex justify-content-between p-0" data-bs-toggle="collapse" href="#collapseOne" aria-expanded="true">
+                <a class="btn text-light d-flex justify-content-between p-0" data-bs-toggle="collapse"
+                    href="#collapseOne" aria-expanded="true">
                     <div class="d-flex align-items-center gap-2 justify-content-between">
                         <span class="text-nowrap">Données personnelles</span>
                         <i class="bi bi-caret-down-fill toggle-arrow fs-7"></i>
@@ -165,7 +166,18 @@
                                 <hr>
                                 <p><span class="fw-bold">Total</span> : {{totalTime}} heures de formation <span
                                         class="cost">
-                                        {{totalCost}}€</span></p>
+                                        {{totalCost}}€</span>
+
+                                    <!-- pour les arrondis multiples de 7 -->
+                                    <!-- Si l'arrondi dépasse le total, on force l'arrondi inférieur -->
+                                    <span *ngIf="totalTime % 7 !== 0 && isTrainingTimeMultiple7 " class="text-danger">
+                                        <br>La formation la plus proche suggérée au candidat est donc de
+                                        {{ getAdjustedTrainingTime(totalTime, totalCost) }}h
+                                        car vos journées de formation sont de 7 heures.
+                                    </span>
+
+
+                                </p>
 
                             </ng-template>
 

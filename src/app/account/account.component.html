@@ -278,7 +278,7 @@
                                             <p>Valeur arrondie : {{ roundToNearestMultipleOf7(calculateSubtotal(trade)) }}</p> -->
                                         
                                             <!-- Si l'arrondi dépasse le total, on force l'arrondi inférieur -->
-                                            <span *ngIf="calculateSubtotal(trade) % 7 !== 0" class="text-danger">
+                                            <span *ngIf="calculateSubtotal(trade) % 7 !== 0 && isTrainingTimeMultiple7 " class="text-danger">
                                                 <br>La formation la plus proche adaptée à votre besoin sera donc de 
                                                 {{ getAdjustedTrainingTime(calculateSubtotal(trade), calculateTotalTime(trade)) }}h 
                                                 car nos journées de formation sont de 7 heures.

@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer2, ViewChild, OnInit, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, Renderer2, ViewChild, OnInit, AfterViewInit, HostListener } from '@angular/core';
 import { AuthService } from '../admin/auth.service';
 import { onAuthStateChanged } from 'firebase/auth';
 import { Auth, reload } from '@angular/fire/auth';
@@ -41,6 +41,9 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
   groupedTrades: any[] = [];  // Pour les métiers avec parentCategory
   ungroupedTrades: any[] = [];  // Pour les métiers sans parentCategory
+
+  // groupedTrades: Map<string, Trade[]> = new Map();
+
 
 
 
@@ -282,7 +285,19 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
 
 
+    formatCategoryTitle(category: string): { main: string, subtitle: string } {
+      const index = category.indexOf('(');
+      if (index === -1) {
+          return { main: category, subtitle: '' };
+      }
+      return { main: category.slice(0, index), subtitle: category.slice(index) };
+  }
 
+  @HostListener('click', ['$event'])
+onDropdownClick(event: Event) {
+    event.stopPropagation();
+}
+  
 
 
 

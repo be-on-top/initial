@@ -166,13 +166,29 @@
                           onclick="event.stopPropagation();">
                             {{ group[0] }}
                           </a> -->
-                            <a class="dropdown-item dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+           
+                            <!-- <a class="dropdown-item dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                                 aria-expanded="false" onclick="event.stopPropagation();">
                                 {{ group[0] | slice:0:group[0].indexOf('(') }}<br>
                                 <span class="break-before-parenthesis">
                                     {{ group[0] | slice:group[0].indexOf('(') }}
                                 </span>
-                            </a>
+                            </a> -->
+                            <!-- <a class="dropdown-item dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+   aria-expanded="false" onclick="event.stopPropagation();">
+    {{ formatCategoryTitle(group[0]).main }}<br>
+    <span class="break-before-parenthesis">
+        {{ formatCategoryTitle(group[0]).subtitle }}
+    </span>
+</a> -->
+                            <a class="dropdown-item dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+   aria-expanded="false"  (click)="onDropdownClick($event)">
+    {{ formatCategoryTitle(group[0]).main }}<br>
+    <span class="break-before-parenthesis">
+        {{ formatCategoryTitle(group[0]).subtitle }}
+    </span>
+</a>
+
                             <ul class="dropdown-menu">
                                 <!-- Afficher chaque métier sous la catégorie -->
                                 <li *ngFor="let trade of group[1]">
@@ -186,6 +202,8 @@
 
                     </ul>
                 </li>
+
+                
 
 
                 <!-- ajout login global (on aura ultérieurement un public et privé réservé aux contributeurs et évaluateurs...) -->
