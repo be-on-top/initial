@@ -39,8 +39,9 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   private networkSubscription: Subscription | null = null; // Initialisé à null
   // private hasCheckedInitialStatus = false;
 
-  groupedTrades: any[] = [];  // Pour les métiers avec parentCategory
+  // groupedTrades: any[] = [];  // Pour les métiers avec parentCategory
   ungroupedTrades: any[] = [];  // Pour les métiers sans parentCategory
+  groupedTrades: Map<string, Trade[]> = new Map();
 
   // groupedTrades: Map<string, Trade[]> = new Map();
 
@@ -142,7 +143,23 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       }
 
     }
+
+    this.groupedTrades = this.groupTradesByCategory(this.trades);
   }
+
+  groupTradesByCategory(trades: Trade[]): Map<string, Trade[]> {
+    const grouped = new Map<string, Trade[]>();
+
+    trades.forEach(trade => {
+        const category = trade.parentCategory || ''; // Catégorie vide pour les non-groupés
+        if (!grouped.has(category)) {
+            grouped.set(category, []);
+        }
+        grouped.get(category)?.push(trade);
+    });
+
+    return grouped;
+}
 
   ngAfterViewInit(): void {
     this.tradeService.fetchPartners().subscribe(data => {
@@ -247,7 +264,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       }
     });
  
-    this.groupedTrades = Array.from(grouped.entries());
+    this.groupedTrades = grouped;
     console.log("Métiers regroupés:", this.groupedTrades);
     console.log("Métiers non groupés:", this.ungroupedTrades);
   }
@@ -293,10 +310,29 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       return { main: category.slice(0, index), subtitle: category.slice(index) };
   }
 
-  @HostListener('click', ['$event'])
+//   @HostListener('click', ['$event'])
+// onDropdownClick(event: Event) {
+//     event.stopPropagation();
+// }
+
 onDropdownClick(event: Event) {
-    event.stopPropagation();
+  event.preventDefault(); // Empêche le lien de naviguer
+  event.stopPropagation(); // Empêche la fermeture immédiate du menu
+
+  const element = (event.target as HTMLElement).parentElement;
+  
+  if (element?.classList.contains("show")) {
+      element.classList.remove("show"); // Cache le sous-menu
+  } else {
+      // Fermer tous les autres sous-menus
+      document.querySelectorAll(".dropdown-submenu").forEach(submenu => {
+          submenu.classList.remove("show");
+      });
+
+      element?.classList.add("show"); // Affiche le sous-menu cliqué
+  }
 }
+
   
 
 

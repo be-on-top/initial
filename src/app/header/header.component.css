@@ -105,6 +105,7 @@ li.submenu a[role="button"]::after {
 
 
 
+
 .info-button {
     position: fixed;
     top: 65%; /* Milieu de l'écran verticalement */
@@ -124,6 +125,86 @@ li.submenu a[role="button"]::after {
   .info-button:hover {
     background-color: #0056b3;
   }
+
+  /* .dropdown-submenu {
+    position: relative; 
+}
+
+.dropdown-submenu .dropdown-menu {
+    top: 100%; 
+    left: 0; 
+    display: none; 
+    position: absolute;
+    z-index: 1050;
+    min-width: 10rem; 
+    width: auto; 
+    margin-top: 0; 
+}
+
+
+.dropdown-submenu.show > .dropdown-menu {
+    display: block;
+} */
+
+/* Garantir le bon positionnement des sous-menus */
+.dropdown-submenu {
+    position: relative;
+}
+
+/* Sous-menus cachés par défaut et affichés lorsqu'ils sont actifs */
+.dropdown-submenu .dropdown-menu {
+    display: none;
+    position: relative !important; /* Permet de pousser les éléments suivants */
+    top: 100%;
+    left: 0;
+    width: auto; /* S'ajuste au contenu */
+    min-width: 10rem;
+    margin-top: 0.2rem; /* Petit espace pour éviter qu'ils collent */
+    z-index: 1050;
+}
+
+/* Affichage du sous-menu lorsqu'il est actif */
+.dropdown-submenu.show > .dropdown-menu {
+    display: block;
+}
+
+/* Lorsque le sous-menu est ouvert, la flèche s'inverse */
+.dropdown-submenu.show > .dropdown-item.dropdown-toggle::after {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+
+/* Assurer que la navbar est bien en dessous des sous-menus */
+.navbar-nav {
+    position: relative;
+    z-index: 1000;
+}
+
+/* Transition fluide pour l'ouverture des menus */
+.navbar-collapse {
+    transition: all 0.3s ease;
+}
+
+.dropdown-item.dropdown-toggle {
+    position: relative;
+    display: inline-block; /* Garde la largeur naturelle du texte */
+    white-space: normal; /* Permet au texte de se couper normalement */
+}
+
+.dropdown-item.dropdown-toggle::after {
+    position: absolute;
+    right: 10px; /* Ajuste la position de la flèche */
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+
+
+
+
+
+
+
 
   @media screen and (max-width:1140px) {
 

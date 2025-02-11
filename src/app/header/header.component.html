@@ -159,48 +159,47 @@
                         </li>
 
                         <!-- Afficher les métiers regroupés par parentCategory -->
-
-                        <li class="dropdown-submenu" *ngFor="let group of groupedTrades">
-                            <!-- Affichage de la parentCategory -->
-                            <!-- <a class="dropdown-item dropdown-toggle text-uppercase" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"
-                          onclick="event.stopPropagation();">
-                            {{ group[0] }}
-                          </a> -->
-           
-                            <!-- <a class="dropdown-item dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false" onclick="event.stopPropagation();">
-                                {{ group[0] | slice:0:group[0].indexOf('(') }}<br>
-                                <span class="break-before-parenthesis">
-                                    {{ group[0] | slice:group[0].indexOf('(') }}
-                                </span>
-                            </a> -->
-                            <!-- <a class="dropdown-item dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-   aria-expanded="false" onclick="event.stopPropagation();">
-    {{ formatCategoryTitle(group[0]).main }}<br>
-    <span class="break-before-parenthesis">
-        {{ formatCategoryTitle(group[0]).subtitle }}
-    </span>
-</a> -->
+                        <!-- <li class="dropdown-submenu" *ngFor="let group of groupedTrades | keyvalue">
                             <a class="dropdown-item dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-   aria-expanded="false"  (click)="onDropdownClick($event)">
-    {{ formatCategoryTitle(group[0]).main }}<br>
-    <span class="break-before-parenthesis">
-        {{ formatCategoryTitle(group[0]).subtitle }}
-    </span>
-</a>
-
+                               aria-expanded="false" (click)="onDropdownClick($event)">
+                                {{ formatCategoryTitle(group.key).main }}<br>
+                                <span class="break-before-parenthesis">
+                                    {{ formatCategoryTitle(group.key).subtitle }}
+                                </span>
+                            </a>
                             <ul class="dropdown-menu">
-                                <!-- Afficher chaque métier sous la catégorie -->
-                                <li *ngFor="let trade of group[1]">
+                                <li *ngFor="let trade of group.value">
                                     <a class="dropdown-item" (click)="closeNavbar()"
-                                        [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]">
+                                       [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]">
+                                        {{ trade.denomination | truncateTitle }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </li> -->
+
+                        <li class="dropdown-submenu" *ngFor="let group of groupedTrades | keyvalue">
+                            <a class="dropdown-item dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                               aria-expanded="false" (click)="onDropdownClick($event)">
+                                {{ formatCategoryTitle(group.key).main }}<br>
+                                <span class="break-before-parenthesis">
+                                    {{ formatCategoryTitle(group.key).subtitle }}
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li *ngFor="let trade of group.value">
+                                    <a class="dropdown-item" (click)="closeNavbar()"
+                                       [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]">
                                         {{ trade.denomination | truncateTitle }}
                                     </a>
                                 </li>
                             </ul>
                         </li>
+                        
+                        
 
                     </ul>
+
+                    
                 </li>
 
                 
