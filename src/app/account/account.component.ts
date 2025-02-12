@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, Renderer2, AfterViewInit } from '@angular/core';
+
 import { Router } from '@angular/router';
 // je ne vois pas l'utilité de cette méthode pour le moment, donc on désactive !!!!
 // import { loggedIn } from '@angular/fire/auth-guard';
@@ -120,7 +121,9 @@ export class AccountComponent implements OnInit, OnDestroy {
     public sanitizer: DomSanitizer,
     private settingsService: SettingsService,
     private consentService: ConsentService,
-    private networkService: NetworkService) {
+    private networkService: NetworkService,
+    private el: ElementRef, 
+    private renderer: Renderer2) {
     // const messaging = getMessaging();
     // onMessage(messaging, (payload) => {
     //   console.log('Message received. ', payload);
@@ -136,8 +139,6 @@ export class AccountComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
-
 
     // Récupérer la valeur initiale de displayPrices depuis Firestore
     this.settingsService.getDisplayPrices().subscribe((data: any) => {
@@ -205,6 +206,41 @@ export class AccountComponent implements OnInit, OnDestroy {
 
 
   }
+
+  // ngAfterViewInit(): void {
+  //   alert('ngAfterViewInit exécuté ✅');
+  //   console.log('🔄 ngAfterViewInit exécuté ✅');
+  
+  //   const alertBox = this.el.nativeElement.querySelector('.assistant');
+  //   console.log('📌 Élément trouvé :', alertBox); // Vérifie si alertBox est bien trouvé
+  
+  //   if (alertBox) {
+  //     const images = ["url('/assets/icons/assistant.webp')", "url('/assets/icons/assistante.webp')"];
+  //     const randomImage = images[Math.floor(Math.random() * images.length)];
+  
+  //     console.log('🎲 Image choisie :', randomImage); // Vérifie si le tirage fonctionne
+  //     this.renderer.setStyle(alertBox, 'background-image', randomImage);
+  //   } else {
+  //     console.error('❌ Alerte introuvable !');
+  //   }
+  // }
+
+  imageAlreadySet:boolean=false
+
+  ngAfterViewChecked(): void {
+    const alertBox = this.el.nativeElement.querySelector('.assistant');
+    if (alertBox && !this.imageAlreadySet) { 
+      this.imageAlreadySet = true; // Pour éviter d’exécuter plusieurs fois
+  
+      const images = ["url('/assets/icons/assistant.webp')", "url('/assets/icons/assistante.webp')"];
+      const randomImage = images[Math.floor(Math.random() * images.length)];
+  
+      console.log('🎲 Image choisie :', randomImage);
+      this.renderer.setStyle(alertBox, 'background-image', randomImage);
+    }
+  }
+  
+  
 
   ngOnDestroy() {
     // Détruit le composant

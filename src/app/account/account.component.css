@@ -1,1 +1,150 @@
-p.card-text{font-size:1rem!important}.perso{background-color:#82BC00!important}.text-success{color:#0062fe;opacity:60!important}.text-primary.fs-6.p-0{line-height:0}.form-check-input.level1{background-color:#E21937}.form-check-input.level2{background-color:#fcb311}.form-check-input.level3{background-color:#82BC00}.form-check-input.level4{background-color:#0062fe}.form-check-input:disabled{opacity:80}.level1,.level2,.level3,.level4{font-weight:500!important;font-size:1rem;text-transform:capitalize}.level1{border-bottom:1px solid #E21937}.level2{border-bottom:1px solid #fcb311}.level3{border-bottom:1px solid #82BC00}.level4{border-bottom:1px solid #0062fe}button:disabled,.btn.btn-success.disabled{margin-top:2rem;border:0;opacity:50%!important}i{margin-right:0}.toggle-arrow{margin-top:2px;margin-right:0;transition:transform .3s ease}.a[aria-expanded="true"] .toggle-arrow{transform:rotate(180deg)}.assistant{background-image:url('/assets/icons/assistant.webp');background-repeat:no-repeat;background-size:auto 80%;background-position:10px center}.alert.bg-warning a{color:black;text-decoration:underline!important}.alert-custom{display:inline-block;overflow:hidden}@keyframes zoom-in{from{transform:scale(.75);opacity:0}to{transform:scale(1);opacity:1}}.alert{display:inline-block;animation:zoom-in .5s ease-out}.alert-light{border-color:#fcb311!important}@media(min-width:1140px){.assistant{min-height:120px;padding-left:10%!important;display:flex;align-items:center}}@media(max-width:1139px)and(min-width:961px){.assistant{padding-left:20%!important}}@media(max-width:960px)and(min-width:576px){.assistant{background-size:auto 70%;padding-left:20%!important}}@media(max-width:575px){.d-flex.align-items-center.gap-2.justify-content-between{width:100%}.assistant{background-size:auto 50%;padding-left:45%!important}}@media(max-width:374px){.assistant{padding:5px!important;background-image:none}}
+/* Suppression des doublons et simplification des règles */
+
+.perso {
+    background-color: #82BC00 !important;
+}
+
+.text-success {
+    color: #0062fe;
+    opacity: 60 !important;
+}
+
+.text-primary.fs-6.p-0 {
+    line-height: 0;
+}
+
+/* Regroupement des styles similaires pour les .form-check-input */
+.form-check-input {
+    background-color: #E21937; /* Valeur par défaut */
+}
+
+.form-check-input.level2 {
+    background-color: #fcb311;
+}
+
+.form-check-input.level3 {
+    background-color: #82BC00;
+}
+
+.form-check-input.level4 {
+    background-color: #0062fe;
+}
+
+.form-check-input:disabled {
+    opacity: 80;
+}
+
+.level1,
+.level2,
+.level3,
+.level4 {
+    font-weight: 500 !important;
+    font-size: 1rem;
+    text-transform: capitalize;
+}
+
+.level1 {
+    border-bottom: 1px solid #E21937;
+}
+
+.level2 {
+    border-bottom: 1px solid #fcb311;
+}
+
+.level3 {
+    border-bottom: 1px solid #82BC00;
+}
+
+.level4 {
+    border-bottom: 1px solid #0062fe;
+}
+
+button:disabled,
+.btn.btn-success.disabled {
+    margin-top: 2rem;
+    border: 0;
+    opacity: 50%!important;
+}
+
+i {
+    margin-right: 0;
+}
+
+.toggle-arrow {
+    margin-top: 2px;
+    margin-right: 0;
+    transition: transform 0.3s ease;
+}
+
+/* Rotation de la flèche quand l'onglet est cliqué */
+a[aria-expanded="true"] .toggle-arrow {
+    transform: rotate(180deg);
+}
+
+.assistant {
+    background-image: url('/assets/icons/assistant.webp');
+    background-repeat: no-repeat;
+    background-size: auto 80%;
+    background-position: 10px center;
+}
+
+.alert.bg-warning a {
+    color: black;
+    text-decoration: underline !important;
+}
+
+.alert-custom {
+    display: inline-block;
+    overflow: hidden;
+}
+
+.alert {
+    display: inline-block;
+    animation: zoom-in 0.5s ease-out;
+}
+
+.alert-light {
+    border-color: #fcb311 !important;
+}
+
+/* Optimisation des media queries */
+@media (min-width: 1140px) {
+  .assistant {
+    min-height: 120px;
+    padding-left: 10% !important;
+    display: flex;
+    align-items: center;
+  }
+}
+
+@media (max-width: 1139px) and (min-width: 961px) {
+  .assistant {
+    padding-left: 20% !important;
+  }
+}
+
+@media (max-width: 960px) and (min-width: 576px) {
+  .assistant {
+    background-size: auto 70%;
+    padding-left: 20% !important;
+  }
+}
+
+@media (max-width: 575px) {
+  .d-flex.align-items-center.gap-2.justify-content-between {
+    width: 100%;
+  }
+
+  .assistant {
+    background-size: auto 50%;
+    padding-left: 45% !important;
+  }
+}
+
+/* Optimisation pour les petits écrans sous 350px */
+@media (max-width: 374px) {
+  .assistant {
+    padding: 5px !important;
+    background-image: none;
+  }
+}
