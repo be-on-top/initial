@@ -250,8 +250,10 @@
                                         </div>
                                         <!-- <em *ngIf="trades[trade]" class="text-primary fs-6">{{ trades[trade][i] }}</em> -->
                                         <em *ngIf="trades[trade]" class="text-primary fs-6">
+                                            <i  *ngIf="!trades[trade][i]" class="bi bi-exclamation-square-fill me-2"></i>
                                             {{ trades[trade][i] ? trades[trade][i] : 'Attention : cette compétence ne fait plus partie du référentiel actuel' }}
                                           </em>
+                                          
                                           
                                           
                                     </ng-container>
