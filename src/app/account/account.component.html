@@ -222,7 +222,6 @@
                         <i class="bi bi-caret-down-fill toggle-arrow fs-7"></i>
                     </div>
                     <i class="bi bi-card-list fs-4 text-light d-none d-sm-inline"></i>
-
                 </a>
             </div>
             <div id="collapseFullResults" class="collapse" data-bs-parent="#accordion">
@@ -249,7 +248,12 @@
                                             <!-- attention si on fait du fractionné à l'enregistrement, faire un arrondi à la restitution ici -->
                                             <span class="fw-bolder"> Coût: </span>{{ item[1].cost | round }}€
                                         </div>
-                                        <em *ngIf="trades[trade]" class="text-primary fs-6">{{ trades[trade][i] }}</em>
+                                        <!-- <em *ngIf="trades[trade]" class="text-primary fs-6">{{ trades[trade][i] }}</em> -->
+                                        <em *ngIf="trades[trade]" class="text-primary fs-6">
+                                            {{ trades[trade][i] ? trades[trade][i] : 'Attention : cette compétence ne fait plus partie du référentiel actuel' }}
+                                          </em>
+                                          
+                                          
                                     </ng-container>
                                     <hr *ngIf="lastEstimate">
                                     <!-- partie si on masque le total de couts -->
@@ -331,7 +335,7 @@
             </div>
             <div id="collapseFor" class="collapse" data-bs-parent="#accordion">
                 <div class="card-body">
-                    <p class="card-text" *ngIf="!userData.isSocialFormSent">Pour faciliter votre inscription et votre
+                    <p class="card-text" *ngIf="!userData.isSocialFormSent">Pour faciliter votre inscription en formation et votre
                         prise en charge, nous vous invitons à remplir le formulaire ci-dessous...
                     </p>
                     <div class="card-text" *ngIf="userData.subscriptions">Inscription confirmée pour :
@@ -369,16 +373,13 @@
                     <button class="btn bg-success" [disabled]="userData.isSocialFormSent"
                         [ngClass]="{'disabled':userData.isSocialFormSent}"><a class="text-light"
                             [routerLink]="['/socialregistration']">
-                            {{ userData.isSocialFormSent ? 'Formulaire pré-inscription envoyé' : 'Formulaire de
-                            pré-inscription' }}</a>
+                            {{userData.isSocialFormSent ? "Formulaire pré-inscription envoyé" : "Formulaire d'inscription en formation"}}</a>
                     </button>
-
                 </div>
             </div>
         </div>
 
         <!-- suivi pédagogique -->
-
         <div class="card" *ngIf="isOneQuizzAchieved==true && evaluationsNotEmpty()">
             <div class="card-header bg-primary">
                 <a class="collapsed btn text-light text-capitalize d-flex justify-content-between px-0"

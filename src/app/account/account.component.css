@@ -1,150 +1,125 @@
-/* Suppression des doublons et simplification des règles */
-
-.perso {
-    background-color: #82BC00 !important;
-}
-
-.text-success {
-    color: #0062fe;
-    opacity: 60 !important;
-}
-
-.text-primary.fs-6.p-0 {
-    line-height: 0;
-}
-
-/* Regroupement des styles similaires pour les .form-check-input */
-.form-check-input {
-    background-color: #E21937; /* Valeur par défaut */
+/* Correction des form-check-input pour respecter les niveaux dynamiques */
+.form-check-input.level1 {
+  background-color: #E21937 !important; /* Débutant */
+  border-color: #E21937 !important;
 }
 
 .form-check-input.level2 {
-    background-color: #fcb311;
+  background-color: #fcb311 !important; /* Intermédiaire */
+  border-color: #fcb311 !important;
 }
 
 .form-check-input.level3 {
-    background-color: #82BC00;
+  background-color: #82BC00 !important; /* Avancé */
+  border-color: #82BC00 !important;
 }
 
 .form-check-input.level4 {
-    background-color: #0062fe;
+  background-color: #0062fe !important; /* Expert */
+  border-color: #0062fe !important;
 }
 
+/* Uniformisation des bordures pour chaque niveau */
+.level1, .level2, .level3, .level4 {
+  font-weight: 500 !important;
+  font-size: 1rem;
+  text-transform: capitalize;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+}
+
+/* Application des couleurs aux bordures des niveaux */
+.level1 { border-bottom-color: #E21937; }
+.level2 { border-bottom-color: #fcb311; }
+.level3 { border-bottom-color: #82BC00; }
+.level4 { border-bottom-color: #0062fe; }
+
+/* Désactivation des checkboxes avec un effet visuel */
 .form-check-input:disabled {
-    opacity: 80;
+  opacity: 0.8 !important;
 }
 
-.level1,
-.level2,
-.level3,
-.level4 {
-    font-weight: 500 !important;
-    font-size: 1rem;
-    text-transform: capitalize;
-}
-
-.level1 {
-    border-bottom: 1px solid #E21937;
-}
-
-.level2 {
-    border-bottom: 1px solid #fcb311;
-}
-
-.level3 {
-    border-bottom: 1px solid #82BC00;
-}
-
-.level4 {
-    border-bottom: 1px solid #0062fe;
-}
-
+/* Amélioration des boutons désactivés */
 button:disabled,
 .btn.btn-success.disabled {
-    margin-top: 2rem;
-    border: 0;
-    opacity: 50%!important;
+  margin-top: 2rem;
+  border: 0;
+  opacity: 50% !important;
 }
 
-i {
-    margin-right: 0;
-}
-
-.toggle-arrow {
-    margin-top: 2px;
-    margin-right: 0;
-    transition: transform 0.3s ease;
-}
-
-/* Rotation de la flèche quand l'onglet est cliqué */
-a[aria-expanded="true"] .toggle-arrow {
-    transform: rotate(180deg);
-}
-
+/* Styles spécifiques pour l'alerte assistant */
 .assistant {
-    background-image: url('/assets/icons/assistant.webp');
-    background-repeat: no-repeat;
-    background-size: auto 80%;
-    background-position: 10px center;
+  background-image: url('/assets/icons/assistant.webp');
+  background-repeat: no-repeat;
+  background-size: auto 80%;
+  background-position: 10px center;
 }
 
+/* Correction pour les liens dans les alertes */
 .alert.bg-warning a {
-    color: black;
-    text-decoration: underline !important;
+  color: black;
+  text-decoration: underline !important;
 }
 
-.alert-custom {
-    display: inline-block;
-    overflow: hidden;
-}
-
+/* Animation légère pour les alertes */
 .alert {
-    display: inline-block;
-    animation: zoom-in 0.5s ease-out;
+  display: inline-block;
+  animation: zoom-in 0.5s ease-out;
 }
 
-.alert-light {
-    border-color: #fcb311 !important;
+/* Gestion des tailles et marges pour la flèche toggle */
+.toggle-arrow {
+  margin-top: 2px;
+  margin-right: 0;
+  transition: transform 0.3s ease;
 }
 
-/* Optimisation des media queries */
+a[aria-expanded="true"] .toggle-arrow {
+  transform: rotate(180deg);
+}
+
+/* RESPONSIVE DESIGN */
+/* Grand écran */
 @media (min-width: 1140px) {
   .assistant {
-    min-height: 120px;
-    padding-left: 10% !important;
-    display: flex;
-    align-items: center;
+      min-height: 120px;
+      padding-left: 10% !important;
+      display: flex;
+      align-items: center;
   }
 }
 
+/* Tablettes et écrans intermédiaires */
 @media (max-width: 1139px) and (min-width: 961px) {
   .assistant {
-    padding-left: 20% !important;
+      padding-left: 20% !important;
   }
 }
 
 @media (max-width: 960px) and (min-width: 576px) {
   .assistant {
-    background-size: auto 70%;
-    padding-left: 20% !important;
+      background-size: auto 70%;
+      padding-left: 20% !important;
   }
 }
 
+/* Petits écrans */
 @media (max-width: 575px) {
   .d-flex.align-items-center.gap-2.justify-content-between {
-    width: 100%;
+      width: 100%;
   }
 
   .assistant {
-    background-size: auto 50%;
-    padding-left: 45% !important;
+      background-size: auto 50%;
+      padding-left: 45% !important;
   }
 }
 
-/* Optimisation pour les petits écrans sous 350px */
+/* Écrans ultra petits (moins de 374px) */
 @media (max-width: 374px) {
   .assistant {
-    padding: 5px !important;
-    background-image: none;
+      padding: 5px !important;
+      background-image: none;
   }
+  
 }
