@@ -147,19 +147,52 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     this.groupedTrades = this.groupTradesByCategory(this.trades);
   }
 
-  groupTradesByCategory(trades: Trade[]): Map<string, Trade[]> {
-    const grouped = new Map<string, Trade[]>();
+  //   groupTradesByCategory(trades: Trade[]): Map<string, Trade[]> {
+  //     const grouped = new Map<string, Trade[]>();
 
+  //     trades.forEach(trade => {
+  //         const category = trade.parentCategory || ''; // Catégorie vide pour les non-groupés
+  //         if (!grouped.has(category)) {
+  //             grouped.set(category, []);
+  //         }
+  //         grouped.get(category)?.push(trade);
+  //     });
+
+  //     return grouped;
+  // }
+
+  /**
+   * Regroupe une liste de transactions (trades) par catégorie.
+   * 
+   * @param trades - Tableau de transactions à regrouper (peut être `undefined` ou `null`).
+   * @returns Une `Map` où chaque clé est une catégorie et chaque valeur est un tableau de transactions appartenant à cette catégorie.
+   */
+  groupTradesByCategory(trades: Trade[] | undefined | null): Map<string, Trade[]> {
+    const grouped = new Map<string, Trade[]>(); // Initialise une Map vide pour stocker les groupes
+
+    // Vérifie si la liste de trades est définie, sinon retourne une Map vide pour éviter une erreur
+    if (!trades) {
+      console.warn('groupTradesByCategory: trades is undefined or null');
+      return grouped;
+    }
+
+    // Parcourt la liste des trades et les regroupe par catégorie
     trades.forEach(trade => {
-        const category = trade.parentCategory || ''; // Catégorie vide pour les non-groupés
-        if (!grouped.has(category)) {
-            grouped.set(category, []);
-        }
-        grouped.get(category)?.push(trade);
+      const category = trade.parentCategory || ''; // Utilise une chaîne vide si la catégorie est absente
+
+      // Si la catégorie n'existe pas encore dans la Map, on l'initialise avec un tableau vide
+      if (!grouped.has(category)) {
+        grouped.set(category, []);
+      }
+
+      // Ajoute le trade à la catégorie correspondante
+      grouped.get(category)?.push(trade);
     });
 
-    return grouped;
-}
+    return grouped; // Retourne la Map contenant les trades regroupés par catégorie
+  }
+
+
 
   ngAfterViewInit(): void {
     this.tradeService.fetchPartners().subscribe(data => {
@@ -250,10 +283,10 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
   groupTrades() {
     console.log("Trades initiaux:", this.trades);
-   
+
     const grouped = new Map<string, any[]>();
- 
-    this.trades.forEach((trade:any) => {
+
+    this.trades.forEach((trade: any) => {
       if (trade.parentCategory) {
         if (!grouped.has(trade.parentCategory)) {
           grouped.set(trade.parentCategory, []);
@@ -263,82 +296,84 @@ export class HeaderComponent implements OnInit, AfterViewInit {
         this.ungroupedTrades.push(trade);
       }
     });
- 
+
     this.groupedTrades = grouped;
     console.log("Métiers regroupés:", this.groupedTrades);
     console.log("Métiers non groupés:", this.ungroupedTrades);
   }
 
 
-    // Fonction pour ajouter une cassure avant la parenthèse
-    getFormattedMenuItem(item: string): string {
-      return item.replace('(', '&shy;(');  // Ajoute une soft hyphen avant la parenthèse
-    }
 
 
-    // goToInfoPage() {
-    //   if (this.userRole.includes('referent')) {
-    //     // Rediriger vers un lien externe
-    //     window.location.href = 'https://xd.adobe.com/view/75e0818e-ab1b-4464-8b05-ff2988454cba-20b3/?fullscreen';
-    //   } else {
-    //     // Rediriger vers une route interne de l'application
-    //     this.router.navigate(['/benefits']);
-    //   }
-    // }
-
-    goToInfoPage() {
-      if (this.userRole.includes('referent')) {
-        // Ouvrir un lien externe dans une nouvelle fenêtre ou un nouvel onglet
-        window.open('https://xd.adobe.com/view/75e0818e-ab1b-4464-8b05-ff2988454cba-20b3/?fullscreen', '_blank');
-      } else if(this.userRole.includes('trainer'))  {
-        // Rediriger vers support Formateurs
-        window.open('https://xd.adobe.com/view/a41e35e0-6af3-4001-8ba8-3c856993d99a-f14d/?fullscreen', '_blank');
-      } else {
-        // Rediriger vers une route interne de l'application
-        this.router.navigate(['/benefits']);
-      }
-    }
-
-
-
-
-    formatCategoryTitle(category: string): { main: string, subtitle: string } {
-      const index = category.indexOf('(');
-      if (index === -1) {
-          return { main: category, subtitle: '' };
-      }
-      return { main: category.slice(0, index), subtitle: category.slice(index) };
+  // Fonction pour ajouter une cassure avant la parenthèse
+  getFormattedMenuItem(item: string): string {
+    return item.replace('(', '&shy;(');  // Ajoute une soft hyphen avant la parenthèse
   }
 
-//   @HostListener('click', ['$event'])
-// onDropdownClick(event: Event) {
-//     event.stopPropagation();
-// }
 
-onDropdownClick(event: Event) {
-  event.preventDefault(); // Empêche le lien de naviguer
-  event.stopPropagation(); // Empêche la fermeture immédiate du menu
+  // goToInfoPage() {
+  //   if (this.userRole.includes('referent')) {
+  //     // Rediriger vers un lien externe
+  //     window.location.href = 'https://xd.adobe.com/view/75e0818e-ab1b-4464-8b05-ff2988454cba-20b3/?fullscreen';
+  //   } else {
+  //     // Rediriger vers une route interne de l'application
+  //     this.router.navigate(['/benefits']);
+  //   }
+  // }
 
-  const element = (event.target as HTMLElement).parentElement;
-  
-  if (element?.classList.contains("show")) {
+  goToInfoPage() {
+    if (this.userRole.includes('referent')) {
+      // Ouvrir un lien externe dans une nouvelle fenêtre ou un nouvel onglet
+      window.open('https://xd.adobe.com/view/75e0818e-ab1b-4464-8b05-ff2988454cba-20b3/?fullscreen', '_blank');
+    } else if (this.userRole.includes('trainer')) {
+      // Rediriger vers support Formateurs
+      window.open('https://xd.adobe.com/view/a41e35e0-6af3-4001-8ba8-3c856993d99a-f14d/?fullscreen', '_blank');
+    } else {
+      // Rediriger vers une route interne de l'application
+      this.router.navigate(['/benefits']);
+    }
+  }
+
+
+
+
+  formatCategoryTitle(category: string): { main: string, subtitle: string } {
+    const index = category.indexOf('(');
+    if (index === -1) {
+      return { main: category, subtitle: '' };
+    }
+    return { main: category.slice(0, index), subtitle: category.slice(index) };
+  }
+
+  //   @HostListener('click', ['$event'])
+  // onDropdownClick(event: Event) {
+  //     event.stopPropagation();
+  // }
+
+  onDropdownClick(event: Event) {
+    event.preventDefault(); // Empêche le lien de naviguer
+    event.stopPropagation(); // Empêche la fermeture immédiate du menu
+
+    const element = (event.target as HTMLElement).parentElement;
+
+    if (element?.classList.contains("show")) {
       element.classList.remove("show"); // Cache le sous-menu
-  } else {
+    } else {
       // Fermer tous les autres sous-menus
       document.querySelectorAll(".dropdown-submenu").forEach(submenu => {
-          submenu.classList.remove("show");
+        submenu.classList.remove("show");
       });
 
       element?.classList.add("show"); // Affiche le sous-menu cliqué
+    }
   }
-}
-
-  
 
 
 
-    
-    
+
+
+
+
 
 
 
