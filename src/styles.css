@@ -424,6 +424,7 @@ p.question {
 abbr { 
     text-decoration-thickness: 1px;
     text-underline-offset: 6px;
+    position: relative;
   }
 
   abbr:hover::before {
@@ -436,7 +437,7 @@ abbr {
     font-size: 14px;
     white-space: nowrap;
     z-index: 9999;
-    top: -35px;
+    top: 35px;
     left: 50%;
     transform: translateX(-50%);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
