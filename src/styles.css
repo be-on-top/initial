@@ -20,12 +20,48 @@
 
 :root {
     --primary-color: #0062fe;
+    --text-primary: #004ECD;
+    /* --text-primary: #0059D4; */
+    /* #00358A */
     /* Couleur primaire par défaut */
-    --text-color: white; 
+    --text-color: white;
+    /* --text-dark:hsl(217, 47%, 18%); */
+    --text-dark: #0a1a2f;
+    --bg-light: #f8f9fa;
+    /* --bg-light: #072848; */
+    /* --bg-light:#531111; */
     /* --text-color: #031C44;  */
     /* Couleur du texte par défaut */
+    --bs-light: #f8f9fa;
+    --bs-light-rgb: #f8f9fa;
 }
-  
+
+
+
+
+
+
+h2,
+.h5 {
+    color: var(--text-dark) !important;
+}
+
+.bg-light,
+.card-header,
+.navbar-light,
+.card-footer {
+    background-color: var(--bg-light) !important;
+    border: none !important;
+    /* box-shadow: none !important; */
+}
+
+nav {
+    /* Ombre légère */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important; 
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.03) !important; */
+}
+
+
 
 /* Utilisation des variables CSS pour les styles concernés */
 
@@ -33,12 +69,12 @@
 .btn-primary {
     /* background-color: #0062fe !important; */
     background-color: var(--primary-color) !important;
-    color:var(--text-color) !important;
+    color: var(--text-color) !important;
 }
 
 
 .text-primary {
-    color: var(--primary-color) !important;
+    color: var(--text-primary) !important;
 }
 
 
@@ -48,6 +84,7 @@ body {
     /* font-size: 16px; */
     z-index: 1040;
     /* Assurez-vous que le contenu de la page est sous la bannière de consentement */
+    color:var(--text-dark);
 }
 
 h1 {
@@ -337,13 +374,19 @@ nav.navbar.navbar-light a {
     opacity: 100;
 }
 
+/* Correction pour les liens dans les alertes */
+.alert.bg-warning a {
+    color: var(--text-dark);
+    text-decoration: underline !important;
+  }
+
 /* a.nav-link.dropdown-toggle::before{
     background-color: #82BC00 ! important;
 } */
 
-nav {
+/* nav {
     box-shadow: 0 10px 20px rgba(0, 0, 0, .12), 0 4px 8px rgba(0, 0, 0, .06);
-}
+} */
 
 .navbar-light a,
 .text-dark,
@@ -377,7 +420,8 @@ nav {
 
 .bg-info,
 .alert-info {
-    background-color: #0062fe;
+    /* background-color: #0062fe; */
+    background-color:  var(--primary-color) !important;
 }
 
 p.question {
@@ -401,7 +445,8 @@ p.question {
     cursor: pointer;
 } */
 .alert-light {
-    background-color: #f8f9fa;
+    background-color: var(--bg-light);
+    /* background-color: #f8f9fa; */
     cursor: pointer;
 }
 
@@ -421,16 +466,18 @@ p.question {
 }
 
 
-abbr { 
+abbr {
     text-decoration-thickness: 1px;
     text-underline-offset: 6px;
     position: relative;
-  }
+}
 
-  abbr:hover::before {
-    content: attr(title); /* Utilise bien title pour l'accessibilité */
+abbr:hover::before {
+    content: attr(title);
+    /* Utilise bien title pour l'accessibilité */
     position: absolute;
-    background-color: #333;
+    /* background-color: #333; */
+    background-color:  var(--text-dark) !important;
     color: white;
     padding: 5px 10px;
     border-radius: 4px;
@@ -440,17 +487,18 @@ abbr {
     top: 35px;
     left: 50%;
     transform: translateX(-50%);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); */
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.2s ease-in-out;
-    pointer-events: none; /* Empêche d'interférer avec le titre natif */
-  }
-  
-  abbr:hover::before {
+    pointer-events: none;
+    /* Empêche d'interférer avec le titre natif */
+}
+
+abbr:hover::before {
     opacity: 1;
     visibility: visible;
-  }
+}
 
 @keyframes fade-zoom-out {
     from {
@@ -500,7 +548,7 @@ abbr {
     }
 
     h2.h5,
-    h1{
+    h1 {
         font-size: 1.1rem
     }
 
@@ -545,13 +593,13 @@ abbr {
     } */
 
 
-    
+
     h1 {
         font-size: 1.5rem !important;
     }
 
-    
-    h1.d-inline{
+
+    h1.d-inline {
         /* font-size: inherit; */
         font-size: 1.2rem !important;
     }
@@ -582,7 +630,7 @@ abbr {
         display: none;
     }
 
-    .nav-link{
+    .nav-link {
         font-size: 1rem;
     }
 
@@ -607,36 +655,35 @@ abbr {
 
 @media print {
     .no-print {
-      display: none !important;
-    }
-  
-  
-    /* Keep collapsible sections expanded */
-    .collapse {
-      display: block !important;
-    }
-  
-    /* Improve visibility of selected options */
-    input[type="radio"]:checked + label {
-      font-weight: bold;
-      text-decoration: underline;
-    }
-  
-    /* Style text inputs for emphasis */
-    input[type="text"] {
-      font-weight: bold;
-      background-color: #42A948;
-    }
-  
-    /* Hide the print button */
-    #print {
-      display: none;
-    }
-
-    button{
         display: none !important;
     }
 
 
-  }
-  
+    /* Keep collapsible sections expanded */
+    .collapse {
+        display: block !important;
+    }
+
+    /* Improve visibility of selected options */
+    input[type="radio"]:checked+label {
+        font-weight: bold;
+        text-decoration: underline;
+    }
+
+    /* Style text inputs for emphasis */
+    input[type="text"] {
+        font-weight: bold;
+        background-color: #42A948;
+    }
+
+    /* Hide the print button */
+    #print {
+        display: none;
+    }
+
+    button {
+        display: none !important;
+    }
+
+
+}

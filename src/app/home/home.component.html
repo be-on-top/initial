@@ -399,7 +399,10 @@
                 || trade.denomination.toLowerCase().includes(searchText.toLowerCase())
                 || removeAccents(trade.description).toLowerCase().includes(removeAccents(searchText).toLowerCase()))"
                             class="pt-3"
-                            [ngClass]="{'col-md-6': !(i === catGroup.length - 1 && catGroup.length % 2 !== 0)}">
+                            [ngClass]="{'col-md-6': !(i === group[1].length - 1 && group[1].length % 2 !== 0)}"
+                            
+                            >
+                            <!-- dsfdsfdsfd{{group[1].length |json}} -->
 
                             <div (click)="selectTrade(trade.id)">
                                 <div

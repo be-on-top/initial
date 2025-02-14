@@ -56,10 +56,10 @@ button:disabled,
 }
 
 /* Correction pour les liens dans les alertes */
-.alert.bg-warning a {
+/* .alert.bg-warning a {
   color: black;
   text-decoration: underline !important;
-}
+} */
 
 /* Animation légère pour les alertes */
 .alert {
