@@ -1,11 +1,11 @@
 .text-custom{
-    color: rgb(27, 9, 106);
+    /* color: rgb(27, 9, 106); */
     text-align: center;
 }
 
 .btn.btn-light.rounded-0:hover{
     background-image: linear-gradient(to right, rgb(27, 9, 106), rgb(24, 5, 74));
-    color: whitesmoke;
+    color: white
 }
 
 /* Ajoutez une classe personnalisée au dropdown */

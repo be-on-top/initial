@@ -14,14 +14,15 @@
     <button type="button" class="btn btn-light rounded-0 text-custom"><i class="fs-5 bi bi-person-circle mx-0 text-center"></i></button>
 </div> -->
 
-<div class=" container btn-group fixed-bottom d-md-none mb-0 bg-light">
-    <a href="#" class="btn rounded-0 text-custom" aria-label="Accueil">
+
+<div class=" container btn-group fixed-bottom d-md-none mb-0 bg-light text-dark">
+    <a href="#" class="btn rounded-0 text-custom" aria-label="Accueil" [routerLink]="['']">
         <i class="fs-5 bi bi-house-fill text-center mx-0 text-center me-2"></i> Accueil
     </a>
-    <a href="#" class="btn rounded-0 text-custom" aria-label="Information">
+    <a href="#" class="btn rounded-0 text-custom" aria-label="Information" [routerLink]="['benefits']">
         <i class="fs-5 bi bi-info-square-fill text-center mx-0 text-center me-2"></i> Information
     </a>
-    <a href="#" class="btn rounded-0 text-custom" aria-label="Mon compte">
+    <a href="#" class="btn rounded-0 text-custom" aria-label="Mon compte" [routerLink]="['account']">
         <i class="fs-5 bi bi-person-vcard-fill text-center mx-0 text-center me-2"></i> Mon compte
     </a>
 </div>
