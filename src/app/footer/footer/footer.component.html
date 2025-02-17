@@ -14,24 +14,25 @@
     <button type="button" class="btn btn-light rounded-0 text-custom"><i class="fs-5 bi bi-person-circle mx-0 text-center"></i></button>
 </div> -->
 
+<footer class="container-fluid fixed-bottom d-md-none mb-0 bg-light fade-in">
+    <div class="container d-flex justify-content-around" *ngIf="showFooter">
+        <a href="#" class="btn rounded-0 text-custom p-0" aria-label="Accueil" [routerLink]="['']">
+            <i class="bi bi-house-door-fill text-center mx-0 me-2"></i><span>Accueil</span>
+        </a>
+        <a href="#" class="btn rounded-0 text-custom p-0" aria-label="Information" [routerLink]="['benefits']">
+            <i class="bi bi-info-square-fill text-center mx-0 me-2"></i><span>Information</span>
+        </a>
+        <a href="#" class="btn rounded-0 text-custom p-0" aria-label="Mon compte" [routerLink]="['account']">
+            <i class="bi bi-person-fill text-center mx-0 me-2"></i><span>Mon compte</span>
+        </a>
+    </div>
+</footer>
 
-<div class=" container btn-group fixed-bottom d-md-none mb-0 bg-light text-dark">
-    <a href="#" class="btn rounded-0 text-custom" aria-label="Accueil" [routerLink]="['']">
-        <i class="fs-5 bi bi-house-fill text-center mx-0 text-center me-2"></i> Accueil
-    </a>
-    <a href="#" class="btn rounded-0 text-custom" aria-label="Information" [routerLink]="['benefits']">
-        <i class="fs-5 bi bi-info-square-fill text-center mx-0 text-center me-2"></i> Information
-    </a>
-    <a href="#" class="btn rounded-0 text-custom" aria-label="Mon compte" [routerLink]="['account']">
-        <i class="fs-5 bi bi-person-vcard-fill text-center mx-0 text-center me-2"></i> Mon compte
-    </a>
-</div>
 
 
 
-
-    <!-- <div> -->
-    <!-- <button aria-label="Nos métiers" type="button" class="text-custom dropup btn btn-light rounded-0 dropdown-toggle" data-bs-toggle="dropdown"
+<!-- <div> -->
+<!-- <button aria-label="Nos métiers" type="button" class="text-custom dropup btn btn-light rounded-0 dropdown-toggle" data-bs-toggle="dropdown"
         aria-haspopup="true" aria-expanded="false">
         <i class="fs-5 bi bi-binoculars-fill mx-0 text-center"></i>
     </button>
@@ -40,8 +41,6 @@
         <a class="dropdown-item" href="#">Métier 2</a>
         <a class="dropdown-item" href="#">Métier 3</a>
     </div> -->
-    <!-- </div> -->
-    <!-- <button type="button" class="btn btn-light rounded-0 text-custom"><i
+<!-- </div> -->
+<!-- <button type="button" class="btn btn-light rounded-0 text-custom"><i
             class="fs-5 bi bi-rocket-takeoff-fill mx-0 text-center"></i></button> -->
-
-
