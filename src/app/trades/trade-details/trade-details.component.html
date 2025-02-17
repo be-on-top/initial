@@ -1,4 +1,4 @@
-<div class="container py-5" *ngIf="tradeData">
+<div class="container py-5 fade-page " *ngIf="tradeData" [class.loaded]="isPageLoaded">
 
     <!-- <h3>{{tradeData.denomination}}</h3> -->
     <div class="p-2 bg-primary text-white rounded row fade show mx-1">
@@ -99,10 +99,17 @@
     </div>
     <!-- 
     {{tradeData | json}} -->
-    <div class="mt-4 p-2">
-        <img *ngIf="!offline" class="rounded img-fluid mb-2 border border-1 m-auto w-100" [src]="imageUrl"
+    <div class="mt-4 p-2 position-relative">
+        
+    <div *ngIf="isLoading" class="spinner-container">
+        <div class="spinner-border text-success" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+        <img *ngIf="!offline" [ngClass]="{'loaded': !isLoading}"  class="rounded img-fluid mb-2 border border-1 m-auto w-100 fade-in" [src]="imageUrl"
             [attr.srcset]="imageUrlReduced ? imageUrlReduced + ' 575w, ' + imageUrl + ' 1024w' : imageUrl"
-            sizes="(max-width: 575px) 575px, 1024px" alt="formation be-on-top au métier {{tradeId}}">
+            sizes="(max-width: 575px) 575px, 1024px" alt="formation be-on-top au métier {{tradeId}}"  (load)="onImageLoad()">
 
         <img *ngIf="offline" class="rounded img-fluid mb-2 border border-1 m-auto w-100" [src]="imageUrl"
             alt="formation au métier {{tradeId}}">

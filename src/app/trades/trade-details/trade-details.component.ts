@@ -52,6 +52,9 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
 
   tradeDataDenominationRGAA?: any
 
+  // ne vise qu'à retarder avec css l'affichage de tout le contenu
+  isPageLoaded: boolean = false;
+
 
   constructor(
     private service: SettingsService,
@@ -219,6 +222,11 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
 
       // fin ac.paramMap.subscribe
     })
+
+
+    setTimeout(() => {
+      this.isPageLoaded = true;
+    }, 300); // Petit délai pour que l'effet soit perceptible
 
 
   }
@@ -615,7 +623,22 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
   }
   
 
+  isLoading: boolean = true
 
+  // onImageLoad
+  //   () {
+  //   alert("bingo")
+  //   // this.isLoading = false;
+  // }
+
+  onImageLoad() {
+    this.isLoading = false;
+    // Ajout de la classe 'loaded' pour le fade-in après le chargement
+    const imgElement = document.querySelector('img');
+    if (imgElement) {
+      imgElement.classList.add('loaded');
+    }
+  }
 
 
 }

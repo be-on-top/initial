@@ -20,8 +20,11 @@
 
 :root {
     --primary-color: #0062fe;
-    --text-primary: #004ECD;
-    /* --text-primary: #0059D4; */
+    --text-primary: #0062fe;
+    /* --text-primary: #004ECD; */
+    /* --text-primary-plus: #0059D4; */
+    --text-primary-plus: #004ECD;
+
     /* #00358A */
     /* Couleur primaire par défaut */
     --text-color: white;

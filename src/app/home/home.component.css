@@ -178,8 +178,6 @@ hr {
  
 } */
 .card-text {
-
-
         display: -webkit-box;
         -webkit-line-clamp: 3; /* Propriété spécifique à WebKit */
         -webkit-box-orient: vertical;
@@ -191,11 +189,14 @@ hr {
         
         /* Fallback pour les navigateurs non compatibles */
         max-height: 4.5em; /* Pour limiter le nombre de lignes visuellement */
-        line-height: 1.4em; /* Ajustement selon la taille de la ligne */
-                            
-    
+        line-height: 1.4em; /* Ajustement selon la taille de la ligne */    
     
  
+}
+
+.card>div.card-body a{
+    color: var(--text-primary-plus);
+    
 }
 
 
