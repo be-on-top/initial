@@ -14,7 +14,7 @@
     <button type="button" class="btn btn-light rounded-0 text-custom"><i class="fs-5 bi bi-person-circle mx-0 text-center"></i></button>
 </div> -->
 
-<footer class="container-fluid fixed-bottom d-md-none mb-0 bg-light fade-in">
+<footer class="container-fluid fixed-bottom d-md-none mb-0 bg-light fade-in" [ngStyle]="footerStyle">
     <div class="container d-flex justify-content-around" *ngIf="showFooter">
         <a href="#" class="btn rounded-0 text-custom p-0" aria-label="Accueil" [routerLink]="['']">
             <i class="bi bi-house-door-fill text-center mx-0 me-2"></i><span>Accueil</span>
