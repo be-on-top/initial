@@ -19,12 +19,32 @@
         <a href="#" class="btn rounded-0 text-custom p-0" aria-label="Accueil" [routerLink]="['']">
             <i class="bi bi-house-door-fill text-center mx-0 me-2"></i><span>Accueil</span>
         </a>
-        <a href="#" class="btn rounded-0 text-custom p-0" aria-label="Information" [routerLink]="['benefits']">
+        <a *ngIf="userRole === null || userRole === '' || userRole === 'student' || userRole.includes('student'); else trainerInfoLink" href="#" class="btn rounded-0 text-custom p-0" aria-label="Information" [routerLink]="['benefits']">
             <i class="bi bi-info-square-fill text-center mx-0 me-2"></i><span>Information</span>
         </a>
-        <a href="#" class="btn rounded-0 text-custom p-0" aria-label="Mon compte" [routerLink]="['account']">
+        <ng-template #trainerInfoLink>
+            <a href="#" class="btn rounded-0 text-custom p-0" aria-label="Information" [routerLink]="['/market-app']">
+                <i class="bi bi-info-square-fill text-center mx-0 me-2"></i><span>Information</span>
+            </a>
+        </ng-template>
+        <!-- <a href="#" class="btn rounded-0 text-custom p-0" aria-label="Mon compte" [routerLink]="['account']">
+            <i class="bi bi-person-fill text-center mx-0 me-2"></i><span>Mon compte</span>
+        </a> -->
+        <a *ngIf="userRole === null || userRole === '' || userRole === 'student' || userRole.includes('student')"
+            href="#" class="btn rounded-0 text-custom p-0" aria-label="Mon compte" [routerLink]="['account']">
             <i class="bi bi-person-fill text-center mx-0 me-2"></i><span>Mon compte</span>
         </a>
+        <!-- dédié juste à trainer -->
+        <a *ngIf="userRole && (userRole.includes('trainer') || userRole==='trainer')" href="#"
+            class="btn rounded-0 text-custom p-0" aria-label="Mon compte" [routerLink]="['/admin/myTrainerAccount']">
+            <i class="bi bi-person-fill text-center mx-0 me-2"></i><span>Compte pro</span>
+        </a>
+
+        <!-- dédié juste à trainer -->
+        <a *ngIf="userRole && (userRole.includes('referent') || userRole.includes('evaluator')) && !userRole.includes('trainer')" class="btn rounded-0 text-custom p-0">
+            <i class="bi bi-person-fill text-center mx-0 me-2"></i><span>Professionnel !</span>
+        </a>
+
     </div>
 </footer>
 

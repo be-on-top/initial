@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Auth, signInWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, sendPasswordResetEmail } from '@angular/fire/auth';
-import { collection, Firestore } from '@angular/fire/firestore';
+import { collection, doc, docData, Firestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 // import { stringify } from '@firebase/util';
 // import { collection, Firestore } from '@angular/fire/firestore';
 
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable, of } from 'rxjs';
 import { EvaluatorsService } from './evaluators.service';
 // import { setPersistence, browserSessionPersistence } from 'firebase/auth';
 // import { ConsentService } from '../consent.service';
@@ -320,6 +320,33 @@ export class AuthService {
     const user = this.auth.currentUser;  // Utilise currentUser pour obtenir l'utilisateur actuel
     return user ? user.email : null;  // Retourne l'UID si l'utilisateur est connecté, sinon null
   }
+
+  getCurrentUserRole(): Observable<string | string[] | null> {
+    return new Observable(observer => {
+      onAuthStateChanged(this.auth, user => {
+        if (!user) {
+          observer.next(null);
+          observer.complete();
+          return;
+        }
+
+        // alert(user.uid)
+
+        const rolesRef = doc(this.firestore, `roles/${user.uid}`);
+        docData(rolesRef).subscribe(roleDoc => {
+          console.log("Données Firestore :", roleDoc);  // Debug
+          if (roleDoc && roleDoc['role']) {
+            observer.next(roleDoc['role']); // Retourne le rôle (chaîne ou tableau)
+          } else {
+            observer.next(null);
+          }
+          observer.complete();
+        });
+      });
+    });
+  }
+  
+  
 
 
 

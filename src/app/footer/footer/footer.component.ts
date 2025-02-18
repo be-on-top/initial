@@ -8,13 +8,21 @@ import { AuthService } from 'src/app/admin/auth.service';
 })
 export class FooterComponent implements OnInit {
   showFooter = false; 
+   userRole:string | string[] | null=null
 
   constructor(
-    // private authService: AuthService
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
     this.checkFooterVisibility();
+
+    this.authService.getCurrentUserRole().subscribe(role => {
+      this.userRole = role; // Affecte le rôle récupéré
+      // alert(this.userRole)
+    });
+
+
   }
 
   private checkFooterVisibility() {
@@ -24,4 +32,13 @@ export class FooterComponent implements OnInit {
 
     this.showFooter = hasUserConsent; // Afficher le footer si les 2 conditions sont remplies
   }
+
+ 
+
+  private getUserRole() {
+    this.authService.getCurrentUserRole().subscribe(role => {
+      this.userRole = role;
+    });
+  }
+
 }
