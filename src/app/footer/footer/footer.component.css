@@ -3,10 +3,10 @@
     text-align: center;
 }
 
-.btn.btn-light.rounded-0:hover{
+/* .btn.btn-light.rounded-0:hover{
     background-image: linear-gradient(to right, rgb(27, 9, 106), rgb(24, 5, 74));
     color: white
-}
+} */
 
 /* Ajoutez une classe personnalisée au dropdown */
 .custom-dropdown .dropdown-menu {
@@ -35,6 +35,32 @@ footer span{
     font-size: 0.85rem;
 
 }
+
+/* Style du bouton de retour */
+.back-to-top-btn {
+    position: fixed;
+    bottom: 120px; /* Positionné juste au-dessus du footer */
+    right: 20px; /* Positionné à droite */
+    z-index: 1000;
+    /* display: none;  */
+  }
+  
+  .back-to-top-btn.show {
+    display: block; /* Affichage du bouton quand nécessaire */
+  }
+  
+  /* Animation d'apparition du footer */
+  .fade-in {
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+  }
+  
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+  }
+  
 
 
 

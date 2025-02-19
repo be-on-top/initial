@@ -1,66 +1,33 @@
-<!-- <div class="rounded-0 fixed-bottom d-md-none">
-    <button type="button" class="btn btn-light rounded-0 text-custom"><i class="fs-5 bi bi-house-fill text-center mx-0 text-center"></i></button>
-    <div class="btn-group dropup">
-        <button type="button" class="btn btn-light rounded-0 text-custom dropdown-toggle custom-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fs-5 bi bi-binoculars-fill mx-0 text-center"></i>
-        </button>
-        <div class="dropdown-menu bg-success">
-            <a class="dropdown-item" href="#">Link 1</a>
-            <a class="dropdown-item" href="#">Link 2</a>
-            <a class="dropdown-item" href="#">Link 3</a>
-        </div>
-    </div>
-    <button type="button" class="btn btn-light rounded-0 text-custom"><i class="fs-5 bi bi-rocket-takeoff-fill mx-0 text-center"></i></button>
-    <button type="button" class="btn btn-light rounded-0 text-custom"><i class="fs-5 bi bi-person-circle mx-0 text-center"></i></button>
-</div> -->
-
+<!-- Footer existant -->
 <footer class="container-fluid fixed-bottom d-md-none mb-0 bg-light fade-in" [ngStyle]="footerStyle">
     <div class="container d-flex justify-content-around" *ngIf="showFooter">
-        <a href="#" class="btn rounded-0 text-custom p-0" aria-label="Accueil" [routerLink]="['']">
-            <i class="bi bi-house-door-fill text-center mx-0 me-2"></i><span>Accueil</span>
+      <a href="#" class="btn rounded-0 text-custom p-0" aria-label="Accueil" [routerLink]="['']">
+        <i class="bi bi-house-door-fill text-center mx-0 me-2"></i><span>Accueil</span>
+      </a>
+      <a *ngIf="userRole === null || userRole === '' || userRole === 'student' || userRole.includes('student'); else trainerInfoLink" href="#" class="btn rounded-0 text-custom p-0" aria-label="Information" [routerLink]="['benefits']">
+        <i class="bi bi-info-square-fill text-center mx-0 me-2"></i><span>Information</span>
+      </a>
+      <ng-template #trainerInfoLink>
+        <a href="#" class="btn rounded-0 text-custom p-0" aria-label="Information" [routerLink]="['/market-app']">
+          <i class="bi bi-info-square-fill text-center mx-0 me-2"></i><span>Information</span>
         </a>
-        <a *ngIf="userRole === null || userRole === '' || userRole === 'student' || userRole.includes('student'); else trainerInfoLink" href="#" class="btn rounded-0 text-custom p-0" aria-label="Information" [routerLink]="['benefits']">
-            <i class="bi bi-info-square-fill text-center mx-0 me-2"></i><span>Information</span>
-        </a>
-        <ng-template #trainerInfoLink>
-            <a href="#" class="btn rounded-0 text-custom p-0" aria-label="Information" [routerLink]="['/market-app']">
-                <i class="bi bi-info-square-fill text-center mx-0 me-2"></i><span>Information</span>
-            </a>
-        </ng-template>
-        <!-- <a href="#" class="btn rounded-0 text-custom p-0" aria-label="Mon compte" [routerLink]="['account']">
-            <i class="bi bi-person-fill text-center mx-0 me-2"></i><span>Mon compte</span>
-        </a> -->
-        <a *ngIf="userRole === null || userRole === '' || userRole === 'student' || userRole.includes('student')"
-            href="#" class="btn rounded-0 text-custom p-0" aria-label="Mon compte" [routerLink]="['account']">
-            <i class="bi bi-person-fill text-center mx-0 me-2"></i><span>Mon compte</span>
-        </a>
-        <!-- dédié juste à trainer -->
-        <a *ngIf="userRole && (userRole.includes('trainer') || userRole==='trainer')" href="#"
-            class="btn rounded-0 text-custom p-0" aria-label="Mon compte" [routerLink]="['/admin/myTrainerAccount']">
-            <i class="bi bi-person-fill text-center mx-0 me-2"></i><span>Compte pro</span>
-        </a>
-
-        <!-- dédié juste à trainer -->
-        <a *ngIf="userRole && (userRole.includes('referent') || userRole.includes('evaluator')) && !userRole.includes('trainer')" class="btn rounded-0 text-custom p-0">
-            <i class="bi bi-person-fill text-center mx-0 me-2"></i><span>Professionnel !</span>
-        </a>
-
+      </ng-template>
+      <a *ngIf="userRole === null || userRole === '' || userRole === 'student' || userRole.includes('student')"
+        href="#" class="btn rounded-0 text-custom p-0" aria-label="Mon compte" [routerLink]="['account']">
+        <i class="bi bi-person-fill text-center mx-0 me-2"></i><span>Mon compte</span>
+      </a>
+      <a *ngIf="userRole && (userRole.includes('trainer') || userRole === 'trainer')" href="#"
+        class="btn rounded-0 text-custom p-0" aria-label="Mon compte" [routerLink]="['/admin/myTrainerAccount']">
+        <i class="bi bi-person-fill text-center mx-0 me-2"></i><span>Compte pro</span>
+      </a>
+      <a *ngIf="userRole && (userRole.includes('referent') || userRole.includes('evaluator')) && !userRole.includes('trainer')" class="btn rounded-0 text-custom p-0">
+        <i class="bi bi-person-fill text-center mx-0 me-2"></i><span>Professionnel !</span>
+      </a>
     </div>
-</footer>
-
-
-
-
-<!-- <div> -->
-<!-- <button aria-label="Nos métiers" type="button" class="text-custom dropup btn btn-light rounded-0 dropdown-toggle" data-bs-toggle="dropdown"
-        aria-haspopup="true" aria-expanded="false">
-        <i class="fs-5 bi bi-binoculars-fill mx-0 text-center"></i>
-    </button>
-    <div class="dropdown-menu w-100">
-        <a class="dropdown-item" href="#">Métier 1</a>
-        <a class="dropdown-item" href="#">Métier 2</a>
-        <a class="dropdown-item" href="#">Métier 3</a>
-    </div> -->
-<!-- </div> -->
-<!-- <button type="button" class="btn btn-light rounded-0 text-custom"><i
-            class="fs-5 bi bi-rocket-takeoff-fill mx-0 text-center"></i></button> -->
+  </footer>
+  
+  <!-- Bouton de retour au-dessus du footer -->
+  <button *ngIf="isBackToTopVisible" (click)="scrollToTop()" class="btn btn-light rounded-0 back-to-top-btn">
+    <i class="bi bi-arrow-up-circle-fill"></i> Retour
+  </button>
+  

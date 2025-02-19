@@ -37,6 +37,7 @@
     /* Couleur du texte par défaut */
     --bs-light: #f8f9fa;
     --bs-light-rgb: #f8f9fa;
+    --bg-sucess:#82BC00;
 }
 
 
@@ -328,19 +329,26 @@ h1.d-inline {
 }
 
 input:checked {
-    background-color: #82BC00 !important;
+    background-color: var(--bg-sucess) !important;
     opacity: 100 !important;
 }
 
 
 .ng-valid {
-    border-color: #82BC00 !important;
+    border-color: var(--bg-sucess) !important;
     /* background-position:center center; */
 }
 
 .valid-feedback {
-    color: #82BC00 !important;
+    color: var(--bg-sucess) !important;
 }
+.valid-feedback, .btn.btn-light.rounded-0:hover {
+    background-color: white !important;
+    color: var(--bg-sucess);
+    border: none;
+}
+
+
 
 /* fin */
 
