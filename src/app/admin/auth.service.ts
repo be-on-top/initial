@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Auth, signInWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, sendPasswordResetEmail } from '@angular/fire/auth';
-import { collection, doc, docData, Firestore } from '@angular/fire/firestore';
+import { collection, doc, docData, Firestore, getDoc } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 // import { stringify } from '@firebase/util';
 // import { collection, Firestore } from '@angular/fire/firestore';
 
-import { BehaviorSubject, map, Observable, of } from 'rxjs';
+import { BehaviorSubject, map, Observable, of, Subscription } from 'rxjs';
 import { EvaluatorsService } from './evaluators.service';
 // import { setPersistence, browserSessionPersistence } from 'firebase/auth';
 // import { ConsentService } from '../consent.service';
@@ -23,6 +23,11 @@ export class AuthService {
   // user$ :Observable<any>;
 
   private redirectUrl: string | null = null;
+
+  private currentUserInfoSubject = new BehaviorSubject<{ uid: string, role: string | string[] | null } | null>(null);
+
+  private userRoleSubscription: Subscription | null = null;
+
 
   constructor(
     private auth: Auth,
@@ -44,6 +49,51 @@ export class AuthService {
     //     });
     // }
 
+    // Initialiser la surveillance de l'état d'auth
+    // onAuthStateChanged(this.auth, user => {
+    //   if (user) {
+    //     const uid = user.uid;
+    //     const rolesRef = doc(this.firestore, `roles/${uid}`);
+    //     docData(rolesRef).subscribe(roleDoc => {
+    //       this.currentUserInfoSubject.next({
+    //         uid,
+    //         role: roleDoc?.['role'] || null,
+    //       });
+    //     });
+    //   } else {
+    //     this.currentUserInfoSubject.next(null);
+    //   }
+    // });
+
+    onAuthStateChanged(this.auth, user => {
+      if (this.userRoleSubscription) {
+        this.userRoleSubscription.unsubscribe(); // 🔴 Nettoie l'abonnement précédent
+        this.userRoleSubscription = null;
+      }
+  
+      if (user) {
+        const uid = user.uid;
+        const rolesRef = doc(this.firestore, `roles/${uid}`);
+  
+        this.userRoleSubscription = docData(rolesRef).subscribe(roleDoc => {
+          this.currentUserInfoSubject.next({
+            uid,
+            role: roleDoc?.['role'] || null,
+          });
+        });
+      } else {
+        this.currentUserInfoSubject.next(null);
+      }
+    });
+
+  }
+
+  getCurrentUserInfo(): Observable<{ uid: string, role: string | string[] | null } | null> {
+    return this.currentUserInfoSubject.asObservable();
+  }
+  
+  setCurrentUserInfo(userInfo: { uid: string, role: string | string[] | null }) {
+    this.currentUserInfoSubject.next(userInfo);
   }
 
   // register({ email, password }: any) {
@@ -95,6 +145,16 @@ export class AuthService {
       const lastLoginDate = new Date();
       localStorage.setItem('lastLoginDate', lastLoginDate.toString());
 
+      // Récupérer le rôle de l'utilisateur après la connexion
+      const uid = result.user.uid;
+      const rolesRef = doc(this.firestore, `roles/${uid}`);
+      const roleDoc = await getDoc(rolesRef); // Utiliser getDoc pour une requête unique
+
+      const userRole = roleDoc.exists() ? roleDoc.data()['role'] : null;
+
+      // Mettre à jour le BehaviorSubject pour notifier tous les composants abonnés
+      this.setCurrentUserInfo({ uid, role: userRole });
+
       // Log avant redirection
       console.log("Redirection après login...");
 
@@ -107,6 +167,7 @@ export class AuthService {
       throw error; // Vous pouvez gérer les erreurs ici
     }
   }
+
 
 
 
@@ -347,32 +408,32 @@ export class AuthService {
   }
 
 
-  getCurrentUserInfo(): Observable<{ uid: string, role: string | string[] | null } | null> {
-    return new Observable(observer => {
-      onAuthStateChanged(this.auth, user => {
-        if (!user) {
-          observer.next(null);
-          observer.complete();
-          return;
-        }
-  
-        const uid = user.uid; // On récupère directement l'UID
-  
-        const rolesRef = doc(this.firestore, `roles/${uid}`);
-        docData(rolesRef).subscribe(roleDoc => {
-          console.log("Données Firestore :", roleDoc); // Debug
-          observer.next({
-            uid,
-            role: roleDoc?.['role'] || null // Récupération du rôle ou `null`
-          });
-          observer.complete();
-        });
-      });
-    });
-  }
-  
-  
-  
+  // getCurrentUserInfo(): Observable<{ uid: string, role: string | string[] | null } | null> {
+  //   return new Observable(observer => {
+  //     onAuthStateChanged(this.auth, user => {
+  //       if (!user) {
+  //         observer.next(null);
+  //         observer.complete();
+  //         return;
+  //       }
+
+  //       const uid = user.uid; // On récupère directement l'UID
+
+  //       const rolesRef = doc(this.firestore, `roles/${uid}`);
+  //       docData(rolesRef).subscribe(roleDoc => {
+  //         console.log("Données Firestore :", roleDoc); // Debug
+  //         observer.next({
+  //           uid,
+  //           role: roleDoc?.['role'] || null // Récupération du rôle ou `null`
+  //         });
+  //         observer.complete();
+  //       });
+  //     });
+  //   });
+  // }
+
+
+
 
 
 
