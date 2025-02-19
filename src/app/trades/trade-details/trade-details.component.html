@@ -25,7 +25,7 @@
                     {{tradeData.requirements}}</span>
                 <br *ngIf="tradeData.parentCategory">
                 <span *ngIf="tradeData.parentCategory && tradeData.parentCategory!==''"
-                    class="text-light">{{tradeData.parentCategory}}</span>
+                    class="text-light">Catégorie : {{tradeData.parentCategory}}</span>
 
                 <!-- <p class="rounded bg-dark p-2 mt-2 small">Pour vérification du rôle récupéré : {{userRole}}</p> -->
                 <br>
@@ -43,10 +43,10 @@
         <!-- pour tenter les méthodes onLogin  et onRegister qui enregistrent l'url actuelle-->
         <div *ngIf="userRole === 'none' else switch" class="col-md-5 text-white mt-md-5">
             <p class="text-md-left fs-5">
-                Afin de commencer un QCM, merci de
+                Afin de démarrer un questionnaire, merci de
                 <a (click)="onLogin()" class="text-white fw-bold">vous authentifier</a>
                 ou
-                <a (click)="onRegister()" class="text-white fw-bold">vous enregistrer</a>
+                <a (click)="onRegister()" class="text-white fw-bold">vous créer un compte</a>
             </p>
         </div>
         <!-- ...des autres cas -->
