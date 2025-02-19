@@ -1,6 +1,7 @@
 <div class="container py-5">
 
-    <h3 class="mb-3">Détails de l'Utilisateur</h3>
+    <h3 *ngIf="userRouterLinks.user==='!referent'" class="mb-3">Détails de l'Utilisateur</h3>
+    <h3 *ngIf="userRouterLinks.user==='referent'" class="mb-3">Mon compte professionnel</h3>
 
 
     <div *ngIf="user">
@@ -28,7 +29,7 @@
                 <span *ngIf="user.created">Date de création : {{user.created | date:'dd/MM/yyyy' }}</span><br>
             </div>
         </div>
-        <div class="d-flex my-4 justify-content-end gap-5">
+        <div *ngIf="userRouterLinks.user==='!referent'" class="d-flex my-4 justify-content-end gap-5">
 
             <button class="btn btn-primary">
                 <!-- <a class="text-white" [routerLink]="['/admin/users']">Retour à la liste</a> -->

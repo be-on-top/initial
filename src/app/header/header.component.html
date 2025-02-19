@@ -223,6 +223,11 @@
                             <a class="dropdown-item" (click)="closeNavbar()"
                                 [routerLink]="['/admin/myTrainerAccount']">Mon compte Formateur</a>
                         </li>
+                        <!-- si user connecté, comme le referent par exemple -->
+                        <li *ngIf="userRole && userRole!='' && userRole.includes('referent') ">
+                            <a class="dropdown-item" (click)="closeNavbar()"
+                                [routerLink]="['/admin/myReferentAccount/', userUid]">Mon compte Conseiller</a>
+                        </li>
 
                         <li *ngIf="!userRole || userRole==''"><a class="dropdown-item" [routerLink]="['register']"
                                 (click)="closeNavbar()">Inscription</a></li>

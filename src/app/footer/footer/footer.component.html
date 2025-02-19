@@ -20,7 +20,11 @@
         class="btn rounded-0 text-custom p-0" aria-label="Mon compte" [routerLink]="['/admin/myTrainerAccount']">
         <i class="bi bi-person-fill text-center mx-0 me-2"></i><span>Compte pro</span>
       </a>
-      <a *ngIf="userRole && (userRole.includes('referent') || userRole.includes('evaluator')) && !userRole.includes('trainer')" class="btn rounded-0 text-custom p-0">
+      <a *ngIf="userRole && (userRole.includes('referent') || userRole === 'referent')" href="#"
+        class="btn rounded-0 text-custom p-0" aria-label="Mon compte" [routerLink]="['/admin/myReferentAccount/', userUid]">
+        <i class="bi bi-person-fill text-center mx-0 me-2"></i><span>Compte pro</span>
+      </a>
+      <a *ngIf="userRole && (userRole.includes('evaluator')) && !userRole.includes('trainer')" class="btn rounded-0 text-custom p-0">
         <i class="bi bi-person-fill text-center mx-0 me-2"></i><span>Professionnel !</span>
       </a>
     </div>

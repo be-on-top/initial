@@ -15,14 +15,25 @@ export class FooterComponent implements OnInit {
   private isScrolling = false; // Flag pour limiter les appels
   public isBackToTopVisible = false; // Indicateur de visibilité du bouton de retour
 
+  // pour la route mon compte pro paramétrable
+  userUid:string=""
+
   constructor(private authService: AuthService) {}
 
   ngOnInit() {
     this.checkFooterVisibility();
 
-    this.authService.getCurrentUserRole().subscribe(role => {
-      this.userRole = role;
+    // this.authService.getCurrentUserRole().subscribe(role => {
+    //   this.userRole = role;
+    // });
+
+    this.authService.getCurrentUserInfo().subscribe(userInfo => {
+      if (userInfo) {
+        this.userRole = userInfo.role;
+        this.userUid = userInfo.uid; // Stocke l'UID
+      }
     });
+
   }
 
   private checkFooterVisibility() {
@@ -60,4 +71,7 @@ export class FooterComponent implements OnInit {
   scrollToTop(): void {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+
+
+
 }

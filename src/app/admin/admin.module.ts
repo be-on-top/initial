@@ -160,6 +160,9 @@ const routesAdmin: Routes = [
       { path: 'referentStudentsList', component: StudentsListComponent, data: { user: 'referent' } },
       { path: 'referent/studentDetails/:id', component: StudentDetailsComponent, data: { user: 'referent' } },
       { path: 'referent/updateStudent/:id', component: UpdateStudentComponent, data: { user: 'referent' } },
+      // pour le compte référent
+      { path: 'myReferentAccount/:id', component: UserDetailsComponent, data: { user: 'referent' } },
+
 
       { path: 'addStudentEvaluation/:id', component: AddFollowUpComponent, data: { user: 'trainer' } },
       // { path: 'addStudentTutorial/:id/:trades?', component: AddFollowUpComponent, data: { user: 'tutor' } },

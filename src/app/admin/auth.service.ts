@@ -345,6 +345,32 @@ export class AuthService {
       });
     });
   }
+
+
+  getCurrentUserInfo(): Observable<{ uid: string, role: string | string[] | null } | null> {
+    return new Observable(observer => {
+      onAuthStateChanged(this.auth, user => {
+        if (!user) {
+          observer.next(null);
+          observer.complete();
+          return;
+        }
+  
+        const uid = user.uid; // On récupère directement l'UID
+  
+        const rolesRef = doc(this.firestore, `roles/${uid}`);
+        docData(rolesRef).subscribe(roleDoc => {
+          console.log("Données Firestore :", roleDoc); // Debug
+          observer.next({
+            uid,
+            role: roleDoc?.['role'] || null // Récupération du rôle ou `null`
+          });
+          observer.complete();
+        });
+      });
+    });
+  }
+  
   
   
 
