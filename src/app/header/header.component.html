@@ -29,7 +29,7 @@
             <ul class="navbar-nav ms-auto pt-4 pt-md-0">
 
                 <!-- ajout accessoire pour accueil -->
-                <li class="nav-item home" [routerLinkActive]="['active']" *ngIf="userRole==='' || userRole==='student'">
+                <li class="nav-item home" [routerLinkActive]="['active']" *ngIf="!userRole|| userRole==='' || userRole==='student'">
                     <!-- <li class="nav-item dropdown" *ngIf="filteredTrades" [routerLinkActive]="['active']"> -->
                     <a class="nav-link" role="button" data-bs-toggle="dropdown" [routerLink]="['/home']"
                         (click)="closeNavbar()">Accueil</a>
@@ -40,95 +40,95 @@
                 <li class="nav-item dropdown" [routerLinkActive]="['active']"
                     *ngIf="userUid!==undefined && userUid!=='' && userRole!=='student' && userRole!=='editor'">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                        *ngIf="userRole.includes('admin') || userRole.includes('evaluator') || userRole.includes('trainer') || userRole.includes('tutor') || userRole.includes('external') || userRole.includes('referent') || userRole.includes('manager')">Admin</a>
+                        *ngIf="userRole?.includes('admin') || userRole?.includes('evaluator') || userRole?.includes('trainer') || userRole?.includes('tutor') || userRole?.includes('external') || userRole?.includes('referent') || userRole?.includes('manager')">Admin</a>
                     <!-- <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Admin</a> -->
                     <ul class="dropdown-menu"
                         aria-label="Menu de navigation pour la création d'utilisateurs ayant des droits spécifiques">
-                        <li *ngIf="userRole.includes('admin') || userRole.includes('manager')"><a class="dropdown-item"
+                        <li *ngIf="userRole?.includes('admin') || userRole?.includes('manager')"><a class="dropdown-item"
                                 (click)="navigateTo('/admin/settings')">Paramètres</a>
 
                         </li>
 
-                        <li *ngIf="userRole.includes('admin')">
+                        <li *ngIf="userRole?.includes('admin')">
                             <hr>
                         </li>
-                        <li *ngIf="userRole.includes('admin')"><a class="dropdown-item"
+                        <li *ngIf="userRole?.includes('admin')"><a class="dropdown-item"
                                 [routerLink]="['/admin/evaluators']">Gestion des évaluateurs</a>
                         </li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/trainers']"
-                                *ngIf="userRole.includes('admin')">Gestion des formateurs</a></li>
+                                *ngIf="userRole?.includes('admin')">Gestion des formateurs</a></li>
                         <!-- exceptionnellement -->
                         <li><a class="dropdown-item" [routerLink]="['/admin/myTrainers']"
-                                *ngIf="userRole.includes('referent')">Gestion des formateurs</a></li>
+                                *ngIf="userRole?.includes('referent')">Gestion des formateurs</a></li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/tutors']"
-                                *ngIf="userRole.includes('admin')">Gestion des tuteurs</a></li>
+                                *ngIf="userRole?.includes('admin')">Gestion des tuteurs</a></li>
                         <!-- pour mémo, pour l'instant on utilise le simple contributeur comme utilisateur générique -->
                         <li><a class="dropdown-item" [routerLink]="['/admin/editors']"
-                                *ngIf="userRole.includes('admin')">Gestion des contributeurs</a></li>
+                                *ngIf="userRole?.includes('admin')">Gestion des contributeurs</a></li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/referents']"
-                                *ngIf="userRole.includes('admin')">Gestion des référents</a></li>
+                                *ngIf="userRole?.includes('admin')">Gestion des référents</a></li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/externals']"
-                                *ngIf="userRole.includes('admin')">Gestion des observateurs</a></li>
+                                *ngIf="userRole?.includes('admin')">Gestion des observateurs</a></li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/students']"
-                                *ngIf="userRole.includes('admin')">Gestion des candidats</a>
+                                *ngIf="userRole?.includes('admin')">Gestion des candidats</a>
                             <!-- pour virer le hr si trainer seul -->
-                            <hr *ngIf="!userRole.includes('trainer')">
+                            <hr *ngIf="!userRole?.includes('trainer')">
                         </li>
                         <!-- ajout d'une route pour designation du référent -->
-                        <!-- <hr *ngIf="userRole.includes('admin')"> -->
+                        <!-- <hr *ngIf="userRole?.includes('admin')"> -->
                         <li><a class="dropdown-item" [routerLink]="['/admin/managers']"
-                                *ngIf="userRole.includes('admin')">Responsable métiers (optionnel)</a></li>
+                                *ngIf="userRole?.includes('admin')">Responsable métiers (optionnel)</a></li>
 
                         <!-- liste étudiants  pour observateurs -->
                         <li><a class="dropdown-item" [routerLink]="['/admin/externalStudentsList']"
-                                *ngIf="userRole.includes('external')">Annuaire candidats</a></li>
+                                *ngIf="userRole?.includes('external')">Annuaire candidats</a></li>
 
-                        <li *ngIf="userRole.includes('admin') || userRole.includes('evaluators')">
+                        <li *ngIf="userRole?.includes('admin') || userRole?.includes('evaluators')">
                             <hr>
                         </li>
                         <li><a class="dropdown-item" (click)="navigateTo('/admin/priorForm')"
-                                *ngIf="userRole.includes('evaluator') || userRole.includes('admin')">Saisie des
+                                *ngIf="userRole?.includes('evaluator') || userRole?.includes('admin')">Saisie des
                                 questions d'accroche</a>
                         </li>
                         <li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/fullForm']"
-                                *ngIf="userRole.includes('evaluator') || userRole.includes('admin')">Saisie des
+                                *ngIf="userRole?.includes('evaluator') || userRole?.includes('admin')">Saisie des
                                 questions de
                                 positionnement</a></li>
                         <li>
                             <a class="dropdown-item text-muted fst-italic" [routerLink]="['/admin/socialForm']"
-                                *ngIf="userRole.includes('evaluator') || userRole.includes('admin')">Saisie des
+                                *ngIf="userRole?.includes('evaluator') || userRole?.includes('admin')">Saisie des
                                 questions type soft
                                 skills</a>
                         </li>
-                        <li *ngIf="userRole.includes('evaluator') || userRole.includes('admin')">
+                        <li *ngIf="userRole?.includes('evaluator') || userRole?.includes('admin')">
                             <hr>
                         </li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/questions']"
-                                *ngIf="userRole.includes('evaluator') || userRole.includes('admin')">Liste des questions
+                                *ngIf="userRole?.includes('evaluator') || userRole?.includes('admin')">Liste des questions
                                 d'accroche</a>
                         </li>
                         <!-- ici, on peut d'ailleurs remarquer que l'ont a déjà affaire à  -->
                         <li><a class="dropdown-item" [routerLink]="['/admin/fullList']"
-                                *ngIf="userRole.includes('evaluator') || userRole.includes('admin')">Liste des questions
+                                *ngIf="userRole?.includes('evaluator') || userRole?.includes('admin')">Liste des questions
                                 de
                                 positionnement</a></li>
                         <li><a class="dropdown-item text-light text-muted fst-italic" [routerLink]="['/admin/socials']"
-                                *ngIf="userRole.includes('evaluator') || userRole.includes('admin')">Liste des questions
+                                *ngIf="userRole?.includes('evaluator') || userRole?.includes('admin')">Liste des questions
                                 type soft skills</a>
                         </li>
                         <li
-                            *ngIf="userRole.includes('admin') || (userRole.includes('trainer') && userRole.includes('evaluator'))">
+                            *ngIf="userRole?.includes('admin') || (userRole?.includes('trainer') && userRole?.includes('evaluator'))">
                             <hr>
                         </li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/myStudents']"
-                                *ngIf="userRole.includes('trainer') || userRole.includes('admin')">Suivi pédagogique</a>
+                                *ngIf="userRole?.includes('trainer') || userRole?.includes('admin')">Suivi pédagogique</a>
                         </li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/tutor/myStudents']"
-                                *ngIf="userRole.includes('tutor') || userRole.includes('admin')">Suivi tutorial</a>
+                                *ngIf="userRole?.includes('tutor') || userRole?.includes('admin')">Suivi tutorial</a>
                         </li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/referentStudentsList']"
-                                *ngIf="userRole.includes('referent') || userRole.includes('admin')">Suivi
+                                *ngIf="userRole?.includes('referent') || userRole?.includes('admin')">Suivi
                                 administratif</a>
                         </li>
                     </ul>
@@ -212,19 +212,19 @@
                     <ul class="dropdown-menu mb-2">
                         <li *ngIf="!userRole"><a class="dropdown-item" [routerLink]="['login']">Connexion</a></li>
                         <!-- <li><a class="dropdown-item" (click)="logOut()" [routerLink]="['']">Logout</a></li> -->
-                        <li *ngIf="userRole || userRole!=''"><a class="dropdown-item" (click)="logOut()">Déconnexion</a>
+                        <li *ngIf="userRole && userRole!='' "><a class="dropdown-item" (click)="logOut()">Déconnexion</a>
                         </li>
                         <li
-                            *ngIf="userRole && userRole!='' && !userRole.includes('evaluator') && !userRole.includes('editor') && !userRole.includes('referent') && !userRole.includes('tutor') && !userRole.includes('trainer') && !userRole.includes('external')">
+                            *ngIf="userRole && userRole!='' && !userRole?.includes('evaluator') && !userRole?.includes('editor') && !userRole?.includes('referent') && !userRole?.includes('tutor') && !userRole?.includes('trainer') && !userRole?.includes('external')">
                             <a class="dropdown-item" (click)="closeNavbar()" [routerLink]="['account']">Mon compte</a>
                         </li>
                         <!-- si formateur connecté -->
-                        <li *ngIf="userRole && userRole!='' && userRole.includes('trainer') ">
+                        <li *ngIf="userRole && userRole!='' && userRole?.includes('trainer') ">
                             <a class="dropdown-item" (click)="closeNavbar()"
                                 [routerLink]="['/admin/myTrainerAccount']">Mon compte Formateur</a>
                         </li>
                         <!-- si user connecté, comme le referent par exemple -->
-                        <li *ngIf="userRole && userRole!='' && userRole.includes('referent') ">
+                        <li *ngIf="userRole && userRole!='' && userRole?.includes('referent') ">
                             <a class="dropdown-item" (click)="closeNavbar()"
                                 [routerLink]="['/admin/myReferentAccount/', userUid]">Mon compte Conseiller</a>
                         </li>
@@ -246,19 +246,19 @@
                 <li class="nav-item" [routerLinkActive]="['partners']" *ngIf="partners && partners.length!==0">
                     <a class="nav-link" [routerLink]="['partners']" role="button">Partenaires</a>
                 </li>
-                <li *ngIf="!userRole.includes('evaluator') && !userRole.includes('referent') && !userRole.includes('trainer')" class="nav-item"
+                <li *ngIf="!userRole?.includes('evaluator') && !userRole?.includes('referent') && !userRole?.includes('trainer')" class="nav-item"
                     [routerLinkActive]="['active']">
                     <a class="nav-link" [routerLink]="['benefits']" role="button" (click)="closeNavbar()">Information<i
                             class="bi bi-info-square-fill ms-2"></i></a>
                 </li>
                 <!-- pour traitement différencié si referent -->
                 <!-- fonctionne bien mais manque market-app -->
-                <!-- <li *ngIf="userRole.includes('referent')" class="nav-item" [routerLinkActive]="['active']">
+                <!-- <li *ngIf="userRole?.includes('referent')" class="nav-item" [routerLinkActive]="['active']">
                     <a class="nav-link" href="https://xd.adobe.com/view/75e0818e-ab1b-4464-8b05-ff2988454cba-20b3"
                         role="button" (click)="closeNavbar()">Documentation<i
                             class="bi bi-info-square-fill ms-2"></i></a>
                 </li> -->
-                <li *ngIf="userRole.includes('referent')" class="nav-item dropdown" [routerLinkActive]="['active']">
+                <li *ngIf="userRole?.includes('referent')" class="nav-item dropdown" [routerLinkActive]="['active']">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Informations
                         <!-- <i class="bi bi-info-square-fill ms-2"></i> -->
                     </a>
@@ -276,7 +276,7 @@
                 </li>
                 <!-- fin de l'alternative -->
                 <!-- pour formateurs momentanné -->
-                <li *ngIf="userRole.includes('trainer')" class="nav-item" [routerLinkActive]="['active']">
+                <li *ngIf="userRole?.includes('trainer')" class="nav-item" [routerLinkActive]="['active']">
                     <a class="nav-link"  [routerLink]="['market-app']"
                         role="button" (click)="closeNavbar()">Information<i
                             class="bi bi-info-square-fill ms-2"></i></a>
@@ -289,4 +289,4 @@
 
 <!-- après plusieurs essais, information reste ce qu'il y a de mieux -->
 <button class="btn btn-primary btn-sm info-button pe-2" (click)="goToInfoPage()"><i
-        class="bi bi-info me-2"></i>{{userRole.includes('referent')?'Informations':'information'}}</button>
+        class="bi bi-info me-2"></i>{{userRole?.includes('referent')?'Informations':'information'}}</button>

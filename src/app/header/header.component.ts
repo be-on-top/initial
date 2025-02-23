@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer2, ViewChild, OnInit, AfterViewInit, HostListener } from '@angular/core';
+import { Component, ElementRef, Renderer2, ViewChild, OnInit, AfterViewInit, HostListener, ChangeDetectorRef } from '@angular/core';
 import { AuthService } from '../admin/auth.service';
 import { onAuthStateChanged } from 'firebase/auth';
 import { Auth, reload } from '@angular/fire/auth';
@@ -20,14 +20,17 @@ import { SlugService } from '../slug.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit, AfterViewInit {
-  userUid?: any
-  userRole: string = ""
+  // userUid?: any
+  // userRole: string = ""
   trades?: any
 
   isMenuOpen = false;
   isNavbarOpen = false;
 
-  studentData?: Student
+  // studentData: Student | null = null;
+  studentData?: Student | null = null;
+
+
   isOneQuizzAchieved: boolean = false
 
   offline: boolean = false
@@ -45,6 +48,12 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
   // groupedTrades: Map<string, Trade[]> = new Map();
 
+  userUid?: string;
+  userRole: string | string[] | null = null;
+
+  private authSubscription: Subscription | undefined;
+  private studentSubscription: Subscription | undefined;
+
 
 
 
@@ -54,6 +63,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     // private renderer: Renderer2,
     private authService: AuthService,
     private auth: Auth,
+    private cdRef: ChangeDetectorRef,
     private firestore: Firestore,
     private tradeService: SettingsService,
     private router: Router,
@@ -88,33 +98,33 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     // Appeler la fonction de vérification au démarrage de l'application
     this.authService.checkLastLoginDate();
 
-    onAuthStateChanged(this.auth, (user: any) => {
-      if (user) {
-        this.userUid = user.uid
-        console.log("log user uid depuis le header", user.uid);
-        this.getRole(this.userUid).subscribe(data => {
-          console.log("data de l'utilisateur depuis header", data);
-          // si on a un tableau de rôles, c'est data.role[0]
-          this.userRole = data.role
-          console.log("roles depuis header", data.role);
-          this.studentService.getStudentById(user.uid).subscribe(data => {
-            this.studentData = data
-            this.checkIfQuizzAchieved()
-          })
+    // onAuthStateChanged(this.auth, (user: any) => {
+    //   if (user) {
+    //     this.userUid = user.uid
+    //     console.log("log user uid depuis le header", user.uid);
+    //     this.getRole(this.userUid).subscribe(data => {
+    //       console.log("data de l'utilisateur depuis header", data);
+    //       // si on a un tableau de rôles, c'est data.role[0]
+    //       this.userRole = data.role
+    //       console.log("roles depuis header", data.role);
+    //       this.studentService.getStudentById(user.uid).subscribe(data => {
+    //         this.studentData = data
+    //         this.checkIfQuizzAchieved()
+    //       })
 
-        })
+    //     })
 
-      }
-      console.log("pas d'utilisateur authentifié")
-    })
+    //   }
+    //   console.log("pas d'utilisateur authentifié")
+    // })
 
-    //  onAuthStateChanged(this.auth, (user: any) => {
-    //    if (user) {
-    //      this.getRole( user.uid).subscribe((data)=>{
-    //        this.userRole=data.role
-    //    }) }
+    // Écoute continue des changements d'état utilisateur
+    this.authSubscription = this.authService.getCurrentUserInfo().subscribe(userInfo => {
+      this.userRole = userInfo?.role ?? null;
+      this.userUid = userInfo?.uid ?? "";
 
-    //  })
+      this.getStudentData(this.userUid)
+    });
 
     if (navigator.onLine) {
       this.tradeService.getTradesWithStatusTrue().subscribe(data => {
@@ -145,6 +155,19 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     }
 
     this.groupedTrades = this.groupTradesByCategory(this.trades);
+  }
+
+  private getStudentData(uid: string) {
+    if (!uid) return;
+    
+    if (this.studentSubscription) {
+      this.studentSubscription.unsubscribe();
+    }
+
+    this.studentSubscription = this.studentService.getStudentById(uid).subscribe(data => {
+      this.studentData = data;
+      this.checkIfQuizzAchieved();
+    });
   }
 
   //   groupTradesByCategory(trades: Trade[]): Map<string, Trade[]> {
@@ -277,7 +300,16 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     if (this.networkSubscription) {
       this.networkSubscription.unsubscribe(); // Vérification explicite pour null
     }
+
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
+    }
+    if (this.studentSubscription) {
+      this.studentSubscription.unsubscribe();
+    }
   }
+
+
 
 
 
@@ -322,10 +354,10 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   // }
 
   goToInfoPage() {
-    if (this.userRole.includes('referent')) {
+    if (this.userRole?.includes('referent')) {
       // Ouvrir un lien externe dans une nouvelle fenêtre ou un nouvel onglet
       window.open('https://xd.adobe.com/view/75e0818e-ab1b-4464-8b05-ff2988454cba-20b3/?fullscreen', '_blank');
-    } else if (this.userRole.includes('trainer')) {
+    } else if (this.userRole?.includes('trainer')) {
       // Rediriger vers support Formateurs
       window.open('https://xd.adobe.com/view/a41e35e0-6af3-4001-8ba8-3c856993d99a-f14d/?fullscreen', '_blank');
     } else {

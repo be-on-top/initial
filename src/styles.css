@@ -277,8 +277,9 @@ h1.d-inline {
     margin-right: 1rem;
 }
 
-.btn btn-danger {
+.btn.btn-danger {
     background-color: #E21937;
+    color: white;
 }
 
 .btn.btn-success {

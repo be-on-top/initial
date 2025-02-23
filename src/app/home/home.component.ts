@@ -98,6 +98,9 @@ export class HomeComponent implements OnInit {
   groupedTrades: any[] = [];  // Pour les métiers avec parentCategory
   ungroupedTrades: any[] = [];  // Pour les métiers sans parentCategory
 
+  // null signifie qu'aucune catégorie n'est ouverte
+  openCategoryIndex: number | null = null;
+
 
   constructor(
     // private notificationService: PushNotificationService, 
@@ -485,9 +488,15 @@ export class HomeComponent implements OnInit {
   //   return slug;
   // }
 
-  openFullCatItems() {
+  // openFullCatItems() {
+  //   this.isFullCatItemsOpen = !this.isFullCatItemsOpen
+  // }
 
+  openFullCatItems(index: number): void {
+    // Si la catégorie cliquée est déjà ouverte, la fermer; sinon, l'ouvrir
+    this.openCategoryIndex = this.openCategoryIndex === index ? null : index;
     this.isFullCatItemsOpen = !this.isFullCatItemsOpen
+
   }
 
   onSearchCat() {
@@ -513,34 +522,67 @@ export class HomeComponent implements OnInit {
 
 
   checkScreenSize() {
-    this.isLargeScreen = window.innerWidth > 950;
+    this.isLargeScreen = window.innerWidth > 720;
   }
 
 
 
   // pour utiliser le composant de recherche
+  // onSearchTextEntered(searchValue: string) {
+  //   const normalizedSearchValue = this.removeAccents(searchValue).toLowerCase().trim(); // Normalisation de la recherche
+
+  //   // Vérifiez si un élément non visible correspond au terme de recherche
+
+  //   if (!this.isFullCatItemsOpen && this.catGroup.some((trade: any) => {
+  //     // Normalisez les descriptions pour la comparaison
+  //     const normalizedDenomination = this.removeAccents(trade.denomination).toLowerCase();
+  //     const normalizedDescription = this.removeAccents(trade.description).toLowerCase();
+  //     console.log(normalizedDescription);
+
+
+  //     // Comparez avec la valeur de recherche normalisée
+  //     return normalizedDenomination.includes(normalizedSearchValue) || normalizedDescription.includes(normalizedSearchValue);
+  //   })) {
+  //     // Ouvrez si une correspondance est trouvée
+  //     this.isFullCatItemsOpen = true;
+
+  //   }
+
+  //   this.searchText = searchValue; // Gardez cela pour l'affichage
+  //   console.log("Search Value:", searchValue);
+  //   console.log("Normalized Search Value:", normalizedSearchValue);
+  // }
+
   onSearchTextEntered(searchValue: string) {
-    const normalizedSearchValue = this.removeAccents(searchValue).toLowerCase().trim(); // Normalisation de la recherche
-
-    // Vérifiez si un élément non visible correspond au terme de recherche
-    if (!this.isFullCatItemsOpen && this.catGroup.some((trade: any) => {
-      // Normalisez les descriptions pour la comparaison
-      const normalizedDenomination = this.removeAccents(trade.denomination).toLowerCase();
-      const normalizedDescription = this.removeAccents(trade.description).toLowerCase();
-      console.log(normalizedDescription);
-
-
-      // Comparez avec la valeur de recherche normalisée
-      return normalizedDenomination.includes(normalizedSearchValue) || normalizedDescription.includes(normalizedSearchValue);
-    })) {
-      // Ouvrez si une correspondance est trouvée
-      this.isFullCatItemsOpen = true;
+    const normalizedSearchValue = this.removeAccents(searchValue).toLowerCase().trim();
+    this.searchText = searchValue; // mise à jour pour l'affichage
+  
+    // Si la recherche est vide, on ferme toutes les catégories
+    if (!normalizedSearchValue) {
+      this.openCategoryIndex = null;
+      return;
     }
-
-    this.searchText = searchValue; // Gardez cela pour l'affichage
+  
+    // Recherche dans chaque groupe : ouvrir le premier groupe où une correspondance est trouvée
+    const matchingGroupIndex = this.groupedTrades.findIndex((group: any) =>
+      group[1].some((trade: any) => {
+        const normalizedDenomination = this.removeAccents(trade.denomination).toLowerCase();
+        const normalizedDescription = this.removeAccents(trade.description).toLowerCase();
+        return normalizedDenomination.includes(normalizedSearchValue) ||
+               normalizedDescription.includes(normalizedSearchValue);
+      })
+    );
+  
+    // Si une correspondance est trouvée et que ce groupe n'est pas déjà ouvert, on l'ouvre
+    if (matchingGroupIndex !== -1 && this.openCategoryIndex !== matchingGroupIndex) {
+      this.openFullCatItems(matchingGroupIndex);
+    }
+  
     console.log("Search Value:", searchValue);
     console.log("Normalized Search Value:", normalizedSearchValue);
   }
+  
+  
 
 
 
@@ -608,12 +650,12 @@ export class HomeComponent implements OnInit {
 
   processDenomination(denomination: string): string {
     const acronymRegex = /(\b[A-Z]+\b)\s?\((.*?)\)/g;
-    
+
     return denomination.replace(acronymRegex, (match, acronym, meaning) => {
       return `<abbr title="${meaning}">${acronym}</abbr>`;
     });
   }
-  
+
 
 
 

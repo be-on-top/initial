@@ -34,12 +34,15 @@
                 personnalisée</h1> qui vous hissera aux portes du métier de votre choix
         </div> -->
         <div *ngIf="!isLoading && !isOneQuizzAchieved && !offline"
-            class="alert w-100 p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show display-5">
-            <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
-                aria-label="Fermer le message be-on-top"></button>
-            Evaluez vos connaissances et démarrez rapidement une <h1 class="d-inline">formation
-                personnalisée</h1> pour être au top des compétences du métier de vôtre choix.
-        </div>
+        class="alert w-100 p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show display-5">
+       <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
+               aria-label="Fermer le message be-on-top"></button>
+       Evaluez vos connaissances et démarrez rapidement une <a href="/benefits" class="text-light text-decoration-none" 
+           role="link" aria-label="Démarrer une formation personnalisée pour développer vos compétences">
+           formation personnalisée
+       </a> pour être au top des compétences du métier de votre choix.
+   </div>
+   
     </ng-container>
     <ng-template #yes>
         <!-- <div class="alert alert-light p-4 alert-dismissible mb-4 fade show pe-5"
@@ -95,6 +98,8 @@
     <!-- <app-search *ngIf="tradesData && tradesData.length>4"
         (searchTextChanged)="onSearchTextEntered($event)"></app-search> -->
     <app-search (searchTextChanged)="onSearchTextEntered($event)"></app-search>
+
+    <!-- {{catGroup|json}} -->
 
     <div *ngIf="tradesData" class="rounded row column-gap-1">
 
@@ -288,7 +293,8 @@
                     <!-- Deuxième niveau d'itération pour afficher les éléments du groupe (group[1] est le tableau des objets) -->
                     <ng-container *ngFor="let trade of group[1], let i = index">
                         <!-- n'affichera que les 2 premiers de la liste catGroup tant que !isFullCatItempsOpen -->
-                        <div *ngIf="!isFullCatItemsOpen && i <= 1" class="col-md-6 pt-3">
+                        <!-- <div *ngIf="!isFullCatItemsOpen && i <= 1" class="col-md-6 pt-3"> -->
+                        <div  *ngIf="openCategoryIndex !== j && i <= 1" class="col-md-6 pt-3">
 
                             <div (click)="selectTrade(trade.id)">
                                 <div
@@ -314,7 +320,11 @@
                                     <div class="image-container rounded mb-1">
                                         <a [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]"
                                             class="text-decoration-none">
-                                            <img ngOpmizedImage class="img-fluid rounded" [ngSrc]="trade.imageUrl"
+                                            
+                                            <img ngOpmizedImage class="img-fluid rounded"
+                                            [ngSrc]="(i === tradesData.length - 1 && tradesData.length % 2 !== 0 && isLargeScreen)
+                                            ? trade.imageUrl.replace('_resized.jpeg', '.jpeg')
+                                            : trade.imageUrl" (load)="onImageLoad()"
                                                 *ngIf="trade.imageUrl" (load)="onImageLoad()" [width]="largeurImage"
                                                 [height]="hauteurImage" [priority]="i === 0"
                                                 alt="formation BE-ON-TOP au métier {{trade.sigle}}">
@@ -392,7 +402,9 @@
                         <!-- affichera normalement tous les items dès que isFullCatItempsOpen -->
                         <!-- <div *ngIf="isFullCatItemsOpen" class="col-md-6 pt-3"> -->
 
-                        <div *ngIf="isFullCatItemsOpen && (searchText===''
+                            
+
+                        <div *ngIf="openCategoryIndex === j && (searchText===''
                 || trade.denomination.includes(searchText)
                 || removeAccents(trade.denomination).toLowerCase().includes(removeAccents(searchText).toLowerCase())
                 || trade.denomination.includes(searchText)
@@ -425,10 +437,11 @@
                                     <div class="image-container rounded mb-1">
                                         <a [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]"
                                             class="text-decoration-none">
-                                            <img ngOpmizedImage class="img-fluid rounded" [ngSrc]="trade.imageUrl"
-                                                *ngIf="trade.imageUrl" (load)="onImageLoad()" [width]="largeurImage"
-                                                [height]="hauteurImage" [priority]="i === 0"
-                                                alt="formation BE-ON-TOP au métier {{trade.sigle}}">
+                                            <img ngOpmizedImage class="img-fluid rounded" [ngSrc]="(i === group[1].length - 1 && tradesData.length % 2 !== 0 && isLargeScreen)
+                                            ? trade.imageUrl.replace('_resized.jpeg', '.jpeg')
+                                            : trade.imageUrl" (load)="onImageLoad()"
+                                  [width]="largeurImage" [height]="hauteurImage" [priority]="i === 0"
+                                  alt="formation BE-ON-TOP au métier {{trade.sigle}}">
                                         </a>
                                     </div>
                                 </ng-container>
@@ -518,7 +531,7 @@
 
                 <!-- refacto si catégories multiples -->
                 <div class="card-footer" *ngIf="group[1].length>2">
-                    <button class="btn btn-primary w-100 mx-auto" (click)="openFullCatItems()">
+                    <button class="btn btn-primary w-100 mx-auto" (click)="openFullCatItems(j)">
                         <span *ngIf="!isFullCatItemsOpen">
                             Toutes les formations ({{group[1].length}})
                         </span>

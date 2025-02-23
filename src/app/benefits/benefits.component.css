@@ -86,19 +86,19 @@ background-repeat: no-repeat; */
 
 
 
-@media only screen and (max-width:772px) {
-    .display-4 {
-        font-size: 1.5rem !important;
-    }
-
+@media only screen and (max-width:720px) {
+/* 
     #image>img {
         display: none;
 
-    }
+    } */
 
     .accordion-button {
         /* background-color: #007bff; */
         font-size: 0.9rem;
     }
-
 }
+
+
+
+

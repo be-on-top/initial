@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
@@ -6,15 +6,41 @@ import { Meta, Title } from '@angular/platform-browser';
   templateUrl: './benefits.component.html',
   styleUrls: ['./benefits.component.css']
 })
-export class BenefitsComponent implements OnInit {
+export class BenefitsComponent implements OnInit, AfterViewInit {
 
-  constructor(private metaService: Meta, private titleService: Title) {
+
+  bootstrap: any;
+  constructor(private metaService: Meta, private titleService: Title, private cdr: ChangeDetectorRef) {
 
   }
 
   ngOnInit(): void {
     this.addTag()
   }
+
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      const carouselElement = document.getElementById('demo');
+      if (carouselElement) {
+        const carouselInstance = new this.bootstrap.Carousel(carouselElement, {
+          interval: 2000,
+          ride: 'carousel',
+          touch: true
+        });
+    
+        // Simuler un événement utilisateur
+        carouselElement.dispatchEvent(new Event('mouseenter'));
+        carouselElement.dispatchEvent(new Event('mouseleave'));
+    
+        carouselInstance.cycle();
+      }
+    }, 500);
+    
+  }
+  
+  
+
 
 
   addTag() {
