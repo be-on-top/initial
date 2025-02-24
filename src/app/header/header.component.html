@@ -47,7 +47,6 @@
                         aria-label="Menu de navigation pour la création d'utilisateurs ayant des droits spécifiques">
                         <li *ngIf="userRole?.includes('admin') || userRole?.includes('manager')"><a
                                 class="dropdown-item" (click)="navigateTo('/admin/settings')">Paramètres</a>
-
                         </li>
 
                         <li *ngIf="userRole?.includes('admin')">
@@ -67,7 +66,7 @@
                         <li><a class="dropdown-item" [routerLink]="['/admin/editors']"
                                 *ngIf="userRole?.includes('admin')">Gestion des contributeurs</a></li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/referents']"
-                                *ngIf="userRole?.includes('admin')">Gestion des référents</a></li>
+                                *ngIf="userRole?.includes('admin')">Gestion des conseillers CP</a></li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/externals']"
                                 *ngIf="userRole?.includes('admin')">Gestion des observateurs</a></li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/students']"

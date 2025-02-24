@@ -495,7 +495,8 @@ export class HomeComponent implements OnInit {
   openFullCatItems(index: number): void {
     // Si la catégorie cliquée est déjà ouverte, la fermer; sinon, l'ouvrir
     this.openCategoryIndex = this.openCategoryIndex === index ? null : index;
-    this.isFullCatItemsOpen = !this.isFullCatItemsOpen
+    
+    // this.isFullCatItemsOpen = !this.isFullCatItemsOpen
 
   }
 

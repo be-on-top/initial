@@ -1,0 +1,4 @@
+.btn-success i {
+    color: white !important; /* Assure un bon contraste sur fond vert */
+    opacity: 1 !important; /* Évite que Bootstrap le rende trop transparent */
+}

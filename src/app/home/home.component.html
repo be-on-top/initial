@@ -181,7 +181,7 @@
 
                         <div *ngIf="isEditor" class="d-flex justify-content-end">
                             <hr>
-                            <button class="btn btn-transparent mt-3" aria-label="Edition du métier">
+                            <button type="button" class="btn btn-transparent mt-3" aria-label="Edition du métier">
                                 <a class="text-dark" [routerLink]="['/admin/updateDescription', trade.sigle]">
                                     <i class="bi bi-pencil-square"></i>
                                     Editer</a>
@@ -206,7 +206,7 @@
                                 <div class="d-flex justify-content-end"
                                     *ngIf="(studentData && !studentData['quizz_'+trade.sigle])">
 
-                                    <button (click)="logStartEvaluationEvent(trade.denomination)"
+                                    <button type="button" (click)="logStartEvaluationEvent(trade.denomination)"
                                         aria-label="Démarrer le questionnaire be-on-top" class="btn btn-transparent"><i
                                             class="bi bi-clock-fill text-success"></i>
                                         Démarrer votre évaluation</button>
@@ -214,7 +214,7 @@
                                 <div class="d-flex justify-content-end"
                                     *ngIf="studentData && studentData['quizz_'+trade.sigle] && !studentData['quizz_'+trade.sigle].fullResults">
 
-                                    <button aria-label="Poursuivre le questionnaire" class="btn btn-transparent"><i
+                                    <button type="button" aria-label="Poursuivre le questionnaire" class="btn btn-transparent"><i
                                             class="bi bi-clock-history fw-bold"></i>
                                         <!-- Reprendre à la question {{studentData.lastIndexQuestion+1}}</button></div> -->
                                         Poursuivre l'évaluation</button>
@@ -231,7 +231,7 @@
                         </ng-container>
 
                     </div>
-                    <div class="card-footer text-muted">Réf.: {{trade.sigle}}
+                    <div class="card-footer text-muted" aria-hidden="true" role="presentation">Réf.: {{trade.sigle}}
                         <ng-container *ngIf="studentData && studentData['quizz_'+trade.sigle]">
                             - Score: {{ studentData['quizz_'+trade.sigle].scoreCounter | json }} PNTS
                         </ng-container>
@@ -370,17 +370,17 @@
                                         <div class="d-flex justify-content-end"
                                             *ngIf="(studentData && !studentData['quizz_'+trade.sigle])">
 
-                                            <button (click)="logStartEvaluationEvent(trade.denomination)"
+                                            <button type="button" (click)="logStartEvaluationEvent(trade.denomination)"
                                                 aria-label="Démarrer le questionnaire be-on-top"
                                                 class="btn btn-transparent"><i
-                                                    class="bi bi-clock-fill text-success"></i>
+                                                    class="bi bi-clock-fill text-success" aria-hidden="true"></i>
                                                 Démarrer votre évaluation</button>
                                         </div>
                                         <div class="d-flex justify-content-end"
                                             *ngIf="studentData && studentData['quizz_'+trade.sigle] && !studentData['quizz_'+trade.sigle].fullResults">
 
-                                            <button aria-label="Poursuivre le questionnaire"
-                                                class="btn btn-transparent"><i class="bi bi-clock-history fw-bold"></i>
+                                            <button type="button" aria-label="Poursuivre le questionnaire"
+                                                class="btn btn-transparent"><i class="bi bi-clock-history fw-bold" aria-hidden="true"></i>
                                                 <!-- Reprendre à la question {{studentData.lastIndexQuestion+1}}</button></div> -->
                                                 Poursuivre l'évaluation</button>
                                         </div>
@@ -461,9 +461,9 @@
 
                                 <div *ngIf="isEditor" class="d-flex justify-content-end">
                                     <hr>
-                                    <button class="btn btn-transparent mt-3" aria-label="Edition du métier">
+                                    <button type="button" class="btn btn-transparent mt-3" aria-label="Edition du métier">
                                         <a class="text-dark" [routerLink]="['/admin/updateDescription', trade.sigle]">
-                                            <i class="bi bi-pencil-square"></i>
+                                            <i class="bi bi-pencil-square" aria-hidden="true"></i>
                                             Editer</a>
                                     </button>
                                 </div>
@@ -484,7 +484,7 @@
                                         <div class="d-flex justify-content-end"
                                             *ngIf="(studentData && !studentData['quizz_'+trade.sigle])">
 
-                                            <button (click)="logStartEvaluationEvent(trade.denomination)"
+                                            <button type="button" (click)="logStartEvaluationEvent(trade.denomination)"
                                                 aria-label="Démarrer le questionnaire be-on-top"
                                                 class="btn btn-transparent"><i
                                                     class="bi bi-clock-fill text-success"></i>
@@ -493,7 +493,7 @@
                                         <div class="d-flex justify-content-end"
                                             *ngIf="studentData && studentData['quizz_'+trade.sigle] && !studentData['quizz_'+trade.sigle].fullResults">
 
-                                            <button aria-label="Poursuivre le questionnaire"
+                                            <button type="button" aria-label="Poursuivre le questionnaire"
                                                 class="btn btn-transparent"><i class="bi bi-clock-history fw-bold"></i>
                                                 <!-- Reprendre à la question {{studentData.lastIndexQuestion+1}}</button></div> -->
                                                 Poursuivre l'évaluation</button>
@@ -530,16 +530,17 @@
           </div> -->
 
                 <!-- refacto si catégories multiples -->
-                <div class="card-footer" *ngIf="group[1].length>2">
-                    <button class="btn btn-primary w-100 mx-auto" (click)="openFullCatItems(j)">
-                        <span *ngIf="!isFullCatItemsOpen">
-                            Toutes les formations ({{group[1].length}})
-                        </span>
-                        <span *ngIf="isFullCatItemsOpen">
-                            Fermer
-                        </span>
+                <div class="card-footer" *ngIf="group[1].length > 2">
+                    <button type="button" class="btn btn-primary w-100 mx-auto" (click)="openFullCatItems(j)">
+                      <span *ngIf="openCategoryIndex !== j">
+                        Toutes les formations ({{ group[1].length }})
+                      </span>
+                      <span *ngIf="openCategoryIndex === j">
+                        Fermer
+                      </span>
                     </button>
-                </div>
+                  </div>
+                  
                 <!-- <div class="card-footer">
                 <button class="btn btn-success w-100 mx-auto" (click)="openFullCatItems()" *ngIf="catGroup.length>2">
                     <span *ngIf="!isFullCatItemsOpen">
