@@ -29,7 +29,8 @@
             <ul class="navbar-nav ms-auto pt-4 pt-md-0">
 
                 <!-- ajout accessoire pour accueil -->
-                <li class="nav-item home" [routerLinkActive]="['active']" *ngIf="!userRole|| userRole==='' || userRole==='student'">
+                <li class="nav-item home" [routerLinkActive]="['active']"
+                    *ngIf="!userRole|| userRole==='' || userRole==='student'">
                     <!-- <li class="nav-item dropdown" *ngIf="filteredTrades" [routerLinkActive]="['active']"> -->
                     <a class="nav-link" role="button" data-bs-toggle="dropdown" [routerLink]="['/home']"
                         (click)="closeNavbar()">Accueil</a>
@@ -44,8 +45,8 @@
                     <!-- <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Admin</a> -->
                     <ul class="dropdown-menu"
                         aria-label="Menu de navigation pour la création d'utilisateurs ayant des droits spécifiques">
-                        <li *ngIf="userRole?.includes('admin') || userRole?.includes('manager')"><a class="dropdown-item"
-                                (click)="navigateTo('/admin/settings')">Paramètres</a>
+                        <li *ngIf="userRole?.includes('admin') || userRole?.includes('manager')"><a
+                                class="dropdown-item" (click)="navigateTo('/admin/settings')">Paramètres</a>
 
                         </li>
 
@@ -105,16 +106,19 @@
                             <hr>
                         </li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/questions']"
-                                *ngIf="userRole?.includes('evaluator') || userRole?.includes('admin')">Liste des questions
+                                *ngIf="userRole?.includes('evaluator') || userRole?.includes('admin')">Liste des
+                                questions
                                 d'accroche</a>
                         </li>
                         <!-- ici, on peut d'ailleurs remarquer que l'ont a déjà affaire à  -->
                         <li><a class="dropdown-item" [routerLink]="['/admin/fullList']"
-                                *ngIf="userRole?.includes('evaluator') || userRole?.includes('admin')">Liste des questions
+                                *ngIf="userRole?.includes('evaluator') || userRole?.includes('admin')">Liste des
+                                questions
                                 de
                                 positionnement</a></li>
                         <li><a class="dropdown-item text-light text-muted fst-italic" [routerLink]="['/admin/socials']"
-                                *ngIf="userRole?.includes('evaluator') || userRole?.includes('admin')">Liste des questions
+                                *ngIf="userRole?.includes('evaluator') || userRole?.includes('admin')">Liste des
+                                questions
                                 type soft skills</a>
                         </li>
                         <li
@@ -122,7 +126,8 @@
                             <hr>
                         </li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/myStudents']"
-                                *ngIf="userRole?.includes('trainer') || userRole?.includes('admin')">Suivi pédagogique</a>
+                                *ngIf="userRole?.includes('trainer') || userRole?.includes('admin')">Suivi
+                                pédagogique</a>
                         </li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/tutor/myStudents']"
                                 *ngIf="userRole?.includes('tutor') || userRole?.includes('admin')">Suivi tutorial</a>
@@ -179,7 +184,7 @@
 
                         <li class="dropdown-submenu" *ngFor="let group of groupedTrades | keyvalue">
                             <a class="dropdown-item dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                               aria-expanded="false" (click)="onDropdownClick($event)">
+                                aria-expanded="false" (click)="onDropdownClick($event)">
                                 {{ formatCategoryTitle(group.key).main }}<br>
                                 <span class="break-before-parenthesis">
                                     {{ formatCategoryTitle(group.key).subtitle }}
@@ -188,45 +193,48 @@
                             <ul class="dropdown-menu">
                                 <li *ngFor="let trade of group.value">
                                     <a class="dropdown-item" (click)="closeNavbar()"
-                                       [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]">
+                                        [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]">
                                         {{ trade.denomination | truncateTitle }}
                                     </a>
                                 </li>
                             </ul>
                         </li>
-                        
-                        
+
+
 
                     </ul>
 
-                    
+
                 </li>
 
-                
+
 
 
                 <!-- ajout login global (on aura ultérieurement un public et privé réservé aux contributeurs et évaluateurs...) -->
                 <li *ngIf="!offline" class="nav-item dropdown" [routerLinkActive]="['active']">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Utilisateur <i
+                    <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">Utilisateur <i
                             class="bi bi-person-fill-gear mx-2"></i></a>
                     <ul class="dropdown-menu mb-2">
                         <li *ngIf="!userRole"><a class="dropdown-item" [routerLink]="['login']">Connexion</a></li>
                         <!-- <li><a class="dropdown-item" (click)="logOut()" [routerLink]="['']">Logout</a></li> -->
-                        <li *ngIf="userRole && userRole!='' "><a class="dropdown-item" (click)="logOut()">Déconnexion</a>
+                        <li *ngIf="userRole && userRole!='' "><a class="dropdown-item"
+                                (click)="logOut()">Déconnexion</a>
                         </li>
                         <li
                             *ngIf="userRole && userRole!='' && !userRole?.includes('evaluator') && !userRole?.includes('editor') && !userRole?.includes('referent') && !userRole?.includes('tutor') && !userRole?.includes('trainer') && !userRole?.includes('external')">
-                            <a class="dropdown-item" (click)="closeNavbar()" [routerLink]="['account']">Mon compte</a>
+                            <a class="dropdown-item" (click)="closeNavbar()" [routerLink]="['account']"
+                                aria-label="Accéder à votre compte Candidat">Mon compte</a>
                         </li>
                         <!-- si formateur connecté -->
                         <li *ngIf="userRole && userRole!='' && userRole?.includes('trainer') ">
-                            <a class="dropdown-item" (click)="closeNavbar()"
-                                [routerLink]="['/admin/myTrainerAccount']">Mon compte Formateur</a>
+                            <a class="dropdown-item" (click)="closeNavbar()" [routerLink]="['/admin/myTrainerAccount']"
+                                aria-label="Accéder à votre compte Formateur">Mon compte Formateur</a>
                         </li>
                         <!-- si user connecté, comme le referent par exemple -->
                         <li *ngIf="userRole && userRole!='' && userRole?.includes('referent') ">
                             <a class="dropdown-item" (click)="closeNavbar()"
-                                [routerLink]="['/admin/myReferentAccount/', userUid]">Mon compte Conseiller</a>
+                                [routerLink]="['/admin/myReferentAccount/', userUid]"
+                                aria-label="Accéder à votre compte Conseiller">Mon compte Conseiller</a>
                         </li>
 
                         <li *ngIf="!userRole || userRole==''"><a class="dropdown-item" [routerLink]="['register']"
@@ -246,8 +254,8 @@
                 <li class="nav-item" [routerLinkActive]="['partners']" *ngIf="partners && partners.length!==0">
                     <a class="nav-link" [routerLink]="['partners']" role="button">Partenaires</a>
                 </li>
-                <li *ngIf="!userRole?.includes('evaluator') && !userRole?.includes('referent') && !userRole?.includes('trainer')" class="nav-item"
-                    [routerLinkActive]="['active']">
+                <li *ngIf="!userRole?.includes('evaluator') && !userRole?.includes('referent') && !userRole?.includes('trainer')"
+                    class="nav-item" [routerLinkActive]="['active']">
                     <a class="nav-link" [routerLink]="['benefits']" role="button" (click)="closeNavbar()">Information<i
                             class="bi bi-info-square-fill ms-2"></i></a>
                 </li>
@@ -266,8 +274,19 @@
                         <li class="nav-item" [routerLinkActive]="['active']">
                             <a class="dropdown-item"
                                 href="https://firebasestorage.googleapis.com/v0/b/be-on-top-beta.appspot.com/o/admin-docs%2FformationCP.pdf?alt=media&token=58038bf1-38fa-4673-8aa5-57cc147d4fe0"
-                                role="button" (click)="closeNavbar()">Support PDF</a>
+                                target="_blank" rel="noopener noreferrer" role="button"
+                                aria-label="Ouvrir la présentation de support Diapo dans un nouvel onglet"
+                                (click)="closeNavbar()">Support PDF</a>
                         </li>
+                        <!-- pour des raisons de sécurité et de conformité RGAA WCAG -->
+                        <li class="nav-item d-none d-lg-block" [routerLinkActive]="['active']">
+                            <a class="dropdown-item"
+                                href="https://xd.adobe.com/view/75e0818e-ab1b-4464-8b05-ff2988454cba-20b3/?fullscreen"
+                                target="_blank" rel="noopener noreferrer" role="button"
+                                aria-label="Ouvrir la présentation de support Diapo dans un nouvel onglet"
+                                (click)="closeNavbar()">Support format Diapo</a>
+                        </li>
+
                         <!-- <li><a class="dropdown-item" (click)="logOut()" [routerLink]="['']">Logout</a></li> -->
                         <li><a class="dropdown-item" (click)="closeNavbar()" [routerLink]="['market-app']">Mission
                                 BE-ON-TOP</a>
@@ -275,12 +294,36 @@
                     </ul>
                 </li>
                 <!-- fin de l'alternative -->
+
                 <!-- pour formateurs momentanné -->
-                <li *ngIf="userRole?.includes('trainer')" class="nav-item" [routerLinkActive]="['active']">
-                    <a class="nav-link"  [routerLink]="['market-app']"
-                        role="button" (click)="closeNavbar()">Information<i
-                            class="bi bi-info-square-fill ms-2"></i></a>
+                <li *ngIf="userRole?.includes('trainer')" class="nav-item dropdown" [routerLinkActive]="['active']">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Informations
+                        <!-- <i class="bi bi-info-square-fill ms-2"></i> -->
+                    </a>
+                    <ul class="dropdown-menu mb-2">
+                        <li class="nav-item" [routerLinkActive]="['active']">
+                            <a class="dropdown-item"
+                                href="https://firebasestorage.googleapis.com/v0/b/be-on-top-beta.appspot.com/o/admin-docs%2FformationFormateurs.pdf?alt=media&token=c38d336b-aafe-4fd4-946c-f35afd6e0ee0"
+                                target="_blank" rel="noopener noreferrer" role="button"
+                                aria-label="Ouvrir la présentation au format PDF dans un nouvel onglet"
+                                (click)="closeNavbar()">Support PDF</a>
+                        </li>
+                        <!-- pour des raisons de sécurité et de conformité RGAA WCAG -->
+                        <li class="nav-item d-none d-lg-block" [routerLinkActive]="['active']">
+                            <a class="dropdown-item"
+                                href="https://xd.adobe.com/view/a41e35e0-6af3-4001-8ba8-3c856993d99a-f14d/?fullscreen"
+                                target="_blank" rel="noopener noreferrer" role="button"
+                                aria-label="Ouvrir la présentation de support Diapo dans un nouvel onglet"
+                                (click)="closeNavbar()">Support format Diapo</a>
+                        </li>
+
+                        <!-- <li><a class="dropdown-item" (click)="logOut()" [routerLink]="['']">Logout</a></li> -->
+                        <li><a class="dropdown-item" (click)="closeNavbar()" [routerLink]="['market-app']">Mission
+                                BE-ON-TOP</a>
+                        </li>
+                    </ul>
                 </li>
+
                 <!-- fin formateurs -->
             </ul>
         </div>
