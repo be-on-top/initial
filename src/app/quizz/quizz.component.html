@@ -76,7 +76,7 @@
     <!-- fin du quizz -->
     <ng-template #elseBlock>
         <div  *ngIf="!loading">
-        <p class="alert  text-dark p-3 m-3 display-6" *ngIf="dataStudent">Bravo <span
+        <p class="alert  text-dark p-3 m-3 display-6" *ngIf="dataStudent">🎉 Bravo <span
                 class="text-capitalize">{{dataStudent.firstName}}</span> !
             Vous êtes parvenu au
             terme du
@@ -84,11 +84,11 @@
         <button class="btn btn-primary m-md-auto" disabled><i class="bi bi-check text-light"></i>Questionnaire terminé&nbsp;!</button>
         <!-- on peut essayer d'englober ici le text de fin de QUIZZ -->
         <p class="alert bg-light text-dark p-3 m-3 w-75 mx-auto">
-            En fonction des réponses que vous avez données, nous sommes en mesure de vous fournir une
-            estimation personnalisée de votre parcours de formation.
+            Nous sommes en mesure de vous fournir une
+            <strong>estimation personnalisée</strong> de votre parcours de formation.
         </p>
         <!-- fullResults : {{fullResults.length}} -->
-        <button *ngIf="fullResults.length==0" data-bs-toggle="modal" data-bs-target="#myModal"
+        <button type="button" id="cta" *ngIf="fullResults.length==0" data-bs-toggle="modal" data-bs-target="#myModal"
             (click)="generateFullResults()" class="btn btn-lg bg-primary text-light"><i
                 class="me-3 bi bi-arrow-right-circle-fill text-light"></i>Accédez à votre
             parcours de formation&nbsp;!</button>
@@ -180,7 +180,7 @@
                 <div class="modal-footer bg-light justify-content-center">
                     <!-- <button type="button" class="btn bg-dark text-light" data-bs-dismiss="modal">Fermer</button> -->
                     <!-- attention à fermer la modale et rediriger vers le lien -->
-                    <button data-bs-dismiss="modal" type="button" class="btn btn-lg btn-primary"
+                    <button id="account" data-bs-dismiss="modal" type="button" class="btn btn-lg btn-primary"
                         (click)="redirectToAccount()">
                         <i class="me-3 bi bi-arrow-right-circle-fill text-light"></i>Accédez au détail</button>
                 </div>

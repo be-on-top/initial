@@ -7,6 +7,7 @@ import { Trade } from '../../trade';
 // import { Denominator } from 'src/app/quizz/denominator';
 import { CPData } from '../CPData';
 import { SlugService } from 'src/app/slug.service';
+import { Timestamp } from 'firebase/firestore';
 
 @Component({
   selector: 'app-update-trades',
@@ -20,11 +21,11 @@ export class UpdateTradesComponent {
   userRole: string = ""
 
   sigleId: string = ""
-  trade: Trade = { sigle: "", denomination: "", rncp:"", isQualifying:false, isCPF:false, status:true, requirements:"", competences: [], totalCP: 0, durations: {}, costs: {}, description:"" }
+  trade: Trade = { sigle: "", denomination: "", rncp: "", isQualifying: false, isCPF: false, status: true, requirements: "", competences: [], totalCP: 0, durations: {}, costs: {}, description: "", parentCategory: '' }
 
 
   // sigles: Trade = { sigle: "", denomination: "", competences: [], totalCP: 0, durations: {}, costs: {}, description:"" }
-  sigles: Trade = { sigle: "", denomination: "", rncp:"", isQualifying:false, isCPF:false, status: true, requirements:"", competences: [], totalCP: 0, durations: {}, costs: {} }
+  sigles: Trade = { sigle: "", denomination: "", rncp: "", isQualifying: false, isCPF: false, status: true, requirements: "", competences: [], totalCP: 0, durations: {}, costs: {}, description: "" }
   form: any
   total: any = []
   minValue: number = 0; // Valeur minimale pour toute nouvelle compétence
@@ -49,7 +50,7 @@ export class UpdateTradesComponent {
   }; // list of firebase error codes to alternate error messages
 
 
-  constructor(private service: SettingsService, private ac: ActivatedRoute, private router: Router, public slugService:SlugService) {
+  constructor(private service: SettingsService, private ac: ActivatedRoute, private router: Router, public slugService: SlugService) {
     this.userRouterLinks = this.ac.snapshot.data;
 
   }
@@ -85,8 +86,8 @@ export class UpdateTradesComponent {
     if (this.userRouterLinks.user === 'editor') {
       console.log("on a bien à faire à un éditeur");
       // alert(form.value.description)
-      
-      
+
+
       // if (form.value.description !== this.trade.description) {
         // alert(form.value.description)
         this.service.updateDescription(form.value, this.sigleId).then(() => {
@@ -97,21 +98,35 @@ export class UpdateTradesComponent {
             this.router.navigate(['/trade', this.sigleId, this.slugService.generateSlug(this.trade.denomination)])
           }, 1000)
         })
-        .catch((error) => {
-          this.feedbackMessages = error.message;
-          // this.feedbackMessages = this.firebaseErrors[error.code];
-          this.isSuccessMessage = false;
-          console.log(this.feedbackMessages);
+          .catch((error) => {
+            this.feedbackMessages = error.message;
+            // this.feedbackMessages = this.firebaseErrors[error.code];
+            this.isSuccessMessage = false;
+            console.log(this.feedbackMessages);
 
-          // ..};
-        })
+            // ..};
+          })
       // }
     }
 
     else {
 
       this.durations = []; // Réinitialise le tableau avant d'ajouter les durées
-      this.sigles = { sigle: this.trade.sigle, denomination: form.value.denomination, rncp:form.value.rncp, isQualifying:form.value.isQualifying,isCPF:form.value.isCPF, requirements: requirementsValue, status:form.value.status, totalCP: form.value.totalCP, competences: [], durations: {}, costs: {}, description: form.value.description }
+      this.sigles = {
+        sigle: this.trade.sigle,
+        denomination: form.value.denomination,
+        rncp: form.value.rncp,
+        isQualifying: form.value.isQualifying,
+        isCPF: form.value.isCPF,
+        requirements: requirementsValue,
+        status: form.value.status,
+        totalCP: form.value.totalCP,
+        competences: [], durations: {},
+        costs: {},
+        parentCategory: form.value.parentCategory,
+        description: form.value.description,
+        createdAt:this.trade.createdAt
+    }
       // si on souhaite un objet, comme ceux écrits initialement en dur exemple : competences:{CP1:"", CP2:""}
       // this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, totalCP: form.value.totalCP, competences: {} }
 
@@ -175,6 +190,11 @@ export class UpdateTradesComponent {
       let totalToRegister: number = this.sigles.totalCP + form.value.totalNewCP
       console.log('totalCP augmenté des nouvelles', totalToRegister)
       console.log("form optimisé", this.sigles)
+      // pour éviter erreurs setDoc
+      if (form.value.parentCategory === undefined) {
+        delete this.sigles.parentCategory;
+      }
+
       this.service.updateTrade(this.sigles, totalToRegister)
         .then(() => {
           this.feedbackMessages = `Enregistrement du métier et ses compétences OK`;

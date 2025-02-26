@@ -290,20 +290,53 @@ h1.d-inline {
     /* background-color: var(--bg-success) !important; */
     text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.4);
     background: linear-gradient(to bottom, #82BC00, #74A800);
+    /* animation: pulse 1.5s infinite; */
+    /* animation: zoomInOnce 0.8s ease-out, pulse 1.5s ease-in-out infinite 0.8s; */
 }
 
 .btn.btn-success:hover {
-    color: #82BC00;
-    border: 2px solid #82BC00;
-    background-color: transparent !important;
+    border: 2px solid #74A800;
     opacity: 100 !important;
 }
 
-.btn.btn-success:hover i {
-    color: #82BC00;
-    background-color: transparent !important;
-    opacity: 100 !important;
+#cta, #account {
+    border: 2px solid white;
+    /* animation: pulse 1.5s infinite; */
+    animation: zoomInOnce 0.8s ease-out, pulse 1.8s ease-in-out infinite 0.8s;
+
 }
+
+
+  @keyframes zoomInOnce {
+    0% {
+      transform: scale(0.5); /* Départ plus petit */
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1); /* Atteint la taille normale */
+      opacity: 1;
+    }
+  }
+  
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    }
+    50% {
+      transform: scale(0.95); /* Une contraction subtile pour une pulsation douce */
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    }
+    100% {
+      transform: scale(1);
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    }
+  }
+  
+  
+
+
+
 
 
 .bg-success,

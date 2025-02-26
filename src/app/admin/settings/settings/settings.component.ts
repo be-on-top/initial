@@ -56,7 +56,7 @@ export class SettingsComponent implements OnInit {
 
   addSigles(form: NgForm) {
     this.durations = []; // Réinitialise le tableau avant d'ajouter les durées
-    this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, rncp: form.value.rncp, isQualifying: form.value.isQualifying, isCPF: form.value.isCPF, requirements: form.value.requirements, status: form.value.status, totalCP: form.value.totalCP, competences: [], durations: {}, costs: {} }
+    this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, parentCategory:form.value.parentCategory, rncp: form.value.rncp, isQualifying: form.value.isQualifying, isCPF: form.value.isCPF, requirements: form.value.requirements, status: form.value.status, totalCP: form.value.totalCP, competences: [], durations: {}, costs: {}, description:'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu lectus porttitor, facilisis diam in, tristique eros. Donec vulputate faucibus metus, nec sodales dolor pharetra sit amet. Nullam vel dictum magna. Aliquam gravida eu est convallis tempus. Vivamus elit odio, aliquam ut consectetur non, mollis vitae ante. Mauris bibendum rhoncus odio, sit amet porttitor quam venenatis non. In commodo purus eget lacus venenatis pulvinar.' }
     // si on souhaite un objet, comme ceux écrits initialement en dur exemple : competences:{CP1:"", CP2:""}
     // this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, totalCP: form.value.totalCP, competences: {} }
     for (let i = 1; i <= form.value.totalCP; i++) {
@@ -86,6 +86,11 @@ export class SettingsComponent implements OnInit {
       console.log('this.sigles.costs', this.sigles.costs);
 
     }
+    
+    if (!this.sigles.parentCategory || this.sigles.parentCategory.trim() === '') {
+      delete this.sigles.parentCategory;
+    }
+    
 
     console.log("form récupéré", form.value);
     console.log("form optimisé", this.sigles);

@@ -14,7 +14,7 @@ import {
   getMetadata
 } from '@angular/fire/storage';
 import { Partner } from './partner';
-import { orderBy } from 'firebase/firestore';
+import { orderBy, Timestamp } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +31,8 @@ export class SettingsService {
 
     console.log(trade);
 
+    // Ajout du champ createdAt avec un timestamp Firestore
+    trade.createdAt = Timestamp.fromDate(new Date());
 
     // // les 2 méthodes fonctionnent très bien.
     let $settingsRef = collection(this.firestore, "sigles");

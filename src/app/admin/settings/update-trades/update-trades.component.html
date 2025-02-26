@@ -14,8 +14,7 @@
 
     <label for="sigle" class="form-label mt-3">Ref <span *ngIf="userRouterLinks.user=='editor'"> (à ne surtout pas
         modifier)</span></label>
-    <input type="text" name="sigle" [(ngModel)]="trade.sigle" class="form-control" required
-      minlength="3" disabled>
+    <input type="text" name="sigle" [(ngModel)]="trade.sigle" class="form-control" required minlength="3" disabled>
 
     <div class="form-group" *ngIf="userRouterLinks && userRouterLinks.user=='admin'">
       <label for="denomination" class="form-label mt-3">Dénomination</label>
@@ -27,12 +26,24 @@
       <div *ngIf="denomination.valid" class="valid-feedback">
         Nom valide.
       </div>
+      <!-- pour categorie parente -->
+      <label for="parentCategory" class="form-label mt-3">Catégorie parente</label>
+      <input type="text" name="parentCategory" [(ngModel)]="trade.parentCategory" #parentCategory="ngModel"
+        class="form-control" minlength="4">
+      <div *ngIf="parentCategory.dirty || (parentCategory.touched && parentCategory.invalid)" class="invalid-feedback">
+        Veuillez fournir un nom valide de plus de 4 caractères.
+      </div>
+      <div *ngIf="parentCategory.valid" class="valid-feedback">
+        Nom de catégorie valide.
+      </div>
       <!-- nouveaux champs du formulaire !!!!  -->
       <label for="rncp" class="form-label mt-3">Code RNCP ou RS (facultatif)</label>
-      <input type="url" name="rncp" [(ngModel)]="trade.rncp" class="form-control" minlength="15" placeholder="renseigner url">
+      <input type="url" name="rncp" [(ngModel)]="trade.rncp" class="form-control" minlength="15"
+        placeholder="renseigner url">
 
       <div class="form-check form-switch mt-3">
-        <input class="form-check-input" type="checkbox" id="statusCheckbox" name="isQualifying" [(ngModel)]="trade.isQualifying">
+        <input class="form-check-input" type="checkbox" id="statusCheckbox" name="isQualifying"
+          [(ngModel)]="trade.isQualifying">
         <label class="form-check-label" for="isQualifying">Formation qualifiante ?</label>
       </div>
       <!-- financement CPF -->
@@ -42,8 +53,9 @@
       </div>
       <!-- si prérequis -->
       <div class="mt-3">
-        <label class="form-label" for="requirements">Prérequis (faculatatif) ?</label>
-        <textarea class="form-control" id="requirements"  name="requirements" [(ngModel)]="trade.requirements" rows="3" placeholder="si plusieurs, remplir chacun séparé d'une virgule"></textarea>
+        <label class="form-label" for="requirements">Prérequis (facultatif) ?</label>
+        <textarea class="form-control" id="requirements" name="requirements" [(ngModel)]="trade.requirements" rows="3"
+          placeholder="si plusieurs, remplir chacun séparé d'une virgule"></textarea>
       </div>
 
       <div class="form-check form-switch mt-3">
@@ -52,7 +64,7 @@
       </div>
 
       <!-- pour arrêter le nombre de compétences par métier -->
-      <label for="totalCP" class="form-label mt-3">Nombre de compétences au référenciel métier</label>
+      <label for="totalCP" class="form-label mt-3">Nombre de compétences au référentiel métier</label>
       <input type="number" name="totalCP" [(ngModel)]="trade.totalCP" #totalCP="ngModel" class="form-control mb-1"
         required>
       <div *ngIf="totalCP.touched && totalCP.invalid" class="invalid-feedback">Veuillez fournir un nombre minimum de

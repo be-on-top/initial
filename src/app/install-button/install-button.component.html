@@ -2,10 +2,10 @@
 
 
 
-<div class="container py-5">
+<div class="container pt-2 pb-5 mb-5">
   <ng-container *ngIf="isWeb && deferredPrompt">
     <!-- Bouton d'installation pour les navigateurs autres que Safari -->
-    <button class="btn btn-success mt-5" (click)="installPWA()">
+    <button type="button" class="btn btn-success mt-0 mb-5" (click)="installPWA()">
       <i class="bi bi-arrow-bar-down"></i>Installer l'application
     </button>
   </ng-container>
@@ -13,14 +13,14 @@
   <ng-container *ngIf="isWeb && isSafari && isMobileSafari">
     <!-- Message spécifique pour Safari sur mobile/tablette -->
     <!-- <div class="alert alert-info"><i class="bi bi-apple me-1 fs-5"></i>Pour installer l'application, sur iPhone ou iPad, appuyer sur l'icône de partage de votre navigateur, puis sélectionner "Sur l'écran d'accueil".</div> -->
-    <div class="alert alert-light p-4 alert-dismissible fade show">
+    <div class="alert alert-light p-4 alert-dismissible fade show mb-5">
       <button title="install" type="button" class="btn-close btn-close-light" data-bs-dismiss="alert"></button>
       Pour installer l'application, sur <strong>iPhone ou iPad</strong>, ajoutez la à l'écran d'accueil en appuyant sur l'icône de partage, puis sélectionner "Sur l'écran d'accueil".</div>  
   </ng-container>
   
   <ng-container *ngIf="isWeb && isSafari && !isMobileSafari">
     <!-- Message spécifique pour Safari sur ordinateur Mac -->
-    <div class="alert alert-info text-light">
+    <div class="alert alert-info text-light mb-5">
       Pour installer cette application sur votre ordinateur Mac <i class="bi bi-apple fs-5"></i>, suivez les étapes ci-dessous :
       <ol>
         <li>Ouvrez Safari</li>
