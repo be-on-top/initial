@@ -10,7 +10,7 @@ import { StudentsService } from '../admin/students.service';
 import { Denominator } from './denominator';
 import { Questions } from '../admin/Questions/questions';
 import { Trade } from '../admin/trade';
-import { Observable, Subject, distinctUntilChanged, of, takeUntil } from 'rxjs';
+import { Observable, Subject, distinctUntilChanged, firstValueFrom, of, takeUntil } from 'rxjs';
 // import { PushNotificationService } from '../push-notification.service';
 // import { getMessaging, getToken } from "@angular/fire/messaging";
 import { NetworkService } from '../network.service';
@@ -539,144 +539,98 @@ export class QuizzComponent implements OnInit {
   }
 
 
-  async setLevel() {
-    // ne sera appeler qu'à ce moment !!!!!!
-    // const realEvaluations: Denominator[] = this.convertirNoteSurVingt();
-    // si on veut l'afficher à l'utilisateur
-    this.realEvaluations = this.convertirNoteSurVingt();
-    console.log("realEvaluations", this.realEvaluations);
+// refacto
 
+async setLevel() {
+  this.realEvaluations = this.convertirNoteSurVingt();
+  console.log("realEvaluations", this.realEvaluations);
 
-    // this.levelsArray = this.dataStudent.studentCompetences.map((obj: any) => {
-    this.levelsArray = this.realEvaluations.map((obj: any) => {
-      console.log("curseurs", this.firstCursor, this.secondCursor);
+  this.levelsArray = this.realEvaluations.map((obj: any) => {
+    const newObj: any = {};
+    for (let prop in obj) {
+      if (obj.hasOwnProperty(prop)) {
+        const levelProp = `level_${prop}`;
+        const value = obj[prop];
 
-      const newObj: any = {};
-      for (let prop in obj) {
-        if (obj.hasOwnProperty(prop)) {
-          const levelProp = `level_${prop}`;
-          const value = obj[prop];
-
-          let levelValue: number;
-          if (value < this.firstCursor) {
-            levelValue = 1;
-          } else if (value > this.secondCursor) {
-            levelValue = 3;
-          } else {
-            levelValue = 2;
-          }
-          newObj[levelProp] = levelValue;
-
-          // this.displayDuration(levelValue, this.actualCompetence)
-
-        }
+        let levelValue = value < this.firstCursor ? 1 : value > this.secondCursor ? 3 : 2;
+        newObj[levelProp] = levelValue;
       }
-      return newObj;
-    });
-
-    console.log("this.levelsArray)", this.levelsArray);
-    // // Appelez la fonction pour générer fullResults
-    await this.generateFullResults()
-  }
-
-
-  async displayDuration(durations: any, levelsArray: any): Promise<any> {
-
-    for (const key in durations) {
-      const level = parseInt(key.match(/\d+$/)?.[0] || ""); // Obtient le niveau de résultat à partir de la clé
-
-      if (!isNaN(level)) {
-        const levelMatch = `CP${level}`; // Construit la clé correspondante dans le tableau final
-        let levelValue: number | undefined; // Stocke la valeur du niveau correspondant
-
-        // Itère sur les objets de levelsArray pour trouver la correspondance avec le niveau
-        for (const levelObj of levelsArray) {
-          const objKey = Object.keys(levelObj)[0] // Obtient la clé de l'objet
-          if (objKey.endsWith(`_CP${level}`)) { // Vérifie si la clé se termine par "_CP{level}"
-            levelValue = levelObj[objKey] // Stocke la valeur correspondante
-
-            this.settingsService.getSigle(this.trade).subscribe((data: Trade) => {
-              console.log(`data.costsdata.costs["cost_CP${level}"]`, data.costs[`cost_CP${level}`])
-              this.cpCostByHour = data.costs[`cost_CP${level}`]
-              this.estimatedCPCost[`individual_cost_CP${level}`] = data.costs[`cost_CP${level}`]
-              console.log("this.moreInfo", this.moreInfo);
-
-            })
-            console.log("le coût horaire de la compétence", this.cpCostByHour)
-            break; // Sort de la boucle une fois la correspondance trouvée
-          }
-        }
-
-        if (levelValue !== undefined) {
-          const value = durations[key][levelValue - 1];
-          this.durationsByLevels[levelMatch] = value;
-
-          this.settingsService.getSigle(this.trade).subscribe((data: Trade) => {
-            this.cpCostByHour = data.costs[`cost_CP${level}`];
-            this.estimatedCPCost[`individual_cost_CP${level}`] *= value;
-            console.log('this.estimatedCPCost', this.estimatedCPCost);
-          });
-
-          console.log('value', value);
-        }
-      }
-
     }
+    return newObj;
+  });
+
+  console.log("this.levelsArray)", this.levelsArray);
+
+  // On prépare les données asynchrones puis on génère fullResults
+  await this.prepareDataForResults();
+}
+
+async prepareDataForResults() {
+  const durationsByLevels: any = {};
+  const estimatedCPCost: any = {};
+  
+  // Récupérer toutes les valeurs asynchrones en parallèle
+  await Promise.all(
+    Object.keys(this.durations).map(async (key) => {
+      const level = parseInt(key.match(/\d+$/)?.[0] || "");
+      if (isNaN(level)) return;
+
+      const levelMatch = `CP${level}`;
+      
+      // Trouver la valeur du niveau
+      let levelValue;
+      for (const levelObj of this.levelsArray) {
+        const objKey = Object.keys(levelObj)[0];
+        if (objKey.endsWith(`_CP${level}`)) {
+          levelValue = levelObj[objKey];
+          break;
+        }
+      }
+
+      if (levelValue !== undefined) {
+        const value = this.durations[key][levelValue - 1];
+        durationsByLevels[levelMatch] = value;
+
+        // Récupérer le coût correspondant
+        const data = await firstValueFrom(this.settingsService.getSigle(this.trade));
+        estimatedCPCost[`individual_cost_CP${level}`] = data.costs[`cost_CP${level}`] * value;
+      }
+    })
+  );
+
+  this.durationsByLevels = durationsByLevels;
+  this.estimatedCPCost = estimatedCPCost;
+  
+  console.log('this.durationsByLevels', this.durationsByLevels);
+  console.log('this.estimatedCPCost', this.estimatedCPCost);
+
+  // Une fois tout prêt, on génère fullResults
+  await this.generateFullResults();
+}
+
+async generateFullResults() {
+  this.quotationIsReady = true;
+  console.log("this.durationsByLevels dans generateFullResults", this.durationsByLevels);
+  console.log("this.levelsArray dans generateFullResults", this.levelsArray);
+
+  this.fullResults = await this.studentService.setFullResults(
+    this.durationsByLevels,
+    this.estimatedCPCost,
+    this.realEvaluations
+  );
+
+  console.log('this.fullResults de generatedFullResults', this.fullResults);
+
+  await this.studentService.updateFullResults(this.studentId, this.fullResults, this.trade);
+  this.totalCost = this.sumCosts(this.fullResults);
+}
 
 
-    console.log('this.troisiemeTableau', this.durationsByLevels);
 
-    // Fonction pour extraire les numéros des clés
-    // const extractNumber = (key: string) => {
-    //   const match = key.match(/\d+$/);
-    //   return match ? parseInt(match[0], 10) : 0;
-    // };
-
-    // // Logique pour trier les résultats
-    // const sortedEntries = Object.entries(this.durationsByLevels).sort((a, b) => {
-    //   const numA = extractNumber(a[0]);
-    //   const numB = extractNumber(b[0]);
-
-    //   console.log(`Comparing ${a[0]} (${numA}) with ${b[0]} (${numB})`);
-
-    //   return numA - numB;
-    // });
-
-    // // Conversion de la liste triée de paires clé-valeur en un nouvel objet
-    // this.durationsByLevels = Object.fromEntries(sortedEntries);
-
-    // console.log('this.troisiemeTableau après tri', this.durationsByLevels);
+// fin refacto
 
 
-  }
 
-
-  async generateFullResults() {
-    this.quotationIsReady = true
-
-    // ce qu'on avait rattaché à setLevel, bien que ce ne soit pas cohérent du point de vue de la seule logique
-    await this.displayDuration(this.durations, this.levelsArray)
-
-    // Par exemple, si ces objets proviennent d'une autre fonction, vous les récupérerez ici.
-    const durationsByLevels = this.durationsByLevels // Récupérer les données de manière appropriée
-    const estimatedCPCost = this.estimatedCPCost // Récupérer les données de manière appropriée
-
-    console.log("this.durationsByLevels dans generateFullResults", this.durationsByLevels);
-    console.log("this.levelsArray dans generateFullResults", this.levelsArray);
-
-
-    // Appeler la fonction setFullResults pour générer le tableau fullResults
-    this.fullResults = await this.studentService.setFullResults(durationsByLevels, estimatedCPCost, this.realEvaluations);
-
-    // Maintenant, on peut utiliser this.fullResults en sachant qu'il est correctement rempli
-    console.log('this.fullResults de generatedFullResults', this.fullResults)
-
-    this.studentService.updateFullResults(this.studentId, this.fullResults, this.trade)
-
-    this.totalCost = this.sumCosts(this.fullResults)
-
-
-  }
 
   getCursors() {
     this.settingsService.getLevelsCursors().subscribe((data) => {

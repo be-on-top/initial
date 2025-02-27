@@ -88,8 +88,12 @@
             <strong>estimation personnalisée</strong> de votre parcours de formation.
         </p>
         <!-- fullResults : {{fullResults.length}} -->
-        <button type="button" id="cta" *ngIf="fullResults.length==0" data-bs-toggle="modal" data-bs-target="#myModal"
+        <!-- <button type="button" id="cta" *ngIf="fullResults.length==0" data-bs-toggle="modal" data-bs-target="#myModal"
             (click)="generateFullResults()" class="btn btn-lg bg-primary text-light"><i
+                class="me-3 bi bi-arrow-right-circle-fill text-light"></i>Accédez à votre
+            parcours de formation&nbsp;!</button> -->
+        <button type="button" id="cta" data-bs-toggle="modal" data-bs-target="#myModal"
+            class="btn btn-lg bg-primary text-light"><i
                 class="me-3 bi bi-arrow-right-circle-fill text-light"></i>Accédez à votre
             parcours de formation&nbsp;!</button>
         </div>
