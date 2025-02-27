@@ -55,12 +55,12 @@
         <!-- <div *ngIf="questions[indexQuestion]"> -->
 
         <!-- <div>             -->
-            <app-details (resetCounter)="resetChildCounter()" [q]="questions[indexQuestion]"
-                [questionsMedias]="questionsMedias" [responsesMedias]="responsesMedias"
-                (hasBeenClicked)="answered($event)" [fullGoodAnswersClicked]="fullGoodAnswersClicked"
-                [fullAnswersClicked]="fullAnswersClicked" [totalAnswersAvailable]="totalAnswersAvailable"
-                [fullOptScoringTrue]="fullOptScoringTrue" (hasBeenUpdated)="updated($event)" [counter]="scoreCounter"
-                [studentCompetences]="studentCompetences" [totalQuestions]="totalQuestions"></app-details>
+        <app-details (resetCounter)="resetChildCounter()" [q]="questions[indexQuestion]"
+            [questionsMedias]="questionsMedias" [responsesMedias]="responsesMedias" (hasBeenClicked)="answered($event)"
+            [fullGoodAnswersClicked]="fullGoodAnswersClicked" [fullAnswersClicked]="fullAnswersClicked"
+            [totalAnswersAvailable]="totalAnswersAvailable" [fullOptScoringTrue]="fullOptScoringTrue"
+            (hasBeenUpdated)="updated($event)" [counter]="scoreCounter" [studentCompetences]="studentCompetences"
+            [totalQuestions]="totalQuestions"></app-details>
         <!-- </div> -->
 
     </div>
@@ -75,27 +75,44 @@
         (click)="next(indexQuestion,  questions[indexQuestion].competence)">Question suivante</button>
     <!-- fin du quizz -->
     <ng-template #elseBlock>
-        <div  *ngIf="!loading">
-        <p class="alert  text-dark p-3 m-3 display-6" *ngIf="dataStudent">🎉 Bravo <span
-                class="text-capitalize">{{dataStudent.firstName}}</span> !
-            Vous êtes parvenu au
-            terme du
-            questionnaire...</p>
-        <button class="btn btn-primary m-md-auto" disabled><i class="bi bi-check text-light"></i>Questionnaire terminé&nbsp;!</button>
-        <!-- on peut essayer d'englober ici le text de fin de QUIZZ -->
-        <p class="alert bg-light text-dark p-3 m-3 w-75 mx-auto">
-            Nous sommes en mesure de vous fournir une
-            <strong>estimation personnalisée</strong> de votre parcours de formation.
-        </p>
-        <!-- fullResults : {{fullResults.length}} -->
-        <!-- <button type="button" id="cta" *ngIf="fullResults.length==0" data-bs-toggle="modal" data-bs-target="#myModal"
+        <div *ngIf="!loading">
+            <p class="alert  text-dark p-3 m-3 display-6" *ngIf="dataStudent">🎉 Bravo <span
+                    class="text-capitalize">{{dataStudent.firstName}}</span> !
+                Vous êtes parvenu au
+                terme du
+                questionnaire...</p>
+            <button class="btn btn-primary m-md-auto" disabled><i class="bi bi-check text-light"></i>Questionnaire
+                terminé&nbsp;!</button>
+            <!-- on peut essayer d'englober ici le text de fin de QUIZZ -->
+            <p class="alert bg-light text-dark p-3 m-3 w-75 mx-auto">
+                Nous sommes en mesure de vous fournir une
+                <strong>estimation personnalisée</strong> de votre parcours de formation.
+            </p>
+            <!-- fullResults : {{fullResults.length}} -->
+            <!-- <button type="button" id="cta" *ngIf="fullResults.length==0" data-bs-toggle="modal" data-bs-target="#myModal"
             (click)="generateFullResults()" class="btn btn-lg bg-primary text-light"><i
                 class="me-3 bi bi-arrow-right-circle-fill text-light"></i>Accédez à votre
             parcours de formation&nbsp;!</button> -->
-        <button type="button" id="cta" data-bs-toggle="modal" data-bs-target="#myModal"
+            <!-- <button type="button" id="cta" data-bs-toggle="modal" data-bs-target="#myModal"
             class="btn btn-lg bg-primary text-light"><i
                 class="me-3 bi bi-arrow-right-circle-fill text-light"></i>Accédez à votre
-            parcours de formation&nbsp;!</button>
+            parcours de formation&nbsp;!</button> -->
+
+            <button type="button" id="cta" data-bs-toggle="modal" data-bs-target="#myModal"
+                class="btn btn-lg bg-primary text-light" [disabled]="isSaving">
+                <i class="me-3 bi bi-arrow-right-circle-fill text-light"></i>
+                Accédez à votre parcours de formation&nbsp;!
+                <i *ngIf="isSaving" class="spinner-border spinner-border-sm"></i> <!-- Loader -->
+            </button>
+
+            <!-- Message de confirmation -->
+            <div *ngIf="saveSuccess" class="alert alert-success mt-3">
+                ✅ Les résultats ont été enregistrés avec succès !
+            </div>
+
+
+
+
         </div>
     </ng-template>
 
@@ -141,7 +158,8 @@
         class="btn bg-primary m-md-auto text-light fs-4"><i class="me-3 bi bi-bar-chart-steps text-light"></i>Votre
         parcours personnalisé</button> -->
     <!-- <div *ngIf="levelsArray && levelsArray.length>0">{{levelsArray | json}}</div> -->
-    <div class="modal fade" id="myModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="myModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-light position-relative">

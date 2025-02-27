@@ -103,6 +103,10 @@ export class QuizzComponent implements OnInit {
   // Subject utilisé pour gérer la destruction de l'abonnement au statut de connexion
   private destroy$ = new Subject<void>();
 
+  isSaving = false;
+
+  saveSuccess = false;
+
 
   @ViewChild('myModal') myModal!: ElementRef;
   constructor(
@@ -405,41 +409,102 @@ export class QuizzComponent implements OnInit {
     }
 
     // pour rappeler la liste des medias 
-    this.questionsMedias = this.questionsService.getMediaQuestionById(this.questions[this.indexQuestion].id)
-    console.log("questionsMedias depuis questions-details", this.questionsMedias)
-    this.responsesMedias = this.questionsService.getMediasResponsesById(this.questions[this.indexQuestion].id)
-
-    // et puisqu'on commence une nouvelle question, isCompleted redevient false, de même que les variabless qui suivent
-    this.isCompleted = false
-    this.fullGoodAnswersClicked = 0
-    this.fullOptScoringTrue = 0
-    this.totalAnswersAvailable = 0
-    this.resetChildCounter()
-
-    // on initialise la valeur réelle de fullOptScoringArray pour avoir un point de comparaison
-    this.questions[this.indexQuestion].optScoring1 && this.questions[this.indexQuestion].optScoring1 === true ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
-    this.questions[this.indexQuestion].optScoring2 && this.questions[this.indexQuestion].optScoring2 === true ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
-    this.questions[this.indexQuestion].optScoring3 && this.questions[this.indexQuestion].optScoring3 === true ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
-    this.questions[this.indexQuestion].optScoring4 && this.questions[this.indexQuestion].optScoring4 === true ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
-    console.log("this.fullOptScoringArray", this.fullOptScoringTrue)
-
-    if (!this.isNullOrEmpty(this.questions[this.indexQuestion].option1)) {
-      this.totalAnswersAvailable += 1;
+    // this.questionsMedias = this.questionsService.getMediaQuestionById(this.questions[this.indexQuestion].id)
+    // console.log("questionsMedias depuis questions-details", this.questionsMedias)
+    // this.responsesMedias = this.questionsService.getMediasResponsesById(this.questions[this.indexQuestion].id)
+    // Vérifier si l'index est valide avant d'essayer d'accéder aux médias
+    if (this.indexQuestion < this.questions.length) {
+      this.questionsMedias = this.questionsService.getMediaQuestionById(this.questions[this.indexQuestion].id);
+      console.log("questionsMedias depuis questions-details", this.questionsMedias);
+      this.responsesMedias = this.questionsService.getMediasResponsesById(this.questions[this.indexQuestion].id);
+    } else {
+      // Traiter le cas où il n'y a plus de questions disponibles
+      console.log("Plus de questions disponibles, aucun média à charger.");
+      this.questionsMedias = [];
+      this.responsesMedias = [];
     }
 
-    if (!this.isNullOrEmpty(this.questions[this.indexQuestion].option2)) {
-      this.totalAnswersAvailable += 1;
+
+
+    // // et puisqu'on commence une nouvelle question, isCompleted redevient false, de même que les variabless qui suivent
+    // this.isCompleted = false
+    // this.fullGoodAnswersClicked = 0
+    // this.fullOptScoringTrue = 0
+    // this.totalAnswersAvailable = 0
+    // this.resetChildCounter()
+
+    // // on initialise la valeur réelle de fullOptScoringArray pour avoir un point de comparaison
+    // this.questions[this.indexQuestion].optScoring1 && this.questions[this.indexQuestion].optScoring1 === true ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
+    // this.questions[this.indexQuestion].optScoring2 && this.questions[this.indexQuestion].optScoring2 === true ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
+    // this.questions[this.indexQuestion].optScoring3 && this.questions[this.indexQuestion].optScoring3 === true ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
+    // this.questions[this.indexQuestion].optScoring4 && this.questions[this.indexQuestion].optScoring4 === true ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : ""
+    // console.log("this.fullOptScoringArray", this.fullOptScoringTrue)
+
+    // pour plus de fiabilité
+    // Vérifier si l'index est valide avant d'essayer d'accéder aux propriétés de la question
+    if (this.indexQuestion < this.questions.length) {
+      // Initialisation des variables
+      this.isCompleted = false;
+      this.fullGoodAnswersClicked = 0;
+      this.fullOptScoringTrue = 0;
+      this.totalAnswersAvailable = 0;
+      this.resetChildCounter();
+
+      // Initialiser les valeurs de fullOptScoringArray, si les options existent
+      this.questions[this.indexQuestion].optScoring1 && this.questions[this.indexQuestion].optScoring1 === true ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : "";
+      this.questions[this.indexQuestion].optScoring2 && this.questions[this.indexQuestion].optScoring2 === true ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : "";
+      this.questions[this.indexQuestion].optScoring3 && this.questions[this.indexQuestion].optScoring3 === true ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : "";
+      this.questions[this.indexQuestion].optScoring4 && this.questions[this.indexQuestion].optScoring4 === true ? this.fullOptScoringTrue = Number(this.fullOptScoringTrue) + 1 : "";
+
+      console.log("this.fullOptScoringArray", this.fullOptScoringTrue);
+    } else {
+      console.log("Index de question invalide, pas de scoring disponible.");
     }
 
-    if (!this.isNullOrEmpty(this.questions[this.indexQuestion].option3)) {
-      this.totalAnswersAvailable += 1;
-    }
 
-    if (!this.isNullOrEmpty(this.questions[this.indexQuestion].option4)) {
-      this.totalAnswersAvailable += 1;
-    }
 
-    console.log("this.totalAnswersAvailable mis à jour !!!!", this.totalAnswersAvailable);
+    // if (!this.isNullOrEmpty(this.questions[this.indexQuestion].option1)) {
+    //   this.totalAnswersAvailable += 1;
+    // }
+
+    // if (!this.isNullOrEmpty(this.questions[this.indexQuestion].option2)) {
+    //   this.totalAnswersAvailable += 1;
+    // }
+
+    // if (!this.isNullOrEmpty(this.questions[this.indexQuestion].option3)) {
+    //   this.totalAnswersAvailable += 1;
+    // }
+
+    // if (!this.isNullOrEmpty(this.questions[this.indexQuestion].option4)) {
+    //   this.totalAnswersAvailable += 1;
+    // }
+
+    // pour plus de fiabilité
+
+    // Vérifier si l'index est valide avant d'essayer d'accéder aux options
+if (this.indexQuestion < this.questions.length) {
+  // Vérification des options pour calculer totalAnswersAvailable
+  if (!this.isNullOrEmpty(this.questions[this.indexQuestion].option1)) {
+    this.totalAnswersAvailable += 1;
+  }
+
+  if (!this.isNullOrEmpty(this.questions[this.indexQuestion].option2)) {
+    this.totalAnswersAvailable += 1;
+  }
+
+  if (!this.isNullOrEmpty(this.questions[this.indexQuestion].option3)) {
+    this.totalAnswersAvailable += 1;
+  }
+
+  if (!this.isNullOrEmpty(this.questions[this.indexQuestion].option4)) {
+    this.totalAnswersAvailable += 1;
+  }
+
+  console.log("this.totalAnswersAvailable mis à jour !!!!", this.totalAnswersAvailable);
+} else {
+  console.log("Index de question invalide, le questionnaire est terminé, pas de calcul des options.");
+}
+
 
 
     // ne sert à rien une fois déployé
@@ -539,95 +604,158 @@ export class QuizzComponent implements OnInit {
   }
 
 
-// refacto
+  // refacto
 
-async setLevel() {
-  this.realEvaluations = this.convertirNoteSurVingt();
-  console.log("realEvaluations", this.realEvaluations);
+  async setLevel() {
+    this.realEvaluations = this.convertirNoteSurVingt();
+    console.log("realEvaluations", this.realEvaluations);
 
-  this.levelsArray = this.realEvaluations.map((obj: any) => {
-    const newObj: any = {};
-    for (let prop in obj) {
-      if (obj.hasOwnProperty(prop)) {
-        const levelProp = `level_${prop}`;
-        const value = obj[prop];
+    this.levelsArray = this.realEvaluations.map((obj: any) => {
+      const newObj: any = {};
+      for (let prop in obj) {
+        if (obj.hasOwnProperty(prop)) {
+          const levelProp = `level_${prop}`;
+          const value = obj[prop];
 
-        let levelValue = value < this.firstCursor ? 1 : value > this.secondCursor ? 3 : 2;
-        newObj[levelProp] = levelValue;
-      }
-    }
-    return newObj;
-  });
-
-  console.log("this.levelsArray)", this.levelsArray);
-
-  // On prépare les données asynchrones puis on génère fullResults
-  await this.prepareDataForResults();
-}
-
-async prepareDataForResults() {
-  const durationsByLevels: any = {};
-  const estimatedCPCost: any = {};
-  
-  // Récupérer toutes les valeurs asynchrones en parallèle
-  await Promise.all(
-    Object.keys(this.durations).map(async (key) => {
-      const level = parseInt(key.match(/\d+$/)?.[0] || "");
-      if (isNaN(level)) return;
-
-      const levelMatch = `CP${level}`;
-      
-      // Trouver la valeur du niveau
-      let levelValue;
-      for (const levelObj of this.levelsArray) {
-        const objKey = Object.keys(levelObj)[0];
-        if (objKey.endsWith(`_CP${level}`)) {
-          levelValue = levelObj[objKey];
-          break;
+          let levelValue = value < this.firstCursor ? 1 : value > this.secondCursor ? 3 : 2;
+          newObj[levelProp] = levelValue;
         }
       }
+      return newObj;
+    });
 
-      if (levelValue !== undefined) {
-        const value = this.durations[key][levelValue - 1];
-        durationsByLevels[levelMatch] = value;
+    console.log("this.levelsArray)", this.levelsArray);
 
-        // Récupérer le coût correspondant
-        const data = await firstValueFrom(this.settingsService.getSigle(this.trade));
-        estimatedCPCost[`individual_cost_CP${level}`] = data.costs[`cost_CP${level}`] * value;
-      }
-    })
-  );
+    // On prépare les données asynchrones puis on génère fullResults
+    await this.prepareDataForResults();
+  }
 
-  this.durationsByLevels = durationsByLevels;
-  this.estimatedCPCost = estimatedCPCost;
-  
-  console.log('this.durationsByLevels', this.durationsByLevels);
-  console.log('this.estimatedCPCost', this.estimatedCPCost);
+  async prepareDataForResults() {
+    const durationsByLevels: any = {};
+    const estimatedCPCost: any = {};
 
-  // Une fois tout prêt, on génère fullResults
-  await this.generateFullResults();
-}
+    // Récupérer toutes les valeurs asynchrones en parallèle
+    await Promise.all(
+      Object.keys(this.durations).map(async (key) => {
+        const level = parseInt(key.match(/\d+$/)?.[0] || "");
+        if (isNaN(level)) return;
 
-async generateFullResults() {
-  this.quotationIsReady = true;
-  console.log("this.durationsByLevels dans generateFullResults", this.durationsByLevels);
-  console.log("this.levelsArray dans generateFullResults", this.levelsArray);
+        const levelMatch = `CP${level}`;
 
-  this.fullResults = await this.studentService.setFullResults(
-    this.durationsByLevels,
-    this.estimatedCPCost,
-    this.realEvaluations
-  );
+        // Trouver la valeur du niveau
+        let levelValue;
+        for (const levelObj of this.levelsArray) {
+          const objKey = Object.keys(levelObj)[0];
+          if (objKey.endsWith(`_CP${level}`)) {
+            levelValue = levelObj[objKey];
+            break;
+          }
+        }
 
-  console.log('this.fullResults de generatedFullResults', this.fullResults);
+        if (levelValue !== undefined) {
+          const value = this.durations[key][levelValue - 1];
+          durationsByLevels[levelMatch] = value;
 
-  await this.studentService.updateFullResults(this.studentId, this.fullResults, this.trade);
-  this.totalCost = this.sumCosts(this.fullResults);
-}
+          // Récupérer le coût correspondant
+          const data = await firstValueFrom(this.settingsService.getSigle(this.trade));
+          estimatedCPCost[`individual_cost_CP${level}`] = data.costs[`cost_CP${level}`] * value;
+        }
+      })
+    );
+
+    this.durationsByLevels = durationsByLevels;
+    this.estimatedCPCost = estimatedCPCost;
+
+    console.log('this.durationsByLevels', this.durationsByLevels);
+    console.log('this.estimatedCPCost', this.estimatedCPCost);
+
+    // Une fois tout prêt, on génère fullResults
+    await this.generateFullResults();
+  }
+
+  // async generateFullResults() {
+  //   this.quotationIsReady = true;
+  //   console.log("this.durationsByLevels dans generateFullResults", this.durationsByLevels);
+  //   console.log("this.levelsArray dans generateFullResults", this.levelsArray);
+
+  //   this.fullResults = await this.studentService.setFullResults(
+  //     this.durationsByLevels,
+  //     this.estimatedCPCost,
+  //     this.realEvaluations
+  //   );
+
+  //   console.log('this.fullResults de generatedFullResults', this.fullResults);
+
+  //   await this.studentService.updateFullResults(this.studentId, this.fullResults, this.trade);
+  //   this.totalCost = this.sumCosts(this.fullResults);
+  // }
 
 
 
-// fin refacto
+  // fin refacto
+
+
+  // pour la gestion du spinner
+  // async generateFullResults() {
+  //     this.isSaving = true;
+  //     this.quotationIsReady = true;
+
+  //     try {
+  //         console.log("this.durationsByLevels dans generateFullResults", this.durationsByLevels);
+  //         console.log("this.levelsArray dans generateFullResults", this.levelsArray);
+
+  //         this.fullResults = await this.studentService.setFullResults(
+  //             this.durationsByLevels,
+  //             this.estimatedCPCost,
+  //             this.realEvaluations
+  //         );
+
+  //         console.log('this.fullResults de generatedFullResults', this.fullResults);
+
+  //         await this.studentService.updateFullResults(this.studentId, this.fullResults, this.trade);
+  //         this.totalCost = this.sumCosts(this.fullResults);
+
+  //         this.saveSuccess = true; // Affiche le message de succès  
+  //     } catch (error) {
+  //         console.error("Erreur lors de l'enregistrement des résultats", error);
+  //     } finally {
+  //         this.isSaving = false;
+  //     }
+  // }
+
+  // encore plus fiable
+  async generateFullResults() {
+    try {
+      // Démarrage de l'enregistrement -> Affichage du spinner
+      this.isSaving = true;
+      console.log("this.durationsByLevels dans generateFullResults", this.durationsByLevels);
+      console.log("this.levelsArray dans generateFullResults", this.levelsArray);
+
+      // Appel au service pour sauvegarder les résultats
+      this.fullResults = await this.studentService.setFullResults(
+        this.durationsByLevels,
+        this.estimatedCPCost,
+        this.realEvaluations
+      );
+
+      console.log('this.fullResults de generatedFullResults', this.fullResults);
+
+      // Mise à jour des résultats en base
+      await this.studentService.updateFullResults(this.studentId, this.fullResults, this.trade);
+      this.totalCost = this.sumCosts(this.fullResults);
+
+      // On met à jour le succès
+      this.saveSuccess = true;
+
+    } catch (error) {
+      console.error("Erreur lors de l'enregistrement des résultats", error);
+      // Optionnel : Message d'erreur utilisateur
+      this.saveSuccess = false;
+    } finally {
+      // Le spinner est désactivé une fois l'enregistrement terminé (ou en cas d'erreur)
+      this.isSaving = false;
+    }
+  }
 
 
 
