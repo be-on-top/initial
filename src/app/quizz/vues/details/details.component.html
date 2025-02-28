@@ -64,10 +64,9 @@
 
     <!-- début des réponses -->
     <div class="p-2 row justify-content-between align-items-end w-100 pb-0">
-
         <div class="col-sm-6 rounded text-center choice mb-3" (click)="toggle(q.option1, q.optScoring1)">
             <button type="button" [ngClass]="{'bg-test':q.optScoring1==true, 'text-choiced':toggledStates[q.option1]}"
-                class="btn btn-transparent border-0 text-center fs-5 bg-light"><i class="bi bi-1-square"></i>{{q.option1}}
+                class="btn btn-transparent border-0 text-center fs-5 bg-light"><i class="bi bi-1-square-fill text-primary"></i>{{q.option1}}
                 <!-- pour illusion du selected  -->
                 <i *ngIf="toggledStates[q.option1]" class="ms-2 text-choiced fs-5 bi bi-check-lg"></i>
             </button>
@@ -87,7 +86,7 @@
         </div>
         <div class="col-sm-6 rounded text-center choice mb-3" (click)="toggle(q.option2, q.optScoring2)">
             <button type="button" [ngClass]="{'bg-test':q.optScoring2==true, 'text-choiced':toggledStates[q.option2]}"
-                class="btn btn-transparent border-0 text-center fs-5 bg-light"><i class="bi bi-2-square"></i>{{q.option2}}
+                class="btn btn-transparent border-0 text-center fs-5 bg-light"><i class="bi bi-2-square-fill text-primary"></i>{{q.option2}}
                 <!-- pour illusion du selected  -->
                 <i *ngIf="toggledStates[q.option2]" class="ms-2 text-choiced fs-5 bi bi-check-lg"></i>
             </button>
@@ -107,7 +106,7 @@
         <div class="col-sm-6 rounded text-center choice mb-3" (click)="toggle(q.option3, q.optScoring3)">
             <button type="button" *ngIf="q.option3"
                 [ngClass]="{'bg-test':q.optScoring3==true, 'text-choiced':toggledStates[q.option3]}"
-                class="btn btn-transparent text-center fs-5 bg-light align-self-center"><i class="bi bi-3-square"></i>{{q.option3}}
+                class="btn btn-transparent text-center fs-5 bg-light align-self-center"><i class="bi bi-3-square-fill text-primary"></i>{{q.option3}}
                 <!-- pour illusion du selected  -->
                 <i *ngIf="toggledStates[q.option3]" class="ms-2 text-choiced fs-5 bi bi-check-lg"></i>
             </button>
@@ -129,7 +128,7 @@
         <div class="col-sm-6 rounded text-center choice mb-3" *ngIf="q.option4"
             (click)="toggle(q.option4, q.optScoring4)">
             <button type="button" [ngClass]="{'bg-test':q.optScoring4==true, 'text-choiced':toggledStates[q.option4]}"
-                class="btn btn-transparent text-center fs-5 bg-light"><i class="bi bi-4-square"></i>{{q.option4}}
+                class="btn btn-transparent text-center fs-5 bg-light"><i class="bi bi-4-square-fill text-primary"></i>{{q.option4}}
                 <!-- pour illusion du selected  -->
                 <i *ngIf="toggledStates[q.option4]" class="ms-2 text-choiced fs-5 bi bi-check-lg"></i>
             </button>
