@@ -14,7 +14,7 @@
     background-color: transparent;
 }
 
-.btn.btn-transparent{
+.btn.btn-transparent {
     min-height: 50px;
 }
 
@@ -25,7 +25,7 @@
     left: 0;
     width: 0;
     height: 2px;
-    background-color:  #82BC00;
+    background-color: #82BC00;
     animation: stretchWidth 0.3s ease forwards;
 }
 
@@ -33,8 +33,8 @@
     display: none;
 } */
 
-i.text-choiced{
-    color:#82BC00;
+i.text-choiced {
+    color: #82BC00;
 }
 
 i.text-choiced::after {
@@ -70,9 +70,35 @@ i.text-choiced::after {
     overflow: hidden;
     position: relative;
   } */
-  
 
-.loading{
+
+.loading {
     filter: blur(5px);
+}
+
+/* Remplace le comportement de col-sm-6 à partir de 460px */
+/* @media (min-width: 429px) {
+    .col-sm-6 {
+        flex: 0 0 100%;
+        max-width: 45%;
+    }
+} */
+
+
+.number-icon {
+    display: inline-block;
+    width: auto;
+    padding: 2px 4px;
+    font-size: smaller;
+    /* height: 2rem; */
+    background-color: #fff;
+
+    text-align: center;
+    /* line-height: 2rem; */
+    /* border-color: white;
+    border-width: 1px;
+    border-style: solid; */
+    border-radius: 0.25rem; /* Pour un effet de carré avec coins arrondis */
+    font-weight: lighter;
 }
 
