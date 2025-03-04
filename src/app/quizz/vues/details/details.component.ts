@@ -1,5 +1,5 @@
 import { NumberFormatStyle, NgOptimizedImage } from '@angular/common';
-import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit, ElementRef, Renderer2, ViewChild, HostListener } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit, ElementRef, Renderer2, ViewChild, HostListener, SimpleChanges, OnChanges } from '@angular/core';
 // import { Firestore, collection, orderBy, startAt, startAfter, query, where, limit } from '@angular/fire/firestore';
 // import { QuestionsService } from 'src/app/admin/questions.service';
 
@@ -8,7 +8,7 @@ import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit, ElementR
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.css']
 })
-export class DetailsComponent implements OnInit {
+export class DetailsComponent implements OnInit, OnChanges {
 
 
   // counter: number = 0
@@ -50,6 +50,10 @@ export class DetailsComponent implements OnInit {
   isImageResponseLoading: boolean = true
   screenWidth: number = 0
 
+  threshold = 2; // Seuil de mots pour une réponse "longue"
+  applyAdjustBreakpoint = false; // Boolean pour savoir si toutes sont courtes
+  options: string[] = []
+
   // pour zoomer image sur mobile
   @ViewChild('imageElement') imageElement?: ElementRef;
   constructor(private renderer: Renderer2) {
@@ -57,7 +61,41 @@ export class DetailsComponent implements OnInit {
 
   ngOnInit() {
     this.screenWidth = window.innerWidth;
+    // Vérifier si toutes les réponses ont moins de 5 mots
+
   }
+
+
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['q'] || changes['responsesMedias']) { // Vérifier si `q` a changé
+      // this.updateOptions();
+      // Construire le tableau `options` dynamiquement
+      this.options = [this.q.option1, this.q.option2, this.q.option3, this.q.option4]
+        .filter(option => option && option.trim() !== ''); // Filtrer les valeurs vides ou nulles
+
+      // Vérifier si toutes les réponses sont courtes
+      // if(this.options.length%2 == 0){
+      //   this.applyAdjustBreakpoint = this.options.every(option => this.getWordCount(option) < this.threshold);
+
+      // }
+
+      if (this.options.length % 2 == 0 && this.responsesMedias.length===0) {
+        this.applyAdjustBreakpoint = this.options.every(option => this.getWordCount(option) < this.threshold);
+      } else {
+        this.applyAdjustBreakpoint = false; // Reset si impair
+      }
+      
+     
+    }
+  }
+
+    // Fonction pour compter les mots
+    getWordCount(answer: string): number {
+      return answer ? answer.trim().split(/\s+/).length : 0;
+    }
+
+
 
   ngOnDestroy(): void {
     this.responsesMedias = []
@@ -127,9 +165,9 @@ export class DetailsComponent implements OnInit {
       // on décrémente le nombre de bonnes réponses données
 
 
-      this.fullGoodAnswersClicked === this.fullOptScoringTrue - 1 && this.fullAnswersClicked  === this.fullOptScoringTrue - 1 ? this.counter = Number(this.counter) - Number(this.q.notation) : ''
-      this.fullGoodAnswersClicked === this.fullOptScoringTrue - 1 && this.fullAnswersClicked  === this.fullOptScoringTrue - 1 ? this.isIncremented = false : this.isIncremented = false
-      this.fullGoodAnswersClicked === this.fullOptScoringTrue - 1 && this.fullAnswersClicked  === this.fullOptScoringTrue - 1 ? this.isDecremented = true : this.isDecremented = false
+      this.fullGoodAnswersClicked === this.fullOptScoringTrue - 1 && this.fullAnswersClicked === this.fullOptScoringTrue - 1 ? this.counter = Number(this.counter) - Number(this.q.notation) : ''
+      this.fullGoodAnswersClicked === this.fullOptScoringTrue - 1 && this.fullAnswersClicked === this.fullOptScoringTrue - 1 ? this.isIncremented = false : this.isIncremented = false
+      this.fullGoodAnswersClicked === this.fullOptScoringTrue - 1 && this.fullAnswersClicked === this.fullOptScoringTrue - 1 ? this.isDecremented = true : this.isDecremented = false
 
 
       console.log("this.fullGoodAnswersClicked", this.fullGoodAnswersClicked);
@@ -241,6 +279,15 @@ export class DetailsComponent implements OnInit {
   //     }
   //   }
   // }
+
+  aReponseLongue(): boolean {
+
+    let responses = [this.q.option1, this.q.option2, this.q.option3, this.q.option4]
+    console.log('dddddddddddddddddddddddddddddddd', responses);
+
+    // alert(responses)
+    return responses.every(reponse => reponse.trim().split(/\s+/).length < 5);
+  }
 
 }
 
