@@ -8,5 +8,6 @@ export interface Users {
     created: Date;
     status: boolean;
     tel?: string;
-    role?:string
+    role?:string;
+    centerId?:string[]
 }
