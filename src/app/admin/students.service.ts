@@ -1034,107 +1034,107 @@ export class StudentsService {
   //   );
   // }
 
-  getCentersAndSocialFormByUserId(userId: string) {
-    const usersRef = collection(this.firestore, 'users');
-    const centersRef = collection(this.firestore, 'centers');
-    const socialFormRef = collection(this.firestore, 'SocialForm');
+//   getCentersAndSocialFormByUserId(userId: string) {
+//     const usersRef = collection(this.firestore, 'users');
+//     const centersRef = collection(this.firestore, 'centers');
+//     const socialFormRef = collection(this.firestore, 'SocialForm');
 
-    // Récupère le document utilisateur dans la collection 'users' en fonction de l'ID donné
-    const userDocRef = doc(usersRef, userId);
+//     // Récupère le document utilisateur dans la collection 'users' en fonction de l'ID donné
+//     const userDocRef = doc(usersRef, userId);
 
-    return from(getDoc(userDocRef)).pipe(
-      switchMap(userDocSnapshot => {
-        const userDocData = userDocSnapshot.data() as Users | undefined;
-        console.log('userDocData.cp', userDocData);
+//     return from(getDoc(userDocRef)).pipe(
+//       switchMap(userDocSnapshot => {
+//         const userDocData = userDocSnapshot.data() as Users | undefined;
+//         console.log('userDocData.cp', userDocData);
 
-// subordonner ce qui suit à l'absence dans userDocRef d'une propriété centerId !!!!
+// // subordonner ce qui suit à l'absence dans userDocRef d'une propriété centerId !!!!
 
-        // Si `cp` dans `userDocData` est un tableau de chaînes de caractères
-        if (userDocData && Array.isArray(userDocData.cp) && userDocData.cp.length > 0) {
-          const cpArray = userDocData.cp; // Le tableau de CPs dans le document de l'utilisateur
-          console.log('utilisateur référent de', cpArray);
+//         // Si `cp` dans `userDocData` est un tableau de chaînes de caractères
+//         if (userDocData && Array.isArray(userDocData.cp) && userDocData.cp.length > 0) {
+//           const cpArray = userDocData.cp; // Le tableau de CPs dans le document de l'utilisateur
+//           console.log('utilisateur référent de', cpArray);
 
-          // Requête pour trouver tous les centres dont le `cp` est dans le tableau `cpArray`
-          const centersQuery = query(centersRef, where('cp', 'in', cpArray));
-          console.log('Exécution de la requête Firestore pour CPs:', cpArray);
+//           // Requête pour trouver tous les centres dont le `cp` est dans le tableau `cpArray`
+//           const centersQuery = query(centersRef, where('cp', 'in', cpArray));
+//           console.log('Exécution de la requête Firestore pour CPs:', cpArray);
 
-          return from(getDocs(centersQuery)).pipe(
-            tap(querySnapshot => {
-              console.log('Résultats de la requête centers:', querySnapshot.docs.map(doc => doc.data()));
-            }),
-            map(querySnapshot => {
-              // Récupère les IDs des centres correspondant aux CPs
-              const centerIDs = querySnapshot.docs.map(doc => doc.id);
-              return centerIDs;
-            }),
-            switchMap(centerIDs => {
-              if (centerIDs.length > 0) {
-                // Requête pour les documents SocialForm en fonction des centerIDs obtenus
-                const socialFormQuery = query(socialFormRef, where('center', 'in', centerIDs));
-                return from(getDocs(socialFormQuery));
-              } else {
-                return of([]); // Aucun centre trouvé
-              }
-            }),
-            map((socialFormQuerySnapshot: any) => {
-              const returnedPriors = socialFormQuerySnapshot.docs.map((doc: any) => doc.id);
-              return returnedPriors;
-            })
-          );
-        } else {
-          return of([]); // Si l'utilisateur n'a pas de CP
-        }
-      })
-    );
-  }
+//           return from(getDocs(centersQuery)).pipe(
+//             tap(querySnapshot => {
+//               console.log('Résultats de la requête centers:', querySnapshot.docs.map(doc => doc.data()));
+//             }),
+//             map(querySnapshot => {
+//               // Récupère les IDs des centres correspondant aux CPs
+//               const centerIDs = querySnapshot.docs.map(doc => doc.id);
+//               return centerIDs;
+//             }),
+//             switchMap(centerIDs => {
+//               if (centerIDs.length > 0) {
+//                 // Requête pour les documents SocialForm en fonction des centerIDs obtenus
+//                 const socialFormQuery = query(socialFormRef, where('center', 'in', centerIDs));
+//                 return from(getDocs(socialFormQuery));
+//               } else {
+//                 return of([]); // Aucun centre trouvé
+//               }
+//             }),
+//             map((socialFormQuerySnapshot: any) => {
+//               const returnedPriors = socialFormQuerySnapshot.docs.map((doc: any) => doc.id);
+//               return returnedPriors;
+//             })
+//           );
+//         } else {
+//           return of([]); // Si l'utilisateur n'a pas de CP
+//         }
+//       })
+//     );
+//   }
 // essai tentative optimisée si plusieurs codes postaux identiques
-// getCentersAndSocialFormByUserId(userId: string) {
-//   const usersRef = collection(this.firestore, 'users');
-//   const centersRef = collection(this.firestore, 'centers');
-//   const socialFormRef = collection(this.firestore, 'SocialForm');
+getCentersAndSocialFormByUserId(userId: string) {
+  const usersRef = collection(this.firestore, 'users');
+  const centersRef = collection(this.firestore, 'centers');
+  const socialFormRef = collection(this.firestore, 'SocialForm');
 
-//   const userDocRef = doc(usersRef, userId);
+  const userDocRef = doc(usersRef, userId);
 
-//   return from(getDoc(userDocRef)).pipe(
-//     switchMap(userDocSnapshot => {
-//       const userDocData = userDocSnapshot.data() as Users | undefined;
-//       console.log('userDocData:', userDocData);
+  return from(getDoc(userDocRef)).pipe(
+    switchMap(userDocSnapshot => {
+      const userDocData = userDocSnapshot.data() as Users | undefined;
+      console.log('userDocData:', userDocData);
 
-//       // **Cas 1 :** Si `centerId` est défini et non vide
-//       if (userDocData?.centerId && userDocData.centerId.length > 0) {
-//         console.log(`Recherche avec centerIds: ${userDocData.centerId}`);
-//         return of(userDocData.centerId); // On retourne directement le tableau `centerId`
-//       }
+      // **Cas 1 :** Si `centerId` est défini et non vide
+      if (userDocData?.centerId && userDocData.centerId.length > 0) {
+        console.log(`Recherche avec centerIds: ${userDocData.centerId}`);
+        return of(userDocData.centerId); // On retourne directement le tableau `centerId`
+      }
 
-//       // **Cas 2 :** Si `centerId` est absent, rechercher par `cp`
-//       if (userDocData?.cp && Array.isArray(userDocData.cp) && userDocData.cp.length > 0) {
-//         const cpArray = userDocData.cp;
-//         console.log('Recherche de centres avec CPs:', cpArray);
+      // **Cas 2 :** Si `centerId` est absent, rechercher par `cp`
+      if (userDocData?.cp && Array.isArray(userDocData.cp) && userDocData.cp.length > 0) {
+        const cpArray = userDocData.cp;
+        console.log('Recherche de centres avec CPs:', cpArray);
 
-//         const centersQuery = query(centersRef, where('cp', 'in', cpArray));
-//         return from(getDocs(centersQuery)).pipe(
-//           tap(querySnapshot => {
-//             console.log('Résultats centers:', querySnapshot.docs.map(doc => doc.data()));
-//           }),
-//           map(querySnapshot => querySnapshot.docs.map(doc => doc.id)) // Récupère les IDs des centres
-//         );
-//       }
+        const centersQuery = query(centersRef, where('cp', 'in', cpArray));
+        return from(getDocs(centersQuery)).pipe(
+          tap(querySnapshot => {
+            console.log('Résultats centers:', querySnapshot.docs.map(doc => doc.data()));
+          }),
+          map(querySnapshot => querySnapshot.docs.map(doc => doc.id)) // Récupère les IDs des centres
+        );
+      }
 
-//       // **Si ni `centerId` ni `cp`, on retourne un tableau vide**
-//       return of([]);
-//     }),
-//     switchMap(centerIDs => {
-//       if (centerIDs.length > 0) {
-//         console.log('Recherche des SocialForms pour ces centers:', centerIDs);
-//         const socialFormQuery = query(socialFormRef, where('center', 'in', centerIDs));
-//         return from(getDocs(socialFormQuery)).pipe(
-//           map(socialFormQuerySnapshot => socialFormQuerySnapshot.docs.map(doc => doc.id))
-//         );
-//       }
-//       return of([]); // Aucun centre trouvé
-//     })
-//   );
-// }
+      // **Si ni `centerId` ni `cp`, on retourne un tableau vide**
+      return of([]);
+    }),
+    switchMap(centerIDs => {
+      if (centerIDs.length > 0) {
+        console.log('Recherche des SocialForms pour ces centers:', centerIDs);
+        const socialFormQuery = query(socialFormRef, where('center', 'in', centerIDs));
+        return from(getDocs(socialFormQuery)).pipe(
+          map(socialFormQuerySnapshot => socialFormQuerySnapshot.docs.map(doc => doc.id))
+        );
+      }
+      return of([]); // Aucun centre trouvé
+    })
+  );
+}
 
 
 
