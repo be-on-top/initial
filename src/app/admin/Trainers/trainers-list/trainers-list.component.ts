@@ -57,7 +57,12 @@ export class TrainersListComponent {
 
     if (this.userUid ) {    
 
+      // logique totalement opérationnelle jusqu'au 04/03/2025
       this.userRouterLinks.user=='referent'?this.getTrainersWithSameCp(this.userUid):this.getTrainers()
+
+
+      // ++ logique qui semble opérationnelle si traitment différencié :
+      // this.getTrainersWithSameCpAndTrades(this.userUid)
 
     } 
 
@@ -117,12 +122,13 @@ export class TrainersListComponent {
         console.log("Trainers correspondants :", this.trainersList);
         // this.getDedicatedTrainer()
         // this.getCentersWithSameCp(userId)
-      })
+      }) 
 
     })
+    
   }
 
-
+ 
   filteredCenters: Centers[] = []
 
   // fonctionne mais pas pertinent sur la liste (à voir si exploité pour des filtres côté vue...)
@@ -140,6 +146,64 @@ export class TrainersListComponent {
       this.filteredCenters.forEach(center => console.log("Sigles :", center.sigles));
     })
   }
+
+
+  dedicatedTrades?:any
+  // on essaie une méthode unique pour cumuler deux filtres si centerId est requis
+  getTrainersWithSameCpAndTrades(userId: string) {
+    // Récupérer les données du référent
+    this.service.getReferentData(userId).subscribe({
+      next: referentData => {
+        console.log("referentData", referentData);
+  
+        // Récupérer les codes postaux du référent
+        this.myCp = referentData.cp || []; // Garantir que `this.myCp` est un tableau
+        console.log("Mes codes postaux :", this.myCp);
+  
+        // Récupérer les identifiants des centres du référent
+        const centerIds = referentData.centerId;
+        if (Array.isArray(centerIds) && centerIds.length > 0) {
+          console.log('centerId trouvé:', centerIds);
+  
+          // Récupérer les sigles des centres
+          this.centersService.getUserCentersSigles(centerIds).subscribe({
+            next: data => {
+              console.log('Données reçues pour les centres:', data);
+              this.dedicatedTrades = data; // Assigner les sigles à dedicatedTrades
+  
+              // Maintenant récupérer les formateurs
+              this.service.getTrainers().subscribe(trainers => {
+                console.log(trainers);
+  
+                // Filtrer les formateurs en fonction des codes postaux et des sigles
+                this.trainersList = trainers.filter((trainer: any) => {
+                  // Vérifier si le formateur a un code postal correspondant
+                  const matchesCp = trainer.cp?.some((cp: string) => this.myCp.includes(cp));
+  
+                  // Vérifier si au moins un sigle du formateur existe dans dedicatedTrades
+                  const matchesSigles = trainer.sigle?.some((sigle: string) => this.dedicatedTrades.includes(sigle));
+  
+                  // Le formateur est inclus s'il correspond à la fois sur le code postal et les sigles
+                  return matchesCp && matchesSigles;
+                });
+  
+                console.log("Trainers correspondants :", this.trainersList);
+              });
+            },
+            error: error => {
+              console.error('Erreur dans l\'appel à getUserCentersSigles:', error);
+            }
+          });
+        } else {
+          console.log('centerId est vide ou invalide');
+        }
+      },
+      error: error => {
+        console.error('Erreur dans la récupération des données du référent:', error);
+      }
+    });
+  } 
+  
 
 
 

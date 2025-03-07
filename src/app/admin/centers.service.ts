@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { addDoc, collection, collectionData, deleteDoc, doc, docData, docSnapshots, Firestore, getDocs, query, setDoc, updateDoc, where, QuerySnapshot, DocumentData, orderBy } from '@angular/fire/firestore';
-import { catchError, from, map, mergeMap, Observable, of, throwError } from 'rxjs';
+import { catchError, concatMap, forkJoin, from, map, mergeMap, Observable, of, tap, throwError } from 'rxjs';
 import { Centers } from './centers';
 
 // Définition de l'interface pour les villes
@@ -395,6 +395,73 @@ export class CentersService {
       console.error("Erreur lors de la récupération des centres : ", error);
     }
   }
+
+
+
+// Méthode pour récupérer uniquement le tableau 'sigles' d'un centre spécifique
+// Cela évite de récupérer tout le document et optimise la requête Firestore
+// getCenterSigles pour obtenir les sigles d'un centre
+getCenterSigles(id: string): Observable<string[]> {
+  const $centerRef = doc(this.firestore, `centers/${id}`);
+  return docData($centerRef).pipe(
+    map((center: any) => center?.sigles || []), // Récupère les sigles ou un tableau vide
+    catchError(error => {
+      console.error('Erreur dans getCenterSigles:', error);
+      return of([]); // Retourne un tableau vide en cas d'erreur
+    })
+  );
+}
+
+// Récupérer tous les sigles des centres liés à l'ID
+// getUserCentersSigles(centerIds: string[]): Observable<string[]> {
+//   alert('bngo')
+//   // Si le tableau est vide, retourner immédiatement un tableau vide
+//   if (!centerIds.length) return of([]);
+
+//   return forkJoin(centerIds.map(id => this.getCenterSigles(id))).pipe(
+//     map(siglesArrays => {
+//       // Fusionner les tableaux et supprimer les doublons
+//       console.log('final', Array.from(new Set(siglesArrays.flat())));
+      
+//       return Array.from(new Set(siglesArrays.flat()));
+//     }),
+//     catchError(error => {
+//       console.error('Erreur dans getUserCentersSigles:', error);
+//       return of([]); // Retourne un tableau vide en cas d'erreur
+//     })
+//   );
+// }
+
+getUserCentersSigles(centerIds: string[]): Observable<string[]> {
+  // Si le tableau est vide, retourner immédiatement un tableau vide
+  if (!centerIds.length) return of([]);
+
+  // On démarre un tableau vide pour y pousser les sigles
+  let allSigles: string[] = [];
+
+  // Créer un observable qui va itérer sur les centerIds
+  return from(centerIds).pipe(
+    concatMap(id => 
+      this.getCenterSigles(id).pipe(
+        tap(sigles => {
+          // On pousse les sigles dans le tableau au fur et à mesure
+          allSigles = [...allSigles, ...sigles];
+        })
+      )
+    ),
+    map(() => {
+      // Une fois tous les sigles récupérés, on supprime les doublons
+      return Array.from(new Set(allSigles));
+    }),
+    catchError(error => {
+      console.error('Erreur dans getUserCentersSigles:', error);
+      return of([]); // Retourne un tableau vide en cas d'erreur
+    })
+  );
+}
+
+
+
 
 
 
