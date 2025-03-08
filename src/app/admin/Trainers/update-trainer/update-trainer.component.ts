@@ -58,13 +58,25 @@ export class UpdateTrainerComponent implements OnInit {
   ngOnInit(): void {
     // Appel à `getTrainer` pour récupérer les données de l'utilisateur
     this.service.getTrainer(this.userId).subscribe((data) => {
-      console.log("data depuis update-user component", data)
+      console.log("data depuis update-user component!!!!!!!!!", data)
       this.user = data
-      this.trainerStudents = data.students
-      // Transformer le champ `cp` en chaîne de caractères
-      this.user.cp = data.cp.join(', ')
+
+      // this.trainerStudents = data.students
+      // fixing error on console
+      // this.trainerStudents = Array.isArray(data.students) ? data.students : [];
+      this.trainerStudents = data.students?.filter((student: any) => student.trim() !== '') || [];
       // Stocker les étudiants assignés à l'utilisateur
-      this.selectedStudent = this.user.students
+      // this.selectedStudent = this.user.students
+      this.selectedStudent = this.trainerStudents;
+
+
+      // Transformer le champ `cp` en chaîne de caractères
+
+      // this.user.cp = data.cp.join(', ')
+      // fixing erreur en console
+      this.user.cp = Array.isArray(data.cp) ? data.cp.join(', ') : '';
+
+
 
       // Appel à `getStudents` après avoir obtenu `this.user.sigle`
       this.studentsService.getStudents().subscribe((students) => {
@@ -75,13 +87,13 @@ export class UpdateTrainerComponent implements OnInit {
           student.subscriptions.some(subscription => this.user.sigle.includes(subscription))
           // que le tableau du formateur contienne le localTraining candidat
           // &&   this.user.cp.includes(student['localTraining'])
-          &&  this.user.cp.includes(student.localTraining)
+          && this.user.cp.includes(student.localTraining)
           // que la fin de formation ne soit pas actéé
-          && !student.endedSubscriptions 
+          && !student.endedSubscriptions
         )
       })
     })
-  
+
 
     // essai > a été transféré à la liste trainersList component...
     // Récupérer l'UID de manière synchrone
@@ -95,18 +107,18 @@ export class UpdateTrainerComponent implements OnInit {
 
     // essai pour récupérer une liste des métiers 
     this.settingsService.getTrades().subscribe(trades => {
-    trades.forEach(trade => this.tradesData?.push(trade.sigle))
-  })
+      trades.forEach(trade => this.tradesData?.push(trade.sigle))
+    })
 
   }
 
 
-  delete(studentUid:string){
+  delete(studentUid: string) {
     console.log('Student à supprimer :', studentUid);
 
     // Trouver l'index de l'étudiant correspondant
-    const index = this.studentsList.findIndex((student:any) => student.id === studentUid);
-  
+    const index = this.studentsList.findIndex((student: any) => student.id === studentUid);
+
     if (index !== -1) {
       // Supprimer l'étudiant du tableau
       this.studentsList.splice(index, 1);
@@ -114,33 +126,34 @@ export class UpdateTrainerComponent implements OnInit {
     } else {
       console.log('Étudiant non trouvé dans la liste');
     }
-    
-    
+
+
     this.service.deleteStudentFromTrainer(this.userId, studentUid)
 
   }
 
 
-updateUser(form: NgForm) {
-  // on vérifie la validité du formulaire
-  if (!form.valid) {
-    console.log('form non valid')
-    return
+  updateUser(form: NgForm) {
+    // on vérifie la validité du formulaire
+    if (!form.valid) {
+      console.log('form non valid')
+      return
+    }
+
+    console.log("form update values", form.value);
+    this.service.updateTrainer(this.userId, form.value)
+    // pour notifier le(s) candidat(s) concerné(s)
+    // this.notificationsService.notifyStudent(form.value)
+    // puis redirection
+    this.router.navigate(['/admin/trainer', this.userId])
   }
 
-  console.log("form update values", form.value);
-  this.service.updateTrainer(this.userId, form.value)
-  // pour notifier le(s) candidat(s) concerné(s)
-  // this.notificationsService.notifyStudent(form.value)
-  // puis redirection
-  this.router.navigate(['/admin/trainer', this.userId])
-}
 
-// pour affecation métiers
-checkIfSelected(sigle: any) {
-  console.log(sigle);
-  this.selectedSigles = [...this.selectedSigles, sigle]
-}
+  // pour affecation métiers
+  checkIfSelected(sigle: any) {
+    console.log(sigle);
+    this.selectedSigles = [...this.selectedSigles, sigle]
+  }
 
 
   // myCp: string[] = []

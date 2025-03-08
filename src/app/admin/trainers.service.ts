@@ -336,11 +336,11 @@ export class TrainersService {
   //   }
   // }
 
+  // faut traiter le cas où students n'est pas encore renseigné pour éviter erreurs en console
   updateTrainer(id: string, trainer: any) {
-    // Référence du document dans Firestore
     const $trainerRef = doc(this.firestore, "trainers/" + id);
   
-    // Suppression des espaces et découpage en tableau
+    // Nettoyage des codes postaux
     const cpArray = trainer.cp
       .split(',')
       .map((cp: string) => cp.trim())
@@ -348,12 +348,17 @@ export class TrainersService {
   
     trainer.cp = cpArray;
   
-    // Supprimer uniquement la propriété "comment" si elle est undefined
+    // Suppression des champs optionnels vides ou undefined
     if (trainer.comment === undefined) {
       delete trainer.comment;
     }
   
-    // Mettre à jour uniquement les champs spécifiés
+    // Vérifier si "students" est bien un tableau non vide, sinon le supprimer
+    if (!Array.isArray(trainer.students) || trainer.students.length === 0) {
+      delete trainer.students;
+    }
+  
+    // Mise à jour du document trainer
     updateDoc($trainerRef, trainer)
       .then(() => {
         console.log("Trainer mis à jour avec succès !");
@@ -362,19 +367,21 @@ export class TrainersService {
         console.error("Erreur lors de la mise à jour du trainer :", error);
       });
   
-    // Mise à jour et notification des étudiants
-    for (let student of trainer.students) {
-      const $studentRef = doc(this.firestore, "students/" + student);
-      // updateDoc($studentRef, { trainer: trainer.lastName })
-      updateDoc($studentRef, { trainer: trainer.lastName + " " + trainer.firstName })
-        .then(() => {
-          console.log(`Notification à envoyer à ${student}`);
-        })
-        .catch((error) => {
-          console.error(`Erreur lors de la mise à jour du student ${student} :`, error);
-        });
+    // Mise à jour et notification des étudiants uniquement si students est un tableau non vide
+    if (Array.isArray(trainer.students) && trainer.students.length > 0) {
+      for (let student of trainer.students) {
+        const $studentRef = doc(this.firestore, "students/" + student);
+        updateDoc($studentRef, { trainer: trainer.lastName + " " + trainer.firstName })
+          .then(() => {
+            console.log(`Notification à envoyer à ${student}`);
+          })
+          .catch((error) => {
+            console.error(`Erreur lors de la mise à jour du student ${student} :`, error);
+          });
+      }
     }
   }
+  
   
   
 
