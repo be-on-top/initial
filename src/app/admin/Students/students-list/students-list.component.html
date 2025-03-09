@@ -136,7 +136,7 @@
 
             <div class="col-sm-3 h5 d-none d-md-inline">Nom</div>
             <div class="col-sm-3 h5 d-none d-md-inline">Prénom</div>
-            <div class="col-sm-3 h5 d-none d-md-inline">Suppression</div>
+            <div class="col-sm-3 h5 d-none d-md-inline" [ngClass]="{disabled:userRouterLinks.user=='referent'}">Suppression</div>
             <div class="col-sm-3 h5 d-none d-md-inline">Détails</div>
             <!-- Liste conditionnelle qui doit être désactivée dès l'application d'un filtre pour plus de lisibilité -->
             <div *ngIf="showNoInterestStudents">
