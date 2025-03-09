@@ -64,7 +64,7 @@
 
     <!-- début des réponses -->
     <div class="p-2 row justify-content-between align-items-end w-100 pb-0">
-        <div [ngClass]="applyAdjustBreakpoint ? 'adjustBreakpoint' : 'col-sm-6'" (click)="toggle(q.option1, q.optScoring1)">
+        <div class="rounded text-center choice mb-3" [ngClass]="applyAdjustBreakpoint ? 'adjustBreakpoint' : 'col-sm-6'" (click)="toggle(q.option1, q.optScoring1)">
             <button type="button" [ngClass]="{'bg-test':q.optScoring1==true, 'text-choiced':toggledStates[q.option1]}"
                 class="btn btn-transparent border-0 text-center fs-5 bg-light"><i class="bi bi-1-square-fill text-primary"></i>&nbsp;{{q.option1}}
                 <!-- pour illusion du selected  -->
@@ -84,7 +84,7 @@
             </div>
             <!-- si pas d'images -->
         </div>
-        <div [ngClass]="applyAdjustBreakpoint ? 'adjustBreakpoint' : 'col-sm-6'"  (click)="toggle(q.option2, q.optScoring2)">
+        <div class="rounded text-center choice mb-3" [ngClass]="applyAdjustBreakpoint ? 'adjustBreakpoint' : 'col-sm-6'"  (click)="toggle(q.option2, q.optScoring2)">
             <button type="button" [ngClass]="{'bg-test':q.optScoring2==true, 'text-choiced':toggledStates[q.option2]}"
                 class="btn btn-transparent border-0 text-center fs-5 bg-light"><i class="bi bi-2-square-fill text-primary"></i>&nbsp;{{q.option2}}
                 <!-- pour illusion du selected  -->
@@ -103,7 +103,7 @@
             </div>
         </div>
         <!-- à partir d'ici, les options Réponse 3 et Réponse 4 n'étant pas obligatoires, faut qu'on s'assure qu'elles existent -->
-        <div [ngClass]="applyAdjustBreakpoint ? 'adjustBreakpoint' : 'col-sm-6'"  (click)="toggle(q.option3, q.optScoring3)">
+        <div class="rounded text-center choice mb-3" [ngClass]="applyAdjustBreakpoint ? 'adjustBreakpoint' : 'col-sm-6'"  (click)="toggle(q.option3, q.optScoring3)">
             <button type="button" *ngIf="q.option3"
                 [ngClass]="{'bg-test':q.optScoring3==true, 'text-choiced':toggledStates[q.option3]}"
                 class="btn btn-transparent text-center fs-5 bg-light align-self-center"><i class="bi bi-3-square-fill text-primary"></i>&nbsp;{{q.option3}}
@@ -125,7 +125,7 @@
         </div>
         <!-- <div class="col-sm-6 rounded text-center choice mb-3" *ngIf="q.option4" (click)="choice(q.optScoring4)"> -->
         <!-- si je fais du toggle...  -->
-        <div [ngClass]="applyAdjustBreakpoint ? 'adjustBreakpoint' : 'col-sm-6'" *ngIf="q.option4"
+        <div class="rounded text-center choice mb-3" [ngClass]="applyAdjustBreakpoint ? 'adjustBreakpoint' : 'col-sm-6'" *ngIf="q.option4"
             (click)="toggle(q.option4, q.optScoring4)">
             <button type="button" [ngClass]="{'bg-test':q.optScoring4==true, 'text-choiced':toggledStates[q.option4]}"
                 class="btn btn-transparent text-center fs-5 bg-light"><i class="bi bi-4-square-fill text-primary"></i>&nbsp;{{q.option4}}

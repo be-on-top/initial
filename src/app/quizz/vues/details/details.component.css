@@ -94,6 +94,8 @@ i {
     .adjustBreakpoint {
         flex: 0 0 100%;
         max-width: 48% !important;
+background-color: blue!important;
+
     }
 
 }
