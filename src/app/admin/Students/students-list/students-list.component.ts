@@ -227,9 +227,9 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
           .subscribe(returnedPriors => {
             console.log('IDs prior récupérés :', returnedPriors);
   
-            // Étape 2 : Filtrer les étudiants par référent ou prior
+            // Étape 2 : Filtrer les étudiants par référent ou prior (qui a terminé et envoyé le formulaire)
             const filteredStudents = this.allStudents.filter(student =>
-              student.referent === referentUid || returnedPriors.includes(student.id)
+              student.referent === referentUid || (returnedPriors.includes(student.id) && student.isSocialFormSent)
             );
             console.log('Étudiants filtrés (référent + prior) :', filteredStudents);
   

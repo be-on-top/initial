@@ -30,7 +30,7 @@
 
             <label for="email" class="form-label mt-3 disabled text">Email *</label>
             <div class="input-group">
-                <span class="input-group-text" id="inputGroupPrepend2">@</span>
+                <span class="input-group-text" id="inputGroupPrepend2">&#64;</span>
                 <input type="email" id="email" [(ngModel)]="student.email" name="email" class="form-control text-white"
                     #email="ngModel" placeholder="Email" disabled>
             </div>
@@ -39,7 +39,7 @@
 
             <label for="cp" class="form-label mt-3">CP</label>
             <input type="text" id="cp" [(ngModel)]="student.cp" name="cp" class="form-control"
-                placeholder="Code Postal Optionnel..." [disabled]="userRouterLinks.user==='trainer'">
+                placeholder="Code Postal Optionnel..." [disabled]="userRouterLinks.user==='trainer' || userRouterLinks.user==='referent'">
 
             <!-- Tooggle Swith for student status -->
             <div class="form-check form-switch my-3">
@@ -57,7 +57,7 @@
                 class="form-control mt-3" #details="ngModel" [ngClass]="{'.is-valid':details.value && details.touched}"
                 placeholder="Commentaires optionnels..."
                 [disabled]="userRouterLinks.user==='trainer'">Détails / Remarques & Objectifs...</textarea>
-            <button type="submit" id="submit" class="btn btn-primary mt-3"
+            <button type="submit" class="btn btn-primary mt-3"
                 [ngClass]="{'disabled':f.invalid || userRouterLinks.user=='trainer'}">Valider</button>
         </form>
 
@@ -97,13 +97,15 @@
                     <!-- ajout pour renforcer la localisation  -->
                     <!-- utile si candidat inscrit par le conseiller projet OU si changement de lieu d'affectation suite à entretien -->
                     <!-- devra être réinitialiser à chaque fin de formation pour obtenir un filtre plus spécifique lors de l'affectation de candidats au formateur -->
-                    <label class="form-label mt-3" for="localTraining">Modifier ou préciser le lieu de la formation *</label>
+                    <label class="form-label mt-3" for="localTraining">Modifier ou préciser le lieu de la formation
+                        *</label>
                     <div class="small fst-italic"> si
-                        vous ne précisez rien, c'est le choix initial du candidat qui sera automatiquement associé à son inscription</div>
-                    <input type="text" class="form-control mt-3" name="localTraining" [(ngModel)]="student.localTraining"
-                        placeholder="code postal du centre">
+                        vous ne précisez rien, c'est le choix initial du candidat qui sera automatiquement associé à son
+                        inscription</div>
+                    <input type="text" class="form-control mt-3" name="localTraining"
+                        [(ngModel)]="student.localTraining" placeholder="code postal du centre">
                     <!-- fin -->
-                    <button type="submit" id="submit" class="btn btn-primary mt-3"
+                    <button type="submit" class="btn btn-primary mt-3"
                         [ngClass]="{'disabled':subscription.invalid}">Valider</button>
                 </form>
 
@@ -142,7 +144,7 @@
                     <input type="url" name="elearning" [(ngModel)]="student.elearning" class="form-control mt-3"
                         minlength="15" placeholder="renseigner url pour le e-learning">
 
-                    <button type="submit" id="submit" class="btn btn-primary mt-3">Valider</button>
+                    <button type="submit" class="btn btn-primary mt-3">Valider</button>
                 </form>
                 <!-- ---------- -->
 
@@ -159,7 +161,7 @@
                             </ng-container>
                         </ng-container>
                     </select>
-                    <button type="submit" id="submit" class="btn btn-primary mt-3"
+                    <button type="submit" class="btn btn-primary mt-3"
                         [ngClass]="{'disabled':endSubscription.invalid}">Valider</button>
                 </form>
 
@@ -223,7 +225,7 @@
                     <div class="invalid-feedback" *ngIf="details.invalid">Merci de saisir votre évaluation de suivi
                     </div>
                 </div>
-                <button type="submit" id="submit" class="btn btn-primary mt-3"
+                <button type="submit" class="btn btn-primary mt-3"
                     [ngClass]="{'disabled':followUp.invalid}">Valider</button>
             </form>
 
@@ -305,5 +307,11 @@
 
         </ng-container>
 
+        <!-- bouton de retour à la liste OU au détail (à voir) -->
+        <!-- {{userRouterLinks.user |json}} -->
+        <a class="btn btn-primary text-white retourList" [routerLink]="['/admin/referentStudentsList']"
+            *ngIf="userRouterLinks.user=='referent'">Retour à la liste</a>
+
     </div>
+
 </div>
