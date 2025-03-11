@@ -36,6 +36,11 @@ footer span{
 
 }
 
+footer:empty {
+  display: none;
+}
+
+
 /* Style du bouton de retour */
 .back-to-top-btn {
     position: fixed;
