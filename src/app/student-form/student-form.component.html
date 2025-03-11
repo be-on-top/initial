@@ -17,7 +17,7 @@ Tests OK. Sur une  partie. A finir.
     </div> -->
         <!-- ici, c'est une fois qu'ils ont terminés un questionnaire dans son intégralité, avec 3 nouveaux onglets -->
         <div
-        class="alert bg-warning p-4 alert-dismissible mb-4 fade show pe-5 animate">
+        class="alert bg-warning p-4 alert-dismissible mb-4 fade show pe-5 animate" *ngIf="!isReadOnly">
         <button type="button" class="btn-close mt-2" data-bs-dismiss="alert"
             aria-label="Fermer le message be-on-top"></button>
         <!-- <span> Vos résultats et estimations sont disponibles ci-dessous. L'<a
