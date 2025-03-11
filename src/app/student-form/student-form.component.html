@@ -8,14 +8,27 @@ Tests OK. Sur une  partie. A finir.
     <!-- {{studentData | json}} -->
 
     <h3 class="text-capitalize">Pré-inscription Formation {{userData.firstName}} {{userData.lastName}}</h3>
-    <div class="alert alert-light p-4 alert-dismissible mb-4 fade show pe-5" *ngIf="!isReadOnly">
-        <!-- <button type="button" class="btn-close btn-close-light" data-bs-dismiss="alert"></button> -->
+    <!-- <div class="alert alert-light p-4 alert-dismissible mb-4 fade show pe-5" *ngIf="!isReadOnly">
         <button aria-label="Fermer le message be-on-top" type="button" class="btn-close btn-close mt-2"
             data-bs-dismiss="alert"></button>
-        <!-- Vous pourrez aussi dès maintenant finaliser votre inscription administrative -->
         Pour faciliter votre inscription et le financement de votre formation, <strong>merci de renseigner un maximum
             d'informations</strong>. Tant que vous n'avez pas soumis le formulaire, vous pourrez interrompre ou modifier
         vos saisies.
+    </div> -->
+        <!-- ici, c'est une fois qu'ils ont terminés un questionnaire dans son intégralité, avec 3 nouveaux onglets -->
+        <div
+        class="alert bg-warning p-4 alert-dismissible mb-4 fade show pe-5 animate">
+        <button type="button" class="btn-close mt-2" data-bs-dismiss="alert"
+            aria-label="Fermer le message be-on-top"></button>
+        <!-- <span> Vos résultats et estimations sont disponibles ci-dessous. L'<a
+                class="text-decoration-none" [routerLink]="['/socialregistration']">incription en formation</a> peut
+            maintenant commencer.</span> -->
+        <span> <i class="bi bi-info-square-fill pe-2"></i>Pour <span class="fw-bold">être accompagné dans votre
+                projet de formation</span> et <span class="fw-bold">vous rapprocher du centre de votre choix</span>
+                <br><i class="bi bi-1-square-fill pe-2"></i><span class="fw-bold">compléter les informations ci-dessous</span> (vous pouvez interrompre ou modifier vos saisies tant que vous n'avez pas validé et soumis le formulaire). 
+                <br><i class="bi bi-2-square-fill pe-2"></i><span class="fw-bold">valider et soumettre</span> en cliquant sur <a  (click)="scrollToSubmitButton()">le bouton en fin de formulaire</a>
+                <br><i class="bi bi-3-square-fill pe-2"></i>une fois envoyé et soumis, <span class="fw-bold">un conseiller projet va prendre contact avec vous !</span>
+        </span>
     </div>
 
     <ng-container *ngIf="isReadOnly">
@@ -33,7 +46,7 @@ Tests OK. Sur une  partie. A finir.
             Merci d'indiquer vos
             préférences.</p>
         <p *ngIf="tradesEvaluated.length>1 && socialData.priorTrade" class="fw-bold">Vos préférences enregistrées.</p>
-        <p *ngIf="tradesEvaluated.length===1 && !socialData.center" class="fw-bold">Merci d'indiquer vos préférences.
+        <p *ngIf="tradesEvaluated.length===1 && !socialData.center" class="fw-bold">➡️ Merci d'indiquer vos préférences.
         </p>
         <p *ngIf="tradesEvaluated.length===1 && socialData.center">Vos préférences enregistrées.</p>
         <!-- dataFiltered {{dataFiltered | json}}  !!!!!!!!!!!!!!-->
@@ -1394,7 +1407,7 @@ Tests OK. Sur une  partie. A finir.
             </div>
         </div>
 
-        <button class="btn btn-primary mt-5" type="submit">Valider et soumettre</button>
+        <button id="submit-button" #submitBtn class="btn btn-warning mt-5" type="submit" ><i class="bi bi-arrow-right-square-fill me-3"></i>Valider et soumettre</button>
     </form>
 
 </div>

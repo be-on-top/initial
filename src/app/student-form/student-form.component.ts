@@ -1,5 +1,5 @@
 import { query } from '@angular/animations';
-import { Component, OnInit, Input, OnChanges, SimpleChanges, AfterViewInit, Output, EventEmitter, } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, AfterViewInit, Output, EventEmitter, ViewChild, ElementRef, } from '@angular/core';
 import { Auth, onAuthStateChanged, user } from '@angular/fire/auth';
 import { DocumentSnapshot, Firestore, addDoc, collection, doc, docData, getDocs, setDoc, where } from '@angular/fire/firestore';
 import { NgForm } from '@angular/forms';
@@ -73,6 +73,8 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
   // @Output() socialDataChange = new EventEmitter<any>();
 
   @Output() centerChange = new EventEmitter<string>(); // On émet seulement le center
+
+  @ViewChild('submitBtn') submitButton!: ElementRef;
 
 
 
@@ -591,7 +593,11 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
 
-
+  scrollToSubmitButton() {
+    if (this.submitButton) {
+      this.submitButton.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
 
 }
 
