@@ -39,7 +39,8 @@
 
             <label for="cp" class="form-label mt-3">CP</label>
             <input type="text" id="cp" [(ngModel)]="student.cp" name="cp" class="form-control"
-                placeholder="Code Postal Optionnel..." [disabled]="userRouterLinks.user==='trainer' || userRouterLinks.user==='referent'">
+                placeholder="Code Postal Optionnel..."
+                [disabled]="userRouterLinks.user==='trainer' || userRouterLinks.user==='referent'">
 
             <!-- Tooggle Swith for student status -->
             <div class="form-check form-switch my-3">
@@ -85,6 +86,8 @@
                     </span>
                 </p>
 
+                <!-- ajout feedback  OK -->
+                <div class="alert alert-success" *ngIf="feedBackSubscribe==true">Inscription validée</div>
                 <form class="form mb-5" #subscription="ngForm" (submit)="subscribeStudent(subscription)"
                     class="was-validated">
                     <select class="form-select" name="sigle" [(ngModel)]="student.subscriptions" required
@@ -149,6 +152,8 @@
                 <!-- ---------- -->
 
                 <h3>Fin de formation</h3>
+                <!-- ajout feedback  OK -->
+                <div class="alert alert-success" *ngIf="feedBackEndSubscription==true">Fin d'inscription (formation) OK </div>
 
                 <form class="form mb-5" #endSubscription="ngForm" (submit)="addEndingDate(endSubscription)"
                     class="was-validated">

@@ -171,7 +171,7 @@ export class AccountComponent implements OnInit, OnDestroy {
             // take(1),
             takeUntil(this.destroy$)) // Utilisation de takeUntil ici
           .subscribe(data => {
-            // console.log("userData from students 0...", data);
+            console.log("userData from students 0...", data);
             this.userData = data;
             // this.lastIndex = Number(this.userData.lastIndexQuestion);
 

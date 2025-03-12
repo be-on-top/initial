@@ -226,13 +226,27 @@
                 <ng-container *ngIf="student.endedSubscriptions">
                     <!-- {{achievedTrainings | json}} -->
                     <h3 *ngIf="student.endedSubscriptions">Fin de Formation du Candidat pour :</h3>
-                    <div class="text-center mb-5"><span class="fw-bold">Ref.:</span>
+                    <!-- <div class="text-center mb-5"><span class="fw-bold">Ref.:</span>
                         {{achievedTrainings.sigle}} - <span class="fw-bold">Métier :</span>{{
                         getDenomination(achievedTrainings.sigle)
                         | async }} - <span class="fw-bold">Date de sortie de formation :</span>{{ achievedTrainings.date
                         | date:'dd/MM/yyyy'}}
+                    </div>                     -->
+                    <!-- entre temps, endedSubscriptions a changé de type
+                      -->
+                    <div *ngIf="student?.endedSubscriptions">
+                        <div *ngFor="let training of student.endedSubscriptions" class="text-center mb-5">
+                            <span class="fw-bold">Ref.:</span> {{training?.sigle}}
+                            - <span class="fw-bold">Métier :</span>
+                            {{getDenomination(training.sigle) | async}}
+                            - <span class="fw-bold">Date de sortie de formation :</span>
+                            {{training.date | date:'dd/MM/yyyy'}}
+                        </div>
                     </div>
+
                 </ng-container>
+
+
 
             </div>
         </div>

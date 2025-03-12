@@ -347,11 +347,22 @@
                         </p>
                     </div>
                     <!-- fin de formations -->
-                    <div class="card-text" *ngIf="userData.endedSubscriptions">Formation terminée pour :
+                    <!-- <div class="card-text" *ngIf="userData.endedSubscriptions">Formation terminée pour :
                         <p class="d-inline"><span class="fw-bold">
                                 {{userData.endedSubscriptions.sigle}} </span>en date du<span class="fw-bold">
                                 {{userData.endedSubscriptions.date}}</span> </p>
-                    </div>
+                    </div> -->
+                    <!-- Fin de formations -->
+<!-- Fin de formations -->
+<div class="card-text" *ngIf="userData.endedSubscriptions?.length > 0">
+    <div *ngFor="let sub of userData.endedSubscriptions">
+        Formation terminée pour :
+        <span class="fw-bold">{{sub.sigle}}</span> en date du
+        <span class="fw-bold">{{sub.date}}</span>
+    </div>
+</div>
+
+
                     <!-- ici, c'est pour récupérer les documents liés -->
                     <div class="card-text" *ngIf="documents.length > 0">
                         <hr>

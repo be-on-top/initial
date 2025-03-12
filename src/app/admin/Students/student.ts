@@ -1,5 +1,10 @@
 import { QuizDetails } from "../quizzDetails";
 
+export interface EndedSubscription {
+    date: string;
+    sigle: string;
+  }
+
 export interface Student {
     id: string;
     // authId: string;
@@ -21,7 +26,7 @@ export interface Student {
     tradesEvaluated?: string[];
     subscriptions?:[];
     isSocialFormSent?:boolean;
-    endedSubscriptions?:{"date":string; "sigle":string}
+    endedSubscriptions?: EndedSubscription[];  // Mise à jour ici
     elearning?:string;
     isInnerStudent?:boolean;
     localTraining?:string;

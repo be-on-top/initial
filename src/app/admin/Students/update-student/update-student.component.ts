@@ -188,35 +188,75 @@ export class UpdateStudentComponent implements OnInit {
       });
   }
 
-  subscribeStudent(subscribeStudent: NgForm) {
-    // console.log('subscribeStudent.value.sigle', subscribeStudent.value.sigle);
-    console.log('this.priorCenterPostalCode', this.priorCenterPostalCode)
-    console.log('localTraining du formulaire', subscribeStudent.value.localTraining)
+  // subscribeStudent(subscribeStudent: NgForm) {
+  //   // console.log('subscribeStudent.value.sigle', subscribeStudent.value.sigle);
+  //   console.log('this.priorCenterPostalCode', this.priorCenterPostalCode)
+  //   console.log('localTraining du formulaire', subscribeStudent.value.localTraining)
 
-    let localTraining=''
-  
-    subscribeStudent.value.localTraining!=undefined?localTraining=subscribeStudent.value.localTraining:localTraining=this.priorCenterPostalCode
-    
-    let array = []
+  //   let localTraining=''
+
+  //   subscribeStudent.value.localTraining!=undefined?localTraining=subscribeStudent.value.localTraining:localTraining=this.priorCenterPostalCode
+
+  //   let array = []
+  //   for (const key of subscribeStudent.value.sigle) {
+  //     array.push(key)
+
+  //   }
+  //   // alert(array)
+
+  //   // this.service.activateSubscription(this.studentId, array)
+  //   // si on veut profiter de l'inscription pour enregistrer une variable qui localise la formation directement dans compte utilisateur
+  //   this.service.activateSubscription(this.studentId, array, localTraining)
+
+  // }
+
+  // poura voir des feedback explicites
+  feedBackSubscribe: boolean = false
+  async subscribeStudent(subscribeStudent: NgForm) {
+    console.log('this.priorCenterPostalCode', this.priorCenterPostalCode);
+    console.log('localTraining du formulaire', subscribeStudent.value.localTraining);
+
+    let localTraining = subscribeStudent.value.localTraining
+      ? subscribeStudent.value.localTraining
+      : this.priorCenterPostalCode;
+
+    let array: string[] = [];
     for (const key of subscribeStudent.value.sigle) {
-      array.push(key)
-
+      array.push(key);
     }
-    // alert(array)
 
-    // this.service.activateSubscription(this.studentId, array)
-    // si on veut profiter de l'inscription pour enregistrer une variable qui localise la formation directement dans compte utilisateur
-    this.service.activateSubscription(this.studentId, array, localTraining)
-
+    try {
+      await this.service.activateSubscription(this.studentId, array, localTraining);
+      this.feedBackSubscribe = true
+      // alert('Inscription réussie !'); 
+    } catch (error) {
+      console.error('Erreur lors de l\'inscription:', error);
+      alert('Échec de l\'inscription. Veuillez réessayer.');
+    }
   }
+
+
 
   sendElearningInfo(info: NgForm) {
     this.service.sendElearningInfo(this.studentId, info.value.elearning)
 
   }
 
-  addEndingDate(endSubscription: NgForm) {
-    this.service.endSubscription(this.studentId, endSubscription.value.sigle)
+  feedBackEndSubscription:boolean=false
+
+  async addEndingDate(endSubscription: NgForm) {
+    // this.service.endSubscription(this.studentId, endSubscription.value.sigle)
+
+    try {
+      await this.service.endSubscription(this.studentId, endSubscription.value.sigle)
+      this.feedBackEndSubscription = true
+      alert('Fin de formation enregistrée !');
+      
+    } catch (error) {
+      console.error('Erreur lors de l\'enregistrement fin de formation:', error);
+      alert('Échec de l\'enregistrement de fin de formation. Veuillez réessayer.');
+      
+    }
   }
 
   selectedFile: File | null = null;

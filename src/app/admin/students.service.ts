@@ -838,17 +838,46 @@ export class StudentsService {
     setDoc(studentRef, updateStudent, { merge: true })
   }
 
-  async endSubscription(id: string, sigle: string) {
-    const studentRef = doc(this.firestore, "students/" + id)
-    const date = new Date();
-    // Formater la date au format YYYY-MM-DD
-    const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+  // async endSubscription(id: string, sigle: string) {
+  //   const studentRef = doc(this.firestore, "students/" + id)
+  //   const date = new Date();
+  //   // Formater la date au format YYYY-MM-DD
+  //   const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
 
-    const updatedStudent = {
-      endedSubscriptions: { date: formattedDate, sigle: sigle }
+  //   const updatedStudent = {
+  //     endedSubscriptions: { date: formattedDate, sigle: sigle }
+  //   }
+  //   setDoc(studentRef, updatedStudent, { merge: true })
+  // }
+
+  // méthode optimisée 
+  async endSubscription(id: string, sigle: string) {
+    const studentRef = doc(this.firestore, "students/" + id);
+    const date = new Date();
+    const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+  
+    // Récupérer les données existantes
+    const studentSnap = await getDoc(studentRef);
+    let endedSubscriptions = [];
+  
+    if (studentSnap.exists()) {
+      const studentData = studentSnap.data();
+      // Vérifier si endedSubscriptions est un tableau, sinon le transformer en tableau
+      endedSubscriptions = Array.isArray(studentData['endedSubscriptions']) 
+        ? studentData['endedSubscriptions'] 
+        : [];
     }
-    setDoc(studentRef, updatedStudent, { merge: true })
+  
+    // ✅ Vérifier si le sigle est déjà enregistré avant d'ajouter
+    if (!endedSubscriptions.some(sub => sub.sigle === sigle)) {
+      endedSubscriptions.push({ date: formattedDate, sigle: sigle });
+    }
+  
+    // Mettre à jour Firestore
+    await setDoc(studentRef, { endedSubscriptions }, { merge: true });
   }
+  
+  
 
   sendElearningInfo(id: string, info: any) {
     let $studentRef = doc(this.firestore, "students/" + id)
