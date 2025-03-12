@@ -621,7 +621,7 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
 
     const setVoice = () => {
       const voices = synth.getVoices();
-      const paulVoice = voices.find(voice => voice.name === 'Microsoft Paul - French (France)');
+      const paulVoice = voices.find(voice => voice.name === 'Microsoft Julie - French (France)');
 
       const speech = new SpeechSynthesisUtterance(message);
       speech.voice = paulVoice || voices[0]; // Si Julie n'est pas trouvée, prendre une autre voix
