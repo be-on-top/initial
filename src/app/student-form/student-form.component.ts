@@ -95,7 +95,11 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
 
         this.isDocumentInStudentsCollection(user.uid).subscribe(isStudent => {
           console.log("un étudiant est authentifié !!!!!", isStudent)
-          if (isStudent) { this.retrieveStudentProperties(user.uid) }
+          if (isStudent) {
+            this.retrieveStudentProperties(user.uid)
+            // Appel de la fonction pour le message d'introduction à l'ouverture
+            this.speakMessage("N'oubliez pas de valider et soumettre votre formulaire à la fin de cette étape pour être contacté par un conseiller projet.");
+          }
           // else {
           //   this.processNonStudentData(this.studentData)
           // }
@@ -112,6 +116,10 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
     //   console.log("this.tradesData", this.tradesData)
     // })
 
+
+    // window.speechSynthesis.addEventListener("voiceschanged", () => {
+    //   console.log(window.speechSynthesis.getVoices().filter(voice => voice.lang.startsWith('fr')));
+    // });
 
 
   }
@@ -262,7 +270,7 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
 
 
 
-  
+
   emitCenter() {
     console.log('Émission de socialData.center :', this.socialData.center);
     this.centerChange.emit(this.socialData.center); // Envoyer uniquement `center`
@@ -327,7 +335,7 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
     //   if (key.includes('quizz')) {
     //     const trade = key.replace('quizz_', '');
     //     this.tradesEvaluated.push(trade); // Ajout direct comme dans la méthode initiale
-    
+
     //     // Filtrage inspiré de isOneQuizzAchieved
     //     const associatedData = this.userData[key];
     //     if (!associatedData || !associatedData.fullResults) {
@@ -346,7 +354,7 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
         }
       }
     }
-    
+
 
 
     // Logique pour récupérer isOneQuizzAchieved
@@ -598,6 +606,42 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
       this.submitButton.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   }
+
+
+  // Fonction pour déclencher la synthèse vocale
+  // speakMessage(message: string) {
+  //   const speech = new SpeechSynthesisUtterance(message);
+  //   speech.lang = 'fr-FR'; // Langue française
+  //   window.speechSynthesis.speak(speech);
+  // }
+
+  // Fonction pour personnaliser la voix
+  speakMessage(message: string) {
+    const synth = window.speechSynthesis;
+
+    const setVoice = () => {
+      const voices = synth.getVoices();
+      const paulVoice = voices.find(voice => voice.name === 'Microsoft Paul - French (France)');
+
+      const speech = new SpeechSynthesisUtterance(message);
+      speech.voice = paulVoice || voices[0]; // Si Julie n'est pas trouvée, prendre une autre voix
+      speech.lang = 'fr-FR';
+
+      speech.rate = 1.3; // Vitesse (1 = normal, <1 = plus lent, >1 = plus rapide)
+      speech.pitch = 1.2; // Hauteur (1 = normal, <1 = grave, >1 = aigu)
+      speech.volume = 1; // Volume (0 = muet, 1 = max)
+
+      synth.speak(speech);
+    };
+
+    if (synth.getVoices().length > 0) {
+      setVoice();
+    } else {
+      synth.addEventListener("voiceschanged", setVoice);
+    }
+  }
+
+
 
 }
 
