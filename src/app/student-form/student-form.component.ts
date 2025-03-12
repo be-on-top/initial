@@ -98,7 +98,9 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
           if (isStudent) {
             this.retrieveStudentProperties(user.uid)
             // Appel de la fonction pour le message d'introduction à l'ouverture
-            this.speakMessage("N'oubliez pas de valider et soumettre votre formulaire à la fin de cette étape pour être contacté par un conseiller projet.");
+            // this.speakMessage("N'oubliez pas de valider et soumettre votre formulaire à la fin de cette étape pour être contacté par un conseiller projet.");
+            // Appel à julie j pour message d'introduction
+            this.playLocalAudio()
           }
           // else {
           //   this.processNonStudentData(this.studentData)
@@ -640,6 +642,14 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
       synth.addEventListener("voiceschanged", setVoice);
     }
   }
+
+
+
+  playLocalAudio() {
+    const audio = new Audio("/assets/audio/introStudentForm.mp3");
+    audio.play();
+  }
+  
 
 
 
