@@ -23,16 +23,18 @@ Tests OK. Sur une  partie. A finir.
         <!-- <span> Vos résultats et estimations sont disponibles ci-dessous. L'<a
                 class="text-decoration-none" [routerLink]="['/socialregistration']">incription en formation</a> peut
             maintenant commencer.</span> -->
+        <!-- <span> <i class="bi bi-info-square-fill pe-2"></i>Pour <span class="fw-bold">être accompagné dans votre
+                projet de formation</span> et <span class="fw-bold">vous rapprocher du centre de votre choix</span> -->
         <span> <i class="bi bi-info-square-fill pe-2"></i>Pour <span class="fw-bold">être accompagné dans votre
                 projet de formation</span> et <span class="fw-bold">vous rapprocher du centre de votre choix</span>
                 <br><i class="bi bi-1-square-fill pe-2"></i><span class="fw-bold">compléter les informations ci-dessous</span> (vous pouvez interrompre ou modifier vos saisies tant que vous n'avez pas validé et soumis le formulaire). 
                 <br><i class="bi bi-2-square-fill pe-2"></i><span class="fw-bold">valider et soumettre</span> en cliquant sur <a  (click)="scrollToSubmitButton()">le bouton en fin de formulaire</a>
-                <br><i class="bi bi-3-square-fill pe-2"></i>une fois envoyé et soumis, <span class="fw-bold">un conseiller projet va prendre contact avec vous !</span>
+                <br><i class="bi bi-3-square-fill pe-2"></i>une fois validé et soumis, <span class="fw-bold">un conseiller projet va prendre contact avec vous !</span>
         </span>
     </div>
 
     <ng-container *ngIf="isReadOnly">
-        <p> <span class="text-decoration-underline"> Préférences du candidat</span> <br>
+        <p> <span class="text-decoration-underline">👉 Préférences du candidat</span> <br>
             Formation : {{ getDenomination(socialData.priorTrade) | async }} <br>
             Centre : {{ getCenterName(socialData.center) | async }}</p>
     </ng-container>
@@ -46,7 +48,7 @@ Tests OK. Sur une  partie. A finir.
             Merci d'indiquer vos
             préférences.</p>
         <p *ngIf="tradesEvaluated.length>1 && socialData.priorTrade" class="fw-bold">Vos préférences enregistrées.</p>
-        <p *ngIf="tradesEvaluated.length===1 && !socialData.center" class="fw-bold">➡️ Merci d'indiquer vos préférences.
+        <p *ngIf="tradesEvaluated.length===1 && !socialData.center" class="fw-bold">👉 Merci d'indiquer vos préférences.
         </p>
         <p *ngIf="tradesEvaluated.length===1 && socialData.center">Vos préférences enregistrées.</p>
         <!-- dataFiltered {{dataFiltered | json}}  !!!!!!!!!!!!!!-->
@@ -59,7 +61,7 @@ Tests OK. Sur une  partie. A finir.
                     <!-- {{priorTrade| json}} -->
                     <select class="form-select" name="priorTrade" [(ngModel)]="priorTrade" required #sigle="ngModel"
                         (change)="checkIfSelected(target.value.priorTrade)">
-                        <option value="">Sélectionnez la formation</option>
+                        <option value="">👉 Sélectionnez la formation</option>
                         <!-- Si un choix déjà enregistré, afficher le choix en haut -->
                         <option *ngIf="priorTrade!==''" [value]="priorTrade" selected>
                             <!-- {{ priorTrade }} -->
@@ -91,7 +93,7 @@ Tests OK. Sur une  partie. A finir.
                         <select *ngIf="!socialData.center" class="form-select" aria-label="Sélectionnez un centre"
                             name="center" id="centerNochoice" ngModel required #center="ngModel"
                             (change)="onCenterSelected($event)">
-                            <option value="">Sélectionnez un centre</option>
+                            <option value="">👉 Sélectionnez un centre</option>
                             <!-- <option *ngFor="let center of dataFiltered" [value]="center.cp + '|' + center.name"> -->
                             <!-- n'est plus nécessaire si on récupère center.id en base -->
                             <option *ngFor="let center of dataFiltered" [value]="center.id">
@@ -112,7 +114,7 @@ Tests OK. Sur une  partie. A finir.
                             (change)="onCenterSelected($event)">
 
                             <!-- Option par défaut si aucun centre n'est sélectionné -->
-                            <option value="" *ngIf="!socialData.center">Sélectionnez un centre</option>
+                            <option value="" *ngIf="!socialData.center">👉 Sélectionnez un centre</option>
 
                             <!-- Options pour tous les centres filtrés -->
                             <!-- <option *ngFor="let center of dataFiltered" [value]="center.cp + '|' + center.name"> -->
@@ -166,9 +168,9 @@ Tests OK. Sur une  partie. A finir.
 
 
 
-    <button (click)="print()" id="print" *ngIf="isReadOnly" class="btn btn-primary">Imprimer</button>
+    <button type="button" (click)="print()" id="print" *ngIf="isReadOnly" class="btn btn-primary">Imprimer</button>
 
-    <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)" class="mt-3" [ngClass]="{'read-only-form': isReadOnly}">
+    <form id="studentForm" #myForm="ngForm" (ngSubmit)="onSubmit(myForm)" class="mt-3" [ngClass]="{'read-only-form': isReadOnly}">
 
 
         <div id="accordion" class="w-100">
@@ -1033,7 +1035,7 @@ Tests OK. Sur une  partie. A finir.
                 <div id="collapseSix" class="collapse" data-bs-parent="#accordion">
                     <div class="card-body">
                         <!-- début éléments de formularie -->
-                        <div class="text-decoration-underline pt-3 pb-2">Comment avez-vous connu notre notre application
+                        <div class="text-decoration-underline pt-3 pb-2">Comment avez-vous connu notre application
                             ?</div>
                         <div>
                             <div class="form-check">
@@ -1180,7 +1182,7 @@ Tests OK. Sur une  partie. A finir.
                                 formation ? </div>
                             <div>
                                 <div class="form-check">
-                                    <label class="form-check-label" for="trainingFinancingProposal1"> Pôle Emploi (POEI,
+                                    <label class="form-check-label" for="trainingFinancingProposal1"> France Travail (POEI,
                                         AFPR…)</label>
                                     <input appAutoChange class="form-check-input" type="checkbox"
                                         name="trainingFinancingProposal1" value="Pôle Emploi (POEI, AFPR…)"
@@ -1396,9 +1398,6 @@ Tests OK. Sur une  partie. A finir.
                         <input appAutoChange class="form-check-input" type="radio" name="mobility" value="allFrance"
                             [(ngModel)]="socialData.mobility">
                         <label class="form-check-label"> sur toute la france</label>
-                    </div>
-
-                    <div>
                     </div>
 
                     <!-- fin éléments de formulaire -->

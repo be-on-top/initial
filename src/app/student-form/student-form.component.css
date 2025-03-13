@@ -19,6 +19,14 @@
     transform: none;
 }
 
+#studentForm{
+  background-image: url('/assets/icons/contact.svg');
+  background-position: right bottom;
+  background-repeat: no-repeat;
+  padding-bottom: 10vw;
+  background-size: 20vw;  
+}
+
 
 /* .read-only-form {
   pointer-events: none;
@@ -94,6 +102,13 @@ a[aria-expanded="true"] .toggle-arrow {
   display: none;
 } */
 
+@media only screen and (max-width:960px) {
+  #studentForm{
+    padding-bottom: 20vw;
+    background-size: 50vw;  
+  }
+  
+}
 
 
 @media only screen and (max-width: 430px) {
