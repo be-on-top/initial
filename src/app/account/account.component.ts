@@ -21,6 +21,7 @@ import { SettingsService } from '../admin/settings.service';
 import { Observable, takeUntil, Subject, take, of } from 'rxjs';
 import { ConsentService } from '../consent.service';
 import { NetworkService } from '../network.service';
+import { TextToSpeechService } from '../admin/text-to-speech.service';
 
 
 @Component({
@@ -28,7 +29,7 @@ import { NetworkService } from '../network.service';
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.css']
 })
-export class AccountComponent implements OnInit, OnDestroy {
+export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
   user?: any;
   // sub: Subscription;
   uid = '';
@@ -126,7 +127,8 @@ export class AccountComponent implements OnInit, OnDestroy {
     private consentService: ConsentService,
     private networkService: NetworkService,
     private el: ElementRef,
-    private renderer: Renderer2) {
+    private renderer: Renderer2,
+    private textToSpeechService: TextToSpeechService) {
     // const messaging = getMessaging();
     // onMessage(messaging, (payload) => {
     //   console.log('Message received. ', payload);
@@ -189,10 +191,12 @@ export class AccountComponent implements OnInit, OnDestroy {
             
               if (this.isSocialForm && !this.userData.isSocialFormSent) {
                 console.log("Conditions validées, lancement du son...");
-                this.playLocalMessage("remind.mp3");
+                this.playText()
+                // this.playLocalMessage("remind.mp3");
               } else {
                 console.log("Conditions non remplies, pas de son.");
               }
+
             });
             
 
@@ -261,6 +265,12 @@ export class AccountComponent implements OnInit, OnDestroy {
       this.renderer.setStyle(alertBox, 'background-image', randomImage);
     }
   }
+
+ngAfterViewInit(): void {
+  // this.playText()
+}
+
+  
 
 
 
@@ -856,5 +866,22 @@ export class AccountComponent implements OnInit, OnDestroy {
 
 
   }
+
+
+  public playText(): void {
+    const text = 'N\'oubliez pas de terminer et soumettre votre formulaire pour être contacté par un conseiller projet.';
+    
+    this.textToSpeechService.synthesizeSpeech(text).subscribe(
+      (response) => {
+        const audioContent = response.audioContent;
+        const audio = new Audio('data:audio/mp3;base64,' + audioContent);
+        audio.play();
+      },
+      (error) => {
+        console.error('Erreur lors de la synthèse vocale:', error);
+      }
+    );
+  }
+
 
 }
