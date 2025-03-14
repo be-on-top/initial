@@ -225,7 +225,7 @@ Tests OK. Sur une  partie. A finir.
                             </label>
                             <div class="col-md-9">
                                 <input appAutoChange type="text" name="address" [(ngModel)]="socialData.address"
-                                    required class="form-control" placeholder="(bat, rue, chemin, n°)">
+                                    required class="form-control" placeholder="(bat, rue, chemin, n°)" (blur)="checkFields()">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -235,7 +235,7 @@ Tests OK. Sur une  partie. A finir.
                             <div class="col-md-9">
                                 <!-- <input appAutoChange type="text" name="postalCode" ngModel class="form-control" required  (change)="onInputChange('postalCode', myForm.value.postalCode)"> -->
                                 <input appAutoChange type="text" name="postalCode" [(ngModel)]="socialData.postalCode"
-                                    class="form-control" required appAutoChange>
+                                    class="form-control" required appAutoChange (blur)="checkFields()">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -243,7 +243,7 @@ Tests OK. Sur une  partie. A finir.
                                 Ville :
                             </label>
                             <div class="col-md-9">
-                                <input appAutoChange type="text" name="city" [(ngModel)]="socialData.city" required
+                                <input appAutoChange type="text" name="city" [(ngModel)]="socialData.city" 
                                     class="form-control">
                             </div>
                         </div>
@@ -253,7 +253,7 @@ Tests OK. Sur une  partie. A finir.
                             </label>
                             <div class="col-md-9">
                                 <input appAutoChange type="tel" name="phone" [(ngModel)]="socialData.phone" required
-                                    class="form-control">
+                                    class="form-control" (blur)="checkFields()">
                             </div>
                         </div>
                         <div class="form-group row">

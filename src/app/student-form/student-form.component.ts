@@ -75,6 +75,8 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
   @Output() centerChange = new EventEmitter<string>(); // On émet seulement le center
 
   @ViewChild('submitBtn') submitButton!: ElementRef;
+  @ViewChild('myForm') myForm!: NgForm; // Récupération du formulaire
+  private audioPlayed = false; // Pour éviter de rejouer plusieurs fois
 
 
 
@@ -649,7 +651,26 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
     const audio = new Audio("/assets/audio/introStudentForm.mp3");
     audio.play();
   }
-  
+
+  checkFields() {
+    if (!this.myForm) return;
+
+    const { postalCode, address, phone } = this.myForm.value;
+
+    if (postalCode && address && phone && !this.audioPlayed) {
+      this.audioPlayed = true; // On empêche de rejouer
+      setTimeout(() => {
+        this.playLocalMessage("employment.mp3");
+      }, 500); // Petit délai pour s'assurer que l'utilisateur est bien sorti du champ
+    }
+  }
+
+  // Méthode pour jouer le MP3 local
+  playLocalMessage(fileName: string) {
+    const audio = new Audio(`/assets/audio/${fileName}`);
+    audio.play();
+  }
+
 
 
 

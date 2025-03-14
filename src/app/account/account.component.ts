@@ -110,6 +110,9 @@ export class AccountComponent implements OnInit, OnDestroy {
   // pour les settings application display
   isTrainingTimeMultiple7: boolean = false
 
+  // pour savoir si y a un formulaire en cours de finalisation
+  isSocialForm: boolean = false
+
   constructor(
     private auth: Auth,
     // private firestore: Firestore, 
@@ -122,7 +125,7 @@ export class AccountComponent implements OnInit, OnDestroy {
     private settingsService: SettingsService,
     private consentService: ConsentService,
     private networkService: NetworkService,
-    private el: ElementRef, 
+    private el: ElementRef,
     private renderer: Renderer2) {
     // const messaging = getMessaging();
     // onMessage(messaging, (payload) => {
@@ -145,7 +148,7 @@ export class AccountComponent implements OnInit, OnDestroy {
       if (data && data.prices !== undefined) {
         this.displayPrices = data.prices;
         // je rajoute de quoi récupérer l'état de l'autre propriété de display
-        this.isTrainingTimeMultiple7=data.isMultiple7TrainingTime
+        this.isTrainingTimeMultiple7 = data.isMultiple7TrainingTime
         console.log("displayPrices depuis ngOnInit !!!!!!!!!!!!!!!!!!!!!!!", this.displayPrices);
       }
     })
@@ -176,6 +179,25 @@ export class AccountComponent implements OnInit, OnDestroy {
             // this.lastIndex = Number(this.userData.lastIndexQuestion);
 
             this.processStudentData();
+
+            // puis on interroge socialForm savoir si un document existe avec l'uid
+            this.studentService.checkIfSocialFormExists(user.uid).then(result => {
+              this.isSocialForm = result;
+              
+              console.log("Résultat Firestore :", this.isSocialForm);
+              console.log("Valeur de isSocialFormSent :", this.userData.isSocialFormSent);
+            
+              if (this.isSocialForm && !this.userData.isSocialFormSent) {
+                console.log("Conditions validées, lancement du son...");
+                this.playLocalMessage("remind.mp3");
+              } else {
+                console.log("Conditions non remplies, pas de son.");
+              }
+            });
+            
+
+
+
           });
       }
     })
@@ -210,14 +232,14 @@ export class AccountComponent implements OnInit, OnDestroy {
   // ngAfterViewInit(): void {
   //   alert('ngAfterViewInit exécuté ✅');
   //   console.log('🔄 ngAfterViewInit exécuté ✅');
-  
+
   //   const alertBox = this.el.nativeElement.querySelector('.assistant');
   //   console.log('📌 Élément trouvé :', alertBox); // Vérifie si alertBox est bien trouvé
-  
+
   //   if (alertBox) {
   //     const images = ["url('/assets/icons/assistant.webp')", "url('/assets/icons/assistante.webp')"];
   //     const randomImage = images[Math.floor(Math.random() * images.length)];
-  
+
   //     console.log('🎲 Image choisie :', randomImage); // Vérifie si le tirage fonctionne
   //     this.renderer.setStyle(alertBox, 'background-image', randomImage);
   //   } else {
@@ -225,22 +247,22 @@ export class AccountComponent implements OnInit, OnDestroy {
   //   }
   // }
 
-  imageAlreadySet:boolean=false
+  imageAlreadySet: boolean = false
 
   ngAfterViewChecked(): void {
     const alertBox = this.el.nativeElement.querySelector('.assistant');
-    if (alertBox && !this.imageAlreadySet) { 
+    if (alertBox && !this.imageAlreadySet) {
       this.imageAlreadySet = true; // Pour éviter d’exécuter plusieurs fois
-  
+
       const images = ["url('/assets/icons/assistant.webp')", "url('/assets/icons/assistante.webp')"];
       const randomImage = images[Math.floor(Math.random() * images.length)];
-  
+
       console.log('🎲 Image choisie :', randomImage);
       this.renderer.setStyle(alertBox, 'background-image', randomImage);
     }
   }
-  
-  
+
+
 
   ngOnDestroy() {
     // Détruit le composant
@@ -743,6 +765,7 @@ export class AccountComponent implements OnInit, OnDestroy {
         console.log("documents liés", this.documents);
 
       }
+
     }
 
     // Logique pour obtenir les compétences pour chaque tradeId
@@ -803,8 +826,6 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   roundToNearestMultipleOf7(duration: number): number {
     return Math.round((duration + 0.1) / 7) * 7;
-
-
   }
 
 
@@ -816,32 +837,6 @@ export class AccountComponent implements OnInit, OnDestroy {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   // on va transférer ça à un composant enfant
   // dismissAlert(): void {
   //   this.showCollapsesAlert = false;
@@ -849,7 +844,17 @@ export class AccountComponent implements OnInit, OnDestroy {
   //   localStorage.setItem('alertDismissed', 'true');
   // }
 
+  private audioPlayed = false; // Pour éviter de rejouer plusieurs fois OK
+  // Méthode pour jouer le MP3 local
+  playLocalMessage(fileName: string) {
+
+    const audio = new Audio(`/assets/audio/${fileName}`);
+    audio.play();
+
+    // Dans ce contexte, c'est là qu'on passe audioPlayed à true
+    this.audioPlayed = true
 
 
+  }
 
 }

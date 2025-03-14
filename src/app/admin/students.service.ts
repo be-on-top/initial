@@ -455,6 +455,19 @@ export class StudentsService {
     return docData(studentRef) as Observable<Student>;
   }
 
+  checkIfSocialFormExists(studentId: string): Promise<boolean> {
+    const docRef = doc(this.firestore, `SocialForm/${studentId}`);
+  
+    return getDoc(docRef)
+      .then((docSnap) => {
+        return docSnap.exists(); // Renvoie true si le document existe, sinon false
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la vérification du SocialForm :", error);
+        return false; // En cas d'erreur, on renvoie false par sécurité
+      });
+    }
+
 
 
   async deleteStudent(student: Student): Promise<void> {
