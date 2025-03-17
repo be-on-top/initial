@@ -18,14 +18,22 @@ export class UpdateUserComponent {
   constructor(private service: UsersService, private ac: ActivatedRoute, private router: Router) {
     this.userId = this.ac.snapshot.params["id"];
     // on fait appel à getuser pour récupérer les entrées de l'existant. méthode qui pour memo renvoie un observable
-    this.service.getUser(this.userId).subscribe((data) => {
-      console.log("data from update-user component", data);
-      this.user = data
-    })
+    // this.service.getUser(this.userId).subscribe((data) => {
+    //   console.log("data from update-user component", data)
+    //   this.user = data
+    //   this.userId=data.id
+    //   console.log("data depuis constructor", data)
+    //   alert(data.id)
+    // })
 
   }
 
   ngOnInit(): void {
+
+    this.service.getUser(this.userId).subscribe((data) => {
+      console.log("data depuis update-user component!!!!!!!!!", data)
+      this.user = data
+    })
   }
 
   updateUser(form: NgForm) {
@@ -36,9 +44,11 @@ export class UpdateUserComponent {
     }
 
     console.log("form update values", form.value);
+    // this.service.updateUser(this.userId, form.value)
     this.service.updateUser(this.userId, form.value)
-    // il faudra prévoir une redirection... 
-    this.router.navigate(['/admin/user', this.userId])
+    // il faudra prévoir une redirection...
+    const routerUser=this.user.role 
+    this.router.navigate([`/admin/${routerUser}`, this.userId])
   }
 
 

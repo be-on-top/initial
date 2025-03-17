@@ -29,20 +29,22 @@
                 <span *ngIf="user.created">Date de création : {{user.created | date:'dd/MM/yyyy' }}</span><br>
             </div>
         </div>
-        <div *ngIf="userRouterLinks.user==='!referent'" class="d-flex my-4 justify-content-end gap-5">
+        <!-- {{userRouterLinks.user}} -->
+        <!-- il n'y a pas de risque qu'un referent demande à accéder à la liste de ceux dont la gestion est mutualisée donc -->
+        <div *ngIf="userRouterLinks.user==='admin'" class="d-flex my-4 justify-content-end gap-5">
 
-            <button class="btn btn-primary">
+            <button type="button" class="btn btn-primary">
                 <!-- <a class="text-white" [routerLink]="['/admin/users']">Retour à la liste</a> -->
                 <a class="text-white" [routerLink]="[linkBackToList]" >Retour à la liste</a>
             </button>
 
 
-            <button class="btn btn-warning">
+            <button type="button" class="btn btn-warning">
                 <a class="text-white" [routerLink]="['/admin/updateUser', user.id]">Modifier</a>
             </button>
 
 
-            <button class="btn btn-danger">
+            <button type="button" class="btn btn-danger">
                 <a class="text-white" (click)="deleteUser(user.id)">Supprimer</a>
             </button>
 

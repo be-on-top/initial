@@ -230,10 +230,24 @@ export class UsersService {
   }
 
 
-  updateUser(id: string, user: any) {
-    let $userRef = doc(this.firestore, "users/" + id);
-    setDoc($userRef, user)
+  // updateUser(id: string, user: any) {  
+  //   let $userRef = doc(this.firestore, "users/" + id);
+  //   setDoc($userRef, user)
+  // }
 
+  // pour éviter les erreurs dûes à des champs undefined
+  updateUser(id: string, user: any) {
+    console.log('user depuis service', user);
+  
+    // Supprimer les clés dont la valeur est undefined
+    let cleanedUser = Object.fromEntries(
+      Object.entries(user).filter(([_, value]) => value !== undefined)
+    );
+  
+    // console.log("Mise à jour du doc:", id, "avec:", cleanedUser);
+    let $userRef = doc(this.firestore, "users/" + id);
+    setDoc($userRef, cleanedUser, { merge: true }); // merge:true pour conserver les autres champs
   }
+  
 
 }
