@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 // import { NgForm } from '@angular/forms';
 import { Auth, reauthenticateWithCredential, createUserWithEmailAndPassword, deleteUser, fetchSignInMethodsForEmail, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithRedirect, updateEmail, EmailAuthProvider } from "@angular/fire/auth";
-import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc, updateDoc, query, getDocs, where, getDoc, QuerySnapshot, arrayUnion, CollectionReference, DocumentData, orderBy } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc, updateDoc, query, getDocs, where, getDoc, QuerySnapshot, arrayUnion, CollectionReference, DocumentData, orderBy, documentId } from '@angular/fire/firestore';
 // import { FirebaseApp } from '@angular/fire/app';
-import { from, map, Observable, of, switchMap, tap } from 'rxjs';
+import { combineLatest, from, map, Observable, of, switchMap, tap } from 'rxjs';
 // import { switchMap, tap } from 'rxjs/operators';
 import { Student } from './Students/student';
 import { NgForm } from '@angular/forms';
@@ -1447,6 +1447,103 @@ getCentersAndSocialFormByUserId(userId: string) {
   
   
   
+
+
+// Méthode pour récupérer les étudiants ayant commencé mais pas soumis
+// Méthode pour récupérer les étudiants ayant commencé mais pas soumis
+// Méthode pour récupérer les étudiants ayant commencé mais pas soumis
+// getStudentsNotSubmitted(): Observable<any[]> {
+//   // 1. Récupérer tous les étudiants ayant commencé à remplir le formulaire (tous les documents dans la collection SocialForm)
+//   const socialFormRef = collection(this.firestore, 'SocialForm');
+//   const socialFormStudents$ = from(getDocs(socialFormRef)).pipe(
+//     map((querySnapshot) => {
+//       const socialForms = querySnapshot.docs.map(doc => ({
+//         id: doc.id,
+//         ...doc.data()
+//       }));
+//       return socialForms;
+//     })
+//   );
+
+//   // 2. Récupérer tous les étudiants ayant soumis le formulaire (isSocialFormSent = true) dans la collection students
+//   const studentsRef = collection(this.firestore, 'students');
+//   const studentsQuery = query(studentsRef, where('isSocialFormSent', '==', true));
+//   const studentsSubmitted$ = from(getDocs(studentsQuery)).pipe(
+//     map((querySnapshot) => {
+//       const students = querySnapshot.docs.map(doc => doc.id);  // On prend uniquement les IDs (UIDs)
+//       return students;
+//     })
+//   );
+
+//   // 3. Comparer et retourner uniquement les étudiants qui ont commencé mais n'ont pas soumis
+//   return combineLatest([socialFormStudents$, studentsSubmitted$]).pipe(
+//     map(([socialForms, students]) => {
+//       // Créer un ensemble des UIDs des étudiants ayant soumis le formulaire (isSocialFormSent = true)
+//       const submittedUIDs = new Set(students);
+
+//       // Filtrer les étudiants ayant commencé mais pas soumis
+//       const notSubmittedStudents = socialForms.filter((socialForm: any) => {
+//         // On ne garde que ceux qui ne sont pas dans les étudiants ayant soumis
+//         return !submittedUIDs.has(socialForm.id); // Utilisation de 'id' de SocialForm pour comparaison
+//       });
+
+//       return notSubmittedStudents;
+//     })
+//   );
+// }
+
+getStudentsNotSubmitted(): Observable<any[]> {
+  // 1. Récupérer tous les étudiants ayant commencé à remplir le formulaire (tous les documents dans la collection SocialForm)
+  const socialFormRef = collection(this.firestore, 'SocialForm');
+  const socialFormStudents$ = from(getDocs(socialFormRef)).pipe(
+    map((querySnapshot) => {
+      const socialForms = querySnapshot.docs.map(doc => doc.id); // On récupère seulement les IDs
+      console.log(`Nombre d'étudiants ayant commencé le formulaire (SocialForm) : ${socialForms.length}`);
+      return socialForms;
+    })
+  );
+
+  // 2. Récupérer tous les étudiants ayant soumis le formulaire (isSocialFormSent = true) dans la collection students
+  const studentsRef = collection(this.firestore, 'students');
+  const studentsQuery = query(studentsRef, where('isSocialFormSent', '==', true));
+  const studentsSubmitted$ = from(getDocs(studentsQuery)).pipe(
+    map((querySnapshot) => {
+      const students = querySnapshot.docs.map(doc => doc.id);  // On prend uniquement les IDs
+      console.log(`Nombre d'étudiants ayant soumis le formulaire (isSocialFormSent = true) : ${students.length}`);
+      return students;
+    })
+  );
+
+  // 3. Comparer et retourner uniquement les étudiants qui ont commencé mais n'ont pas soumis
+  return combineLatest([socialFormStudents$, studentsSubmitted$]).pipe(
+    map(([socialForms, students]) => {
+      // Créer un ensemble des UIDs des étudiants ayant soumis le formulaire
+      const submittedUIDs = new Set(students);
+
+      // Filtrer les étudiants ayant commencé mais pas soumis
+      const notSubmittedStudentIDs = socialForms.filter((socialFormId: string) => {
+        // On ne garde que ceux qui ne sont pas dans les étudiants ayant soumis
+        return !submittedUIDs.has(socialFormId);
+      });
+
+      console.log(`Nombre d'étudiants ayant commencé mais pas soumis le formulaire : ${notSubmittedStudentIDs.length}`);
+
+      // 4. Maintenant on récupère les données de ces étudiants n'ayant pas soumis
+      // Utilisation d'une promesse pour résoudre les données des étudiants n'ayant pas soumis
+      const notSubmittedStudents$ = from(getDocs(
+        query(studentsRef, where(documentId(), 'in', notSubmittedStudentIDs))
+      )).pipe(
+        map((querySnapshot) => {
+          return querySnapshot.docs.map(doc => doc.data());  // Retourne les données complètes des étudiants
+        })
+      );
+
+      // On retourne directement l'observable contenant les étudiants n'ayant pas soumis
+      return notSubmittedStudents$;
+    }),
+    switchMap(observable => observable)  // Flatten l'observable imbriqué
+  );
+}
 
 
 

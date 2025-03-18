@@ -27,16 +27,21 @@
         <!-- on introduit un champ de recherche -->
         <app-search (searchTextChanged)="onSearchTextEntered($event)"></app-search>
         <!-- ajoute un bouton d'ajout en haut du composant j'aime  pas sur petits écrans !!!! -->
-        <button class="btn btn-primary mt-5 w-auto" *ngIf="userRouterLinks.user!=='external'"><a
+        <button type="submit" class="btn btn-primary mt-5 w-auto" *ngIf="userRouterLinks.user!=='external'"><a
                 [routerLink]="['/admin/addStudent']" class="text-white"><i
                     class="bi bi-person-fill-add me-2"></i>Ajouter</a></button>
 
         <div class="row mt-3 text-secondary justify-content-between">
 
-            <div class="col-md-6">Activer un filtre OU un autre > <br>
+            <div class="col-md-6 d-flex flex-column justify-content-between">Activer un filtre OU un autre > <br>
                 <p class="small" *ngIf="userRouterLinks.user==='referent'">
                     Ont expressément choisi votre centre pour le suivi de leur
                     dossier d'inscription&nbsp;*</p>
+                <ng-container *ngIf="userRouterLinks.user=='admin'">
+                    <button type="button" class="btn btn-warning mt-5"
+                        (click)="getMissingSubmitedForm()">Formulaires commencés non encore soumis</button>
+
+                </ng-container>
             </div>
 
             <div class="col-md-6">
@@ -136,7 +141,8 @@
 
             <div class="col-sm-3 h5 d-none d-md-inline">Nom</div>
             <div class="col-sm-3 h5 d-none d-md-inline">Prénom</div>
-            <div class="col-sm-3 h5 d-none d-md-inline" [ngClass]="{disabled:userRouterLinks.user=='referent'}">Suppression</div>
+            <div class="col-sm-3 h5 d-none d-md-inline" [ngClass]="{disabled:userRouterLinks.user=='referent'}">
+                Suppression</div>
             <div class="col-sm-3 h5 d-none d-md-inline">Détails</div>
             <!-- Liste conditionnelle qui doit être désactivée dès l'application d'un filtre pour plus de lisibilité -->
             <div *ngIf="showNoInterestStudents">
@@ -153,8 +159,9 @@
                             <div class="col-sm-3 col-6 order-perso2">{{student.firstName}}</div>
                             <div class="col-sm-3 col-6"><button class="btn btn-danger text-white"
                                     [ngClass]="{'disabled':userRouterLinks.user=='referent'}"
-                                    (click)="deleteStudent(student)"><i
-                                        class="bi bi-person-dash-fill"></i><span class="d-md-none">Sup.</span><span class="d-none d-md-inline">Suppression</span></button>
+                                    (click)="deleteStudent(student)"><i class="bi bi-person-dash-fill"></i><span
+                                        class="d-md-none">Sup.</span><span
+                                        class="d-none d-md-inline">Suppression</span></button>
                             </div>
                             <div class="col-sm-3 col-6 order-perso4"><button class="btn btn-primary">
                                     <a *ngIf="userRouterLinks.user=='admin'"
@@ -219,7 +226,9 @@
                     <div class="col-sm-3 col-6 order-perso2">{{student.firstName}}</div>
                     <div class="col-sm-3 col-6"><button class="btn btn-danger text-white"
                             [ngClass]="{'disabled':userRouterLinks.user=='referent'}"
-                            (click)="deleteStudent(student)"><i class="bi bi-person-dash-fill"></i><span class="d-md-none">Sup.</span><span class="d-none d-md-inline">Suppression</span></button>
+                            (click)="deleteStudent(student)"><i class="bi bi-person-dash-fill"></i><span
+                                class="d-md-none">Sup.</span><span
+                                class="d-none d-md-inline">Suppression</span></button>
                     </div>
                     <div class="col-sm-3 col-6 order-perso4"><button class="btn btn-primary">
                             <a *ngIf="userRouterLinks.user=='admin'" [routerLink]="['/admin/student', student.id]"
@@ -244,15 +253,15 @@
 
         </div>
         <!-- {{userRouterLinks.user}} -->
-        <button class="btn btn-primary mt-5" *ngIf="userRouterLinks.user!=='external'"><a
+        <button type="submit" class="btn btn-primary mt-5" *ngIf="userRouterLinks.user!=='external'"><a
                 [routerLink]="['/admin/addStudent']" class="text-white"><i
                     class="bi bi-person-fill-add me-2"></i>Ajouter</a></button>
 
 
         <div class="row gap-3" *ngIf="userRouterLinks.user!=='external'">
-            <button class="btn btn-primary mt-5 col-10 col-md-5" (click)="exportStudentsCollection()"><i
+            <button type="button" class="btn btn-primary mt-5 col-10 col-md-5" (click)="exportStudentsCollection()"><i
                     class="bi bi-box-arrow-down me-3"></i>Export au format JSON de la collection</button>
-            <button class="btn btn-primary mt-5 col-10 col-md-5" (click)="exportCollectionAsCSV()"><i
+            <button type="button" class="btn btn-primary mt-5 col-10 col-md-5" (click)="exportCollectionAsCSV()"><i
                     class="bi bi-box-arrow-down me-3"></i>Export au format csv de la collection</button>
         </div>
 

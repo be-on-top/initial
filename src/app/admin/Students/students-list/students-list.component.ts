@@ -56,7 +56,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
 
   myCenterStudents: boolean = false
 
-  cpArray:string[]=[]
+  cpArray: string[] = []
 
   constructor(
     private service: StudentsService,
@@ -64,7 +64,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     private tradeService: SettingsService,
     private authService: AuthService,
     private trainerService: TrainersService,
-  private userService:UsersService) {
+    private userService: UsersService) {
     this.userRouterLinks = this.activatedRoute.snapshot.data;
 
     // implémenter la méthode conçue pour les "conseillers projets" qui n'en sont pas puisqu'ils se font concurrence (référents admin)
@@ -73,10 +73,10 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     console.log('UID de l\'utilisateur authentifié dans le composant :', this.userUid);
 
     // On peut maintenant utiliser cet UID pour d'autres opérations
-    if (this.userUid) {
+    if (this.userUid && this.userRouterLinks.user === 'referent') {
       // Exécuter la méthode interminable pour le changement de paradigme
       this.getCentersAndSocialFormByUserId(this.userUid)
-      this.userService.getUser(this.userUid).subscribe(data=>this.cpArray=data.cp)
+      this.userService.getUser(this.userUid).subscribe(data => this.cpArray = data.cp)
 
       // Une méthode qui s'en inspière mais va me retourner
       // la liste des formateurs et ceux qui ont le même tableau de cp
@@ -96,6 +96,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     this.getStudents();
     this.onSearchTextEntered("")
 
+
   }
 
   ngAfterViewInit() {
@@ -104,6 +105,9 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
         this.trades.push(element.sigle)
       });
     })
+
+
+
 
   }
 
@@ -154,71 +158,71 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   //   });
   // }
 
-//  pour faire toutes les requêtes nécessaires illico si c'est le referent qui est connecté
-// fonctionne bien sans faire de distinguo selon l'utilisateur
+  //  pour faire toutes les requêtes nécessaires illico si c'est le referent qui est connecté
+  // fonctionne bien sans faire de distinguo selon l'utilisateur
   // getStudents() {
   //   const order = this.ascending ? 'asc' : 'desc';
   //   const referentUid = this.authService.getCurrentUserUid(); // UID du référent.
-  
+
   //   if (!referentUid) {
   //     console.error('Impossible de récupérer UID du référent.');
   //     return;
   //   }
-  
+
   //   // Étape 1 : Charger tous les étudiants
   //   this.service.getStudents(order).subscribe(allStudents => {
   //     console.log('Tous les étudiants chargés :', allStudents);
-  
+
   //     // Étape 2 : Récupérer les étudiants prior (via service)
   //     this.service.getCentersAndSocialFormByUserId(referentUid)
   //       .subscribe(returnedPriors => {
   //         console.log('IDs prior récupérés :', returnedPriors);
-  
+
   //         // Filtrer les étudiants en fonction de deux critères (référent + prior)
   //         const filteredStudents = allStudents.filter(student => 
   //           student.referent === referentUid || returnedPriors.includes(student.id)
   //         );
   //         console.log('Étudiants filtrés (référent + prior) :', filteredStudents);
-  
+
   //         // Initialisation de la base de données
   //         this.initialStudents = [...filteredStudents]; // Base par défaut
   //         this.allStudents = [...this.initialStudents]; // Pré-remplissage pour affichage
-  
+
   //         // Mise à jour des filtres dynamiques
   //         this.filteredStudents = filteredStudents.filter(student => returnedPriors.includes(student.id)); // Garde uniquement les prior pour filtres dynamiques
   //         console.log('Filtered Prior Students :', this.filteredStudents);
-  
+
   //         this.applyFilters(); // Appliquer les filtres actuels
   //       });
   //   });
   // }
 
-// en cours... pour ajouter la détection des roles 
+  // en cours... pour ajouter la détection des roles 
   getStudents() {
     const order = this.ascending ? 'asc' : 'desc';
     const referentUid = this.authService.getCurrentUserUid(); // Récupérer l'UID de l'utilisateur connecté.
-  
+
     if (!referentUid) {
       console.error('Impossible de récupérer UID de l\'utilisateur.');
       return;
     }
-  
+
     // Étape 1 : Charger tous les étudiants
-      this.service.getStudents(order).pipe(
-        tap(students => {
-          // Stocker les données brutes avant toute transformation
-          this.collectionStudents = students;
-          console.log('Données brutes (collectionStudents) :', this.collectionStudents);
-        }),
-        // A condition qu'ils aient au minimum terminé UN questionnaire...
-        map(students => students.filter(student => this.hasFullResults(student)))
-      ).subscribe(filteredStudents => {
+    this.service.getStudents(order).pipe(
+      tap(students => {
+        // Stocker les données brutes avant toute transformation
+        this.collectionStudents = students;
+        console.log('Données brutes (collectionStudents) :', this.collectionStudents);
+      }),
+      // A condition qu'ils aient au minimum terminé UN questionnaire...
+      map(students => students.filter(student => this.hasFullResults(student)))
+    ).subscribe(filteredStudents => {
 
-       this.initialStudents = filteredStudents; // Stocker la liste initiale
-        this.allStudents = [...this.initialStudents]; // Initialiser allStudents
+      this.initialStudents = filteredStudents; // Stocker la liste initiale
+      this.allStudents = [...this.initialStudents]; // Initialiser allStudents
 
-        // Vérifie le rôle utilisateur
-        if (this.userRouterLinks.user === 'admin') {
+      // Vérifie le rôle utilisateur
+      if (this.userRouterLinks.user === 'admin') {
         this.applyFilters();
       }
       else if (this.userRouterLinks.user === 'referent') {
@@ -226,23 +230,23 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
         this.service.getCentersAndSocialFormByUserId(referentUid)
           .subscribe(returnedPriors => {
             console.log('IDs prior récupérés :', returnedPriors);
-  
+
             // Étape 2 : Filtrer les étudiants par référent ou prior (qui a terminé et envoyé le formulaire)
             const filteredStudents = this.allStudents.filter(student =>
               student.referent === referentUid || (returnedPriors.includes(student.id) && student.isSocialFormSent)
             );
             console.log('Étudiants filtrés (référent + prior) :', filteredStudents);
-  
+
             // Initialisation pour le référent
-            this.initialStudents = [...filteredStudents]; 
+            this.initialStudents = [...filteredStudents];
             this.allStudents = [...this.initialStudents];
-  
+
             // Mise à jour des filtres dynamiques pour prior uniquement
-            this.filteredStudents = filteredStudents.filter(student => 
+            this.filteredStudents = filteredStudents.filter(student =>
               returnedPriors.includes(student.id)
             );
             console.log('Filtered Prior Students :', this.filteredStudents);
-  
+
             this.applyFilters(); // Appliquer les filtres actuels
           });
       }
@@ -525,13 +529,13 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   // myCp: string[] = []
   // filteredTrainers : string[] = []
 
-  
+
   // getTrainersWithSameCp(userId: string) {
   //   this.trainerService.getReferentData(userId).subscribe(referentData => {
   //     this.myCp = referentData.cp || []; // Garantir que `this.myCp` est un tableau
-  
+
   //     console.log("Mes codes postaux :", this.myCp);
-  
+
   //     // Étape 2 : Récupérer les formateurs et les filtrer
   //     this.trainerService.getTrainers().subscribe(trainers => {
   //       // Appliquer le filtre et assigner le résultat à `filteredTrainers`
@@ -539,16 +543,37 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   //         // Vérifier si le formateur a au moins un code postal correspondant
   //         return trainer.cp?.some((cp: string) => this.myCp.includes(cp));
   //       });
-  
+
   //       console.log("Trainers correspondants :", this.filteredTrainers);
   //     });
   //   });
   // }
-  
-  
 
 
+
+getMissingSubmitedForm(){
+      // Appel à la fonction en cours de développement
+      this.service.getStudentsNotSubmitted().subscribe(students => {
+        console.log("Étudiants ayant commencé mais pas soumis :", students);
   
+        // Afficher chaque étudiant avec son prénom et nom
+        students.forEach(student => {
+  
+          // Convertir la date de création en objet Date si nécessaire
+          const createdDate = new Date(student.created); // Si 'created' est un string représentant une date
+  
+          // Formater la date
+          const formattedDate = createdDate.toLocaleDateString('fr-FR', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          });
+  
+          console.log(`Nom: ${student.lastName}, Prénom: ${student.firstName}, Date de création :${formattedDate}, Id:${student.id}, email :Id:${student.email} `);
+        });
+      });
+}
+
 
 
 

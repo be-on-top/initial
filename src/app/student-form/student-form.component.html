@@ -35,7 +35,7 @@ Tests OK. Sur une  partie. A finir.
     </div>
 
     <ng-container *ngIf="isReadOnly">
-        <p> <span class="text-decoration-underline">👉 Préférences du candidat</span> <br>
+        <p> <span class="text-decoration-underline">Préférences du candidat</span> <br>
             Formation : {{ getDenomination(socialData.priorTrade) | async }} <br>
             Centre : {{ getCenterName(socialData.center) | async }}</p>
     </ng-container>
@@ -45,11 +45,10 @@ Tests OK. Sur une  partie. A finir.
     <ng-container *ngIf="!isReadOnly">
         <!-- début de partie concernant les  préférences à masquer pour referent -->
         <p *ngIf="tradesEvaluated.length>1 && !socialData.priorTrade">Vous avez terminé plusieurs questionnaires
-            métiers.
-            Merci d'indiquer vos
+            métiers. Merci d'indiquer vos
             préférences.</p>
         <p *ngIf="tradesEvaluated.length>1 && socialData.priorTrade" class="fw-bold">Vos préférences enregistrées.</p>
-        <p *ngIf="tradesEvaluated.length===1 && !socialData.center" class="fw-bold">👉 Merci d'indiquer vos préférences.
+        <p *ngIf="tradesEvaluated.length===1 && !socialData.center" class="fw-bold">👉 Merci d'indiquer vos préférences
         </p>
         <p *ngIf="tradesEvaluated.length===1 && socialData.center">Vos préférences enregistrées.</p>
         <!-- dataFiltered {{dataFiltered | json}}  !!!!!!!!!!!!!!-->
@@ -62,7 +61,7 @@ Tests OK. Sur une  partie. A finir.
                     <!-- {{priorTrade| json}} -->
                     <select class="form-select" name="priorTrade" [(ngModel)]="priorTrade" required #sigle="ngModel"
                         (change)="checkIfSelected(target.value.priorTrade)">
-                        <option value="">👉 Sélectionnez la formation</option>
+                        <option value="">1 - Sélectionnez la formation visée</option>
                         <!-- Si un choix déjà enregistré, afficher le choix en haut -->
                         <option *ngIf="priorTrade!==''" [value]="priorTrade" selected>
                             <!-- {{ priorTrade }} -->
