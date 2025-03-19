@@ -21,7 +21,7 @@
                 </p>
                 <ng-template #checkbox> Status : inactif</ng-template>
                 <!-- affectation métiers -->
-                <p *ngIf="user.sigle">Métiers d'affectation ({{user.sigle.length}}) : 
+                <p *ngIf="user.sigle">Métiers d'affectation ({{user.sigle.length}}) :
                     <span *ngFor="let s of user.sigle">{{s}} </span>
                 </p>
             </div>
@@ -32,22 +32,12 @@
         <!-- {{userRouterLinks.user}} -->
         <!-- il n'y a pas de risque qu'un referent demande à accéder à la liste de ceux dont la gestion est mutualisée donc -->
         <div *ngIf="userRouterLinks.user==='admin'" class="d-flex my-4 justify-content-end gap-5">
-
-            <button type="button" class="btn btn-primary">
-                <!-- <a class="text-white" [routerLink]="['/admin/users']">Retour à la liste</a> -->
-                <a class="text-white" [routerLink]="[linkBackToList]" >Retour à la liste</a>
+            <button type="button" class="btn btn-primary text-white" [routerLink]="[linkBackToList]">Retour à la liste </button>
+            <button type="button" class="btn btn-warning text-white"
+                [routerLink]="['/admin/updateUser', user.id]">
+                Modifier
             </button>
-
-
-            <button type="button" class="btn btn-warning">
-                <a class="text-white" [routerLink]="['/admin/updateUser', user.id]">Modifier</a>
-            </button>
-
-
-            <button type="button" class="btn btn-danger">
-                <a class="text-white" (click)="deleteUser(user.id)">Supprimer</a>
-            </button>
-
+            <button type="button" class="btn btn-danger text-white" (click)="deleteUser(user.id)">Supprimer </button>
         </div>
     </div>
 
