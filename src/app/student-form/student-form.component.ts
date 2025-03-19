@@ -11,6 +11,7 @@ import { Student } from '../admin/Students/student';
 import { SettingsService } from '../admin/settings.service';
 import { CentersService } from '../admin/centers.service';
 import { Centers } from '../admin/centers';
+import { TextToSpeechService } from '../admin/text-to-speech.service';
 
 
 @Component({
@@ -86,7 +87,8 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
     private auth: Auth,
     private firestore: Firestore,
     private settingsService: SettingsService,
-    private centersService: CentersService) { }
+    private centersService: CentersService,
+    private textToSpeechService: TextToSpeechService) { }
 
 
   async ngOnInit() {
@@ -102,7 +104,10 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
             // Appel de la fonction pour le message d'introduction à l'ouverture
             // this.speakMessage("N'oubliez pas de valider et soumettre votre formulaire à la fin de cette étape pour être contacté par un conseiller projet.");
             // Appel à julie j pour message d'introduction
-            this.playLocalAudio()
+            // this.playLocalAudio()
+            // remplacé par appel text-to-speech
+            this.playText("N'oubliez pas de valider votre formulaire, à la fin de cette étape, pour être contacté par un conseiller projet")
+
           }
           // else {
           //   this.processNonStudentData(this.studentData)
@@ -620,58 +625,93 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
   // }
 
   // Fonction pour personnaliser la voix
-  speakMessage(message: string) {
-    const synth = window.speechSynthesis;
 
-    const setVoice = () => {
-      const voices = synth.getVoices();
-      const paulVoice = voices.find(voice => voice.name === 'Microsoft Julie - French (France)');
-
-      const speech = new SpeechSynthesisUtterance(message);
-      speech.voice = paulVoice || voices[0]; // Si Julie n'est pas trouvée, prendre une autre voix
-      speech.lang = 'fr-FR';
-
-      speech.rate = 1.3; // Vitesse (1 = normal, <1 = plus lent, >1 = plus rapide)
-      speech.pitch = 1.2; // Hauteur (1 = normal, <1 = grave, >1 = aigu)
-      speech.volume = 1; // Volume (0 = muet, 1 = max)
-
-      synth.speak(speech);
-    };
-
-    if (synth.getVoices().length > 0) {
-      setVoice();
-    } else {
-      synth.addEventListener("voiceschanged", setVoice);
-    }
-  }
-
-
-
-  playLocalAudio() {
-    const audio = new Audio("/assets/audio/introStudentForm.mp3");
-    audio.play();
-  }
 
   checkFields() {
     if (!this.myForm) return;
 
     const { postalCode, address, phone } = this.myForm.value;
 
-    if (postalCode && address && phone && !this.audioPlayed) {
-      this.audioPlayed = true; // On empêche de rejouer
-      setTimeout(() => {
-        this.playLocalMessage("employment.mp3");
-      }, 500); // Petit délai pour s'assurer que l'utilisateur est bien sorti du champ
+    // if (postalCode && address && phone && !this.audioPlayed) {
+    //   this.audioPlayed = true; // On empêche de rejouer
+    //   setTimeout(() => {
+    //     this.playLocalMessage("employment.mp3");      
+    //   }, 500); // Petit délai pour s'assurer que l'utilisateur est bien sorti du champ
+    // }
+
+    if (postalCode && address && phone) {
+      this.playText("Merci d\'avoir fourni tous les renseignements relatifs à votre identité. Si vous êtes salarié, envoyé par votre entreprise, il faudra le préciser dans la section mon historique emploi")
     }
+
   }
 
-  // Méthode pour jouer le MP3 local
-  playLocalMessage(fileName: string) {
-    const audio = new Audio(`/assets/audio/${fileName}`);
-    audio.play();
+  // speakMessage(message: string) {
+  //   const synth = window.speechSynthesis;
+
+  //   const setVoice = () => {
+  //     const voices = synth.getVoices();
+  //     const paulVoice = voices.find(voice => voice.name === 'Microsoft Julie - French (France)');
+
+  //     const speech = new SpeechSynthesisUtterance(message);
+  //     speech.voice = paulVoice || voices[0]; // Si Julie n'est pas trouvée, prendre une autre voix
+  //     speech.lang = 'fr-FR';
+
+  //     speech.rate = 1.3; // Vitesse (1 = normal, <1 = plus lent, >1 = plus rapide)
+  //     speech.pitch = 1.2; // Hauteur (1 = normal, <1 = grave, >1 = aigu)
+  //     speech.volume = 1; // Volume (0 = muet, 1 = max)
+
+  //     synth.speak(speech);
+  //   };
+
+  //   if (synth.getVoices().length > 0) {
+  //     setVoice();
+  //   } else {
+  //     synth.addEventListener("voiceschanged", setVoice);
+  //   }
+  // }
+
+
+
+  // playLocalAudio() {
+  //   const audio = new Audio("/assets/audio/introStudentForm.mp3");
+  //   audio.play();
+  // }
+
+  // Méthode pour jouer un MP3 local en lui passant le nom d'un fichier
+  // playLocalMessage(fileName: string) {
+  //   const audio = new Audio(`/assets/audio/${fileName}`);
+  //   audio.play();
+  // } public playText(): void {
+  //   const text = 'N\'oubliez pas de terminer et soumettre votre formulaire pour être contacté par un conseiller projet.';
+
+  //   this.textToSpeechService.synthesizeSpeech(text).subscribe(
+  //     (response) => {
+  //       const audioContent = response.audioContent;
+  //       const audio = new Audio('data:audio/mp3;base64,' + audioContent);
+  //       audio.play();
+  //     },
+  //     (error) => {
+  //       console.error('Erreur lors de la synthèse vocale:', error);
+  //     }
+  //   );
+  // }
+
+  
+
+  public playText(text:string): void {
+    // const text = 'N\'oubliez pas de terminer et soumettre votre formulaire pour être contacté par un conseiller projet.';
+    
+    this.textToSpeechService.synthesizeSpeech(text).subscribe(
+      (response) => {
+        const audioContent = response.audioContent;
+        const audio = new Audio('data:audio/mp3;base64,' + audioContent);
+        audio.play();
+      },
+      (error) => {
+        console.error('Erreur lors de la synthèse vocale:', error);
+      }
+    );
   }
-
-
 
 
 }

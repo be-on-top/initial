@@ -1,30 +1,44 @@
 .formation {
-    font-weight: bold;
-    position: relative;
-    padding-left: 20px;
-    /* max-width: 100%; */
+  font-weight: bold;
+  position: relative;
+  padding-left: 20px;
+  /* max-width: 100%; */
 
-}  
-
-.formation::before {
-    content: '\2192';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 20px;
-  }
-
-  .btn:hover {
-    transform: none;
 }
 
-#studentForm{
+.formation::before {
+  content: '\2192';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+}
+
+.btn:hover {
+  transform: none;
+}
+
+#studentForm {
   background-image: url('/assets/icons/contact.svg');
   background-position: right bottom;
   background-repeat: no-repeat;
-  padding-bottom: 10vw;
-  background-size: 20vw;  
+  /* padding-bottom: 10vw; */
+  background-size: contain;
+
+  height: 25vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+}
+
+#studentForm button {
+  align-self: left;
+  /* Centre le bouton et lui évite de s'étirer */
+  width: fit-content;
+  /* Il prendra juste la largeur du texte */
+  /* padding: 10px 20px;  */
 }
 
 
@@ -34,35 +48,45 @@
 } */
 
 
-.read-only-form input, .read-only-form textarea, .read-only-form.form-control{
-  color: #666; /* Couleur de texte gris pour indiquer que le champ est en lecture seule */
+.read-only-form input,
+.read-only-form textarea,
+.read-only-form.form-control {
+  color: #666;
+  /* Couleur de texte gris pour indiquer que le champ est en lecture seule */
   pointer-events: none;
-  
-}
-.read-only-form{
-  opacity: 0.85;   
+
 }
 
-.read-only-form button{
-  opacity: 0.6;   
+.read-only-form {
+  opacity: 0.85;
 }
 
-.ng-valid[required], .ng-valid.required  {
-  border: 1px solid #42A948; /* green */
+.read-only-form button {
+  opacity: 0.6;
 }
 
-.valid{
-  color: #42A948; /* green */
+.ng-valid[required],
+.ng-valid.required {
+  border: 1px solid #42A948;
+  /* green */
+}
+
+.valid {
+  color: #42A948;
+  /* green */
   border: 0;
   font-size: smaller;
 }
 
-.ng-invalid:not(form)  {
-  border: 1px solid #a94442; /* red */
+.ng-invalid:not(form) {
+  border: 1px solid #a94442;
+  /* red */
 }
-.invalid  {
+
+.invalid {
   border: 0;
-  color: #a94442; /* red */
+  color: #a94442;
+  /* red */
   font-size: smaller;
 }
 
@@ -76,9 +100,12 @@
 } */
 
 select option {
-  white-space: nowrap; /* Empêche le retour à la ligne */
-  overflow: hidden;    /* Cache le texte qui dépasse */
-  text-overflow: ellipsis; /* Ajoute "..." pour le texte trop long */
+  white-space: nowrap;
+  /* Empêche le retour à la ligne */
+  overflow: hidden;
+  /* Cache le texte qui dépasse */
+  text-overflow: ellipsis;
+  /* Ajoute "..." pour le texte trop long */
 }
 
 .main-city {
@@ -89,35 +116,38 @@ select option {
 
 .toggle-arrow {
   margin-top: 2px;
-  margin-left:0;
-  margin-right:0;
-  transition: transform 0.3s ease; /* Animation fluide */
+  margin-left: 0;
+  margin-right: 0;
+  transition: transform 0.3s ease;
+  /* Animation fluide */
 }
 
 /* Tourner la flèche de l'onglet cliqué */
 a[aria-expanded="true"] .toggle-arrow {
   transform: rotate(180deg);
 }
+
 /* a[aria-expanded="true"] .toggle-arrow {
   display: none;
 } */
 
 @media only screen and (max-width:960px) {
-  #studentForm{
-    padding-bottom: 20vw;
-    background-size: 50vw;  
+
+  #studentForm {
+    background-size: 50vw;
+    height: 35vw;
   }
-  
+
 }
 
 
 @media only screen and (max-width: 430px) {
   ::ng-deep select option span {
     background-color: lightblue;
-    color: red!important;
+    color: red !important;
   }
 
-  select option{
+  select option {
     font-size: smaller;
   }
 
@@ -125,8 +155,3 @@ a[aria-expanded="true"] .toggle-arrow {
     padding: 0;
   }
 }
-
-
-  
-
-

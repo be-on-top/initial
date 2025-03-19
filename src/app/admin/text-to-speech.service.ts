@@ -19,9 +19,12 @@ export class TextToSpeechService {
       "voice": {
         "languageCode": "fr-FR",
         "name": "fr-FR-Wavenet-D"
+        
       },
       "audioConfig": {
-        "audioEncoding": "MP3"
+        "audioEncoding": "MP3",
+        "speakingRate": 0.9,  // Légèrement plus lent
+        "pitch": 4.0  // Un peu plus aigu
       },
 
     };
