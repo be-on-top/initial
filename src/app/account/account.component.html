@@ -126,12 +126,12 @@
 
                         <!-- option avec déroulé -->
                         <div class="d-flex gap-1">
-                            <button class="btn btn-success mt-3" data-bs-toggle="collapse" data-bs-target="#demo">
+                            <button type="button" class="btn btn-success mt-3" data-bs-toggle="collapse" data-bs-target="#demo">
                                 <i class="bi bi-pencil-square p-0 pe-1"></i><span
                                     (click)="toogleText()">{{editButtonLabel}}</span>
                             </button>
                             <!-- ajout d'un bouton supprimer -->
-                            <button class="btn btn-danger mt-3 disabled" (click)="delete()">
+                            <button type="button" class="btn btn-danger mt-3 disabled" (click)="delete()">
                                 Supprimer
                             </button>
                         </div>

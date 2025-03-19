@@ -3,6 +3,7 @@ import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from './admin/auth.service';
+import { doc, Firestore, getDoc } from '@angular/fire/firestore';
 
 
 // A route can have more than one canActivate guard.
@@ -18,7 +19,7 @@ export class AuthGuardService implements CanActivate {
 
   // je ne devrais pas avoir à me faire importer onAuthStateChanged et auth ...
 
-  constructor(private authService: AuthService, private router: Router, private auth: Auth) {
+  constructor(private authService: AuthService, private router: Router, private auth: Auth, private firestore:Firestore) {
 
   }
 
@@ -41,38 +42,66 @@ export class AuthGuardService implements CanActivate {
 
   // }
 
+  // canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
+  //   return new Promise<boolean>((resolve) => {
+  //     onAuthStateChanged(this.auth, (user: any) => {
+  //       if (user) {
+  //         // User is signed in, see docs for a list of available properties
+  //         // https://firebase.google.com/docs/reference/js/firebase.User
+  //         this.user = user.uid;
+  
+  //         // Ajouter une condition pour vérifier si la route nécessite une authentification
+  //         if (route.data['requiresAuth'] !== false) {
+  //           // Si l'utilisateur est authentifié et la route nécessite une authentification,
+  //           // laisser la navigation continuer
+  //           resolve(true);
+  //         } else {
+  //           // Si la route ne nécessite pas d'authentification, laisser la navigation continuer
+  //           resolve(true);
+  //         }
+  //       } else {
+  //         // Si l'utilisateur n'est pas authentifié et la route nécessite une authentification,
+  //         // effectuer la redirection vers la page de connexion
+  //         if (route.data['requiresAuth'] !== false) {
+  //           this.router.navigate(['/login']);
+  //           resolve(false);
+  //         } else {
+  //           // Si la route ne nécessite pas d'authentification, laisser la navigation continuer
+  //           resolve(true);
+  //         }
+  //       }
+  //     });
+  //   });
+
+  // }
+
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
-      onAuthStateChanged(this.auth, (user: any) => {
+      onAuthStateChanged(this.auth, async (user: any) => {
         if (user) {
-          // User is signed in, see docs for a list of available properties
-          // https://firebase.google.com/docs/reference/js/firebase.User
-          this.user = user.uid;
+          // Vérifier si la route nécessite un document "student"
+          if (route.data['requiresStudentDocument']) {
+            // Vérifier si un document existe dans la collection "students" avec l'ID égal à l'UID de l'utilisateur
+            const userRef = doc(this.firestore, "students", user.uid); // Utiliser l'UID comme ID
+            const userSnap = await getDoc(userRef);
   
-          // Ajouter une condition pour vérifier si la route nécessite une authentification
-          if (route.data['requiresAuth'] !== false) {
-            // Si l'utilisateur est authentifié et la route nécessite une authentification,
-            // laisser la navigation continuer
-            resolve(true);
+            if (userSnap.exists()) {
+              resolve(true); // Accès autorisé
+            } else {
+              this.router.navigate(['/home']); // Redirection si le document n'existe pas
+              resolve(false);
+            }
           } else {
-            // Si la route ne nécessite pas d'authentification, laisser la navigation continuer
-            resolve(true);
+            resolve(true); // Pas de vérification nécessaire pour cette route
           }
         } else {
-          // Si l'utilisateur n'est pas authentifié et la route nécessite une authentification,
-          // effectuer la redirection vers la page de connexion
-          if (route.data['requiresAuth'] !== false) {
-            this.router.navigate(['/login']);
-            resolve(false);
-          } else {
-            // Si la route ne nécessite pas d'authentification, laisser la navigation continuer
-            resolve(true);
-          }
+          this.router.navigate(['/login']); // Si l'utilisateur n'est pas authentifié, redirection vers login
+          resolve(false);
         }
       });
     });
-
   }
+  
  
   
   
