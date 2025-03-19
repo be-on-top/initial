@@ -42,6 +42,7 @@ export class AuthGuardService implements CanActivate {
 
   // }
 
+  // canActivate fonctionnel pour utilisateurs sans bloquer l'accès à account (pas de traitement spécifique)
   // canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
   //   return new Promise<boolean>((resolve) => {
   //     onAuthStateChanged(this.auth, (user: any) => {
@@ -75,34 +76,67 @@ export class AuthGuardService implements CanActivate {
 
   // }
 
+  // suggestion à l'essai qui bloque l'accès à account pour autres que students mais ne convient pas pour la récupération de l'ensemble des propriétés des autres utilisateurs
+
+  // canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
+  //   return new Promise<boolean>((resolve) => {
+  //     onAuthStateChanged(this.auth, async (user: any) => {
+  //       if (user) {
+  //         // Vérifier si la route nécessite un document "student"
+  //         if (route.data['requiresStudentDocument']) {
+  //           // Vérifier si un document existe dans la collection "students" avec l'ID égal à l'UID de l'utilisateur
+  //           const userRef = doc(this.firestore, "students", user.uid); // Utiliser l'UID comme ID
+  //           const userSnap = await getDoc(userRef);
+  
+  //           if (userSnap.exists()) {
+  //             resolve(true); // Accès autorisé
+  //           } else {
+  //             this.router.navigate(['/home']); // Redirection si le document n'existe pas
+  //             resolve(false);
+  //           }
+  //         } else {
+  //           resolve(true); // Pas de vérification nécessaire pour cette route
+  //         }
+  //       } else {
+  //         this.router.navigate(['/login']); // Si l'utilisateur n'est pas authentifié, redirection vers login
+  //         resolve(false);
+  //       }
+  //     });
+  //   });
+  // }
+
+  // nouvel essai on fait comme initialement mais on rajoute une exception
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
       onAuthStateChanged(this.auth, async (user: any) => {
         if (user) {
+          this.user = user.uid;
+  
           // Vérifier si la route nécessite un document "student"
           if (route.data['requiresStudentDocument']) {
-            // Vérifier si un document existe dans la collection "students" avec l'ID égal à l'UID de l'utilisateur
-            const userRef = doc(this.firestore, "students", user.uid); // Utiliser l'UID comme ID
-            const userSnap = await getDoc(userRef);
+            const studentRef = doc(this.firestore, "students", user.uid);
+            const studentSnap = await getDoc(studentRef);
   
-            if (userSnap.exists()) {
-              resolve(true); // Accès autorisé
-            } else {
+            if (!studentSnap.exists()) {
               this.router.navigate(['/home']); // Redirection si le document n'existe pas
-              resolve(false);
+              return resolve(false);
             }
-          } else {
-            resolve(true); // Pas de vérification nécessaire pour cette route
           }
-        } else {
-          this.router.navigate(['/login']); // Si l'utilisateur n'est pas authentifié, redirection vers login
-          resolve(false);
-        }
-      });
-    });
-  }
   
- 
+          // Si aucune restriction supplémentaire ou si elle est satisfaite, on laisse passer
+          return resolve(true);
+        } else {
+          // Rediriger les utilisateurs non authentifiés si nécessaire
+          if (route.data['requiresAuth'] !== false) {
+            this.router.navigate(['/login']);
+            return resolve(false);
+          } else {
+            return resolve(true);
+          }
+        }
+      })
+    })
+  }
   
   
   
