@@ -177,6 +177,11 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
       return; // Arrêter l'exécution de la méthode si le champ n'est pas renseigné
     }
 
+    if (form.invalid) {
+      alert("Veuillez remplir tous les champs obligatoires : adresse, code postal et téléphone.");
+      return;
+  }
+
     // Nettoyer l'objet des champs undefined
     Object.keys(socialFormData).forEach(key => socialFormData[key] === undefined && delete socialFormData[key]);
 
