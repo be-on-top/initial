@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { QuestionsService } from 'src/app/admin/questions.service';
 import { SwUpdate } from '@angular/service-worker';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { Subscription, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { AuthGuardService } from 'src/app/auth-guard.service';
@@ -20,12 +20,15 @@ export class FullListComponent implements OnInit, OnDestroy {
 
   private subscription = new Subscription(); // Gestion des abonnements pour éviter les fuites mémoire
 
+  selectedSigle?: string | null = '';
+
   constructor(
     private service: QuestionsService,
     private swUpdate: SwUpdate,
     private activatedRoute: ActivatedRoute,
     private authService: AuthGuardService,
-    private evaluatorService: EvaluatorsService
+    private evaluatorService: EvaluatorsService,
+    private router:Router
   ) {
     // Récupération des paramètres de l'URL (sigles sélectionnés)
     this.activatedRoute.queryParams.subscribe(params => {
@@ -35,16 +38,20 @@ export class FullListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    const storedSigle = localStorage.getItem('selectedSigle'); // Récupérer le sigle stocké
+    storedSigle?this.selectedSigle=storedSigle:''  
+
     this.subscription.add(
       this.service.getQuestions().pipe(
-        // Filtrage initial : ne récupérer que les questions avec number > 20
         map(allQuestions => allQuestions.filter(q => q.number > 20)),
         switchMap(filteredQuestions => {
           if (this.sigleIds.length > 0) {
-            // Si des sigles sont spécifiés, on filtre directement
+            if (storedSigle && this.sigleIds.includes(storedSigle)) {
+              // Si un sigle est sauvegardé et qu'il fait partie des sigles de l'utilisateur, filtrer dessus
+              return of(filteredQuestions.filter(q => q.sigle === storedSigle));
+            }
             return of(filteredQuestions.filter(q => this.sigleIds.includes(q.sigle)));
           } else {
-            // Sinon, on récupère les sigles associés à l'utilisateur
             return this.evaluatorService.getEvaluator(this.authService.user).pipe(
               map(userData => {
                 this.sigleIds = userData.sigle;
@@ -57,10 +64,13 @@ export class FullListComponent implements OnInit, OnDestroy {
         this.questions = sortedQuestions.sort(this.compare);
       })
     );
-
-    // Vérifier les mises à jour du service worker
-    this.checkForUpdates();
+  
+    window.addEventListener('beforeunload', () => {
+      localStorage.removeItem('selectedSigle'); // Effacer la sélection quand l'utilisateur quitte
+    });
   }
+  
+  
 
   ngOnDestroy() {
     // Nettoyage des abonnements pour éviter les fuites mémoire
@@ -94,6 +104,13 @@ export class FullListComponent implements OnInit, OnDestroy {
   // Gestion du filtre sur le sigle via menu déroulant
   onChange(event: Event) {
     const selectedValue = (event.target as HTMLSelectElement).value;
+
+
+    console.log("Sigle sélectionné :", selectedValue); // Vérification console
+    // Stocke dans sessionStorage
+    // sessionStorage.setItem('selectedSigle', selectedValue); 
+    localStorage.setItem('selectedSigle', selectedValue);
+
     this.subscription.add(
       this.getFilteredQuestions(selectedValue).subscribe(filteredQuestions => {
         this.questions = filteredQuestions;
