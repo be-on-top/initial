@@ -23,10 +23,12 @@ export class QuestionsListComponent implements OnInit, OnDestroy {
   sigleIds: string[] = [];
   private subscription: Subscription = new Subscription(); // Stocke l’abonnement pour éviter les fuites mémoire
 
+  selectedSigle?: string | null = '';
+
   constructor(
-    private service: QuestionsService, 
-    private activatedRoute: ActivatedRoute, 
-    private evaluatorService: EvaluatorsService, 
+    private service: QuestionsService,
+    private activatedRoute: ActivatedRoute,
+    private evaluatorService: EvaluatorsService,
     private authService: AuthGuardService
   ) {
     // Récupère les paramètres de l’URL (sigleIds) pour filtrer les questions si nécessaire
@@ -37,16 +39,24 @@ export class QuestionsListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
+    const storedSigle = localStorage.getItem('selectedSigle'); // Récupérer le sigle stocké
+    storedSigle ? this.selectedSigle = storedSigle : ''
+    
     // Ajoute l’abonnement principal pour récupérer et filtrer les questions
     this.subscription.add(
       this.service.getQuestions().pipe(
         // Filtre les questions pour ne garder que celles avec number < 21
-        map(allQuestions => allQuestions.filter(q => q.number < 21)), 
-        
+        map(allQuestions => allQuestions.filter(q => q.number < 21)),
+
         // Gestion des sigles : si sigleIds est défini, filtre directement,
         // sinon récupère les sigles de l'utilisateur connecté
         switchMap(filteredQuestions => {
           if (this.sigleIds && this.sigleIds.length > 0) {
+            if (storedSigle && this.sigleIds.includes(storedSigle)) {
+              // Si un sigle est sauvegardé et qu'il fait partie des sigles de l'utilisateur, filtrer dessus
+              return of(filteredQuestions.filter(q => q.sigle === storedSigle));
+            }
             return of(filteredQuestions.filter(q => this.sigleIds.includes(q.sigle)));
           } else {
             return this.evaluatorService.getEvaluator(this.authService.user).pipe(
@@ -62,13 +72,19 @@ export class QuestionsListComponent implements OnInit, OnDestroy {
         this.questions = sortedQuestions.sort(this.compare);
       })
     );
+
+
+    window.addEventListener('beforeunload', () => {
+      localStorage.removeItem('selectedSigle'); // Effacer la sélection quand l'utilisateur quitte
+    });
+
   }
 
   // Fonction pour comparer les numéros des questions et les trier
   compare(a: any, b: any) {
     const numA = typeof a.number === 'number' ? a.number : parseInt(a.number as string, 10);
     const numB = typeof b.number === 'number' ? b.number : parseInt(b.number as string, 10);
-  
+
     return numA - numB;
   }
 
@@ -79,12 +95,25 @@ export class QuestionsListComponent implements OnInit, OnDestroy {
   }
 
   // Méthode pour filtrer les questions lorsque l'utilisateur change de sigle via le menu déroulant
-  onChange(event: Event) {
-    const selectedValue = (event.target as HTMLSelectElement).value;
-    this.getFilteredQuestions(selectedValue).subscribe(filteredQuestions => {
-      this.questions = filteredQuestions;
-    });
-  }
+  // onChange(event: Event) {
+  //   const selectedValue = (event.target as HTMLSelectElement).value;
+  //   this.getFilteredQuestions(selectedValue).subscribe(filteredQuestions => {
+  //     this.questions = filteredQuestions;
+  //   });
+  // }
+
+    // Gestion du filtre sur le sigle via menu déroulant
+    onChange(event: Event) {
+      const selectedValue = (event.target as HTMLSelectElement).value;  
+      console.log("Sigle sélectionné :", selectedValue); // Vérification console
+      localStorage.setItem('selectedSigle', selectedValue);
+  
+      this.subscription.add(
+        this.getFilteredQuestions(selectedValue).subscribe(filteredQuestions => {
+          this.questions = filteredQuestions;
+        })
+      );
+    }
 
   // Récupère et filtre les questions en fonction du sigle sélectionné
   getFilteredQuestions(sigle: string): Observable<any[]> {

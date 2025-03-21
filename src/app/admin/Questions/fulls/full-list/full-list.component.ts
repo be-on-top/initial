@@ -45,7 +45,7 @@ export class FullListComponent implements OnInit, OnDestroy {
       this.service.getQuestions().pipe(
         map(allQuestions => allQuestions.filter(q => q.number > 20)),
         switchMap(filteredQuestions => {
-          if (this.sigleIds.length > 0) {
+          if (this.sigleIds && this.sigleIds.length > 0) {
             if (storedSigle && this.sigleIds.includes(storedSigle)) {
               // Si un sigle est sauvegardé et qu'il fait partie des sigles de l'utilisateur, filtrer dessus
               return of(filteredQuestions.filter(q => q.sigle === storedSigle));
