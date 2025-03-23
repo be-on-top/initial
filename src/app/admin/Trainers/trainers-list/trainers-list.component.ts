@@ -62,7 +62,8 @@ export class TrainersListComponent {
 
 
       // ++ logique qui semble opérationnelle si traitment différencié :
-      this.getTrainersWithSameCpAndTrades(this.userUid)
+      this.userRouterLinks.user == 'referent' ? this.getTrainersWithSameCpAndTrades(this.userUid) : this.getTrainers()
+      // this.getTrainersWithSameCpAndTrades(this.userUid)
 
     }
 
