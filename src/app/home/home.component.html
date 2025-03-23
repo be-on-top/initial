@@ -34,15 +34,16 @@
                 personnalisée</h1> qui vous hissera aux portes du métier de votre choix
         </div> -->
         <div *ngIf="!isLoading && !isOneQuizzAchieved && !offline"
-        class="alert w-100 p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show display-5">
-       <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
-               aria-label="Fermer le message be-on-top"></button>
-       Evaluez vos connaissances et démarrez rapidement une <a href="/benefits" class="text-light text-decoration-none" 
-           role="link" aria-label="Démarrer une formation personnalisée pour développer vos compétences">
-           formation personnalisée
-       </a> pour être au top des compétences du métier de votre choix.
-   </div>
-   
+            class="alert w-100 p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show display-5">
+            <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
+                aria-label="Fermer le message be-on-top"></button>
+            Evaluez vos connaissances et démarrez rapidement une <a href="/benefits"
+                class="text-light text-decoration-none" role="link"
+                aria-label="Démarrer une formation personnalisée pour développer vos compétences">
+                formation personnalisée
+            </a> pour être au top des compétences du métier de votre choix.
+        </div>
+
     </ng-container>
     <ng-template #yes>
         <!-- <div class="alert alert-light p-4 alert-dismissible mb-4 fade show pe-5"
@@ -56,12 +57,13 @@
         </div> -->
         <!-- si un questionnaire achevé et le formulaire non renseigné -->
         <div class="alert bg-warning p-4 alert-dismissible mb-4 fade show pe-5"
-            *ngIf="!isLoading && isOneQuizzAchieved && !studentData.isSocialFormSent && !offline">
+            *ngIf="!isLoading && isOneQuizzAchieved && !studentData.isSocialFormSent && !offline && !studentData.innerStudent ">
             <!-- <button type="button" class="btn-close btn-close-light" data-bs-dismiss="alert"></button> -->
             <button type="button" class="btn-close btn-close mt-2" data-bs-dismiss="alert"
                 aria-label="Fermer le message"></button>
             <!-- Retrouvez vos résultats + finaliser votre inscription administrative -->
-            <span> <i aria-hidden="true" class="bi bi-info-square-fill pe-2"></i>Vos <span class="fw-bold">résultats et estimations</span>
+            <span> <i aria-hidden="true" class="bi bi-info-square-fill pe-2"></i>Vos <span class="fw-bold">résultats et
+                    estimations</span>
                 sont
                 disponibles dans votre <a [routerLink]="['/account']" class="text-decoration-none"
                     title="compte personnel be-on-top">compte utilisateur</a>. Pour <span class="fw-bold">vous
@@ -70,16 +72,36 @@
                     formations</a>.</span>
         </div>
 
+        <!-- si un innerStudent a terminé un questionnaire au minimum -->
+        <div class="alert alert-light p-4 alert-dismissible mb-4 fade show pe-5"
+            *ngIf="!isLoading && isOneQuizzAchieved && !offline && studentData.innerStudent ">
+            <!-- <button type="button" class="btn-close btn-close-light" data-bs-dismiss="alert"></button> -->
+            <button type="button" class="btn-close btn-close mt-2" data-bs-dismiss="alert"
+                aria-label="Fermer le message"></button>
+            <!-- Retrouvez vos résultats + finaliser votre inscription administrative -->
+            <i aria-hidden="true" class="bi bi-info-square-fill pe-2"></i>Vos <span class="fw-bold">résultats et
+                estimations</span>
+            sont
+            disponibles dans votre <a [routerLink]="['/account']" class="text-decoration-none"
+                title="compte personnel be-on-top">compte utilisateur</a>. Compte à partir duquel vous aurez également
+            <span class="fw-bold
+                        "> accès au suivi de vos évaluations pédagogiques...</span>
+        </div>
+
+
         <!-- si au minimum un questionnaire achevé et le formulaire renseigné -->
 
         <div class="alert alert-light p-4 alert-dismissible mb-4 fade show pe-5"
             *ngIf="!isLoading && isOneQuizzAchieved && studentData.isSocialFormSent && !offline">
             <button type="button" class="btn-close btn-close mt-2" data-bs-dismiss="alert"
                 aria-label="Fermer le message"></button>
-                <i aria-hidden="true" class="bi bi-info-square-fill pe-2"></i> Vous pouvez accéder au suivi de <span class="fw-bold">vos résultats</span> et <span class="fw-bold">votre parcours</span> depuis <a [routerLink]="['/account']" class="text-decoration-none"
-                title="compte personnel be-on-top" aria-label="Accéder à votre compte personnel sur be-on-top"> votre compte
-                personnel</a>. Pour <span class="fw-bold">toute question relative à be-on-top</span>, n'oubliez pas de consulter la <a class="text-decoration-none"
-                [routerLink]="['/benefits']" aria-label="Consulter la page d'information sur be-on-top">page info</a>
+            <i aria-hidden="true" class="bi bi-info-square-fill pe-2"></i> Vous pouvez accéder au suivi de <span
+                class="fw-bold">vos résultats</span> et <span class="fw-bold">votre parcours</span> depuis <a
+                [routerLink]="['/account']" class="text-decoration-none" title="compte personnel be-on-top"
+                aria-label="Accéder à votre compte personnel sur be-on-top"> votre compte
+                personnel</a>. Pour <span class="fw-bold">toute question relative à be-on-top</span>, n'oubliez pas de
+            consulter la <a class="text-decoration-none" [routerLink]="['/benefits']"
+                aria-label="Consulter la page d'information sur be-on-top">page info</a>
         </div>
 
 
@@ -214,8 +236,8 @@
                                 <div class="d-flex justify-content-end"
                                     *ngIf="studentData && studentData['quizz_'+trade.sigle] && !studentData['quizz_'+trade.sigle].fullResults">
 
-                                    <button type="button" aria-label="Poursuivre le questionnaire" class="btn btn-transparent"><i
-                                            class="bi bi-clock-history fw-bold"></i>
+                                    <button type="button" aria-label="Poursuivre le questionnaire"
+                                        class="btn btn-transparent"><i class="bi bi-clock-history fw-bold"></i>
                                         <!-- Reprendre à la question {{studentData.lastIndexQuestion+1}}</button></div> -->
                                         Poursuivre l'évaluation</button>
                                 </div>
@@ -294,7 +316,7 @@
                     <ng-container *ngFor="let trade of group[1], let i = index">
                         <!-- n'affichera que les 2 premiers de la liste catGroup tant que !isFullCatItempsOpen -->
                         <!-- <div *ngIf="!isFullCatItemsOpen && i <= 1" class="col-md-6 pt-3"> -->
-                        <div  *ngIf="openCategoryIndex !== j && i <= 1" class="col-md-6 pt-3">
+                        <div *ngIf="openCategoryIndex !== j && i <= 1" class="col-md-6 pt-3">
 
                             <div (click)="selectTrade(trade.id)">
                                 <div
@@ -303,7 +325,8 @@
                                     <h3 class="h5 text-start ps-2">
                                         <i class="bi bi-{{i+1}}-square-fill text-success me-2"></i>
                                         <!-- <span [innerHTML]="trade.denomination | firstWord | truncateTitle"></span> -->
-                                        <span [innerHTML]="processDenomination(trade.denomination) | firstWord | truncateTitle"></span>
+                                        <span
+                                            [innerHTML]="processDenomination(trade.denomination) | firstWord | truncateTitle"></span>
                                     </h3>
 
                                 </div>
@@ -320,13 +343,12 @@
                                     <div class="image-container rounded mb-1">
                                         <a [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]"
                                             class="text-decoration-none">
-                                            
-                                            <img ngOpmizedImage class="img-fluid rounded"
-                                            [ngSrc]="(i === tradesData.length - 1 && tradesData.length % 2 !== 0 && isLargeScreen)
+
+                                            <img ngOpmizedImage class="img-fluid rounded" [ngSrc]="(i === tradesData.length - 1 && tradesData.length % 2 !== 0 && isLargeScreen)
                                             ? trade.imageUrl.replace('_resized.jpeg', '.jpeg')
-                                            : trade.imageUrl" (load)="onImageLoad()"
-                                                *ngIf="trade.imageUrl" (load)="onImageLoad()" [width]="largeurImage"
-                                                [height]="hauteurImage" [priority]="i === 0"
+                                            : trade.imageUrl" (load)="onImageLoad()" *ngIf="trade.imageUrl"
+                                                (load)="onImageLoad()" [width]="largeurImage" [height]="hauteurImage"
+                                                [priority]="i === 0"
                                                 alt="formation BE-ON-TOP au métier {{trade.sigle}}">
                                         </a>
                                     </div>
@@ -372,15 +394,16 @@
 
                                             <button type="button" (click)="logStartEvaluationEvent(trade.denomination)"
                                                 aria-label="Démarrer le questionnaire be-on-top"
-                                                class="btn btn-transparent"><i
-                                                    class="bi bi-clock-fill text-success" aria-hidden="true"></i>
+                                                class="btn btn-transparent"><i class="bi bi-clock-fill text-success"
+                                                    aria-hidden="true"></i>
                                                 Démarrer votre évaluation</button>
                                         </div>
                                         <div class="d-flex justify-content-end"
                                             *ngIf="studentData && studentData['quizz_'+trade.sigle] && !studentData['quizz_'+trade.sigle].fullResults">
 
                                             <button type="button" aria-label="Poursuivre le questionnaire"
-                                                class="btn btn-transparent"><i class="bi bi-clock-history fw-bold" aria-hidden="true"></i>
+                                                class="btn btn-transparent"><i class="bi bi-clock-history fw-bold"
+                                                    aria-hidden="true"></i>
                                                 <!-- Reprendre à la question {{studentData.lastIndexQuestion+1}}</button></div> -->
                                                 Poursuivre l'évaluation</button>
                                         </div>
@@ -402,7 +425,7 @@
                         <!-- affichera normalement tous les items dès que isFullCatItempsOpen -->
                         <!-- <div *ngIf="isFullCatItemsOpen" class="col-md-6 pt-3"> -->
 
-                            
+
 
                         <div *ngIf="openCategoryIndex === j && (searchText===''
                 || trade.denomination.includes(searchText)
@@ -411,9 +434,7 @@
                 || trade.denomination.toLowerCase().includes(searchText.toLowerCase())
                 || removeAccents(trade.description).toLowerCase().includes(removeAccents(searchText).toLowerCase()))"
                             class="pt-3"
-                            [ngClass]="{'col-md-6': !(i === group[1].length - 1 && group[1].length % 2 !== 0)}"
-                            
-                            >
+                            [ngClass]="{'col-md-6': !(i === group[1].length - 1 && group[1].length % 2 !== 0)}">
                             <!-- dsfdsfdsfd{{group[1].length |json}} -->
 
                             <div (click)="selectTrade(trade.id)">
@@ -439,9 +460,9 @@
                                             class="text-decoration-none">
                                             <img ngOpmizedImage class="img-fluid rounded" [ngSrc]="(i === group[1].length - 1 && tradesData.length % 2 !== 0 && isLargeScreen)
                                             ? trade.imageUrl.replace('_resized.jpeg', '.jpeg')
-                                            : trade.imageUrl" (load)="onImageLoad()"
-                                  [width]="largeurImage" [height]="hauteurImage" [priority]="i === 0"
-                                  alt="formation BE-ON-TOP au métier {{trade.sigle}}">
+                                            : trade.imageUrl" (load)="onImageLoad()" [width]="largeurImage"
+                                                [height]="hauteurImage" [priority]="i === 0"
+                                                alt="formation BE-ON-TOP au métier {{trade.sigle}}">
                                         </a>
                                     </div>
                                 </ng-container>
@@ -461,7 +482,8 @@
 
                                 <div *ngIf="isEditor" class="d-flex justify-content-end">
                                     <hr>
-                                    <button type="button" class="btn btn-transparent mt-3" aria-label="Edition du métier">
+                                    <button type="button" class="btn btn-transparent mt-3"
+                                        aria-label="Edition du métier">
                                         <a class="text-dark" [routerLink]="['/admin/updateDescription', trade.sigle]">
                                             <i class="bi bi-pencil-square" aria-hidden="true"></i>
                                             Editer</a>
@@ -532,15 +554,15 @@
                 <!-- refacto si catégories multiples -->
                 <div class="card-footer" *ngIf="group[1].length > 2">
                     <button type="button" class="btn btn-primary w-100 mx-auto" (click)="openFullCatItems(j)">
-                      <span *ngIf="openCategoryIndex !== j">
-                        Toutes les formations ({{ group[1].length }})
-                      </span>
-                      <span *ngIf="openCategoryIndex === j">
-                        Fermer
-                      </span>
+                        <span *ngIf="openCategoryIndex !== j">
+                            Toutes les formations ({{ group[1].length }})
+                        </span>
+                        <span *ngIf="openCategoryIndex === j">
+                            Fermer
+                        </span>
                     </button>
-                  </div>
-                  
+                </div>
+
                 <!-- <div class="card-footer">
                 <button class="btn btn-success w-100 mx-auto" (click)="openFullCatItems()" *ngIf="catGroup.length>2">
                     <span *ngIf="!isFullCatItemsOpen">

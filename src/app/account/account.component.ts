@@ -189,7 +189,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
               console.log("Résultat Firestore :", this.isSocialForm);
               console.log("Valeur de isSocialFormSent :", this.userData.isSocialFormSent);
             
-              if (this.isSocialForm && !this.userData.isSocialFormSent) {
+              if (this.isSocialForm && !this.userData.isSocialFormSent && !this.userData.innerStudent) {
                 console.log("Conditions validées, lancement du son...");
                 this.playText()
                 // this.playLocalMessage("remind.mp3");
