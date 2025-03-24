@@ -260,8 +260,13 @@ Tests OK. Sur une  partie. A finir.
                             </label>
                             <div class="col-md-9">
                                 <input appAutoChange type="tel" name="phone" [(ngModel)]="socialData.phone" required
-                                    class="form-control" (blur)="checkFields()">
+                                    class="form-control" (blur)="checkFields()" pattern="^\+?[0-9]{9,15}$" #phoneInput="ngModel">
                             </div>
+
+                            <div *ngIf="socialData.phone && !phoneInput.valid" class="invalid">
+                                Veuillez renseigner un tel.
+                              </div>
+
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label text-decoration-underline pt-3 pb-2">
