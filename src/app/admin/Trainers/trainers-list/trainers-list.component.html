@@ -25,7 +25,10 @@
                 <div class="col-sm-3 col-6 order-perso2">{{user.firstName}}</div>
                 <!-- {{userRouterLinks.user|json}} -->
                 <div class="col-sm-3 col-6"><button type="button" class="btn btn-danger" (click)="deleteUser(user.id)" [disabled]="userRouterLinks.user=='referent'"><i class="bi bi-person-dash-fill"></i>Suppression</button></div>
-                <div class="col-sm-3 col-6 order-perso4"><button type="button" class="btn btn-primary"><a [routerLink]="['/admin/trainer', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a></button></div>
+                <div class="col-sm-3 col-6 order-perso4"><button type="button" class="btn btn-primary">
+                    <a *ngIf="userRouterLinks.user!=='referent'" [routerLink]="['/admin/trainer', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
+                    <a *ngIf="userRouterLinks.user=='referent'" [routerLink]="['/admin/referent/trainerDetails', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
+                </button></div>
             </div>
         </div>
         <div class="row my-5 justify-content-end ps-5 ps-sm-0">

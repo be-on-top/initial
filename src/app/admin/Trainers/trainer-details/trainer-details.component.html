@@ -59,11 +59,13 @@
               </button> -->
 
 
-            <button class="btn btn-warning">
-                <a class="text-white" [routerLink]="['/admin/updateTrainer', user.id]">Modifier</a>
+            <button type="button" class="btn btn-warning">
+                <a *ngIf="userRouterLinks.user!=='referent'" class="text-white" [routerLink]="['/admin/updateTrainer', user.id]">Modifier</a>
+                <a *ngIf="userRouterLinks.user==='referent'" class="text-white" [routerLink]="['/admin/referent/updateTrainer', user.id]">Modifier</a>
+                
             </button>
 
-            <button class="btn btn-danger">
+            <button type="button" class="btn btn-danger" [disabled]="userRouterLinks.user=='referent'">
                 <a class="text-white" (click)="deleteUser(user.id)">Supprimer</a>
             </button>
 

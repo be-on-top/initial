@@ -38,6 +38,9 @@ export class UpdateTrainerComponent implements OnInit {
 
   trainerStudents: any = []
 
+  // pour différencier la vue si user trainer
+  userRouterLinks: any
+
 
 
   constructor(
@@ -53,6 +56,7 @@ export class UpdateTrainerComponent implements OnInit {
     private notificationsService: PushNotificationService
   ) {
     this.userId = this.ac.snapshot.params["id"];
+    this.userRouterLinks = this.ac.snapshot.data;
   }
 
   ngOnInit(): void {
@@ -145,7 +149,8 @@ export class UpdateTrainerComponent implements OnInit {
     // pour notifier le(s) candidat(s) concerné(s)
     // this.notificationsService.notifyStudent(form.value)
     // puis redirection
-    this.router.navigate(['/admin/trainer', this.userId])
+    this.userRouterLinks.user=='referent'? this.router.navigate(['/admin/referent/trainerDetails', this.userId]) : this.router.navigate(['/admin/trainer', this.userId])
+    // this.router.navigate(['/admin/trainer', this.userId])
   }
 
 
