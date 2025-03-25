@@ -35,6 +35,40 @@ export class QuestionDetailsComponent implements OnInit {
     () {
     this.isLoading = false;
   }
+  
+  deleteQuestion(idQuestion: string, number: number, sigle:string) {
+    // this.service.deleteQuestionById(idQuestion)
+
+    // pour lui passer mediaQuestion
+   if (this.questionsMedias) {
+     for (const element of this.questionsMedias) {
+      console.log('en voilà un', element);
+      this.service.deleteMediaFromUrl(element)
+      
+     }
+   }
+
+       // pour lui passer mediasResponses
+       if (this.responsesMedias) {
+        for (const element of this.responsesMedias) {
+         console.log('en voilà un', element);
+         this.service.deleteMediaFromUrl(element)
+         
+        }
+      }
+
+    const questionNumber = number
+
+    if (window.confirm("Êtes-vous certain ? Ceci est irrévocable.")) {
+      this.service.deleteQuestionById(idQuestion).then(() => {
+        alert("la question "+idQuestion+" numéro " + questionNumber +" de "+sigle+ " a bien été supprimée")
+      }).catch(error => console.error("Erreur lors de la suppression :", error));
+    }
+
+  }
+
+
+
 
   // onImageResponseLoad
   //   () {

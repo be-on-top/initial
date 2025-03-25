@@ -6,7 +6,10 @@
         +{{q.notation}}</p>
     <p class="fs-6 text-center"><span class="fw-bold">Id:</span>
         {{q.id}}. <a class="fw-bold text-decoration-none" [routerLink]="['/admin/updateQuestion', q.id]">Modifier</a>
+        <!-- implémentations en cours... -->
+        <!-- <a href="" class="fw-bold text-decoration-none ms-2" (click)="deleteQuestion(q.id, q.number, q.sigle); $event.preventDefault()">Supprimer</a> -->
     </p>
+
 
     <!-- questionMedia {{questionsMedias |json}} -->
     <div *ngIf="questionsMedias">
@@ -46,7 +49,7 @@
                 <div *ngFor="let item of responsesMedias">
                     <!-- <img *ngIf="item.includes(q.id) && item.includes('Option1')" class="img-fluid rounded mb-3"
                         [src]="item"> -->
-                    <img *ngIf="item.includes(q.id) && item.includes('Option1')"
+                    <img alt="image de questionnaire" *ngIf="item.includes(q.id) && item.includes('Option1')"
                         class="cover img-fluid rounded mb-3 img-thumbnail" [src]="item" loading="lazy">
                 </div>
             </div>
@@ -56,7 +59,7 @@
             <p class="text-center fs-5">R2 : {{q.option2}}</p>
             <div *ngIf="responsesMedias">
                 <div *ngFor="let item of responsesMedias">
-                    <img *ngIf="item.includes(q.id) && item.includes('Option2')"
+                    <img alt="image de questionnaire" *ngIf="item.includes(q.id) && item.includes('Option2')"
                         class="cover img-fluid rounded mb-3 img-thumbnail" [src]="item" loading="lazy">
                 </div>
             </div>
@@ -66,7 +69,7 @@
             <p class="text-center fs-5">R3 : {{q.option3}}</p>
             <div *ngIf="responsesMedias">
                 <div *ngFor="let item of responsesMedias">
-                    <img *ngIf="item.includes(q.id) && item.includes('Option3')"
+                    <img alt="image de questionnaire" *ngIf="item.includes(q.id) && item.includes('Option3')"
                         class="cover img-fluid rounded mb-3 img-thumbnail" [src]="item" loading="lazy">
                 </div>
             </div>
@@ -75,7 +78,7 @@
             <p class="text-center fs-5">R4 : {{q.option4}} </p>
             <div *ngIf="responsesMedias">
                 <div *ngFor="let item of responsesMedias">
-                    <img *ngIf="item.includes(q.id) && item.includes('Option4')"
+                    <img alt="image de questionnaire" *ngIf="item.includes(q.id) && item.includes('Option4')"
                         class="cover img-fluid rounded mb-3 img-thumbnail" [src]="item" loading="lazy">
                 </div>
             </div>

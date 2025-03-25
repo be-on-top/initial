@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Storage, ref, uploadBytes, getDownloadURL, listAll, deleteObject } from '@angular/fire/storage';
-import { Firestore, collection, collectionData, docData, setDoc, query, orderBy, startAt, startAfter, limit, getDocs} from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, docData, setDoc, query, orderBy, startAt, startAfter, limit, getDocs, deleteDoc } from '@angular/fire/firestore';
 import { addDoc, doc } from 'firebase/firestore';
 import { Observable, from, map, switchMap } from 'rxjs';
 
@@ -145,7 +145,7 @@ export class QuestionsService {
   // }
 
   // Dernier essai pour sitemapService...
-  
+
   // getMediasQuestionsForSitemap(): Observable<string[]> {
   //   const mediasQuestionsRef = ref(this.storage, 'images/questions');
   //   return from(listAll(mediasQuestionsRef)).pipe(
@@ -271,7 +271,7 @@ export class QuestionsService {
     listAll(mediasResponsesRef)
       .then(async response => {
         for (let item of response.items) {
-          // console.log("esssai recuperation media by id", item.fullPath.includes(id));
+          console.log("esssai recuperation media by id", item.fullPath.includes(id));
           // anciennement : 
           // item.fullPath.includes(id) == true ? mediasResponsesById.push(item.fullPath.includes(id)) : ""
           // depuis les mises à jour effectuées sur les questions sociales !!!! 
@@ -288,7 +288,6 @@ export class QuestionsService {
 
   }
 
-
   getMediaQuestionById(id: string) {
     const mediaQuestionById: any = []
     let mediasQuestionsRef = ref(this.storage, 'images/questions');
@@ -296,7 +295,7 @@ export class QuestionsService {
       .then(async response => {
         // console.log("listAll medias for mediasQuestions", response);
         for (let item of response.items) {
-          // console.log("esssai recuperation media question by id", item.fullPath.includes(id));
+          console.log("esssai recuperation media question by id", item.fullPath.includes(id));
           // item.fullPath.includes(id) == true ? mediaQuestionById.push(item) : ""
           // depuis les mises à jour effectuées sur les questions sociales !!!!
           item.fullPath.includes(id) == true ? mediaQuestionById.push(await getDownloadURL(item)) : ""
@@ -308,7 +307,35 @@ export class QuestionsService {
       });
 
     return (mediaQuestionById)
+  }
 
+  async deleteQuestionById(id: string): Promise<void> {
+    console.log("Suppression de la question avec l'ID :", id);
+
+    // try {
+    //   // Référence au document
+    //   const questionRef = doc(this.firestore, `questions/${id}`); 
+    //   // Suppression du document
+    //   await deleteDoc(questionRef); 
+    //   console.log("Question supprimée avec succès !");
+    // } catch (error) {
+    //   console.error("Erreur lors de la suppression :", error);
+    // }
+
+  }
+
+  deleteMediaFromUrl(url: string) {
+    const storagePath = this.getStoragePathFromUrl(url);
+    // if (storagePath) {
+    //   this.deleteMedia(storagePath);
+    // } else {
+    //   console.error("Impossible d'extraire le chemin du fichier depuis l'URL.");
+    // }
+  }
+
+  getStoragePathFromUrl(url: string): string | null {
+    const match = url.match(/\/o\/(.*?)\?alt=media/);
+    return match ? decodeURIComponent(match[1]) : null;
   }
 
 }
