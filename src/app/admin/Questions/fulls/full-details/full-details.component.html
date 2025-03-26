@@ -5,7 +5,10 @@
         {{q.competence}}. <span class="fw-bold">PNTS:</span>
         +{{q.notation}}.</p>
     <p class="fs-6 text-center"><span class="fw-bold">Id:</span>
-        {{q.id}} - <a class="fw-bold text-decoration-none" [routerLink]="['/admin/updateFull', q.id]">Modifier</a></p>
+        {{q.id}} - <a class="fw-bold text-decoration-none" [routerLink]="['/admin/updateFull', q.id]">Modifier</a>
+        <!-- implémentations en cours... -->
+        <!-- <a href="" class="fw-bold text-decoration-none ms-2" (click)="deleteQuestion(q.id, q.number, q.sigle); $event.preventDefault()">Supprimer</a> -->
+    </p>
 
     <!-- questionMedia {{questionsMedias |json}} -->
     <div *ngIf="questionsMedias">
@@ -27,8 +30,8 @@
                     <source [src]="item" type="video/mp4">
                     Your browser does not support HTML video.
                 </video>
-                <ng-template #image><img class="img-fluid image-zoomable p-2" [src]="item"
-                        (load)="onImageLoad()" loading="lazy" [class.bg-primary]="!isLoading"></ng-template>
+                <ng-template #image><img class="img-fluid image-zoomable p-2" [src]="item" (load)="onImageLoad()"
+                        loading="lazy" [class.bg-primary]="!isLoading"></ng-template>
             </div>
         </div>
     </div>
