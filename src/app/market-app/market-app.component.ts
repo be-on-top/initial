@@ -28,18 +28,25 @@ export class MarketAppComponent {
   //     this.currentIndex = (this.currentIndex + 1) % this.paragraphs.length;
   //   }, 5500); // Change tous les 2 secondes
   // }
-
   ngAfterViewInit(): void {
-    // Attache un écouteur d'événements au carrousel Bootstrap
-    const carouselElement = document.getElementById('demo');
-
-    if (carouselElement) {
-      carouselElement.addEventListener('slide.bs.carousel', (event: any) => {
-        // Met à jour l'index en fonction du slide actif
+    const myCarousel = document.querySelector('#demo');
+  
+    if (myCarousel) {
+      const carousel = new bootstrap.Carousel(myCarousel, {
+        interval: 7000,
+        ride: 'carousel'
+      });
+  
+      setTimeout(() => {
+        carousel.cycle();
+      }, 1000); // 🔹 Redémarre après 1s pour assurer le lancement sur mobile
+  
+      myCarousel.addEventListener('slide.bs.carousel', (event: any) => {
         this.currentIndex = event.to;
       });
     }
   }
+  
 
   // ngOnDestroy(): void {
   //   // Nettoie l'intervalle pour éviter les fuites de mémoire

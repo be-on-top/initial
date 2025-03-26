@@ -19,24 +19,41 @@ export class BenefitsComponent implements OnInit, AfterViewInit {
   }
 
 
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      const carouselElement = document.getElementById('demo');
-      if (carouselElement) {
-        const carouselInstance = new this.bootstrap.Carousel(carouselElement, {
-          interval: 2000,
-          ride: 'carousel',
-          touch: true
-        });
+  // ngAfterViewInit(): void {
+  //   setTimeout(() => {
+  //     const carouselElement = document.getElementById('demo');
+  //     if (carouselElement) {
+  //       const carouselInstance = new this.bootstrap.Carousel(carouselElement, {
+  //         interval: 2000,
+  //         ride: 'carousel',
+  //         touch: true
+  //       });
     
-        // Simuler un événement utilisateur
-        carouselElement.dispatchEvent(new Event('mouseenter'));
-        carouselElement.dispatchEvent(new Event('mouseleave'));
+  //       // Simuler un événement utilisateur
+  //       carouselElement.dispatchEvent(new Event('mouseenter'));
+  //       carouselElement.dispatchEvent(new Event('mouseleave'));
     
-        carouselInstance.cycle();
-      }
-    }, 500);
+  //       carouselInstance.cycle();
+  //     }
+  //   }, 500);
     
+  // }
+
+  ngAfterViewInit() {
+    const myCarousel = document.querySelector('#demo');
+
+    if (myCarousel) {
+      const carousel = new bootstrap.Carousel(myCarousel, {
+        interval: 3000,  // Définit l'intervalle (5s)
+        ride: 'carousel',
+        touch: true
+      });
+
+      // 🔹 Relance le carousel après un petit délai (nécessaire sur mobile)
+      setTimeout(() => {
+        carousel.cycle();
+      }, 1000);
+    }
   }
   
   

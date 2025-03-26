@@ -235,6 +235,15 @@ hr {
   } */
 
 
+ h1 a{
+
+    /* text-decoration: underline; */
+    text-decoration-color: rgba(255, 255, 255, 0.3)!important; /* Noir très transparent */
+    text-decoration-thickness: 2px; /* Épaisseur discrète */
+    text-underline-position: under; /* Position sous le texte */
+  }
+
+
 @media only screen and (max-width: 765px) {
 
     .image-container img {
