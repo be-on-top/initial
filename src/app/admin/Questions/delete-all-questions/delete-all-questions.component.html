@@ -1,0 +1,17 @@
+<h3>Suppression de questionnaires métiers !</h3>
+<div>
+  <label class="form-label" *ngIf="!selectedSigle">Sélectionnez un métier :</label>
+  <select class="form-control" *ngIf="!selectedSigle" (change)="selectSigle($event)">
+    <option *ngFor="let sigle of siglesList" [value]="sigle">{{ sigle }}</option>
+  </select>
+</div>
+
+<div *ngIf="selectedSigle">
+  <h4>Métier sélectionné : {{ selectedSigle }}</h4>
+  <p *ngIf="questionIds.length > 0">Nombre de questions à supprimer : {{ questionIds.length }}</p>
+  <p *ngIf="questionIds.length === 0">Aucune question trouvée pour ce sigle.</p>
+  <button type="button" (click)="deleteAllQuestions()" class="btn btn-danger" *ngIf="questionIds.length > 0">
+    Supprimer toutes les questions
+  </button>
+</div>
+

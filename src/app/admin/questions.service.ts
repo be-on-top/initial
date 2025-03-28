@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Storage, ref, uploadBytes, getDownloadURL, listAll, deleteObject } from '@angular/fire/storage';
-import { Firestore, collection, collectionData, docData, setDoc, query, orderBy, startAt, startAfter, limit, getDocs, deleteDoc } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, docData, setDoc, query, orderBy, startAt, startAfter, limit, getDocs, deleteDoc, where } from '@angular/fire/firestore';
 import { addDoc, doc } from 'firebase/firestore';
 import { Observable, from, map, switchMap } from 'rxjs';
 
@@ -337,6 +337,16 @@ export class QuestionsService {
     const match = url.match(/\/o\/(.*?)\?alt=media/);
     return match ? decodeURIComponent(match[1]) : null;
   }
+
+  // ✅ Méthode corrigée pour récupérer uniquement les IDs des questions filtrées par sigle
+  async getQuestionIdsBySigle(sigle: string): Promise<string[]> {
+    const questionsRef = collection(this.firestore, 'questions'); // ✅ Correct
+    const q = query(questionsRef, where('sigle', '==', sigle)); // ✅ Correction du where
+    const querySnapshot = await getDocs(q);
+  
+    return querySnapshot.docs.map(doc => doc.id); // ✅ Retourne uniquement les IDs
+  }
+  
 
 }
 

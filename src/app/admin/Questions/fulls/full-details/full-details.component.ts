@@ -49,9 +49,8 @@ export class FullDetailsComponent {
     // pour lui passer mediaQuestion
    if (this.questionsMedias) {
      for (const element of this.questionsMedias) {
-      console.log('en voilà un', element);
-      this.service.deleteMediaFromUrl(element)
-      
+      console.log('en voilà un', element)
+      this.service.deleteMediaFromUrl(element)      
      }
    }
 
