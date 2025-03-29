@@ -9,6 +9,10 @@ export class TextToSpeechService {
 
   private apiUrl = 'https://texttospeech.googleapis.com/v1/text:synthesize';
   private apiKey = 'AIzaSyC1JZ5h0pXszJkM-1PbUZXiXI6z436rOLI';  // Remplace par ta clé API ici
+  // private apiUrl = 'https://us-central1-be-on-top-beta.cloudfunctions.net/synthesizeSpeech';
+
+
+
 
   constructor(private http: HttpClient) {}
 
@@ -29,6 +33,8 @@ export class TextToSpeechService {
 
     };
 
+    // avec cloud functions, plus besoin de passer apiKey
     return this.http.post<any>(`${this.apiUrl}?key=${this.apiKey}`, body); // PAS de headers Authorization !
+    // return this.http.post<any>(this.apiUrl, body);
   }
 }
