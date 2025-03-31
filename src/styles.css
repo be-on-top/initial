@@ -576,6 +576,26 @@ abbr:hover::before {
 }
 
 
+.alert.bg-primary {
+  position: relative;
+  padding: 15px;
+  border-radius: 5px;
+  display: inline-block;
+}
+
+.alert.bg-primary::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -10px; /* Positionne la flèche sous l'alerte */
+  transform: translateX(-50%);
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid var(--primary-color); /* Couleur de la flèche */
+}
+
+
+
 /* added to avoid container reduced on landscape screen under 992px */
 
 
