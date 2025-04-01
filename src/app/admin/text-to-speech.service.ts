@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
+
+
 
 @Injectable({
   providedIn: 'root',
@@ -8,10 +11,12 @@ import { Observable } from 'rxjs';
 export class TextToSpeechService {
 
   private apiUrl = 'https://texttospeech.googleapis.com/v1/text:synthesize';
-  private apiKey = 'AIzaSyC1JZ5h0pXszJkM-1PbUZXiXI6z436rOLI';  // Remplace par ta clé API ici
+  // private apiKey = 'AIzaSyC1JZ5h0pXszJkM-1PbUZXiXI6z436rOLI';  // Remplace par ta clé API ici
   // private apiUrl = 'https://us-central1-be-on-top-beta.cloudfunctions.net/synthesizeSpeech';
 
+  private apiKey = environment.googleApiKey;  // Utilisation de la clé API
 
+// 
 
 
   constructor(private http: HttpClient) {}

@@ -27,7 +27,8 @@ export const environment = {
         messagingSenderId: "212539373061",
         appId: "1:212539373061:web:425cde1b1071152e700e6c",
         measurementId: "G-C9M2VS675H"
-    }
+    },
+    googleApiKey: "AIzaSyC1JZ5h0pXszJkM-1PbUZXiXI6z436rOLI"
 
 }
 
