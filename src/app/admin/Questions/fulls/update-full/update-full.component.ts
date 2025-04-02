@@ -290,6 +290,20 @@ export class UpdateFullComponent {
       })
   }
 
+  onNumberChange(event: Event) {
+    const newNumber = Number((event.target as HTMLSelectElement).value);
+  
+    if (newNumber !== this.result.number) {
+      this.service.swapQuestionNumbers(this.result.number, newNumber)
+        .then(() => {
+          console.log(`Numéro mis à jour : ${this.result.number} → ${newNumber}`);
+          this.result.number = newNumber;  // Met à jour l'affichage
+        })
+        .catch(error => console.error("Erreur lors du changement de numéro :", error));
+    }
+  }
+  
+
 
 
 }

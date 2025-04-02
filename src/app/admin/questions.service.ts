@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Storage, ref, uploadBytes, getDownloadURL, listAll, deleteObject } from '@angular/fire/storage';
-import { Firestore, collection, collectionData, docData, setDoc, query, orderBy, startAt, startAfter, limit, getDocs, deleteDoc, where } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, docData, setDoc, query, orderBy, startAt, startAfter, limit, getDocs, deleteDoc, where, updateDoc } from '@angular/fire/firestore';
 import { addDoc, doc } from 'firebase/firestore';
 import { Observable, from, map, switchMap } from 'rxjs';
 
@@ -346,6 +346,78 @@ export class QuestionsService {
   
     return querySnapshot.docs.map(doc => doc.id); // ✅ Retourne uniquement les IDs
   }
+
+
+
+
+swapQuestionNumbers(oldNumber: number, newNumber: number) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const questionsRef = collection(this.firestore, "questions");
+
+      // 🔹 Vérifier si le nouveau numéro est déjà attribué
+      const newNumberQuery = query(questionsRef, where("number", "==", newNumber));
+      const newNumberSnapshot = await getDocs(newNumberQuery);
+
+      if (newNumberSnapshot.empty) {
+        // 🚨 Si le numéro est libre, on met à jour directement l'ancienne question
+        const oldQuestionQuery = query(questionsRef, where("number", "==", oldNumber));
+        const oldQuestionSnapshot = await getDocs(oldQuestionQuery);
+
+        if (oldQuestionSnapshot.empty) {
+          reject("Aucune question trouvée avec ce numéro.");
+          return;
+        }
+
+        const oldQuestionDoc = oldQuestionSnapshot.docs[0];
+
+        // 🔹 Mettre à jour Firestore pour affecter le nouveau numéro
+        await updateDoc(oldQuestionDoc.ref, { number: newNumber });
+
+        console.log(`Numéro mis à jour : ${oldNumber} → ${newNumber}`);
+        resolve("Numéro mis à jour avec succès !");
+      } else {
+        // 🔄 Si le numéro est déjà pris, on effectue un échange
+
+        // 🔹 Trouver les deux questions
+        const oldQuestionQuery = query(questionsRef, where("number", "==", oldNumber));
+        const oldQuestionSnapshot = await getDocs(oldQuestionQuery);
+
+        if (oldQuestionSnapshot.empty) {
+          reject("Aucune question trouvée avec l'ancien numéro.");
+          return;
+        }
+
+        const oldQuestionDoc = oldQuestionSnapshot.docs[0];
+        const newQuestionDoc = newNumberSnapshot.docs[0];
+
+        // 🔄 Échanger les numéros
+        await updateDoc(oldQuestionDoc.ref, { number: newNumber });
+        await updateDoc(newQuestionDoc.ref, { number: oldNumber });
+
+        console.log(`Numéros échangés : ${oldNumber} ⇄ ${newNumber}`);
+        resolve("Numéros échangés avec succès !");
+      }
+    } catch (error) {
+      reject("Erreur lors de la modification des numéros : " + error);
+    }
+  });
+}
+
+isNumberAvailable(newNumber: number): Promise<boolean> {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const questionsRef = collection(this.firestore, "questions");
+      const querySnapshot = await getDocs(query(questionsRef, where("number", "==", newNumber)));
+
+      resolve(querySnapshot.empty); // Renvoie `true` si libre, `false` si déjà pris
+    } catch (error) {
+      reject("Impossible de vérifier la disponibilité du numéro.");
+    }
+  });
+}
+
+
   
 
 }

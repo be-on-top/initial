@@ -88,19 +88,30 @@ export class UpdateQuestionComponents implements OnInit {
     })
 
     // pour permettre de permutter le numéro de la question
+    // this.service.getQuestions().subscribe(data => {
+    //   // console.log(data);
+    //   // attention : c'est la différence avec prior-form, on ne veut pas afficher les 20 premières questions dans le dénombre
+    //   for (let n of data) {
+    //     n.number < 21 ? this.registryNumbers = [...this.registryNumbers, Number(n.number)] : ""
+    //     this.registryNumbers.sort((a, b) => a - b); // 🔹 Trier en ordre croissant
+    //     // console.log(this.registryNumbers);
+    //     this.numbers = this.numbers.filter(element => {
+    //       return element != n.number
+    //     });
+    //     // console.log("result", this.numbers);
+    //   }
+    //   // return this.registryNumbers
+    // })
+
     this.service.getQuestions().subscribe(data => {
-      // console.log(data);
-      // attention : c'est la différence avec prior-form, on ne veut pas afficher les 20 premières questions dans le dénombre
-      for (let n of data) {
-        n.number < 21 ? this.registryNumbers = [...this.registryNumbers, Number(n.number)] : ""
-        // console.log(this.registryNumbers);
-        this.numbers = this.numbers.filter(element => {
-          return element != n.number
-        });
-        // console.log("result", this.numbers);
-      }
-      // return this.registryNumbers
-    })
+      this.registryNumbers = data
+        .filter(q => q.sigle === this.result.sigle  && q.number<20) // 🔹 Garder uniquement celles avec le même sigle
+        .map(q => Number(q.number)) // 🔹 Extraire les numéros attribués
+
+        .filter(n => !this.registryNumbers.includes(n) || n === this.result.number) // 🔹 Éviter les doublons et garder l'actuel
+        .sort((a, b) => a - b); // 🔹 Trier en ordre croissant
+    });
+    
 
   }
 
@@ -287,6 +298,42 @@ export class UpdateQuestionComponents implements OnInit {
       this.relatedCompetences= data
       })
   }
+
+  // onNumberChange(event: Event) {
+  //   const newNumber = Number((event.target as HTMLSelectElement).value);
+  
+  //   if (newNumber !== this.result.number) {
+  //     this.service.swapQuestionNumbers(this.result.number, newNumber)
+  //       .then(() => {
+  //         console.log(`Numéro mis à jour : ${this.result.number} → ${newNumber}`);
+  //         this.result.number = newNumber;  // Met à jour l'affichage
+  //       })
+  //       .catch(error => console.error("Erreur lors du changement de numéro :", error));
+  //   }
+  // }
+
+  onNumberChange(event: Event) {
+    const newNumber = Number((event.target as HTMLSelectElement).value);
+  
+    if (newNumber !== this.result.number) {
+      // Vérifier si le numéro est déjà pris dans le même sigle
+      const isTaken = this.registryNumbers.includes(newNumber) && newNumber !== this.result.number;
+  
+      if (isTaken) {
+        alert(`⚠️ Attention : le numéro ${newNumber} est déjà attribué et nécessitera un échange.`);
+      } else {
+        alert(`✅ Pour information : le numéro ${newNumber} est libre.`);
+      }
+  
+      // Mise à jour temporaire pour affichage, pas d'enregistrement immédiat
+      this.result.number = newNumber;
+    }
+  }
+  
+  
+
+  
+  
 
 
 }

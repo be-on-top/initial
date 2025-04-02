@@ -4,7 +4,7 @@
     <!-- {{allMediasResponses | json}}
     all mediaQuestions :{{allMediasQuestions | json}} -->
 
-    <h3 *ngIf="result">Mise à jour de la question {{result.number}} <span class="d-block fs-6 mt-1">id :
+    <h3 *ngIf="result">Mise à jour de la question !!!!!!!!!!!! {{result.number}} <span class="d-block fs-6 mt-1">id :
             {{questionId}}</span> </h3>
     <!-- <hr> -->
 
@@ -25,6 +25,17 @@
                     <option *ngFor="let element of numbers" value="{{element}}">N°: {{element}}</option>
                 </select>
             </div>
+            <!-- en cours pour swap numbers... -->
+            <!-- <div class="col-md-2 mb-1">
+                <select class="form-select" id="number" name="number" [(ngModel)]="result.number" required
+                    #number="ngModel" (change)="onNumberChange($event)">
+                    <option [value]="result.number" selected>Actuel : {{ result.number }}</option>
+                    <option *ngFor="let element of numbers" [value]="element" [disabled]="element === result.number">
+                        N°: {{ element }}
+                    </option>
+                </select>
+            </div> -->
+
 
             <!-- rappel du nombre de point attribué ou score associé -->
             <div class="col-md-3 d-sm-flex mb-1" *ngIf="result.notation">
@@ -55,12 +66,12 @@
             <div class="col-md-4 mb-1">
                 <!-- {{relatedCompetences | json}} -->
                 <ng-container *ngIf="relatedCompetences">
-                    <select class="form-select" name="competence" id="competence" [(ngModel)]="result.competence" required
-                        #competence="ngModel">
-                                <option selected [value]="result.competence">{{result.competence}} (actuel enregistrement)</option>
+                    <select class="form-select" name="competence" id="competence" [(ngModel)]="result.competence"
+                        required #competence="ngModel">
+                        <option selected [value]="result.competence">{{result.competence}} (actuel enregistrement)
+                        </option>
 
-                        <option
-                            *ngFor="let key of relatedCompetences, let i = index"
+                        <option *ngFor="let key of relatedCompetences, let i = index"
                             [value]="result.sigle + '_CP' + (i + 1)">
                             {{result.sigle}}_CP{{i+1}} ({{ key }})
                         </option>
