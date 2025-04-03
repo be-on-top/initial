@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { firstValueFrom, take } from 'rxjs';
 
 // import { Observable } from 'rxjs';
 import { QuestionsService } from 'src/app/admin/questions.service';
@@ -52,8 +53,10 @@ export class UpdateQuestionComponents implements OnInit {
   arrayFilesToUpdate: any = []
   notations: number[] = [1, 2, 3]
 
-  // pour faire le décompte des questions enregistrées puisqu'il faut pouvoir permutter
-  numbers: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+  numbers: number[] =[]
+
+  // pour faire le décompte des questions enregistrées s'il faut pouvoir permutter
+  // numbers: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
   registryNumbers: any[] = []
 
   optScoring3: boolean | null = null
@@ -69,6 +72,9 @@ export class UpdateQuestionComponents implements OnInit {
   isRequiredOption4: boolean = false
 
   relatedCompetences: any = []
+
+  originalNumber?: number; // Ajout d'une variable pour stocker l'original
+  
 
   constructor(private service: QuestionsService, private ac: ActivatedRoute, private router: Router, private tradeService:SettingsService) {
   }
@@ -102,18 +108,26 @@ export class UpdateQuestionComponents implements OnInit {
     //   }
     //   // return this.registryNumbers
     // })
-
     this.service.getQuestions().subscribe(data => {
       this.registryNumbers = data
-        .filter(q => q.sigle === this.result.sigle  && q.number<20) // 🔹 Garder uniquement celles avec le même sigle
-        .map(q => Number(q.number)) // 🔹 Extraire les numéros attribués
-
-        .filter(n => !this.registryNumbers.includes(n) || n === this.result.number) // 🔹 Éviter les doublons et garder l'actuel
-        .sort((a, b) => a - b); // 🔹 Trier en ordre croissant
+        .filter(q => q.sigle === this.result.sigle && q.number < 20)
+        .map(q => Number(q.number))
+        .filter(n => !this.registryNumbers.includes(n) || n === this.result.number)
+        .sort((a, b) => a - b);
+  
+      // 🔹 Attendre que `this.result.number` soit bien défini
+      if (this.result.number !== undefined) {
+        this.originalNumber = this.result.number;
+        console.log("✅ Numéro original stocké :", this.originalNumber);
+      } else {
+        console.warn("⚠️ Attention : `this.result.number` est undefined !");
+      }
     });
     
 
   }
+
+
 
   updateForm(form: NgForm) {
     // on vérifie la validité du formulaire
@@ -148,6 +162,96 @@ export class UpdateQuestionComponents implements OnInit {
 
     this.router.navigate(['/admin/questions'])
   }
+
+
+// essai swap en cours... 
+// updateForm(form: NgForm) {
+
+//   console.log("🟡 Valeur de result.number au clic :", this.result.number);
+// console.log("🟡 Valeur de form.value.number :", form.value.number);
+
+//   if (!form.valid) {
+//       console.log('Formulaire invalide');
+//       return;
+//   }
+
+//   if (form.value.optScoring4 === undefined) form.value.optScoring4 = null;
+//   if (form.value.optScoring3 === undefined) form.value.optScoring3 = null;
+//   if (form.value.option4 === undefined || form.value.option4 === '') form.value.optScoring4 = null;
+//   if (form.value.option3 === undefined || form.value.option3 === '') form.value.optScoring3 = null;
+
+//   console.log("Vidéo avant passage à service", this.isVideo);
+  
+//   // const oldNumber = this.result.number;
+//   const oldNumber = this.originalNumber;
+//   const newNumber = form.value.number;
+
+//   console.log(`✅ Numéro original stocké : ${oldNumber}`);
+//   console.log(`🔢 Numéro actuel : ${newNumber}`);
+
+//   if (newNumber !== oldNumber) {
+//       const isTaken = this.registryNumbers.includes(newNumber);
+//       console.log(`📌 Numéro ${newNumber} est-il déjà pris ?`, isTaken);
+
+//       if (isTaken) {
+//           console.log(`🔄 Un swap est nécessaire : ${oldNumber} ↔ ${newNumber}`);
+
+//           // 🔹 Désactivation des appels au service, on garde seulement le log 
+//           this.service.getQuestions().pipe(take(1)).subscribe(data => {
+//               console.log("📂 Récupération des questions en base...");
+
+//               const existingQuestion = data.find(q => q.sigle === this.result.sigle && q.number === String(newNumber));
+
+//               if (existingQuestion) {
+//                   console.log(`🔍 Trouvé : Question ${existingQuestion.id} qui porte déjà ${newNumber}`);
+                  
+//                   // 🔹 Désactiver les mises à jour pour éviter toute action sur la base
+//                   /*
+//                   const existingUpdate = { ...existingQuestion, number: String(oldNumber) };
+//                   const currentUpdate = { ...this.result, number: String(newNumber) };
+
+//                   this.service.updateQuestion(existingQuestion.id, existingUpdate, []).then(() => {
+//                       console.log(`✅ Swap terminé pour l'ancienne question, mise à jour de la nouvelle`);
+//                       return this.service.updateQuestion(this.questionId, currentUpdate, this.arrayFilesToUpdate);
+//                   }).then(() => {
+//                       console.log(`✅ Swap finalisé, redirection en cours`);
+//                       this.router.navigate(['/admin/questions']);
+//                   }).catch(error => {
+//                       console.error("❌ Erreur lors du swap :", error);
+//                   });
+//                   */
+//               } else {
+//                   console.log("⚠️ Aucune question trouvée pour faire le swap, erreur possible !");
+//               }
+//           }, error => {
+//               console.error("❌ Erreur lors de la récupération des questions :", error);
+//           });
+
+//           return; // 🔹 On arrête ici après le log pour éviter toute mise à jour
+//       }
+//   }
+
+//   // 🔹 Désactivation de la mise à jour si aucun swap n'est nécessaire
+//   /*
+//   this.service.updateQuestion(this.questionId, { ...this.result, ...form.value }, this.arrayFilesToUpdate)
+//       .then(() => {
+//           console.log(`✅ Question mise à jour avec succès`);
+//           this.router.navigate(['/admin/questions']);
+//       })
+//       .catch(error => {
+//           console.error("❌ Erreur lors de la mise à jour de la question :", error);
+//       });
+//   */
+// }
+
+
+
+  
+  
+  
+  
+
+  
 
   //  fonction en cas de modification d'un média existant
   detectFiles(event: any, fieldName: any, item: any = "") {

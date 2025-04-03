@@ -246,6 +246,25 @@ export class QuestionsService {
 
   }
 
+  // modification nécessaire si faut pouvoir permutter ou modifier les numéros
+//   updateQuestion(id: string, question: any, allFilesToUpdate: any): Promise<void> {
+//     console.log("🔄 Mise à jour en cours pour", id, question);
+    
+//     let $questionRef = doc(this.firestore, "questions/" + id);
+    
+//     return setDoc($questionRef, question).then(() => {
+//         console.log("✅ Mise à jour Firestore réussie");
+
+//         for (let myFile of allFilesToUpdate) {
+//             this.uploadFiles(myFile[0], myFile[1], id);
+//         }
+//     }).catch(error => {
+//         console.error("❌ Erreur lors de la mise à jour :", error);
+//         throw error; // Relancer l'erreur pour la gestion dans `then().catch()`
+//     });
+// }
+
+
 
   deleteMedia(fieldName: any) {
     console.log("fichier à supprimer", fieldName);

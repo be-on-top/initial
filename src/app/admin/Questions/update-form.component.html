@@ -4,7 +4,7 @@
     <!-- {{allMediasResponses | json}}
     all mediaQuestions :{{allMediasQuestions | json}} -->
 
-    <h3 *ngIf="result">Mise à jour de la question !!!!!!!!!!!! {{result.number}} <span class="d-block fs-6 mt-1">id :
+    <h3 *ngIf="result">Mise à jour de la question {{result.number}} <span class="d-block fs-6 mt-1">id :
             {{questionId}}</span> </h3>
     <!-- <hr> -->
 
@@ -19,17 +19,17 @@
                 </select>
             </div> -->
             <div class="col-md-2 mb-1">
-                <select class="form-select" id="number" name="number" [(ngModel)]="result.number" required
+                <select class="form-select disabled" id="number" name="number" [(ngModel)]="result.number" required
                     #number="ngModel">
                     <option selected="selected" value="{{result.number}}">{{result.number}}</option>
                     <option *ngFor="let element of numbers" value="{{element}}">N°: {{element}}</option>
                 </select>
             </div>
-            <!-- en cours pour swap numbers... -->
+            <!-- ATTENTION : en cours pour swap numbers... -->
             <!-- <div class="col-md-2 mb-1">
                 <select class="form-select" id="number" name="number" [(ngModel)]="result.number" required
                     #number="ngModel" (change)="onNumberChange($event)">
-                    <option [value]="result.number" selected>Actuel : {{ result.number }}</option>
+                      <option [value]="result.number" selected>{{ result.number }}</option>
                     <option *ngFor="let element of numbers" [value]="element" [disabled]="element === result.number">
                         N°: {{ element }}
                     </option>
