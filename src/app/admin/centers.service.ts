@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, deleteDoc, doc, docData, docSnapshots, Firestore, getDocs, query, setDoc, updateDoc, where, QuerySnapshot, DocumentData, orderBy } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, deleteDoc, doc, docData, docSnapshots, Firestore, getDocs, query, setDoc, updateDoc, where, QuerySnapshot, DocumentData, orderBy, getDoc } from '@angular/fire/firestore';
 import { catchError, concatMap, forkJoin, from, map, mergeMap, Observable, of, tap, throwError } from 'rxjs';
 import { Centers } from './centers';
 
@@ -463,6 +463,75 @@ getUserCentersSigles(centerIds: string[]): Observable<string[]> {
 
 
 
+// Cette méthode retourne une liste de régions uniques sous forme d'Observable<string[]>
+getAllRegions(): Observable<string[]> {
+  // On commence par faire un GET HTTP sur le fichier assets/cities.json
+  return this.http.get<{ cities: City[] }>(this.dataUrl).pipe(
+
+    // On utilise la fonction map pour transformer la réponse
+    map(response => {
+      // Étape 1 : On extrait toutes les régions depuis les objets 'city'
+      // Cela donne un tableau avec potentiellement des doublons
+      const allRegions = response.cities.map(city => city.region_name);
+
+      // Étape 2 : On utilise un Set pour supprimer les doublons automatiquement
+      const uniqueRegions = new Set(allRegions);
+
+      // Étape 3 : On transforme le Set en tableau pour le retourner
+      const regionsArray = Array.from(uniqueRegions);
+
+      // Étape 4 (optionnelle) : On trie les régions par ordre alphabétique
+      regionsArray.sort();
+
+      // On retourne la liste finale
+      return regionsArray;
+    })
+  );
+}
+
+getRegionsByPostalCodes(postalCodes: string[]): Observable<{ [postalCode: string]: string }> {
+  return this.http.get<{ cities: City[] }>(this.dataUrl).pipe(
+    map(response => {
+      const result: { [postalCode: string]: string } = {};
+
+      postalCodes.forEach(cp => {
+        const city = response.cities.find(c => c.zip_code === cp);
+        if (city) {
+          result[cp] = city.region_name;
+        } else {
+          result[cp] = 'Région inconnue';
+        }
+      });
+
+      return result;
+    })
+  );
+}
+
+getSocialForms(studentIds: string[]): Observable<{ [studentId: string]: any }> {
+  const observables = studentIds.map(id => {
+    const ref = doc(this.firestore, `SocialForm/${id}`);
+    return getDoc(ref).then(snapshot => ({ id, snapshot }));
+  });
+
+  return from(Promise.all(observables)).pipe(
+    map(pairs => {
+      const result: { [studentId: string]: any } = {};
+
+      pairs.forEach(({ id, snapshot }) => {
+        if (snapshot.exists()) {
+          const data = snapshot.data();
+          result[id] = data;
+        } else {
+          console.warn(`⚠️ socialForm non trouvé pour studentId : ${id}`);
+        }
+      });
+
+      console.log('📦 Résultat getSocialForms :', result);
+      return result;
+    })
+  );
+}
 
 
 

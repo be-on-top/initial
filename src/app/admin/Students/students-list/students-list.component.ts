@@ -10,6 +10,7 @@ import { AuthService } from '../../auth.service';
 import { User } from 'firebase/auth';
 import { TrainersService } from '../../trainers.service';
 import { UsersService } from '../../users.service';
+import { CentersService } from '../../centers.service';
 
 @Component({
   selector: 'app-students-list',
@@ -57,6 +58,9 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   myCenterStudents: boolean = false
 
   cpArray: string[] = []
+  regions: string[] = []
+  // quelle région l'utilisateur a sélectionné dans l'interface
+  selectedRegion: string | null = null;
 
   constructor(
     private service: StudentsService,
@@ -64,7 +68,8 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     private tradeService: SettingsService,
     private authService: AuthService,
     private trainerService: TrainersService,
-    private userService: UsersService) {
+    private userService: UsersService,
+    private regionalService: CentersService) {
     this.userRouterLinks = this.activatedRoute.snapshot.data;
 
     // implémenter la méthode conçue pour les "conseillers projets" qui n'en sont pas puisqu'ils se font concurrence (référents admin)
@@ -95,6 +100,12 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
 
     this.getStudents();
     this.onSearchTextEntered("")
+
+    this.regionalService.getAllRegions().subscribe(regions => {
+      this.regions = regions
+      console.log('regions récupérées', this.regions);
+
+    })
 
 
   }
@@ -434,6 +445,8 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     }
   }
 
+
+
   onCheckboxChangePrior(event: any) {
     this.isPriorFilter = event.target.checked;
     this.applyFilters();
@@ -474,6 +487,57 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     this.myCenterStudents = event.target.checked;
     this.applyFilters();
   }
+
+  onSelectRegion(region: string | null) {
+    this.selectedRegion = region && region !== 'null' ? region : null;
+    console.log('Région sélectionnée :', this.selectedRegion);
+
+    this.applyRegionalFilter()
+
+  }
+
+  applyRegionalFilter(): void {
+    if (!this.selectedRegion) {
+      this.allStudents = [...this.initialStudents];
+      return;
+    }
+
+    // ➤ Étape 1 : filtrer uniquement les étudiants qui ont envoyé leur SocialForm
+    const eligibleStudents = this.initialStudents.filter(s => s.isSocialFormSent);
+    const studentIds = eligibleStudents.map(s => s.id);
+
+    console.log('📥 Étudiants avec formulaire rempli :', studentIds);
+
+    if (studentIds.length === 0) {
+      this.allStudents = []; // Aucun formulaire rempli => aucun résultat
+      return;
+    }
+
+    this.regionalService.getSocialForms(studentIds).subscribe(socialForms => {
+      console.log('📬 Social forms récupérés :', socialForms);
+
+      // const postalCodes = Object.values(socialForms)
+      //   .map(form => form.postalCode)
+      //   .filter(Boolean); // on garde uniquement les cp valides
+
+      const postalCodes = Object.values(socialForms)
+        .map(form => form.postalCode)
+        .filter(cp => !!cp); // on garde que les vrais codes
+
+      this.regionalService.getRegionsByPostalCodes(postalCodes).subscribe(mapping => {
+        console.log('🗺️ Mapping CP -> Région :', mapping);
+
+        this.allStudents = eligibleStudents.filter(student => {
+          const cp = socialForms[student.id]?.postalCode;
+          const region = mapping[cp];
+          return region === this.selectedRegion;
+        });
+
+        console.log('✅ Étudiants après filtre régional :', this.allStudents);
+      });
+    });
+  }
+
 
   /**
    * Méthode pour vérifier le CP d'un utilisateur par son ID (credential.uid),
@@ -551,28 +615,41 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
 
 
 
-getMissingSubmitedForm(){
-      // Appel à la fonction en cours de développement
-      this.service.getStudentsNotSubmitted().subscribe(students => {
-        console.log("Étudiants ayant commencé mais pas soumis :", students);
-  
-        // Afficher chaque étudiant avec son prénom et nom
-        students.forEach(student => {
-  
-          // Convertir la date de création en objet Date si nécessaire
-          const createdDate = new Date(student.created); // Si 'created' est un string représentant une date
-  
-          // Formater la date
-          const formattedDate = createdDate.toLocaleDateString('fr-FR', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-          });
-  
-          console.log(`Nom: ${student.lastName}, Prénom: ${student.firstName}, Date de création :${formattedDate}, Id:${student.id}, email :Id:${student.email} `);
+  getMissingSubmitedForm() {
+    // Appel à la fonction en cours de développement
+    this.service.getStudentsNotSubmitted().subscribe(students => {
+      console.log("Étudiants ayant commencé mais pas soumis :", students);
+
+      // Afficher chaque étudiant avec son prénom et nom
+      students.forEach(student => {
+
+        // Convertir la date de création en objet Date si nécessaire
+        const createdDate = new Date(student.created); // Si 'created' est un string représentant une date
+
+        // Formater la date
+        const formattedDate = createdDate.toLocaleDateString('fr-FR', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
         });
+
+        console.log(`Nom: ${student.lastName}, Prénom: ${student.firstName}, Date de création :${formattedDate}, Id:${student.id}, email :Id:${student.email} `);
       });
-}
+    });
+  }
+
+
+  // onSelectRegion(region: string) {
+  //   this.selectedRegion = region;
+  //   console.log('Région sélectionnée :', this.selectedRegion);
+  // }
+
+  // onSelectRegion(region: string | null) {
+  //   this.selectedRegion = region && region !== 'null' ? region : null;
+  //   console.log('Région sélectionnée :', this.selectedRegion);
+  // }
+
+
 
 
 

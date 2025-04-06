@@ -37,10 +37,16 @@
                 <p class="small" *ngIf="userRouterLinks.user==='referent'">
                     Ont expressément choisi votre centre pour le suivi de leur
                     dossier d'inscription&nbsp;*</p>
-                <ng-container *ngIf="userRouterLinks.user=='admin'">
-                    <button type="button" class="btn btn-warning mt-5"
-                        (click)="getMissingSubmitedForm()">Formulaires commencés non encore soumis</button>
 
+                <!-- feat : pour tester un filtre régional sur la base de postalCode OK marche bien -->
+                <select class="form-control" [(ngModel)]="selectedRegion" (ngModelChange)="onSelectRegion($event)">
+                    <option [ngValue]="null">-- Toutes les régions --</option>
+                    <option *ngFor="let region of regions" [ngValue]="region">{{ region }}</option>
+                </select>
+
+                <ng-container *ngIf="userRouterLinks.user=='admin'">
+                    <button type="button" class="btn btn-warning mt-5" (click)="getMissingSubmitedForm()">Formulaires
+                        commencés non encore soumis</button>
                 </ng-container>
             </div>
 
