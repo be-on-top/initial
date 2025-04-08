@@ -508,6 +508,49 @@ getRegionsByPostalCodes(postalCodes: string[]): Observable<{ [postalCode: string
   );
 }
 
+
+// Cette méthode retourne une liste de départements uniques sous forme d'Observable<string[]>
+getAllDepartments(): Observable<string[]> {
+  return this.http.get<{ cities: City[] }>(this.dataUrl).pipe(
+    map(response => {
+      // Étape 1 : on extrait tous les noms de départements depuis les objets 'city'
+      const allDepartments = response.cities.map(city => city.department_name);
+
+      // Étape 2 : suppression des doublons via un Set
+      const uniqueDepartments = new Set(allDepartments);
+
+      // Étape 3 : on transforme en tableau
+      const departmentsArray = Array.from(uniqueDepartments);
+
+      // Étape 4 (optionnelle) : tri alphabétique
+      departmentsArray.sort();
+
+      return departmentsArray;
+    })
+  );
+}
+
+
+getDepartmentsByPostalCodes(postalCodes: string[]): Observable<{ [postalCode: string]: string }> {
+  return this.http.get<{ cities: City[] }>(this.dataUrl).pipe(
+    map(response => {
+      const result: { [postalCode: string]: string } = {};
+
+      postalCodes.forEach(cp => {
+        const city = response.cities.find(c => c.zip_code === cp);
+        if (city) {
+          result[cp] = city.department_name; // c’est ce champ qui est dispo
+        } else {
+          result[cp] = 'Département inconnu';
+        }
+      });
+
+      return result;
+    })
+  );
+}
+
+
 getSocialForms(studentIds: string[]): Observable<{ [studentId: string]: any }> {
   const observables = studentIds.map(id => {
     const ref = doc(this.firestore, `SocialForm/${id}`);

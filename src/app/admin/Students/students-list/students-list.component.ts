@@ -59,8 +59,10 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
 
   cpArray: string[] = []
   regions: string[] = []
+  departments: string[] = []
   // quelle région l'utilisateur a sélectionné dans l'interface
   selectedRegion: string | null = null;
+  selectedDepartment: string | null = null;
 
   constructor(
     private service: StudentsService,
@@ -88,9 +90,6 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       // ou ceux dont un des cp du tableau est contenu dans le tableau des cp du compte authentifié
       // this.getTrainersWithSameCp(this.userUid)
 
-
-
-
     }
 
 
@@ -104,6 +103,13 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     this.regionalService.getAllRegions().subscribe(regions => {
       this.regions = regions
       console.log('regions récupérées', this.regions);
+
+    })
+
+
+    this.regionalService.getAllDepartments().subscribe(departments => {
+      this.departments = departments
+      console.log('départements récupérées', this.departments);
 
     })
 
@@ -426,7 +432,16 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       this.allStudents = this.initialStudents.filter(student => student.subscriptions);
       this.tradesActivated = true
     } else if (this.isTradeFilter) {
-      this.allStudents = this.initialStudents.filter(student => student.subscriptions && student.subscriptions.includes(trade));
+      this.allStudents = this.initialStudents.filter(student =>
+        Array.isArray(student.subscriptions) &&
+        student.subscriptions.includes(trade) &&
+        (
+          !Array.isArray(student.endedSubscriptions) ||
+          !student.endedSubscriptions.some((ended: any) => ended.sigle === trade)
+        )
+      );
+
+
 
     } else if (this.isTradeQCMStarted) {
       this.allStudents = this.initialStudents.filter(student => student['quizz_' + trade] && !student['quizz_' + trade].fullResults);
@@ -445,8 +460,6 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     }
   }
 
-
-
   onCheckboxChangePrior(event: any) {
     this.isPriorFilter = event.target.checked;
     this.applyFilters();
@@ -463,19 +476,67 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   }
 
   // inititalement destiné aux inscriptions officielles
-  onCheckboxChangeTrades(event: any, trade: string) {
-    this.isTradeFilter = event.target.checked;
-    this.applyFilters(trade);
+  // onCheckboxChangeTrades(event: any, trade: string) {
+  //   this.isTradeFilter = event.target.checked;
+  //   this.applyFilters(trade);
+  // }
+
+  selectedTradeOnTraining: string | null = null;
+
+  onTradeTrainingSelect(trade: string | null) {
+    this.resetAllFilters();
+    this.isTradeFilter = !!trade;
+
+    const cleanTrade = trade ?? undefined; // convertit null → undefined
+    this.applyFilters(cleanTrade);
   }
 
+
   // puisqu'il faut compliquer
-  onCheckboxChangeTradesForStartedQCM(event: any, trade: string) {
-    this.isTradeQCMStarted = event.target.checked;
-    this.applyFilters(trade);
+
+  // si on substitue partout où on boucle sur trades un select aux cases à cocher !!! :
+  resetAllFilters() {
+    this.isSocialFormSentFilter = false;
+    this.isSubscriptionFilter = false;
+    this.isTradeFilter = false;
+    this.isTradeQCMStarted = false;
+    this.isTradeFullQCM = false;
+    this.isQualifiedFilter = false;
+    this.isPriorFilter = false;
+    this.myCenterStudents = false;
+    this.tradesActivated = false;
   }
-  onCheckboxChangeTradesForFullQCM(event: any, trade: string) {
-    this.isTradeFullQCM = event.target.checked;
-    this.applyFilters(trade);
+  // onCheckboxChangeTradesForStartedQCM(event: any, trade: string) {
+  //   this.isTradeQCMStarted = event.target.checked;
+  //   this.applyFilters(trade);
+  // }
+  selectedTradeForQCMStarted: string | null = null;
+
+  onTradeQCMStartedSelect(trade: string | null) {
+    this.resetAllFilters();
+    this.isTradeQCMStarted = !!trade;
+
+    const cleanTrade = trade ?? undefined; // convertit null → undefined
+    this.applyFilters(cleanTrade);
+  }
+
+  // onCheckboxChangeTradesForFullQCM(event: any, trade: string) {
+  //   this.isTradeFullQCM = event.target.checked;
+  //   this.applyFilters(trade);
+  // }
+  // pour le changer en select
+  // Déclaration de la variable pour lier la sélection
+  selectedTradeForFullQCM: string | null = null;
+
+  // Méthode appelée lors de la sélection dans le select
+  onTradeFullQCMSelect(trade: string | null) {
+    this.resetAllFilters();
+    this.isTradeFullQCM = !!trade;  // Si trade est non null, activer le filtre
+
+    const cleanTrade = trade ?? undefined;  // Convertir null → undefined
+
+    // Appliquer les filtres avec la valeur du trade
+    this.applyFilters(cleanTrade);
   }
 
 
@@ -537,6 +598,44 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       });
     });
   }
+
+  onSelectDepartment(department: string | null): void {
+    this.selectedDepartment = department && department !== 'null' ? department : null;
+    console.log('Département sélectionné :', this.selectedDepartment);
+
+    this.applyDepartmentalFilter();
+  }
+
+
+  applyDepartmentalFilter(): void {
+    if (!this.selectedDepartment) {
+      this.allStudents = [...this.initialStudents];
+      return;
+    }
+
+    const eligibleStudents = this.initialStudents.filter(s => s.isSocialFormSent);
+    const studentIds = eligibleStudents.map(s => s.id);
+
+    if (studentIds.length === 0) {
+      this.allStudents = [];
+      return;
+    }
+
+    this.regionalService.getSocialForms(studentIds).subscribe(socialForms => {
+      const postalCodes = Object.values(socialForms)
+        .map(form => form.postalCode)
+        .filter(cp => !!cp);
+
+      this.regionalService.getDepartmentsByPostalCodes(postalCodes).subscribe(mapping => {
+        this.allStudents = eligibleStudents.filter(student => {
+          const cp = socialForms[student.id]?.postalCode;
+          const dept = mapping[cp];
+          return dept === this.selectedDepartment;
+        });
+      });
+    });
+  }
+
 
 
   /**
