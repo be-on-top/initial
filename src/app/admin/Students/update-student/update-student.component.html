@@ -8,7 +8,14 @@
         <h3>Mise à jour du statut de <span class="text-capitalize">{{student.lastName}} {{student.firstName}}</span>
         </h3>
 
-        <form class="form mb-5 was-validated" #f="ngForm" (submit)="updateStudent(f)">
+        <div class="alert bg-warning alert-dismissible fade show" role="alert">
+            <button type="button" class="btn-close btn-close mt-2" data-bs-dismiss="alert" aria-label="Fermer le message"></button>
+            <span class="fw-bold"><i class="bi bi-exclamation-triangle-fill me-1"></i>Rappel</span> : Le positionnement en amont a servi de fil conducteur au développement de l'application et du parcours utilisateur. Il permet de formaliser une offre de formation personnalisée (durée, contenu, coûts) très en amont de l'inscription.
+            <span class="fw-bold">Les ajustements "en aval", qui mobilisent dans l'urgence et simultanément conseiller projet, formateur et candidats, ne doivent pas devenir un réflexe opérationnel.</span>
+          </div>          
+          
+
+        <form  class="form mb-5 was-validated" #f="ngForm" (submit)="updateStudent(f)">
 
             <input type="text" id="created" [(ngModel)]="student.created" name="created" class="form-control invisible"
                 placeholder="Date de création : non modifiable">
@@ -37,10 +44,13 @@
             <!-- <div class="valid-feedback" *ngIf="email.valid">Email Valide </div>
             <div class="invalid-feedback" *ngIf="email.invalid">Merci de renseigner le champ email.</div> -->
 
+           <div [ngClass]="{'d-none':userRouterLinks.user==='trainer' || userRouterLinks.user==='referent'}">
+
             <label for="cp" class="form-label mt-3">CP</label>
             <input type="text" id="cp" [(ngModel)]="student.cp" name="cp" class="form-control"
                 placeholder="Code Postal Optionnel..."
                 [disabled]="userRouterLinks.user==='trainer' || userRouterLinks.user==='referent'">
+            </div>
 
             <!-- Tooggle Swith for student status -->
             <div class="form-check form-switch my-3">
@@ -53,11 +63,12 @@
                 </label>
             </div>
 
-            <!-- <label for="email" class="form-label mt-3">Commentaires optionnels</label> -->
+            <label for="details" class="form-label mt-3">Commentaires optionnels.</label>
+            
             <textarea name="details" id="details" [(ngModel)]="student.details" name="details" cols="100" rows="10"
                 class="form-control mt-3" #details="ngModel" [ngClass]="{'.is-valid':details.value && details.touched}"
                 placeholder="Commentaires optionnels..."
-                [disabled]="userRouterLinks.user==='trainer'">Détails / Remarques & Objectifs...</textarea>
+                [disabled]="userRouterLinks.user==='trainer'">Détails / Remarques ou objectifs...</textarea>
             <button type="submit" class="btn btn-primary mt-3"
                 [ngClass]="{'disabled':f.invalid || userRouterLinks.user=='trainer'}">Valider</button>
         </form>
@@ -68,12 +79,14 @@
 
 
         <ng-container *ngIf="userRouterLinks.user=='admin' || userRouterLinks.user=='referent'">
-            <div class="alert bg-warning text-dark">
-                <i class="bi bi-info-square-fill me-1"></i>Ici, vous pouvez visualiser les données du formulaire validé et soumis par le candidat. Formulaire destiné faciliter la finalisation du dossier de candidature et appuyer les demandes de financement.</div>
+            <div *ngIf="!student.innerStudent" class="alert bg-warning text-dark">
+                <i class="bi bi-info-square-fill me-1"></i>Ici, vous pouvez visualiser les données du formulaire validé et soumis par le candidat externe. Formulaire destiné faciliter la finalisation du dossier de candidature et appuyer les demandes de financement.</div>
             <!-- le formulaire pré-inscription formation -->
             <!-- <app-student-form  [studentData]="student"></app-student-form> -->
             <!-- si besoin de récupérer informations (centre choisi) depuis le composant enfant -->
-            <app-student-form (centerChange)="onCenterChanged($event)" [studentData]="student"></app-student-form>
+            <div class="alert bg-warning text-dark" *ngIf="student.innerStudent">  <i class="bi bi-info-square-fill me-1"></i>Etudiant dispensé de remplir le formulaire de pré-inscription formation puisque vous avez pris l'initiative de lui créer un compte pour le dispenser d'avoir à vous fournir en ligne les renseignements dont vous disposez déjà pour son inscription...</div>
+
+            <app-student-form (centerChange)="onCenterChanged($event)" [studentData]="student" *ngIf="!student.innerStudent"></app-student-form>
             <hr>
 
 

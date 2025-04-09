@@ -2,6 +2,12 @@
 
     <h3>Mise à jour d'un formateur</h3>
 
+    <div class="alert bg-warning alert-dismissible fade show my-3" role="alert">
+        <button type="button" class="btn-close btn-close mt-2" data-bs-dismiss="alert" aria-label="Fermer le message"></button>
+        <span class="fw-bold"><i class="bi bi-exclamation-triangle-fill me-1"></i>Rappel</span> : Le positionnement en amont a servi de fil conducteur au développement de l'application et du parcours utilisateur afin de pouvoir formaliser une offre de formation personnalisée (durée, contenu, coûts) bien avant l'entrée en présentiel.
+        <span class="fw-bold">Le positionnements "en aval", qui mobilisera dans l'urgence et simultanément conseiller projet, formateur et candidats, n'a pas vocation à devenir un réflexe opérationnel.</span>
+      </div>  
+
     <form class="form" #f="ngForm" (submit)="updateUser(f)" class="was-validated">
 
         <input type="text" id="created" [(ngModel)]="user.created" name="created" class="form-control invisible"
@@ -43,8 +49,15 @@
             </label>
         </div>
 
+        <hr class="my-4">
+
         <!-- modification des sigles métiers -->
-        <label for="sigle" class="form-label mt-3">Affectation métier :</label>
+        <label for="sigle" class="form-label mt-3">📌 Affectation métier(s) :</label>
+        <div class="d-flex border-start ps-3 text-muted small mb-2" >
+            Maintenez Ctrl (ou Cmd sur Mac) pour ajouter ou retirer des spécialisations métiers.
+          </div>
+          
+
         <!-- <select class="form-select" name="sigle" id="sigle" [ngModel]="user.sigle" required #sigle="ngModel"
             (change)="checkIfSelected(sigle.value)" multiple>
             <option value>Selectionner le métier</option>
@@ -60,8 +73,12 @@
         </select>
 
         <!-- modification des étudiants qui lui sont affectés -->
+         <hr class="my-4">
 
-        <label for="students" class="form-label mt-5">Affectation étudiants :</label><br>
+        <label for="students" class="form-label">📌 Affectation étudiants :</label>
+        <div class="d-flex border-start ps-3 text-muted small mb-2" >
+            Maintenez Ctrl (ou Cmd sur Mac) pour ajouter ou retirer des étudiants à sa liste de suivi.
+          </div>
 
         <!-- <input type="text" class="form-control mb-2" name="searchText" [(ngModel)]="searchText"
             placeholder="Rechercher un étudiant"> -->

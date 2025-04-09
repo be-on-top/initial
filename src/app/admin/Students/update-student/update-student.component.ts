@@ -123,7 +123,7 @@ export class UpdateStudentComponent implements OnInit {
     /* console.log("form update values", form.value); */
     this.service.updateStudent(this.studentId, form.value)
     // il faudra prévoir une redirection... 
-    this.router.navigate(['/admin/student', this.studentId])
+    this.userRouterLinks.user==='referent'?this.router.navigate(['/admin/referent/studentDetails', this.studentId]):this.router.navigate(['/admin/student', this.studentId])
   }
 
   updateStudentEvaluation(form: NgForm) {

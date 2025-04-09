@@ -605,6 +605,7 @@ export class StudentsService {
       // Mise à jour du document dans Firestore
       const studentRef = doc(this.firestore, "students", id);
       await updateDoc(studentRef, student);
+      alert("ok modifications prises en compte")
       console.log("Student updated successfully in Firestore");
   
     } catch (error) {
