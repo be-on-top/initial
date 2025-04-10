@@ -270,21 +270,22 @@
                         <!-- <i class="bi bi-info-square-fill ms-2"></i> -->
                     </a>
                     <ul class="dropdown-menu mb-2">
+                        <!-- pour des raisons de sécurité et de conformité RGAA WCAG -->
+                        <li class="nav-item d-none d-md-block" [routerLinkActive]="['active']">
+                            <a class="dropdown-item"
+                                href="https://xd.adobe.com/view/75e0818e-ab1b-4464-8b05-ff2988454cba-20b3/?fullscreen"
+                                target="_blank" rel="noopener noreferrer" role="button"
+                                aria-label="Ouvrir la présentation de support Diapo dans un nouvel onglet"
+                                (click)="closeNavbar()">Guide Conseiller version Diapo</a>
+                        </li>
                         <li class="nav-item d-lg-none" [routerLinkActive]="['active']">
                             <a class="dropdown-item"
                                 href="https://firebasestorage.googleapis.com/v0/b/be-on-top-beta.appspot.com/o/admin-docs%2FformationCP.pdf?alt=media&token=58038bf1-38fa-4673-8aa5-57cc147d4fe0"
                                 target="_blank" rel="noopener noreferrer" role="button"
                                 aria-label="Ouvrir la présentation de support Diapo dans un nouvel onglet"
-                                (click)="closeNavbar()">Support PDF</a>
+                                (click)="closeNavbar()">Guide Conseiller PDF</a>
                         </li>
-                        <!-- pour des raisons de sécurité et de conformité RGAA WCAG -->
-                        <li class="nav-item d-none d-lg-block" [routerLinkActive]="['active']">
-                            <a class="dropdown-item"
-                                href="https://xd.adobe.com/view/75e0818e-ab1b-4464-8b05-ff2988454cba-20b3/?fullscreen"
-                                target="_blank" rel="noopener noreferrer" role="button"
-                                aria-label="Ouvrir la présentation de support Diapo dans un nouvel onglet"
-                                (click)="closeNavbar()">Support Conseiller Projet version Diapo</a>
-                        </li>
+
 
                         <!-- <li><a class="dropdown-item" (click)="logOut()" [routerLink]="['']">Logout</a></li> -->
                         <li><a class="dropdown-item" (click)="closeNavbar()" [routerLink]="['market-app']">Mission
@@ -300,21 +301,22 @@
                         <!-- <i class="bi bi-info-square-fill ms-2"></i> -->
                     </a>
                     <ul class="dropdown-menu mb-2">
+                        <!-- pour des raisons de sécurité et de conformité RGAA WCAG -->
+                        <li class="nav-item d-none d-md-block" [routerLinkActive]="['active']">
+                            <a class="dropdown-item"
+                                href="https://xd.adobe.com/view/a41e35e0-6af3-4001-8ba8-3c856993d99a-f14d/?fullscreen"
+                                target="_blank" rel="noopener noreferrer" role="button"
+                                aria-label="Ouvrir la présentation de support Diapo dans un nouvel onglet"
+                                (click)="closeNavbar()">Guide Formateur version Diapo</a>
+                        </li>
                         <li class="nav-item d-lg-none" [routerLinkActive]="['active']">
                             <a class="dropdown-item"
                                 href="https://firebasestorage.googleapis.com/v0/b/be-on-top-beta.appspot.com/o/admin-docs%2FformationFormateurs.pdf?alt=media&token=c38d336b-aafe-4fd4-946c-f35afd6e0ee0"
                                 target="_blank" rel="noopener noreferrer" role="button"
                                 aria-label="Ouvrir la présentation au format PDF dans un nouvel onglet"
-                                (click)="closeNavbar()">Support PDF</a>
+                                (click)="closeNavbar()">Guide Formateur PDF</a>
                         </li>
-                        <!-- pour des raisons de sécurité et de conformité RGAA WCAG -->
-                        <li class="nav-item d-none d-lg-block" [routerLinkActive]="['active']">
-                            <a class="dropdown-item"
-                                href="https://xd.adobe.com/view/a41e35e0-6af3-4001-8ba8-3c856993d99a-f14d/?fullscreen"
-                                target="_blank" rel="noopener noreferrer" role="button"
-                                aria-label="Ouvrir la présentation de support Diapo dans un nouvel onglet"
-                                (click)="closeNavbar()">Support Formateur version Diapo</a>
-                        </li>
+
 
                         <!-- <li><a class="dropdown-item" (click)="logOut()" [routerLink]="['']">Logout</a></li> -->
                         <li><a class="dropdown-item" (click)="closeNavbar()" [routerLink]="['market-app']">Mission
