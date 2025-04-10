@@ -36,6 +36,9 @@ export class AddTrainerComponent {
   // pour aller chercher les métiers en base (ce qui n'était pas possible en 2023)
   tradesData: string[] = []
 
+  // si on partage ce composant avec un referent
+  userRole:string | string[] | null=""
+
   constructor(
     private service: TrainersService,
     private router: Router,
@@ -76,6 +79,10 @@ export class AddTrainerComponent {
       trades.forEach((trade: Trade) => this.tradesData.push(trade.sigle))
       console.log('this.tradesData', this.tradesData);
     })
+
+    this.authService.getCurrentUserRole().subscribe((role:any)=>
+      this.userRole=role)
+    
 
 
 

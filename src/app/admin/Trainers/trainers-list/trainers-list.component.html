@@ -8,6 +8,13 @@
         ...loading
     </div>
 
+    <div class="alert alert-light my-3">
+        <i class="bi bi-info-square-fill me-1"></i><span class="fw-bold">Rappel contextuel</span> : L'administrateur
+        principal de l'application se sera probablement rapproché de vous pour importer en nombre des formateurs que
+        vous avez renseignés comme devant être rattachés à votre ou vos centre(s) de formation. L'objectif étant de vous
+        permettre d'accéder à votre liste de formateurs et de pouvoir leur affecter des étudiants/apprenants une fois inscrits en formation.
+    </div>
+
     <div *ngIf="trainersList">
         <!-- on introduit un champ de recherche -->
         <app-search (searchTextChanged)="onSearchTextEntered($event)"></app-search>
@@ -20,19 +27,26 @@
         </div>
 
         <div *ngFor="let user of trainersList">
-            <div class="row mt-4 ps-5 ps-sm-0" *ngIf="searchText==='' || user.lastName.toLowerCase().includes(searchText) || user.firstName.toLowerCase().includes(searchText) ">
+            <div class="row mt-4 ps-5 ps-sm-0"
+                *ngIf="searchText==='' || user.lastName.toLowerCase().includes(searchText) || user.firstName.toLowerCase().includes(searchText) ">
                 <div class="col-sm-3 col-6">{{user.lastName}}</div>
                 <div class="col-sm-3 col-6 order-perso2">{{user.firstName}}</div>
                 <!-- {{userRouterLinks.user|json}} -->
-                <div class="col-sm-3 col-6"><button type="button" class="btn btn-danger" (click)="deleteUser(user.id)" [disabled]="userRouterLinks.user=='referent'"><i class="bi bi-person-dash-fill"></i>Suppression</button></div>
+                <div class="col-sm-3 col-6"><button type="button" class="btn btn-danger" (click)="deleteUser(user.id)"
+                        [disabled]="userRouterLinks.user=='referent'"><i
+                            class="bi bi-person-dash-fill"></i>Suppression</button></div>
                 <div class="col-sm-3 col-6 order-perso4"><button type="button" class="btn btn-primary">
-                    <a *ngIf="userRouterLinks.user!=='referent'" [routerLink]="['/admin/trainer', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
-                    <a *ngIf="userRouterLinks.user=='referent'" [routerLink]="['/admin/referent/trainerDetails', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
-                </button></div>
+                        <a *ngIf="userRouterLinks.user!=='referent'" [routerLink]="['/admin/trainer', user.id]"
+                            class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
+                        <a *ngIf="userRouterLinks.user=='referent'"
+                            [routerLink]="['/admin/referent/trainerDetails', user.id]" class="text-white"><i
+                                class="bi bi-person-lines-fill"></i>Détails</a>
+                    </button></div>
             </div>
         </div>
         <div class="row my-5 justify-content-end ps-5 ps-sm-0">
-            <div class="col-sm-3"><button class="btn btn-primary"><a [routerLink]="['/admin/addTrainer']" class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a></button></div>
+            <div class="col-sm-3"><button class="btn btn-primary"><a [routerLink]="['/admin/addTrainer']"
+                        class="text-white"><i class="bi bi-person-plus-fill"></i>Ajouter</a></button></div>
         </div>
     </div>
 </div>

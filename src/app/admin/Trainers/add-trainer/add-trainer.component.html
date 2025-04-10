@@ -3,8 +3,12 @@
     <app-feedback-messages [feedbackMessages]="feedbackMessages"
         [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
 
+<!-- partie réservée à l'administrateur principal -->
 
+        <ng-container *ngIf="userRole!=='referent'">
     <h3>Ajouter un évaluateur existant comme formateur</h3>
+
+    <div class="alert alert-danger mt-2"><i class="bi bi-info-square-fill me-1"></i>Partie réservée à l'administrateur principal.</div>
 
     <form #reg="ngForm" (submit)="addEvaluatorAsTrainer(reg)" class="form">
         <div class="form-group">
@@ -16,12 +20,11 @@
                 </option>
             </select>
         </div>
-        <button type="submit" class="btn btn-primary mt-3">  {{ selectedEvaluator ? 'Choix validé' : 'Valider le choix' }}</button>
+        <button disabled type="submit" class="btn btn-primary mt-3">  {{ selectedEvaluator ? 'Choix validé' : 'Valider le choix' }}</button>
     </form>
 
     <!-- Mise à jour des métiers pour l’évaluateur existant (inscrits en dur pour tests,  qui seront requêtés plus tard) -->
     <div *ngIf="isExistingEvaluatorSelected">
-        <!-- <h4>Affectation métier :</h4> -->
         <form #expertiseForm="ngForm" (submit)="addEvaluatorAsTrainer(expertiseForm)">
             <label for="sigle" class="form-label mt-3">Affectation métier :</label>
             <select class="form-select" name="sigle" ngModel multiple required>
@@ -35,8 +38,14 @@
     </div>
 
     <hr>
+        </ng-container>
+        <!-- fin partie réservée -->
 
     <h3>Ajouter un formateur à la liste des formateurs</h3>
+    <div class="alert alert-danger mt-2"><i class="bi bi-info-square-fill me-1"></i>ATTENTION: Normalement, la liste des formateurs qui vous ont été attribués est conforme aux informations que vous avez transmises à l'administrateur principal de l'application. 
+        Prendre l'initiative d'ajouter un formateur ne vous dispensera pas de devoir par la suite en avertir l'administrateur de l'application.
+    <span class="fw-bold">Par ailleurs, pour valider cette étape de création de compte, votre mot de passe Conseiller Projet va vous être demandé</span> .</div>
+
 
     <!-- pour les messages de retour/validation des champs du formulaire ou form validation, on utilisera BOOTSTRAP plutôt que des directives structurelles -->
     <form class="form" #f="ngForm" (submit)="addTrainer(f)" class="was-validated">
