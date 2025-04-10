@@ -22,20 +22,20 @@ export class UserDetailsComponent implements OnInit {
   constructor(private service: UsersService, private ac: ActivatedRoute, private router: Router, private externalS: ExternalsService) {
     this.userId = this.ac.snapshot.params["id"];
     this.userRouterLinks = this.ac.snapshot.data;
-    if (this.userRouterLinks.user == 'admin' && this.userRouterLinks.data == 'externals') {
-      this.externalS.getExternal(this.userId).subscribe(data => {
-        console.log('data de getExternal', data);
-        this.user = data
-        return this.user
-      })
-    }
-    else {
+    // if (this.userRouterLinks.user == 'admin' && this.userRouterLinks.data == 'externals') {
+    //   this.externalS.getExternal(this.userId).subscribe(data => {
+    //     console.log('data de getExternal', data);
+    //     this.user = data
+    //     return this.user
+    //   })
+    // }
+    // else {
       this.service.getUser(this.userId).subscribe(data => {
         console.log("data de getuser", data);
         this.user = data
         return this.user
       })
-    }
+    // }
 
   }
 

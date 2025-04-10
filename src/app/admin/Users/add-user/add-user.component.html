@@ -1,9 +1,11 @@
 <div class="container py-5">
 
     <h3>Ajouter un utilisateur</h3>
-    <app-feedback-messages [feedbackMessages]="feedbackMessages" [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
+    <app-feedback-messages [feedbackMessages]="feedbackMessages"
+        [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
 
-<div class="alert alert-info text-light">Essai de mutualisation pour l'ajout d'utilisateurs autres que évaluateurs, formateurs et tuteurs...</div>
+    <div class="alert bg-info text-white">Essai de mutualisation pour l'ajout d'utilisateurs autres que évaluateurs,
+        formateurs et tuteurs...</div>
 
     <!-- pour les messages de retour/validation des champs du formulaire ou form validation, on utilisera BOOTSTRAP plutôt que des directives structurelles -->
     <form class="form" #f="ngForm" (submit)="addUser(f)" class="was-validated">
@@ -42,8 +44,8 @@
             </div>
             <div class="form-group col-md-6">
                 <label for="cp" class="form-label mt-3">CP</label>
-                <input type="text" id="cp" ngModel name="cp" class="form-control"
-                    placeholder="Code Postal Optionnel..." [required]="userRouterLinks.user == 'admin' && userRouterLinks.data == 'referents'">
+                <input type="text" id="cp" ngModel name="cp" class="form-control" placeholder="Code Postal Optionnel..."
+                    [required]="userRouterLinks.user == 'admin' && userRouterLinks.data == 'referents'">
             </div>
         </div>
         <!-- pour en faire un formulaire générique susceptible d'affecter un rôle ou un autre -->
@@ -60,6 +62,33 @@
             </div>
         </div>
 
+        <!-- pour périmètre + caractère privé/public -->
+        <ng-container *ngIf="f.value.role=='external'">
+            <hr>
+
+            <!-- Optionnel : afficher le statut (Public/Privé) -->
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" ngModel name="isPrivate"
+                    (change)="onPrivateToggle()">
+                <label class="form-check-label" for="flexSwitchCheckChecked"><span class="text-dark">Status:</span><span
+                        [ngClass]="{'text-danger':isPrivate}"> {{ isPrivate ? 'Privé (accès à la base candidats payant)'
+                        :
+                        'Public (accès à la base candidat immédiat)' }}</span></label>
+            </div>
+
+
+            <label for="geographicScopeSelect" class="my-2">🌍 Son périmètre géographique :</label>
+            <select id="geographicScopeSelect" class="form-control" ngModel name="geographicScope">
+                <option value>-- Sélectionner un périmètre (pour plus de lisibilité quand vous partagerez le
+                    contact)</option>
+                <option value="regional">Régional</option>
+                <option value="departmental">Départemental</option>
+                <option value="local">Local</option>
+            </select>
+
+        </ng-container>
+
+
 
         <!-- <label for="details" class="form-label mt-3">Commentaires optionnels</label> -->
         <textarea name="details" id="details" ngModel name="details" cols="100" rows="10" class="form-control mt-3"
@@ -71,15 +100,16 @@
 
     <hr>
 
-     <!-- Section d'importation CSV -->
-      <ng-container *ngIf="userRouterLinks.user == 'admin' && userRouterLinks.data == 'referents'">
-          <h3 class="mt-3">Importer plusieurs référents administratifs (avec le code postal qui leur sera affecté)</h3>
-          <div class="form-group">
+    <!-- Section d'importation CSV -->
+    <ng-container *ngIf="userRouterLinks.user == 'admin' && userRouterLinks.data == 'referents'">
+        <h3 class="mt-3">Importer plusieurs référents administratifs (avec le code postal qui leur sera affecté)</h3>
+        <div class="form-group">
             <label for="csvFile" class="form-label">Choisissez un fichier CSV</label>
-               <input type="file" id="csvFile" (change)="onFileChange($event)" accept=".csv" class="form-control">
-          </div>
-          <button type="submit" class="btn btn-secondary mt-4" (click)="importCSV()" [disabled]="!csvFile">Importer</button>
-      </ng-container>
+            <input type="file" id="csvFile" (change)="onFileChange($event)" accept=".csv" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-secondary mt-4" (click)="importCSV()"
+            [disabled]="!csvFile">Importer</button>
+    </ng-container>
 
 
 </div>

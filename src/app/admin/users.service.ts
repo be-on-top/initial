@@ -37,7 +37,13 @@ export class UsersService {
       // si nul besoin de récupérer le rôle dans le profil de l'utilisateur, inutile de l'y inscrire. 
       // on peut cependant considérer que l'ajout de role modifie 2 collections pour éviter d'aller lire dans rôles celui attribué à l'utilisateur.... 
       // let newUser = { created: Date.now(), roles: 'editor', status: true, ...user };
-      let newUser = { created: Date.now(), role: user.role, status: true, ...user };
+
+      // puisque le status doit être maintenant lié à isPrivate... 
+      if (user.isPrivate === true) {
+        user.status = false;
+      }
+      let newUser = { created: Date.now(), role: user.role, status: user.status, ...user };
+      // let newUser = { created: Date.now(), role: user.role, status: true, ...user };
       this.users = [newUser, ...this.users];
       console.log('this.users!!!!!!!!!!!', this.users);
       // on va lui affecter un password aléatoire en fonction de la date

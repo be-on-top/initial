@@ -9,5 +9,7 @@ export interface Users {
     status: boolean;
     tel?: string;
     role?:string;
-    centerId?:string[]
+    centerId?:string[];
+    isPrivate?:boolean;
+    geographicScope?: 'regional' | 'departmental' | 'local';
 }

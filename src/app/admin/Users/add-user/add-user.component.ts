@@ -224,6 +224,17 @@ export class AddUserComponent {
       this.errorMessage = `Erreur lors de l'importation : ${error.message}`;
     }
   }
+
+  isPrivate:boolean=true
+
+  // Méthode qui sera appelée à chaque changement de l'état du switch
+  onPrivateToggle() {
+    console.log('Le statut privé a été changé:', this.isPrivate);
+    this.isPrivate=!this.isPrivate
+  }
+  
+
+  
   
 
 }

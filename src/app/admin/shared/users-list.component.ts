@@ -98,6 +98,7 @@ export class UsersListComponent {
       //   return this.allUsers
       // })
       this.sUsers.getUsers().subscribe(data => {
+        alert('dfdfdfdsfesdfsdf')
         console.log("data de getUsers for external()", data)
         this.allUsers = data.filter(user => user.role == "external")
         return this.allUsers

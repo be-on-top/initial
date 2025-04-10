@@ -9,8 +9,8 @@
             placeholder="Date de création : non modifiable">
         <input type="text" id="id" [(ngModel)]="user.id" name="id" class="form-control"
             placeholder="id d'authentification : non modifiable" class="form-control text-white" disabled>
-            
-            <!-- classe {{user.class}} -->
+
+        <!-- classe {{user.class}} -->
         <label for="firstName" class="form-label mt-3">Prénom</label>
         <input type="text" id="firstName" [(ngModel)]="user.firstName" name="firstName" class="form-control"
             placeholder="Prénom">
@@ -24,8 +24,8 @@
         <label for="email" class="form-label mt-3">Email *</label>
         <div class="input-group disabled">
             <span class="input-group-text" id="inputGroupPrepend2">&#64;</span>
-            <input type="email" id="email" [(ngModel)]="user.email" name="email" class="form-control text-white" #email="ngModel"
-                placeholder="Email" required disabled>
+            <input type="email" id="email" [(ngModel)]="user.email" name="email" class="form-control text-white"
+                #email="ngModel" placeholder="Email" required disabled>
         </div>
         <div class="valid-feedback" *ngIf="email.valid">Email Valide </div>
         <div class="invalid-feedback" *ngIf="email.invalid">Merci de renseigner le champ email.</div>
@@ -37,8 +37,11 @@
         </ng-container>
         <ng-container *ngIf="user.centerId">
             <hr>
-            <label for="centerId" class="form-label mt-1">ID des centres associés <span>(si le Conseiller Projet partage des localisations en commun avec d'autres)</span></label>
-            <div class="alert bg-info text-white mb-2"><i class="bi bi-info-square-fill me-2"></i>L'ID d'un centre est clairement identifié côté utilisateur final ou côté back-office dans la liste des centres que vous avez rentrés</div>
+            <label for="centerId" class="form-label mt-1">ID des centres associés <span>(si le Conseiller Projet partage
+                    des localisations en commun avec d'autres)</span></label>
+            <div class="alert bg-info text-white mb-2"><i class="bi bi-info-square-fill me-2"></i>L'ID d'un centre est
+                clairement identifié côté utilisateur final ou côté back-office dans la liste des centres que vous avez
+                rentrés</div>
             <input type="text" id="centerId" [(ngModel)]="user.centerId" name="centerId" class="form-control"
                 placeholder="Identitifants des centres associés séparés par une virgule...">
         </ng-container>
@@ -54,6 +57,32 @@
                 <ng-template #elseBlock> <span class="fw-bold">Inactif</span></ng-template>
             </label>
         </div>
+
+        <!-- pour périmètre + caractère privé/public -->
+        <ng-container>
+            <hr>
+
+            <!-- Tooggle Swith for user status -->
+            <div class="form-check form-switch my-3">
+                <input disabled class="form-check-input" type="checkbox" id="isPrivate" name="isPrivate" value="true"
+                    [(checked)]="user.isPrivate" [(ngModel)]="user.isPrivate">
+                <label class="form-check-label" for="isPrivate">Catégorie :
+                    <span *ngIf="user.isPrivate; else elseCat" class="fw-bold">Privé</span>
+                    <ng-template #elseCat> <span class="fw-bold">Public</span></ng-template>
+                </label>
+            </div>
+
+
+            <label for="geographicScopeSelect" class="my-2">🌍 Son périmètre géographique :</label>
+            <select id="geographicScopeSelect" class="form-control" [(ngModel)]="user.geographicScope" name="geographicScope">
+              <option [ngValue]="undefined" disabled>-- Choisir un périmètre --</option>
+              <option [ngValue]="'regional'">Régional</option>
+              <option [ngValue]="'departmental'">Départemental</option>
+              <option [ngValue]="'local'">Local</option>
+            </select>
+            
+
+        </ng-container>
 
 
 
