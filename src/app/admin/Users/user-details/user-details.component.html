@@ -16,14 +16,24 @@
                     <span *ngIf="user.cp"><span class="fw-bold">CP</span> : {{user.cp}}</span>
                 </p>
                 <hr>
-                <p> <span *ngIf="user.status; else checkbox">Status : actif</span>
-                    <ng-template #checkbox> Status : inactif</ng-template>
+                <p> <span *ngIf="user.status; else checkbox"><strong>Status</strong> : actif</span>
+                    <ng-template #checkbox> <strong>Status</strong> : inactif</ng-template>
                 </p>
-                <ng-template #checkbox> Status : inactif</ng-template>
+                <ng-template #checkbox> <strong>Status</strong> : inactif</ng-template>
                 <!-- affectation métiers -->
-                <p *ngIf="user.sigle">Métiers d'affectation ({{user.sigle.length}}) :
+                <!-- <p *ngIf="user.sigle">Métiers d'affectation ({{user.sigle.length}}) :
                     <span *ngFor="let s of user.sigle">{{s}} </span>
-                </p>
+                </p> -->
+                <p><strong>Enregistré en tant que</strong> : {{ user.isPrivate ? 'Privé' : 'Public' }}</p>
+                <p *ngIf="user.geographicScope"><strong>Son périmètre</strong> : {{permimeter}}</p>
+                <span *ngIf="user.structure"><strong>Organisme</strong>: {{user.structure}}</span><br>
+                <hr>
+                <p *ngIf="user.structure"><strong>Détails</strong> : Nulla facilisi. Duis faucibus nisi ut arcu rhoncus venenatis. 
+                    Aenean vehicula dui tincidunt, rutrum metus sed, ultrices risus. 
+                    Maecenas semper, ante at volutpat sodales, felis ipsum tempor urna, ac fringilla ex felis sit amet ex. 
+                    Praesent suscipit metus nulla, ac tristique sapien sodales ut.</p>
+            
+
             </div>
             <div class="card-footer text-muted">
                 <span *ngIf="user.created">Date de création : {{user.created | date:'dd/MM/yyyy' }}</span><br>

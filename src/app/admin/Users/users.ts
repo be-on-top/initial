@@ -12,4 +12,6 @@ export interface Users {
     centerId?:string[];
     isPrivate?:boolean;
     geographicScope?: 'regional' | 'departmental' | 'local';
+    structure?:string;
+    address?: number;
 }

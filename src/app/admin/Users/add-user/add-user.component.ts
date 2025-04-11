@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { Papa } from 'ngx-papaparse';
 import { Users } from '../users';
+import { AuthService } from '../../auth.service';
 
 
 @Component({
@@ -45,8 +46,16 @@ export class AddUserComponent {
   successMessage: string = '';
   errorMessage: string = '';
 
-  constructor(private service: UsersService, private router: Router, private ac: ActivatedRoute, private papa: Papa) {
+  // si on partage ce formulaire avec un referent, autaht aller récupérer le role directement en base
+  userRole?: any
+
+  constructor(private service: UsersService,
+    private router: Router,
+    private ac: ActivatedRoute,
+    private papa: Papa,
+    private auth: AuthService) {
     this.userRouterLinks = this.ac.snapshot.data;
+    this.auth.getCurrentUserRole().subscribe(role => this.userRole = role)
   }
 
   ngOnInit(): void {
@@ -75,32 +84,40 @@ export class AddUserComponent {
       return
     }
 
+    let newUser: Users
 
-    console.log("form registration", form.value);
-    this.service.createUser(form.value).then(() => {
-      // Signed in 
-      // const user = userCredential
-      this.feedbackMessages = `Enregistrement OK`;
-      // alert("adminReconnected call")
+    // si on partage ce formulaire avec un referent qui n'aura pas accès à isPrivate ni role...
+    if (this.userRole === 'referent') {
+      newUser = { ...form.value, role: 'external', isPrivate: 'false' }
+    } else { newUser = form.value }
+    // ... et on passe newUser au service
 
-      // alert("registration ok")
-      setTimeout(() => {
-        this.router.navigate([this.linkBackToList]);
-        window.location.reload();
+    console.log("newUser", newUser);
+    
+    // this.service.createUser(form.value).then(() => {
+    //   // Signed in 
+    //   // const user = userCredential
+    //   this.feedbackMessages = `Enregistrement OK`;
+    //   // alert("adminReconnected call")
 
-      }, 2000)
-      // this.router.navigate(['/admin/trainers']);
+    //   // alert("registration ok")
+    //   setTimeout(() => {
+    //     this.router.navigate([this.linkBackToList]);
+    //     window.location.reload();
 
-      // ...
-    })
-      .catch((error) => {
-        this.feedbackMessages = error.message;
-        this.feedbackMessages = this.firebaseErrors[error.code];
-        this.isSuccessMessage = false;
-        console.log(this.feedbackMessages);
+    //   }, 2000)
+    //   // this.router.navigate(['/admin/trainers']);
 
-        // ..};
-      })
+    //   // ...
+    // })
+    //   .catch((error) => {
+    //     this.feedbackMessages = error.message;
+    //     this.feedbackMessages = this.firebaseErrors[error.code];
+    //     this.isSuccessMessage = false;
+    //     console.log(this.feedbackMessages);
+
+    //     // ..};
+    //   })
 
   }
 
@@ -127,17 +144,17 @@ export class AddUserComponent {
       this.errorMessage = 'Veuillez sélectionner un fichier CSV avant de procéder.';
       return;
     }
-  
+
     // Analyse du fichier CSV grâce à PapaParse
     this.papa.parse(this.csvFile, {
       header: true,
-      skipEmptyLines: true, 
+      skipEmptyLines: true,
       complete: (result) => {
         console.log("result data", result.data);
-  
+
         // Objet pour stocker les utilisateurs uniques par email
         const userMap: { [key: string]: any } = {};
-  
+
         result.data.forEach((user: Users) => {
           if (user.email) {
             if (userMap[user.email]) {
@@ -148,18 +165,18 @@ export class AddUserComponent {
               userMap[user.email] = {
                 cp: [user.cp],
                 email: user.email,
-                firstName:user.firstName,
-                lastName:user.lastName,
-                role:'referent',
-                tel:user.tel
+                firstName: user.firstName,
+                lastName: user.lastName,
+                role: 'referent',
+                tel: user.tel
               };
             }
           }
         });
-  
+
         // Convertir l'objet en tableau
         this.parsedReferents = Object.values(userMap);
-  
+
         console.log('Données analysées et fusionnées:', this.parsedReferents);
         this.uploadReferentsToFirestore();
       },
@@ -169,14 +186,14 @@ export class AddUserComponent {
       }
     });
   }
-  
+
 
 
   // Fonction pour télécharger les données vers Firestore
   // uploadReferentsToFirestore(): void {
 
   //   console.log("on execute uploadReferentsToFirestore");
-    
+
   //   if (this.parsedReferents.length === 0) {
   //     this.errorMessage = 'Aucune donnée à importer depuis le fichier CSV.';
   //     return;
@@ -187,7 +204,7 @@ export class AddUserComponent {
   //     // const newReferent={cp:user.cp, role:this.userRouterLinks.data ,tel:user.tel, email:user.email, lastName:user.lastName, firstName:user.firstName}
   //     const newReferent={cp:user.cp, role:user.role ,tel:user.tel, email:user.email, lastName:user.lastName, firstName:user.firstName}
   //     console.log(newReferent);      
-      
+
   //     this.service.createUsers(newReferent)
   //     .then(
   //       (response) => {
@@ -207,15 +224,15 @@ export class AddUserComponent {
 
   async uploadReferentsToFirestore(): Promise<void> {
     console.log("Exécution de uploadReferentsToFirestore");
-  
+
     if (this.parsedReferents.length === 0) {
       this.errorMessage = 'Aucune donnée à importer depuis le fichier CSV.';
       return;
     }
-  
+
     try {
       // console.log("this.parsedReferents", this.parsedReferents);
-      
+
       await this.service.createUsers(this.parsedReferents);
       this.successMessage = 'Référents importés avec succès.';
       this.errorMessage = '';
@@ -225,16 +242,16 @@ export class AddUserComponent {
     }
   }
 
-  isPrivate:boolean=true
+  isPrivate: boolean = true
 
   // Méthode qui sera appelée à chaque changement de l'état du switch
   onPrivateToggle() {
     console.log('Le statut privé a été changé:', this.isPrivate);
-    this.isPrivate=!this.isPrivate
+    this.isPrivate = !this.isPrivate
   }
-  
 
-  
-  
+
+
+
 
 }

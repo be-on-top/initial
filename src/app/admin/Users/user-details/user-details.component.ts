@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UsersService } from '../../users.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ExternalsService } from '../../externals.service';
+import { Users } from '../users';
 
 @Component({
   selector: 'app-user-details',
@@ -11,12 +12,14 @@ import { ExternalsService } from '../../externals.service';
 export class UserDetailsComponent implements OnInit {
 
   userId: any;
-  user: any
+  user?: Users
 
 
   userRouterLinks: any;
   title?: string
   linkBackToList: string = ""
+
+  permimeter:string=""
 
 
   constructor(private service: UsersService, private ac: ActivatedRoute, private router: Router, private externalS: ExternalsService) {
@@ -30,9 +33,19 @@ export class UserDetailsComponent implements OnInit {
     //   })
     // }
     // else {
-      this.service.getUser(this.userId).subscribe(data => {
+      this.service.getUser(this.userId).subscribe((data:Users) => {
         console.log("data de getuser", data);
         this.user = data
+        if (this.user.geographicScope) {
+          if (this.user.geographicScope='regional') {
+            this.permimeter="Régional"
+          } if(this.user.geographicScope="departmental") {
+            this.permimeter="Départemental"            
+          } else{
+            this.permimeter="Local"
+          }
+          
+        }
         return this.user
       })
     // }

@@ -58,6 +58,12 @@
             </label>
         </div>
 
+        <div class="form-group col-md-6">
+            <label for="structure" class="form-label mt-3">Organisme <span class="text-muted">(ex : Mission locale, CIO, association...)</span></label>
+            <input type="text" id="structure" [(ngModel)]="user.structure" name="structure" class="form-control" placeholder="Organisme ou structure d'affiliation">
+          </div>
+          
+
         <!-- pour périmètre + caractère privé/public -->
         <ng-container>
             <hr>
