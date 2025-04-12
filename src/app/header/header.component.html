@@ -47,19 +47,15 @@
                         aria-label="Menu de navigation pour la création d'utilisateurs ayant des droits spécifiques">
                         <li *ngIf="userRole?.includes('admin') || userRole?.includes('manager')"><a
                                 class="dropdown-item" (click)="navigateTo('/admin/settings')">Paramètres</a>
+                                <hr>
                         </li>
 
-                        <li *ngIf="userRole?.includes('admin')">
-                            <hr>
-                        </li>
                         <li *ngIf="userRole?.includes('admin')"><a class="dropdown-item"
                                 [routerLink]="['/admin/evaluators']">Gestion des évaluateurs</a>
                         </li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/trainers']"
                                 *ngIf="userRole?.includes('admin')">Gestion des formateurs</a></li>
                         <!-- exceptionnellement -->
-                        <li><a class="dropdown-item" [routerLink]="['/admin/myTrainers']"
-                                *ngIf="userRole?.includes('referent')">Gestion des formateurs</a></li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/tutors']"
                                 *ngIf="userRole?.includes('admin')">Gestion des tuteurs</a></li>
                         <!-- pour mémo, pour l'instant on utilise le simple contributeur comme utilisateur générique -->
@@ -71,19 +67,20 @@
                                 *ngIf="userRole?.includes('admin')">Gestion des observateurs</a></li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/students']"
                                 *ngIf="userRole?.includes('admin')">Gestion des candidats</a>
+                        </li>
+                        <li *ngIf="userRole?.includes('evaluator') && userRole?.includes('trainer')">
                             <!-- pour virer le hr si trainer seul -->
-                            <hr *ngIf="!userRole?.includes('trainer')">
+                            <hr >
                         </li>
                         <!-- ajout d'une route pour designation du référent -->
                         <!-- <hr *ngIf="userRole?.includes('admin')"> -->
                         <li><a class="dropdown-item" [routerLink]="['/admin/managers']"
                                 *ngIf="userRole?.includes('admin')">Responsable métiers (optionnel)</a></li>
-
                         <!-- liste étudiants  pour observateurs -->
                         <li><a class="dropdown-item" [routerLink]="['/admin/externalStudentsList']"
                                 *ngIf="userRole?.includes('external')">Annuaire candidats</a></li>
 
-                        <li *ngIf="userRole?.includes('admin') || userRole?.includes('evaluators')">
+                        <li *ngIf="userRole?.includes('admin') || (userRole?.includes('evaluators') && userRole?.includes('trainer'))">
                             <hr>
                         </li>
                         <li><a class="dropdown-item" (click)="navigateTo('/admin/priorForm')"
@@ -91,34 +88,35 @@
                                 questions d'accroche</a>
                         </li>
                         <li>
-                        <li><a class="dropdown-item" [routerLink]="['/admin/fullForm']"
-                                *ngIf="userRole?.includes('evaluator') || userRole?.includes('admin')">Saisie des
+                        <li *ngIf="userRole?.includes('evaluator') || userRole?.includes('admin')">
+                            <a class="dropdown-item" [routerLink]="['/admin/fullForm']">Saisie des
                                 questions de
                                 positionnement</a></li>
-                        <li>
-                            <a class="dropdown-item text-muted fst-italic" [routerLink]="['/admin/socialForm']"
-                                *ngIf="userRole?.includes('evaluator') || userRole?.includes('admin')">Saisie des
-                                questions type soft
-                                skills</a>
-                        </li>
                         <li *ngIf="userRole?.includes('evaluator') || userRole?.includes('admin')">
-                            <hr>
+                            <a class="dropdown-item text-muted fst-italic" [routerLink]="['/admin/socialForm']">Saisie des
+                                questions type soft skills</a>
                         </li>
+                        <li *ngIf="userRole?.includes('admin') || (userRole?.includes('trainer') && userRole?.includes('evaluator'))">
+                                <hr>
+                        </li>
+
                         <li><a class="dropdown-item" [routerLink]="['/admin/questions']"
                                 *ngIf="userRole?.includes('evaluator') || userRole?.includes('admin')">Liste des
                                 questions
                                 d'accroche</a>
                         </li>
                         <!-- ici, on peut d'ailleurs remarquer que l'ont a déjà affaire à  -->
-                        <li><a class="dropdown-item" [routerLink]="['/admin/fullList']"
-                                *ngIf="userRole?.includes('evaluator') || userRole?.includes('admin')">Liste des
+                        <li *ngIf="userRole?.includes('evaluator') || userRole?.includes('admin')">
+                            <a class="dropdown-item" [routerLink]="['/admin/fullList']">Liste des
                                 questions
                                 de
                                 positionnement</a></li>
-                        <li><a class="dropdown-item text-light text-muted fst-italic" [routerLink]="['/admin/socials']"
-                                *ngIf="userRole?.includes('evaluator') || userRole?.includes('admin')">Liste des
+                        <li *ngIf="userRole?.includes('evaluator') || userRole?.includes('admin')">
+                            <a class="dropdown-item text-light text-muted fst-italic" [routerLink]="['/admin/socials']"
+                               >Liste des
                                 questions
                                 type soft skills</a>
+                                
                         </li>
                         <li
                             *ngIf="userRole?.includes('admin') || (userRole?.includes('trainer') && userRole?.includes('evaluator'))">
@@ -131,9 +129,17 @@
                         <li><a class="dropdown-item" [routerLink]="['/admin/tutor/myStudents']"
                                 *ngIf="userRole?.includes('tutor') || userRole?.includes('admin')">Suivi tutorial</a>
                         </li>
-                        <li><a class="dropdown-item" [routerLink]="['/admin/referentStudentsList']"
-                                *ngIf="userRole?.includes('referent') || userRole?.includes('admin')">Suivi
-                                administratif des candidats</a>
+
+                        <!-- pour regrouper les délégations aux conseillers projets -->
+                        <li *ngIf="userRole?.includes('referent')">                            
+                            <a class="dropdown-item" [routerLink]="['/admin/referentStudentsList']">Gestion des candidats</a>
+                        </li>
+                        <li *ngIf="userRole?.includes('referent')">
+                            <!-- <hr> -->
+                        <a class="dropdown-item" [routerLink]="['/admin/myTrainers']">Gestion des formateurs</a></li>
+                        <li *ngIf="userRole?.includes('referent')">
+                            <hr>
+                            <a class="dropdown-item" [routerLink]="['/admin/externals']">Gestion des contacts <span class="d-block d-md-inline">(observateurs externes)</span></a>
                         </li>
                     </ul>
                 </li>
