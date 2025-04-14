@@ -58,15 +58,15 @@ export class UserDetailsComponent implements OnInit {
       this.linkBackToList = "/admin/referents"
     }
     else if (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "editors") {
-      this.title = "Contributeurs"
+      this.title = "Contributeur"
       this.linkBackToList = "/admin/editors"
     } else if (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "externals") {
-      this.title = "Observateurs Externes"
+      this.title = "Observateur Externe"
       this.linkBackToList = "/admin/externals"
     }
     // Responsable métiers
     else if (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "managers") {
-      this.title = "Responsables métiers"
+      this.title = "Responsable métier"
       this.linkBackToList = "/admin/managers"
     }
   }

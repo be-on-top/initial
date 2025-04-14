@@ -14,4 +14,5 @@ export interface Users {
     geographicScope?: 'regional' | 'departmental' | 'local';
     structure?:string;
     address?: number;
+    referentUid?:string;
 }

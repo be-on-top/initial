@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, sendPasswordResetEmail, deleteUser, signInWithEmailAndPassword, signInWithCustomToken } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, sendPasswordResetEmail, deleteUser, signInWithEmailAndPassword, signInWithCustomToken, fetchSignInMethodsForEmail } from '@angular/fire/auth';
 import { Firestore, collectionData, collection, docData, setDoc, query, where, updateDoc, getDoc } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { deleteDoc, doc, getDocs } from 'firebase/firestore';
 import { Observable, pipe } from 'rxjs';
+import { Users } from './Users/users';
 
 
 @Injectable({
@@ -24,109 +25,202 @@ export class UsersService {
 
 
   // pour en faire une méthode générique susceptible d'attribuer un rôle ou un autre, me faut 2 arguments.
-  async createUser(user: any) {
-    alert(this.actualRoute)
+  // async createUser(user: any) {
+  //   alert(this.actualRoute)
 
-    // Vérifier si currentUser est défini
-    if (this.auth.currentUser && this.auth.currentUser.email) {
-      // Récupérer l'email de l'administrateur
+  //   // Vérifier si currentUser est défini
+  //   if (this.auth.currentUser && this.auth.currentUser.email) {
+  //     // Récupérer l'email de l'administrateur
+  //     const adminEmail = this.auth.currentUser.email;
+  //     // const actualRoute = this.router.url
+
+
+  //     // si nul besoin de récupérer le rôle dans le profil de l'utilisateur, inutile de l'y inscrire. 
+  //     // on peut cependant considérer que l'ajout de role modifie 2 collections pour éviter d'aller lire dans rôles celui attribué à l'utilisateur.... 
+  //     // let newUser = { created: Date.now(), roles: 'editor', status: true, ...user };
+
+  //     // puisque le status doit être maintenant lié à isPrivate... 
+  //     if (user.isPrivate === true) {
+  //       user.status = false;
+  //     }
+  //     let newUser = { created: Date.now(), role: user.role, status: user.status, ...user };
+  //     // let newUser = { created: Date.now(), role: user.role, status: true, ...user };
+  //     this.users = [newUser, ...this.users];
+  //     console.log('this.users!!!!!!!!!!!', this.users);
+  //     // on va lui affecter un password aléatoire en fonction de la date
+  //     // mais pour le moment, je fais un password à la con pour pouvoir faire mes tests : ATTENTION !!!!!!!!!!!!!!!!!!!
+  //     let password = "password2025#";
+  //     // let password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
+
+  //     // enregistrement en base dans fireAuth d'une part : 
+  //     this.result = await createUserWithEmailAndPassword(this.auth, user.email, password);
+
+
+  //     // c'est ici que ça ne suit pas !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  //     if (this.result && this.result.user) {
+  //       // ATTENTION : compte tenu du fait qu'on enregistre maintenant AVEC uid comme id du doc, ajouter l'uid en propriété du doc n'a plus vraiment d'intérêt
+  //       newUser.id = this.result.user.uid
+
+  //       // enregistre dans Firestore d'autre part avec un collection trainers qui elle aura de multiples propriétés
+  //       let $usersRef = collection(this.firestore, "users");
+  //       // addDoc($trainersRef, newTrainer)
+  //       setDoc(doc($usersRef, newUser.id), newUser)
+
+  //       // enregistre dans Firestore d'autre part le role attribué dans une collection roles qui regroupera tous les roles de tous les utilisateurs avec comme idDoc uid d'authentification là aussi
+  //       let $rolesRef = collection(this.firestore, "roles");
+  //       // addDoc($trainersRef, newTrainer)
+  //       // setDoc(doc($rolesRef, newUser.id), { role: 'editor' })
+  //       await setDoc(doc($rolesRef, newUser.id), { role: user.role })
+
+  //       // envoie un mail de réinitialisation du mot de passe
+  //       await sendPasswordResetEmail(this.auth, newUser.email
+  //             ,{
+  //                // URL de redirection après personnalisation du mot de passe
+  //             url: 'https://be-on-top.io/login',
+  //             // Utilisation de l'application pour traiter cette action
+  //             handleCodeInApp: true 
+  //         }
+  //       )
+  //         .then(() => {
+  //           // Password reset email sent!
+  //           // ..
+  //         })
+  //         .catch((error) => {
+  //           const errorCode = error.code;
+  //           const errorMessage = error.message;
+  //           return errorMessage
+  //           // ..
+  //         });
+
+
+
+  //     }
+
+
+
+
+
+  //     ///////////////
+  //     // Déconnexion de l'administrateur après la création de l'utilisateur
+  //     await this.auth.signOut();
+
+  //     // Attendre que la déconnexion soit terminée
+  //     this.auth.onAuthStateChanged(async (user) => {
+  //       if (!user) {
+  //         // Demander à l'administrateur de se reconnecter
+  //         const adminPassword = prompt('Veuillez entrer votre mot de passe pour vous reconnecter.');
+
+  //         if (adminPassword) {
+  //           await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
+  //           console.log('Reconnexion automatique en tant qu\'administrateur réussie.', adminPassword);
+  //           this.router.navigate([this.actualRoute]);
+  //         } else {
+  //           console.error('Mot de passe non fourni.');
+  //         }
+  //       }
+  //     });
+
+
+  //   } else {
+  //     // Gérer le cas où currentUser est undefined
+  //     console.error('Utilisateur non connecté.');
+  //   }
+
+
+  // }
+
+    // suggestion pour plus de robusteste  
+    async createUser(user: any) {
+      if (!this.auth.currentUser || !this.auth.currentUser.email) {
+        console.error('Administrateur non connecté.');
+        return;
+      }
+  
       const adminEmail = this.auth.currentUser.email;
-      // const actualRoute = this.router.url
-
-
-      // si nul besoin de récupérer le rôle dans le profil de l'utilisateur, inutile de l'y inscrire. 
-      // on peut cependant considérer que l'ajout de role modifie 2 collections pour éviter d'aller lire dans rôles celui attribué à l'utilisateur.... 
-      // let newUser = { created: Date.now(), roles: 'editor', status: true, ...user };
-
-      // puisque le status doit être maintenant lié à isPrivate... 
-      if (user.isPrivate === true) {
-        user.status = false;
+      const adminPassword = prompt('Veuillez entrer votre mot de passe administrateur pour continuer.');
+      if (!adminPassword) {
+        console.error('Mot de passe administrateur non fourni.');
+        return;
       }
-      let newUser = { created: Date.now(), role: user.role, status: user.status, ...user };
-      // let newUser = { created: Date.now(), role: user.role, status: true, ...user };
-      this.users = [newUser, ...this.users];
-      console.log('this.users!!!!!!!!!!!', this.users);
-      // on va lui affecter un password aléatoire en fonction de la date
-      // mais pour le moment, je fais un password à la con pour pouvoir faire mes tests : ATTENTION !!!!!!!!!!!!!!!!!!!
-      let password = "password2025#";
-      // let password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
+  
+      const adminUid = this.auth.currentUser.uid;
+  
+      // Nettoyer l'email (enlever les espaces avant et après)
+      const cleanedEmail = user.email.trim();
 
-      // enregistrement en base dans fireAuth d'une part : 
-      this.result = await createUserWithEmailAndPassword(this.auth, user.email, password);
-
-
-      // c'est ici que ça ne suit pas !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      if (this.result && this.result.user) {
-        // ATTENTION : compte tenu du fait qu'on enregistre maintenant AVEC uid comme id du doc, ajouter l'uid en propriété du doc n'a plus vraiment d'intérêt
-        newUser.id = this.result.user.uid
-
-        // enregistre dans Firestore d'autre part avec un collection trainers qui elle aura de multiples propriétés
-        let $usersRef = collection(this.firestore, "users");
-        // addDoc($trainersRef, newTrainer)
-        setDoc(doc($usersRef, newUser.id), newUser)
-
-        // enregistre dans Firestore d'autre part le role attribué dans une collection roles qui regroupera tous les roles de tous les utilisateurs avec comme idDoc uid d'authentification là aussi
-        let $rolesRef = collection(this.firestore, "roles");
-        // addDoc($trainersRef, newTrainer)
-        // setDoc(doc($rolesRef, newUser.id), { role: 'editor' })
-        await setDoc(doc($rolesRef, newUser.id), { role: user.role })
-
-        // envoie un mail de réinitialisation du mot de passe
-        await sendPasswordResetEmail(this.auth, newUser.email
-              ,{
-                 // URL de redirection après personnalisation du mot de passe
-              url: 'https://be-on-top.io/login',
-              // Utilisation de l'application pour traiter cette action
-              handleCodeInApp: true 
-          }
-        )
-          .then(() => {
-            // Password reset email sent!
-            // ..
-          })
-          .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            return errorMessage
-            // ..
-          });
-
-
-
-      }
-
-
-
-
-
-      ///////////////
-      // Déconnexion de l'administrateur après la création de l'utilisateur
-      await this.auth.signOut();
-
-      // Attendre que la déconnexion soit terminée
-      this.auth.onAuthStateChanged(async (user) => {
-        if (!user) {
-          // Demander à l'administrateur de se reconnecter
-          const adminPassword = prompt('Veuillez entrer votre mot de passe pour vous reconnecter.');
-
-          if (adminPassword) {
-            await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
-            console.log('Reconnexion automatique en tant qu\'administrateur réussie.', adminPassword);
-            this.router.navigate([this.actualRoute]);
-          } else {
-            console.error('Mot de passe non fourni.');
-          }
+  
+      // Initialiser un nouvel étudiant avec des champs par défaut
+      const newUser: Users = {
+        created: Date.now(),        
+        referentUid: adminUid,
+        ...user,
+        email: cleanedEmail,  // Assurez-vous que l'email nettoyé est utilisé
+      };
+  
+      try {
+        console.log("Vérification des doublons pour l'email :", cleanedEmail);
+        const signInMethods = await fetchSignInMethodsForEmail(this.auth, cleanedEmail);
+        if (signInMethods.length > 0) {
+          console.error('Un utilisateur avec cet email existe déjà.');
+          alert('Un utilisateur avec cet email existe déjà.');
+          return;
         }
-      });
-
-
-    } else {
-      // Gérer le cas où currentUser est undefined
-      console.error('Utilisateur non connecté.');
+  
+        console.log("Aucun doublon détecté. Création de l'étudiant...");
+        // const password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
+        const password="password"
+  
+        const result = await createUserWithEmailAndPassword(this.auth, cleanedEmail, password);
+        if (!result || !result.user) {
+          throw new Error("Échec de la création de l'utilisateur Firebase.");
+        }
+  
+        newUser.id = result.user.uid;
+  
+        // Ajouter les informations de l'étudiant dans Firestore
+        const studentsRef = collection(this.firestore, "users");
+        await setDoc(doc(studentsRef, newUser.id), newUser);
+        console.log("Utilisateur ajouté avec succès dans Firestore :", newUser);
+  
+        // Ajouter le rôle de l'étudiant dans Firestore
+        const rolesRef = collection(this.firestore, "roles");
+        await setDoc(doc(rolesRef, newUser.id), { role: user.role });
+        console.log("Rôle de l'utilisateur ajouté avec succès!!!!!!!.", user.role);
+  
+        // Envoyer un e-mail de réinitialisation du mot de passe
+        await sendPasswordResetEmail(this.auth, cleanedEmail
+  
+          , {
+            // URL de redirection après personnalisation du mot de passe
+            url: 'https://be-on-top.io/login',
+            // Utilisation de l'application pour traiter cette action
+            handleCodeInApp: true
+          }
+  
+  
+        );
+        console.log("E-mail de réinitialisation envoyé à :", cleanedEmail);
+  
+        // Déconnexion du compte étudiant
+        await this.auth.signOut();
+        console.log("Déconnexion de l'utilisateur étudiant.");
+  
+        // Reconnexion de l'administrateur
+        const adminResult = await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
+        if (!adminResult || !adminResult.user) {
+          throw new Error('Échec de la reconnexion de l\'administrateur.');
+        }
+  
+        console.log("Administrateur reconnecté avec succès.");
+  
+        // Redirection vers la liste ou page des détails de l'utilisateur (?)
+        this.router.navigate(['/admin/external', newUser.id]);
+        console.log("Redirection vers la page des détails de l'utilisateur.");
+      } catch (error: any) {
+        console.error("Erreur lors de la création de l'utilisateur :", error.message);
+        alert(`Erreur : ${error.message}`);
+      }
     }
-
-
-  }
 
 
   // version simplifiée de createUsers

@@ -1,7 +1,9 @@
 <div class="container py-5">
 
-    <h3 *ngIf="userRouterLinks.user==='!referent'" class="mb-3">Détails de l'utilisateur ({{title}})</h3>
+    <h3 *ngIf="userRouterLinks.user==='admin'" class="mb-3">Détails de l'utilisateur ({{title}})</h3>
     <h3 *ngIf="userRouterLinks.user==='referent'" class="mb-3">Mon compte professionnel</h3>
+
+    
 <!-- title {{title}} -->
 
     <div *ngIf="user">

@@ -88,13 +88,13 @@ export class AddUserComponent {
 
     // si on partage ce formulaire avec un referent qui n'aura pas accès à isPrivate ni role...
     if (this.userRole === 'referent') {
-      newUser = { ...form.value, role: 'external', isPrivate: 'false' }
+      newUser = { ...form.value, role: 'external', isPrivate: false, status:true }
     } else { newUser = form.value }
     // ... et on passe newUser au service
 
     console.log("newUser", newUser);
     
-    // this.service.createUser(form.value).then(() => {
+    // this.service.createUser(newUser).then(() => {
     //   // Signed in 
     //   // const user = userCredential
     //   this.feedbackMessages = `Enregistrement OK`;
@@ -102,7 +102,7 @@ export class AddUserComponent {
 
     //   // alert("registration ok")
     //   setTimeout(() => {
-    //     this.router.navigate([this.linkBackToList]);
+    //     // this.router.navigate([this.linkBackToList]);
     //     window.location.reload();
 
     //   }, 2000)
