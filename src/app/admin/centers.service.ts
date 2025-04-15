@@ -432,30 +432,64 @@ getCenterSigles(id: string): Observable<string[]> {
 //   );
 // }
 
+// getUserCentersSigles(centerIds: string[]): Observable<string[]> {
+//   // Si le tableau est vide, retourner immédiatement un tableau vide
+//   if (!centerIds.length) return of([]);
+
+//   // On démarre un tableau vide pour y pousser les sigles
+//   let allSigles: string[] = [];
+
+//   // Créer un observable qui va itérer sur les centerIds
+//   return from(centerIds).pipe(
+//     concatMap(id => 
+//       this.getCenterSigles(id).pipe(
+//         tap(sigles => {
+//           // On pousse les sigles dans le tableau au fur et à mesure
+//           allSigles = [...allSigles, ...sigles];
+//         })
+//       )
+//     ),
+//     map(() => {
+//       // Une fois tous les sigles récupérés, on supprime les doublons
+//       return Array.from(new Set(allSigles));
+//     }),
+//     catchError(error => {
+//       console.error('Erreur dans getUserCentersSigles:', error);
+//       return of([]); // Retourne un tableau vide en cas d'erreur
+//     })
+//   );
+// }
+
 getUserCentersSigles(centerIds: string[]): Observable<string[]> {
-  // Si le tableau est vide, retourner immédiatement un tableau vide
   if (!centerIds.length) return of([]);
 
-  // On démarre un tableau vide pour y pousser les sigles
+  console.log('✅ Liste des centerIds reçus dans getUserCentersSigles:', centerIds);
+
+  // Tableau pour accumuler tous les sigles
   let allSigles: string[] = [];
 
-  // Créer un observable qui va itérer sur les centerIds
   return from(centerIds).pipe(
-    concatMap(id => 
+    mergeMap(id => 
       this.getCenterSigles(id).pipe(
         tap(sigles => {
-          // On pousse les sigles dans le tableau au fur et à mesure
+          // Ajout des sigles de chaque centerId dans le tableau
           allSigles = [...allSigles, ...sigles];
+        }),
+        catchError(error => {
+          console.error(`Erreur pour le centerId ${id}:`, error);
+          return of([]);  // Retourne un tableau vide en cas d'erreur pour cet ID
         })
       )
     ),
     map(() => {
-      // Une fois tous les sigles récupérés, on supprime les doublons
-      return Array.from(new Set(allSigles));
+      // Après avoir récupéré tous les sigles, on fusionne et dédoublonne
+      const uniques = Array.from(new Set(allSigles));
+      console.log('✅ Sigles fusionnés et dédoublonnés:', uniques);
+      return uniques;
     }),
     catchError(error => {
-      console.error('Erreur dans getUserCentersSigles:', error);
-      return of([]); // Retourne un tableau vide en cas d'erreur
+      console.error('Erreur générale dans getUserCentersSigles:', error);
+      return of([]);  // Retourne un tableau vide en cas d'erreur
     })
   );
 }

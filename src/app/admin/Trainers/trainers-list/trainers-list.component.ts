@@ -214,17 +214,31 @@ export class TrainersListComponent {
   
         this.myCp = referentData.cp || []; // Codes postaux
         const centerIds = referentData.centerId;
+        console.log("🧩 centerIds du référent :", centerIds);
+
   
         if (Array.isArray(centerIds) && centerIds.length > 0) {
           this.centersService.getUserCentersSigles(centerIds).subscribe({
             next: data => {
               this.dedicatedTrades = data; // Métiers liés aux centres
+
+              console.log('✅ dedicatedTrades récupérés :', this.dedicatedTrades);
+              console.log('✅ CP du référent :', this.myCp);
   
               this.service.getTrainers().subscribe(trainers => {
                 this.trainersList = trainers.filter((trainer: any) => {
                   const matchesCp = trainer.cp?.some((cp: string) => this.myCp.includes(cp));
                   const matchesSigles = trainer.sigle?.some((sigle: string) => this.dedicatedTrades.includes(sigle));
-  
+                
+                  if (matchesCp && matchesSigles) {
+                    console.log('✅ Formateur retenu :', trainer.id, 'CP:', trainer.cp, 'SIGLES:', trainer.sigle);
+                  } else {
+                    console.warn('⛔️ Formateur exclu :', trainer.id, 'CP:', trainer.cp, 'SIGLES:', trainer.sigle, {
+                      matchesCp,
+                      matchesSigles
+                    });
+                  }
+                
                   return matchesCp && matchesSigles;
                 });
   
