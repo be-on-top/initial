@@ -15,4 +15,5 @@ export interface Users {
     structure?:string;
     address?: number;
     referentUid?:string;
+    students:string[]
 }

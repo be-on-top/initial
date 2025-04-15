@@ -299,7 +299,7 @@ export class StudentsService {
 
   // suggestion pour plus de robusteste
   async createStudents(students: any[]) {
-    alert(this.actualRoute);
+    // alert(this.actualRoute);
 
     // Vérifier si currentUser est défini
     if (this.auth.currentUser && this.auth.currentUser.email) {
