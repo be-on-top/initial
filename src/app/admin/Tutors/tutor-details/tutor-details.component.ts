@@ -32,7 +32,7 @@ export class TutorDetailsComponent {
           let list: any = [];
           for (let student of this.user.students) {
             console.log('ce que je récupère getLinkedStudentName', this.service.getLinkedStudentName(student));
-            this.service.getLinkedStudentName(student).subscribe(dataStudent => list.push(dataStudent.lastName))
+            this.service.getLinkedStudentName(student).subscribe(dataStudent => list.push(dataStudent.lastName + dataStudent.firstName))
           }
           this.studentsList = list
         }

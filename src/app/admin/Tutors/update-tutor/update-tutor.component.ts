@@ -27,6 +27,9 @@ export class UpdateTutorComponent implements OnInit {
   adminUid?: any
   allStudents: any[] = [];
 
+  searchText: string = ''; // Assurez-vous de définir la propriété searchText ici
+  selectedStudent: string[] = []; // Déclarer en tant que tableau de chaînes
+
   constructor(private service: TutorsService,
     private ac: ActivatedRoute,
     private router: Router,
@@ -117,6 +120,25 @@ export class UpdateTutorComponent implements OnInit {
 
   filterStudentsByPriorCenter(students: Student[], returnedPriors: string[]): Student[] {
     return students.filter(student => returnedPriors.includes(student.id));
+  }
+
+  delete(studentUid: string) {
+    console.log('Student à supprimer :', studentUid);
+
+    // Trouver l'index de l'étudiant correspondant
+    const index = this.studentsList.findIndex((student: any) => student.id === studentUid);
+
+    if (index !== -1) {
+      // Supprimer l'étudiant du tableau
+      this.studentsList.splice(index, 1);
+      console.log('this.studentsList mis à jour :', this.studentsList);
+    } else {
+      console.log('Étudiant non trouvé dans la liste');
+    }
+
+
+    this.studentsService.deleteStudentFromTutor(this.userId, studentUid)
+
   }
 
 

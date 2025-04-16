@@ -23,8 +23,8 @@
         <label for="email" class="form-label mt-3">Email *</label>
         <div class="input-group">
             <span class="input-group-text" id="inputGroupPrepend2">@</span>
-            <input type="email" id="email" [(ngModel)]="user.email" name="email" class="form-control"
-                #email="ngModel" placeholder="Email" required>
+            <input type="email" id="email" [(ngModel)]="user.email" name="email" class="form-control" #email="ngModel"
+                placeholder="Email" required>
         </div>
         <div class="valid-feedback" *ngIf="email.valid">Email Valide </div>
         <div class="invalid-feedback" *ngIf="email.invalid">Merci de renseigner le champ email.</div>
@@ -44,7 +44,7 @@
         </div>
 
         <!-- modification des sigles métiers : pas d'affectation métier pour le tuteur externe -->
-<!-- 
+        <!-- 
         <label for="sigle" class="form-label mt-3">Affectation métier :</label>
         <select class="form-select" name="sigle" id="sigle" [ngModel]="user.sigle" required #sigle="ngModel"
             (change)="checkIfSelected(sigle.value)" multiple>
@@ -57,10 +57,29 @@
 
         <!-- modification des étudiants qui lui sont affectés -->
 
-        <label for="students" class="form-label mt-3">Affectation étudiants :</label>
-        <select class="form-select" name="students" id="students" [ngModel]="user.students" #students="ngModel" multiple>
+        <!-- initialement -->
+        <!-- <label for="students" class="form-label mt-3">Affectation étudiants :</label>
+        <select class="form-select" name="students" id="students" [ngModel]="user.students" #students="ngModel"
+            multiple>
             <option value>Selectionner l'étudiant</option>
-            <option *ngFor="let student of studentsList" value="{{student.id}}">+{{student.lastName}} {{student.firstName}}</option>
+            <option *ngFor="let student of studentsList" value="{{student.id}}">+{{student.lastName}}
+                {{student.firstName}}</option>
+        </select> -->
+
+        <!-- pour lister ceux déjà inscrits -->
+        <ng-container *ngFor="let student of studentsList">
+            <span *ngIf="selectedStudent.includes(student.id)">{{student.lastName}} {{student.firstName}}<button
+                    type="button" class="btn" title="remove student" (click)="delete(student.id)"><i
+                        class="bi bi-x-square-fill mx-0"></i></button></span>
+        </ng-container>
+
+
+        <select #studentSelect class="form-select" name="students" id="students" [(ngModel)]="selectedStudent" multiple>
+            <option value>Selectionner l'étudiant</option>
+            <option *ngFor="let student of studentsList" [value]="student.id" [id]="student.id" #[student.id]
+                [ngClass]="{'text-light bg-primary fst-italic': searchText && student.lastName.toLowerCase().includes(searchText.toLowerCase())}">
+                {{student.lastName}} {{student.firstName}}
+            </option>
         </select>
 
         <!-- <label for="email" class="form-label mt-3">Commentaires optionnels</label> -->

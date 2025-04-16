@@ -1549,7 +1549,46 @@ getStudentsNotSubmitted(): Observable<any[]> {
 
 
 
-
+  deleteStudentFromTutor(trainerId: string, studentUid: string) {
+    // Référence au document Trainer dans Firestore
+    const $tutorRef = doc(this.firestore, "tutors/" + trainerId);
+  
+    // Lire le document actuel pour récupérer la liste des étudiants
+    getDoc($tutorRef)
+      .then((docSnapshot) => {
+        if (docSnapshot.exists()) {
+          const trainerData = docSnapshot.data(); // Obtenir les données du document
+  
+          // Vérifier que 'students' est un tableau valide
+          if (trainerData['students'] && Array.isArray(trainerData['students'] )) {
+            // Supprimer le studentUid de la liste des étudiants
+            const updatedStudents = trainerData['students'] .filter((id: string) => id !== studentUid);
+  
+            // Mettre à jour uniquement le champ 'students' dans Firestore
+            return updateDoc($tutorRef, { students: updatedStudents });
+          } else {
+            console.error("Le champ 'students' est absent ou invalide.");
+            return Promise.reject("Propriété 'students' invalide.");
+          }
+        } else {
+          console.error("Le document trainer n'existe pas.");
+          return Promise.reject("Document introuvable.");
+        }
+      })
+      .then(() => {
+        console.log("Le champ 'students' a été mis à jour avec succès !");
+  
+        // Réinitialiser la propriété 'trainer' dans le document de l'étudiant
+        const $studentRef = doc(this.firestore, "students/" + studentUid);
+        return updateDoc($studentRef, { tutor: "attribué ultérieurement" });
+      })
+      .then(() => {
+        console.log(`La propriété 'trainer' de l'étudiant ${studentUid} a été réinitialisée avec succès !`);
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la mise à jour :", error);
+      });
+  }
 
 
 
