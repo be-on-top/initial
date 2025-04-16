@@ -101,10 +101,7 @@ const routesAdmin: Routes = [
       { path: 'addTutor', component: AddTutorComponent },
       { path: 'tutor/myStudents', component: MyStudentsComponent, data: { user: 'tutor' } },
       { path: 'tutor/:id', component: TutorDetailsComponent },
-
-
-      // { path: 'tutor/:id', component: TutorDetailsComponent },
-      // { path: 'updateTutor/:id', component: UpdateTutorComponent },
+      { path: 'updateTutor/:id', component: UpdateTutorComponent },
 
       // l'éditeur est générique pour l'esssai ??
       // { path: 'users', component: UsersListComponent, data: { user: 'editor' } },

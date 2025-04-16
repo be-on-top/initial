@@ -3,6 +3,9 @@ import { NgForm } from '@angular/forms';
 import { TutorsService } from '../../tutors.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StudentsService } from '../../students.service';
+import { AuthService } from '../../auth.service';
+import { UsersService } from '../../users.service';
+import { Student } from '../../Students/student';
 
 @Component({
   selector: 'app-update-tutor',
@@ -18,7 +21,29 @@ export class UpdateTutorComponent implements OnInit {
   // pour affecter des étudiants à son compte
   studentsList: any = []
 
-  constructor(private service: TutorsService, private ac: ActivatedRoute, private router: Router, private studentsService: StudentsService) {
+  // si on partage ce formulaire avec un referent, autaht aller récupérer le role directement en base
+  userRole?: any
+  cpArray: string[] = []
+  adminUid?: any
+  allStudents: any[] = [];
+
+  constructor(private service: TutorsService,
+    private ac: ActivatedRoute,
+    private router: Router,
+    private studentsService: StudentsService,
+    private authService: AuthService,
+    private userService: UsersService
+  ) {
+
+    // Récupérer l'UID de manière synchrone
+    this.adminUid = this.authService.getCurrentUserUid();
+    console.log('UID de l\'utilisateur authentifié dans le composant :', this.adminUid);
+    // si j'utilise pas un attribut de route
+    this.authService.getCurrentUserRole().subscribe(role => this.userRole = role)
+
+
+
+
   }
 
   ngOnInit(): void {
@@ -30,9 +55,30 @@ export class UpdateTutorComponent implements OnInit {
     })
 
     // parce que j'ai besoin de récupérer la liste pour les affectations
+    // this.studentsService.getStudents().subscribe((students) => {
+    //   this.studentsList = students
+    // })
+
+    // si partage des affectations avec referent
     this.studentsService.getStudents().subscribe((students) => {
-      this.studentsList = students
+      this.allStudents = students
+      // On peut maintenant utiliser cet UID pour d'autres opérations
+      if (this.adminUid && this.userRole === 'referent') {
+        alert("referent")
+        this.getCentersAndSocialFormByUserId(this.adminUid)
+        this.userService.getUser(this.adminUid).subscribe(data => this.cpArray = data.cp)
+
+      } else {
+        this.studentsList = students.filter(student =>
+          // qu'il soit inscrit
+          student.subscriptions &&
+          // que la fin de formation ne soit pas actéé
+          !student.endedSubscriptions
+        )
+      }
+
     })
+
   }
 
   updateUser(form: NgForm) {
@@ -55,5 +101,25 @@ export class UpdateTutorComponent implements OnInit {
     console.log(sigle);
     this.selectedSigles = [...this.selectedSigles, sigle]
   }
+
+
+  getCentersAndSocialFormByUserId(userId: string) {
+
+    this.studentsService.getCentersAndSocialFormByUserId(userId)
+      .subscribe(returnedPriors => {
+        console.log('ReturnedPriors:', returnedPriors);
+        // Après avoir récupéré returnedPriors, on filtre la liste des étudiants
+        this.studentsList = this.filterStudentsByPriorCenter(this.allStudents, returnedPriors);
+        console.log('Filtered Students:', this.studentsList);
+      })
+
+  }
+
+  filterStudentsByPriorCenter(students: Student[], returnedPriors: string[]): Student[] {
+    return students.filter(student => returnedPriors.includes(student.id));
+  }
+
+
+
 
 }
