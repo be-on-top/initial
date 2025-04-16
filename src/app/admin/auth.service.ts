@@ -382,6 +382,7 @@ export class AuthService {
     return user ? user.email : null;  // Retourne l'UID si l'utilisateur est connecté, sinon null
   }
 
+//  fonctionne bien mais je récupère pas admin (?)
   getCurrentUserRole(): Observable<string | string[] | null> {
     return new Observable(observer => {
       onAuthStateChanged(this.auth, user => {
@@ -406,6 +407,40 @@ export class AuthService {
       });
     });
   }
+
+  // suggestion amélioration 
+  // getCurrentUserRole(): Observable<string | string[] | null> {
+  //   return new Observable(observer => {
+  //     onAuthStateChanged(this.auth, user => {
+  //       if (!user) {
+  //         observer.next(null);
+  //         observer.complete();
+  //         return;
+  //       }
+  
+  //       const rolesRef = doc(this.firestore, `roles/${user.uid}`);
+  //       docData(rolesRef).subscribe(roleDoc => {
+  //         console.log("Données Firestore pour l'utilisateur :", roleDoc);  // Debug
+  
+  //         if (roleDoc && roleDoc['role']) {
+  //           const role = roleDoc['role'];
+  
+  //           // Si role est un tableau, on peut vérifier si 'admin' en fait partie
+  //           if (Array.isArray(role)) {
+  //             // Si rôle est un tableau, on vérifie si l'admin y est présent
+  //             observer.next(role.includes('admin') ? 'admin' : role);
+  //           } else {
+  //             observer.next(role);  // Si role est une chaîne simple
+  //           }
+  //         } else {
+  //           observer.next(null);
+  //         }
+  //         observer.complete();
+  //       });
+  //     });
+  //   });
+  // }
+  
 
 
   // getCurrentUserInfo(): Observable<{ uid: string, role: string | string[] | null } | null> {

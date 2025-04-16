@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { TutorsService } from '../../tutors.service';
 import { Router } from '@angular/router';
 import { EvaluatorsService } from '../../evaluators.service';
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-add-tutor',
@@ -30,7 +31,11 @@ export class AddTutorComponent {
     'auth/invalid-email': 'Aucun enregistrement ne correspond au mail fourni'
   }; // list of firebase error codes to alternate error messages
 
-  constructor(private service: TutorsService, private router: Router, private evaluatorsService:EvaluatorsService) { }
+  constructor(
+    private service: TutorsService,
+    private router: Router,
+    private evaluatorsService:EvaluatorsService,
+  private authService:AuthService ) { }
 
   ngOnInit(): void {
     this.evaluatorsService.getEvaluators().subscribe(data => {
@@ -47,39 +52,81 @@ export class AddTutorComponent {
   }
 
 
+  // async addTutor(form: NgForm) {
+  //   // on vérifie la validité du formulaire
+  //   if (!form.valid) {
+  //     console.log('form valid');
+  //     return
+  //   }
+
+  //   console.log("form registration", form.value);
+  //   this.service.createTutor(form.value).then((userCredential) => {
+  //     // Signed in 
+  //     const user = userCredential;
+  //     this.feedbackMessages = `Enregistrement OK`;
+
+  //     // alert("registration ok")
+  //     setTimeout(() => {
+  //       this.router.navigate(['/admin/tutors'])
+  //     }, 2000)
+  //     // this.router.navigate(['/admin/trainers']);
+  //     // ...
+  //   })
+  //     .catch((error) => {
+  //       this.feedbackMessages = error.message;
+  //       this.feedbackMessages = this.firebaseErrors[error.code];
+  //       this.isSuccessMessage = false;
+  //       console.log(this.feedbackMessages);
+
+  //       // ..};
+  //     })
+  //   // form.reset();
+  //   // redirige vers la vue de détail 
+  //   // this.router.navigate(['/admin/trainers']);
+
+  // }
+
+  // si je partage le formulaire avec le référent
   async addTutor(form: NgForm) {
-    // on vérifie la validité du formulaire
+    // On vérifie la validité du formulaire
     if (!form.valid) {
       console.log('form valid');
-      return
+      return;
     }
-
+  
     console.log("form registration", form.value);
-    this.service.createTutor(form.value).then((userCredential) => {
-      // Signed in 
-      const user = userCredential;
-      this.feedbackMessages = `Enregistrement OK`;
+  
+    // On récupère le rôle de l'utilisateur connecté
+    this.authService.getCurrentUserRole().subscribe((role: any) => {
+      // Si l'utilisateur est un référent, on ajoute son UID comme referentUid
+      if (role === 'referent') {
+        const referentUid = this.authService.getCurrentUserUid(); // Récupération de l'UID du référent
+        form.value.referentUid = referentUid;  // On ajoute le referentUid aux données du tuteur
+      }
 
-      // alert("registration ok")
-      setTimeout(() => {
-        this.router.navigate(['/admin/tutors'])
-      }, 2000)
-      // this.router.navigate(['/admin/trainers']);
-      // ...
-    })
+       console.log("form registration if referent", form.value);
+  
+      // On passe les données (form.value) avec ou sans referentUid au service pour l'enregistrement
+      this.service.createTutor(form.value).then((userCredential) => {
+        const user = userCredential;
+        this.feedbackMessages = `Enregistrement OK`;
+
+        // la redirection se gère côté service (?)
+  
+        // setTimeout(() => {
+        //   this.router.navigate(['/admin/tutors']);
+        // }, 2000);
+      })
       .catch((error) => {
         this.feedbackMessages = error.message;
         this.feedbackMessages = this.firebaseErrors[error.code];
         this.isSuccessMessage = false;
         console.log(this.feedbackMessages);
-
-        // ..};
-      })
-    // form.reset();
-    // redirige vers la vue de détail 
-    // this.router.navigate(['/admin/trainers']);
-
+      });
+  
+    });
   }
+  
 
   // pour affecation métier de l'évaluateur
   checkIfSelected(sigle: any) {
