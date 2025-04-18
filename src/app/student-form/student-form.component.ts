@@ -180,7 +180,7 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
     if (form.invalid) {
       alert("Veuillez remplir tous les champs obligatoires : adresse, code postal et téléphone.");
       return;
-  }
+    }
 
     // Nettoyer l'objet des champs undefined
     Object.keys(socialFormData).forEach(key => socialFormData[key] === undefined && delete socialFormData[key]);
@@ -701,21 +701,25 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
   //   );
   // }
 
-  
 
-  public playText(text:string): void {
+
+  public playText(text: string): void {
     // const text = 'N\'oubliez pas de terminer et soumettre votre formulaire pour être contacté par un conseiller projet.';
-    
-    this.textToSpeechService.synthesizeSpeech(text).subscribe(
-      (response) => {
-        const audioContent = response.audioContent;
-        const audio = new Audio('data:audio/mp3;base64,' + audioContent);
-        audio.play();
-      },
-      (error) => {
-        console.error('Erreur lors de la synthèse vocale:', error);
-      }
-    );
+
+    if (!this.isReadOnly) {
+
+      this.textToSpeechService.synthesizeSpeech(text).subscribe(
+        (response) => {
+          const audioContent = response.audioContent;
+          const audio = new Audio('data:audio/mp3;base64,' + audioContent);
+          audio.play();
+        },
+        (error) => {
+          console.error('Erreur lors de la synthèse vocale:', error);
+        }
+      );
+    }
+
   }
 
 
