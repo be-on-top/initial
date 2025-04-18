@@ -7,7 +7,7 @@
     <p class="fs-6 text-center"><span class="fw-bold">Id:</span>
         {{q.id}} - <a class="fw-bold text-decoration-none" [routerLink]="['/admin/updateFull', q.id]">Modifier</a>
         <!-- implémentations en cours... -->
-        <!-- <a href="" class="fw-bold text-decoration-none ms-2" (click)="deleteQuestion(q.id, q.number, q.sigle); $event.preventDefault()">Supprimer</a> -->
+        <a href="" class="fw-bold text-decoration-none ms-2" (click)="deleteQuestion(q.id, q.number, q.sigle); $event.preventDefault()">Supprimer</a>
     </p>
 
     <!-- questionMedia {{questionsMedias |json}} -->
@@ -30,7 +30,7 @@
                     <source [src]="item" type="video/mp4">
                     Your browser does not support HTML video.
                 </video>
-                <ng-template #image><img class="img-fluid image-zoomable p-2" [src]="item" (load)="onImageLoad()"
+                <ng-template #image><img alt="onLoading" class="img-fluid image-zoomable p-2" [src]="item" (load)="onImageLoad()"
                         loading="lazy" [class.bg-primary]="!isLoading"></ng-template>
             </div>
         </div>
@@ -44,7 +44,7 @@
             <p class="text-center fs-5">R1 : {{q.option1}}</p>
             <div *ngIf="responsesMedias && responsesMedias.length!==0">
                 <div *ngFor="let item of responsesMedias">
-                    <img *ngIf="item.includes(q.id) && item.includes('Option1')"
+                    <img alt="Option1" *ngIf="item.includes(q.id) && item.includes('Option1')"
                         class="cover img-fluid rounded mb-3 img-thumbnail" [src]="item" loading="lazy">
                 </div>
             </div>
@@ -54,7 +54,7 @@
             <p class="text-center fs-5">R2 : {{q.option2}}</p>
             <div *ngIf="responsesMedias">
                 <div *ngFor="let item of responsesMedias">
-                    <img *ngIf="item.includes(q.id) && item.includes('Option2')"
+                    <img alt="Option2" *ngIf="item.includes(q.id) && item.includes('Option2')"
                         class="cover img-fluid rounded mb-3 img-thumbnail" [src]="item" loading="lazy">
                 </div>
             </div>
@@ -64,7 +64,7 @@
             <p class="text-center fs-5">R3 : {{q.option3}}</p>
             <div *ngIf="responsesMedias">
                 <div *ngFor="let item of responsesMedias">
-                    <img *ngIf="item.includes(q.id) && item.includes('Option3')"
+                    <img alt="Option3" *ngIf="item.includes(q.id) && item.includes('Option3')"
                         class="cover img-fluid rounded mb-3 img-thumbnail" [src]="item" loading="lazy">
                 </div>
             </div>
@@ -73,7 +73,7 @@
             <p class="text-center fs-5">R4 : {{q.option4}}</p>
             <div *ngIf="responsesMedias">
                 <div *ngFor="let item of responsesMedias">
-                    <img *ngIf="item.includes(q.id) && item.includes('Option4')"
+                    <img alt="Option4" *ngIf="item.includes(q.id) && item.includes('Option4')"
                         class="cover img-fluid rounded mb-3 img-thumbnail" [src]="item" loading="lazy">
                 </div>
             </div>

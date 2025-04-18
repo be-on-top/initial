@@ -43,35 +43,63 @@ export class FullDetailsComponent {
   //   this.isImageResponseLoading = false
   // }
 
-  deleteQuestion(idQuestion: string, number: number, sigle:string) {
-    // this.service.deleteQuestionById(idQuestion)
+  // deleteQuestion(idQuestion: string, number: number, sigle:string) {
+  //   // this.service.deleteQuestionById(idQuestion)
 
-    // pour lui passer mediaQuestion
-   if (this.questionsMedias) {
-     for (const element of this.questionsMedias) {
-      console.log('en voilà un', element)
-      this.service.deleteMediaFromUrl(element)      
-     }
-   }
+  //   // pour lui passer mediaQuestion
+  //  if (this.questionsMedias) {
+  //    for (const element of this.questionsMedias) {
+  //     console.log('en voilà un', element)
+  //     this.service.deleteMediaFromUrl(element)      
+  //    }
+  //  }
 
-       // pour lui passer mediasResponses
-       if (this.responsesMedias) {
-        for (const element of this.responsesMedias) {
-         console.log('en voilà un', element);
-         this.service.deleteMediaFromUrl(element)         
+  //      // pour lui passer mediasResponses
+  //      if (this.responsesMedias) {
+  //       for (const element of this.responsesMedias) {
+  //        console.log('en voilà un', element);
+  //        this.service.deleteMediaFromUrl(element)         
+  //       }
+  //     }
+
+  //   const questionNumber = number
+
+  //   if (window.confirm("Êtes-vous certain ? Ceci est irrévocable.")) {
+  //     this.service.deleteQuestionById(idQuestion).then(() => {
+  //       alert("la question "+idQuestion+" numéro " + questionNumber +" de "+sigle+ " a bien été supprimée")
+  //     }).catch(error => console.error("Erreur lors de la suppression :", error));
+  //   }
+
+  // }
+
+  // Pour que ce soit plus robuste et sécure (ordre des exécution...)
+
+  deleteQuestion(idQuestion: string, number: number, sigle: string) {
+    const questionNumber = number;
+  
+    if (window.confirm("Êtes-vous certain ? Ceci est irrévocable.")) {
+      const mediaDeletes = [];
+  
+      if (this.questionsMedias) {
+        for (const element of this.questionsMedias) {
+          mediaDeletes.push(this.service.deleteMediaFromUrl(element));
         }
       }
-
-    const questionNumber = number
-
-    if (window.confirm("Êtes-vous certain ? Ceci est irrévocable.")) {
-      this.service.deleteQuestionById(idQuestion).then(() => {
-        alert("la question "+idQuestion+" numéro " + questionNumber +" de "+sigle+ " a bien été supprimée")
-      }).catch(error => console.error("Erreur lors de la suppression :", error));
+  
+      if (this.responsesMedias) {
+        for (const element of this.responsesMedias) {
+          mediaDeletes.push(this.service.deleteMediaFromUrl(element));
+        }
+      }
+  
+      // Attendre que toutes les suppressions de médias soient finies
+      Promise.all(mediaDeletes).then(() => {
+        return this.service.deleteQuestionById(idQuestion);
+      }).then(() => {
+        alert("La question " + idQuestion + " numéro " + questionNumber + " de " + sigle + " a bien été supprimée");
+      }).catch(error => {
+        console.error("Erreur lors de la suppression :", error);
+      });
     }
-
   }
-
-
-
 }

@@ -331,25 +331,25 @@ export class QuestionsService {
   async deleteQuestionById(id: string): Promise<void> {
     console.log("Suppression de la question avec l'ID :", id);
 
-    // try {
-    //   // Référence au document
-    //   const questionRef = doc(this.firestore, `questions/${id}`); 
-    //   // Suppression du document
-    //   await deleteDoc(questionRef); 
-    //   console.log("Question supprimée avec succès !");
-    // } catch (error) {
-    //   console.error("Erreur lors de la suppression :", error);
-    // }
+    try {
+      // Référence au document
+      const questionRef = doc(this.firestore, `questions/${id}`); 
+      // Suppression du document
+      await deleteDoc(questionRef); 
+      console.log("Question supprimée avec succès !");
+    } catch (error) {
+      console.error("Erreur lors de la suppression :", error);
+    }
 
   }
 
   deleteMediaFromUrl(url: string) {
     const storagePath = this.getStoragePathFromUrl(url);
-    // if (storagePath) {
-    //   this.deleteMedia(storagePath);
-    // } else {
-    //   console.error("Impossible d'extraire le chemin du fichier depuis l'URL.");
-    // }
+    if (storagePath) {
+      this.deleteMedia(storagePath);
+    } else {
+      console.error("Impossible d'extraire le chemin du fichier depuis l'URL.");
+    }
   }
 
   getStoragePathFromUrl(url: string): string | null {
