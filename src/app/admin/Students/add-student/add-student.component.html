@@ -8,11 +8,11 @@
             <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
                 aria-label="Fermer le message"></button>
 
-            Si vous ajoutez un apprenant, donc que vous prenez l'initiave de lui créer un compte sur be-on-top, il ne vous appartient pas de lui communiquer un mot de passe. Il recevra immédiatement sur sa boite mail un mail pour personnaliser (réinitialisation) son mot de passe. Ceci est une procédure classique. Si le lien de réinitialisation ne fonctionne plus parce que ces liens ne restent opérationnels qu'une courte durée, il faudra inviter chaque étudiant à aller sur la page <a class="text-light fw-bold" [routerLink]="['/login']" >connexion</a> et cliquer sur mot de passe perdu. </div>
+            Si vous ajoutez un apprenant, donc que vous prenez l'initiave de lui créer un compte sur be-on-top, <span class="fw-bold">il ne vous appartient pas de lui communiquer un mot de passe</span>. Il recevra immédiatement sur sa boite mail un lien pour personnaliser (réinitialisation) son mot de passe. Si le lien de réinitialisation ne fonctionne plus parce que ces liens ne sont opérationnels qu'une courte durée, il faudra inviter chaque candidat apprenant à se rendre sur la page de <a class="text-light fw-bold" target="_blank" [routerLink]="['/login']" >connexion</a> et cliquer sur <span class="fw-bold">réinitialiser mon mot de passe</span>. </div>
         <div  class="alert w-100 p-4 pe-5 bg-danger alert-dismissible text-white mb-4 fade show fs-5">
             <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
                 aria-label="Fermer le message"></button>
-            Cette fonctionnalité est EXCLUSIVEMENT destinée à des étudiants déjà inscrits dans vos centres de formation respectifs pour les faire passer une évaluation métier. De fait il seront dispensés, parce que vous avez déjà à disposition toutes ces informations, de remplir le formulaire d'inscription formation habituellement requis pour les utilisateurs finaux.</div>
+            Cette fonctionnalité est EXCLUSIVEMENT destinée à des candidats que vous souhaitez dispenser de remplir notre formulaire en ligne habituellement requis pour finaliser le dossier d'inscription. <span class="fw-bold">ATTENTION à vous munir de votre mot de passe, il vous sera demandé pour des raisons de sécurité</span>.</div>
     <!-- pour les messages de retour/validation des champs du formulaire ou form validation, on utilisera BOOTSTRAP plutôt que des directives structurelles -->
     <form class="form" #f="ngForm" (submit)="addStudent(f)" class="was-validated">
 
