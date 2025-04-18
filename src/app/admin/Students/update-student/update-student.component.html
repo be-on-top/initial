@@ -79,8 +79,6 @@
 
 
         <ng-container *ngIf="userRouterLinks.user=='admin' || userRouterLinks.user=='referent'">
-            <div *ngIf="!student.innerStudent" class="alert bg-warning text-dark">
-                <i class="bi bi-info-square-fill me-1"></i>Ici, vous pouvez visualiser les données du formulaire validé et soumis par le candidat externe. Formulaire destiné faciliter la finalisation du dossier de candidature et appuyer les demandes de financement.</div>
             <!-- le formulaire pré-inscription formation -->
             <!-- <app-student-form  [studentData]="student"></app-student-form> -->
             <!-- si besoin de récupérer informations (centre choisi) depuis le composant enfant -->

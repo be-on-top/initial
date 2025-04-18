@@ -9,6 +9,13 @@ Tests OK. Sur une  partie. A finir.
 
     <!-- <h3 class="text-capitalize">Pré-inscription Formation {{userData.firstName}} {{userData.lastName}}</h3> -->
     <h3>Formulaire de pré-inscription Formation</h3>
+    <!-- pour que le referent voit ce message d'explication -->
+
+    <div *ngIf="!userData.innerStudent && isReadOnly" class="alert bg-warning text-dark">
+        <i class="bi bi-info-square-fill me-1"></i>Ci-dessous, vous pouvez visualiser les données du formulaire validé et soumis par le candidat externe. Formulaire destiné faciliter la finalisation du dossier de candidature et appuyer les demandes de financement.</div>
+
+
+
     <!-- <div class="alert alert-light p-4 alert-dismissible mb-4 fade show pe-5" *ngIf="!isReadOnly">
         <button aria-label="Fermer le message be-on-top" type="button" class="btn-close btn-close mt-2"
             data-bs-dismiss="alert"></button>
@@ -1418,7 +1425,7 @@ Tests OK. Sur une  partie. A finir.
         </div>
 
         <div id="studentForm" class="rounded bg-warning p-4"> <button id="submit-button" #submitBtn class="btn btn-primary text-white"
-                type="submit"><i class="bi bi-arrow-right-square-fill me-3"></i>Valider et soumettre</button>
+                type="submit"><i class="bi bi-arrow-right-square-fill me-3"></i>{{isReadOnly?'Validé et soumis':'Valider et soumettre'}}</button>
         </div>
 
     </form>
