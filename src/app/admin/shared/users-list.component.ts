@@ -5,6 +5,7 @@ import { EvaluatorsService } from '../evaluators.service';
 import { UsersService } from '../users.service';
 import { TutorsService } from '../tutors.service';
 import { ExternalsService } from '../externals.service';
+import { Users } from '../Users/users';
 
 @Component({
   selector: 'app-users-list',

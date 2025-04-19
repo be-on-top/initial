@@ -23,8 +23,14 @@
         <div *ngFor="let user of allUsers">
             <div class="row mt-4 ps-5 ps-sm-0"
                 *ngIf="searchText==='' || user.lastName.toLowerCase().includes(searchText) || user.firstName.toLowerCase().includes(searchText) ">
-                <div class="col-sm-3 col-6">{{user.lastName}}</div>
-                <div class="col-sm-3 col-6 order-perso2">{{user.firstName}}</div>
+                <ng-container *ngIf="user.role==='external'">                    
+                    <div class="col-sm-3 col-6">{{user.lastName}} {{user.firstName}}</div>
+                    <div class="col-sm-3 col-6 order-perso2">{{user.structure}} ({{user.geographicScope}})</div>
+                </ng-container>
+                <ng-container *ngIf="user.role!=='external'">                    
+                    <div class="col-sm-3 col-6">{{user.lastName}}</div>
+                    <div class="col-sm-3 col-6 order-perso2">{{user.firstName}}</div>
+                </ng-container>
                 <div class="col-sm-3 col-6"><button class="btn btn-danger" (click)="deleteUser(user.id)"><i
                             class="bi bi-person-dash-fill"></i>Suppression</button></div>
                 <div class="col-sm-3 col-6 order-perso4"><button class="btn btn-primary">
