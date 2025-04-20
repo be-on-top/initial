@@ -186,21 +186,75 @@ export class SettingsComponent implements OnInit {
 
   }
 
+  // addPartners(partnersForm: NgForm) {
+  //   if (partnersForm.valid) {
+  //     const newPartner = {
+  //       name: partnersForm.value.name,
+  //       description: partnersForm.value.description,
+  //       url: partnersForm.value.url,
+  //     };
+
+  //     this.partners = [newPartner, ...this.partners];
+  //     this.service.addPartners(this.partners).subscribe(() => {
+  //       partnersForm.resetForm();
+  //       this.feedbackMessages = `Enregistrement du partnaire et ses informations OK`;
+  //       this.isSuccessMessage = true
+  //     })
+
+  //   }
+  // }
+
+  // pour ajouter le traitement de l'image
   addPartners(partnersForm: NgForm) {
     if (partnersForm.valid) {
-      const newPartner = {
+      const partnerData = {
         name: partnersForm.value.name,
         description: partnersForm.value.description,
-        url: partnersForm.value.url,
+        url: partnersForm.value.url
       };
+  
+      const submitPartner = (finalPartner: any) => {
+        this.partners = [finalPartner, ...this.partners];
+        this.service.addPartners(this.partners).subscribe(() => {
+          partnersForm.resetForm();
+          this.feedbackMessages = `Partenaire enregistré`;
+          this.isSuccessMessage = true;
+          this.selectedFile = null;
+          this.previewUrl = null;
+        });
+      };
+  
+      if (this.selectedFile) {
+        this.service.uploadPartnerWithLogo(partnerData, this.selectedFile).subscribe(
+          (partnerWithLogo) => submitPartner(partnerWithLogo),
+          (error) => console.error('Erreur upload :', error)
+        );
+      } else {
+        submitPartner({ ...partnerData, logoUrl: '' });
+      }
+    }
+  }
+  
 
-      this.partners = [newPartner, ...this.partners];
-      this.service.addPartners(this.partners).subscribe(() => {
-        partnersForm.resetForm();
-        this.feedbackMessages = `Enregistrement du partnaire et ses informations OK`;
-        this.isSuccessMessage = true
-      })
 
+
+
+
+  previewUrl: string | ArrayBuffer | null = null;
+  selectedFile: File | null = null;
+
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
+  
+      // Préparation de l'aperçu
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.previewUrl = reader.result;
+      };
+      reader.readAsDataURL(this.selectedFile);
     }
   }
 

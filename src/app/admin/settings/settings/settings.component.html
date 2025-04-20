@@ -205,6 +205,15 @@
       <div *ngIf="description.valid" class="valid-feedback">
         Url OK.
       </div>
+      <!-- logo image additionnel -->
+      <label for="logo" class="form-label mt-3">Logo</label>
+      <input type="file" (change)="onFileSelected($event)" class="form-control" accept="image/*">
+      
+      <div *ngIf="previewUrl" class="mt-3">
+        <label>Aperçu du logo :</label>
+        <img [src]="previewUrl" alt="Aperçu du logo" class="img-thumbnail mt-2" style="max-height: 150px;">
+      </div>
+      
     </div>
 
     <button type="submit" class="btn btn-primary mt-4" [disabled]=partnersForm.invalid>Ajouter</button>

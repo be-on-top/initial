@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Firestore, collection, collectionData, docData, setDoc, addDoc, query, doc, where, getDocs, DocumentData, getDoc, updateDoc, documentId } from '@angular/fire/firestore';
 // import { NgForm } from '@angular/forms';
-import { Observable, from, map, of, tap } from 'rxjs';
+import { Observable, from, map, of, switchMap, tap } from 'rxjs';
 import { Trade } from './trade';
 import { Settings } from './settings';
 // à externaliser vers un service
@@ -248,6 +248,26 @@ export class SettingsService {
     const $partnersDocRef = doc($settingsRef, 'partners');
     return from(setDoc($partnersDocRef, { partners: partners }, { merge: true }));
   }
+
+
+  
+  uploadPartnerWithLogo(partner: any, file: File): Observable<any> {
+    const rawName = partner.name || 'partenaire';
+    const cleanName = rawName.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
+    const fileExt = file.name.split('.').pop();
+    const filePath = `partners_logos/${cleanName}_${Date.now()}.${fileExt}`;
+  
+    const storageRef = ref(this.storage, filePath); // ✅ version modulaire
+  
+    return from(uploadBytes(storageRef, file)).pipe(
+      switchMap(() => getDownloadURL(storageRef)),
+      map((downloadUrl: string) => ({
+        ...partner,
+        logoUrl: downloadUrl
+      }))
+    );
+  }
+  
 
   // Méthode pour récupérer les partenaires
   fetchPartners(): Observable<Partner[]> {
