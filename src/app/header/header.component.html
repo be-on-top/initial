@@ -270,7 +270,7 @@
                 </li>
 
                 <!-- Inscription lien externe sans condition pour tester en local -->
-                <li class="nav-item" [routerLinkActive]="['partners']"
+                <li class="nav-item d-none d-lg-inline" [routerLinkActive]="['partners']"
                     *ngIf="(!userRole || userRole==='student') && partners && partners.length!==0">
                     <a class="nav-link" [routerLink]="['partners']" role="button">Partenaires</a>
                 </li>

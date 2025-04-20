@@ -2,6 +2,7 @@
 
     <app-feedback-messages [feedbackMessages]="feedbackMessages"
         [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
+        
 
 <!-- partie réservée à l'administrateur principal -->
 
@@ -80,14 +81,22 @@
                 </div>
             </div>
             <div class="form-group col-md-6">
-                <label for="cp" class="form-label mt-3">CP</label>
+                <label for="cp" class="form-label mt-3">CP - lieu(x) d'affectation</label>
                 <input type="text" id="cp" ngModel name="cp" class="form-control"
-                    placeholder="Code Postal Optionnel...">
+                    placeholder="Code Postaux Séparés par une virgule..."
+                    required pattern="^(\d{5})(\s*,\s*\d{5})*$"
+                    #cp="ngModel">
+                    <div *ngIf="cp.invalid || (cp.dirty || cp.touched)" class="invalid-feedback">
+                        Veuillez fournir au moins un code postal valide (ex. : 75001, 75002).
+                      </div>
+                      <div *ngIf="cp.valid" class="valid-feedback">
+                        Code(s) postal(aux) valide(s).
+                      </div>
             </div>
         </div>
 
         <!-- affectation métier -->
-        <label for="sigle" class="form-label mt-3">Affectation métier :</label>
+        <label for="sigle" class="form-label mt-3">Affectation métier(s) :</label>
         <!-- <select class="form-select" name="sigle" id="sigle" ngModel required #sigle="ngModel"
             (change)="checkIfSelected(sigle.value)" multiple>
             <option value>Selectionner le métier</option>
@@ -98,7 +107,7 @@
         </select> -->
         <select class="form-select" name="sigle" id="sigle" ngModel required #sigle="ngModel"
             (change)="checkIfSelected(sigle.value)" multiple>
-            <option value>Selectionner le métier</option>
+            <option value>Selectionner le(s) métier</option>
             <option *ngFor="let trade of tradesData" value="{{trade}}">{{trade}}</option>
         </select>
 
