@@ -24,7 +24,7 @@
                 <ng-template #checkbox> Status : inactif</ng-template>
                 <!-- affectation métiers -->
                 <p *ngIf="user.sigle">Métiers d'affectation ({{user.sigle.length}}) :
-                    <span *ngFor="let s of user.sigle">{{s}} </span>
+                    <span *ngFor="let s of user.sigle, let i = index"> <a class="text-decoration-none" target="_blank" [routerLink]="[('/formation'),s]">{{s}}</a>{{i < user.sigle.length - 1 ? ', ' : ''}}</span>
                 </p>
                 <p *ngIf="user.comment && user.comment!=''">Commentaire : <span
                         class="fst-italic">{{user.comment}}</span>
