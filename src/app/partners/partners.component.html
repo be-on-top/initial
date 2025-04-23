@@ -7,12 +7,17 @@
 
             <div class="col-md-6">
 
-                <div class="card">
+                <div class="card mb-2">
                     <!-- <img src="..." class="card-img-top" alt="..."> -->
+
+                    <div class="card-img-wrapper text-start">
+                        <img *ngIf="partner.logoUrl" [src]="partner.logoUrl" alt="{{partner.name}}" class="partner-logo p-2">
+                      </div>
+                      
                     <div class="card-body">
-                        <h5 class="card-title">{{partner.name}}</h5>
+                        <!-- <h5 class="card-title">{{partner.name}}</h5> -->
                         <p class="card-text">{{partner.description}}</p>
-                        <a *ngIf="partner.url" href="{{partner.description}}" class="btn btn-primary">Visite</a>
+                        <a *ngIf="partner.url" href="{{partner.url}}" target="_blank" class="btn btn-primary">Visite</a>
                     </div>
                 </div>
 

@@ -32,7 +32,7 @@
                 <li class="nav-item home" [routerLinkActive]="['active']"
                     *ngIf="!userRole|| userRole==='' || userRole==='student'">
                     <!-- <li class="nav-item dropdown" *ngIf="filteredTrades" [routerLinkActive]="['active']"> -->
-                    <a class="nav-link" role="button" data-bs-toggle="dropdown" [routerLink]="['/home']"
+                    <a class="nav-link d-md-none d-lg-block" role="button" data-bs-toggle="dropdown" [routerLink]="['/home']"
                         (click)="closeNavbar()">Accueil</a>
                 </li>
                 <!-- <li class="nav-item">
@@ -270,9 +270,9 @@
                 </li>
 
                 <!-- Inscription lien externe sans condition pour tester en local -->
-                <li class="nav-item d-none d-lg-inline" [routerLinkActive]="['partners']"
+                <li class="nav-item" [routerLinkActive]="['partners']"
                     *ngIf="(!userRole || userRole==='student') && partners && partners.length!==0">
-                    <a class="nav-link" [routerLink]="['partners']" role="button">Partenaires</a>
+                    <a class="nav-link" [routerLink]="['partners']" role="button" (click)="closeNavbar()">Partenaires</a>
                 </li>
 
                 <li *ngIf="!userRole?.includes('evaluator') && !userRole?.includes('referent') && !userRole?.includes('trainer')"

@@ -1,0 +1,12 @@
+.card-img-wrapper {
+    text-align: left;
+  }
+  .partner-logo {
+    height: 200px;
+    object-fit: contain;
+    width: auto;
+    max-width: 100%;
+    display: block; /* facultatif ici */
+  }
+  
+  
