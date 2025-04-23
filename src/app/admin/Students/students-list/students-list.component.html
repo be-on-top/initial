@@ -219,7 +219,7 @@
                     </div>
                     <ng-template #external>
                         <div class="row mt-4 justify-content-start"
-                            *ngIf="searchText==='' || student.lastName.includes(searchText) || student.lastName.toLowerCase().includes(searchText)
+                            *ngIf="searchText===''|| student.lastName.includes(searchText) || student.lastName.toLowerCase().includes(searchText)
                                                   || student.firstName.includes(searchText) || student.firstName.toLowerCase().includes(searchText)
                                                   || student.email.includes(searchText) || student.email.toLowerCase().includes(searchText)">
                             <div class="col-sm-3 col-6">{{student.lastName}}</div>

@@ -44,9 +44,11 @@
         <div *ngIf="userRole === 'none' else switch" class="col-md-5 text-white mt-md-5">
             <p class="text-md-left fs-5">
                 Afin de démarrer un questionnaire, merci de
-                <a (click)="onLogin()" class="text-white fw-bold">vous authentifier</a>
+                <button type="button" (click)="onLogin()" class="btn-as-link text-white fw-bold" title="Vous authentifier pour passer des évaluations en ligne sur BE-ON-TOP"
+                aria-label="Vous authentifier pour passer des évaluations en ligne sur BE-ON-TOP">vous authentifier</button>
                 ou
-                <a (click)="onRegister()" class="text-white fw-bold">vous créer un compte</a>
+                <button type="button" (click)="onRegister()" class="btn-as-link text-white fw-bold" title="Vous créer un compte pour passer des évaluations en ligne sur BE-ON-TOP"
+                aria-label="Vous créer un compte pour passer des évaluations en ligne sur BE-ON-TOP">vous créer un compte</button>
             </p>
         </div>
         <!-- ...des autres cas -->

@@ -3,6 +3,10 @@
     <h3>Détails utilisateur</h3>
 
     <app-collapses-alert></app-collapses-alert>
+    <!-- {{userRouterLinks.user}} -->
+
+    <div *ngIf="userRouterLinks.user==='trainer'" class="alert alert-light"><i class="bi bi-info-square-fill me-1"></i>Dès que vous aurez saisi au minimum une évaluation, un onglet additionnel dédié aux évaluations de suivi pédagogique apparait dans la vue de détail, et dans le compte personnel du candidat apprenant. C'est à partir de cet onglet que vous et vous seul  pourrez modifier l'évaluation si besoin.  
+    </div>
 
 
     <div id="accordion" class="mb-5">

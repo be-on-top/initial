@@ -4,7 +4,8 @@
         <!-- <a class="navbar-brand" [routerLink]="['home', userRole || '']">BE-ON-TOP</a> -->
         <!-- pour éviter les erreurs d'interprétation des segments de chemin -->
         <!-- <a class="navbar-brand" [routerLink]="['home']" [queryParams]="{ userRole: userRole }">BE-ON-TOP</a> -->
-        <a class="navbar-brand" [routerLink]="['']" [queryParams]="{ userRole: userRole }" (click)="resetNavbar()">
+        <a class="navbar-brand" [routerLink]="['']" [queryParams]="{ userRole: userRole }" (click)="resetNavbar()"
+            title="Retour à l'accueil BE-ON-TOP" aria-label="Logo BE-ON-TOP, retour à l'accueil">
             <img alt="logo BE-ON-TOP de l'application de positionnement" src="./assets/BE-ON-TOP_picto_LOGO.svg"
                 class="logo">BE-ON-TOP</a>
 
@@ -32,8 +33,8 @@
                 <li class="nav-item home" [routerLinkActive]="['active']"
                     *ngIf="!userRole|| userRole==='' || userRole==='student'">
                     <!-- <li class="nav-item dropdown" *ngIf="filteredTrades" [routerLinkActive]="['active']"> -->
-                    <a class="nav-link d-md-none d-lg-block" role="button" data-bs-toggle="dropdown" [routerLink]="['/home']"
-                        (click)="closeNavbar()">Accueil</a>
+                    <a class="nav-link d-md-none d-lg-block" role="button" data-bs-toggle="dropdown"
+                        [routerLink]="['/home']" (click)="closeNavbar()">Accueil</a>
                 </li>
                 <!-- <li class="nav-item">
                     <a class="nav-link" [routerLink]="['socialregistration']">Pré-inscription Formation</a>
@@ -233,33 +234,39 @@
                     <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">Utilisateur <i
                             class="bi bi-person-fill-gear mx-2"></i></a>
                     <ul class="dropdown-menu mb-2">
-                        <li *ngIf="!userRole"><a class="dropdown-item" [routerLink]="['login']">Connexion</a></li>
+                        <li *ngIf="!userRole"><a class="dropdown-item" [routerLink]="['login']" aria-label="Connexion"
+                                title="Se connecter">Connexion</a></li>
                         <!-- <li><a class="dropdown-item" (click)="logOut()" [routerLink]="['']">Logout</a></li> -->
-                        <li *ngIf="userRole && userRole!='' "><a class="dropdown-item"
-                                (click)="logOut()">Déconnexion</a>
+                        <li *ngIf="userRole && userRole!='' "><a class="dropdown-item" (click)="logOut()"
+                                aria-label="Déconnexion" title="Se déconnecter">Déconnexion</a>
                         </li>
                         <li
                             *ngIf="userRole && userRole!='' && !userRole?.includes('evaluator') && !userRole?.includes('editor') && !userRole?.includes('referent') && !userRole?.includes('tutor') && !userRole?.includes('trainer') && !userRole?.includes('external')">
                             <a class="dropdown-item" (click)="closeNavbar()" [routerLink]="['account']"
-                                aria-label="Accéder à votre compte Candidat">Mon compte</a>
+                                aria-label="Accéder à votre compte Candidat" title="Accéder à votre compte candidat">Mon
+                                compte</a>
                         </li>
                         <!-- si formateur connecté -->
                         <li *ngIf="userRole && userRole!='' && userRole?.includes('trainer') ">
                             <a class="dropdown-item" (click)="closeNavbar()" [routerLink]="['/admin/myTrainerAccount']"
-                                aria-label="Accéder à votre compte Formateur">Mon compte Formateur</a>
+                                aria-label="Accéder à votre compte Formateur"
+                                title="Accéder à votre compte Formateur">Mon compte Formateur</a>
                         </li>
                         <!-- si user connecté, comme le referent par exemple -->
                         <li *ngIf="userRole && userRole!='' && userRole?.includes('referent') ">
                             <a class="dropdown-item" (click)="closeNavbar()"
                                 [routerLink]="['/admin/myReferentAccount/', userUid]"
-                                aria-label="Accéder à votre compte Conseiller">Mon compte Conseiller</a>
+                                aria-label="Accéder à votre compte Conseiller"
+                                title="Accéder à votre compte Conseiller">Mon compte Conseiller</a>
                         </li>
 
                         <li *ngIf="!userRole || userRole==''"><a class="dropdown-item" [routerLink]="['register']"
                                 (click)="closeNavbar()">Inscription</a></li>
                         <!-- Inscription lien externe sans condition pour tester en local -->
                         <li *ngIf="!offline && isOneQuizzAchieved && !studentData?.isSocialFormSent">
-                            <a class="dropdown-item" [routerLink]="['socialregistration']">Inscription Formation</a>
+                            <a class="dropdown-item" [routerLink]="['socialregistration']"
+                                aria-label="Formulaire en ligne pour candidater à une formation"
+                                title="Formulaire en ligne pour candidater à une formation">Inscription Formation</a>
                         </li>
                     </ul>
                 </li>
@@ -272,13 +279,23 @@
                 <!-- Inscription lien externe sans condition pour tester en local -->
                 <li class="nav-item" [routerLinkActive]="['partners']"
                     *ngIf="(!userRole || userRole==='student') && partners && partners.length!==0">
-                    <a class="nav-link" [routerLink]="['partners']" role="button" (click)="closeNavbar()">Partenaires</a>
+                    <a class="nav-link" [routerLink]="['partners']" role="button"
+                        (click)="closeNavbar()">Partenaires</a>
                 </li>
 
                 <li *ngIf="!userRole?.includes('evaluator') && !userRole?.includes('referent') && !userRole?.includes('trainer')"
                     class="nav-item" [routerLinkActive]="['active']">
-                    <a class="nav-link" [routerLink]="['benefits']" role="button" (click)="closeNavbar()">Information<i
-                            class="bi bi-info-square-fill ms-2"></i></a>
+                    <a class="nav-link"
+                    [routerLink]="['/benefits']"
+                    role="button"
+                    (click)="closeNavbar()"
+                    title="Informations, questions réponses et mission de BE-ON-TOP"
+                    aria-label="Informations, questions réponses et mission de BE-ON-TOP">
+                    <span class="visually-hidden">Page d'informations sur BE-ON-TOP</span>
+                    Information
+                    <i class="bi bi-info-square-fill ms-2"></i>
+                 </a>
+                 
                 </li>
                 <!-- pour traitement différencié si referent -->
                 <!-- fonctionne bien mais manque market-app -->
@@ -354,5 +371,6 @@
 </nav>
 
 <!-- après plusieurs essais, information reste ce qu'il y a de mieux -->
-<button class="btn btn-primary btn-sm info-button pe-2" (click)="goToInfoPage()"><i
-        class="bi bi-info me-2"></i>{{userRole?.includes('referent')?'Informations':'information'}}</button>
+<button type="button" class="btn btn-primary btn-sm info-button pe-2" (click)="goToInfoPage()"
+    aria-label="Informations et mission de BE-ON-TOP"><i
+        class="bi bi-info me-2" aria-hidden="true"></i>{{userRole?.includes('referent')?'Informations':'information'}}</button>
