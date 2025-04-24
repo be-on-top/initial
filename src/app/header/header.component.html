@@ -170,17 +170,43 @@
                 </li> -->
 
 
-
-                <li class="nav-item dropdown" *ngIf="trades" [routerLinkActive]="['active']">
+                <!-- version  en l'état du 24042025 métiers sans parentCategory -->
+                <!-- <li class="nav-item dropdown" *ngIf="trades" [routerLinkActive]="['active']">
                     <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">Nos métiers</a>
                     <ul class="dropdown-menu mb-2">
-                        <!-- Afficher les métiers sans parentCategory -->
                         <li *ngFor="let trade of ungroupedTrades">
                             <a class="dropdown-item" (click)="closeNavbar()"
                                 [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]">
                                 {{ trade.denomination | truncateTitle }}
                             </a>
-                        </li>
+                        </li> -->
+
+                        <li class="nav-item dropdown" [routerLinkActive]="['active']">
+                            <a
+                              class="nav-link dropdown-toggle"
+                              href="#"
+                              role="button"
+                              data-bs-toggle="dropdown"
+                              aria-haspopup="true"
+                              aria-expanded="false"
+                              id="metiersDropdown"
+                            >
+                              Nos métiers
+                            </a>
+                            <ul class="dropdown-menu mb-2" aria-labelledby="metiersDropdown">
+                              <li *ngFor="let trade of ungroupedTrades">
+                                <a
+                                  class="dropdown-item"
+                                  [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]"
+                                  (click)="closeNavbar()"
+                                >
+                                  {{ trade.denomination | truncateTitle }}
+                                </a>
+                              </li>
+
+
+                          
+
 
                         <!-- Afficher les métiers regroupés par parentCategory -->
                         <!-- <li class="dropdown-submenu" *ngFor="let group of groupedTrades | keyvalue">
@@ -230,13 +256,13 @@
 
 
                 <!-- ajout login global (on aura ultérieurement un public et privé réservé aux contributeurs et évaluateurs...) -->
-                <li *ngIf="!offline" class="nav-item dropdown" [routerLinkActive]="['active']">
+                <!-- version du 24022025 -->
+                <!-- <li *ngIf="!offline" class="nav-item dropdown" [routerLinkActive]="['active']">
                     <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">Utilisateur <i
                             class="bi bi-person-fill-gear mx-2"></i></a>
                     <ul class="dropdown-menu mb-2">
                         <li *ngIf="!userRole"><a class="dropdown-item" [routerLink]="['login']" aria-label="Connexion"
                                 title="Se connecter">Connexion</a></li>
-                        <!-- <li><a class="dropdown-item" (click)="logOut()" [routerLink]="['']">Logout</a></li> -->
                         <li *ngIf="userRole && userRole!='' "><a class="dropdown-item" (click)="logOut()"
                                 aria-label="Déconnexion" title="Se déconnecter">Déconnexion</a>
                         </li>
@@ -246,13 +272,13 @@
                                 aria-label="Accéder à votre compte Candidat" title="Accéder à votre compte candidat">Mon
                                 compte</a>
                         </li>
-                        <!-- si formateur connecté -->
+
                         <li *ngIf="userRole && userRole!='' && userRole?.includes('trainer') ">
                             <a class="dropdown-item" (click)="closeNavbar()" [routerLink]="['/admin/myTrainerAccount']"
                                 aria-label="Accéder à votre compte Formateur"
                                 title="Accéder à votre compte Formateur">Mon compte Formateur</a>
                         </li>
-                        <!-- si user connecté, comme le referent par exemple -->
+
                         <li *ngIf="userRole && userRole!='' && userRole?.includes('referent') ">
                             <a class="dropdown-item" (click)="closeNavbar()"
                                 [routerLink]="['/admin/myReferentAccount/', userUid]"
@@ -262,14 +288,57 @@
 
                         <li *ngIf="!userRole || userRole==''"><a class="dropdown-item" [routerLink]="['register']"
                                 (click)="closeNavbar()">Inscription</a></li>
-                        <!-- Inscription lien externe sans condition pour tester en local -->
+
                         <li *ngIf="!offline && isOneQuizzAchieved && !studentData?.isSocialFormSent">
                             <a class="dropdown-item" [routerLink]="['socialregistration']"
                                 aria-label="Formulaire en ligne pour candidater à une formation"
                                 title="Formulaire en ligne pour candidater à une formation">Inscription Formation</a>
                         </li>
                     </ul>
-                </li>
+                </li> -->
+
+                <li *ngIf="!offline" class="nav-item dropdown" [routerLinkActive]="['active']">
+                    <a
+                      class="nav-link dropdown-toggle"
+                      href="#"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      aria-label="Menu utilisateur"
+                      id="userDropdown"
+                    >
+                      Utilisateur <i class="bi bi-person-fill-gear mx-2"></i>
+                    </a>
+                  
+                    <ul class="dropdown-menu mb-2" aria-labelledby="userDropdown">
+                      <li *ngIf="!userRole">
+                        <a class="dropdown-item" [routerLink]="['login']" (click)="closeNavbar()">Connexion</a>
+                      </li>
+                      <li *ngIf="userRole && userRole != ''">
+                        <a href="#" class="dropdown-item" (click)="logOut()">Déconnexion</a>
+                      </li>
+                      <li
+                        *ngIf="userRole && !userRole?.includes('evaluator') && !userRole?.includes('editor') && !userRole?.includes('referent') && !userRole?.includes('tutor') && !userRole?.includes('trainer') && !userRole?.includes('external')"
+                      >
+                        <a class="dropdown-item" [routerLink]="['account']" (click)="closeNavbar()">Mon compte</a>
+                      </li>
+                      <li *ngIf="userRole?.includes('trainer')">
+                        <a class="dropdown-item" [routerLink]="['/admin/myTrainerAccount']" (click)="closeNavbar()">Mon compte Formateur</a>
+                      </li>
+                      <li *ngIf="userRole?.includes('referent')">
+                        <a class="dropdown-item" [routerLink]="['/admin/myReferentAccount/', userUid]" (click)="closeNavbar()">Mon compte Conseiller</a>
+                      </li>
+                      <li *ngIf="!userRole || userRole == ''">
+                        <a class="dropdown-item" [routerLink]="['register']" (click)="closeNavbar()">Inscription</a>
+                      </li>
+                      <li *ngIf="!offline && isOneQuizzAchieved && !studentData?.isSocialFormSent">
+                        <a class="dropdown-item" [routerLink]="['socialregistration']" (click)="closeNavbar()">Inscription Formation</a>
+                      </li>
+                    </ul>
+                  </li>
+                  
+                  
+
                 <!-- si hors ligne -->
                 <li class="nav-item" *ngIf="offline">
                     <span class="nav-link bg-danger px-2 mt-2 mt-md-0 small text-light rounded" role="button"
@@ -285,17 +354,14 @@
 
                 <li *ngIf="!userRole?.includes('evaluator') && !userRole?.includes('referent') && !userRole?.includes('trainer')"
                     class="nav-item" [routerLinkActive]="['active']">
-                    <a class="nav-link"
-                    [routerLink]="['/benefits']"
-                    role="button"
-                    (click)="closeNavbar()"
-                    title="Informations, questions réponses et mission de BE-ON-TOP"
-                    aria-label="Informations, questions réponses et mission de BE-ON-TOP">
-                    <span class="visually-hidden">Page d'informations sur BE-ON-TOP</span>
-                    Information
-                    <i class="bi bi-info-square-fill ms-2"></i>
-                 </a>
-                 
+                    <a class="nav-link" [routerLink]="['/benefits']" role="button" (click)="closeNavbar()"
+                        title="Informations, questions réponses et mission de BE-ON-TOP"
+                        aria-label="Informations, questions réponses et mission de BE-ON-TOP">
+                        <span class="visually-hidden">Page d'informations sur BE-ON-TOP</span>
+                        Information
+                        <i class="bi bi-info-square-fill ms-2"></i>
+                    </a>
+
                 </li>
                 <!-- pour traitement différencié si referent -->
                 <!-- fonctionne bien mais manque market-app -->
@@ -372,5 +438,5 @@
 
 <!-- après plusieurs essais, information reste ce qu'il y a de mieux -->
 <button type="button" class="btn btn-primary btn-sm info-button pe-2" (click)="goToInfoPage()"
-    aria-label="Informations et mission de BE-ON-TOP"><i
-        class="bi bi-info me-2" aria-hidden="true"></i>{{userRole?.includes('referent')?'Informations':'information'}}</button>
+    aria-label="Informations et mission de BE-ON-TOP"><i class="bi bi-info me-2"
+        aria-hidden="true"></i>{{userRole?.includes('referent')?'Informations':'information'}}</button>
