@@ -20,6 +20,7 @@ export interface Student {
     roles:[];
     details:string;
     trainer: string;
+    trainers?:string[];
     tutor?: string;
     anpe?: boolean;
     referent?:string;

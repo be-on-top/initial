@@ -33,8 +33,10 @@
             maintenant commencer.</span> -->
         <span> <i class="bi bi-info-square-fill pe-2"></i>Vos <span class="fw-bold">résultats et estimations</span> sont
             affichés <span class="fw-bold">ci-dessous</span>. Pour <span class="fw-bold">être accompagné dans votre
-                projet </span>et <span class="fw-bold">vous rapprocher du centre de votre choix,</span> compléter et valider notre <a
-                class="text-decoration-none fw-bold" [routerLink]="['/socialregistration']"> formulaire d'inscription en formation</a>. Il s'agit d'un formulaire en ligne permettant de recueillir toutes les informations nécessaires au financement de la formation.</span>
+                projet </span>et <span class="fw-bold">vous rapprocher du centre de votre choix,</span> compléter et
+            valider notre <a class="text-decoration-none fw-bold" [routerLink]="['/socialregistration']"> formulaire
+                d'inscription en formation</a>. Il s'agit d'un formulaire en ligne permettant de recueillir toutes les
+            informations nécessaires au financement de la formation.</span>
     </div>
     <!-- ici, c'est une fois le formulaire de pré-inscription envoyé, en attendant que l'inscription soit officialisée  -->
     <div *ngIf="userData && userData.isSocialFormSent && !userData.subscriptions"
@@ -119,15 +121,29 @@
                                 {{userData.lastName}}</li>
                             <li class="list-group-item"><span class="fw-bolder">Date d'enregistrement :</span>
                                 {{userData.created | date:'dd/MM/yyyy' }}</li>
-                            <li *ngIf="userData.trainer && userData.subscriptions" class="list-group-item"><span class="fw-bolder">Formateur attribué :</span>
-                                {{userData.trainer}}</li>
-                            <li *ngIf="userData.tutor && userData.subscriptions" class="list-group-item"><span class="fw-bolder">Tuteur attribué :</span>
+                            <li *ngIf="userData.trainer && userData.subscriptions" class="list-group-item">
+                                <!-- Ancien champ trainer affiché uniquement s'il est différent de "Attribué ultérieurement" -->
+                                <span *ngIf="userData.trainer && userData.trainer !== 'Attribué ultérieurement'"
+                                    class="d-block">
+                                    <span class="fw-bold">Formateur</span> : {{userData.trainer}}
+                                </span>
+                                <!-- Nouveau champ trainers (tableau) -->
+                                <span *ngIf="userData.trainers && userData.trainers.length > 0" class="d-block">
+                                    <span class="fw-bold">Formateur(s)</span> :
+                                    <span *ngFor="let t of userData.trainers; let isLast = last">
+                                        {{ t }}<span *ngIf="!isLast">, </span>
+                                    </span>
+                                </span>
+                            </li>
+                            <li *ngIf="userData.tutor && userData.subscriptions" class="list-group-item"><span
+                                    class="fw-bolder">Tuteur attribué :</span>
                                 {{userData.tutor}}</li>
                         </ul>
 
                         <!-- option avec déroulé -->
                         <div class="d-flex gap-1">
-                            <button type="button" class="btn btn-success mt-3" data-bs-toggle="collapse" data-bs-target="#demo">
+                            <button type="button" class="btn btn-success mt-3" data-bs-toggle="collapse"
+                                data-bs-target="#demo">
                                 <i class="bi bi-pencil-square p-0 pe-1"></i><span
                                     (click)="toogleText()">{{editButtonLabel}}</span>
                             </button>
@@ -251,12 +267,13 @@
                                         </div>
                                         <!-- <em *ngIf="trades[trade]" class="text-primary fs-6">{{ trades[trade][i] }}</em> -->
                                         <em *ngIf="trades[trade]" class="text-primary fs-6">
-                                            <i  *ngIf="!trades[trade][i]" class="bi bi-exclamation-square-fill me-2"></i>
-                                            {{ trades[trade][i] ? trades[trade][i] : 'Attention : cette compétence ne fait plus partie du référentiel actuel' }}
-                                          </em>
-                                          
-                                          
-                                          
+                                            <i *ngIf="!trades[trade][i]" class="bi bi-exclamation-square-fill me-2"></i>
+                                            {{ trades[trade][i] ? trades[trade][i] : 'Attention : cette compétence ne
+                                            fait plus partie du référentiel actuel' }}
+                                        </em>
+
+
+
                                     </ng-container>
                                     <hr *ngIf="lastEstimate">
                                     <!-- partie si on masque le total de couts -->
@@ -273,29 +290,31 @@
                                             journées de formation sont de 7 heures.
                                         </span> -->
 
-                                        
-                                        <div *ngIf="lastEstimate && displayPrices==false" class="mb-5">
-                                            <span class="fw-bolder">
-                                                Total estimé: {{ calculateSubtotal(trade) | duration }}
-                                            </span> / {{ calculateTotalTime(trade) | duration }} 
-                                            <span class="fw-bolder">de formation</span>
-                                        
-                                            <!-- Valeur brute et arrondie pour le débogage -->
-                                            <!-- <p>Valeur brute : {{ calculateSubtotal(trade) }}</p>
-                                            <p>Valeur arrondie : {{ roundToNearestMultipleOf7(calculateSubtotal(trade)) }}</p> -->
-                                        
-                                            <!-- Si l'arrondi dépasse le total, on force l'arrondi inférieur -->
-                                            <span *ngIf="calculateSubtotal(trade) % 7 !== 0 && isTrainingTimeMultiple7 " class="text-danger">
-                                                <br>La formation la plus proche adaptée à votre besoin sera donc de 
-                                                {{ getAdjustedTrainingTime(calculateSubtotal(trade), calculateTotalTime(trade)) }}h 
-                                                car nos journées de formation sont de 7 heures.
-                                            </span>
-                                            
-                                            
-                                            
-                                        </div>
 
-                                    
+                                    <div *ngIf="lastEstimate && displayPrices==false" class="mb-5">
+                                        <span class="fw-bolder">
+                                            Total estimé: {{ calculateSubtotal(trade) | duration }}
+                                        </span> / {{ calculateTotalTime(trade) | duration }}
+                                        <span class="fw-bolder">de formation</span>
+
+                                        <!-- Valeur brute et arrondie pour le débogage -->
+                                        <!-- <p>Valeur brute : {{ calculateSubtotal(trade) }}</p>
+                                            <p>Valeur arrondie : {{ roundToNearestMultipleOf7(calculateSubtotal(trade)) }}</p> -->
+
+                                        <!-- Si l'arrondi dépasse le total, on force l'arrondi inférieur -->
+                                        <span *ngIf="calculateSubtotal(trade) % 7 !== 0 && isTrainingTimeMultiple7 "
+                                            class="text-danger">
+                                            <br>La formation la plus proche adaptée à votre besoin sera donc de
+                                            {{ getAdjustedTrainingTime(calculateSubtotal(trade),
+                                            calculateTotalTime(trade)) }}h
+                                            car nos journées de formation sont de 7 heures.
+                                        </span>
+
+
+
+                                    </div>
+
+
                                     <!-- partie si on affiche tout  -->
                                     <div *ngIf="lastEstimate && displayPrices==true && trade?.durations" class="mb-5">
                                         <span class="fw-bolder">Total estimé: {{
@@ -338,7 +357,8 @@
             </div>
             <div id="collapseFor" class="collapse" data-bs-parent="#accordion">
                 <div class="card-body">
-                    <p class="card-text" *ngIf="!userData.isSocialFormSent">Pour faciliter votre inscription en formation et votre
+                    <p class="card-text" *ngIf="!userData.isSocialFormSent">Pour faciliter votre inscription en
+                        formation et votre
                         prise en charge, nous vous invitons à remplir le formulaire ci-dessous...
                     </p>
                     <div class="card-text" *ngIf="userData.subscriptions">Inscription confirmée pour :
@@ -354,14 +374,14 @@
                                 {{userData.endedSubscriptions.date}}</span> </p>
                     </div> -->
                     <!-- Fin de formations -->
-<!-- Fin de formations -->
-<div class="card-text" *ngIf="userData.endedSubscriptions?.length > 0">
-    <div *ngFor="let sub of userData.endedSubscriptions">
-        Formation terminée pour :
-        <span class="fw-bold">{{sub.sigle}}</span> en date du
-        <span class="fw-bold">{{sub.date}}</span>
-    </div>
-</div>
+                    <!-- Fin de formations -->
+                    <div class="card-text" *ngIf="userData.endedSubscriptions?.length > 0">
+                        <div *ngFor="let sub of userData.endedSubscriptions">
+                            Formation terminée pour :
+                            <span class="fw-bold">{{sub.sigle}}</span> en date du
+                            <span class="fw-bold">{{sub.date}}</span>
+                        </div>
+                    </div>
 
 
                     <!-- ici, c'est pour récupérer les documents liés -->
@@ -387,7 +407,8 @@
                     <button class="btn bg-success" [disabled]="userData.isSocialFormSent"
                         [ngClass]="{'disabled':userData.isSocialFormSent}"><a class="text-light"
                             [routerLink]="['/socialregistration']">
-                            {{userData.isSocialFormSent ? "Formulaire pré-inscription envoyé" : "Formulaire d'inscription en formation"}}</a>
+                            {{userData.isSocialFormSent ? "Formulaire pré-inscription envoyé" : "Formulaire
+                            d'inscription en formation"}}</a>
                     </button>
                 </div>
             </div>

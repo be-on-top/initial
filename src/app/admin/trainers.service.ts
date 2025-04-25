@@ -336,7 +336,52 @@ export class TrainersService {
   //   }
   // }
 
-  // faut traiter le cas où students n'est pas encore renseigné pour éviter erreurs en console
+  // faut traiter le cas où students n'est pas encore renseigné pour éviter erreurs en console du 25042025
+  // updateTrainer(id: string, trainer: any) {
+  //   const $trainerRef = doc(this.firestore, "trainers/" + id);
+  
+  //   // Nettoyage des codes postaux
+  //   const cpArray = trainer.cp
+  //     .split(',')
+  //     .map((cp: string) => cp.trim())
+  //     .filter((cp: string) => cp);
+  
+  //   trainer.cp = cpArray;
+  
+  //   // Suppression des champs optionnels vides ou undefined
+  //   if (trainer.comment === undefined) {
+  //     delete trainer.comment;
+  //   }
+  
+  //   // Vérifier si "students" est bien un tableau non vide, sinon le supprimer
+  //   if (!Array.isArray(trainer.students) || trainer.students.length === 0) {
+  //     delete trainer.students;
+  //   }
+  
+  //   // Mise à jour du document trainer
+  //   updateDoc($trainerRef, trainer)
+  //     .then(() => {
+  //       console.log("Trainer mis à jour avec succès !");
+  //     })
+  //     .catch((error) => {
+  //       console.error("Erreur lors de la mise à jour du trainer :", error);
+  //     });
+  
+  //   // Mise à jour et notification des étudiants uniquement si students est un tableau non vide
+  //   if (Array.isArray(trainer.students) && trainer.students.length > 0) {
+  //     for (let student of trainer.students) {
+  //       const $studentRef = doc(this.firestore, "students/" + student);
+  //       updateDoc($studentRef, { trainer: trainer.lastName + " " + trainer.firstName })
+  //         .then(() => {
+  //           console.log(`Notification à envoyer à ${student}`);
+  //         })
+  //         .catch((error) => {
+  //           console.error(`Erreur lors de la mise à jour du student ${student} :`, error);
+  //         });
+  //     }
+  //   }
+  // }
+
   updateTrainer(id: string, trainer: any) {
     const $trainerRef = doc(this.firestore, "trainers/" + id);
   
@@ -345,7 +390,6 @@ export class TrainersService {
       .split(',')
       .map((cp: string) => cp.trim())
       .filter((cp: string) => cp);
-  
     trainer.cp = cpArray;
   
     // Suppression des champs optionnels vides ou undefined
@@ -369,18 +413,46 @@ export class TrainersService {
   
     // Mise à jour et notification des étudiants uniquement si students est un tableau non vide
     if (Array.isArray(trainer.students) && trainer.students.length > 0) {
-      for (let student of trainer.students) {
-        const $studentRef = doc(this.firestore, "students/" + student);
-        updateDoc($studentRef, { trainer: trainer.lastName + " " + trainer.firstName })
-          .then(() => {
-            console.log(`Notification à envoyer à ${student}`);
-          })
-          .catch((error) => {
-            console.error(`Erreur lors de la mise à jour du student ${student} :`, error);
-          });
+      for (let studentId of trainer.students) {
+        const $studentRef = doc(this.firestore, "students/" + studentId);
+        
+        // Lecture du document étudiant pour vérifier le champ trainer
+        getDoc($studentRef).then((snapshot) => {
+          if (!snapshot.exists()) return;
+  
+          const studentData = snapshot.data();
+          const fullName = trainer.lastName + " " + trainer.firstName;
+  
+          // Si trainer est une chaîne et équivaut à "attribuer ultérieurement", on le remplace par un tableau
+          let updatedTrainers = studentData['trainers'] || [];
+  
+          if (studentData['trainer'] === "Attribué ultérieurement") {
+            updatedTrainers = [fullName];  // On crée un tableau avec le formateur
+          } else {
+            // Si trainer est une chaîne, on le convertit en tableau
+            if (typeof studentData['trainer'] === 'string') {
+              updatedTrainers = [studentData['trainer'], fullName];
+            } else if (Array.isArray(studentData['trainer'])) {
+              // Si trainer est déjà un tableau, on ajoute le formateur sans duplicata
+              if (!studentData['trainer'].includes(fullName)) {
+                updatedTrainers.push(fullName);
+              }
+            }
+          }
+  
+          // Mettre à jour le champ 'trainers' avec la nouvelle valeur
+          updateDoc($studentRef, { trainers: updatedTrainers })
+            .then(() => {
+              console.log(`Formateur mis à jour pour ${studentId}`);
+            })
+            .catch((error) => {
+              console.error(`Erreur lors de la mise à jour de ${studentId} :`, error);
+            });
+        });
       }
     }
   }
+  
   
   
   

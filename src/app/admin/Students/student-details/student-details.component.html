@@ -5,7 +5,11 @@
     <app-collapses-alert></app-collapses-alert>
     <!-- {{userRouterLinks.user}} -->
 
-    <div *ngIf="userRouterLinks.user==='trainer'" class="alert alert-light"><i class="bi bi-info-square-fill me-1"></i>Dès que vous aurez saisi au minimum une évaluation, un onglet additionnel dédié aux évaluations de suivi pédagogique apparait dans la vue de détail, et dans le compte personnel du candidat apprenant. C'est à partir de cet onglet que vous et vous seul  pourrez modifier l'évaluation si besoin.  
+    <div *ngIf="userRouterLinks.user==='trainer'" class="alert alert-light"><i
+            class="bi bi-info-square-fill me-1"></i>Dès que vous aurez saisi au minimum une évaluation, un onglet
+        additionnel dédié aux évaluations de suivi pédagogique apparait dans la vue de détail, et dans le compte
+        personnel du candidat apprenant. C'est à partir de cet onglet que vous et vous seul pourrez modifier
+        l'évaluation si besoin.
     </div>
 
 
@@ -35,8 +39,19 @@
                         <span class="fw-bold">Date de création</span> : {{student.created | date:'dd/MM/yyyy'}}<br>
                         <span *ngIf="student.details" class="d-block"><span class="fw-bold">Détails</span> :
                             {{student.details}}</span>
-                        <span *ngIf="student.trainer" class="d-block"><span class="fw-bold">Formateur</span> :
-                            {{student.trainer}}</span>
+                        <!-- Ancien champ trainer affiché uniquement s'il est différent de "Attribué ultérieurement" -->
+                        <span *ngIf="student.trainer && student.trainer !== 'Attribué ultérieurement'" class="d-block">
+                            <span class="fw-bold">Formateur</span> : {{student.trainer}}
+                        </span>
+
+                        <!-- Nouveau champ trainers (tableau) -->
+                        <span *ngIf="student.trainers && student.trainers.length > 0" class="d-block">
+                            <span class="fw-bold">Formateur(s)</span> :
+                            <span *ngFor="let t of student.trainers; let isLast = last">
+                                {{ t }}<span *ngIf="!isLast">, </span>
+                            </span>
+                        </span>
+                        
                         <span *ngIf="student.tutor" class="d-block"><span class="fw-bold">Tuteur</span> :
                             {{student.tutor}}</span>
                     </p>
