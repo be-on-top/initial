@@ -382,8 +382,78 @@ export class TrainersService {
   //   }
   // }
 
+
+  // fonctionne très bien mais ne tient pas compte du cas pour la mise à jour de student.trainers du cas où il a été retiré au formateur
+
+  // updateTrainer(id: string, trainer: any) {
+  //   const $trainerRef = doc(this.firestore, "trainers/" + id);
+  
+  //   // Nettoyage des codes postaux
+  //   const cpArray = trainer.cp
+  //     .split(',')
+  //     .map((cp: string) => cp.trim())
+  //     .filter((cp: string) => cp);
+  //   trainer.cp = cpArray;
+  
+  //   // Suppression des champs optionnels vides ou undefined
+  //   if (trainer.comment === undefined) {
+  //     delete trainer.comment;
+  //   }
+  
+  //   // Vérifier si "students" est bien un tableau non vide, sinon le supprimer
+  //   if (!Array.isArray(trainer.students) || trainer.students.length === 0) {
+  //     delete trainer.students;
+  //   }
+  
+  //   // Mise à jour du document trainer
+  //   updateDoc($trainerRef, trainer)
+  //     .then(() => {
+  //       console.log("Trainer mis à jour avec succès !");
+  //     })
+  //     .catch((error) => {
+  //       console.error("Erreur lors de la mise à jour du trainer :", error);
+  //     });
+  
+  //   // Mise à jour des étudiants concernés (si la liste des students est bien présente)
+  //   if (Array.isArray(trainer.students) && trainer.students.length > 0) {
+  //     const fullName = trainer.lastName + " " + trainer.firstName;
+  //     const normalizedFullName = fullName.toLowerCase();
+  
+  //     for (let studentId of trainer.students) {
+  //       const $studentRef = doc(this.firestore, "students/" + studentId);
+  
+  //       getDoc($studentRef).then((snapshot) => {
+  //         if (!snapshot.exists()) return;
+  
+  //         const studentData = snapshot.data();
+  //         let updatedTrainers = studentData['trainers'] || [];
+  
+  //         // Vérifie si ce formateur est déjà dans la liste (insensible à la casse)
+  //         const isAlreadyPresent = updatedTrainers.some(
+  //           (name: string) => name.toLowerCase() === normalizedFullName
+  //         );
+  
+  //         if (!isAlreadyPresent) {
+  //           updatedTrainers.push(fullName);
+  //         }
+  
+  //         // Mise à jour du champ 'trainers' uniquement
+  //         updateDoc($studentRef, { trainers: updatedTrainers })
+  //           .then(() => {
+  //             console.log(`Formateur ajouté pour l'étudiant ${studentId}`);
+  //           })
+  //           .catch((error) => {
+  //             console.error(`Erreur lors de la mise à jour de ${studentId} :`, error);
+  //           });
+  //       });
+  //     }
+  //   }
+  // }
+
   updateTrainer(id: string, trainer: any) {
     const $trainerRef = doc(this.firestore, "trainers/" + id);
+  
+    const fullName = trainer.lastName + " " + trainer.firstName;
   
     // Nettoyage des codes postaux
     const cpArray = trainer.cp
@@ -398,7 +468,8 @@ export class TrainersService {
     }
   
     // Vérifier si "students" est bien un tableau non vide, sinon le supprimer
-    if (!Array.isArray(trainer.students) || trainer.students.length === 0) {
+    const hasStudents = Array.isArray(trainer.students) && trainer.students.length > 0;
+    if (!hasStudents) {
       delete trainer.students;
     }
   
@@ -411,47 +482,78 @@ export class TrainersService {
         console.error("Erreur lors de la mise à jour du trainer :", error);
       });
   
-    // Mise à jour et notification des étudiants uniquement si students est un tableau non vide
-    if (Array.isArray(trainer.students) && trainer.students.length > 0) {
-      for (let studentId of trainer.students) {
-        const $studentRef = doc(this.firestore, "students/" + studentId);
-        
-        // Lecture du document étudiant pour vérifier le champ trainer
-        getDoc($studentRef).then((snapshot) => {
-          if (!snapshot.exists()) return;
+    // Mise à jour des étudiants concernés
+    const studentsCollection = collection(this.firestore, "students");
   
-          const studentData = snapshot.data();
-          const fullName = trainer.lastName + " " + trainer.firstName;
+    getDocs(studentsCollection).then((querySnapshot) => {
+      querySnapshot.forEach((docSnapshot) => {
+        const studentId = docSnapshot.id;
+        const studentData = docSnapshot.data();
+        let trainersList = studentData['trainers'] || [];
   
-          // Si trainer est une chaîne et équivaut à "attribuer ultérieurement", on le remplace par un tableau
-          let updatedTrainers = studentData['trainers'] || [];
+        const hasThisTrainer = trainersList.includes(fullName);
+        const stillAssigned = trainer.students && trainer.students.includes(studentId);
   
-          if (studentData['trainer'] === "Attribué ultérieurement") {
-            updatedTrainers = [fullName];  // On crée un tableau avec le formateur
-          } else {
-            // Si trainer est une chaîne, on le convertit en tableau
-            if (typeof studentData['trainer'] === 'string') {
-              updatedTrainers = [studentData['trainer'], fullName];
-            } else if (Array.isArray(studentData['trainer'])) {
-              // Si trainer est déjà un tableau, on ajoute le formateur sans duplicata
-              if (!studentData['trainer'].includes(fullName)) {
-                updatedTrainers.push(fullName);
-              }
-            }
-          }
+        if (hasThisTrainer && !stillAssigned) {
+          // Si l'étudiant avait ce formateur mais qu'il n'est plus dans la liste
+          trainersList = trainersList.filter(
+            (name: string) => name !== fullName
+          );
   
-          // Mettre à jour le champ 'trainers' avec la nouvelle valeur
-          updateDoc($studentRef, { trainers: updatedTrainers })
+          updateDoc(docSnapshot.ref, { trainers: trainersList })
             .then(() => {
-              console.log(`Formateur mis à jour pour ${studentId}`);
+              console.log(`Formateur retiré de ${studentId}`);
             })
             .catch((error) => {
-              console.error(`Erreur lors de la mise à jour de ${studentId} :`, error);
+              console.error(`Erreur lors de la suppression du formateur chez ${studentId}:`, error);
             });
-        });
-      }
-    }
+        }
+  
+        if (!hasThisTrainer && stillAssigned) {
+          // S'il est censé l'avoir mais ne l'a pas encore
+          trainersList.push(fullName);
+  
+          updateDoc(docSnapshot.ref, { trainers: trainersList })
+            .then(() => {
+              console.log(`Formateur ajouté pour ${studentId}`);
+            })
+            .catch((error) => {
+              console.error(`Erreur lors de l'ajout du formateur chez ${studentId}:`, error);
+            });
+        }
+      });
+    }).catch((error) => {
+      console.error("Erreur lors de la lecture des étudiants :", error);
+    });
   }
+  
+
+  
+
+
+ 
+  
+  
+
+
+
+  
+  
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   
   
