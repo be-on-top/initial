@@ -19,30 +19,56 @@
 
         <!-- attention à virer les fonctions pour l'exercice sur (change) et (input) !!!!!! -->
         <!-- premières tentatives pour sélectionner les métiers depuis userTrades -->
+   
         <div class="row mb-1">
-            <div class="form-group col-sm-4">
-                <select class="form-select" name="sigle" ngModel required #sigle="ngModel"
-                    (change)="checkIfSelected(sigle.value)" [disabled]="!isRealStudent">
-                    <option value>Métier</option>
-                    <option *ngFor="let item of receivedTrades" value="{{item}}">
-                        {{item}}
-                    </option>
-                </select>
-            </div>
-            <div class="form-group col-sm-4">
-                <ng-container *ngIf="relatedCompetences">
-                    <!-- j'ai retiré required pour laisser la possibilité de saisir une appréciation globale -->
-                    <select class="form-select" name="competence" id="competence" ngModel #competence="ngModel"
+
+                <div class="form-group col-sm-4">
+                    <ng-container *ngIf="receivedTrades.length > 1; else autoSelectedTrade">
+                      <select 
+                        class="form-select" 
+                        name="sigle" 
+                        ngModel 
+                        required 
+                        #sigle="ngModel"
+                        (change)="checkIfSelected(sigle.value)" 
                         [disabled]="!isRealStudent">
-                        <option value>Competence métier à évaluer</option>
-                        <option
-                            *ngFor="let key of getKeys(relatedCompetences['competences_' + selectedSigle]); let i = index"
-                            [value]="selectedSigle + '_CP' + (i + 1)">
-                            CP{{ i + 1 }}: {{ relatedCompetences['competences_' + selectedSigle][key] }}
+                        <option value="">Métier</option>
+                        <option *ngFor="let item of receivedTrades" [value]="item">
+                          {{ item }}
                         </option>
-                    </select>
-                </ng-container>
+                      </select>
+                    </ng-container>
+                  
+                    <ng-template #autoSelectedTrade>
+                      <input 
+                        class="form-control" 
+                        name="sigle" 
+                        [ngModel]="selectedSigle" 
+                        readonly>
+                      <!-- 👆 Ici pas disabled, mais readonly + ngModel pour l'enregistrer dans le form -->
+                    </ng-template>
+                  </div>
+                  
+
+          
+            <div class="form-group col-sm-4">
+              <ng-container *ngIf="relatedCompetences">
+                <select class="form-select" name="competence" id="competence" ngModel #competence="ngModel"
+                  [disabled]="!isRealStudent" [required]="f.value.subject===''">
+                  <option value>Competence métier à évaluer</option>
+                  <option
+                    *ngFor="let key of getKeys(relatedCompetences['competences_' + selectedSigle]); let i = index"
+                    [value]="selectedSigle + '_CP' + (i + 1)">
+                    CP{{ i + 1 }}: {{ relatedCompetences['competences_' + selectedSigle][key] }}
+                  </option>
+                </select>
+
+                <div class="valid-feedback" *ngIf="competence.valid">Champ correctement renseigné</div>
+                <div class="invalid-feedback" *ngIf="competence.invalid">Merci de choisir la compétence concernée.</div>
+              </ng-container>
             </div>
+          
+          
 
             <!-- Tant qu'on faisait la distinction pour surclasser le candidat -->
             <!-- <div class="form-group col-sm-4">
@@ -64,6 +90,8 @@
                     <option value>Niveau</option>
                     <option *ngFor="let level of levels" value="{{level}}">{{ levelTranslations[level] }}</option>
                 </select>
+                <!-- <div class="valid-feedback" *ngIf="level.valid">Champ correctement renseigné</div> -->
+                <div class="invalid-feedback" *ngIf="level.invalid">Merci de renseigner le niveau</div>
 
             </div>
 
@@ -72,20 +100,38 @@
 
         <div class="row">
             <div class="form-group col-md-6">
-                <label for="subject" class="form-label mt-3">Titre *</label>
-                <input type="text" placeholder="Pour plus de lisibilité, merci de renseigner" ngModel name="subject"
+                <label for="subject" class="form-label mt-3">Titre (optionnel)</label>
+                <!-- <input type="text" placeholder="Pour plus de lisibilité, merci de renseigner" ngModel name="subject"
                     class="form-control" #subject="ngModel" required [disabled]="!isRealStudent">
                 <div class="valid-feedback" *ngIf="subject.valid">Champ correctement renseigné</div>
                 <div class="invalid-feedback" *ngIf="subject.invalid">Merci de renseigner le sujet de l'évaluation.
-                </div>
+                </div> -->
+                <input type="text" placeholder="Pour plus de lisibilité & rappel du contexte" ngModel name="subject"
+                    class="form-control" #subject="ngModel" [disabled]="!isRealStudent">
+                <!-- <div class="valid-feedback" *ngIf="subject.valid">Champ correctement renseigné</div>
+                <div class="invalid-feedback" *ngIf="subject.invalid">Merci de renseigner le sujet de l'évaluation.
+                </div> -->
             </div>
             <div class="form-group col-sm-4">
                 <label for="date" class="form-label mt-3">Date *</label>
-                <input type="date" name="date" ngModel name="date" class="form-control" #date="ngModel"
-                    placeholder="Saisissez l'évaluation reçue en présentiel" required>
-                <div class="valid-feedback" *ngIf="date.valid">Champ correctement renseigné</div>
+                <!-- <input type="date" name="date" ngModel name="date" class="form-control" #date="ngModel"
+                    placeholder="Saisissez l'évaluation reçue en présentiel" required> -->
+                    <input 
+                    id="date" 
+                    name="date" 
+                    ngModel 
+                    type="date" 
+                    class="form-control" 
+                    [ngModel]="today"
+                    required 
+                    #date="ngModel"
+                  />
+                <!-- <div class="valid-feedback" *ngIf="date.valid">Champ correctement renseigné</div> -->
                 <div class="invalid-feedback" *ngIf="date.invalid">Merci de renseigner la date</div>
             </div>
+
+
+              
         </div>
 
         <div class="form-group">

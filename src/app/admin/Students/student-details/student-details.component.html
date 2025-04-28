@@ -379,6 +379,7 @@
                                                 [routerLink]="['/admin/updateEvaluation', studentId, evaluation.key]">Modifier
                                                 l'évaluation</button>
                                         </div>
+
                                         <!-- fin  partie censée être cachée -->
                                         <div *ngIf="userRouterLinks.user!=='external'"
                                             class="card-footer d-flex justify-content-between align-items-center">
@@ -405,6 +406,11 @@
                                     </div>
                                 </ng-container>
                             </div>
+
+                                                                    <!-- bouton additionnel pour ajouter une évaluation depuis la vue -->
+                                                                    <button class="btn btn-primary my-3" *ngIf="userRouterLinks.user=='trainer'"
+                                                                    [routerLink]="['/admin/addStudentEvaluation', studentId]"><i
+                                                                    class="bi bi-pen"></i>Ajouter une évaluation de suivi</button>
                             <!-- fin de la boucle additionnelle si inscriptions multiples -->
                         </ng-container>
                         <!-- si aucune évaluation de suivi jusqu'ici, on le mentionne -->

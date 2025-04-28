@@ -45,6 +45,8 @@ export class AddFollowUpComponent implements OnInit {
   // subscriptions?: any
   isRealStudent: boolean = false
 
+  today: string = "";
+
   constructor(
     private service: StudentsService,
     private activatedRoute: ActivatedRoute,
@@ -55,6 +57,11 @@ export class AddFollowUpComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    const todayDate = new Date();
+    this.today = todayDate.toISOString().split('T')[0];  // Format yyyy-MM-dd
+
+    
     // this.receivedTrades = this.activatedRoute.snapshot.queryParams['trades'] ? this.activatedRoute.snapshot.queryParams['trades'].split(',') : [];
     console.log('trades récupéré en paramètres de route', this.receivedTrades);
 
@@ -68,9 +75,22 @@ export class AddFollowUpComponent implements OnInit {
       console.log('tableau des inscriptions', this.receivedTrades);
       // this.receivedTrades = this.activatedRoute.snapshot.queryParams['trades'] ? this.activatedRoute.snapshot.queryParams['trades'].split(',') : [this.subscriptions];
       // on appelle la méthode qui va nous permettre de récupérer les compétences 
+
+
+      // ⚡ Directement ici : si un seul métier, on pré-sélectionne
+    if (this.receivedTrades.length === 1) {
+      this.selectedSigle = this.receivedTrades[0];
+    }
+
+
+
       this.getRelatedCompetences()
 
     })
+
+
+
+    
 
 
 
@@ -116,22 +136,22 @@ export class AddFollowUpComponent implements OnInit {
     // let evaluations:any={}
     let evalKey: string = 'tutorial-' + tutorial.value.date + Math.floor(Math.random() * 2)
     const tutorials = { [evalKey]: tutorial.value }
-    this.service.addFollowUpTutorial(studentId, { tutorials })
-      .then(() => {
+    // this.service.addFollowUpTutorial(studentId, { tutorials })
+    //   .then(() => {
 
-        this.feedbackMessages = `Enregistrement OK`;
-        setTimeout(() => {
-          this.router.navigate(['/admin/tutor/myStudentDetails', studentId])
-        }, 2000)
-        // this.router.navigate(['/admin/trainers']);
-        // ...
-      })
-      .catch((error) => {
-        this.feedbackMessages = error.message;
-        // this.feedbackMessages = this.firebaseErrors[error.code];
-        this.isSuccessMessage = false;
-        console.log(this.feedbackMessages)
-      })
+    //     this.feedbackMessages = `Enregistrement OK`;
+    //     setTimeout(() => {
+    //       this.router.navigate(['/admin/tutor/myStudentDetails', studentId])
+    //     }, 2000)
+    //     // this.router.navigate(['/admin/trainers']);
+    //     // ...
+    //   })
+    //   .catch((error) => {
+    //     this.feedbackMessages = error.message;
+    //     // this.feedbackMessages = this.firebaseErrors[error.code];
+    //     this.isSuccessMessage = false;
+    //     console.log(this.feedbackMessages)
+    //   })
   }
 
   // ngAfterViewInit() {
@@ -175,6 +195,31 @@ export class AddFollowUpComponent implements OnInit {
     console.log('relatedCompetences en dehors de la boucle', this.relatedCompetences)
     // return this.relatedCompetences
   }
+
+
+
+/**
+ * Fonction appelée automatiquement dans le template quand il n'y a qu'un seul métier.
+ * Son but est de mettre à jour `selectedSigle` pour que le select des compétences
+ * fonctionne même sans passer par l'événement (change).
+ * 
+ * @param sigle - Le métier à auto-sélectionner (reçu depuis receivedTrades[0])
+ * @returns Toujours `true` pour satisfaire l'*ngIf dans le template.
+ */
+setSelectedSigle(sigle: string): boolean {
+  // Vérifie si le sigle passé n'est pas déjà le sigle actuellement sélectionné
+  if (this.selectedSigle !== sigle) {
+    // Si c'est un nouveau sigle, on l'affecte à selectedSigle
+    this.selectedSigle = sigle;
+    // Pour debug : on affiche dans la console le sigle qui vient d'être sélectionné automatiquement
+    console.log('Auto-selected sigle:', this.selectedSigle);
+  }
+
+  // Toujours retourner `true` car Angular attend un booléen pour *ngIf
+  return true;
+}
+
+  
 
 
 }
