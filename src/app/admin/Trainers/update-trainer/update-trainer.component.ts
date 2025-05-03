@@ -12,6 +12,7 @@ import { CentersService } from '../../centers.service';
 import { UsersService } from '../../users.service';
 import { Centers } from '../../centers';
 import { Trade } from '../../trade';
+import { Student } from '../../Students/student';
 
 @Component({
   selector: 'app-update-trainer',
@@ -40,6 +41,8 @@ export class UpdateTrainerComponent implements OnInit {
 
   // pour différencier la vue si user trainer
   userRouterLinks: any
+
+  mirorList: any = []
 
 
 
@@ -95,6 +98,7 @@ export class UpdateTrainerComponent implements OnInit {
           // que la fin de formation ne soit pas actéé
           && !student.endedSubscriptions
         )
+        this.mirorList = [...this.studentsList]
       })
     })
 
@@ -117,41 +121,49 @@ export class UpdateTrainerComponent implements OnInit {
   }
 
 
+
   delete(studentUid: string) {
     console.log('Student à supprimer :', studentUid);
 
-    // Trouver l'index de l'étudiant correspondant
-    const index = this.studentsList.findIndex((student: any) => student.id === studentUid);
+    // Copie de l'état initial de selectedStudent (si tu veux garder l'original)
+    const initialSelectedStudents = [...this.selectedStudent];
+
+    const index = this.mirorList.findIndex((student: any) => student.id === studentUid);
 
     if (index !== -1) {
-      // Supprimer l'étudiant du tableau
+      // Supprime l'étudiant de studentsList
       this.studentsList.splice(index, 1);
       console.log('this.studentsList mis à jour :', this.studentsList);
+
+      // Supprime l'UID de selectedStudent, sans toucher au reste de la liste
+      this.selectedStudent = initialSelectedStudents.filter((id: string) => id !== studentUid);
+      console.log('this.selectedStudent :', this.selectedStudent);
+
     } else {
       console.log('Étudiant non trouvé dans la liste');
     }
-
-
-    this.service.deleteStudentFromTrainer(this.userId, studentUid)
-
   }
 
-
-  updateUser(form: NgForm) {
-    // on vérifie la validité du formulaire
+  
+  
+ updateUser(form: NgForm) {
     if (!form.valid) {
-      console.log('form non valid')
-      return
+      console.log('form non valid');
+      return;
     }
-
-    console.log("form update values", form.value);
-    this.service.updateTrainer(this.userId, form.value)
-    // pour notifier le(s) candidat(s) concerné(s)
-    // this.notificationsService.notifyStudent(form.value)
-    // puis redirection
-    this.userRouterLinks.user=='referent'? this.router.navigate(['/admin/referent/trainerDetails', this.userId]) : this.router.navigate(['/admin/trainer', this.userId])
-    // this.router.navigate(['/admin/trainer', this.userId])
-  }
+  
+    // Sécurité : on aligne form.value.students sur selectedStudent
+    form.value.students = this.selectedStudent;
+  
+    console.log('form update values', form.value);
+  
+    this.service.updateTrainer(this.userId, form.value);
+  
+    this.userRouterLinks.user === 'referent'
+      ? this.router.navigate(['/admin/referent/trainerDetails', this.userId])
+      : this.router.navigate(['/admin/trainer', this.userId]);
+  }  
+  
 
 
   // pour affecation métiers

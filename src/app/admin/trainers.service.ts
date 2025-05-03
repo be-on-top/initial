@@ -468,10 +468,10 @@ export class TrainersService {
     }
   
     // Vérifier si "students" est bien un tableau non vide, sinon le supprimer
-    const hasStudents = Array.isArray(trainer.students) && trainer.students.length > 0;
-    if (!hasStudents) {
-      delete trainer.students;
-    }
+    // const hasStudents = Array.isArray(trainer.students) && trainer.students.length > 0;
+    // if (!hasStudents) {
+    //   delete trainer.students;
+    // }
   
     // Mise à jour du document trainer
     updateDoc($trainerRef, trainer)
@@ -482,6 +482,9 @@ export class TrainersService {
         console.error("Erreur lors de la mise à jour du trainer :", error);
       });
   
+
+
+      
     // Mise à jour des étudiants concernés
     const studentsCollection = collection(this.firestore, "students");
   

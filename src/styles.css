@@ -741,8 +741,14 @@ abbr:hover::before {
 
 
     /* Keep collapsible sections expanded */
-    .collapse {
+    .collapse, .alert.alert-info {
         display: block !important;
+        background-color: #004ECD;
+        color: white !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+
+
     }
 
     /* Improve visibility of selected options */

@@ -3,112 +3,123 @@
     <h3>Mise à jour d'un formateur</h3>
 
     <div class="alert bg-warning alert-dismissible fade show my-3" role="alert">
-        <button type="button" class="btn-close btn-close mt-2" data-bs-dismiss="alert" aria-label="Fermer le message"></button>
-        <span class="fw-bold"><i class="bi bi-exclamation-triangle-fill me-1"></i>Rappel</span> : Le positionnement en amont a servi de fil conducteur au développement de l'application et du parcours utilisateur afin de pouvoir formaliser une offre de formation personnalisée (durée, contenu, coûts) bien avant l'entrée en présentiel.
-        <span class="fw-bold">Le positionnements "en aval", qui mobilisera dans l'urgence et simultanément conseiller projet, formateur et candidats, n'a pas vocation à devenir un réflexe opérationnel.</span>
-      </div>  
+        <button type="button" class="btn-close btn-close mt-2" data-bs-dismiss="alert"
+            aria-label="Fermer le message"></button>
+        <span class="fw-bold"><i class="bi bi-exclamation-triangle-fill me-1"></i>Rappel</span> : Le positionnement en
+        amont a servi de fil conducteur au développement de l'application et du parcours utilisateur afin de pouvoir
+        formaliser une offre de formation personnalisée (durée, contenu, coûts) bien avant l'entrée en présentiel.
+        <span class="fw-bold">Le positionnements "en aval", qui mobilisera dans l'urgence et simultanément conseiller
+            projet, formateur et candidats, n'a pas vocation à devenir un réflexe opérationnel.</span>
+    </div>
 
     <form class="form" #f="ngForm" (submit)="updateUser(f)" class="was-validated">
 
+        <!-- Date de création (invisible) -->
         <input type="text" id="created" [(ngModel)]="user.created" name="created" class="form-control invisible"
             placeholder="Date de création : non modifiable">
+    
+        <!-- ID d’authentification (affiché mais désactivé) -->
         <input type="text" id="id" [(ngModel)]="user.id" name="id" class="form-control"
-            placeholder="id d'authentification : non modifiable" class="form-control text-white" disabled>
-            
-            <!-- classe {{user.class}} -->
+            placeholder="id d'authentification : non modifiable" disabled>
+    
+        <!-- Champ Prénom -->
         <label for="firstName" class="form-label mt-3">Prénom</label>
         <input type="text" id="firstName" [(ngModel)]="user.firstName" name="firstName" class="form-control"
             placeholder="Prénom">
-
+    
+        <!-- Champ Nom obligatoire avec validation -->
         <label for="lastName" class="form-label mt-3">Nom *</label>
         <input type="text" id="lastName" [(ngModel)]="user.lastName" name="lastName" class="form-control"
             #lastName="ngModel" placeholder="Nom" required>
         <div class="valid-feedback" *ngIf="lastName.valid">Champ correctement renseigné</div>
         <div class="invalid-feedback" *ngIf="lastName.invalid">Merci de renseigner le champ nom.</div>
-
+    
+        <!-- Email désactivé mais validé -->
         <label for="email" class="form-label mt-3">Email *</label>
         <div class="input-group disabled">
-            <span class="input-group-text" id="inputGroupPrepend2">@</span>
-            <input type="email" id="email" [(ngModel)]="user.email" name="email" class="form-control text-white" #email="ngModel"
-                placeholder="Email" required disabled>
+            <span class="input-group-text">@</span>
+            <input type="email" id="email" [(ngModel)]="user.email" name="email" class="form-control text-white"
+                #email="ngModel" placeholder="Email" required disabled>
         </div>
-        <div class="valid-feedback" *ngIf="email.valid">Email Valide </div>
+        <div class="valid-feedback" *ngIf="email.valid">Email Valide</div>
         <div class="invalid-feedback" *ngIf="email.invalid">Merci de renseigner le champ email.</div>
-
+    
+        <!-- Code postal optionnel -->
         <label for="cp" class="form-label mt-3">CP</label>
         <input type="text" id="cp" [(ngModel)]="user.cp" name="cp" class="form-control"
             placeholder="Code Postal Optionnel...">
-
-        <!-- Tooggle Swith for user status -->
+    
+        <!-- Toggle switch pour l’état actif/inactif -->
         <div class="form-check form-switch my-3">
             <input class="form-check-input" type="checkbox" id="status" name="status" value="true"
                 [(checked)]="user.status" [(ngModel)]="user.status">
-            <label class="form-check-label" for="status">Status de l'utilisateur :
+            <label class="form-check-label" for="status">
+                Status de l'utilisateur :
                 <span *ngIf="user.status; else elseBlock" class="fw-bold">Actif</span>
-                <ng-template #elseBlock> <span class="fw-bold">Inactif</span></ng-template>
+                <ng-template #elseBlock><span class="fw-bold">Inactif</span></ng-template>
             </label>
         </div>
-
+    
         <hr class="my-4">
-
-        <!-- modification des sigles métiers -->
+    
+        <!-- Sélection multiple des métiers (sigles) -->
         <label for="sigle" class="form-label mt-3">📌 Affectation métier(s) :</label>
-        <div class="d-flex border-start ps-3 text-muted small mb-2" >
+        <div class="d-flex border-start ps-3 text-muted small mb-2">
             Maintenez Ctrl (ou Cmd sur Mac) pour ajouter ou retirer des spécialisations métiers.
-          </div>
-          
-
-        <!-- <select class="form-select" name="sigle" id="sigle" [ngModel]="user.sigle" required #sigle="ngModel"
-            (change)="checkIfSelected(sigle.value)" multiple>
-            <option value>Selectionner le métier</option>
-            <option value="prepa_cdes">PREPA CDES</option>
-            <option value="poser_ite">POSEUR ITE</option>
-            <option value="macon_vrd">MACON VRD</option>
-            <option value="cl_vul">CLVUL</option>
-        </select> -->
+        </div>
         <select class="form-select" name="sigle" id="sigle" [ngModel]="user.sigle" required #sigle="ngModel"
             (change)="checkIfSelected(sigle.value)" multiple>
             <option value>Selectionner le métier</option>
             <option *ngFor="let trade of tradesData" value="{{trade}}">{{trade}}</option>
         </select>
-
-        <!-- modification des étudiants qui lui sont affectés -->
-         <hr class="my-4">
-
+    
+        <hr class="my-4">
+    
+        <!-- Affectation des étudiants -->
         <label for="students" class="form-label">📌 Affectation étudiants :</label>
-        <div class="d-flex border-start ps-3 text-muted small mb-2" >
+        <div class="d-flex border-start ps-3 text-muted small mb-2">
             Maintenez Ctrl (ou Cmd sur Mac) pour ajouter ou retirer des étudiants à sa liste de suivi.
-          </div>
-
-        <!-- <input type="text" class="form-control mb-2" name="searchText" [(ngModel)]="searchText"
-            placeholder="Rechercher un étudiant"> -->
-
-            <!-- pour lister ceux déjà inscrits -->
-             <ng-container *ngFor="let student of studentsList">
-                <span *ngIf="selectedStudent.includes(student.id)" >{{student.lastName}} {{student.firstName}}<button type="button" class="btn" title="remove student" (click)="delete(student.id)"><i class="bi bi-x-square-fill mx-0"></i></button></span>
-             </ng-container>
-
-
-        <select #studentSelect class="form-select" name="students" id="students" [(ngModel)]="selectedStudent" multiple>
+        </div>
+    
+        <!-- Liste visuelle des étudiants déjà sélectionnés, avec bouton de suppression -->
+        <ng-container *ngFor="let student of mirorList">
+            <span *ngIf="selectedStudent.includes(student.id)">
+                {{student.lastName}} {{student.firstName}}
+                <button type="button" class="btn" title="remove student" (click)="delete(student.id)">
+                    <i class="bi bi-x-square-fill mx-0"></i>
+                </button>
+            </span>
+        </ng-container>
+    
+        <!-- Select multiple pour sélectionner des étudiants -->
+        <select #studentSelect class="form-select" name="students" id="students"
+            [(ngModel)]="selectedStudent" multiple>
             <option value>Selectionner l'étudiant</option>
-            <option *ngFor="let student of studentsList" [value]="student.id" [id]="student.id" #[student.id]
+            <option *ngFor="let student of mirorList" [value]="student.id" [id]="student.id" #[student.id]
                 [ngClass]="{'text-light bg-primary fst-italic': searchText && student.lastName.toLowerCase().includes(searchText.toLowerCase())}">
                 {{student.lastName}} {{student.firstName}}
             </option>
         </select>
-
-
-        <!-- <label for="email" class="form-label mt-3">Commentaires optionnels</label> -->
-        <textarea name="comment" id="comment" [(ngModel)]="user.comment" name="comment" cols="100" rows="10"
-            class="form-control mt-3" #comment="ngModel" [ngClass]="{'.is-valid':comment.value && comment.touched}"
-            placeholder="Commentaires optionnels...">Détails / Remarques & Objectifs...</textarea>
+    
+        <!-- Commentaires optionnels -->
+        <textarea name="comment" id="comment" [(ngModel)]="user.comment" cols="100" rows="10"
+            class="form-control mt-3" #comment="ngModel"
+            [ngClass]="{'.is-valid':comment.value && comment.touched}"
+            placeholder="Commentaires optionnels...">
+            Détails / Remarques & Objectifs...
+        </textarea>
+    
+        <!-- Bouton de soumission désactivé si le formulaire est invalide -->
         <button type="submit" id="submit" class="btn btn-primary mt-3"
             [ngClass]="{'disabled':f.invalid}">Valider</button>
+    
     </form>
+    
 
     <!-- pour retour -->
 
-    <a class="btn btn-primary text-white mt-5" [routerLink]="userRouterLinks.user=='referent' ? '/admin/myTrainers' : '/admin/trainers'">
+    <a class="btn btn-primary text-white mt-5"
+        [routerLink]="userRouterLinks.user=='referent' ? '/admin/myTrainers' : '/admin/trainers'">
         Retour à la liste
     </a>
 
