@@ -32,6 +32,7 @@ export class UpdateStudentComponent implements OnInit {
 
   // essai pour connecter le tableau des sigles aux documents de la collection sigles destinée aux paramétrages métier
   sigleIds: string[] = []
+  tradesEvaluated: string[] = []
 
   levels: string[] = ['beginner', 'intermediate', 'advance', 'pro']
   // pour traduire en bon français
@@ -78,6 +79,20 @@ export class UpdateStudentComponent implements OnInit {
         } console.log("tutorialToUpdate", this.tutorialToUpdate)
       }
 
+      // Utilisation d'un Set pour stocker les tradesEvaluated uniques
+      const tradesEvaluatedSet = new Set<string>();
+
+      for (const key in this.student) {
+        if (key.includes('quizz')) {
+          tradesEvaluatedSet.add(key)
+        }        
+      }
+
+      // this.tradesEvaluated = [...tradesEvaluatedSet]
+      this.tradesEvaluated = [...tradesEvaluatedSet].map(item => item.replace('quizz_', ''));
+
+      console.log("this tradesEvaluated", this.tradesEvaluated);
+
     })
 
     this.getUsers()
@@ -123,7 +138,7 @@ export class UpdateStudentComponent implements OnInit {
     /* console.log("form update values", form.value); */
     this.service.updateStudent(this.studentId, form.value)
     // il faudra prévoir une redirection... 
-    this.userRouterLinks.user==='referent'?this.router.navigate(['/admin/referent/studentDetails', this.studentId]):this.router.navigate(['/admin/student', this.studentId])
+    this.userRouterLinks.user === 'referent' ? this.router.navigate(['/admin/referent/studentDetails', this.studentId]) : this.router.navigate(['/admin/student', this.studentId])
   }
 
   updateStudentEvaluation(form: NgForm) {
@@ -242,7 +257,7 @@ export class UpdateStudentComponent implements OnInit {
 
   }
 
-  feedBackEndSubscription:boolean=false
+  feedBackEndSubscription: boolean = false
 
   async addEndingDate(endSubscription: NgForm) {
     // this.service.endSubscription(this.studentId, endSubscription.value.sigle)
@@ -251,11 +266,11 @@ export class UpdateStudentComponent implements OnInit {
       await this.service.endSubscription(this.studentId, endSubscription.value.sigle)
       this.feedBackEndSubscription = true
       alert('Fin de formation enregistrée !');
-      
+
     } catch (error) {
       console.error('Erreur lors de l\'enregistrement fin de formation:', error);
       alert('Échec de l\'enregistrement de fin de formation. Veuillez réessayer.');
-      
+
     }
   }
 
