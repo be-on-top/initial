@@ -173,53 +173,21 @@ export class UpdateTrainerComponent implements OnInit {
   }
 
 
-  // myCp: string[] = []
-  // filteredTrainers: Trainer[] = []
-
-  // getTrainersWithSameCp(userId: string) {
-  //   Étape 1 : Récupérer les données du referent en charge
-  //   this.trainerService.getReferentData(userId).subscribe(referentData => {
-  //     console.log("referentData", referentData);
-  //     this.myCp = referentData.cp || []; // Garantir que `this.myCp` est un tableau
-  //     console.log("Mes codes postaux :", this.myCp);
-
-  //     // Étape 2 : Récupérer les formateurs et les filtrer
-  //     this.trainerService.getTrainers().subscribe(trainers => {
-  //       // Appliquer le filtre et assigner le résultat à `filteredTrainers`
-  //       this.filteredTrainers = trainers.filter((trainer: any) => {
-  //         // Vérifier si le formateur a au moins un code postal correspondant
-  //         return trainer.cp?.some((cp: string) => this.myCp.includes(cp));
-  //       });
-  //       console.log("Trainers correspondants :", this.filteredTrainers);
-  //       // this.getDedicatedTrainer()
-  //     })
-  //     this.getCentersWithSameCp(this.userId)
-  //   });
-  // }
 
 
-  // filteredCenters: Centers[] = []
+alertMessage: string | null = null;
 
-  // // fonctionne mais double appel à getReferentData si on garde l'ensemble...
-  // getCentersWithSameCp(userId: string) {
-  //   // this.trainerService.getReferentData(userId).subscribe(referentData => {
-  //   //   console.log("referentData", referentData);
-  //   //   // Initialiser myCp comme tableau
-  //   //   this.myCp = referentData.cp || [];
-  //   //   console.log("Mes codes postaux :", this.myCp);
-  //     // Récupérer les centres
-  //     this.centersService.getCenters().subscribe(centers => {
-  //       // Filtrer les centres
-  //       this.filteredCenters = centers.filter((center: any) => {
-  //         console.log("center.cp :", center.cp, "Type :", typeof center.cp);
-  //         // Vérifie si center.cp (string) est dans myCp (tableau)
-  //         return this.myCp.includes(center.cp);
-  //       });
-  //       console.log("Centers correspondants :", this.filteredCenters);
-  //       this.filteredCenters.forEach(center => console.log("Sigles :", center.sigles));
-  //     });
-  //   // });
-  // }
+onStudentSelect(selectedIds: string[]) {
+  selectedIds.forEach((studentId: string) => {
+    const student = this.mirorList.find((s: Student) => s.id === studentId);
+    if (student && student.trainers && student.trainers.length > 0 && !this.trainerStudents.includes(student.id)) {
+      this.alertMessage = `L'étudiant ${student.firstName} ${student.lastName} a déjà un formateur.`;
+    }
+  });
+}
+
+
+
 
 
 }

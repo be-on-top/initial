@@ -468,8 +468,7 @@ nav.navbar.navbar-light a {
     /* background-color: #2B2B2B !important; */
 }
 
-.bg-info,
-.alert-info {
+.bg-info{
     /* background-color: #0062fe; */
     background-color:  var(--primary-color) !important;
 }

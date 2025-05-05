@@ -76,6 +76,7 @@
         <hr class="my-4">
     
         <!-- Affectation des étudiants -->
+        <!-- {{trainerStudents}} -->
         <label for="students" class="form-label">📌 Affectation étudiants :</label>
         <div class="d-flex border-start ps-3 text-muted small mb-2">
             Maintenez Ctrl (ou Cmd sur Mac) pour ajouter ou retirer des étudiants à sa liste de suivi.
@@ -92,14 +93,34 @@
         </ng-container>
     
         <!-- Select multiple pour sélectionner des étudiants -->
-        <select #studentSelect class="form-select" name="students" id="students"
+        <!-- <select #studentSelect class="form-select" name="students" id="students"
             [(ngModel)]="selectedStudent" multiple>
             <option value>Selectionner l'étudiant</option>
             <option *ngFor="let student of mirorList" [value]="student.id" [id]="student.id" #[student.id]
                 [ngClass]="{'text-light bg-primary fst-italic': searchText && student.lastName.toLowerCase().includes(searchText.toLowerCase())}">
                 {{student.lastName}} {{student.firstName}}
             </option>
-        </select>
+        </select> -->
+
+        <!-- code additionnel qui fonctionne pour alerter sur ceux qui ont déjà un autre formateur -->
+        <div *ngIf="alertMessage" class="alert alert-info my-2">
+            <i class="bi bi-info-circle me-1"></i> {{ alertMessage }}
+            <button type="button" class="btn btn-primary btn-sm float-end" (click)="alertMessage = null">OK</button>
+        </div>
+        
+          
+          <select #studentSelect class="form-select" name="students" id="students"
+          [(ngModel)]="selectedStudent" multiple
+          (ngModelChange)="onStudentSelect($event)">
+          <option value>Selectionner l'étudiant</option>
+          <option *ngFor="let student of mirorList" [value]="student.id" [id]="student.id">
+              {{student.lastName}} {{student.firstName}}
+          </option>
+      </select>
+      
+      <!-- fin du code additionnel -->
+      
+
     
         <!-- Commentaires optionnels -->
         <textarea name="comment" id="comment" [(ngModel)]="user.comment" cols="100" rows="10"
