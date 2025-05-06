@@ -33,6 +33,7 @@ export class UpdateStudentComponent implements OnInit {
   // essai pour connecter le tableau des sigles aux documents de la collection sigles destinée aux paramétrages métier
   sigleIds: string[] = []
   tradesEvaluated: string[] = []
+  availableTrainings: string[] = []
 
   levels: string[] = ['beginner', 'intermediate', 'advance', 'pro']
   // pour traduire en bon français
@@ -72,26 +73,39 @@ export class UpdateStudentComponent implements OnInit {
         for (const key in this.student.evaluations) {
           key === this.evaluationKey ? this.evaluationToUpdate = this.student.evaluations[key] : ''
         }
-        console.log("evaluationToUpdate", this.evaluationToUpdate)
+        // console.log("evaluationToUpdate", this.evaluationToUpdate)
 
         for (const key in this.student.tutorials) {
           key === this.tutorialKey ? this.tutorialToUpdate = this.student.tutorials[key] : ''
-        } console.log("tutorialToUpdate", this.tutorialToUpdate)
+        } 
+        // console.log("tutorialToUpdate", this.tutorialToUpdate)
       }
 
-      // Utilisation d'un Set pour stocker les tradesEvaluated uniques
-      const tradesEvaluatedSet = new Set<string>();
 
-      for (const key in this.student) {
-        if (key.includes('quizz')) {
-          tradesEvaluatedSet.add(key)
-        }        
+      // Vérification de la présence de endedSubscriptions directement avant de continuer
+      if (this.student.endedSubscriptions && this.student.endedSubscriptions.length > 0) {
+        // Convertir achievedTrainings en Set pour des recherches plus rapides
+        const achievedTrainingsSet = new Set(
+          this.student.endedSubscriptions.map((sub: any) => sub.sigle)
+        );
+
+        // Générer tradesEvaluated à partir des clés contenant 'quizz_'
+        const tradesEvaluated = Object.keys(this.student)
+          .filter(key => key.includes('quizz_'))
+          .map(key => key.replace('quizz_', ''));
+
+        // Filtrer les formations disponibles en excluant celles déjà achevées
+        this.availableTrainings = tradesEvaluated.filter(
+          trade => !achievedTrainingsSet.has(trade)
+        );
+      } else {
+        // Si endedSubscriptions est vide ou non défini, on laisse tradesEvaluated tel quel
+        this.availableTrainings = Object.keys(this.student)
+          .filter(key => key.includes('quizz_'))
+          .map(key => key.replace('quizz_', ''));
       }
 
-      // this.tradesEvaluated = [...tradesEvaluatedSet]
-      this.tradesEvaluated = [...tradesEvaluatedSet].map(item => item.replace('quizz_', ''));
 
-      console.log("this tradesEvaluated", this.tradesEvaluated);
 
     })
 
@@ -101,29 +115,23 @@ export class UpdateStudentComponent implements OnInit {
     // implémenter la méthode conçue pour les "conseillers projets" (référents admin)
     // Récupérer l'UID de manière synchrone
     this.userUid = this.authService.getCurrentUserUid();
-    console.log('UID de l\'utilisateur authentifié dans le composant :', this.userUid);
+    // console.log('UID de l\'utilisateur authentifié dans le composant :', this.userUid);
 
 
     // On peut maintenant utiliser cet UID pour d'autres opérations
-    if (this.userUid) {
+    // if (this.userUid) {
       // Une méthode qui s'en inspière mais va me retourner
       // la liste des formateurs et ceux qui ont le même tableau de cp
       // ou ceux dont un des cp du tableau est contenu dans le tableau des cp du compte authentifié
-
-
-      // this.getCenterPostalCode(id:string){
-
-
-      // }
+      // this.getCenterPostalCode(id:string)
 
       // this.getTrainersWithSameCp(this.userUid)
       // this.getDedicatedTrainer()
 
-      // SI JE VEUX FAIRE un DEUX EN UN n'est plus utile si pas de classe normée
+      // SI JE VEUX FAIRE un DEUX EN UN : n'est plus utile si pas de classe normée
       // this.getTrainersWithSameCpAndSigle(this.userUid)
 
-
-    }
+    // }
 
 
   }

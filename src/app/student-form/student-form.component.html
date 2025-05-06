@@ -44,7 +44,7 @@ Tests OK. Sur une  partie. A finir.
     </div>
 
     <ng-container *ngIf="isReadOnly">
-        <p> <span class="text-decoration-underline">Préférences du candidat</span> <br>
+        <p *ngIf="socialData.center"> <span class="text-decoration-underline">Préférences du candidat</span> <br>
             Formation : {{ getDenomination(socialData.priorTrade) | async }} <br>
             Centre : {{ getCenterName(socialData.center) | async }}</p>
     </ng-container>
