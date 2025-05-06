@@ -121,6 +121,7 @@
                 <div class="alert alert-success" *ngIf="feedBackSubscribe==true">Inscription validée</div>
                 <form class="form mb-5" #subscription="ngForm" (submit)="subscribeStudent(subscription)"
                     class="was-validated">
+                    <p>Seuls les métiers ayant fait l'objet d'une évaluation complète apparaitront dans la liste ci-dessous<i class="bi bi-arrow-down-square-fill ms-1"></i></p>
 
                     <!-- 
                     Select multiple lié à student.subscriptions avec [(ngModel)] :

@@ -82,28 +82,27 @@ export class UpdateStudentComponent implements OnInit {
       }
 
 
-      // Vérification de la présence de endedSubscriptions directement avant de continuer
-      if (this.student.endedSubscriptions && this.student.endedSubscriptions.length > 0) {
-        // Convertir achievedTrainings en Set pour des recherches plus rapides
-        const achievedTrainingsSet = new Set(
-          this.student.endedSubscriptions.map((sub: any) => sub.sigle)
-        );
+// 1. Extraire les métiers évalués (métiers dont le questionnaire est terminé)
+const tradesEvaluated = Object.keys(this.student)
+  .filter(key => key.startsWith('quizz_') && (this.student[key] as { fullResults?: any }).fullResults)
+  .map(key => key.replace('quizz_', ''));
 
-        // Générer tradesEvaluated à partir des clés contenant 'quizz_'
-        const tradesEvaluated = Object.keys(this.student)
-          .filter(key => key.includes('quizz_'))
-          .map(key => key.replace('quizz_', ''));
+// 2. Si endedSubscriptions existe, exclure les métiers déjà suivis
+if (this.student.endedSubscriptions && this.student.endedSubscriptions.length > 0) {
+  // Convertir achievedTrainings en Set pour des recherches plus rapides
+  const achievedTrainingsSet = new Set(
+    this.student.endedSubscriptions.map((sub: any) => sub.sigle)
+  );
 
-        // Filtrer les formations disponibles en excluant celles déjà achevées
-        this.availableTrainings = tradesEvaluated.filter(
-          trade => !achievedTrainingsSet.has(trade)
-        );
-      } else {
-        // Si endedSubscriptions est vide ou non défini, on laisse tradesEvaluated tel quel
-        this.availableTrainings = Object.keys(this.student)
-          .filter(key => key.includes('quizz_'))
-          .map(key => key.replace('quizz_', ''));
-      }
+  // Filtrer les traitsEvaluated en excluant ceux déjà réalisés
+  this.availableTrainings = tradesEvaluated.filter(
+    trade => !achievedTrainingsSet.has(trade)
+  );
+} else {
+  // Si endedSubscriptions est vide ou non défini, on laisse tradesEvaluated tel quel
+  this.availableTrainings = tradesEvaluated;
+}
+
 
 
 
