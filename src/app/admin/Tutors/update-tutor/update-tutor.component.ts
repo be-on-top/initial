@@ -53,8 +53,10 @@ export class UpdateTutorComponent implements OnInit {
     this.userId = this.ac.snapshot.params["id"];
     // on fait appel à geTutor pour récupérer les entrées de l'existant. méthode qui pour memo renvoie un observable
     this.service.getTutor(this.userId).subscribe((data) => {
-      console.log("data depuis update-user component", data);
+      // console.log("data depuis update-user component", data);
       this.user = data
+
+      data.students ? this.selectedStudent = this.user.students : ""
     })
 
     // parce que j'ai besoin de récupérer la liste pour les affectations
@@ -67,9 +69,19 @@ export class UpdateTutorComponent implements OnInit {
       this.allStudents = students
       // On peut maintenant utiliser cet UID pour d'autres opérations
       if (this.adminUid && this.userRole === 'referent') {
-        alert("referent")
-        this.getCentersAndSocialFormByUserId(this.adminUid)
-        this.userService.getUser(this.adminUid).subscribe(data => this.cpArray = data.cp)
+        // alert("referent")
+        // on veut récupérer le cp[] du référent
+        this.userService.getUser(this.adminUid).subscribe(data => {
+          console.log("data du referent", data)
+          console.log("this.cpArray", data.cp);
+          this.cpArray = data.cp
+
+          // on veut que seuls les étudiants dont le localTraining est inclu dans cp[] remontent dans la liste
+          this.studentsList = students.filter(student =>
+            student.localTraining && this.cpArray.includes(student.localTraining) && !student.endedSubscriptions
+          )
+        })
+
 
       } else {
         this.studentsList = students.filter(student =>
@@ -106,21 +118,21 @@ export class UpdateTutorComponent implements OnInit {
   }
 
 
-  getCentersAndSocialFormByUserId(userId: string) {
+  // la logique ci-dessous est inutile, pour tutor, une simple comparaison localtraining et cpArray était suffisante
+  // getCentersAndSocialFormByUserId(userId: string) {
 
-    this.studentsService.getCentersAndSocialFormByUserId(userId)
-      .subscribe(returnedPriors => {
-        console.log('ReturnedPriors:', returnedPriors);
-        // Après avoir récupéré returnedPriors, on filtre la liste des étudiants
-        this.studentsList = this.filterStudentsByPriorCenter(this.allStudents, returnedPriors);
-        console.log('Filtered Students:', this.studentsList);
-      })
+  //   this.studentsService.getCentersAndSocialFormByUserId(userId)
+  //     .subscribe(returnedPriors => {
+  //       console.log('ReturnedPriors:', returnedPriors);
+  //       // Après avoir récupéré returnedPriors, on filtre la liste des étudiants
+  //       this.studentsList = this.filterStudentsByPriorCenter(this.allStudents, returnedPriors);
+  //       console.log('Filtered Students:', this.studentsList);
+  //     })
+  // }
 
-  }
-
-  filterStudentsByPriorCenter(students: Student[], returnedPriors: string[]): Student[] {
-    return students.filter(student => returnedPriors.includes(student.id));
-  }
+  // filterStudentsByPriorCenter(students: Student[], returnedPriors: string[]): Student[] {
+  //   return students.filter(student => returnedPriors.includes(student.id));
+  // }
 
   delete(studentUid: string) {
     console.log('Student à supprimer :', studentUid);
