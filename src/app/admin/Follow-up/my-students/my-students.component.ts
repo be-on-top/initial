@@ -39,15 +39,16 @@ export class MyStudentsComponent implements OnInit {
         // pour vérifier au préalable si c'est un tuteur ou pas
         if (this.userRouterLinks.user == 'tutor') {
 
-          alert("c'est un tutor ! ")
+          // alert("c'est un tutor ! ")
           this.tutorService.getTutor(user.uid).subscribe(data => {
 
 
-            console.log("userData from myStudents 0...", data)
+            // console.log("userData from myStudents 0...", data)
             console.log("userData lastName from myStudents...", data.lastName)
             this.userLastName = data.lastName
-            this.userTrades= data.sigle
-            console.log('trades récupérés pour tutor', this.userTrades= data.sigle);
+            // on ne devrait plus utiliser cette propriété pour tutor
+            // this.userTrades= data.sigle
+            // console.log('trades récupérés pour tutor', this.userTrades= data.sigle);
 
             // et maintenant qu'on a le lastName
             this.service.getStudents().subscribe(students => {
@@ -64,7 +65,7 @@ export class MyStudentsComponent implements OnInit {
         }
 
         if (this.userRouterLinks.user == 'trainer'){
-          alert("c'est un trainer ! ")
+          // alert("c'est un trainer ! ")
 
           // pour récupérer le nom de l'utilisateur authentifié, mais faudra changer ça :
           this.trainerService.getTrainer(user.uid).subscribe(data => {
@@ -138,12 +139,7 @@ export class MyStudentsComponent implements OnInit {
               
                 // Affichage pour contrôle, montrant les étudiants filtrés et sans doublon
                 console.log('this.myStudents avec trainer et/ou trainers, sans doublon', this.myStudents);
-              });
-
-              
-
-              
-              
+              });  
                            
 
             } else {
@@ -163,8 +159,6 @@ export class MyStudentsComponent implements OnInit {
           })
 
         }
-
-
 
       }
 

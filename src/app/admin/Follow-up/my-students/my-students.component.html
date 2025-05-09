@@ -1,6 +1,6 @@
 <div class="container py-5">
 
-    <h3>Mes étudiants</h3>
+    <h3>Mes étudiants/apprenants</h3>
     <!-- <h4>Mon rôle pour test : {{role}}</h4> -->
     <!-- {{userRouterLinks}} -->
     <hr>
@@ -8,9 +8,20 @@
         ...loading
     </div>
 
-    <div class="alert alert-light"><span class="fw-bold"><i class="bi bi-info-square-fill me-1"></i>Rappel contextuel</span> : Le candidat apprenant a finalisé son évaluation de positionnement, son inscription en formation a été validée par un conseiller projet, il a été notifié qu'un formateur lui a été attribué. Les formations en présentiel démarrent. Il vous faudra pouvoir procéder à des évaluations de suivi pédagogique. Evaluations individuelles, que l'utilisateur pourra consulter dans son compte personnel.  
+    <div class="alert alert-light" *ngIf="userRouterLinks.user=='trainer'">
+        <span class="fw-bold"><i class="bi bi-info-square-fill me-1"></i>Rappel contextuel</span> : Le candidat
+        apprenant a finalisé son évaluation de positionnement, son inscription en formation a été validée par un
+        conseiller projet, il a été notifié qu'un formateur lui a été attribué. Les formations en présentiel démarrent.
+        Il vous faudra pouvoir procéder à des évaluations de suivi pédagogique. Evaluations individuelles, que
+        l'utilisateur pourra consulter dans son compte personnel.
     </div>
-    <div *ngIf="myStudents.length===0" class="alert alert-warning text-light"><i class="bi bi-exclamation-lg me-1"></i> Tant qu'aucun Conseiller Projet ne vous a attribué de candidats, votre liste de suivi restera vide.</div>
+    <div class="alert alert-light" *ngIf="userRouterLinks.user=='tutor'">
+        <span class="fw-bold"><i class="bi bi-info-square-fill me-1"></i>Rappel contextuel</span> : Les formations en présentiel sont terminées.
+        Le candidat apprenant vient de démarrer son stage en entreprise. Il vous faudra pouvoir procéder à des évaluations de suivi en entreprise. Evaluations individuelles, que
+        l'utilisateur pourra consulter dans son compte personnel.
+    </div>
+    <div *ngIf="myStudents.length===0" class="alert alert-warning text-light"><i class="bi bi-exclamation-lg me-1"></i>
+        Tant qu'aucun Conseiller Projet ne vous a attribué de candidats, votre liste de suivi restera vide.</div>
 
     <div *ngIf="myStudents" class="text-center">
         <!-- on introduit un champ de recherche -->
