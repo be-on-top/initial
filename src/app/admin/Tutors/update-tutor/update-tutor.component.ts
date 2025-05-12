@@ -82,7 +82,6 @@ export class UpdateTutorComponent implements OnInit {
           )
         })
 
-
       } else {
         this.studentsList = students.filter(student =>
           // qu'il soit inscrit

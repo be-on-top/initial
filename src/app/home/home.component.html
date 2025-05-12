@@ -442,7 +442,8 @@
                                     [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]">
                                     <h3 class="h5 text-start ps-2">
                                         <i class="bi bi-{{i+1}}-square-fill text-success me-2"></i>
-                                        <span [innerHTML]="trade.denomination | firstWord | truncateTitle"></span>
+                                                                                <span
+                                            [innerHTML]="processDenomination(trade.denomination) | firstWord | truncateTitle"></span>
                                     </h3>
                                 </div>
 
