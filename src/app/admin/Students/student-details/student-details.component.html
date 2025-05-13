@@ -578,15 +578,18 @@
                             Aucune évaluation n'a encore été saisie
                         </div>
                     </ng-template>
-
                 </ng-container>
+                <!-- bouton additionnel pour ajouter une évaluation depuis la vue -->
+                  <button class="btn btn-primary my-3" *ngIf="userRouterLinks.user=='tutor'"
+                      [routerLink]="['/admin/addStudentTutorial', studentId]"><i
+                          class="bi bi-pen"></i>Ajouter un suivi tutorial</button>
+                  <!-- fin de la boucle additionnelle si inscriptions multiples -->
             </div>
         </div>
-
     </div>
 
-    <button (click)="print()" id="print" class="btn btn-light me-3">Imprimer</button>
-    <button *ngIf="userRouterLinks.user=='referent'" (click)="hideAndPrint()" id="print"
+    <button type="button" (click)="print()" id="printFullProposal" class="btn btn-light me-3">Imprimer</button>
+    <button type="button" *ngIf="userRouterLinks.user=='referent'" (click)="hideAndPrint()" id="printSimpleProposal"
         class="btn btn-warning me-3">Imprimer sans les coûts</button>
 
 
