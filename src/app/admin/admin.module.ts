@@ -188,7 +188,10 @@ const routesAdmin: Routes = [
       { path: 'updateCenter/:id', component: UpdateCenterComponent },
 
       // pour décompte total
-      { path: 'professionalsList', component: ProfessionalsListComponent }
+      { path: 'professionalsList', component: ProfessionalsListComponent },
+
+      // pour le tuteur
+      { path: 'myTutorAccount/:id', component: TutorDetailsComponent, data: { user: 'tutor' }  },
 
     ],
     // canActivate: [AuthGuardService]

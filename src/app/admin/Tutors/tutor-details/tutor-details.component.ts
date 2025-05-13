@@ -13,9 +13,12 @@ export class TutorDetailsComponent {
   userId: string = "";
   user: any
   studentsList?: any = []
+  // pour différencier la vue si user tutor
+  userRouterLinks: any
 
   constructor(private service: TutorsService, private ac: ActivatedRoute, private router: Router, private studentsService: StudentsService) {
     this.userId = this.ac.snapshot.params["id"];
+    this.userRouterLinks = this.ac.snapshot.data;
 
   }
 
@@ -25,7 +28,7 @@ export class TutorDetailsComponent {
       .subscribe(data => {
         console.log("data de getTrainer", data);
         this.user = data
-        console.log('this.user.students', this.user.students)     
+        console.log('this.user.students', this.user.students)
 
         // option concluante 
         if (this.user.students) {

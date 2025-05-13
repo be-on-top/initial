@@ -109,7 +109,7 @@
                 </div>
 
                 <p *ngIf="student.subscriptions && student.subscriptions.length !== 0">
-                    Inscriptions en cours :
+                   <strong>Inscriptions en cours :</strong> 
                     <span *ngFor="let sub of student.subscriptions">
                         <span *ngIf="!student.endedSubscriptions?.includes(sub)">
                             {{sub}}
@@ -121,7 +121,10 @@
                 <div class="alert alert-success" *ngIf="feedBackSubscribe==true">Inscription validée</div>
                 <form class="form mb-5" #subscription="ngForm" (submit)="subscribeStudent(subscription)"
                     class="was-validated">
-                    <p>Seuls les métiers ayant fait l'objet d'une évaluation complète apparaitront dans la liste ci-dessous<i class="bi bi-arrow-down-square-fill ms-1"></i>. <br> <small class="text-muted"> Attention : si vous procédez à plusieurs inscriptions simultanées à ce que le déroulé des formations le permette...</small></p>
+                    <p>Seuls les métiers ayant fait l'objet d'une évaluation complète apparaitront dans la liste
+                        ci-dessous<i class="bi bi-arrow-down-square-fill ms-1"></i>. <br> <small class="text-muted">
+                            Attention : si vous procédez à plusieurs inscriptions simultanées à ce que le déroulé des
+                            formations le permette...</small></p>
 
                     <!-- 
                     Select multiple lié à student.subscriptions avec [(ngModel)] :
@@ -147,11 +150,16 @@
                     <!-- ajout pour renforcer la localisation  -->
                     <!-- utile si candidat inscrit par le conseiller projet OU si changement de lieu d'affectation suite à entretien -->
                     <!-- devra être réinitialiser à chaque fin de formation pour obtenir un filtre plus spécifique lors de l'affectation de candidats au formateur -->
-                    <label class="form-label mt-3" for="localTraining">Modifier ou préciser le lieu de la formation
-                        *</label>
-                    <div class="small fst-italic"> si
-                        vous ne précisez rien, c'est le choix initial du candidat qui sera automatiquement associé à son
-                        inscription</div>
+                    <label class="form-label mt-3" for="localTraining">Modifier ou préciser le lieu de la formation<i
+                            class="bi bi-arrow-down-square-fill ms-1"></i>.
+                    </label>
+                    <br>
+
+
+                    <small class="text-muted">Fonctionnalité dédiée aux Conseillers Projets qui gèrent plusieurs
+                        centres de formation OU candidats que vous avez ajoutés (dispensés de remplir le formulaire
+                        en ligne).</small><small class="text-muted" *ngIf="!student.innerStudent">Si rien n'est précisé, c'est le choix initial du candidat qui sera automatiquement associé à son
+                        inscription</small>
                     <input type="text" class="form-control mt-3" name="localTraining"
                         [(ngModel)]="student.localTraining" placeholder="code postal du centre">
                     <!-- fin -->

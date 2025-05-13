@@ -740,9 +740,9 @@ abbr:hover::before {
 
 
     /* Keep collapsible sections expanded */
-    .collapse, .alert.alert-info {
+    .collapse,.card-header, .alert.alert-info {
         display: block !important;
-        background-color: #004ECD;
+        /* background-color: #004ECD; */
         color: white !important;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;

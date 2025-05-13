@@ -28,6 +28,11 @@
       [routerLink]="['/admin/myReferentAccount/', userUid]">
       <i class="bi bi-person-fill text-center mx-0 me-2"></i><span>Compte pro</span>
     </a>
+    <a *ngIf="userRole && (userRole.includes('tutor') || userRole === 'tutor')" href="#"
+      class="btn rounded-0 text-custom p-0" aria-label="Mon compte"
+      [routerLink]="['/admin/myTutorAccount/', userUid]">
+      <i class="bi bi-person-fill text-center mx-0 me-2"></i><span>Compte pro</span>
+    </a>
     <a *ngIf="userRole && (userRole.includes('evaluator')) && !userRole.includes('trainer')"
       class="btn rounded-0 text-custom p-0" aria-label="Mon compte professionnel">
       <i class="bi bi-person-fill text-center mx-0 me-2" aria-hidden="true"></i><span>Professionnel !</span>
