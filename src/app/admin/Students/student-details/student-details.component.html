@@ -407,10 +407,6 @@
                                 </ng-container>
                             </div>
 
-                                                                    <!-- bouton additionnel pour ajouter une évaluation depuis la vue -->
-                                                                    <button class="btn btn-primary my-3" *ngIf="userRouterLinks.user=='trainer'"
-                                                                    [routerLink]="['/admin/addStudentEvaluation', studentId]"><i
-                                                                    class="bi bi-pen"></i>Ajouter une évaluation de suivi</button>
                             <!-- fin de la boucle additionnelle si inscriptions multiples -->
                         </ng-container>
                         <!-- si aucune évaluation de suivi jusqu'ici, on le mentionne -->
@@ -420,6 +416,10 @@
                             </p>
                         </ng-template>
                     </div>
+                    <!-- bouton additionnel pour ajouter une évaluation depuis la vue -->
+                    <button class="btn btn-primary my-3 mx-2" *ngIf="userRouterLinks.user=='trainer'"
+                    [routerLink]="['/admin/addStudentEvaluation', studentId]"><i
+                    class="bi bi-pen"></i>Ajouter une évaluation de suivi pédagogique</button>
                 </ng-container>
             </div>
 

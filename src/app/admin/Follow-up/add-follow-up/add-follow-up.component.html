@@ -1,77 +1,83 @@
 <div class="container py-5">
-    <!-- {{userRouterLinks}} -->
+  <!-- {{userRouterLinks}} -->
 
-    <h3 *ngIf="userRouterLinks=='tutor', else evaluation">Nouveau suivi tutorial pour {{fullName}}</h3>
-    <app-feedback-messages [feedbackMessages]="feedbackMessages"
-        [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
-    <div *ngIf="!isRealStudent" class="alert alert-danger p-4 mb-4 fade show pe-5">
-        <span> Vous ne pouvez pas saisir une évaluation pour un étudiant dont l'inscription à la formation n'a pas
-            encore été validée</span>
-    </div>
-    <ng-template #evaluation>
+  <h3 *ngIf="userRouterLinks=='tutor', else evaluation">Nouveau suivi tutorial pour {{fullName}}</h3>
+  <app-feedback-messages [feedbackMessages]="feedbackMessages"
+    [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
+  <div *ngIf="!isRealStudent" class="alert alert-danger p-4 mb-4 fade show pe-5">
+    <span> Vous ne pouvez pas saisir une évaluation pour un étudiant dont l'inscription à la formation n'a pas
+      encore été validée</span>
+  </div>
+  <ng-template #evaluation>
 
-        <h3 *ngIf="userRouterLinks=='trainer', else evaluation">Nouvelle évaluation pédagogique pour {{fullName}}</h3>
-    </ng-template>
-    <!-- <app-feedback-messages [feedbackMessages]="feedbackMessages" [isSuccessMessage]="isSuccessMessage"></app-feedback-messages> -->
+    <h3 *ngIf="userRouterLinks=='trainer', else evaluation">Nouvelle évaluation pédagogique pour {{fullName}}</h3>
+  </ng-template>
+  <!-- <app-feedback-messages [feedbackMessages]="feedbackMessages" [isSuccessMessage]="isSuccessMessage"></app-feedback-messages> -->
 
-    <!-- pour les messages de retour/validation des champs du formulaire ou form validation, on utilisera BOOTSTRAP plutôt que des directives structurelles -->
-    <form class="form" #f="ngForm" (submit)="addFollowUp(studentId, f)" class="was-validated" disabled>
+  <!-- pour les messages de retour/validation des champs du formulaire ou form validation, on utilisera BOOTSTRAP plutôt que des directives structurelles -->
+  <form class="form" #f="ngForm" (submit)="addFollowUp(studentId, f)" class="was-validated" disabled>
 
-        <!-- attention à virer les fonctions pour l'exercice sur (change) et (input) !!!!!! -->
-        <!-- premières tentatives pour sélectionner les métiers depuis userTrades -->
-   
-        <div class="row mb-1">
+    <!-- attention à virer les fonctions pour l'exercice sur (change) et (input) !!!!!! -->
+    <!-- premières tentatives pour sélectionner les métiers depuis userTrades -->
 
-                <div class="form-group col-sm-4">
-                    <ng-container *ngIf="receivedTrades.length > 1; else autoSelectedTrade">
-                      <select 
-                        class="form-select" 
-                        name="sigle" 
-                        ngModel 
-                        required 
-                        #sigle="ngModel"
-                        (change)="checkIfSelected(sigle.value)" 
-                        [disabled]="!isRealStudent">
-                        <option value="">Métier</option>
-                        <option *ngFor="let item of receivedTrades" [value]="item">
-                          {{ item }}
-                        </option>
-                      </select>
-                    </ng-container>
-                  
-                    <ng-template #autoSelectedTrade>
-                      <input 
-                        class="form-control" 
-                        name="sigle" 
-                        [ngModel]="selectedSigle" 
-                        readonly>
-                      <!-- 👆 Ici pas disabled, mais readonly + ngModel pour l'enregistrer dans le form -->
-                    </ng-template>
-                  </div>
-                  
+    <div class="row mb-1">
 
-          
-            <div class="form-group col-sm-4">
-              <ng-container *ngIf="relatedCompetences">
-                <select class="form-select" name="competence" id="competence" ngModel #competence="ngModel"
-                  [disabled]="!isRealStudent" [required]="f.value.subject===''">
-                  <option value>Competence métier à évaluer</option>
-                  <option
-                    *ngFor="let key of getKeys(relatedCompetences['competences_' + selectedSigle]); let i = index"
-                    [value]="selectedSigle + '_CP' + (i + 1)">
-                    CP{{ i + 1 }}: {{ relatedCompetences['competences_' + selectedSigle][key] }}
-                  </option>
-                </select>
+      <div class="form-group col-sm-4">
+        <ng-container *ngIf="receivedTrades.length > 1; else autoSelectedTrade">
+          <select class="form-select" name="sigle" ngModel required #sigle="ngModel"
+            (change)="checkIfSelected(sigle.value)" [disabled]="!isRealStudent">
+            <option value="">Métier</option>
+            <option *ngFor="let item of receivedTrades" [value]="item">
+              {{ item }}
+            </option>
+          </select>
+        </ng-container>
 
-                <div class="valid-feedback" *ngIf="competence.valid">Champ correctement renseigné</div>
-                <div class="invalid-feedback" *ngIf="competence.invalid">Merci de choisir la compétence concernée.</div>
-              </ng-container>
-            </div>
-          
-          
+        <ng-template #autoSelectedTrade>
+          <input class="form-control" name="sigle" [ngModel]="selectedSigle" readonly>
+          <!-- 👆 Ici pas disabled, mais readonly + ngModel pour l'enregistrer dans le form -->
+        </ng-template>
+      </div>
 
-            <!-- Tant qu'on faisait la distinction pour surclasser le candidat -->
-            <!-- <div class="form-group col-sm-4">
+
+
+      <div class="form-group col-sm-4">
+        <ng-container *ngIf="relatedCompetences">
+          <select class="form-select" name="competence" id="competence" ngModel #competence="ngModel"
+            [disabled]="!isRealStudent" [required]="f.value.subject === ''">
+            <option value>Compétence métier à évaluer</option>
+
+            <!-- <option *ngFor="let key of getKeys(relatedCompetences['competences_' + selectedSigle]); let i = index"
+              [value]="selectedSigle + '_CP' + (i + 1)" [ngClass]="{
+      'already-used': alreadyUsedCompetences.includes(selectedSigle + '_CP' + (i + 1))
+    }">
+              CP{{ i + 1 }}: {{ relatedCompetences['competences_' + selectedSigle][key] }}
+            </option> -->
+
+<option
+  *ngFor="let key of getKeys(relatedCompetences['competences_' + selectedSigle]); let i = index"
+  [value]="selectedSigle + '_CP' + (i + 1)"
+  [disabled]="alreadyUsedCompetences.includes(selectedSigle + '_CP' + (i + 1))"
+>
+  <span *ngIf="alreadyUsedCompetences.includes(selectedSigle + '_CP' + (i + 1))" class="checkmark-icon">
+    ✔ <!-- Caractère checkmark Unicode -->
+  </span>
+  CP{{ i + 1 }}: {{ relatedCompetences['competences_' + selectedSigle][key] }}
+</option>
+
+
+          </select>
+
+
+          <div class="valid-feedback" *ngIf="competence.valid">Champ correctement renseigné</div>
+          <div class="invalid-feedback" *ngIf="competence.invalid">Merci de choisir la compétence concernée.</div>
+        </ng-container>
+      </div>
+
+
+
+      <!-- Tant qu'on faisait la distinction pour surclasser le candidat -->
+      <!-- <div class="form-group col-sm-4">
                 <select *ngIf="userRouterLinks=='trainer'" class="form-select" name="level" id="level" ngModel
                     [required]="f.value.competence!==''" #level="ngModel" [disabled]="!isRealStudent">
                     <option value>Niveau</option>
@@ -83,79 +89,70 @@
                     <option value="pro">Acquise</option>
                 </select>
             </div> -->
-            <div class="form-group col-sm-4">
-                <!-- {{userRouterLinks=='tutor' | json}} !!!!!! -->
-                <select class="form-select" name="level" id="level" ngModel
-                    [required]="f.value.competence!==''" #level="ngModel" [disabled]="!isRealStudent">
-                    <option value>Niveau</option>
-                    <option *ngFor="let level of levels" value="{{level}}">{{ levelTranslations[level] }}</option>
-                </select>
-                <!-- <div class="valid-feedback" *ngIf="level.valid">Champ correctement renseigné</div> -->
-                <div class="invalid-feedback" *ngIf="level.invalid">Merci de renseigner le niveau</div>
+      <div class="form-group col-sm-4">
+        <!-- {{userRouterLinks=='tutor' | json}} !!!!!! -->
+        <select class="form-select" name="level" id="level" ngModel [required]="f.value.competence!==''"
+          #level="ngModel" [disabled]="!isRealStudent">
+          <option value>Niveau</option>
+          <option *ngFor="let level of levels" value="{{level}}">{{ levelTranslations[level] }}</option>
+        </select>
+        <!-- <div class="valid-feedback" *ngIf="level.valid">Champ correctement renseigné</div> -->
+        <div class="invalid-feedback" *ngIf="level.invalid">Merci de renseigner le niveau</div>
 
-            </div>
+      </div>
 
-        </div>
+    </div>
 
 
-        <div class="row">
-            <div class="form-group col-md-6">
-                <label for="subject" class="form-label mt-3">Titre (optionnel)</label>
-                <!-- <input type="text" placeholder="Pour plus de lisibilité, merci de renseigner" ngModel name="subject"
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label for="subject" class="form-label mt-3">Titre (optionnel)</label>
+        <!-- <input type="text" placeholder="Pour plus de lisibilité, merci de renseigner" ngModel name="subject"
                     class="form-control" #subject="ngModel" required [disabled]="!isRealStudent">
                 <div class="valid-feedback" *ngIf="subject.valid">Champ correctement renseigné</div>
                 <div class="invalid-feedback" *ngIf="subject.invalid">Merci de renseigner le sujet de l'évaluation.
                 </div> -->
-                <input type="text" placeholder="Pour plus de lisibilité & rappel du contexte" ngModel name="subject"
-                    class="form-control" #subject="ngModel" [disabled]="!isRealStudent">
-                <!-- <div class="valid-feedback" *ngIf="subject.valid">Champ correctement renseigné</div>
+        <input type="text" placeholder="Pour plus de lisibilité & rappel du contexte" ngModel name="subject"
+          class="form-control" #subject="ngModel" [disabled]="!isRealStudent">
+        <!-- <div class="valid-feedback" *ngIf="subject.valid">Champ correctement renseigné</div>
                 <div class="invalid-feedback" *ngIf="subject.invalid">Merci de renseigner le sujet de l'évaluation.
                 </div> -->
-            </div>
-            <div class="form-group col-sm-4">
-                <label for="date" class="form-label mt-3">Date *</label>
-                <!-- <input type="date" name="date" ngModel name="date" class="form-control" #date="ngModel"
+      </div>
+      <div class="form-group col-sm-4">
+        <label for="date" class="form-label mt-3">Date *</label>
+        <!-- <input type="date" name="date" ngModel name="date" class="form-control" #date="ngModel"
                     placeholder="Saisissez l'évaluation reçue en présentiel" required> -->
-                    <input 
-                    id="date" 
-                    name="date" 
-                    ngModel 
-                    type="date" 
-                    class="form-control" 
-                    [ngModel]="today"
-                    required 
-                    #date="ngModel"
-                  />
-                <!-- <div class="valid-feedback" *ngIf="date.valid">Champ correctement renseigné</div> -->
-                <div class="invalid-feedback" *ngIf="date.invalid">Merci de renseigner la date</div>
-            </div>
+        <input id="date" name="date" ngModel type="date" class="form-control" [ngModel]="today" required
+          #date="ngModel" />
+        <!-- <div class="valid-feedback" *ngIf="date.valid">Champ correctement renseigné</div> -->
+        <div class="invalid-feedback" *ngIf="date.invalid">Merci de renseigner la date</div>
+      </div>
 
 
-              
-        </div>
 
-        <div class="form-group">
-            <label for="details" class="form-label mt-3">Details</label>
-            <!-- pour éditeur de text (?) -->
-            <!-- <editor
+    </div>
+
+    <div class="form-group">
+      <label for="details" class="form-label mt-3">Details</label>
+      <!-- pour éditeur de text (?) -->
+      <!-- <editor
                 [init]="{ plugins: 'link image', toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | link image' }">
                 [id]="'details'"
             </editor> -->
-            <!-- version sans TinyMCE -->
-            <!-- <textarea name="details" id="details" cols="50" rows="30" ngModel name="details" class="form-control" #details="ngModel"
+      <!-- version sans TinyMCE -->
+      <!-- <textarea name="details" id="details" cols="50" rows="30" ngModel name="details" class="form-control" #details="ngModel"
                 placeholder="Saisissez l'évaluation reçue en présentiel" required></textarea> -->
 
-            <editor apiKey="ahl0yg86w69zh9viflcvku8m2k333o942kc9fpttussom153"
-                [init]="{ plugins: 'link image', toolbar: 'undo redo | bold italic | link image' }" [id]="'details'"
-                ngModel name="details" #details="ngModel" placeholder="Saisissez l'évaluation">
-            </editor>
-            <div class="valid-feedback" *ngIf="details.valid">Evaluation correctement renseignée</div>
-            <div class="invalid-feedback" *ngIf="details.invalid">Merci de saisir votre évaluation</div>
-        </div>
+      <editor apiKey="ahl0yg86w69zh9viflcvku8m2k333o942kc9fpttussom153"
+        [init]="{ plugins: 'link image', toolbar: 'undo redo | bold italic | link image' }" [id]="'details'" ngModel
+        name="details" #details="ngModel" placeholder="Saisissez l'évaluation">
+      </editor>
+      <div class="valid-feedback" *ngIf="details.valid">Evaluation correctement renseignée</div>
+      <div class="invalid-feedback" *ngIf="details.invalid">Merci de saisir votre évaluation</div>
+    </div>
 
-        <button type="submit" id="submit" class="btn btn-primary mt-3"
-            [ngClass]="{'disabled':f.invalid}">Ajouter</button>
-    </form>
+    <button type="submit" id="submit" class="btn btn-primary mt-3" [ngClass]="{'disabled':f.invalid}">Ajouter</button>
+  </form>
 
 
 

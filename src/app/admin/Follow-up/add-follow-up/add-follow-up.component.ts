@@ -47,6 +47,9 @@ export class AddFollowUpComponent implements OnInit {
 
   today: string = "";
 
+  alreadyUsedCompetences: string[] = [];
+
+
   constructor(
     private service: StudentsService,
     private activatedRoute: ActivatedRoute,
@@ -61,7 +64,7 @@ export class AddFollowUpComponent implements OnInit {
     const todayDate = new Date();
     this.today = todayDate.toISOString().split('T')[0];  // Format yyyy-MM-dd
 
-    
+
     // this.receivedTrades = this.activatedRoute.snapshot.queryParams['trades'] ? this.activatedRoute.snapshot.queryParams['trades'].split(',') : [];
     console.log('trades récupéré en paramètres de route', this.receivedTrades);
 
@@ -78,10 +81,26 @@ export class AddFollowUpComponent implements OnInit {
 
 
       // ⚡ Directement ici : si un seul métier, on pré-sélectionne
-    if (this.receivedTrades.length === 1) {
-      this.selectedSigle = this.receivedTrades[0];
-    }
+      if (this.receivedTrades.length === 1) {
+        this.selectedSigle = this.receivedTrades[0];
+      }
+      if (this.receivedTrades.length === 1) {
+        this.selectedSigle = this.receivedTrades[0];
+      }
 
+      // 🧠 Parcours des évaluations existantes pour en extraire les compétences
+if (data.evaluations) {
+  for (const evalKey in data.evaluations) {
+    const evaluation = data.evaluations[evalKey];
+
+    // Vérifie que la propriété est bien présente et de type string
+    if (typeof evaluation.competence === 'string') {
+      this.alreadyUsedCompetences.push(evaluation.competence);
+      console.log('this.alreadyUsedCompetences', this.alreadyUsedCompetences);
+      
+    }
+  }
+}
 
 
       this.getRelatedCompetences()
@@ -90,7 +109,7 @@ export class AddFollowUpComponent implements OnInit {
 
 
 
-    
+
 
 
 
@@ -198,28 +217,31 @@ export class AddFollowUpComponent implements OnInit {
 
 
 
-/**
- * Fonction appelée automatiquement dans le template quand il n'y a qu'un seul métier.
- * Son but est de mettre à jour `selectedSigle` pour que le select des compétences
- * fonctionne même sans passer par l'événement (change).
- * 
- * @param sigle - Le métier à auto-sélectionner (reçu depuis receivedTrades[0])
- * @returns Toujours `true` pour satisfaire l'*ngIf dans le template.
- */
-setSelectedSigle(sigle: string): boolean {
-  // Vérifie si le sigle passé n'est pas déjà le sigle actuellement sélectionné
-  if (this.selectedSigle !== sigle) {
-    // Si c'est un nouveau sigle, on l'affecte à selectedSigle
-    this.selectedSigle = sigle;
-    // Pour debug : on affiche dans la console le sigle qui vient d'être sélectionné automatiquement
-    console.log('Auto-selected sigle:', this.selectedSigle);
+  /**
+   * Fonction appelée automatiquement dans le template quand il n'y a qu'un seul métier.
+   * Son but est de mettre à jour `selectedSigle` pour que le select des compétences
+   * fonctionne même sans passer par l'événement (change).
+   * 
+   * @param sigle - Le métier à auto-sélectionner (reçu depuis receivedTrades[0])
+   * @returns Toujours `true` pour satisfaire l'*ngIf dans le template.
+   */
+  setSelectedSigle(sigle: string): boolean {
+    // Vérifie si le sigle passé n'est pas déjà le sigle actuellement sélectionné
+    if (this.selectedSigle !== sigle) {
+      // Si c'est un nouveau sigle, on l'affecte à selectedSigle
+      this.selectedSigle = sigle;
+      // Pour debug : on affiche dans la console le sigle qui vient d'être sélectionné automatiquement
+      console.log('Auto-selected sigle:', this.selectedSigle);
+    }
+
+    // Toujours retourner `true` car Angular attend un booléen pour *ngIf
+    return true;
   }
 
-  // Toujours retourner `true` car Angular attend un booléen pour *ngIf
-  return true;
-}
-
-  
+  // ✅ Méthode utilitaire
+  isAlreadyUsed(key: string): boolean {
+    return this.alreadyUsedCompetences.includes(key);
+  }
 
 
 }

@@ -353,7 +353,8 @@ h1.d-inline {
 }
 
 .text-success,
-.text-success i {
+.text-success i,
+span.checkmark-icon {
     color: #82BC00 !important;
 
 }

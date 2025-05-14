@@ -10,3 +10,15 @@
   .form-check-input .danger input[type="checkbox"]:checked {
     background-color: red!important;
   }
+
+
+
+option.already-used  {
+  color: #6c757d; /* Gris Bootstrap */
+  background-color: #f8f9fa; /* Fond clair */
+  font-style: italic;
+  opacity: 0.6;
+}
+
+
+
