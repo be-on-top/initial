@@ -967,5 +967,15 @@ if (this.indexQuestion < this.questions.length) {
     this.destroy$.complete();
   }
 
+  getCompetenceLabel(key: string): string {
+  // Vérifie si la clé commence par 'CP' et est suivie d'un nombre
+  const match = key.match(/^CP(\d+)$/);
+  if (match) {
+    return `Compétence ${match[1]}`;
+  }
+  return key; // fallback si le format ne correspond pas
+}
+
+
 
 }

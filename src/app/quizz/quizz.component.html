@@ -169,8 +169,9 @@
                 <!-- contenu de la modale -->
 
                 <div class="modal-body">
-                    <p class="alert alert-light p-2 alert-dismissible mb-4 fade show">Voici pour chaque compétence
-                        du référentiel métier la durée de formation
+                    <p class="alert alert-light p-2 alert-dismissible mb-4 fade show">Voici <strong>pour chaque
+                            compétence
+                            du référentiel métier</strong> la durée de formation
                         recommandée.
                         <!-- </p>{{durationsByLevels|json}} -->
 
@@ -179,9 +180,15 @@
                                 <span class="text-success">Pour {{ item.key }}:</span> {{ item.value
                                 }} heures
                             </div> -->
-                        <div *ngFor="let item of sortDurationsByLevels()">
+                        <!-- pour afficher Compétences en lieu et place de CP -->
+                        <!-- <div *ngFor="let item of sortDurationsByLevels()">
                             <span class="text-success">Pour {{ item.key }}:</span> {{ item.value |duration }}
+                        </div> -->
+                        <div *ngFor="let item of sortDurationsByLevels()">
+                            <span class="text-success">{{ getCompetenceLabel(item.key) }}:</span> {{ item.value |
+                            duration }}
                         </div>
+
 
                         <!-- <div *ngFor="let item of estimatedCPCost | keyvalue">
                             <span class="text-success">Coût individualisé pour {{ item.key | slice:16 }}:</span> {{

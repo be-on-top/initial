@@ -340,7 +340,7 @@ export class HomeComponent implements OnInit {
 
 
   checkIfQuizzAchieved() {
-    if (this.userRole === 'student' && this.studentData) {
+    if (this.studentData) {
       this.isOneQuizzAchieved = Object.values(this.studentData).some((data: any) => data?.fullResults)
     }
   }
