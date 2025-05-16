@@ -51,7 +51,7 @@
                     <!-- <div class="image-container" (touchstart)="handleTouch()"> -->
                     <div class="image-container">
                         <!-- <img #imageElement class="img-fluid bg-light image-zoomable" [src]="item"> -->
-                        <img alt="{{'image pour la question '+q.number +' ' + q.question}}" #imageElement class="img-fluid w-100 p-1 rounded mt-2" [src]="item" (load)="onImageLoad()"
+                        <img alt="{{'image pour la question '+q.number +' ' + q.question}}" #imageElement class="img-fluid p-1 rounded mt-2" [src]="item" (load)="onImageLoad()"
                             loading="lazy" [class.bg-primary]="!isLoading" [ngClass]="{'loading':isLoading}">
                     </div>
                 </ng-template>
