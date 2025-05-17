@@ -33,38 +33,42 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
   }
 
-  checkUserConsent(): void {
-    const consentValue = localStorage.getItem("userConsent");
-    console.log('Consentement lu depuis app avant de boucler', consentValue);
+checkUserConsent(): void {
+  const consentValue = localStorage.getItem("userConsent");
+  console.log('Consentement lu depuis app', consentValue);
 
-    if (consentValue == null) {
-      console.log('Consentement évalué depuis app si null', consentValue);
-      this.consentReaded = true;
-    }
-
-    if (consentValue==="false") {
-      console.log('consentement refusé');
-      setAnalyticsCollectionEnabled(this.analytics, false)      
-    }
-
-    // Configuration des options pour désactiver la collecte analytic
-    this.disableAnalytics();
+  if (consentValue === "false") {
+    console.log('Consentement refusé');
+    setAnalyticsCollectionEnabled(this.analytics, false);
+    this.disableAnalytics(); // Appelle maintenant la bonne méthode
   }
+
+  if (consentValue === null) {
+    this.consentReaded = true;
+  }
+}
+
 
   async loadComponent(): Promise<void> {
     let { CookieConsentBannerComponent } = await import('./cookie-consent-banner/cookie-consent-banner.component');
     this.vc1.createComponent(CookieConsentBannerComponent);
   }
 
-  disableAnalytics(): void {
-    // setAnalyticsCollectionEnabled(this.analytics, false)
-    // Set cookies with SameSite=None; Secure attributes
-    document.cookie = '__Secure-3PAPISID=value; SameSite=None; Secure';
-    document.cookie = '__Secure-3PSID=value; SameSite=None; Secure';
-    document.cookie = 'NID=value; SameSite=None; Secure';
-    document.cookie = '__Secure-3PSIDTS=value; SameSite=None; Secure';
-    document.cookie = '__Secure-3PSIDCC=value; SameSite=None; Secure';
-  }
+disableAnalytics(): void {
+  this.deleteCookie('_ga');
+  this.deleteCookie('_gid');
+  this.deleteCookie('_gat');
+  this.deleteCookie('_ga_'); // utile si tu as un GA4 type _ga_XXXXXXX
+}
+
+deleteCookie(name: string): void {
+  const domain = window.location.hostname;
+
+  // Suppression sur tous les chemins + tous les sous-domaines potentiels
+  document.cookie = `${name}=; Max-Age=0; path=/; domain=${domain}`;
+  document.cookie = `${name}=; Max-Age=0; path=/`;
+}
+
 
   // transféré à header
   // goToInfoPage() {
