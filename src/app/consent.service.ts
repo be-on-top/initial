@@ -36,12 +36,14 @@ export class ConsentService {
       setAnalyticsCollectionEnabled(this.analytics, false);
       setUserProperties(this.analytics, { allow_ad_personalization_signals: false });
       this.deleteAllCookies();
-      this.removeMetapixel(); // Supprime le Metapixel si refusé
+      // Supprime le Metapixel si refusé
+      // this.removeMetapixel(); 
     } else {
       // Consentement accepté : activer Analytics et Metapixel
       setAnalyticsCollectionEnabled(this.analytics, true);
       setUserProperties(this.analytics, { allow_ad_personalization_signals: true });
-      this.loadMetapixel(); // Charge le Metapixel si accepté
+      // Charge le Metapixel si accepté ici il est de trop ?
+      // this.loadMetapixel(); 
     }
   }
 
@@ -67,59 +69,78 @@ export class ConsentService {
 
 
   // Charge le script Metapixel
-  private loadMetapixel(): void {
-    if ((window as any).fbq) {
-      return; // Si déjà chargé, ne pas recharger
-    }
-
-
-
-    const script = document.createElement('script');
-    script.src = 'https://connect.facebook.net/en_US/fbevents.js';
-    script.async = true;
-    script.onload = () => {
-      (window as any).fbq = function () {
-        (window as any).fbq.callMethod ?
-          (window as any).fbq.callMethod.apply((window as any).fbq, arguments) :
-          (window as any).fbq.queue.push(arguments);
-      };
-      (window as any).fbq.push = (window as any).fbq;
-      (window as any).fbq.loaded = true;
-      (window as any).fbq.version = '2.0';
-      (window as any).fbq.queue = [];
-
-
-
-      (window as any).fbq('init', '622453283587163');
-      (window as any).fbq('track', 'PageView');
-    };
-    document.head.appendChild(script);
+private loadMetapixel(): void {
+  // Empêche de recharger si déjà en mémoire ET initialisé
+  if ((window as any).fbq && (window as any).fbq.loaded) {
+    return;
   }
+
+  const script = document.createElement('script');
+  script.src = 'https://connect.facebook.net/en_US/fbevents.js';
+  script.async = true;
+
+  script.onload = () => {
+    (window as any).fbq = function () {
+      (window as any).fbq.callMethod
+        ? (window as any).fbq.callMethod.apply((window as any).fbq, arguments)
+        : (window as any).fbq.queue.push(arguments);
+    };
+    (window as any).fbq.push = (window as any).fbq;
+    (window as any).fbq.loaded = true;
+    (window as any).fbq.version = '2.0';
+    (window as any).fbq.queue = [];
+
+    (window as any).fbq('init', '622453283587163');
+    (window as any).fbq('track', 'PageView');
+  };
+
+  document.head.appendChild(script);
+}
+
 
 
 
   // Retire le Metapixel (désactive la collecte de données)
   private removeMetapixel(): void {
-    (window as any).fbq = function () { };  // Remplace la fonction fbq pour désactiver
+    (window as any).fbq = function () { }; // Remplace la fonction fbq pour désactiver
     console.log('Metapixel désactivé et retiré');
   }
 
 
- deleteCookiesStartingWith(prefix: any) {
-    const cookies = document.cookie.split(';');
-    console.log("cookies récupérées depuis deleteCookies", cookies);
+//  deleteCookiesStartingWith(prefix: any) {
+//     const cookies = document.cookie.split(';');
+//     console.log("cookies récupérées depuis deleteCookies", cookies);
     
 
-    cookies.forEach(cookie => {
-      const [name] = cookie.trim().split('=');
-      if (name.startsWith(prefix)) {
-        this.deleteCookie(name);
-      }
-    });
-  }
+//     cookies.forEach(cookie => {
+//       const [name] = cookie.trim().split('=');
+//       if (name.startsWith(prefix)) {
+//         this.deleteCookie(name);
+//       }
+//     });
+//   }
+
+deleteCookiesStartingWith(prefix: string) {
+  const cookies = document.cookie.split(';');
+  console.log("Cookies récupérés :", cookies);
+
+  cookies.forEach(cookie => {
+    const [name] = cookie.trim().split('=');
+
+    // Accepte : _ga, _ga_, _ga-..., etc. si le prefix est "_ga"
+    if (name === prefix || name.startsWith(prefix + '_') || name.startsWith(prefix + '-')) {
+      this.deleteCookie(name);
+    }
+  });
+}
+
+
+
 
   // Fonction pour supprimer un cookie individuel
   deleteCookie(name: string) {
+    // alert(name)
+    console.log('Suppression du cookie :', name);
     // document.cookie = name + '=;expires=Thu, 01 Jan 2023 00:00:00 GMT;path=/';
     document.cookie = name + '=;Max-Age=0;path=/';
   }

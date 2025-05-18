@@ -154,11 +154,9 @@ export class CookieConsentBannerComponent implements OnInit {
 
     this.consentService.deleteCookiesStartingWith("_ga")
 
+    // this.consentService.deleteCookiesStartingWith("_ga_C9M2VS675H")
+
     this.consentService.deleteCookiesStartingWith("_fbp");
-
-
-
-
 
   }
 
