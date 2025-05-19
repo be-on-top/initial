@@ -1,8 +1,12 @@
+// Tout en haut du fichier
+declare let fbq: (...args: any[]) => void;
+
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { StudentsService } from '../admin/students.service';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { AuthService } from '../admin/auth.service';
+import { ConsentService } from '../consent.service';
 
 @Component({
   selector: 'app-register',
@@ -25,7 +29,7 @@ export class RegisterComponent {
  
 
   // recuperation code sv
-  constructor(private service: StudentsService, private router:Router, private authService:AuthService) { }
+  constructor(private service: StudentsService, private router:Router, private authService:AuthService, private consentService : ConsentService) { }
 
   async addStudent(form: any) {
     // on vérifie la validité du formulaire
@@ -43,7 +47,6 @@ export class RegisterComponent {
       setTimeout(() => {
         // Appeler la méthode de redirection d'AuthService
         this.authService.redirectAfterLogin(); // Redirection après inscription réussie
-
         // this.router.navigate([''])
       }, 2000)
     })
@@ -55,6 +58,13 @@ export class RegisterComponent {
 
         // ..};
       })
+
+      // fbq('track', 'CompleteRegistration');
+      if (this.consentService.canTrack()) {
+  (window as any).fbq('track', 'CompleteRegistration');
+}
+
+
     // form.reset();
     // redirige vers la vue de détail 
     // this.router.navigate(['/admin/evaluators']);

@@ -1,6 +1,7 @@
 import { Component, HostListener, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { AuthService } from 'src/app/admin/auth.service';
 import { Subscription } from 'rxjs';
+import { ConsentService } from 'src/app/consent.service';
 
 @Component({
   selector: 'app-footer',
@@ -16,43 +17,40 @@ export class FooterComponent implements OnInit, OnDestroy {
   private isScrolling = false;
   public isBackToTopVisible = false;
   userUid: string = "";
-  private authSubscription: Subscription | undefined;
 
-  constructor(private authService: AuthService, private cdRef: ChangeDetectorRef) {}
+  private authSubscription: Subscription | undefined;
+  private consentSubscription: Subscription | undefined; // 👈
+
+  constructor(
+    private authService: AuthService,
+    private consentService: ConsentService, // 👈
+    private cdRef: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
-    this.checkFooterVisibility();
+    this.consentSubscription = this.consentService.consentStatus$.subscribe(consent => {
+      this.showFooter = consent;
+      this.cdRef.detectChanges(); // 👈 Assure la mise à jour du DOM
+    });
 
-    // Écoute continue des changements d'état utilisateur
     this.authSubscription = this.authService.getCurrentUserInfo().subscribe(userInfo => {
       this.userRole = userInfo?.role ?? null;
       this.userUid = userInfo?.uid ?? "";
     });
   }
 
-  private checkFooterVisibility() {
-    const hasUserConsent = localStorage.getItem('userConsent') !== null;
-    this.showFooter = hasUserConsent;
-  }
-
   @HostListener('window:scroll', ['$event'])
   onScroll(): void {
     if (!this.isScrolling) {
       this.isScrolling = true;
-
       requestAnimationFrame(() => {
         const currentScroll = window.scrollY || document.documentElement.scrollTop;
-
-        if (currentScroll > this.lastScrollTop) {
-          this.footerHeight = Math.min(this.footerHeight + 10, 100);
-        } else {
-          this.footerHeight = Math.max(this.footerHeight - 10, 50);
-        }
-
+        this.footerHeight = currentScroll > this.lastScrollTop
+          ? Math.min(this.footerHeight + 10, 100)
+          : Math.max(this.footerHeight - 10, 50);
         this.footerStyle = { height: `${this.footerHeight}px` };
         this.lastScrollTop = Math.max(currentScroll, 0);
         this.isBackToTopVisible = currentScroll > 300;
-
         this.isScrolling = false;
       });
     }
@@ -63,8 +61,7 @@ export class FooterComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.authSubscription) {
-      this.authSubscription.unsubscribe();
-    }
+    this.authSubscription?.unsubscribe();
+    this.consentSubscription?.unsubscribe(); // 👈 proprement
   }
 }
