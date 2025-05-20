@@ -30,8 +30,12 @@ export class CookieConsentBannerComponent implements OnInit {
 
   @Input() integratedBanner: boolean = false;
 
+    // Flag pour empêcher plusieurs chargements
+  private metaPixelLoaded = false;
+
 
   constructor(public consentService: ConsentService, private auth: Auth) {
+
 
     // Vérifier si l'utilisateur a déjà pris une décision concernant les cookies
 
@@ -62,14 +66,29 @@ export class CookieConsentBannerComponent implements OnInit {
     }
   }
 
+// fonctionne mais META PIXEL HELPER ne le détecte qu'en localhost
+//   acceptCookies() {
+//     this.consentService.setConsent(true);
+//     // Autres actions nécessaires après avoir accepté les cookies
+//     this.showBanner = false;
+//     // Charger Meta Pixel seulement après consentement
+//     this.loadMetaPixel();
+//  }
+acceptCookies() {
+  this.consentService.setConsent(true);
+  this.showBanner = false;
 
-  acceptCookies() {
-    this.consentService.setConsent(true);
-    // Autres actions nécessaires après avoir accepté les cookies
-    this.showBanner = false;
-    // Charger Meta Pixel seulement après consentement
-    this.loadMetaPixel();
- }
+  // Charger le Meta Pixel script si pas déjà fait
+  if (!(window as any).fbq?.loaded) {
+    this.loadMetaPixel(); // script va s’auto-init si consent donné
+  } else {
+    // Script déjà là → juste initialiser
+    (window as any).fbq('init', '622453283587163');
+    (window as any).fbq('track', 'PageView');
+    console.log('✅ fbq PageView envoyé (manuel)');
+  }
+}
+
 
 
   rejectCookies() {
@@ -93,39 +112,96 @@ export class CookieConsentBannerComponent implements OnInit {
     // this.showBanner = true;
   }
 
+// fonctionne mais uniquement localhost
+  // loadMetaPixel(): void {
+  //   // Si le pixel est déjà chargé, pas besoin de le recharger
+  //   if ((window as any).fbq) {
+  //     return;
+  //   }
 
-  loadMetaPixel(): void {
-    // Si le pixel est déjà chargé, pas besoin de le recharger
-    if ((window as any).fbq) {
-      return;
-    }
+  //   // 1. Initialisation immédiate AVANT de charger le script (mécanisme de queue)
+  //   (window as any).fbq = function () {
+  //     (window as any).fbq.callMethod
+  //       ? (window as any).fbq.callMethod.apply((window as any).fbq, arguments)
+  //       : (window as any).fbq.queue.push(arguments);
+  //   };
+  //   (window as any).fbq.push = (window as any).fbq;
+  //   (window as any).fbq.loaded = true;
+  //   (window as any).fbq.version = '2.0';
+  //   (window as any).fbq.queue = [];
 
-    // 1. Initialisation immédiate AVANT de charger le script (mécanisme de queue)
-    (window as any).fbq = function () {
-      (window as any).fbq.callMethod
-        ? (window as any).fbq.callMethod.apply((window as any).fbq, arguments)
-        : (window as any).fbq.queue.push(arguments);
-    };
-    (window as any).fbq.push = (window as any).fbq;
-    (window as any).fbq.loaded = true;
-    (window as any).fbq.version = '2.0';
-    (window as any).fbq.queue = [];
+  //   // 2. Charger ensuite le script Facebook avec onload pour s'assurer qu'il est bien chargé avant d'appeler init/track
+  //   const script = document.createElement('script');
+  //   script.src = 'https://connect.facebook.net/en_US/fbevents.js';
+  //   script.async = true;
 
-    // 2. Charger ensuite le script Facebook avec onload pour s'assurer qu'il est bien chargé avant d'appeler init/track
-    const script = document.createElement('script');
-    script.src = 'https://connect.facebook.net/en_US/fbevents.js';
-    script.async = true;
+  //   // Une fois le script chargé, on peut appeler fbq
+  //   script.onload = () => {
+  // console.log('📦 Meta Pixel script chargé');
+  // (window as any).fbq('init', '622453283587163');
+  // (window as any).fbq('track', 'PageView');
+  // console.log('✅ fbq PageView envoyé');
+  //   };
 
-    // Une fois le script chargé, on peut appeler fbq
-    script.onload = () => {
-      // Initialisation du Pixel (ID 622453283587163)
-      (window as any).fbq('init', '622453283587163');
-      // Enregistrement de l'événement de vue de page
-      (window as any).fbq('track', 'PageView');
-    };
+  //   document.head.appendChild(script);
+  // }
+// loadMetaPixel(): void {
+//   // Supprimer une éventuelle ancienne instance pour éviter les conflits
+//   if ((window as any).fbq) {
+//     delete (window as any).fbq;
+//   }
 
-    document.head.appendChild(script);
+//   // Charger le script toujours, mais sans init tant que pas de consentement
+//   if ((window as any).fbq && (window as any).fbq.loaded) return;
+
+//   (window as any).fbq = function () {
+//     (window as any).fbq.callMethod
+//       ? (window as any).fbq.callMethod.apply((window as any).fbq, arguments)
+//       : (window as any).fbq.queue.push(arguments);
+//   };
+//   (window as any).fbq.push = (window as any).fbq;
+//   (window as any).fbq.loaded = false;
+//   (window as any).fbq.version = '2.0';
+//   (window as any).fbq.queue = [];
+
+//   const script = document.createElement('script');
+//   script.src = 'https://connect.facebook.net/en_US/fbevents.js?ngsw-bypass=true'; // ✅ LA ligne clé
+//   script.async = true;
+
+//   script.onload = () => {
+//     console.log('📦 Meta Pixel script chargé');
+//     (window as any).fbq.loaded = true;
+
+//     // Si consentement déjà donné, alors on initialise
+//     if (this.consentService.getConsent()) {
+//       (window as any).fbq('init', '622453283587163');
+//       (window as any).fbq('track', 'PageView');
+//       console.log('✅ fbq PageView envoyé');
+//     }
+//   };
+
+//   document.head.appendChild(script);
+// }
+
+loadMetaPixel(): void {
+  // Vérifie si le script est chargé (via index.html)
+  if (!(window as any).fbq) {
+    console.warn('⚠️ fbq non défini — script Meta Pixel absent ou bloqué');
+    return;
   }
+
+  try {
+    (window as any).fbq('init', '622453283587163'); // Ton ID pixel
+    (window as any).fbq('track', 'PageView');
+    console.log('✅ fbq PageView envoyé');
+  } catch (e) {
+    console.error('❌ Erreur lors de l’init du Meta Pixel :', e);
+  }
+}
+
+
+
+
 
 
 }

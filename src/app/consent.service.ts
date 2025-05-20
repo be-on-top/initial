@@ -12,7 +12,6 @@ export class ConsentService {
   constructor(private analytics: Analytics) { }
 
   // 👇 Le BehaviorSubject avec valeur initiale
-  // public consentStatus$ = new BehaviorSubject<boolean>(this.getConsent());
   public consentStatus$ = new BehaviorSubject<boolean>(this.hasStoredConsent());
 
 

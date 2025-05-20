@@ -16,9 +16,10 @@ import { UpdateService } from '../update.service';
 import { Subject, distinctUntilChanged, map, takeUntil } from 'rxjs';
 // import { NetworkService } from '../network.service';
 import { PRECONNECT_CHECK_BLOCKLIST } from '@angular/common';
-import { Analytics, logEvent } from '@angular/fire/analytics';
+// import { Analytics, logEvent } from '@angular/fire/analytics';
 import { SlugService } from '../slug.service';
 import { Trade } from '../admin/trade';
+import { ConsentService } from '../consent.service';
 // import { DomSanitizer } from '@angular/platform-browser';
 
 
@@ -113,10 +114,11 @@ export class HomeComponent implements OnInit {
     private updateService: UpdateService,
     private titleService: Title,
     // private networkService: NetworkService,
-    private analytics: Analytics,
+    // private analytics: Analytics,
     // private networkService: NetworkService
     public slugService: SlugService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private consentService: ConsentService
   ) {
 
     this.offline = !navigator.onLine
@@ -457,7 +459,8 @@ export class HomeComponent implements OnInit {
 
   logStartEvaluationEvent(tradeName: string) {
     // alert(tradeName)
-    logEvent(this.analytics, 'has_started_evaluation_from_home', { trade_name: tradeName });
+    console.log("dfdsfdsfdsf")
+    // logEvent(this.analytics, 'has_started_evaluation_from_home', { trade_name: tradeName });
   }
 
   // generateSlug(denomination: string): string {
@@ -658,7 +661,20 @@ export class HomeComponent implements OnInit {
   }
 
 
-
+  trackAddToCart(): void {
+    if (this.consentService.canTrack()) {
+      (window as any).fbq('track', 'AddToCart', {
+        content_name: 'Produit fictif',
+        content_ids: ['12345'],
+        content_type: 'product',
+        value: 19.99,
+        currency: 'EUR'
+      });
+      console.log('📦 Événement "AddToCart" envoyé à Meta Pixel');
+    } else {
+      console.warn('⛔ Tracking désactivé ou Meta Pixel non chargé');
+    }
+  }
 
 }
 

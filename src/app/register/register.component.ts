@@ -1,6 +1,3 @@
-// Tout en haut du fichier
-declare let fbq: (...args: any[]) => void;
-
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { StudentsService } from '../admin/students.service';
@@ -15,21 +12,21 @@ import { ConsentService } from '../consent.service';
 })
 export class RegisterComponent {
 
-   // variables à passer à feedbackMessages component pour retours de firebase sur la soumission
-   feedbackMessages?:any=""
-   isSuccessMessage:boolean=true
-   // essai pour personnaliser les messages
-   // https://firebase.google.com/docs/auth/admin/errors?hl=fr
-   firebaseErrors:any = {
-     'auth/user-not-found': 'Aucun utilisateur ne correspond à cet email',
-     'auth/email-already-in-use': 'Cet email est déjà utilisé pour un autre compte',
-     'auth/wrong-password' : 'Le mot de passe est incorrect',
-     'auth/invalid-email' : 'Aucun enregistrement ne correspond au mail fourni'
-   }; // list of firebase error codes to alternate error messages
- 
+  // variables à passer à feedbackMessages component pour retours de firebase sur la soumission
+  feedbackMessages?: any = ""
+  isSuccessMessage: boolean = true
+  // essai pour personnaliser les messages
+  // https://firebase.google.com/docs/auth/admin/errors?hl=fr
+  firebaseErrors: any = {
+    'auth/user-not-found': 'Aucun utilisateur ne correspond à cet email',
+    'auth/email-already-in-use': 'Cet email est déjà utilisé pour un autre compte',
+    'auth/wrong-password': 'Le mot de passe est incorrect',
+    'auth/invalid-email': 'Aucun enregistrement ne correspond au mail fourni'
+  }; // list of firebase error codes to alternate error messages
+
 
   // recuperation code sv
-  constructor(private service: StudentsService, private router:Router, private authService:AuthService, private consentService : ConsentService) { }
+  constructor(private service: StudentsService, private router: Router, private authService: AuthService, private consentService: ConsentService) { }
 
   async addStudent(form: any) {
     // on vérifie la validité du formulaire
@@ -44,6 +41,15 @@ export class RegisterComponent {
       const user = userCredential;
       this.feedbackMessages = `Enregistrement OK`;
       this.isSuccessMessage = true
+
+      // 👉 Meta Pixel tracking après succès et consentement
+      // if (this.consentService.canTrack()) {
+      //   (window as any).fbq('track', 'CompleteRegistration');
+      //   console.log('📦 Événement "CompleteRegistration" envoyé à Meta Pixel');
+      // } else {
+      //   console.warn('⛔ Tracking désactivé ou Meta Pixel non chargé');
+      // }
+
       setTimeout(() => {
         // Appeler la méthode de redirection d'AuthService
         this.authService.redirectAfterLogin(); // Redirection après inscription réussie
@@ -52,62 +58,57 @@ export class RegisterComponent {
     })
       .catch((error) => {
         this.feedbackMessages = error.message;
-        this.feedbackMessages=this.firebaseErrors[error.code];
+        this.feedbackMessages = this.firebaseErrors[error.code];
         this.isSuccessMessage = false;
         console.log(this.feedbackMessages);
 
         // ..};
       })
 
-      // fbq('track', 'CompleteRegistration');
-      if (this.consentService.canTrack()) {
-  (window as any).fbq('track', 'CompleteRegistration');
+  
+  // form.reset();
+  // redirige vers la vue de détail 
+  // this.router.navigate(['/admin/evaluators']);
+
 }
 
+// addStudent(form: NgForm) {
+//   /* console.log(form.value); */
 
-    // form.reset();
-    // redirige vers la vue de détail 
-    // this.router.navigate(['/admin/evaluators']);
+//   // fait doublon avec les propriétés d'Angular combinées à bootstrap, html5...
+//   // if (!this.validateEmail(form.value.email)) { // vérifier si l'adresse e-mail est valide
+//   //   alert("Adresse e-mail non valide!");
+//   // } else 
+//   if (form.value.studentPw.length < 8) { // tester si le mot de passe contient au moins 8 caractères
+//     alert("Attention: Le mot de passe doit contenir au moins 8 caractères!");
+//   } else if (/\s/.test(form.value.studentPw)) { // vérifier si le mot de passe ne contient pas d'espace
+//     alert("Attention: Le mot de passe ne doit pas contenir d'espaces vides!");
+//   } else {
+//   this.service.createStudent(form.value).catch((error)=>{
+//     this.feedbackMessages=error.code;
+//     this.isSuccessMessage=false
 
-  }
+//   })
 
-  // addStudent(form: NgForm) {
-  //   /* console.log(form.value); */
+//   // form.reset();
+//   this.router.navigate(['']);
+//   }
+// }
 
-  //   // fait doublon avec les propriétés d'Angular combinées à bootstrap, html5...
-  //   // if (!this.validateEmail(form.value.email)) { // vérifier si l'adresse e-mail est valide
-  //   //   alert("Adresse e-mail non valide!");
-  //   // } else 
-  //   if (form.value.studentPw.length < 8) { // tester si le mot de passe contient au moins 8 caractères
-  //     alert("Attention: Le mot de passe doit contenir au moins 8 caractères!");
-  //   } else if (/\s/.test(form.value.studentPw)) { // vérifier si le mot de passe ne contient pas d'espace
-  //     alert("Attention: Le mot de passe ne doit pas contenir d'espaces vides!");
-  //   } else {
-  //   this.service.createStudent(form.value).catch((error)=>{
-  //     this.feedbackMessages=error.code;
-  //     this.isSuccessMessage=false
+valid: boolean = false;
 
-  //   })
-    
-  //   // form.reset();
-  //   this.router.navigate(['']);
-  //   }
-  // }
+validateEmail(mailInput: any) { //fonction de vérification d'e-mail, retourne vrai ou faux !
+  const regex = /\S+@\S+\.\S+/;
+  this.valid = regex.test(mailInput);
 
-  valid: boolean = false;
+  return this.valid;
+}
 
-  validateEmail(mailInput: any) { //fonction de vérification d'e-mail, retourne vrai ou faux !
-    const regex = /\S+@\S+\.\S+/;
-    this.valid = regex.test(mailInput);
+showPassword: boolean = false;
 
-    return this.valid;
-  }
-
-  showPassword: boolean = false;
-
-  toggleDisplayPassword() {
-    this.showPassword = !this.showPassword;
-  }
+toggleDisplayPassword() {
+  this.showPassword = !this.showPassword;
+}
 
 
 
@@ -125,6 +126,6 @@ export class RegisterComponent {
 
   // }
 
-  
+
 
 }
