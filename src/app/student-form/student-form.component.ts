@@ -12,6 +12,7 @@ import { SettingsService } from '../admin/settings.service';
 import { CentersService } from '../admin/centers.service';
 import { Centers } from '../admin/centers';
 import { TextToSpeechService } from '../admin/text-to-speech.service';
+import { ConsentService } from '../consent.service';
 
 
 @Component({
@@ -88,7 +89,8 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
     private firestore: Firestore,
     private settingsService: SettingsService,
     private centersService: CentersService,
-    private textToSpeechService: TextToSpeechService) { }
+    private textToSpeechService: TextToSpeechService,
+    private consentService: ConsentService) { }
 
 
   async ngOnInit() {
@@ -147,34 +149,19 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit() {
-
     // this.getCenterName()
   }
-
-
 
 
   async onSubmit(form: NgForm) {
     console.log("form value", form.value);
 
-
-
-    // const socialFormData = form.value; 
-    // if (form.value.MoyenDeTransport !== undefined) 
-
-    // Cloner les données du formulaire pour éviter de modifier directement form.value !!!!!!!!!!!!!!!!
-    // ne suffisait pas à faire que priorTrade et center persistent sur la durée une fois le formulaire soumi
-    // const socialFormData = { ...form.value };
-
-    // const socialFormData = { center: this.centerChoiced?.id, priorTrade: this.priorTrade, ...form.value };
     const socialFormData = { center: this.socialData.center, priorTrade: this.priorTrade, ...form.value };
 
-    // attention. pour obliger center à être renseigné
-    // Vérifier si le champ "center" est renseigné
-    // alert(this.socialData.center)
+    // Validation
     if (!this.socialData.center) {
       alert("Veuillez sélectionner un centre avant de soumettre le formulaire.");
-      return; // Arrêter l'exécution de la méthode si le champ n'est pas renseigné
+      return;
     }
 
     if (form.invalid) {
@@ -182,29 +169,47 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
       return;
     }
 
-    // Nettoyer l'objet des champs undefined
+    // Nettoyage des données avant envoi
     Object.keys(socialFormData).forEach(key => socialFormData[key] === undefined && delete socialFormData[key]);
 
     try {
+      // Enregistrement des données dans Firestore
       let enrollRef = collection(this.firestore, "SocialForm");
       await setDoc(doc(enrollRef, this.uid), socialFormData);
-      // pour l'étudiant concerné
+
+      // Mise à jour de l'étudiant
       let studentRef = collection(this.firestore, "students");
-      // Mise à jour du document dans la collection "students"
       await setDoc(doc(studentRef, this.uid), { isSocialFormSent: true }, { merge: true });
-      form.reset();
-      this.router.navigate(['/account'], { queryParams: this.userData.id });
+
+      // Avant la redirection effectuée, on déclenche l'événement
+      this.trackSocialFormSent();
+
+      // ✅ Déclenchement de la redirection
+      setTimeout(() => {
+        this.router.navigate(['/account'], { queryParams: { id: this.userData.id } });
+      }, 300); // 300ms suffisent pour assurer le flush réseau du pixel
+
     } catch (error) {
       console.error('Erreur lors de l\'enregistrement des données: ', error);
     }
-
-
   }
+
+  trackSocialFormSent() {
+    try {
+      console.log('👀 Tentative de track Lead');
+      (window as any).fbq('track', 'Lead', {}, { eventID: 'test-lead-debug' });
+
+      console.log('✅ fbq track Lead envoyé');
+    } catch (e) {
+      console.warn('❌ Erreur fbq', e);
+    }
+  }
+
+
 
   async onInputChange(fieldName: string, value: any) {
     try {
       let enrollRef = collection(this.firestore, "SocialForm");
-
       // Enregistrement des données dans la collection "SocialForm"
       await setDoc(doc(enrollRef, this.uid), { [fieldName]: value }, { merge: true });
 
@@ -246,7 +251,6 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
       }
 
 
-
       // si choix de la formation déjà enregistré
       if (this.socialData.priorTrade) {
         // alert("il a déjà un centre favoris)
@@ -267,15 +271,8 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
             console.error('Erreur lors de la récupération des centres:', err);
             this.isLoading = false;  // Arrêter le chargement en cas d'erreur
           }
-        });
-
-
-
+        })
       }
-
-
-
-
 
     })
 
@@ -489,13 +486,9 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
         console.error('Erreur lors de la récupération des centres:', err);
         this.isLoading = false;  // Arrêter le chargement en cas d'erreur
       }
-    });
-
-
+    })
 
   }
-
-
 
 
   getKeys(obj: any): string[] {

@@ -90,14 +90,29 @@ i {
     white-space: nowrap;
 }
 
+@media (min-width: 1200px) {
+
+    .questionnaire-wrapper {
+        width: 60%;
+        margin: auto;
+    }    
+
+    h2 {
+        font-size: 1.4em;
+    }
+}
+
+.answers-wrapper {
+    flex: 1;
+    overflow-y: auto;
+}
+
 @media (min-width: 410px) {
     .adjustBreakpoint {
         flex: 0 0 100%;
         max-width: 48% !important;
-/* background-color: blue!important; */
-
+        /* background-color: blue!important; */
     }
-
 }
 
 @media (min-width: 410px) and (max-width:575px) {

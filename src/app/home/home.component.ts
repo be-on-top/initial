@@ -16,7 +16,7 @@ import { UpdateService } from '../update.service';
 import { Subject, distinctUntilChanged, map, takeUntil } from 'rxjs';
 // import { NetworkService } from '../network.service';
 import { PRECONNECT_CHECK_BLOCKLIST } from '@angular/common';
-// import { Analytics, logEvent } from '@angular/fire/analytics';
+import { Analytics, logEvent } from '@angular/fire/analytics';
 import { SlugService } from '../slug.service';
 import { Trade } from '../admin/trade';
 import { ConsentService } from '../consent.service';
@@ -114,7 +114,7 @@ export class HomeComponent implements OnInit {
     private updateService: UpdateService,
     private titleService: Title,
     // private networkService: NetworkService,
-    // private analytics: Analytics,
+    private analytics: Analytics,
     // private networkService: NetworkService
     public slugService: SlugService,
     private cdr: ChangeDetectorRef,
@@ -458,10 +458,20 @@ export class HomeComponent implements OnInit {
   }
 
   logStartEvaluationEvent(tradeName: string) {
-    // alert(tradeName)
-    console.log("dfdsfdsfdsf")
-    // logEvent(this.analytics, 'has_started_evaluation_from_home', { trade_name: tradeName });
+    // Google Analytics (Firebase)
+    logEvent(this.analytics, 'has_started_evaluation_from_home', { trade_name: tradeName });
+
+    // Facebook Pixel — seulement si tracking autorisé
+    if (this.consentService.canTrack()) {
+      (window as any).fbq('trackCustom', 'has_started_evaluation_from_home', {
+        trade_name: tradeName
+      });
+      console.log('📦 Event "has_started_evaluation_from_home" envoyé à Meta Pixel');
+    } else {
+      console.warn('⛔ Tracking désactivé ou Meta Pixel non chargé');
+    }
   }
+
 
   // generateSlug(denomination: string): string {
   //   return denomination
@@ -498,7 +508,7 @@ export class HomeComponent implements OnInit {
   openFullCatItems(index: number): void {
     // Si la catégorie cliquée est déjà ouverte, la fermer; sinon, l'ouvrir
     this.openCategoryIndex = this.openCategoryIndex === index ? null : index;
-    
+
     // this.isFullCatItemsOpen = !this.isFullCatItemsOpen
 
   }
@@ -560,33 +570,33 @@ export class HomeComponent implements OnInit {
   onSearchTextEntered(searchValue: string) {
     const normalizedSearchValue = this.removeAccents(searchValue).toLowerCase().trim();
     this.searchText = searchValue; // mise à jour pour l'affichage
-  
+
     // Si la recherche est vide, on ferme toutes les catégories
     if (!normalizedSearchValue) {
       this.openCategoryIndex = null;
       return;
     }
-  
+
     // Recherche dans chaque groupe : ouvrir le premier groupe où une correspondance est trouvée
     const matchingGroupIndex = this.groupedTrades.findIndex((group: any) =>
       group[1].some((trade: any) => {
         const normalizedDenomination = this.removeAccents(trade.denomination).toLowerCase();
         const normalizedDescription = this.removeAccents(trade.description).toLowerCase();
         return normalizedDenomination.includes(normalizedSearchValue) ||
-               normalizedDescription.includes(normalizedSearchValue);
+          normalizedDescription.includes(normalizedSearchValue);
       })
     );
-  
+
     // Si une correspondance est trouvée et que ce groupe n'est pas déjà ouvert, on l'ouvre
     if (matchingGroupIndex !== -1 && this.openCategoryIndex !== matchingGroupIndex) {
       this.openFullCatItems(matchingGroupIndex);
     }
-  
+
     console.log("Search Value:", searchValue);
     console.log("Normalized Search Value:", normalizedSearchValue);
   }
-  
-  
+
+
 
 
 
@@ -647,7 +657,6 @@ export class HomeComponent implements OnInit {
     this.groupedTrades = Array.from(grouped.entries());
     // j'obtiens [Array(2)] dont 0 est parentCategory et 1 le tableau d'objets
     console.log("Métiers regroupés:", this.groupedTrades);
-
     console.log("Métiers non groupés:", this.ungroupedTrades);
 
   }
@@ -661,20 +670,20 @@ export class HomeComponent implements OnInit {
   }
 
 
-  trackAddToCart(): void {
-    if (this.consentService.canTrack()) {
-      (window as any).fbq('track', 'AddToCart', {
-        content_name: 'Produit fictif',
-        content_ids: ['12345'],
-        content_type: 'product',
-        value: 19.99,
-        currency: 'EUR'
-      });
-      console.log('📦 Événement "AddToCart" envoyé à Meta Pixel');
-    } else {
-      console.warn('⛔ Tracking désactivé ou Meta Pixel non chargé');
-    }
-  }
+  // trackAddToCart(): void {
+  //   if (this.consentService.canTrack()) {
+  //     (window as any).fbq('track', 'AddToCart', {
+  //       content_name: 'Produit fictif',
+  //       content_ids: ['12345'],
+  //       content_type: 'product',
+  //       value: 19.99,
+  //       currency: 'EUR'
+  //     });
+  //     console.log('📦 Événement "AddToCart" envoyé à Meta Pixel');
+  //   } else {
+  //     console.warn('⛔ Tracking désactivé ou Meta Pixel non chargé');
+  //   }
+  // }
 
 }
 

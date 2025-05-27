@@ -317,7 +317,7 @@
                         <li *ngIf="!userRole || userRole == ''">
                             <a class="dropdown-item" [routerLink]="['register']" (click)="closeNavbar()">Inscription</a>
                         </li>
-                        <li *ngIf="!offline && isOneQuizzAchieved && !studentData?.isSocialFormSent">
+                        <li *ngIf="!offline && isOneQuizzAchieved && !studentData?.isSocialFormSent && !studentData?.innerStudent">
                             <a class="dropdown-item" [routerLink]="['socialregistration']"
                                 (click)="closeNavbar()">Inscription Formation</a>
                         </li>

@@ -185,10 +185,10 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
             // puis on interroge socialForm savoir si un document existe avec l'uid
             this.studentService.checkIfSocialFormExists(user.uid).then(result => {
               this.isSocialForm = result;
-              
+
               console.log("Résultat Firestore :", this.isSocialForm);
               console.log("Valeur de isSocialFormSent :", this.userData.isSocialFormSent);
-            
+
               if (this.isSocialForm && !this.userData.isSocialFormSent && !this.userData.innerStudent) {
                 console.log("Conditions validées, lancement du son...");
                 this.playText()
@@ -198,7 +198,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
               }
 
             });
-            
+
 
 
 
@@ -266,11 +266,20 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-ngAfterViewInit(): void {
-  // this.playText()
-}
 
-  
+
+  ngAfterViewInit() {
+    // this.playText()
+    // Placer ici le tracking, il est lancé après le rendu de la vue
+    setTimeout(() => {
+      if (this.consentService.canTrack() && typeof (window as any).fbq === 'function') {
+        (window as any).fbq('track', 'PageView', { page_name: 'Account' });
+        console.log('📦 Event "PageView" envoyé à Meta Pixel pour Account');
+      } else {
+        console.warn('⛔ Tracking désactivé ou Meta Pixel non chargé');
+      }
+    }, 0);
+  }
 
 
 
@@ -870,7 +879,7 @@ ngAfterViewInit(): void {
 
   public playText(): void {
     const text = 'N\'oubliez pas de terminer et soumettre votre formulaire pour être contacté par un conseiller projet.';
-    
+
     this.textToSpeechService.synthesizeSpeech(text).subscribe(
       (response) => {
         const audioContent = response.audioContent;

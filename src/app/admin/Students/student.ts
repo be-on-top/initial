@@ -29,7 +29,7 @@ export interface Student {
     isSocialFormSent?:boolean;
     endedSubscriptions?: EndedSubscription[];  // Mise à jour ici
     elearning?:string;
-    isInnerStudent?:boolean;
+    innerStudent?:boolean;
     localTraining?:string;
      // Index signature
      [key: string]: any; // Index signature for dynamic properties

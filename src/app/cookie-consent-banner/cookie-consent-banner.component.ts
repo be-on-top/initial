@@ -30,7 +30,7 @@ export class CookieConsentBannerComponent implements OnInit {
 
   @Input() integratedBanner: boolean = false;
 
-    // Flag pour empêcher plusieurs chargements
+  // Flag pour empêcher plusieurs chargements
   private metaPixelLoaded = false;
 
 
@@ -66,28 +66,32 @@ export class CookieConsentBannerComponent implements OnInit {
     }
   }
 
-// fonctionne mais META PIXEL HELPER ne le détecte qu'en localhost
-//   acceptCookies() {
-//     this.consentService.setConsent(true);
-//     // Autres actions nécessaires après avoir accepté les cookies
-//     this.showBanner = false;
-//     // Charger Meta Pixel seulement après consentement
-//     this.loadMetaPixel();
-//  }
+  // fonctionne mais META PIXEL HELPER ne le détecte qu'en localhost
+  //   acceptCookies() {
+  //     this.consentService.setConsent(true);
+  //     // Autres actions nécessaires après avoir accepté les cookies
+  //     this.showBanner = false;
+  //     // Charger Meta Pixel seulement après consentement
+  //     this.loadMetaPixel();
+  //  }
+  
 acceptCookies() {
   this.consentService.setConsent(true);
   this.showBanner = false;
 
-  // Charger le Meta Pixel script si pas déjà fait
-  if (!(window as any).fbq?.loaded) {
-    this.loadMetaPixel(); // script va s’auto-init si consent donné
-  } else {
-    // Script déjà là → juste initialiser
+  // Initialiser Meta Pixel avec un léger délai
+  setTimeout(() => {
+    if (!(window as any).fbq) {
+      console.warn('Meta Pixel script non chargé ou bloqué');
+      return;
+    }
+
     (window as any).fbq('init', '622453283587163');
     (window as any).fbq('track', 'PageView');
-    console.log('✅ fbq PageView envoyé (manuel)');
-  }
+    console.log('✅ fbq PageView envoyé (manuel avec délai)');
+  }, 100); // ← délai de 100ms (ajustable si besoin)
 }
+
 
 
 
@@ -112,7 +116,7 @@ acceptCookies() {
     // this.showBanner = true;
   }
 
-// fonctionne mais uniquement localhost
+  // fonctionne mais uniquement localhost
   // loadMetaPixel(): void {
   //   // Si le pixel est déjà chargé, pas besoin de le recharger
   //   if ((window as any).fbq) {
@@ -145,59 +149,59 @@ acceptCookies() {
 
   //   document.head.appendChild(script);
   // }
-// loadMetaPixel(): void {
-//   // Supprimer une éventuelle ancienne instance pour éviter les conflits
-//   if ((window as any).fbq) {
-//     delete (window as any).fbq;
-//   }
+  // loadMetaPixel(): void {
+  //   // Supprimer une éventuelle ancienne instance pour éviter les conflits
+  //   if ((window as any).fbq) {
+  //     delete (window as any).fbq;
+  //   }
 
-//   // Charger le script toujours, mais sans init tant que pas de consentement
-//   if ((window as any).fbq && (window as any).fbq.loaded) return;
+  //   // Charger le script toujours, mais sans init tant que pas de consentement
+  //   if ((window as any).fbq && (window as any).fbq.loaded) return;
 
-//   (window as any).fbq = function () {
-//     (window as any).fbq.callMethod
-//       ? (window as any).fbq.callMethod.apply((window as any).fbq, arguments)
-//       : (window as any).fbq.queue.push(arguments);
-//   };
-//   (window as any).fbq.push = (window as any).fbq;
-//   (window as any).fbq.loaded = false;
-//   (window as any).fbq.version = '2.0';
-//   (window as any).fbq.queue = [];
+  //   (window as any).fbq = function () {
+  //     (window as any).fbq.callMethod
+  //       ? (window as any).fbq.callMethod.apply((window as any).fbq, arguments)
+  //       : (window as any).fbq.queue.push(arguments);
+  //   };
+  //   (window as any).fbq.push = (window as any).fbq;
+  //   (window as any).fbq.loaded = false;
+  //   (window as any).fbq.version = '2.0';
+  //   (window as any).fbq.queue = [];
 
-//   const script = document.createElement('script');
-//   script.src = 'https://connect.facebook.net/en_US/fbevents.js?ngsw-bypass=true'; // ✅ LA ligne clé
-//   script.async = true;
+  //   const script = document.createElement('script');
+  //   script.src = 'https://connect.facebook.net/en_US/fbevents.js?ngsw-bypass=true'; // ✅ LA ligne clé
+  //   script.async = true;
 
-//   script.onload = () => {
-//     console.log('📦 Meta Pixel script chargé');
-//     (window as any).fbq.loaded = true;
+  //   script.onload = () => {
+  //     console.log('📦 Meta Pixel script chargé');
+  //     (window as any).fbq.loaded = true;
 
-//     // Si consentement déjà donné, alors on initialise
-//     if (this.consentService.getConsent()) {
-//       (window as any).fbq('init', '622453283587163');
-//       (window as any).fbq('track', 'PageView');
-//       console.log('✅ fbq PageView envoyé');
-//     }
-//   };
+  //     // Si consentement déjà donné, alors on initialise
+  //     if (this.consentService.getConsent()) {
+  //       (window as any).fbq('init', '622453283587163');
+  //       (window as any).fbq('track', 'PageView');
+  //       console.log('✅ fbq PageView envoyé');
+  //     }
+  //   };
 
-//   document.head.appendChild(script);
-// }
+  //   document.head.appendChild(script);
+  // }
 
-loadMetaPixel(): void {
-  // Vérifie si le script est chargé (via index.html)
-  if (!(window as any).fbq) {
-    console.warn('⚠️ fbq non défini — script Meta Pixel absent ou bloqué');
-    return;
+  loadMetaPixel(): void {
+    // Vérifie si le script est chargé (via index.html)
+    if (!(window as any).fbq) {
+      console.warn('⚠️ fbq non défini — script Meta Pixel absent ou bloqué');
+      return;
+    }
+
+    try {
+      (window as any).fbq('init', '622453283587163'); // Ton ID pixel
+      (window as any).fbq('track', 'userConsentOk');
+      console.log('✅ fbq PageView envoyé');
+    } catch (e) {
+      console.error('❌ Erreur lors de init du Meta Pixel :', e);
+    }
   }
-
-  try {
-    (window as any).fbq('init', '622453283587163'); // Ton ID pixel
-    (window as any).fbq('track', 'PageView');
-    console.log('✅ fbq PageView envoyé');
-  } catch (e) {
-    console.error('❌ Erreur lors de l’init du Meta Pixel :', e);
-  }
-}
 
 
 

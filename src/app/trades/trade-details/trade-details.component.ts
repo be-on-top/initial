@@ -15,6 +15,7 @@ import { CentersService } from 'src/app/admin/centers.service';
 import { Centers } from 'src/app/admin/centers';
 
 import * as L from 'leaflet';
+import { ConsentService } from 'src/app/consent.service';
 
 
 @Component({
@@ -68,7 +69,8 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
     private titleService: Title,
     private metaService: Meta,
     private centerService: CentersService,
-    private router: Router
+    private router: Router,
+    private consentService: ConsentService
   ) {
     this.offline = !navigator.onLine
   }
@@ -613,15 +615,14 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
   processDenomination(denomination: string): string {
     // Expression régulière pour détecter les acronymes en majuscules suivis de la signification entre parenthèses
     const acronymRegex = /(\b[A-Z]+\b)\s?\((.*?)\)/g;
-  
+
     return denomination.replace(acronymRegex, (match, acronym, meaning) => {
       // On remplace l'acronyme par <abbr>, mais on garde les parenthèses et leur contenu visibles
       return `<abbr title="${meaning}">${acronym}</abbr> (${meaning})`;
     });
 
-
   }
-  
+
 
   isLoading: boolean = true
 
@@ -640,8 +641,22 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
     }
   }
 
+  trackStartEvaluation(tradeSigle: string): void {
+    if (this.consentService.canTrack()) {
+      (window as any).fbq('trackCustom', 'has_started_evaluation_from_trade_details', {
+        trade_sigle: tradeSigle
+      });
+      console.log('📦 Event "has_started_evaluation_from_trade_details" envoyé à Meta Pixel');
+    } else {
+      console.warn('⛔ Tracking désactivé ou Meta Pixel non chargé');
+    }
+  }
+
 
 }
+
+
+
 
 
 

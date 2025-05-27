@@ -4,7 +4,8 @@
     <div class="p-2 bg-primary text-white rounded row fade show mx-1">
         <!-- {{imageUrl}} -->
         <!-- <h1 class="d-flex justify-content-between mt-3">{{tradeData.denomination}}<app-share-button></app-share-button> -->
-        <h1 class="d-flex justify-content-between mt-3"><span [innerHTML]="processDenomination(tradeData.denomination)"></span> <app-share-button></app-share-button>
+        <h1 class="d-flex justify-content-between mt-3"><span
+                [innerHTML]="processDenomination(tradeData.denomination)"></span> <app-share-button></app-share-button>
         </h1>
 
         <div class="col-md-7">
@@ -24,8 +25,8 @@
                 <span *ngIf="tradeData.requirements && tradeData.requirements!==''" class="text-light">Prérequis :
                     {{tradeData.requirements}}</span>
                 <br *ngIf="tradeData.parentCategory">
-                <span *ngIf="tradeData.parentCategory && tradeData.parentCategory!==''"
-                    class="text-light">Catégorie : {{tradeData.parentCategory}}</span>
+                <span *ngIf="tradeData.parentCategory && tradeData.parentCategory!==''" class="text-light">Catégorie :
+                    {{tradeData.parentCategory}}</span>
 
                 <!-- <p class="rounded bg-dark p-2 mt-2 small">Pour vérification du rôle récupéré : {{userRole}}</p> -->
                 <br>
@@ -44,11 +45,15 @@
         <div *ngIf="userRole === 'none' else switch" class="col-md-5 text-white mt-md-5">
             <p class="text-md-left fs-5 accessibility">
                 Afin de démarrer un questionnaire, merci de
-                <button type="button" (click)="onLogin()" class="btn-as-link text-white fw-bold px-1" title="Vous authentifier pour passer des évaluations en ligne sur BE-ON-TOP"
-                aria-label="Vous authentifier pour passer des évaluations en ligne sur BE-ON-TOP">vous authentifier</button>
+                <button type="button" (click)="onLogin()" class="btn-as-link text-white fw-bold px-1"
+                    title="Vous authentifier pour passer des évaluations en ligne sur BE-ON-TOP"
+                    aria-label="Vous authentifier pour passer des évaluations en ligne sur BE-ON-TOP">vous
+                    authentifier</button>
                 ou
-                <button type="button" (click)="onRegister()" class="btn-as-link text-white fw-bold px-1" title="Vous créer un compte pour passer des évaluations en ligne sur BE-ON-TOP"
-                aria-label="Vous créer un compte pour passer des évaluations en ligne sur BE-ON-TOP">vous créer un compte</button>
+                <button type="button" (click)="onRegister()" class="btn-as-link text-white fw-bold px-1"
+                    title="Vous créer un compte pour passer des évaluations en ligne sur BE-ON-TOP"
+                    aria-label="Vous créer un compte pour passer des évaluations en ligne sur BE-ON-TOP">vous créer un
+                    compte</button>
             </p>
         </div>
         <!-- ...des autres cas -->
@@ -66,9 +71,16 @@
                     <ng-container *ngIf="studentData && userRole!=='editor'">
                         <!-- ScoreCounter : {{ studentData['quizz_'+this.tradeData.sigle].scoreCounter | json }} -->
                         <!-- pour switcher d'un intitulé à un autre selon que studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle -->
-                        <div class="d-flex justify-content-md-end" *ngIf="hasStartedEvaluation==false, else none">
+                        <!-- <div class="d-flex justify-content-md-end" *ngIf="hasStartedEvaluation==false, else none">
                             <p class="btn btn-transparent ps-0 fs-5 text-white"><i class="bi bi-clock"></i>
                                 Démarrer votre évaluation</p>
+                        </div> -->
+                        <div class="d-flex justify-content-md-end" *ngIf="hasStartedEvaluation == false; else none">
+                            <button type="button" class="btn btn-transparent ps-0 fs-5 text-white"
+                                (click)="trackStartEvaluation(this.tradeData.sigle)" aria-label="Démarrer évaluation">
+                                <i class="bi bi-clock" aria-hidden="true"></i>
+                                <span>Démarrer votre évaluation</span>
+                            </button>
                         </div>
                         <ng-template #none>
                             <div class="d-flex justify-content-md-end"
@@ -102,16 +114,18 @@
     <!-- 
     {{tradeData | json}} -->
     <div class="mt-4 p-2 position-relative">
-        
-    <div *ngIf="isLoading" class="spinner-container">
-        <div class="spinner-border text-success" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>
-    </div>
 
-        <img *ngIf="!offline" [ngClass]="{'loaded': !isLoading}"  class="rounded img-fluid mb-2 border border-1 m-auto w-100 fade-in" [src]="imageUrl"
+        <div *ngIf="isLoading" class="spinner-container">
+            <div class="spinner-border text-success" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <img *ngIf="!offline" [ngClass]="{'loaded': !isLoading}"
+            class="rounded img-fluid mb-2 border border-1 m-auto w-100 fade-in" [src]="imageUrl"
             [attr.srcset]="imageUrlReduced ? imageUrlReduced + ' 575w, ' + imageUrl + ' 1024w' : imageUrl"
-            sizes="(max-width: 575px) 575px, 1024px" alt="formation be-on-top au métier {{tradeId}}"  (load)="onImageLoad()">
+            sizes="(max-width: 575px) 575px, 1024px" alt="formation be-on-top au métier {{tradeId}}"
+            (load)="onImageLoad()">
 
         <img *ngIf="offline" class="rounded img-fluid mb-2 border border-1 m-auto w-100" [src]="imageUrl"
             alt="formation au métier {{tradeId}}">

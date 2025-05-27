@@ -42,13 +42,13 @@ export class RegisterComponent {
       this.feedbackMessages = `Enregistrement OK`;
       this.isSuccessMessage = true
 
-      // 👉 Meta Pixel tracking après succès et consentement
-      // if (this.consentService.canTrack()) {
-      //   (window as any).fbq('track', 'CompleteRegistration');
-      //   console.log('📦 Événement "CompleteRegistration" envoyé à Meta Pixel');
-      // } else {
-      //   console.warn('⛔ Tracking désactivé ou Meta Pixel non chargé');
-      // }
+      // 👉 Meta Pixel tracking après succès et consentement !!!!!
+      if (this.consentService.canTrack()) {
+        (window as any).fbq('track', 'CompleteRegistration');
+        console.log('📦 Événement "CompleteRegistration" envoyé à Meta Pixel');
+      } else {
+        console.warn('⛔ Tracking désactivé ou Meta Pixel non chargé');
+      }
 
       setTimeout(() => {
         // Appeler la méthode de redirection d'AuthService

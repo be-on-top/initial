@@ -17,7 +17,7 @@ button.btn.btn-primary:disabled {
 
 
 .display-6 {
-    font-size: 1.3rem!important;
+    font-size: 1.3rem !important;
     font-weight: 500;
 }
 
@@ -36,14 +36,20 @@ button.btn.btn-primary:disabled {
 } */
 
 .invisible {
-  visibility: hidden !important;
-  max-height: 10px ! important;
-  overflow: hidden;
+    visibility: hidden !important;
+    max-height: 10px ! important;
+    overflow: hidden;
+}
+
+@media (min-width: 1200px) {
+
+    h3 {
+        font-size: 1.3em;
+    }
 }
 
 @media screen and (max-width:575px) {
-    .btn-lg{
-        font-size: 1.1rem!important;
+    .btn-lg {
+        font-size: 1.1rem !important;
     }
-    
 }

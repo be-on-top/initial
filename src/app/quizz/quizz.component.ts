@@ -15,6 +15,7 @@ import { Observable, Subject, distinctUntilChanged, firstValueFrom, of, takeUnti
 // import { getMessaging, getToken } from "@angular/fire/messaging";
 import { NetworkService } from '../network.service';
 import { KeyValue } from '@angular/common';
+import { ConsentService } from '../consent.service';
 // import { UpdateService } from '../update.service';
 
 @Component({
@@ -120,8 +121,9 @@ export class QuizzComponent implements OnInit {
     private router: Router,
     private el: ElementRef,
     // private notificationService: PushNotificationService,
-    private networkService: NetworkService
+    private networkService: NetworkService,
     // private updateService: UpdateService
+    private consentService: ConsentService
   ) {
 
     // this.networkService.getOnlineStatus().subscribe(online => {
@@ -276,17 +278,38 @@ export class QuizzComponent implements OnInit {
       } else if (this.trade == "poseur_ite") {
         this.title = "Poseur ITE"
       }
-
       else if (this.trade == "mac_vrd") {
         this.title = "Maçon VRD"
       }
-
       else if (this.trade == "caces_R489") {
         this.title = "Conducteur chariot élévateur R489"
       }
-
       else if (this.trade == "caces_R482") {
-        this.title = "Conducteur engins de chantier R482"
+        this.title = "Conducteur engins de chantier R482 Cat.A"
+      }
+      else if (this.trade == "caces_R482B1") {
+        this.title = "Conducteur engins de chantier R482 Cat.B1"
+      }
+      else if (this.trade == "caces_R482C1") {
+        this.title = "Conducteur engins de chantier R482 Cat.C1"
+      }
+      else if (this.trade == "caces_R482F") {
+        this.title = "Conducteur engins de chantier R482 Cat.F"
+      }
+      else if (this.trade == "caces_R482Commun") {
+        this.title = "Conducteur engins de chantier R482 Commun"
+      }
+      else if (this.trade == "escr") {
+        this.title = "Enseignant ECSR"
+      }
+      else if (this.trade == "ctrmp_2025") {
+        this.title = "CTRMP Parcours complet 2025"
+      }
+      else if (this.trade == "ctrmp_2025PermisC") {
+        this.title = "CTRMP Parcours initial 2025"
+      }
+      else if (this.trade == "permis_c") {
+        this.title = "CTRMP Permis C"
       }
 
     })
@@ -482,28 +505,28 @@ export class QuizzComponent implements OnInit {
     // pour plus de fiabilité
 
     // Vérifier si l'index est valide avant d'essayer d'accéder aux options
-if (this.indexQuestion < this.questions.length) {
-  // Vérification des options pour calculer totalAnswersAvailable
-  if (!this.isNullOrEmpty(this.questions[this.indexQuestion].option1)) {
-    this.totalAnswersAvailable += 1;
-  }
+    if (this.indexQuestion < this.questions.length) {
+      // Vérification des options pour calculer totalAnswersAvailable
+      if (!this.isNullOrEmpty(this.questions[this.indexQuestion].option1)) {
+        this.totalAnswersAvailable += 1;
+      }
 
-  if (!this.isNullOrEmpty(this.questions[this.indexQuestion].option2)) {
-    this.totalAnswersAvailable += 1;
-  }
+      if (!this.isNullOrEmpty(this.questions[this.indexQuestion].option2)) {
+        this.totalAnswersAvailable += 1;
+      }
 
-  if (!this.isNullOrEmpty(this.questions[this.indexQuestion].option3)) {
-    this.totalAnswersAvailable += 1;
-  }
+      if (!this.isNullOrEmpty(this.questions[this.indexQuestion].option3)) {
+        this.totalAnswersAvailable += 1;
+      }
 
-  if (!this.isNullOrEmpty(this.questions[this.indexQuestion].option4)) {
-    this.totalAnswersAvailable += 1;
-  }
+      if (!this.isNullOrEmpty(this.questions[this.indexQuestion].option4)) {
+        this.totalAnswersAvailable += 1;
+      }
 
-  console.log("this.totalAnswersAvailable mis à jour !!!!", this.totalAnswersAvailable);
-} else {
-  console.log("Index de question invalide, le questionnaire est terminé, pas de calcul des options.");
-}
+      console.log("this.totalAnswersAvailable mis à jour !!!!", this.totalAnswersAvailable);
+    } else {
+      console.log("Index de question invalide, le questionnaire est terminé, pas de calcul des options.");
+    }
 
 
 
@@ -747,6 +770,16 @@ if (this.indexQuestion < this.questions.length) {
       // On met à jour le succès
       this.saveSuccess = true;
 
+      if (this.consentService.canTrack()) {
+        (window as any).fbq('trackCustom', 'has_finished_evaluation', {
+          trade_sigle: this.trade?.sigle // ou `this.trade` selon la structure
+        });
+        console.log('📦 Event "has_finished_evaluation" envoyé à Meta Pixel');
+      } else {
+        console.warn('⛔ Tracking désactivé ou Meta Pixel non chargé');
+      }
+
+
     } catch (error) {
       console.error("Erreur lors de l'enregistrement des résultats", error);
       // Optionnel : Message d'erreur utilisateur
@@ -968,13 +1001,13 @@ if (this.indexQuestion < this.questions.length) {
   }
 
   getCompetenceLabel(key: string): string {
-  // Vérifie si la clé commence par 'CP' et est suivie d'un nombre
-  const match = key.match(/^CP(\d+)$/);
-  if (match) {
-    return `Compétence ${match[1]}`;
+    // Vérifie si la clé commence par 'CP' et est suivie d'un nombre
+    const match = key.match(/^CP(\d+)$/);
+    if (match) {
+      return `Compétence ${match[1]}`;
+    }
+    return key; // fallback si le format ne correspond pas
   }
-  return key; // fallback si le format ne correspond pas
-}
 
 
 
