@@ -40,15 +40,19 @@
                     <a class="nav-link" [routerLink]="['socialregistration']">Pré-inscription Formation</a>
                 </li> -->
                 <li class="nav-item dropdown" [routerLinkActive]="['active']"
-                    *ngIf="userUid!==undefined && userUid!=='' && userRole!=='student' && userRole!=='editor'">
+                    *ngIf="userUid!==undefined && userUid!=='' && userRole!=='student'">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                        *ngIf="userRole?.includes('admin') || userRole?.includes('evaluator') || userRole?.includes('trainer') || userRole?.includes('tutor') || userRole?.includes('external') || userRole?.includes('referent') || userRole?.includes('manager')">Admin</a>
+                        *ngIf="userRole?.includes('admin') || userRole?.includes('evaluator') || userRole?.includes('trainer') || userRole?.includes('tutor') || userRole?.includes('external') || userRole?.includes('referent') || userRole?.includes('manager') || userRole?.includes('editor')">Admin</a>
                     <!-- <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Admin</a> -->
                     <ul class="dropdown-menu"
                         aria-label="Menu de navigation pour la création d'utilisateurs ayant des droits spécifiques">
                         <li *ngIf="userRole?.includes('admin') || userRole?.includes('manager')"><a
                                 class="dropdown-item" (click)="navigateTo('/admin/settings')">Paramètres</a>
                             <hr>
+                        </li>
+                        <!-- pour vue des filtres quantitatifs -->
+                        <li *ngIf="userRole?.includes('editor')"><a
+                                class="dropdown-item" (click)="navigateTo('/admin/leads')">Vue quantitative candidats</a>
                         </li>
 
                         <li *ngIf="userRole?.includes('admin')"><a class="dropdown-item"

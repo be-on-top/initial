@@ -94,30 +94,30 @@ export class AddUserComponent {
 
     console.log("newUser", newUser);
     
-    // this.service.createUser(newUser).then(() => {
-    //   // Signed in 
-    //   // const user = userCredential
-    //   this.feedbackMessages = `Enregistrement OK`;
-    //   // alert("adminReconnected call")
+    this.service.createUser(newUser).then(() => {
+      // Signed in 
+      // const user = userCredential
+      this.feedbackMessages = `Enregistrement OK`;
+      // alert("adminReconnected call")
 
-    //   // alert("registration ok")
-    //   setTimeout(() => {
-    //     // this.router.navigate([this.linkBackToList]);
-    //     window.location.reload();
+      // alert("registration ok")
+      setTimeout(() => {
+        // this.router.navigate([this.linkBackToList]);
+        window.location.reload();
 
-    //   }, 2000)
-    //   // this.router.navigate(['/admin/trainers']);
+      }, 2000)
+      // this.router.navigate(['/admin/trainers']);
 
-    //   // ...
-    // })
-    //   .catch((error) => {
-    //     this.feedbackMessages = error.message;
-    //     this.feedbackMessages = this.firebaseErrors[error.code];
-    //     this.isSuccessMessage = false;
-    //     console.log(this.feedbackMessages);
+      // ...
+    })
+      .catch((error) => {
+        this.feedbackMessages = error.message;
+        this.feedbackMessages = this.firebaseErrors[error.code];
+        this.isSuccessMessage = false;
+        console.log(this.feedbackMessages);
 
-    //     // ..};
-    //   })
+        // ..};
+      })
 
   }
 

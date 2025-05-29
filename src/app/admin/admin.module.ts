@@ -192,6 +192,9 @@ const routesAdmin: Routes = [
 
       // pour le tuteur
       { path: 'myTutorAccount/:id', component: TutorDetailsComponent, data: { user: 'tutor' }  },
+      // pour le marketing
+      { path: 'leads', component: StudentsListComponent, data: { user: 'editor' }  },
+      { path: 'leads/studentDetails/:id', component: StudentDetailsComponent, data: { user: 'editor' }  },
 
     ],
     // canActivate: [AuthGuardService]

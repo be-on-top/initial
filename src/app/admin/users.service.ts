@@ -164,7 +164,7 @@ export class UsersService {
           return;
         }
   
-        console.log("Aucun doublon détecté. Création de l'étudiant...");
+        console.log("Aucun doublon détecté. Création de l'utilisateur...");
         // const password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
         const password="password"
   

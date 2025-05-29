@@ -27,7 +27,8 @@
                     <span *ngFor="let s of center.sigles" class="badge bg-secondary me-2"><a class="text-white text-decoration-none" [routerLink]="[('/formation'),s]" >{{s}}</a></span>
                 </p> -->
                 <!-- pour masquer ceux des métiers dont le statut est false (dépubliés) -->
-                <p *ngIf="center.sigles">Formations métiers <span *ngIf="userRouterLinks.user=='admin'">({{center.sigles.length}})</span> : 
+                <!-- <p *ngIf="center.sigles">Formations métiers <span *ngIf="userRouterLinks.user=='admin'">({{center.sigles.length}})</span> :  -->
+                <p *ngIf="center.sigles">Formations métiers <span *ngIf="userRouterLinks.user=='admin'"></span> : 
                     <span *ngFor="let s of center.sigles" class="badge bg-secondary me-2">
                         <a class="text-white text-decoration-none" [routerLink]="[('/formation'),s]" *ngIf="activeTrades.includes(s)">{{s}}</a></span>
                 </p>
