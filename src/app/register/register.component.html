@@ -7,8 +7,8 @@
 
     <div class="form-group mb-3">
       <label for="lastname">Nom</label>
-      <input id="lastname" title="Nom de famille" type="text" id="lastName" name="lastName" ngModel #lastName="ngModel" class="form-control" required
-        minlength="3">
+      <input id="lastname" title="Nom de famille" type="text" id="lastName" name="lastName" ngModel #lastName="ngModel"
+        class="form-control" required minlength="3">
       <div *ngIf="lastName.dirty || (lastName.touched && lastName.invalid)" class="invalid-feedback">
         Veuillez fournir un nom valide.
       </div>
@@ -19,8 +19,8 @@
 
     <div class="form-group mb-3">
       <label for="firstName">Prénom</label>
-      <input id="firstName" title="Prénom" type="text" id="firstName" name="firstName" ngModel class="form-control" #firstName="ngModel" required
-        minlength="3">
+      <input id="firstName" title="Prénom" type="text" id="firstName" name="firstName" ngModel class="form-control"
+        #firstName="ngModel" required minlength="3">
       <div *ngIf="firstName.dirty || (firstName.touched && firstName.invalid)" class="invalid-feedback">
         Veuillez fournir un prénom valide.
       </div>
@@ -31,16 +31,62 @@
 
     <div class="form-group mb-3">
       <label for="studentMail">Email</label>
-      <!-- puisqu'on peut balancer le regex dans l'attribut pattern="" -->
-      <!-- <input type="email" id="studentMail" name="email" ngModel class="form-control" #mail="ngModel" (keyup)="validateEmail(mail.value)" required>   -->
-      <input id="studentMail" title="Votre email de connexion" type="email" minlength="6" id="email" name="email" ngModel class="form-control" #email="ngModel" required>
+
+      <input id="studentMail" name="email" type="text" class="form-control" ngModel required minlength="6"
+        pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.(com|fr|eu|net|org|gov|edu)$" #email="ngModel" class="form-control"
+        [ngClass]="{
+    'is-valid': email.valid && (email.dirty || email.touched),
+    'is-invalid': email.invalid && (email.dirty || email.touched)
+  }" />
+      <!-- <input
+  id="studentMail"
+  name="email"
+  type="text"
+  class="form-control"
+  ngModel
+  required
+  minlength="6"
+  pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.(com|fr|eu|net|org|gov|edu)$"
+  #email="ngModel"
+  [ngClass]="{
+    'is-valid': email.valid && (email.dirty || email.touched),
+    'is-invalid': email.invalid && (email.dirty || email.touched)
+  }"
+/> -->
+      <!-- <input
+    id="studentMail"
+  name="email"
+  type="text"
+  class="form-control"
+  ngModel
+  required
+  minlength="6"
+  pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.(com|fr|eu|net|org|gov|edu)$"
+  class="form-control rounded"
+  [ngClass]="{
+    'is-valid border border-success': email.valid && email.touched,
+    'is-invalid border border-danger': email.invalid && (email.dirty || email.touched)
+  }"
+  #email="ngModel"
+/> -->
+
+      <!-- Erreurs -->
       <div *ngIf="email.invalid && (email.dirty || email.touched)" class="invalid-feedback">
-        Veuillez fournir un E-mail valide.
+        <div *ngIf="email.errors?.['required']">Adresse email requise.</div>
+        <div *ngIf="email.errors?.['minlength']">Adresse email trop courte.</div>
+        <div *ngIf="email.errors?.['pattern']">
+          Veuillez fournir une adresse e-mail valide (sans majuscules, sans accents, domaines acceptés : .com, .fr,
+          .net...).
+        </div>
       </div>
-      <div *ngIf="email.valid" class="valid-feedback">
-        E-mail valide.
+
+      <!-- Valide -->
+      <div *ngIf="email.valid && (email.dirty || email.touched)" class="valid-feedback">
+        Adresse email valide.
       </div>
     </div>
+
+
 
     <div class="form-group">
 
@@ -51,7 +97,8 @@
         <input type="{{ !showPassword ? 'password' : 'text' }}" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\S{6,15}$"
           id="studentPw" name="studentPw" ngModel class="form-control position-relative" minlength="6"
           #studentPw="ngModel" required>
-        <span class="input-group-text rounded-top-right-bottom" (click)="toggleDisplayPassword()" [ngClass]="{'bi-eye': showPassword, 'bi-eye-slash': !showPassword}">
+        <span class="input-group-text rounded-top-right-bottom" (click)="toggleDisplayPassword()"
+          [ngClass]="{'bi-eye': showPassword, 'bi-eye-slash': !showPassword}">
         </span>
         <div *ngIf="studentPw.invalid && (studentPw.dirty || studentPw.touched)" class="invalid-feedback">
           Veuillez fournir un password valide. Avec au minimum une majuscule, une minuscule, un nombre et aucun espace
@@ -63,11 +110,12 @@
     </div>
 
     <div class="form-check mb-3 mt-4">
-      <label class="form-check-label fs-5" for="myCheck">J'ai lu et compris <a href="#" class="link-primary" data-bs-toggle="modal" data-bs-target="#rgpdModal">
-        la charte de respect de la vie privée
-      </a></label>
+      <label class="form-check-label fs-5" for="myCheck">J'ai lu et compris <a href="#" class="link-primary"
+          data-bs-toggle="modal" data-bs-target="#rgpdModal">
+          la charte de respect de la vie privée
+        </a></label>
       <input class="form-check-input" type="checkbox" id="myCheck" name="remember" required>
-      
+
       <div class="valid-feedback">Validation OK.</div>
       <div class="invalid-feedback">Cocher la case pour continuer.</div>
     </div>

@@ -97,12 +97,12 @@ export class RegisterComponent {
 
 valid: boolean = false;
 
-validateEmail(mailInput: any) { //fonction de vérification d'e-mail, retourne vrai ou faux !
-  const regex = /\S+@\S+\.\S+/;
-  this.valid = regex.test(mailInput);
-
+validateEmail(mailInput: string): boolean {
+  const strictRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.(com|fr|eu|net|org|gov|edu)$/;
+  this.valid = strictRegex.test(mailInput);
   return this.valid;
 }
+
 
 showPassword: boolean = false;
 

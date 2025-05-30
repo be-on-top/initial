@@ -1,11 +1,67 @@
-.was-validated .form-control:valid, .form-control.is-valid {
+/* .was-validated .form-control:valid, .form-control.is-valid {
     background-image: none;
-  }
+  } */
 
   .rounded-top-right-bottom {
     border-top-right-radius: 0.25rem;
     border-bottom-right-radius: 0.25rem;
 }
+
+/* Pour l'état invalide (lorsque l'email est invalide) */
+.form-control.ng-invalid.ng-touched {
+  border-color: inherit !important;  /* Rouge */
+  background-image: none !important;
+  /* background-color: #f8d7da !important;  */
+}
+
+/* Pour l'état valide (lorsque l'email est valide) */
+.form-control.ng-valid.ng-touched {
+  border-color: inherit !important;  /* Vert */
+  /* background-image: none !important; */
+  background-color: transparent;
+
+}
+
+/* Si le champ est encore vierge ou pas modifié, tu peux rajouter un style neutre */
+.form-control.ng-pristine {
+  border-color: #ced4da !important;  /* Gris neutre */
+}
+
+
+/* Désactiver le fond vert si l'email est validé par Angular */
+input.ng-valid {
+  border-color: none; /* Pas de couleur verte */
+   /* background-image: none !important; */
+  background-color: initial; /* Pas de fond vert */
+}
+
+input.ng-invalid {
+  border-color: initial; /* Pas de bordure rouge */
+   background-image: none !important;
+  background-color: initial; /* Pas de fond rouge */
+}
+
+/* Neutraliser le contour vert pendant la saisie (focus) */
+.form-control:focus {
+  border-color: initial !important;  /* Couleur rouge en cas d'erreur */
+  box-shadow: none !important;  /* Enlever l'ombre ou l'effet de focus */
+}
+
+/* Enlève l'effet de fond vert quand l'input est valide mais pendant la saisie */
+.form-control.ng-valid.ng-touched:focus {
+  border-color: #82BC00 !important; 
+  background-color: transparent !important;  /* Fond vert clair */
+  box-shadow: none !important;  /* Retirer l'ombre */
+}
+
+/* Si le champ est en mode erreur mais en focus, on garde le rouge */
+.form-control.ng-invalid.ng-touched:focus {
+  border-color: #E21937 !important;  /* Rouge (si invalide) */
+  background-color: #f8d7da !important;  /* Fond rouge clair */
+  box-shadow: none !important;  /* Retirer l'ombre */
+}
+
+
 
 #rgpdModalLabel{
   text-align: center !important;
