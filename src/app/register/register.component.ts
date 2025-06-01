@@ -24,6 +24,9 @@ export class RegisterComponent {
     'auth/invalid-email': 'Aucun enregistrement ne correspond au mail fourni'
   }; // list of firebase error codes to alternate error messages
 
+  emailRegex: string = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.(com|fr|eu|net|org|gov|edu|io)$';
+
+
 
   // recuperation code sv
   constructor(private service: StudentsService, private router: Router, private authService: AuthService, private consentService: ConsentService) { }

@@ -33,7 +33,8 @@
       <label for="studentMail">Email</label>
 
       <input id="studentMail" name="email" type="text" class="form-control" ngModel required minlength="6"
-        pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.(com|fr|eu|net|org|gov|edu)$" #email="ngModel" class="form-control"
+        [pattern]="emailRegex"
+        #email="ngModel" class="form-control"
         [ngClass]="{
     'is-valid': email.valid && (email.dirty || email.touched),
     'is-invalid': email.invalid && (email.dirty || email.touched)

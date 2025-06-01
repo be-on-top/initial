@@ -2,6 +2,7 @@
     background-image: none;
   } */
 
+
   .rounded-top-right-bottom {
     border-top-right-radius: 0.25rem;
     border-bottom-right-radius: 0.25rem;
@@ -23,9 +24,10 @@
 }
 
 /* Si le champ est encore vierge ou pas modifié, tu peux rajouter un style neutre */
-.form-control.ng-pristine {
-  border-color: #ced4da !important;  /* Gris neutre */
-}
+/* .form-control.ng-pristine {
+  border-color: #ced4da !important; 
+} */
+
 
 
 /* Désactiver le fond vert si l'email est validé par Angular */
@@ -37,7 +39,7 @@ input.ng-valid {
 
 input.ng-invalid {
   border-color: initial; /* Pas de bordure rouge */
-   background-image: none !important;
+   /* background-image: none !important; */
   background-color: initial; /* Pas de fond rouge */
 }
 
