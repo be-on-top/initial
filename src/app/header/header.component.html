@@ -51,8 +51,8 @@
                             <hr>
                         </li>
                         <!-- pour vue des filtres quantitatifs -->
-                        <li *ngIf="userRole?.includes('editor')"><a
-                                class="dropdown-item" (click)="navigateTo('/admin/leads')">Vue quantitative candidats</a>
+                        <li *ngIf="userRole?.includes('editor')"><a class="dropdown-item"
+                                (click)="navigateTo('/admin/leads')">Vue quantitative candidats</a>
                         </li>
 
                         <li *ngIf="userRole?.includes('admin')"><a class="dropdown-item"
@@ -321,7 +321,8 @@
                         <li *ngIf="!userRole || userRole == ''">
                             <a class="dropdown-item" [routerLink]="['register']" (click)="closeNavbar()">Inscription</a>
                         </li>
-                        <li *ngIf="!offline && isOneQuizzAchieved && !studentData?.isSocialFormSent && !studentData?.innerStudent">
+                        <li
+                            *ngIf="!offline && isOneQuizzAchieved && !studentData?.isSocialFormSent && !studentData?.innerStudent">
                             <a class="dropdown-item" [routerLink]="['socialregistration']"
                                 (click)="closeNavbar()">Inscription Formation</a>
                         </li>
@@ -343,7 +344,7 @@
                         (click)="closeNavbar()">Partenaires</a>
                 </li>
 
-                <li *ngIf="!userRole?.includes('evaluator') && !userRole?.includes('referent') && !userRole?.includes('trainer') && !userRole?.includes('tutor')"
+                <li *ngIf="!userRole?.includes('evaluator') && !userRole?.includes('referent') && !userRole?.includes('trainer') && !userRole?.includes('tutor') && !userRole?.includes('editor')"
                     class="nav-item" [routerLinkActive]="['active']">
                     <a class="nav-link" [routerLink]="['/benefits']" role="button" (click)="closeNavbar()"
                         title="Informations, questions réponses et mission de BE-ON-TOP"
@@ -450,6 +451,14 @@
                     </ul>
                 </li>
                 <!-- fin tuteurs -->
+
+                <!-- pour marketing momentanné -->
+                <li *ngIf="userRole?.includes('editor')" class="nav-item" [routerLinkActive]="['active']">
+                    <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown">Informations
+                        <!-- <i class="bi bi-info-square-fill ms-2"></i> -->
+                    </a>
+                </li>
+                <!-- fin marketing -->
 
             </ul>
         </div>

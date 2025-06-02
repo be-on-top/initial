@@ -4,7 +4,10 @@
 
     <!-- myCp : {{myCp}} - FilteredTrainers : {{filteredTrainers  | json}} -->
 
-    <h3 *ngIf="userRouterLinks.user=='admin' || userRouterLinks.user=='editor'">Gestion des candidats<span
+    <h3 *ngIf="userRouterLinks.user=='admin'">Gestion des candidats<span
+            class="badge bg-primary ms-2">{{collectionStudents.length}}</span></h3>
+
+    <h3 *ngIf="userRouterLinks.user=='editor'">Vue quantitative des candidats<span
             class="badge bg-primary ms-2">{{collectionStudents.length}}</span></h3>
     <!-- pour vérifier userUid du référent et le comparer au champ student.referent facilement -->
     <!-- <h3 *ngIf="userRouterLinks.user=='referent'">Suivi administratif des candidats ({{userUid}})</h3> -->
@@ -193,7 +196,7 @@
                 <div class="alert alert-warning mx-0 fw-regular fs-auto">Prospects inscrits mais inactifs<span
                         class="badge bg-danger ms-2">{{studentsWithNoInterest.length}}</span> </div>
                 <div *ngFor="let student of studentsWithNoInterest">
-                    <div *ngIf="userRouterLinks.user=='admin' || userRouterLinks.user=='editor'">
+                    <div *ngIf="userRouterLinks.user==='admin' || userRouterLinks.user==='editor'">
                         <div class="row mt-4 ps-sm-0"
                             *ngIf="searchText==='' || student.lastName.includes(searchText) || student.lastName.toLowerCase().includes(searchText) 
                                                   || student.firstName.includes(searchText) || student.firstName.toLowerCase().includes(searchText)
@@ -202,15 +205,15 @@
                             <div class="col-sm-3 col-6">{{student.lastName}}</div>
                             <div class="col-sm-3 col-6 order-perso2">{{student.firstName}}</div>
                             <!-- je ne comprends plus cette colonne !!!! -->
-                            <!-- <div class="col-sm-3 col-6 bg-info">
+                            <div class="col-sm-3 col-6">
                                 <button class="btn btn-danger text-white"
                                     [disabled]="userRouterLinks.user !=='admin'"
                                     (click)="deleteStudent(student)">
                                     <i class="bi bi-person-dash-fill"></i>
                                     <span class="d-md-none">Sup.</span>
-                                    <span class="d-none d-md-inline">Suppression!!!!!</span>
+                                    <span class="d-none d-md-inline">Suppression</span>
                                 </button>
-                            </div> -->
+                            </div>
                             <div class="col-sm-3 col-6 order-perso4"><button class="btn btn-primary">
                                     <a *ngIf="userRouterLinks.user=='admin'"
                                         [routerLink]="['/admin/student', student.id]" class="text-white"><i
@@ -219,7 +222,7 @@
                                         [routerLink]="['/admin/referent/studentDetails', student.id]"
                                         class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
                                     <a *ngIf="userRouterLinks.user=='editor'"
-                                        [routerLink]="['/admin/marketing/studentDetails', student.id]"
+                                        [routerLink]="['/admin/leads/studentDetails', student.id]"
                                         class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
                                 </button></div>
                         </div>
@@ -268,16 +271,17 @@
 
             <div *ngIf="userRouterLinks.user=='admin' || userRouterLinks.user=='referent' || userRouterLinks.user=='editor', else external">
 
-                <div class="row mt-4 ps-5 ps-sm-0" *ngIf="searchText==='' || student.lastName.includes(searchText) || student.lastName.toLowerCase().includes(searchText) 
-                    || student.firstName.includes(searchText) || student.firstName.toLowerCase().includes(searchText)
-                    || student.email.includes(searchText) || student.email.toLowerCase().includes(searchText)">
+                <div class="row mt-4 ps-5 ps-sm-0" *ngIf="searchText === '' 
+        || student.lastName.toLowerCase().includes(searchText.toLowerCase()) 
+        || student.firstName.toLowerCase().includes(searchText.toLowerCase()) 
+        || student.email.toLowerCase().includes(searchText.toLowerCase())">
 
 
                     <div class="col-sm-3 col-6">{{student.lastName}}</div>
                     <div class="col-sm-3 col-6 order-perso2">{{student.firstName}}</div>
                     <div class="col-sm-3 col-6">
                         <button class="btn btn-danger text-white"
-                            [disabled]="{'disabled':userRouterLinks.user==='editor'}"
+                            [disabled]="userRouterLinks.user==='editor' || userRouterLinks.user==='referent'"
                             (click)="deleteStudent(student)"><i class="bi bi-person-dash-fill"></i><span
                                 class="d-md-none">Sup.</span><span
                                 class="d-none d-md-inline">Suppression</span></button>
@@ -295,9 +299,10 @@
                 </div>
             </div>
             <ng-template #external>
-                <div class="row mt-4 justify-content-start" *ngIf="searchText==='' || student.lastName.includes(searchText) || student.lastName.toLowerCase().includes(searchText)
-                    || student.firstName.includes(searchText) || student.firstName.toLowerCase().includes(searchText)
-                    || student.email.includes(searchText) || student.email.toLowerCase().includes(searchText)">
+                <div class="row mt-4 justify-content-start" *ngIf="searchText === '' 
+        || student.lastName.toLowerCase().includes(searchText.toLowerCase()) 
+        || student.firstName.toLowerCase().includes(searchText.toLowerCase()) 
+        || student.email.toLowerCase().includes(searchText.toLowerCase())">
                     <div class="col-sm-3 col-6">{{student.lastName}}</div>
                     <div class="col-sm-3 col-6">{{student.firstName}}</div>
                     <div class="col-sm-3 col-6 mt-3 m-sm-0"><button class="btn btn-primary"><a
