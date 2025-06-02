@@ -64,6 +64,9 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   selectedRegion: string | null = null;
   selectedDepartment: string | null = null;
 
+
+  isLoading:boolean=true
+
   constructor(
     private service: StudentsService,
     private activatedRoute: ActivatedRoute,
@@ -422,6 +425,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   //   this.applyFilters();
   // }
 
+
   applyFilters(trade?: string) {
     // puisqu'il faut désactiver la vue additionnelle des non actifs dès qu'un filtre est actif...
     this.showNoInterestStudents = false
@@ -458,6 +462,8 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       this.allStudents = [...this.initialStudents];
       this.tradesActivated = false
     }
+
+    this.isLoading=false
   }
 
   onCheckboxChangePrior(event: any) {
