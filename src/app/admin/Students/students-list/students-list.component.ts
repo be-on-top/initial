@@ -40,7 +40,8 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
 
   filteredStudents: Student[] = []; // Liste des étudiants filtrée
 
-  isSocialFormSentFilter: boolean = false;
+  isSocialFormSentFilter: boolean = false
+  isInnerStudentFilter: boolean = false
   isSubscriptionFilter: boolean = false
   initialStudents: any[] = []; // Copie initiale des étudiants
 
@@ -65,7 +66,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   selectedDepartment: string | null = null;
 
 
-  isLoading:boolean=true
+  isLoading: boolean = true
 
   constructor(
     private service: StudentsService,
@@ -105,14 +106,14 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
 
     this.regionalService.getAllRegions().subscribe(regions => {
       this.regions = regions
-      console.log('regions récupérées', this.regions);
+      // console.log('regions récupérées', this.regions);
 
     })
 
 
     this.regionalService.getAllDepartments().subscribe(departments => {
       this.departments = departments
-      console.log('départements récupérées', this.departments);
+      // console.log('départements récupérées', this.departments);
 
     })
 
@@ -232,7 +233,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       tap(students => {
         // Stocker les données brutes avant toute transformation
         this.collectionStudents = students;
-        console.log('Données brutes (collectionStudents) :', this.collectionStudents);
+        // console.log('Données brutes (collectionStudents) :', this.collectionStudents);
       }),
       // A condition qu'ils aient au minimum terminé UN questionnaire...
       map(students => students.filter(student => this.hasFullResults(student)))
@@ -249,13 +250,13 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
         // Si référent, applique les filtres (référent et prior)
         this.service.getCentersAndSocialFormByUserId(referentUid)
           .subscribe(returnedPriors => {
-            console.log('IDs prior récupérés :', returnedPriors);
+            // console.log('IDs prior récupérés :', returnedPriors);
 
             // Étape 2 : Filtrer les étudiants par référent ou prior (qui a terminé et envoyé le formulaire)
             const filteredStudents = this.allStudents.filter(student =>
               student.referent === referentUid || (returnedPriors.includes(student.id) && student.isSocialFormSent)
             );
-            console.log('Étudiants filtrés (référent + prior) :', filteredStudents);
+            // console.log('Étudiants filtrés (référent + prior) :', filteredStudents);
 
             // Initialisation pour le référent
             this.initialStudents = [...filteredStudents];
@@ -265,10 +266,13 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
             this.filteredStudents = filteredStudents.filter(student =>
               returnedPriors.includes(student.id)
             );
-            console.log('Filtered Prior Students :', this.filteredStudents);
+            // console.log('Filtered Prior Students :', this.filteredStudents);
 
-            this.applyFilters(); // Appliquer les filtres actuels
+            this.applyFilters(); // Appliquer les filtres actuels                       
+
           });
+
+           this.isLoading = false
       }
     });
   }
@@ -303,8 +307,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
           !this.initialStudents.some(interestedStudent => interestedStudent.id === student.id)
         );
 
-        console.log('Étudiants sans intérêt :', this.studentsWithNoInterest);
-
+        // console.log('Étudiants sans intérêt :', this.studentsWithNoInterest);
         this.showNoInterestStudents = true;
       });
     }
@@ -445,8 +448,8 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
         )
       );
 
-
-
+    } else if (this.isInnerStudentFilter) {
+      this.allStudents = this.initialStudents.filter(student => student.innerStudent);
     } else if (this.isTradeQCMStarted) {
       this.allStudents = this.initialStudents.filter(student => student['quizz_' + trade] && !student['quizz_' + trade].fullResults);
     }
@@ -462,8 +465,8 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       this.allStudents = [...this.initialStudents];
       this.tradesActivated = false
     }
-
-    this.isLoading=false
+            //  this.isLoading = false
+   
   }
 
   onCheckboxChangePrior(event: any) {
@@ -545,6 +548,11 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     this.applyFilters(cleanTrade);
   }
 
+  onCheckboxChangeInner(event: any) {
+    this.isInnerStudentFilter = event.target.checked;
+    this.applyFilters();
+  }
+
 
   onCheckboxChangeEndedTraining(event: any) {
     this.isQualifiedFilter = event.target.checked;
@@ -573,7 +581,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     const eligibleStudents = this.initialStudents.filter(s => s.isSocialFormSent);
     const studentIds = eligibleStudents.map(s => s.id);
 
-    console.log('📥 Étudiants avec formulaire rempli :', studentIds);
+    // console.log('📥 Étudiants avec formulaire rempli :', studentIds);
 
     if (studentIds.length === 0) {
       this.allStudents = []; // Aucun formulaire rempli => aucun résultat
@@ -581,7 +589,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     }
 
     this.regionalService.getSocialForms(studentIds).subscribe(socialForms => {
-      console.log('📬 Social forms récupérés :', socialForms);
+      // console.log('📬 Social forms récupérés :', socialForms);
 
       // const postalCodes = Object.values(socialForms)
       //   .map(form => form.postalCode)
@@ -659,10 +667,10 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
 
     this.service.getCentersAndSocialFormByUserId(userId)
       .subscribe(returnedPriors => {
-        console.log('ReturnedPriors:', returnedPriors);
+        // console.log('ReturnedPriors:', returnedPriors);
         // Après avoir récupéré returnedPriors, on filtre la liste des étudiants
         this.filteredStudents = this.filterStudentsByPriorCenter(this.allStudents, returnedPriors);
-        console.log('Filtered Students:', this.filteredStudents);
+        // console.log('Filtered Students:', this.filteredStudents);
       })
 
   }
@@ -685,7 +693,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       tap(students => {
         // Stocker les données brutes avant toute transformation
         this.collectionStudents = students;
-        console.log('Données brutes (collectionStudents) :', this.collectionStudents);
+        // console.log('Données brutes (collectionStudents) :', this.collectionStudents);
       }),
       map(students => students.filter(student => student.referent === referentUid))
     ).subscribe(filteredStudents => {
