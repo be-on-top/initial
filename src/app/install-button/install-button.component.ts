@@ -29,16 +29,19 @@ export class InstallButtonComponent {
             });
           }
     this.isSafari = this.detectSafari();
-    this.isMobileSafari = this.detectMobileSafari();  // Appel de la nouvelle fonction
+    this.isMobileSafari = this.detectMobileSafari();  
   }
 
-  detectSafari(): boolean {
-    return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-  }
+detectSafari(): boolean {
+  const ua = navigator.userAgent;
+  return ua.includes('Safari') && !ua.includes('Chrome') && !ua.includes('CriOS') && !ua.includes('FxiOS');
+}
 
-  detectMobileSafari(): boolean {
-    return this.isSafari && /(iPhone|iPod|iPad)/i.test(navigator.userAgent);
-  }
+detectMobileSafari(): boolean {
+  const ua = navigator.userAgent;
+  return /(iPhone|iPod|iPad)/i.test(ua) && this.detectSafari();
+}
+
 
   installPWA() {
     if (this.deferredPrompt) {
