@@ -454,7 +454,7 @@
 
                 <!-- pour marketing momentanné -->
                 <li *ngIf="userRole?.includes('editor')" class="nav-item" [routerLinkActive]="['active']">
-                    <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown">Informations
+                    <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" (click)="goToInfoPage()">Informations
                         <!-- <i class="bi bi-info-square-fill ms-2"></i> -->
                     </a>
                 </li>

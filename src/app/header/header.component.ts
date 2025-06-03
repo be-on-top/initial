@@ -363,6 +363,9 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     } else if (this.userRole?.includes('tutor')) {
       // Rediriger vers support Tuteurs
       window.open('https://xd.adobe.com/view/8d60ffda-7df2-4e6c-b40b-adad69fd0f7b-d833/?fullscreen', '_blank');
+    } else if (this.userRole?.includes('editor')) {
+      // Rediriger vers support Tuteurs
+      this.router.navigate(['/market-app']);
     } else {
       // Rediriger vers une route interne de l'application
       this.router.navigate(['/benefits']);
