@@ -195,6 +195,9 @@ const routesAdmin: Routes = [
       // pour le marketing
       { path: 'leads', component: StudentsListComponent, data: { user: 'editor' }  },
       { path: 'leads/studentDetails/:id', component: StudentDetailsComponent, data: { user: 'editor' }  },
+      // pour l'external ajouté par referent
+      { path: 'contactStudentsList', component: StudentsListComponent, data: { user: 'referentsContacts' } },
+      { path: 'contactStudentDetails/:id', component: StudentDetailsComponent, data: { user: 'referentsContacts' }  },
 
     ],
     // canActivate: [AuthGuardService]

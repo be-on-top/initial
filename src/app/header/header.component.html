@@ -82,8 +82,17 @@
                         <li><a class="dropdown-item" [routerLink]="['/admin/managers']"
                                 *ngIf="userRole?.includes('admin')">Responsable métiers (optionnel)</a></li>
                         <!-- liste étudiants  pour observateurs -->
-                        <li><a class="dropdown-item" [routerLink]="['/admin/externalStudentsList']"
-                                *ngIf="userRole?.includes('external')">Annuaire candidats</a></li>
+                        <!-- <li><a class="dropdown-item" [routerLink]="['/admin/externalStudentsList']"
+                                *ngIf="userRole?.includes('external')">Annuaire candidats</a></li> -->
+                        <li *ngIf="userRole?.includes('external') && userHasReferent">
+                            <a class="dropdown-item" [routerLink]="['/admin/contactStudentsList']">Annuaire candidats
+                                (contact)</a>
+                        </li>
+                        <li *ngIf="userRole?.includes('external') && !userHasReferent">
+                            <a class="dropdown-item" [routerLink]="['/admin/externalStudentsList']">Annuaire candidats
+                                (externe)</a>
+                        </li>
+
 
                         <li
                             *ngIf="userRole?.includes('admin') || (userRole?.includes('evaluators') && userRole?.includes('trainer'))">
@@ -156,7 +165,7 @@
                         </li>
                         <li *ngIf="userRole?.includes('referent')">
                             <hr>
-                            <a class="dropdown-item disabled" [routerLink]="['/admin/externals']">Gestion des
+                            <a class="dropdown-item" [routerLink]="['/admin/externals']">Gestion des
                                 contacts <span class="d-block d-md-inline">(observateurs externes)</span></a>
                         </li>
                     </ul>
@@ -454,7 +463,8 @@
 
                 <!-- pour marketing momentanné -->
                 <li *ngIf="userRole?.includes('editor')" class="nav-item" [routerLinkActive]="['active']">
-                    <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" (click)="goToInfoPage()">Informations
+                    <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown"
+                        (click)="goToInfoPage()">Informations
                         <!-- <i class="bi bi-info-square-fill ms-2"></i> -->
                     </a>
                 </li>

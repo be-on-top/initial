@@ -158,7 +158,7 @@ export class StudentDetailsComponent {
           // Ajoutez les compétences dans l'objet trades
           this.trades[tradeId] = competences;
           // Loguez les compétences dans la console
-          console.log(`${tradeId}:`, competences);
+          // console.log(`${tradeId}:`, competences);
         });
       });
 

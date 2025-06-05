@@ -3,7 +3,7 @@ import { AuthService } from '../admin/auth.service';
 import { onAuthStateChanged } from 'firebase/auth';
 import { Auth, reload } from '@angular/fire/auth';
 import { Firestore, docData, doc } from '@angular/fire/firestore';
-import { Observable, Subscription } from 'rxjs'
+import { Observable, Subscription, take } from 'rxjs'
 import { Trade } from '../admin/trade';
 import { SettingsService } from '../admin/settings.service';
 import { Router } from '@angular/router';
@@ -50,6 +50,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
   userUid?: string;
   userRole: string | string[] | null = null;
+  userHasReferent = false;
 
   private authSubscription: Subscription | undefined;
   private studentSubscription: Subscription | undefined;
@@ -124,6 +125,17 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       this.userUid = userInfo?.uid ?? "";
 
       this.getStudentData(this.userUid)
+
+if (this.userRole?.includes('external') && this.userUid) {
+  const userDocRef = doc(this.firestore, `users/${this.userUid}`);
+  docData(userDocRef, { idField: 'uid' })  // `idField` est optionnel ici
+    .pipe(take(1))
+    .subscribe(data => {
+      this.userHasReferent = !!data['referentUid'];
+    });
+}
+
+
     });
 
     if (navigator.onLine) {
@@ -220,7 +232,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.tradeService.fetchPartners().subscribe(data => {
       this.partners = data
-      console.log("partenaires récupérés", this.partners);
+      // console.log("partenaires récupérés", this.partners);
 
     })
 
@@ -314,8 +326,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
 
   groupTrades() {
-    console.log("Trades initiaux:", this.trades);
-
+    // console.log("Trades initiaux:", this.trades);
     const grouped = new Map<string, any[]>();
 
     this.trades.forEach((trade: any) => {
@@ -330,8 +341,8 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     });
 
     this.groupedTrades = grouped;
-    console.log("Métiers regroupés:", this.groupedTrades);
-    console.log("Métiers non groupés:", this.ungroupedTrades);
+    // console.log("Métiers regroupés:", this.groupedTrades);
+    // console.log("Métiers non groupés:", this.ungroupedTrades);
   }
 
 

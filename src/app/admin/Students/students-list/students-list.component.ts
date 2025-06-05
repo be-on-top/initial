@@ -44,6 +44,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   isInnerStudentFilter: boolean = false
   isSubscriptionFilter: boolean = false
   initialStudents: any[] = []; // Copie initiale des étudiants
+  contactStudents: any[] = []; // pour les étudiants affectés par referent à contact
 
   isTradeFilter: boolean = false
   tradesActivated: boolean = false
@@ -81,7 +82,6 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     // implémenter la méthode conçue pour les "conseillers projets" qui n'en sont pas puisqu'ils se font concurrence (référents admin)
     // Récupérer l'UID de manière synchrone
     this.userUid = this.authService.getCurrentUserUid();
-    console.log('UID de l\'utilisateur authentifié dans le composant :', this.userUid);
 
     // On peut maintenant utiliser cet UID pour d'autres opérations
     if (this.userUid && this.userRouterLinks.user === 'referent') {
@@ -94,6 +94,16 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       // ou ceux dont un des cp du tableau est contenu dans le tableau des cp du compte authentifié
       // this.getTrainersWithSameCp(this.userUid)
 
+    }
+
+    
+    // pour le cas très spécifique du contact ajouté par un referent
+    if (this.userUid && this.userRouterLinks.user==='referentsContacts') {
+      this.userService.getUser(this.userUid).subscribe(data=>{
+        console.log("tableau du doc",data.students)
+        this.contactStudents=data.students      
+      }
+      )
     }
 
 
@@ -267,12 +277,19 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
               returnedPriors.includes(student.id)
             );
             // console.log('Filtered Prior Students :', this.filteredStudents);
-
             this.applyFilters(); // Appliquer les filtres actuels                       
 
           });
 
            this.isLoading = false
+      }
+      // pour les contacts ajoutés par referent
+      else if (this.contactStudents.length!==0) {        
+            const filteredStudents = this.allStudents.filter(student =>
+            this.contactStudents.includes(student.id) && student.isSocialFormSent)
+            // Initialisation pour le référent
+            this.initialStudents = [...filteredStudents];
+            this.allStudents = [...this.initialStudents];        
       }
     });
   }

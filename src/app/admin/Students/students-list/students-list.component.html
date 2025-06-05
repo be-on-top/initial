@@ -14,7 +14,7 @@
     <h3 *ngIf="userRouterLinks.user=='referent'">Suivi administratif des candidats</h3>
     <p *ngIf="userRouterLinks.user=='referent'" class="small primary text-center mt-0">Pour rappel, vous sont associés :
         {{cpArray}}</p>
-    <h3 *ngIf="userRouterLinks.user=='external'">Annuaire étudiants</h3>
+    <h3 *ngIf="userRouterLinks.user=='external' || userRouterLinks.user=='referentsContacts'">Annuaire étudiants</h3>
     <!-- <hr> -->
     <div *ngIf="(!allStudents)">
         ...loading
@@ -31,8 +31,8 @@
         <app-search (searchTextChanged)="onSearchTextEntered($event)"></app-search>
         <!-- ajoute un bouton d'ajout en haut du composant j'aime  pas sur petits écrans !!!! -->
         <button type="submit" class="btn btn-primary mt-5 w-auto"
-            *ngIf="userRouterLinks.user!=='external' && userRouterLinks.user!=='editor'"><a
-                [routerLink]="['/admin/addStudent']" class="text-white"><i
+            *ngIf="userRouterLinks.user!=='external' && userRouterLinks.user!=='editor' && userRouterLinks.user!=='referentsContacts'">
+            <a [routerLink]="['/admin/addStudent']" class="text-white"><i
                     class="bi bi-person-fill-add me-2"></i>Ajouter</a></button>
 
         <div class="row mt-3 text-secondary justify-content-between">
@@ -251,9 +251,12 @@
                                                   || student.email.includes(searchText) || student.email.toLowerCase().includes(searchText)">
                             <div class="col-sm-3 col-6">{{student.lastName}}</div>
                             <div class="col-sm-3 col-6">{{student.firstName}}</div>
-                            <div class="col-sm-3 col-6 mt-3 m-sm-0"><button class="btn btn-primary"><a
-                                        [routerLink]="['/admin/externalStudentDetails', student.id]"
-                                        class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a></button>
+                            <div class="col-sm-3 col-6 mt-3 m-sm-0">
+                                <button type="button" class="btn btn-primary text-white"
+                                    [routerLink]="[userRouterLinks.user === 'referentsContacts' ? '/admin/contactStudentDetails' : '/admin/externalStudentDetails', student.id]">
+                                    <i class="bi bi-person-lines-fill"></i> Détails
+                                </button>
+
                             </div>
                         </div>
                     </ng-template>
@@ -275,15 +278,18 @@
             </div>
         </div>
 
-        <div class="row mt-4 d-xs-none justify-content-start" *ngIf="userRouterLinks.user=='external'">
-            <div class="col-sm-3 col-6 h5">Nom</div>
-            <div class="col-sm-3 col-6 h5">Prénom</div>
-            <div class="col-sm-3 col-6 h5">Détails</div>
+        <!-- attention  -->
+        <div class="row mt-4 justify-content-start"
+            *ngIf="userRouterLinks.user==='external' || userRouterLinks.user==='referentsContacts'">
+            <div class="col-sm-3 h5 d-none d-md-inline">Prénom</div>
+            <div class="col-sm-3 h5 d-none d-md-inline">Nom</div>
+            <div class="col-sm-3 h5 d-none d-md-inline">Détails</div>
         </div>
 
         <div *ngFor="let student of allStudents">
 
-            <div *ngIf="userRouterLinks.user=='admin' || (userRouterLinks.user=='referent'&& !isLoading) || userRouterLinks.user=='editor', else external">
+            <div
+                *ngIf="userRouterLinks.user=='admin' || (userRouterLinks.user=='referent'&& !isLoading) || userRouterLinks.user=='editor', else external">
 
                 <div class="row mt-4 ps-5 ps-sm-0" *ngIf="searchText === '' 
         || student.lastName.toLowerCase().includes(searchText.toLowerCase()) 
@@ -319,21 +325,23 @@
         || student.email.toLowerCase().includes(searchText.toLowerCase())">
                     <div class="col-sm-3 col-6">{{student.lastName}}</div>
                     <div class="col-sm-3 col-6">{{student.firstName}}</div>
-                    <div class="col-sm-3 col-6 mt-3 m-sm-0"><button class="btn btn-primary"><a
-                                [routerLink]="['/admin/externalStudentDetails', student.id]" class="text-white"><i
-                                    class="bi bi-person-lines-fill"></i>Détails</a></button></div>
+                    <div class="col-sm-3 col-6 mt-3 m-sm-0">
+                        <button type="button" class="btn btn-primary"
+                            [routerLink]="[userRouterLinks.user === 'referentsContacts' ? '/admin/contactStudentDetails' : '/admin/externalStudentDetails', student.id]">
+                            <i class="bi bi-person-lines-fill"></i> Détails</button>
+                    </div>
                 </div>
             </ng-template>
 
         </div>
         <!-- {{userRouterLinks.user}} -->
         <button type="submit" class="btn btn-primary mt-5"
-            *ngIf="userRouterLinks.user!=='external' && userRouterLinks.user!=='editor'"><a
+            *ngIf="userRouterLinks.user!=='external' && userRouterLinks.user!=='editor' && userRouterLinks.user!=='referentsContacts'"><a
                 [routerLink]="['/admin/addStudent']" class="text-white"><i
                     class="bi bi-person-fill-add me-2"></i>Ajouter</a></button>
 
 
-        <div class="row gap-3" *ngIf="userRouterLinks.user!=='external'">
+        <div class="row gap-3" *ngIf="userRouterLinks.user!=='external'  && userRouterLinks.user!=='referentsContacts'">
             <button type="button" class="btn btn-primary mt-5 col-10 col-md-5" (click)="exportStudentsCollection()"><i
                     class="bi bi-box-arrow-down me-3"></i>Export au format JSON
                 de la collection</button>
