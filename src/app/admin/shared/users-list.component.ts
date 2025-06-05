@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ModuleWithComponentFactories } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TrainersService } from '../trainers.service';
 import { EvaluatorsService } from '../evaluators.service';
@@ -6,6 +6,8 @@ import { UsersService } from '../users.service';
 import { TutorsService } from '../tutors.service';
 import { ExternalsService } from '../externals.service';
 import { Users } from '../Users/users';
+import { AuthService } from '../auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-users-list',
@@ -25,8 +27,22 @@ export class UsersListComponent {
   linkToDetails: string = ""
   linkBackToList: string = ""
 
+
+  private authSubscription: Subscription | undefined;
+  userRole: string | string[] | null = null;
+  userUid: string = "";
+
   // vous pouvez injecter le service ActivatedRoute pour accéder aux paramètres de route et déterminer quelle méthode doit être utilisée
-  constructor(private router: Router, private sTrainer: TrainersService, private sUsers: UsersService, private sEvaluator: EvaluatorsService, private sTutor: TutorsService, private sExternal: ExternalsService, private activatedRoute: ActivatedRoute) {
+  constructor(
+    private router: Router,
+    private sTrainer: TrainersService,
+    private sUsers: UsersService,
+    private sEvaluator: EvaluatorsService,
+    private sTutor: TutorsService,
+    private sExternal: ExternalsService,
+    private activatedRoute: ActivatedRoute,
+    private authService: AuthService
+  ) {
     this.userRouterLinks = this.activatedRoute.snapshot.data;
     // console.log("user to edit", this.userRouterLinks);
   }
@@ -34,6 +50,12 @@ export class UsersListComponent {
 
   ngOnInit(): void {
     this.getUsers();
+    // pour pouvoir utiliser la même route initiale par moment
+    this.authSubscription = this.authService.getCurrentUserInfo().subscribe(userInfo => {
+      this.userRole = userInfo?.role ?? null;
+      this.userUid = userInfo?.uid ?? "";
+    });
+
   }
 
   getUsers() {
@@ -90,7 +112,7 @@ export class UsersListComponent {
         return this.allUsers
       })
     } else if (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "externals") {
-      this.title = "Observateurs Externes"
+      this.title = "Contacts (Observateurs Externes)"
       this.linkToDetails = "/admin/external"
       this.linkBackToList = "admin/externals"
       // this.sExternal.getExternals().subscribe(data => {
@@ -99,8 +121,11 @@ export class UsersListComponent {
       //   return this.allUsers
       // })
       this.sUsers.getUsers().subscribe(data => {
-        console.log("data de getUsers for external()", data)
-        this.allUsers = data.filter(user => user.role == "external")
+        // console.log("data de getUsers for external()", data)
+        // ATTENTION IMPORTANT : pour l'activation du filtre mes contacts 
+        // this.allUsers = data.filter(user => user.role == "external")
+        this.initialContacts = data.filter(user => user.role == "external")
+        this.applyFilters()
         return this.allUsers
       })
     }
@@ -120,22 +145,22 @@ export class UsersListComponent {
 
   deleteUser(userId: string) {
     // console.log(trainerid);
-    if (this.userRouterLinks.user == "admin") {    
+    if (this.userRouterLinks.user == "admin") {
 
-    this.sUsers.deleteUser(userId)
-    // this.router.navigate([this.linkBackToList]);
+      this.sUsers.deleteUser(userId)
+      // this.router.navigate([this.linkBackToList]);
     }
 
-    else if (this.userRouterLinks.user == "trainer") {      
+    else if (this.userRouterLinks.user == "trainer") {
       this.sTrainer.deleteTrainer(userId)
     }
-    else if (this.userRouterLinks.user == "tutor") {      
+    else if (this.userRouterLinks.user == "tutor") {
       this.sTutor.deleteTutor(userId)
     }
-    else if (this.userRouterLinks.user == "evaluator") {      
+    else if (this.userRouterLinks.user == "evaluator") {
       this.sEvaluator.deleteEvaluator(userId)
     }
-    else if (this.userRouterLinks.user == "external") {      
+    else if (this.userRouterLinks.user == "external") {
       this.sExternal.deleteExternal(userId)
     }
     // else if (this.userRouterLinks.user == "editor") {      
@@ -149,6 +174,31 @@ export class UsersListComponent {
   onSearchTextEntered(searchValue: string) {
     this.searchText = searchValue
     console.log(this.searchText);
+  }
+
+  isInnerContactFilter: boolean = false
+  initialContacts: any[] = []; // Copie initiale des étudiants
+  referentContacts: any[] = []; // Copie initiale des étudiants
+
+  // pour filtrer contacts ajoutés par le référent
+  onCheckboxChangeInnerContacts(event: any) {
+    this.isInnerContactFilter = event.target.checked;
+    this.applyFilters();
+  }
+
+  applyFilters() {
+
+    if (this.isInnerContactFilter) {
+      console.log('this.allUsers', this.allUsers);
+
+      this.allUsers = this.initialContacts.filter((user: Users) => user.referentUid && user.referentUid===this.userUid)
+      console.log('this.referentContacts', this.allUsers);
+    }
+
+    else {
+      this.allUsers = [...this.initialContacts]
+    }
+
   }
 
 }

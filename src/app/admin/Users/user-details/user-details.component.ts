@@ -3,6 +3,8 @@ import { UsersService } from '../../users.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ExternalsService } from '../../externals.service';
 import { Users } from '../users';
+import { Subscription } from 'rxjs';
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-user-details',
@@ -19,10 +21,20 @@ export class UserDetailsComponent implements OnInit {
   title?: string
   linkBackToList: string = ""
 
-  permimeter:string=""
+  permimeter: string = ""
+
+  private authSubscription: Subscription | undefined;
+  userRole: string | string[] | null = null;
+  userUid: string = "";
 
 
-  constructor(private service: UsersService, private ac: ActivatedRoute, private router: Router, private externalS: ExternalsService) {
+  constructor(
+    private service: UsersService,
+    private ac: ActivatedRoute,
+    private router: Router,
+    private externalS: ExternalsService,
+    private authService:AuthService
+  ) {
     this.userId = this.ac.snapshot.params["id"];
     this.userRouterLinks = this.ac.snapshot.data;
     // if (this.userRouterLinks.user == 'admin' && this.userRouterLinks.data == 'externals') {
@@ -33,21 +45,21 @@ export class UserDetailsComponent implements OnInit {
     //   })
     // }
     // else {
-      this.service.getUser(this.userId).subscribe((data:Users) => {
-        console.log("data de getuser", data);
-        this.user = data
-        if (this.user.geographicScope) {
-          if (this.user.geographicScope='regional') {
-            this.permimeter="Régional"
-          } if(this.user.geographicScope="departmental") {
-            this.permimeter="Départemental"            
-          } else{
-            this.permimeter="Local"
-          }
-          
+    this.service.getUser(this.userId).subscribe((data: Users) => {
+      console.log("data de getuser", data);
+      this.user = data
+      if (this.user.geographicScope) {
+        if (this.user.geographicScope = 'regional') {
+          this.permimeter = "Régional"
+        } if (this.user.geographicScope = "departmental") {
+          this.permimeter = "Départemental"
+        } else {
+          this.permimeter = "Local"
         }
-        return this.user
-      })
+
+      }
+      return this.user
+    })
     // }
 
   }
@@ -69,9 +81,14 @@ export class UserDetailsComponent implements OnInit {
       this.title = "Responsable métier"
       this.linkBackToList = "/admin/managers"
     }
+
+        // pour pouvoir utiliser la même route initiale par moment
+    this.authSubscription = this.authService.getCurrentUserInfo().subscribe(userInfo => {
+      this.userRole = userInfo?.role ?? null;
+      this.userUid = userInfo?.uid ?? "";
+    });
   }
 
-// Responsable métiers
 
   deleteUser(userid: string) {
     console.log(userid);

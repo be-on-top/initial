@@ -204,7 +204,7 @@ Tests OK. Sur une  partie. A finir.
                     <div class="card-body">
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label text-decoration-underline pt-3 pb-2">
-                                Nom : {{lastName}}
+                                Nom* : {{lastName}}
                             </label>
                             <div class="col-md-9">
                                 <input appAutoChange type="text" name="lastName" [(ngModel)]="userData.lastName"
@@ -213,7 +213,7 @@ Tests OK. Sur une  partie. A finir.
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label text-decoration-underline pt-3 pb-2">
-                                Prénom : {{firstName}}
+                                Prénom* : {{firstName}}
                             </label>
                             <div class="col-md-9">
                                 <input appAutoChange type="text" name="firstName" [(ngModel)]="userData.firstName"
@@ -233,7 +233,7 @@ Tests OK. Sur une  partie. A finir.
                         <div class="form-group row">
                             <!-- {{socialData| json}} -->
                             <label class="col-md-3 col-form-label text-decoration-underline pt-3 pb-2">
-                                Adresse complète :
+                                Adresse complète* :
                             </label>
                             <div class="col-md-9">
                                 <input appAutoChange type="text" name="address" [(ngModel)]="socialData.address"
@@ -243,7 +243,7 @@ Tests OK. Sur une  partie. A finir.
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label text-decoration-underline pt-3 pb-2">
-                                Code Postal :
+                                Code Postal* :
                             </label>
                             <div class="col-md-9">
                                 <!-- <input appAutoChange type="text" name="postalCode" ngModel class="form-control" required  (change)="onInputChange('postalCode', myForm.value.postalCode)"> -->
@@ -262,7 +262,7 @@ Tests OK. Sur une  partie. A finir.
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label text-decoration-underline pt-3 pb-2">
-                                Téléphone :
+                                Téléphone* :
                             </label>
                             <div class="col-md-9">
                                 <input appAutoChange type="tel" name="phone" [(ngModel)]="socialData.phone" required

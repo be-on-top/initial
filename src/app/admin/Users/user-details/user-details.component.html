@@ -44,12 +44,12 @@
         <!-- {{userRouterLinks.user}} - {{userRouterLinks.data}}  -->
         <!-- il n'y a pas de risque qu'un referent demande à accéder à la liste de ceux dont la gestion est mutualisée donc -->
         <div *ngIf="userRouterLinks.user==='admin'" class="d-flex my-4 justify-content-end gap-5">
-            <button type="button" class="btn btn-primary text-white" [routerLink]="[linkBackToList]">Retour à la liste !!!! </button>
+            <button type="button" class="btn btn-primary text-white" [routerLink]="[linkBackToList]">Retour à la liste</button>
             <button type="button" class="btn btn-warning text-white"
                 [routerLink]="['/admin/updateUser', user.id]">
                 Modifier
             </button>
-            <button type="button" class="btn btn-danger text-white" (click)="deleteUser(user.id)">Supprimer </button>
+            <button [disabled]="userRole==='referent'" type="button" class="btn btn-danger text-white" (click)="deleteUser(user.id)">Supprimer </button>
         </div>
     </div>
 

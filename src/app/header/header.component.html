@@ -151,12 +151,12 @@
                         </li>
                         <li *ngIf="userRole?.includes('referent')">
                             <!-- <hr> -->
-                            <a class="dropdown-item fst-italic" [routerLink]="['/admin/tutors']">Gestion des
+                            <a class="dropdown-item" [routerLink]="['/admin/tutors']">Gestion des
                                 tuteurs</a>
                         </li>
                         <li *ngIf="userRole?.includes('referent')">
                             <hr>
-                            <a class="dropdown-item fst-italic disabled" [routerLink]="['/admin/externals']">Gestion des
+                            <a class="dropdown-item disabled" [routerLink]="['/admin/externals']">Gestion des
                                 contacts <span class="d-block d-md-inline">(observateurs externes)</span></a>
                         </li>
                     </ul>
