@@ -183,9 +183,29 @@ export class StudentDetailsComponent {
   }
 
   // Fonction pour obtenir les entrées d'un objet
+  // objectEntries(obj: any): [string, any][] {
+  //   return Object.entries(obj);
+  // }
   objectEntries(obj: any): [string, any][] {
-    return Object.entries(obj);
+  return Object.entries(obj).sort((a, b) => +a[0] - +b[0]);
+}
+
+
+  sortResultsByKeys(results: any[]): any[] {
+    return results.sort((a, b) => {
+      const keyA = Object.keys(a)[0];
+      const keyB = Object.keys(b)[0];
+      const numA = parseInt(keyA.match(/\d+/)?.[0] || '0', 10);
+      const numB = parseInt(keyB.match(/\d+/)?.[0] || '0', 10);
+      return numA - numB;
+    });
   }
+
+  // Utilisez cette méthode dans le template pour obtenir les résultats triés
+  getSortedResults(trade: string): any[] {
+    return this.sortResultsByKeys(this.student[trade].fullResults);
+  }
+
 
   getUsers() {
     if (this.userRouterLinks.user == "trainer") {

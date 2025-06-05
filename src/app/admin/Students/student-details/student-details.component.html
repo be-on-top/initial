@@ -51,7 +51,7 @@
                                 {{ t }}<span *ngIf="!isLast">, </span>
                             </span>
                         </span>
-                        
+
                         <span *ngIf="student.tutor" class="d-block"><span class="fw-bold">Tuteur</span> :
                             {{student.tutor}}</span>
                     </p>
@@ -62,13 +62,15 @@
 
                 <!-- zone dédiée à l'administrateur en charge de la gestion des comptes - à désactiver si role trainer -->
                 <div class="d-flex mb-5 justify-content-end gap-5 me-3">
-                    <button type="button" class="btn btn-warning" *ngIf="userRouterLinks.user!=='trainer' && userRouterLinks.user!=='external'&& userRouterLinks.user!=='tutor'&& userRouterLinks.user!=='editor'&& userRouterLinks.user!=='referentsContacts'">
+                    <button type="button" class="btn btn-warning"
+                        *ngIf="userRouterLinks.user!=='trainer' && userRouterLinks.user!=='external'&& userRouterLinks.user!=='tutor'&& userRouterLinks.user!=='editor'&& userRouterLinks.user!=='referentsContacts'">
                         <a *ngIf="userRouterLinks.user=='admin'" class="text-white"
                             routerLink="/admin/updateStudent/{{student.id}}">Modifier</a>
                         <a *ngIf="userRouterLinks.user=='referent'" class="text-white"
                             routerLink="/admin/referent/updateStudent/{{student.id}}">Modifier</a>
                     </button>
-                    <button type="button" class="btn btn-danger" [ngClass]="{'disabled':userRouterLinks.user=='referent' || userRouterLinks.user=='editor'|| userRouterLinks.user=='external'|| userRouterLinks.user=='referentsContacts'}">
+                    <button type="button" class="btn btn-danger"
+                        [ngClass]="{'disabled':userRouterLinks.user=='referent' || userRouterLinks.user=='editor'|| userRouterLinks.user=='external'|| userRouterLinks.user=='referentsContacts'}">
                         <a class="text-white" (click)="delete(student)">Supprimer</a>
                     </button>
                 </div>
@@ -161,9 +163,9 @@
 
                                 <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
                                 <div class="card-text mb-0 align-items-center"
-                                    *ngFor="let result of getTradeDetails(trade)?.fullResults  | keyvalue, let i=index ">
-                                    <ng-container *ngFor="let item of objectEntries(result.value)">
-                                        <div><span class="fw-bold">{{item[0] }}: </span> <span
+                                    *ngFor="let result of getSortedResults(trade); let lastResult=last; let i = index">
+                                    <ng-container *ngFor="let item of objectEntries(result)">
+                                        <div><span class="fw-bold">{{item[0] }}:</span> <span
                                                 *ngIf="trades[trade]">{{trades[trade][i]}}</span></div>
                                         <div class="mb-2">
                                             <div class="d-sm-inline">
@@ -417,8 +419,8 @@
                     </div>
                     <!-- bouton additionnel pour ajouter une évaluation depuis la vue -->
                     <button class="btn btn-primary my-3 mx-2" *ngIf="userRouterLinks.user=='trainer'"
-                    [routerLink]="['/admin/addStudentEvaluation', studentId]"><i
-                    class="bi bi-pen"></i>Ajouter une évaluation de suivi pédagogique</button>
+                        [routerLink]="['/admin/addStudentEvaluation', studentId]"><i class="bi bi-pen"></i>Ajouter une
+                        évaluation de suivi pédagogique</button>
                 </ng-container>
             </div>
 
@@ -579,10 +581,10 @@
                     </ng-template>
                 </ng-container>
                 <!-- bouton additionnel pour ajouter une évaluation depuis la vue -->
-                  <button class="btn btn-primary my-3" *ngIf="userRouterLinks.user=='tutor'"
-                      [routerLink]="['/admin/addStudentTutorial', studentId]"><i
-                          class="bi bi-pen"></i>Ajouter un suivi tutorial</button>
-                  <!-- fin de la boucle additionnelle si inscriptions multiples -->
+                <button class="btn btn-primary my-3" *ngIf="userRouterLinks.user=='tutor'"
+                    [routerLink]="['/admin/addStudentTutorial', studentId]"><i class="bi bi-pen"></i>Ajouter un suivi
+                    tutorial</button>
+                <!-- fin de la boucle additionnelle si inscriptions multiples -->
             </div>
         </div>
     </div>
