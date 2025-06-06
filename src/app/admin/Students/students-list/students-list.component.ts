@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { StudentsService } from '../../students.service';
 import { Student } from '../student';
-import { ActivatedRoute } from '@angular/router';
-import { map, tap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { map, Subscription, tap } from 'rxjs';
 import { SettingsService } from '../../settings.service';
 import { Trade } from '../../trade';
 import { Users } from '../../Users/users';
@@ -37,6 +37,10 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
 
   // pour récupérer côté composant l'uid dont on va avoir besoin pour le changement de paradigme...
   userUid: string | null = null;
+  // si on change de méthode getCurrentUserUid() pour getCurrentUserInfo(). 
+  private authSubscription: Subscription | undefined;
+  userRole: string | string[] | null = null;
+  currentRoute = this.router.url; // récupère la route complète
 
   filteredStudents: Student[] = []; // Liste des étudiants filtrée
 
@@ -76,12 +80,17 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     private authService: AuthService,
     private trainerService: TrainersService,
     private userService: UsersService,
-    private regionalService: CentersService) {
+    private regionalService: CentersService,
+    private router: Router) {
     this.userRouterLinks = this.activatedRoute.snapshot.data;
 
     // implémenter la méthode conçue pour les "conseillers projets" qui n'en sont pas puisqu'ils se font concurrence (référents admin)
     // Récupérer l'UID de manière synchrone
-    this.userUid = this.authService.getCurrentUserUid();
+    // this.userUid = this.authService.getCurrentUserUid();
+    this.authSubscription = this.authService.getCurrentUserInfo().subscribe(userInfo => {
+      this.userRole = userInfo?.role ?? null;
+      this.userUid = userInfo?.uid ?? "";
+    });
 
     // On peut maintenant utiliser cet UID pour d'autres opérations
     if (this.userUid && this.userRouterLinks.user === 'referent') {
@@ -96,12 +105,12 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
 
     }
 
-    
+
     // pour le cas très spécifique du contact ajouté par un referent
-    if (this.userUid && this.userRouterLinks.user==='referentsContacts') {
-      this.userService.getUser(this.userUid).subscribe(data=>{
-        console.log("tableau du doc",data.students)
-        this.contactStudents=data.students      
+    if (this.userUid && this.userRouterLinks.user === 'referentsContacts') {
+      this.userService.getUser(this.userUid).subscribe(data => {
+        console.log("tableau du doc", data.students)
+        this.contactStudents = data.students
       }
       )
     }
@@ -110,6 +119,13 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    
+    // pour le cas très spécifique du referent qu'a rien à foutre ici
+    if (this.userUid && this.userRole === 'referent' && this.currentRoute.endsWith('/leads')) // récupère la route complète) 
+    {
+      alert('Accès refusé : cette page n\'est pas accessible avec votre profil utilisateur.');
+      this.router.navigate(['/']); // redirige vers la page d’accueil     
+    }
 
     this.getStudents();
     this.onSearchTextEntered("")
@@ -281,15 +297,15 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
 
           });
 
-           this.isLoading = false
+        this.isLoading = false
       }
       // pour les contacts ajoutés par referent
-      else if (this.contactStudents.length!==0) {        
-            const filteredStudents = this.allStudents.filter(student =>
-            this.contactStudents.includes(student.id) && student.isSocialFormSent)
-            // Initialisation pour le référent
-            this.initialStudents = [...filteredStudents];
-            this.allStudents = [...this.initialStudents];        
+      else if (this.contactStudents.length !== 0) {
+        const filteredStudents = this.allStudents.filter(student =>
+          this.contactStudents.includes(student.id) && student.isSocialFormSent)
+        // Initialisation pour le référent
+        this.initialStudents = [...filteredStudents];
+        this.allStudents = [...this.initialStudents];
       }
     });
   }
@@ -482,8 +498,8 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       this.allStudents = [...this.initialStudents];
       this.tradesActivated = false
     }
-            //  this.isLoading = false
-   
+    //  this.isLoading = false
+
   }
 
   onCheckboxChangePrior(event: any) {

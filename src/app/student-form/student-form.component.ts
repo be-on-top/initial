@@ -206,7 +206,6 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
 
-
   async onInputChange(fieldName: string, value: any) {
     try {
       let enrollRef = collection(this.firestore, "SocialForm");
@@ -233,6 +232,11 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
     this.service.getStudentById(user).subscribe(data => {
       console.log("userData from students 0...", data);
       this.userData = data
+      // pour éjecter le innerStudent
+      if (this.userData.innerStudent) {
+      alert('Accès refusé : cette page n\'est pas destinée à votre profil utilisateur.');
+      this.router.navigate(['/home']); // redirige vers la page d’accueil
+    }
       this.processStudentData();
     })
     // on récupère la data de la collection SocialForm
