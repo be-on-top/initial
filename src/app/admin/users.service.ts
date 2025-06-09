@@ -388,6 +388,14 @@ export class UsersService {
           console.error("Erreur lors de la mise à jour :", error);
         });
     }
+
+    
+  // methode à tester pour récupérer le nom
+  getLinkedStudentName(id: string) {
+    let $studentRef = doc(this.firestore, "students/" + id);
+    return docData($studentRef) as Observable<any>;
+
+  }
   
 
 }

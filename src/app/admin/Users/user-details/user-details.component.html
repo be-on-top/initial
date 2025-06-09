@@ -26,6 +26,9 @@
                 <!-- <p *ngIf="user.sigle">Métiers d'affectation ({{user.sigle.length}}) :
                     <span *ngFor="let s of user.sigle">{{s}} </span>
                 </p> -->
+                <p *ngIf="studentsList"><strong>Candidats en cours de suivi ({{studentsList.length}})</strong> :
+                    {{studentsList}}
+                </p>
                 <p><strong>Enregistré en tant que</strong> : {{ user.isPrivate ? 'Privé' : 'Public' }}</p>
                 <p *ngIf="user.geographicScope"><strong>Son périmètre</strong> : {{permimeter}}</p>
                 <span *ngIf="user.structure"><strong>Organisme</strong>: {{user.structure}}</span><br>
@@ -34,8 +37,6 @@
                     Aenean vehicula dui tincidunt, rutrum metus sed, ultrices risus. 
                     Maecenas semper, ante at volutpat sodales, felis ipsum tempor urna, ac fringilla ex felis sit amet ex. 
                     Praesent suscipit metus nulla, ac tristique sapien sodales ut.</p>
-            
-
             </div>
             <div class="card-footer text-muted">
                 <span *ngIf="user.created">Date de création : {{user.created | date:'dd/MM/yyyy' }}</span><br>

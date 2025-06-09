@@ -27,6 +27,8 @@ export class UserDetailsComponent implements OnInit {
   userRole: string | string[] | null = null;
   userUid: string = "";
 
+  studentsList:any=[]
+
 
   constructor(
     private service: UsersService,
@@ -46,7 +48,7 @@ export class UserDetailsComponent implements OnInit {
     // }
     // else {
     this.service.getUser(this.userId).subscribe((data: Users) => {
-      console.log("data de getuser", data);
+      // console.log("data de getuser !!!!", data);
       this.user = data
       if (this.user.geographicScope) {
         if (this.user.geographicScope = 'regional') {
@@ -56,7 +58,20 @@ export class UserDetailsComponent implements OnInit {
         } else {
           this.permimeter = "Local"
         }
+    // Vérification si des étudiants sont associés au contact
+      if (this.userRole == 'referent' && this.user.students) {
+        let list: string[] = [];
 
+        // On attend que tous les abonnements des étudiants soient terminés
+        this.user.students.forEach((student: any) => {
+          this.service.getLinkedStudentName(student).subscribe(dataStudent => {
+            // list.push(dataStudent.lastName);
+            list.push(dataStudent.lastName + " " + dataStudent.firstName);
+            this.studentsList=[...new Set(list)];
+            // console.log('Liste des étudiants sans doublons:', this.studentsList)
+          })
+        })}
+        // fin de la boucle pour les candidats potentiellement attribués
       }
       return this.user
     })
@@ -82,11 +97,13 @@ export class UserDetailsComponent implements OnInit {
       this.linkBackToList = "/admin/managers"
     }
 
-        // pour pouvoir utiliser la même route initiale par moment
+    // pour pouvoir utiliser la même route initiale par moment
     this.authSubscription = this.authService.getCurrentUserInfo().subscribe(userInfo => {
       this.userRole = userInfo?.role ?? null;
       this.userUid = userInfo?.uid ?? "";
-    });
+    });   
+
+
   }
 
 
