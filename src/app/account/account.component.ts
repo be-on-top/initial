@@ -151,7 +151,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         this.displayPrices = data.prices;
         // je rajoute de quoi récupérer l'état de l'autre propriété de display
         this.isTrainingTimeMultiple7 = data.isMultiple7TrainingTime
-        console.log("displayPrices depuis ngOnInit !!!!!!!!!!!!!!!!!!!!!!!", this.displayPrices);
+        // console.log("displayPrices depuis ngOnInit !!!!!!!!!!!!!!!!!!!!!!!", this.displayPrices);
       }
     })
 
@@ -170,7 +170,6 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     onAuthStateChanged(this.auth, (user: any) => {
       if (user) {
         this.user = user.uid;
-
         this.studentService.getStudentById(user.uid)
           .pipe(
             // take(1),
@@ -179,15 +178,13 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
             console.log("userData from students 0...", data);
             this.userData = data;
             // this.lastIndex = Number(this.userData.lastIndexQuestion);
-
             this.processStudentData();
-
             // puis on interroge socialForm savoir si un document existe avec l'uid
             this.studentService.checkIfSocialFormExists(user.uid).then(result => {
               this.isSocialForm = result;
 
-              console.log("Résultat Firestore :", this.isSocialForm);
-              console.log("Valeur de isSocialFormSent :", this.userData.isSocialFormSent);
+              // console.log("Résultat Firestore :", this.isSocialForm);
+              // console.log("Valeur de isSocialFormSent :", this.userData.isSocialFormSent);
 
               if (this.isSocialForm && !this.userData.isSocialFormSent && !this.userData.innerStudent) {
                 console.log("Conditions validées, lancement du son...");
@@ -206,7 +203,8 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     })
 
-    // this.authService.getToken()?.then(res => console.log("token authentification depuis authService", res.token));
+    // reactivé 062025
+    this.authService.getToken()?.then(res => console.log("token authentification depuis authService", res.token));
 
     // console.log('this.tradesEvaluated', this.tradesEvaluated);
     // console.log('type of tradesEvaluated', typeof (this.tradesEvaluated));
@@ -217,10 +215,12 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     // pour récupérer les métiers (sigles) enregistrés en base qui détermineront les maximums couts et durée
     this.settingsService.getTrades().subscribe(data => {
       this.tradesData = data;
-      console.log("this.tradesData", this.tradesData)
+      // console.log("this.tradesData", this.tradesData)
     })
 
-    // this.checkNotificationPermission()
+    // réactivé 062025
+    this.checkNotificationPermission()
+
 
 
     // Vérifie si l'alerte a déjà été affichée > transféré au composant enfant...
@@ -333,20 +333,21 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
       const registration = await navigator.serviceWorker.getRegistration();
       if (registration) {
         registration.showNotification("Vous venez de demander à être notifié !");
+        localStorage.setItem('notification-permission', 'granted')
       }
 
       const messaging = getMessaging();
 
       const token = await getToken(messaging, { vapidKey: "BIh4nZeNhn8JfEciZJvgFL96Qd7uVzfZTmaoUp2RFb65SA2Lk2jvujAtmEkttGR5OtyTRIj2_FS49k5mPLl6HsM" });
 
-      console.log(token);
+      console.log("token", token);
       this.notificationService.registerToken(token, this.userData.id);
-      localStorage.setItem('notification-permission', 'granted')
+      // localStorage.setItem('notification-permission', 'granted')
     } catch (error) {
       console.error("Error during notification setup:", error);
     }
 
-    this.notifyMeWithTitleAndBody('Votre Actualité', `Bravo ${this.userData.firstName}, vous êtes dans les starting-blocks ! `);
+    // this.notifyMeWithTitleAndBody('Votre Actualité', `Bravo ${this.userData.firstName}, vous êtes dans les starting-blocks ! `);
 
 
     // mise à jour la variable pour indiquer que l'autorisation a été accordée
@@ -373,7 +374,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
 
       const messaging = getMessaging();
       const token = await getToken(messaging, { vapidKey: "BIh4nZeNhn8JfEciZJvgFL96Qd7uVzfZTmaoUp2RFb65SA2Lk2jvujAtmEkttGR5OtyTRIj2_FS49k5mPLl6HsM" });
-      console.log(token);
+      console.log("token", token);
       this.notificationService.registerToken(token, this.userData.id);
     } catch (error) {
       console.error("Error during notification setup:", error);
@@ -387,7 +388,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     if (this.isOneQuizzAchieved && !this.userData.isSocialFormSent && !this.userData.subscriptions) {
-      this.contextualNotification('Suivi personnalisé', 'Vos résulats et estimations personnalisées de durée et de coût de formation sont désormais disponibles. Votre inscription formation peut également commencer', 'isOneQuizzAchieved');
+      this.contextualNotification('Suivi personnalisé', 'Vos résulats et estimations personnalisées de durée de formation sont désormais disponibles. Votre inscription en formation peut également commencer', 'isOneQuizzAchieved');
     }
 
     if (this.userData.isSocialFormSent && !this.userData.subscriptions) {
@@ -654,11 +655,9 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
 
   calculateTotalTime(trade: string): any {
     const keyTrade = trade.replace('quizz_', '')
-    console.log("trade", keyTrade)
-
+    // console.log("trade", keyTrade)
     const filteredData = this.tradesData.filter((item: any) => item.sigle === keyTrade);
-
-    console.log('filteredData', filteredData)
+    // console.log('filteredData', filteredData)
     let total = 0
     Object.values(filteredData[0].durations).forEach((value: any) => {
       total += value[0]
@@ -781,7 +780,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
       // peut-être pas top de l'inclure ici...
       if (key.includes('documents')) {
         this.documents = this.userData.documents
-        console.log("documents liés", this.documents);
+        // console.log("documents liés", this.documents);
 
       }
 

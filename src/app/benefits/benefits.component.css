@@ -87,7 +87,7 @@ background-repeat: no-repeat; */
 
 
 @media only screen and (max-width:720px) {
-/* 
+    /* 
     #image>img {
         display: none;
 
@@ -98,14 +98,19 @@ background-repeat: no-repeat; */
         font-size: 0.9rem;
     }
 
+
+    #info-tab,
+    #rgpd-tab,
+    #contact-tab {
+        font-size: 0.9rem;
+    }
+
 }
+
 @media only screen and (max-width:460px) {
 
-    .carousel-item span{
+    .carousel-item span {
         display: none;
     }
+
 }
-
-
-
-

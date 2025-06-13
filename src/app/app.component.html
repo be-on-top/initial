@@ -7,6 +7,20 @@
 <!-- <button class="btn btn-primary btn-sm info-button pe-2" (click)="goToInfoPage()"><i
         class="bi bi-info me-2"></i>information</button> -->
 
+<div class="container pt-2 my-5" *ngIf="isAuthenticated() && isServiceWorkerReady && !notificationPermissionGranted">
+  <button
+    type="button"
+    class="btn btn-success w-100"
+    (click)="requestNotificationPermission()"
+    aria-label="Activer les notifications push"
+  >
+    <i class="bi bi-bell me-2" aria-hidden="true"></i>
+    <span class="visually-hidden-focusable">Accepter les notifications push pour rester informé</span>
+    <span aria-hidden="true">Accepter les notifications</span>
+  </button>
+</div>
+
+
 <app-install-button></app-install-button>
 <!-- <app-cookie-consent-banner *ngIf="consentReaded"></app-cookie-consent-banner> -->
 <div #banner *ngIf="consentReaded"></div>

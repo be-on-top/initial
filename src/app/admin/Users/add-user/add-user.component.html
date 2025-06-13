@@ -4,8 +4,19 @@
     <app-feedback-messages [feedbackMessages]="feedbackMessages"
         [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
 
-    <div class="alert bg-info text-white" *ngIf="userRole?.includes('admin')">Ajout d'utilisateurs autres que évaluateurs,
+    <div class="alert bg-info text-white" *ngIf="userRole?.includes('admin')">Ajout d'utilisateurs autres que
+        évaluateurs,
         formateurs et tuteurs...</div>
+
+    <div class="alert w-100 p-4 pe-5 bg-danger alert-dismissible text-white mb-4 fade show fs-5">
+        <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
+            aria-label="Fermer le message"></button><span class="fw-bold">ATTENTION : Pensez à vous munir de votre mot de passe. </span> 
+        A l'issue de cette étape votre contact recevra automatiquement par mail un lien pour personnaliser (réinitialisation) son mot de passe. Si le lien de
+        réinitialisation ne fonctionne plus parce que ces liens ne sont opérationnels qu'une courte durée, invitez le à se rendre sur la
+        page de <a class="text-light fw-bold" target="_blank" [routerLink]="['/login']">connexion</a> et cliquer sur
+        <span class="fw-bold">réinitialiser mon mot de
+            passe</span>.
+    </div>
 
     <!-- pour les messages de retour/validation des champs du formulaire ou form validation, on utilisera BOOTSTRAP plutôt que des directives structurelles -->
     <form class="form" #f="ngForm" (submit)="addUser(f)" class="was-validated">
@@ -73,11 +84,12 @@
 
         <hr>
         <!-- Optionnel : afficher le statut (Public/Privé) -->
-        <div class="alert alert-danger" *ngIf="userRole?.includes('admin')">Les champs ci-dessous sont réservés à la création d'observateurs externes
+        <div class="alert alert-danger" *ngIf="userRole?.includes('admin')">Les champs ci-dessous sont réservés à la
+            création d'observateurs externes
         </div>
         <div class="form-check form-switch" *ngIf="userRole?.includes('admin')">
-            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" [(ngModel)]="isPrivate" name="isPrivate"
-                (change)="onPrivateToggle()">
+            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" [(ngModel)]="isPrivate"
+                name="isPrivate" (change)="onPrivateToggle()">
 
 
             <label class="form-check-label" for="flexSwitchCheckChecked"><span class="text-dark">Propriété:</span><span

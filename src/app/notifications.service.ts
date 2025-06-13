@@ -1,58 +1,95 @@
 // notification.service.ts
 
 import { Injectable } from '@angular/core';
-import { getMessaging, getToken, onMessage, MessagePayload } from '@angular/fire/messaging';
-import { initializeApp } from 'firebase/app';
-import { environment } from '../environments/environment';
+import { getMessaging, getToken, onMessage, MessagePayload, Messaging } from '@angular/fire/messaging';
 import { Firestore, collection, setDoc, doc } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { catchError, from, map, Observable, of } from 'rxjs';
+// import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
-export class NotificationService {
-  private messagingFirebase: any;
+export class NotificationsService {
+  private messagingFirebase: Messaging;
 
   constructor(private firestore: Firestore) {
-    this.messagingFirebase = getMessaging();
-    initializeApp(environment.firebaseConfig);
+    this.messagingFirebase = getMessaging(); // AngularFire gère l'init
   }
-
-  private messagingObservable = new Observable<MessagePayload>((observer) => {
-    onMessage(this.messagingFirebase, (payload: any) => {
-      observer.next(payload);
-    });
-  });
 
   receiveMessage(): Observable<MessagePayload> {
-    return this.messagingObservable;
+    return new Observable((observer) => {
+      onMessage(this.messagingFirebase, (payload: MessagePayload) => {
+        observer.next(payload);
+      });
+    });
   }
 
-  requestPermissionAndRegisterToken(userId: string): Promise<string> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const permission = await Notification.requestPermission();
-        if (permission === "granted") {
-          // const token = await getToken(this.messagingFirebase, { vapidKey: "BOLK9wQoeo2ycP0yK1yTLQG8DlIYM1GnRLe09u3tdnCERUSOwW7iv_QV671oU8Xa4njllE64DbVvHPnrzsgRdpc" });
-          const token = await getToken(this.messagingFirebase, { vapidKey: "BHjK2aDZ7AUCJ2hc7y_bNvXSk7XFrW23Uq2mfl28Rp2GijVJ" });
-          const notification = new Notification("Coucou, vous avez déjà demandé à être notifié. Votre demande a été prise en compte !!!");
+  async requestPermissionAndRegisterToken(userId: string): Promise<string> {
+    try {
+      const permission = await Notification.requestPermission();
+      localStorage.setItem('notification-permission', permission);
 
-          this.registerToken(token, userId);
-
-          resolve(token);
-        } else {
-          reject(new Error("Permission not granted"));
-        }
-      } catch (error) {
-        reject(error);
+      if (permission !== 'granted') {
+        throw new Error('Permission not granted');
       }
-    });
+
+      const token = await getToken(this.messagingFirebase, {
+        vapidKey: 'BIh4nZeNhn8JfEciZJvgFL96Qd7uVzfZTmaoUp2RFb65SA2Lk2jvujAtmEkttGR5OtyTRIj2_FS49k5mPLl6HsM', // ← à sécuriser côté backend
+      });
+
+      new Notification('Coucou ! Votre inscription aux notifications est bien prise en compte !');
+
+      this.registerToken(token, userId);
+
+      return token;
+    } catch (error) {
+      console.error('Erreur de permission/FCM :', error);
+      throw error;
+    }
   }
 
   private registerToken(newToken: string, userId: string): void {
-    console.log(`Enregistrement du token ${newToken} pour l'utilisateur ${userId}`);
-    const $tokensRef = collection(this.firestore, "tokens");
+    const $tokensRef = collection(this.firestore, 'tokens');
     const userTokenNotification = { key: newToken };
+
     setDoc(doc($tokensRef, userId), userTokenNotification);
   }
+
+// isServiceWorkerReady$(): Observable<boolean> {
+//   return new Observable(observer => {
+//     if (!('serviceWorker' in navigator)) {
+//       observer.next(false);
+//       observer.complete();
+//       return;
+//     }
+
+//     navigator.serviceWorker.ready
+//       .then(() => {
+//         observer.next(true);
+//         observer.complete();
+//       })
+//       .catch((err) => {
+//         console.warn('Erreur Service Worker ready :', err);
+//         observer.next(false);
+//         observer.complete();
+//       });
+//   });
+// }
+
+isServiceWorkerReady$(): Observable<boolean> {
+  if (!('serviceWorker' in navigator)) {
+    return of(false);
+  }
+
+  return from(navigator.serviceWorker.ready).pipe(
+    map(() => true),
+    catchError((err) => {
+      console.warn('Erreur Service Worker ready :', err);
+      return of(false);
+    })
+  );
+}
+
+
+
 }

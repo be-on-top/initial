@@ -43,8 +43,24 @@
     }
   ],
   "navigationUrls": [
-    "/**",
-    "!/assets/**",
-    "!/*.(js|css|png|jpg|jpeg|svg|ico|json)"
-  ]
+  "/home",
+  "/home/**",
+  "/account",
+  "/rgpd",
+  "/partners",
+  "/benefits",
+  "/market-app",
+  "/centers",
+  "/center/**",
+  "/quizz/**",
+  "/trade/**",
+  "/formation/**",
+  "/chat/**",
+  "/socialregistration",
+  "/login",
+  "/register",
+  "/",
+  "!/assets/**",
+  "!/*.(js|css|png|jpg|jpeg|svg|ico|json|woff2?|ttf|map)"
+]
 }
