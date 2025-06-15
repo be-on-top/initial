@@ -234,14 +234,62 @@ hr {
     text-decoration: underline!important;
   } */
 
+  h1 a {text-decoration: none;}
 
- h1 a{
+ h1 a, .popover-custom a{
 
     /* text-decoration: underline; */
-    text-decoration-color: rgba(255, 255, 255, 0.3)!important; /* Noir très transparent */
+    text-decoration-color: rgba(255, 255, 255, 0.4)!important; /* Noir très transparent */
     text-decoration-thickness: 2px; /* Épaisseur discrète */
     text-underline-position: under; /* Position sous le texte */
   }
+
+
+  .popover-custom{
+    margin-bottom: 16px;
+  /* animation: fadeInAnim 0.05s linear forwards; */
+}
+
+@keyframes fadeInAnim {
+  from {
+    opacity: 0;
+
+  }
+  to {
+    opacity: 1;
+
+  }
+}
+
+  .popover-custom a{
+    color: white;
+    font-style: italic;
+    font-size: 0.9rem;
+  }
+
+.relative-btn {
+  position: relative;
+  width:1rem;
+  height: 1rem;
+  display: inline-flex; 
+  align-items: center;  
+  justify-content: center; 
+  padding-bottom: 0; 
+  margin: 0;
+  margin-right:0;
+  margin-bottom: 0;
+}
+
+.icon-align {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); 
+  margin: 0; 
+  padding:0; 
+
+}
+
 
 
 @media only screen and (max-width: 765px) {

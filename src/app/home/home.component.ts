@@ -306,6 +306,16 @@ export class HomeComponent implements OnInit {
 
   }
 
+  showInfo = false;
+
+toggleInfo() {
+  this.showInfo = !this.showInfo;
+}
+
+closeInfo() {
+  this.showInfo = false;
+}
+
 
   selectTrade(id: string) {
 

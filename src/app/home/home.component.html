@@ -28,7 +28,7 @@
     </div>
 
     <!-- test alert-dismissible for mission -->
-    <ng-container *ngIf="user==undefined || !isOneQuizzAchieved; else yes">
+    <ng-container *ngIf="!isLoading && !isOneQuizzAchieved && !offline; else yes">
         <!-- <div *ngIf="!isLoading && !isOneQuizzAchieved && !offline"
             class="alert w-100 p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show fs-5">
             <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
@@ -36,16 +36,28 @@
             Evaluez vos connaissances et démarrez rapidement une <h1 class="d-inline fs-5">formation
                 personnalisée</h1> qui vous hissera aux portes du métier de votre choix
         </div> -->
-        
-        <div *ngIf="!isLoading && !isOneQuizzAchieved && !offline"
-            class="alert w-100 p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show display-5">
+
+        <div class="alert w-100 p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show display-5">
             <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
                 aria-label="Fermer le message be-on-top"></button>
-                Evaluez vos connaissances et intégrez rapidement une<h1 class="d-inline fs-5"> <a href="/benefits"
-                class="text-light" role="link"
-                aria-label="Démarrer une formation personnalisée pour développer vos compétences">
-                formation personnalisée
-            </a></h1> pour être au top des compétences du métier de votre choix.
+                        <!-- popover -->
+            <button type="button" aria-label="Plus d'informations" *ngIf="user==undefined"
+                class="btn text-light p-0 relative-btn me-1 mb-1" (click)="toggleInfo()" aria-label="Plus d'informations">
+                <!-- <i class="bi bi-info-lg m-0 pb-1 fs-5"></i> -->
+                <i [ngClass]="!showInfo?'bi bi-info-square-fill icon-align':'bi bi-info-square icon-align'"></i>
+            </button>
+            <div class="popover-custom fade show" *ngIf="showInfo" (clickOutside)="closeInfo()">
+                <a role="link" aria-label="Avertissement : création de compte pour démarrer un questionnaire"
+                    [routerLink]="['/register']">Identifiez-vous ou créez votre compte pour démarrer un
+                    questionnaire</a>
+                <!-- <button type="button" class="btn-close ms-2" (click)="closeInfo()" aria-label="Fermer"></button> -->
+            </div>
+            <!-- fin popover -->
+             Evaluez vos connaissances et <h1 class="d-inline fs-5"> <a [routerLink]="['/benefits']"
+                    class="text-light" role="link"
+                    aria-label="Démarrer une formation personnalisée pour développer vos compétences">intégrez rapidement une
+                    formation personnalisée
+                </a></h1> pour être au top des compétences du métier de votre choix.
         </div>
 
     </ng-container>
@@ -70,7 +82,9 @@
                     estimations</span>
                 sont
                 disponibles dans votre <a [routerLink]="['/account']" class="text-decoration-none fw-bold"
-                    title="compte personnel be-on-top"><i class="bi bi-person-fill pe-1"></i>compte utilisateur</a>. Pour <span class="fw-bold">être mis en relation avec un Conseiller Projet</span> et <span class="fw-bold">vous
+                    title="compte personnel be-on-top"><i class="bi bi-person-fill pe-1"></i>compte utilisateur</a>.
+                Pour <span class="fw-bold">être mis en relation avec un Conseiller Projet</span> et <span
+                    class="fw-bold">vous
                     rapprocher du centre de votre choix,</span> compléter votre <a class="text-decoration-none fw-bold"
                     [routerLink]="['/socialregistration']">demande d'inscription en formation.</a></span>
         </div>
@@ -198,7 +212,8 @@
                         <!-- je laisse le css faire la troncature -->
                         <div class="card-text pt-2"><a
                                 [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]"
-                                class="text-decoration-none fs-6" [attr.aria-label]="(trade.description | stripHtml | slice:0:220) + '… lire la suite'">
+                                class="text-decoration-none fs-6"
+                                [attr.aria-label]="(trade.description | stripHtml | slice:0:220) + '… lire la suite'">
                                 {{trade.description| stripHtml }} </a></div>
 
                         <!-- si on utilise l'éditeur de texte, pour récupérer le texte tronqué et brut -->
@@ -364,7 +379,8 @@
                                 {{(truncateText(trade.description, 200) )| stripHtml }} </a></div> -->
                                 <div class="card-text pt-2"><a
                                         [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]"
-                                        class="text-decoration-none fs-6"  [attr.aria-label]="(trade.description | stripHtml | slice:0:220) + '… lire la suite'">
+                                        class="text-decoration-none fs-6"
+                                        [attr.aria-label]="(trade.description | stripHtml | slice:0:220) + '… lire la suite'">
                                         {{trade.description | stripHtml }} </a></div>
 
                                 <!-- si on utilise l'éditeur de texte, pour récupérer le texte tronqué et brut -->
@@ -445,7 +461,7 @@
                                     [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]">
                                     <h3 class="h5 text-start ps-2">
                                         <i class="bi bi-{{i+1}}-square-fill text-success me-2"></i>
-                                                                                <span
+                                        <span
                                             [innerHTML]="processDenomination(trade.denomination) | firstWord | truncateTitle"></span>
                                     </h3>
                                 </div>
@@ -478,7 +494,8 @@
                                 {{(truncateText(trade.description, 230) )| stripHtml }} </a></div> -->
                                 <div class="card-text pt-2"><a
                                         [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]"
-                                        class="text-decoration-none fs-6" [attr.aria-label]="(trade.description | stripHtml | slice:0:220) + '… lire la suite'">
+                                        class="text-decoration-none fs-6"
+                                        [attr.aria-label]="(trade.description | stripHtml | slice:0:220) + '… lire la suite'">
                                         {{ trade.description| stripHtml }} </a></div>
 
                                 <!-- si on utilise l'éditeur de texte, pour récupérer le texte tronqué et brut -->
@@ -584,4 +601,3 @@
         <!-- fin de boucle additionnelle si plusieurs catégories -->
     </ng-container>
 </div>
-
