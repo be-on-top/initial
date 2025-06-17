@@ -45,6 +45,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   filteredStudents: Student[] = []; // Liste des étudiants filtrée
 
   isSocialFormSentFilter: boolean = false
+  noSocialFormSentFilter: boolean = false
   isInnerStudentFilter: boolean = false
   isSubscriptionFilter: boolean = false
   initialStudents: any[] = []; // Copie initiale des étudiants
@@ -119,7 +120,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    
+
     // pour le cas très spécifique du referent qu'a rien à foutre ici
     if (this.userUid && this.userRole === 'referent' && this.currentRoute.endsWith('/leads')) // récupère la route complète) 
     {
@@ -467,7 +468,27 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     this.showNoInterestStudents = false
 
     if (this.isSocialFormSentFilter) {
+      // Si le filtre "formulaire social envoyé" est actif,
+      // on ne garde que les étudiants qui ont effectivement envoyé ce formulaire
       this.allStudents = this.initialStudents.filter(student => student.isSocialFormSent);
+
+    } else if (this.noSocialFormSentFilter) {
+      // Si le filtre "aucun formulaire social envoyé" est actif,
+      // on applique les conditions suivantes :
+      this.allStudents = this.initialStudents.filter(student =>
+
+        // 1. L'étudiant a au moins un questionnaire (clé commençant par "quizz_")
+        //    avec une propriété fullResults non vide (donc questionnaire finalisé)
+        Object.keys(student).some(key =>
+          key.startsWith('quizz_') && student[key]?.fullResults?.length > 0
+        ) &&
+
+        // 2. L'étudiant n'est pas un candidat interne
+        !student.innerStudent &&
+
+        // 3. L'étudiant n'a pas encore envoyé le formulaire social
+        !student.isSocialFormSent
+      );
     } else if (this.isSubscriptionFilter) {
       this.allStudents = this.initialStudents.filter(student => student.subscriptions);
       this.tradesActivated = true
@@ -512,6 +533,11 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     this.applyFilters();
   }
 
+  onCheckboxChangeNoSocial(event: any) {
+    this.noSocialFormSentFilter = event.target.checked;
+    this.applyFilters();
+  }
+
   onCheckboxChangeSubscriptions(event: any) {
     this.isSubscriptionFilter = event.target.checked;
     this.applyFilters();
@@ -539,6 +565,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   // si on substitue partout où on boucle sur trades un select aux cases à cocher !!! :
   resetAllFilters() {
     this.isSocialFormSentFilter = false;
+    this.noSocialFormSentFilter = false;
     this.isSubscriptionFilter = false;
     this.isTradeFilter = false;
     this.isTradeQCMStarted = false;
@@ -547,6 +574,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     this.isPriorFilter = false;
     this.myCenterStudents = false;
     this.tradesActivated = false;
+    // this.noSocialFormSentFilter = false;
   }
   // onCheckboxChangeTradesForStartedQCM(event: any, trade: string) {
   //   this.isTradeQCMStarted = event.target.checked;
@@ -586,11 +614,11 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     this.applyFilters();
   }
 
-
   onCheckboxChangeEndedTraining(event: any) {
     this.isQualifiedFilter = event.target.checked;
     this.applyFilters();
   }
+
   onCheckboxChangeMyInitialStudents(event: any) {
     this.myCenterStudents = event.target.checked;
     this.applyFilters();
@@ -795,6 +823,44 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   //   console.log('Région sélectionnée :', this.selectedRegion);
   // }
 
+
+  exportFilteredStudentsAsCSV(): void {
+    try {
+      // Utiliser toujours `this.oldStudents` pour l'export
+      const headers = ['firstName', 'lastName', 'email'];  // Tu peux définir tes propres headers ici
+      const csvContent = this.generateCSVContentFromData(this.allStudents, headers);  // Utiliser `this.oldStudents` pour obtenir les données filtrées
+
+      // const blob = new Blob([csvContent], { type: 'text/csv' });
+      const BOM = '\uFEFF'; // Byte Order Mark
+      const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
+
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `filtered_students_export.csv`;  // Le fichier sera toujours nommé de cette façon
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Erreur lors de l\'export des étudiants filtrés :', error);
+      throw error;
+    }
+  }
+
+  generateCSVContentFromData(data: any[], headers: string[]): string {
+    const csvRows = [];
+
+    // En-tête
+    csvRows.push(headers.join(','));
+
+    // Données
+    for (const item of data) {
+      const row = headers.map(header => `"${(item[header] ?? '').toString().replace(/"/g, '""')}"`);
+      csvRows.push(row.join(','));
+    }
+
+    return csvRows.join('\n');
+  }
 
 
 

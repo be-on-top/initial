@@ -37,7 +37,8 @@
 
         <div class="row mt-3 text-secondary justify-content-between">
 
-            <div class="col-md-6 d-flex flex-column justify-content-between">Activer un filtre OU un autre > <br>
+            <div class="col-md-6 d-flex flex-column justify-content-between">
+                <p class="text-dark">Activer un filtre <strong>OU</strong> un autre</p>
                 <p class="small" *ngIf="userRouterLinks.user==='referent'">
                     Ont expressément choisi votre centre pour le suivi de leur
                     dossier d'inscription&nbsp;*</p>
@@ -65,6 +66,11 @@
                     <input type="checkbox" (change)="onCheckboxChangeSocial($event)" class="form-check-input"
                         id="socialCheckbox">
                 </div>
+                <div class="form-check" *ngIf="userRouterLinks.user==='admin'|| userRouterLinks.user==='editor'">
+                    <label class="form-check-label" for="socialCheckbox">Formulaire administratif non renseigné</label>
+                    <input type="checkbox" (change)="onCheckboxChangeNoSocial($event)" class="form-check-input"
+                        id="socialCheckbox">
+                </div>
                 <!-- étudiant interne : innerStudent -->
                 <div class="form-check" *ngIf="userRouterLinks.user==='admin'|| userRouterLinks.user==='editor'">
                     <label class="form-check-label" for="innerStudentCheckbox">Etudiants internes</label>
@@ -73,7 +79,7 @@
                 </div>
                 <!-- fin innerStudent -->
                 <div class="form-check">
-                    <label class="form-check-label" for="subscriptionsCheckbox">Inscription finalisée</label>
+                    <label class="form-check-label" for="subscriptionsCheckbox">Inscription formation finalisée</label>
                     <input type="checkbox" (change)="onCheckboxChangeSubscriptions($event)" class="form-check-input"
                         id="subscriptionsCheckbox">
                 </div>
@@ -345,7 +351,9 @@
             <button type="button" class="btn btn-primary mt-5 col-10 col-md-5" (click)="exportStudentsCollection()"><i
                     class="bi bi-box-arrow-down me-3"></i>Export au format JSON
                 de la collection</button>
-            <button type="button" class="btn btn-primary mt-5 col-10 col-md-5" (click)="exportCollectionAsCSV()"><i
+            <!-- <button type="button" class="btn btn-primary mt-5 col-10 col-md-5" (click)="exportCollectionAsCSV()"><i
+                    class="bi bi-box-arrow-down me-3"></i>Export au format csv de la collection</button> -->
+            <button type="button" class="btn btn-primary mt-5 col-10 col-md-5" (click)="exportFilteredStudentsAsCSV()"><i
                     class="bi bi-box-arrow-down me-3"></i>Export au format csv de la collection</button>
         </div>
         <!-- </ng-container> -->
