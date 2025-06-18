@@ -4,6 +4,7 @@ import { StudentsService } from '../admin/students.service';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { AuthService } from '../admin/auth.service';
 import { ConsentService } from '../consent.service';
+import { NotificationsService } from '../notifications.service';
 
 @Component({
   selector: 'app-register',
@@ -29,7 +30,12 @@ export class RegisterComponent {
 
 
   // recuperation code sv
-  constructor(private service: StudentsService, private router: Router, private authService: AuthService, private consentService: ConsentService) { }
+  constructor(
+    private service: StudentsService, 
+    private router: Router, 
+    private authService: AuthService, 
+    private consentService: ConsentService,
+  private notificationsService:NotificationsService) { }
 
   async addStudent(form: any) {
     // on vérifie la validité du formulaire
@@ -56,6 +62,14 @@ export class RegisterComponent {
       setTimeout(() => {
         // Appeler la méthode de redirection d'AuthService
         this.authService.redirectAfterLogin(); // Redirection après inscription réussie
+        // forcer la notification request ici, ce que je ne faisais pas
+        const user =this.authService.getCurrentUserUid()
+        if (user) {
+          console.log(user);          
+          this.notificationsService.requestPermissionAndRegisterToken(user)          
+        }
+        
+
         // this.router.navigate([''])
       }, 2000)
     })

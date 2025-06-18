@@ -234,7 +234,7 @@ hr {
     text-decoration: underline!important;
   } */
 
-  h1 a {text-decoration: none;}
+  /* h1 a {text-decoration: none;} */
 
  h1 a, .popover-custom a{
 
@@ -263,7 +263,7 @@ hr {
 
   .popover-custom a{
     color: white;
-    font-style: italic;
+    /* font-style: italic; */
     font-size: 0.9rem;
   }
 

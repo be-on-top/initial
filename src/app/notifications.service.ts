@@ -24,29 +24,58 @@ export class NotificationsService {
     });
   }
 
+  // async requestPermissionAndRegisterToken(userId: string): Promise<string> {
+  //   try {
+  //     const permission = await Notification.requestPermission();
+  //     localStorage.setItem('notification-permission', permission);
+
+  //     if (permission !== 'granted') {
+  //       throw new Error('Permission not granted');
+  //     }
+
+  //     const token = await getToken(this.messagingFirebase, {
+  //       vapidKey: 'BIh4nZeNhn8JfEciZJvgFL96Qd7uVzfZTmaoUp2RFb65SA2Lk2jvujAtmEkttGR5OtyTRIj2_FS49k5mPLl6HsM', // ← à sécuriser côté backend
+  //     });
+
+  //     new Notification('Coucou ! Votre inscription aux notifications est bien prise en compte !');
+
+  //     this.registerToken(token, userId);
+
+  //     return token;
+  //   } catch (error) {
+  //     console.error('Erreur de permission/FCM :', error);
+  //     throw error;
+  //   }
+  // }
+
   async requestPermissionAndRegisterToken(userId: string): Promise<string> {
-    try {
-      const permission = await Notification.requestPermission();
-      localStorage.setItem('notification-permission', permission);
+  try {
+    // ⚠️ Attendre que le service worker soit prêt
+    const registration = await navigator.serviceWorker.ready;
 
-      if (permission !== 'granted') {
-        throw new Error('Permission not granted');
-      }
+    const permission = await Notification.requestPermission();
+    localStorage.setItem('notification-permission', permission);
 
-      const token = await getToken(this.messagingFirebase, {
-        vapidKey: 'BIh4nZeNhn8JfEciZJvgFL96Qd7uVzfZTmaoUp2RFb65SA2Lk2jvujAtmEkttGR5OtyTRIj2_FS49k5mPLl6HsM', // ← à sécuriser côté backend
-      });
-
-      new Notification('Coucou ! Votre inscription aux notifications est bien prise en compte !');
-
-      this.registerToken(token, userId);
-
-      return token;
-    } catch (error) {
-      console.error('Erreur de permission/FCM :', error);
-      throw error;
+    if (permission !== 'granted') {
+      throw new Error('Permission not granted');
     }
+
+    const token = await getToken(this.messagingFirebase, {
+      vapidKey: 'BIh4nZeNhn8JfEciZJvgFL96Qd7uVzfZTmaoUp2RFb65SA2Lk2jvujAtmEkttGR5OtyTRIj2_FS49k5mPLl6HsM',
+      serviceWorkerRegistration: registration, // ✅ très important
+    });
+
+    // Optionnel : petite notif immédiate
+    new Notification('Coucou ! Votre inscription aux notifications est bien prise en compte !');
+
+    this.registerToken(token, userId);
+    return token;
+  } catch (error) {
+    console.error('Erreur de permission/FCM :', error);
+    throw error;
   }
+}
+
 
   private registerToken(newToken: string, userId: string): void {
     const $tokensRef = collection(this.firestore, 'tokens');
