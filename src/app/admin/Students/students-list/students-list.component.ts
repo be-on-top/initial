@@ -48,6 +48,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   noSocialFormSentFilter: boolean = false
   isInnerStudentFilter: boolean = false
   isSubscriptionFilter: boolean = false
+  isSubscriptionMissingFilter: boolean = false
   initialStudents: any[] = []; // Copie initiale des étudiants
   contactStudents: any[] = []; // pour les étudiants affectés par referent à contact
 
@@ -492,7 +493,15 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     } else if (this.isSubscriptionFilter) {
       this.allStudents = this.initialStudents.filter(student => student.subscriptions);
       this.tradesActivated = true
-    } else if (this.isTradeFilter) {
+    } 
+    
+    // missing subscriptions
+    else if (this.isSubscriptionMissingFilter) {
+      this.allStudents = this.initialStudents.filter(student => !student.subscriptions);
+      this.tradesActivated = true
+    } 
+    
+    else if (this.isTradeFilter) {
       this.allStudents = this.initialStudents.filter(student =>
         Array.isArray(student.subscriptions) &&
         student.subscriptions.includes(trade) &&
@@ -543,6 +552,12 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     this.applyFilters();
   }
 
+  onCheckboxChangeSubscriptionsMissing(event: any) {
+    this.isSubscriptionMissingFilter = event.target.checked;
+    this.applyFilters();
+  }
+  
+
   // inititalement destiné aux inscriptions officielles
   // onCheckboxChangeTrades(event: any, trade: string) {
   //   this.isTradeFilter = event.target.checked;
@@ -567,6 +582,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     this.isSocialFormSentFilter = false;
     this.noSocialFormSentFilter = false;
     this.isSubscriptionFilter = false;
+    this.isSubscriptionMissingFilter = false;
     this.isTradeFilter = false;
     this.isTradeQCMStarted = false;
     this.isTradeFullQCM = false;

@@ -69,19 +69,24 @@
                 <div class="form-check" *ngIf="userRouterLinks.user==='admin'|| userRouterLinks.user==='editor'">
                     <label class="form-check-label" for="socialCheckbox">Formulaire administratif non renseigné</label>
                     <input type="checkbox" (change)="onCheckboxChangeNoSocial($event)" class="form-check-input"
-                        id="socialCheckbox">
+                        id="noSocialCheckbox">
                 </div>
                 <!-- étudiant interne : innerStudent -->
                 <div class="form-check" *ngIf="userRouterLinks.user==='admin'|| userRouterLinks.user==='editor'">
                     <label class="form-check-label" for="innerStudentCheckbox">Etudiants internes</label>
                     <input type="checkbox" (change)="onCheckboxChangeInner($event)" class="form-check-input"
-                        id="socialCheckbox">
+                        id="innerStudentCheckbox">
                 </div>
                 <!-- fin innerStudent -->
                 <div class="form-check">
                     <label class="form-check-label" for="subscriptionsCheckbox">Inscription formation finalisée</label>
                     <input type="checkbox" (change)="onCheckboxChangeSubscriptions($event)" class="form-check-input"
                         id="subscriptionsCheckbox">
+                </div>
+                <div class="form-check" *ngIf="userRouterLinks.user==='referent'">
+                    <label class="form-check-label" for="subscriptionsCheckbox">Inscription à finaliser</label>
+                    <input type="checkbox" (change)="onCheckboxChangeSubscriptionsMissing($event)" class="form-check-input"
+                        id="subscriptionsMissingCheckbox">
                 </div>
 
                 <div class="form-check">
