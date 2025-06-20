@@ -311,6 +311,11 @@ export class HomeComponent implements OnInit {
 toggleInfo() {
   this.showInfo = !this.showInfo;
 }
+  showadditional = false;
+
+toggleInfoAdditional() {
+  this.showadditional = !this.showadditional;
+}
 
 closeInfo() {
   this.showInfo = false;

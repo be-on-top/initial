@@ -236,19 +236,17 @@ hr {
 
   /* h1 a {text-decoration: none;} */
 
- h1 a, .popover-custom a{
-
+ h1 a, .popover-custom a, .showInfo{
     /* text-decoration: underline; */
     text-decoration-color: rgba(255, 255, 255, 0.4)!important; /* Noir très transparent */
     text-decoration-thickness: 2px; /* Épaisseur discrète */
     text-underline-position: under; /* Position sous le texte */
+    text-decoration-style:dotted;
   }
 
-
-  .popover-custom{
-    margin-bottom: 16px;
-  /* animation: fadeInAnim 0.05s linear forwards; */
-}
+  .showInfo{
+    cursor: pointer;
+  }
 
 @keyframes fadeInAnim {
   from {

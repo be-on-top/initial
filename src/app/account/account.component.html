@@ -32,11 +32,11 @@
                 class="text-decoration-none" [routerLink]="['/socialregistration']">incription en formation</a> peut
             maintenant commencer.</span> -->
         <span> <i class="bi bi-info-square-fill pe-2"></i>Vos <span class="fw-bold">résultats et estimations</span> sont
-            affichés <span class="fw-bold">ci-dessous</span>. Pour <span class="fw-bold">être accompagné dans votre
+            affichés <span class="fw-bold">ci-dessous</span><i class="bi bi-box-arrow-down ms-1"></i>. Pour <span class="fw-bold">être accompagné dans votre
                 projet </span>et <span class="fw-bold">vous rapprocher du centre de votre choix,</span> compléter et
             valider votre <a class="text-decoration-none fw-bold" [routerLink]="['/socialregistration']"> demande
                 d'inscription en formation</a>. Il s'agit d'un formulaire en ligne permettant de recueillir toutes les
-            informations nécessaires au financement de la formation.</span>
+            informations nécessaires au financement de la formation.</span><br>
     </div>
     <!-- ici, c'est une fois le formulaire de pré-inscription envoyé, en attendant que l'inscription soit officialisée  -->
     <div *ngIf="userData && userData.isSocialFormSent && !userData.subscriptions"
@@ -98,7 +98,7 @@
         <div class="card" *ngIf="userData">
             <div class="card-header bg-primary">
                 <a class="btn text-light text-capitalize d-flex justify-content-between px-0" data-bs-toggle="collapse"
-                    href="#collapseOne" aria-expanded="true">
+                    href="#collapseOne">
                     <div class="d-flex align-items-center gap-2 justify-content-between">
                         <span class="text-nowrap">Données personnelles</span>
                         <i class="bi bi-caret-down-fill toggle-arrow fs-7"></i>
@@ -107,7 +107,7 @@
                 </a>
             </div>
 
-            <div id="collapseOne" class="collapse show" data-bs-parent="#accordion">
+            <div id="collapseOne" class="collapse" data-bs-parent="#accordion">
                 <div class="card-body">
                     <div class="rounded p-2" id="actual" #actual>
                         <ul class="list-group">

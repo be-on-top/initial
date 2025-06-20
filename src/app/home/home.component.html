@@ -1,7 +1,6 @@
 <div class="container pt-3">
 
-
-
+    <!-- AUCUN #btn="..." ici ! -->
 
     <!-- userRole{{userRole | json}} -->
 
@@ -40,22 +39,32 @@
         <div class="alert w-100 p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show display-5">
             <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
                 aria-label="Fermer le message be-on-top"></button>
-                        <!-- popover -->
-            <button type="button" aria-label="Plus d'informations" *ngIf="user==undefined"
+            <!-- popover -->
+            <!-- <button type="button" aria-label="Plus d'informations" *ngIf="user==undefined"
                 class="btn text-light p-0 relative-btn me-1 mb-1" (click)="toggleInfo()" aria-label="Plus d'informations">
-                <!-- <i class="bi bi-info-lg m-0 pb-1 fs-5"></i> -->
                 <i [ngClass]="!showInfo?'bi bi-info-square-fill icon-align':'bi bi-info-square icon-align'"></i>
             </button>
             <div class="popover-custom fade show" *ngIf="showInfo" (clickOutside)="closeInfo()">
                 <a role="link" aria-label="Avertissement : création de compte pour démarrer un questionnaire"
                     [routerLink]="['/register']">Identifiez-vous ou créez votre compte pour démarrer un
                     questionnaire</a>
+            </div> -->
+            <!-- fin popover -->
+            <a role="button" (click)="toggleInfo()" *ngIf="user==undefined" class="showInfo text-light"
+                aria-label="Afficher les informations pour évaluer vos connaissances">Evaluez vos connaissances</a>
+            <span *ngIf="user!==undefined">Evaluez vos connaissances</span>
+
+            <div class="popover-custom fade show" *ngIf="showInfo" (clickOutside)="closeInfo()" role="region"
+                aria-live="polite">
+                <a role="link" aria-label="Avertissement : création de compte pour démarrer un questionnaire"
+                    [routerLink]="['/register']">Identifiez-vous ou créez votre compte pour démarrer un
+                    questionnaire</a>
                 <!-- <button type="button" class="btn-close ms-2" (click)="closeInfo()" aria-label="Fermer"></button> -->
             </div>
-            <!-- fin popover -->
-             Evaluez vos connaissances et <h1 class="d-inline fs-5"> <a [routerLink]="['/benefits']"
-                    class="text-light" role="link"
-                    aria-label="Démarrer une formation personnalisée pour développer vos compétences">intégrez rapidement une
+
+            et <h1 class="d-inline fs-5"> <a [routerLink]="['/benefits']" class="text-light" role="link"
+                    aria-label="Démarrer une formation personnalisée pour développer vos compétences">intégrez
+                    rapidement une
                     formation personnalisée
                 </a></h1> pour être au top des compétences du métier de votre choix.
         </div>
