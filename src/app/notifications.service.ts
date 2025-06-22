@@ -49,32 +49,35 @@ export class NotificationsService {
   // }
 
   async requestPermissionAndRegisterToken(userId: string): Promise<string> {
-  try {
-    // ⚠️ Attendre que le service worker soit prêt
-    const registration = await navigator.serviceWorker.ready;
+    try {
+      // ⚠️ Attendre que le service worker soit prêt
+      const registration = await navigator.serviceWorker.ready;
 
-    const permission = await Notification.requestPermission();
-    localStorage.setItem('notification-permission', permission);
+      const permission = await Notification.requestPermission();
+      localStorage.setItem('notification-permission', permission);
 
-    if (permission !== 'granted') {
-      throw new Error('Permission not granted');
+      if (permission !== 'granted') {
+        throw new Error('Permission not granted');
+      }
+
+      const token = await getToken(this.messagingFirebase, {
+        vapidKey: 'BIh4nZeNhn8JfEciZJvgFL96Qd7uVzfZTmaoUp2RFb65SA2Lk2jvujAtmEkttGR5OtyTRIj2_FS49k5mPLl6HsM',
+        serviceWorkerRegistration: registration, // ✅ très important
+      });
+
+      // Optionnel : petite notif immédiate
+      // new Notification('Coucou ! Votre inscription aux notifications est bien prise en compte !');
+      registration.showNotification('✅ Inscription réussie !', {
+        body: 'Vous recevrez désormais des notifications push.'
+      });
+
+      this.registerToken(token, userId);
+      return token;
+    } catch (error) {
+      console.error('Erreur de permission/FCM :', error);
+      throw error;
     }
-
-    const token = await getToken(this.messagingFirebase, {
-      vapidKey: 'BIh4nZeNhn8JfEciZJvgFL96Qd7uVzfZTmaoUp2RFb65SA2Lk2jvujAtmEkttGR5OtyTRIj2_FS49k5mPLl6HsM',
-      serviceWorkerRegistration: registration, // ✅ très important
-    });
-
-    // Optionnel : petite notif immédiate
-    new Notification('Coucou ! Votre inscription aux notifications est bien prise en compte !');
-
-    this.registerToken(token, userId);
-    return token;
-  } catch (error) {
-    console.error('Erreur de permission/FCM :', error);
-    throw error;
   }
-}
 
 
   private registerToken(newToken: string, userId: string): void {
@@ -84,40 +87,40 @@ export class NotificationsService {
     setDoc(doc($tokensRef, userId), userTokenNotification);
   }
 
-// isServiceWorkerReady$(): Observable<boolean> {
-//   return new Observable(observer => {
-//     if (!('serviceWorker' in navigator)) {
-//       observer.next(false);
-//       observer.complete();
-//       return;
-//     }
+  // isServiceWorkerReady$(): Observable<boolean> {
+  //   return new Observable(observer => {
+  //     if (!('serviceWorker' in navigator)) {
+  //       observer.next(false);
+  //       observer.complete();
+  //       return;
+  //     }
 
-//     navigator.serviceWorker.ready
-//       .then(() => {
-//         observer.next(true);
-//         observer.complete();
-//       })
-//       .catch((err) => {
-//         console.warn('Erreur Service Worker ready :', err);
-//         observer.next(false);
-//         observer.complete();
-//       });
-//   });
-// }
+  //     navigator.serviceWorker.ready
+  //       .then(() => {
+  //         observer.next(true);
+  //         observer.complete();
+  //       })
+  //       .catch((err) => {
+  //         console.warn('Erreur Service Worker ready :', err);
+  //         observer.next(false);
+  //         observer.complete();
+  //       });
+  //   });
+  // }
 
-isServiceWorkerReady$(): Observable<boolean> {
-  if (!('serviceWorker' in navigator)) {
-    return of(false);
-  }
-
-  return from(navigator.serviceWorker.ready).pipe(
-    map(() => true),
-    catchError((err) => {
-      console.warn('Erreur Service Worker ready :', err);
+  isServiceWorkerReady$(): Observable<boolean> {
+    if (!('serviceWorker' in navigator)) {
       return of(false);
-    })
-  );
-}
+    }
+
+    return from(navigator.serviceWorker.ready).pipe(
+      map(() => true),
+      catchError((err) => {
+        console.warn('Erreur Service Worker ready :', err);
+        return of(false);
+      })
+    );
+  }
 
 
 

@@ -65,7 +65,7 @@ export class RegisterComponent {
         // forcer la notification request ici, ce que je ne faisais pas
         const user =this.authService.getCurrentUserUid()
         if (user) {
-          console.log(user);          
+          console.log('userUid à passer à notificationsServices', user);          
           this.notificationsService.requestPermissionAndRegisterToken(user)          
         }
         

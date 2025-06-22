@@ -54,11 +54,11 @@
                 aria-label="Afficher les informations pour évaluer vos connaissances">Evaluez vos connaissances</a>
             <span *ngIf="user!==undefined">Evaluez vos connaissances</span>
 
-            <div class="popover-custom fade show" *ngIf="showInfo" (clickOutside)="closeInfo()" role="region"
+            <div class="popover-custom pb-2" *ngIf="showInfo" (clickOutside)="closeInfo()" role="region"
                 aria-live="polite">
                 <a role="link" aria-label="Avertissement : création de compte pour démarrer un questionnaire"
-                    [routerLink]="['/register']">Identifiez-vous ou créez votre compte pour démarrer un
-                    questionnaire</a>
+                    [routerLink]="['/login']">Identifiez-vous ou créez votre compte pour démarrer un
+                    questionnaire <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i></a>
                 <!-- <button type="button" class="btn-close ms-2" (click)="closeInfo()" aria-label="Fermer"></button> -->
             </div>
 
@@ -87,15 +87,13 @@
             <button type="button" class="btn-close btn-close mt-2" data-bs-dismiss="alert"
                 aria-label="Fermer le message"></button>
             <!-- Retrouvez vos résultats + finaliser votre inscription administrative -->
-            <span> <i aria-hidden="true" class="bi bi-info-square-fill pe-2"></i>Vos <span class="fw-bold">résultats et
-                    estimations</span>
-                sont
-                disponibles dans votre <a [routerLink]="['/account']" class="text-decoration-none fw-bold"
+            <span> <i aria-hidden="true" class="bi bi-info-square-fill pe-2"></i>Vos <span class="fw-bold">résultats</span>
+                sont disponibles dans votre <a [routerLink]="['/account']" class="text-decoration-none fw-bold"
                     title="compte personnel be-on-top"><i class="bi bi-person-fill pe-1"></i>compte utilisateur</a>.
-                Pour <span class="fw-bold">être mis en relation avec un Conseiller Projet</span> et <span
-                    class="fw-bold">vous
-                    rapprocher du centre de votre choix,</span> compléter votre <a class="text-decoration-none fw-bold"
-                    [routerLink]="['/socialregistration']">demande d'inscription en formation.</a></span>
+                Pour <span class="fw-bold">intégrer rapidement une formation</span> dans <span
+                    class="fw-bold">le centre de votre choix,</span> compléter votre <a class="text-decoration-none fw-bold"
+                    [routerLink]="['/socialregistration']">demande
+                     d'inscription.</a> Un conseiller projet prendra ensuite contact avec vous.</span>
         </div>
 
         <!-- si un innerStudent a terminé un questionnaire au minimum -->

@@ -328,7 +328,7 @@
                                 (click)="closeNavbar()">Mon compte Tuteur</a>
                         </li>
                         <li *ngIf="!userRole || userRole == ''">
-                            <a class="dropdown-item" [routerLink]="['register']" (click)="closeNavbar()">Inscription</a>
+                            <a class="dropdown-item" [routerLink]="['register']" (click)="closeNavbar()" aria-label="Création de compte candidat">Création de compte</a>
                         </li>
                         <li
                             *ngIf="!offline && isOneQuizzAchieved && !studentData?.isSocialFormSent && !studentData?.innerStudent">

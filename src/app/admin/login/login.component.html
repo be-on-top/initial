@@ -18,18 +18,18 @@
         </form>
         <!-- <button class="btn btn-primary mt-4" (click)="onClick()">S'identifier avec Google</button> -->
         <hr>
-        <button class="btn btn-warning my-4" (click)="reset(formLogin.value.email)">Réinitialiser son mot de
+        <button type="button" class="btn btn-warning my-4" (click)="reset(formLogin.value.email)">Réinitialiser son mot de
             passe</button>
         <hr>
-        <p>Pas encore inscrit ?</p>
-        <button class="btn btn-primary"><a class="dropdown-item" [routerLink]="['/register']">Inscription</a></button>
+        <p>Pas encore de compte BE-ON-TOP ?</p>
+        <button type="button" class="btn btn-primary"><a class="dropdown-item" [routerLink]="['/register']">Créer son compte</a></button>
     </ng-template>
 
     <hr>
     <div *ngIf="user, else login">
         <p class="alert bg-success my-3 p-3">Vous êtes authentifié</p>
 
-        <button class="btn btn-primary mt-3" (click)="onClick()"><a class="dropdown-item"
+        <button type="button" class="btn btn-primary mt-3" (click)="onClick()"><a class="dropdown-item"
                 (click)="logOut()">Logout</a></button>
     </div>
 

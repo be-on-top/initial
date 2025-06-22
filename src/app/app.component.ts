@@ -26,25 +26,52 @@ export class AppComponent implements OnInit, AfterViewInit {
     private authService: AuthService
   ) { }
 
+  // ngOnInit(): void {
+  //   this.checkUserConsent();
+
+  //   const permission = localStorage.getItem('notification-permission');
+  //   this.notificationPermissionGranted = permission === 'granted';
+
+  //   // ❌ NE PAS appeler la demande de permission ici
+  //   // ✨ Plus propre : délégué au service
+  //   this.notificationsService.isServiceWorkerReady$()
+  //     .pipe(take(1))
+  //     .subscribe(ready => {
+  //       this.isServiceWorkerReady = ready;
+  //     });
+  // //       this.notificationsService.isServiceWorkerReady$().subscribe((ready) => {
+  // //   this.isServiceWorkerReady = ready;
+  // // });
+
+
+  // }
+
   ngOnInit(): void {
-    this.checkUserConsent();
+  this.checkUserConsent();
 
-    const permission = localStorage.getItem('notification-permission');
-    this.notificationPermissionGranted = permission === 'granted';
+  // Récupérer la permission actuelle de la Notification API
+  const currentPermission = Notification.permission;
 
-    // ❌ NE PAS appeler la demande de permission ici
-    // ✨ Plus propre : délégué au service
-    this.notificationsService.isServiceWorkerReady$()
-      .pipe(take(1))
-      .subscribe(ready => {
-        this.isServiceWorkerReady = ready;
-      });
-  //       this.notificationsService.isServiceWorkerReady$().subscribe((ready) => {
-  //   this.isServiceWorkerReady = ready;
-  // });
+  // Récupérer la valeur de permission dans le localStorage
+  const permission = localStorage.getItem('notification-permission');
 
+  // Le bouton ne doit s'afficher que si :
+  // - Il n'y a pas de permission explicite dans localStorage ("granted" ou "denied")
+  // Si la permission a été refusée ou accordée, on ne montre pas le bouton
+  // this.notificationPermissionGranted = permission === 'granted' || currentPermission === 'denied';
+  this.notificationPermissionGranted =
+  permission === 'granted' ||
+  permission === 'denied' ||
+  currentPermission === 'granted' ||
+  currentPermission === 'denied';
 
-  }
+  // Vérifier si le service worker est prêt
+  this.notificationsService.isServiceWorkerReady$()
+    .pipe(take(1))
+    .subscribe(ready => {
+      this.isServiceWorkerReady = ready;
+    });
+}
 
   ngAfterViewInit(): void {
     if (this.consentReaded) {
