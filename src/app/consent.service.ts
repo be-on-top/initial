@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Analytics, setAnalyticsCollectionEnabled, setUserProperties } from '@angular/fire/analytics';
 import { BehaviorSubject } from 'rxjs';
+import { setConsent as setFirebaseConsent } from 'firebase/analytics';
+
 
 
 
@@ -35,16 +37,35 @@ export class ConsentService {
     if (!consent) {
       // Refus : tout désactiver (Analytics + Metapixel) et supprimer les cookies
       setAnalyticsCollectionEnabled(this.analytics, false);
+
       setUserProperties(this.analytics, { allow_ad_personalization_signals: false });
       this.deleteAllCookies();
       // Supprime le Metapixel si refusé
       // this.removeMetapixel(); 
+      // Indique à Firebase que l'utilisateur a refusé la collecte des données pour les analyses et la publicité
+      setFirebaseConsent({
+        ad_storage: 'denied',
+        analytics_storage: 'denied'
+      });
     } else {
       // Consentement accepté : activer Analytics et Metapixel
       setAnalyticsCollectionEnabled(this.analytics, true);
+      // Indique à Firebase que l'utilisateur a consenti à la collecte des données pour les analyses et la publicité
+      setFirebaseConsent({
+        ad_storage: 'granted',
+        analytics_storage: 'granted'
+      });
+
+
       setUserProperties(this.analytics, { allow_ad_personalization_signals: true });
       // Charge le Metapixel si accepté ici il est de trop ?
       // this.loadMetapixel(); 
+
+      // Indique à Firebase que l'utilisateur a consenti à la collecte des données pour les analyses et la publicité
+      setFirebaseConsent({
+        ad_storage: 'granted',
+        analytics_storage: 'granted'
+      });
     }
   }
 
@@ -95,8 +116,8 @@ export class ConsentService {
   }
 
   hasStoredConsent(): boolean {
-  return localStorage.getItem(this.consentKey) !== null;
-}
+    return localStorage.getItem(this.consentKey) !== null;
+  }
 
 
 
