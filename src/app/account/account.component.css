@@ -119,7 +119,7 @@ a[aria-expanded="true"] .toggle-arrow {
 @media (max-width: 374px) {
   .assistant {
       padding: 5px !important;
-      background-image: none;
+      background-image: none !important;
   }
   
 }

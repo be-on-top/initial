@@ -23,6 +23,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   collectionStudents: any[] = [];
 
   allStudents: any[] = [];
+  studentsWithToken: any[] = [];
 
 
 
@@ -490,17 +491,29 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
         // 3. L'étudiant n'a pas encore envoyé le formulaire social
         !student.isSocialFormSent
       );
+
+      // Extrait les UIDs des étudiants
+      // const uids = this.allStudents.map(student => student.id)
+      // console.log("all students with no socialFormSent", uids)
+      // Passe les UIDs au service pour interroger Firestore (desactivé juste pour test OK)
+    //   this.service.checkTokensForStudents(uids).then(tokens => {
+    //   // Les tokens trouvés seront stockés ici
+    //   this.studentsWithToken = tokens;
+    //   console.log(this.studentsWithToken); // Ou fais ce que tu veux avec les tokens
+    // });
+  
+
     } else if (this.isSubscriptionFilter) {
       this.allStudents = this.initialStudents.filter(student => student.subscriptions);
       this.tradesActivated = true
-    } 
-    
+    }
+
     // missing subscriptions
     else if (this.isSubscriptionMissingFilter) {
       this.allStudents = this.initialStudents.filter(student => !student.subscriptions);
       this.tradesActivated = true
-    } 
-    
+    }
+
     else if (this.isTradeFilter) {
       this.allStudents = this.initialStudents.filter(student =>
         Array.isArray(student.subscriptions) &&
@@ -556,7 +569,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     this.isSubscriptionMissingFilter = event.target.checked;
     this.applyFilters();
   }
-  
+
 
   // inititalement destiné aux inscriptions officielles
   // onCheckboxChangeTrades(event: any, trade: string) {
@@ -868,11 +881,13 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
 
     // En-tête
     csvRows.push(headers.join(','));
+    //  csvRows.push(headers.join(';'));
 
     // Données
     for (const item of data) {
       const row = headers.map(header => `"${(item[header] ?? '').toString().replace(/"/g, '""')}"`);
       csvRows.push(row.join(','));
+        // csvRows.push(row.join(';'));
     }
 
     return csvRows.join('\n');

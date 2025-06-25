@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit } from '@angular/core';
 // pour interpréter les balises HTML enregistrées en base avec un éditeur de text
 import { DomSanitizer } from '@angular/platform-browser';
 
@@ -22,7 +22,7 @@ import { ChartService } from '../../chart.service';
   styleUrls: ['./student-details.component.css']
 })
 
-export class StudentDetailsComponent {
+export class StudentDetailsComponent implements OnInit, AfterViewInit {
   title: string = ""
 
   editMode: boolean = false;
@@ -73,13 +73,14 @@ export class StudentDetailsComponent {
   // tradesData?: any
 
   // pour les settings application display
-  isTrainingTimeMultiple7:boolean=false
+  isTrainingTimeMultiple7: boolean = false
 
   constructor(
     private service: StudentsService,
     private route: ActivatedRoute,
     private settingsService: SettingsService,
     public sanitizer: DomSanitizer,
+    private tradesService: SettingsService
     // private chartService:ChartService
   ) {
 
@@ -101,7 +102,7 @@ export class StudentDetailsComponent {
     //   console.log("this.tradesData", this.tradesData)
     // })
 
-    this.settingsService.getDisplayPrices().subscribe(element=>this.isTrainingTimeMultiple7=element['isMultiple7TrainingTime'])
+    this.settingsService.getDisplayPrices().subscribe(element => this.isTrainingTimeMultiple7 = element['isMultiple7TrainingTime'])
 
   }
 
@@ -187,8 +188,8 @@ export class StudentDetailsComponent {
   //   return Object.entries(obj);
   // }
   objectEntries(obj: any): [string, any][] {
-  return Object.entries(obj).sort((a, b) => +a[0] - +b[0]);
-}
+    return Object.entries(obj).sort((a, b) => +a[0] - +b[0]);
+  }
 
 
   sortResultsByKeys(results: any[]): any[] {
@@ -489,6 +490,71 @@ export class StudentDetailsComponent {
 
   // }
 
+  tradesData?: any
 
+  ngAfterViewInit(): void {
+    this.tradesService.getTrades().subscribe(data => this.tradesData = data)
+  }
+
+
+  calculateTotalTime(trade: string): any {
+    const keyTrade = trade.replace('quizz_', '');
+
+    if (!this.tradesData || !Array.isArray(this.tradesData)) {
+      console.warn('tradesData est undefined ou pas un tableau');
+      return 0;
+    }
+
+    const filteredData = this.tradesData.filter((item: any) => item.sigle === keyTrade);
+
+    if (!filteredData.length) {
+      console.log('Trade non trouvé');
+      return 0;
+    }
+
+    let total = 0;
+    Object.values(filteredData[0].durations).forEach((value: any) => {
+      total += value[0];
+    });
+
+    return total;
+  }
+
+  calculateTotalCost(trade: string): number {
+    const keyTrade = trade.replace('quizz_', '');
+
+    // Filtrer les données pour obtenir les informations spécifiques au trade donné
+    const filteredData = this.tradesData.find((item: any) => item.sigle === keyTrade);
+
+    if (!filteredData) {
+      console.log('Trade non trouvé');
+      return 0;
+    }
+
+    let maxTotalCost = 0;
+
+    // Parcourir les propriétés dans durations
+    for (const durationKey in filteredData.durations) {
+      if (durationKey.includes('duration')) {
+        const costKey = `cost_${durationKey.substring(durationKey.lastIndexOf('_') + 1)}`; // Construire la clé de coût correspondante
+        const maxDuration = Math.max(...filteredData.durations[durationKey]); // Obtenir la durée maximale
+        const costValue = filteredData.costs[costKey]; // Obtenir le coût correspondant
+
+        if (costValue !== undefined) {
+          const totalCost = maxDuration * costValue; // Calculer le coût total pour cette compétence
+          maxTotalCost += totalCost; // Ajouter au coût total maximal
+        } else {
+          console.log(`Coût non trouvé pour ${durationKey}`);
+        }
+      }
+    }
+
+    // return maxTotalCost;
+
+    // Arrondir le résultat final à deux décimales
+    // return parseFloat(maxTotalCost.toFixed(2));
+    // Arrondir le résultat final à l'entier le plus proche
+    return Math.round(maxTotalCost);
+  }
 
 }

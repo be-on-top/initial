@@ -184,9 +184,11 @@
                                 </div>
 
                                 <hr>
-                                <p><span class="fw-bold">Total</span> : {{totalTime}} heures de formation <span
+   
+                                <p *ngIf="tradesData?.length > 0"><span class="fw-bold">Total</span> : {{totalTime}}/{{ calculateTotalTime(trade) | json }} heures de formation pour <span
                                         class="cost">
-                                        {{totalCost}}€</span>
+                                        {{totalCost}}/{{
+                                        calculateTotalCost(trade) }}€</span>
 
                                     <!-- pour les arrondis multiples de 7 -->
                                     <!-- Si l'arrondi dépasse le total, on force l'arrondi inférieur -->
@@ -195,9 +197,8 @@
                                         {{ getAdjustedTrainingTime(totalTime, totalCost) }}h
                                         car vos journées de formation sont de 7 heures.
                                     </span>
-
-
                                 </p>
+  
 
                             </ng-template>
 

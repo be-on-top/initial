@@ -13,12 +13,6 @@ import { Router } from '@angular/router';
 import { Storage, getDownloadURL, ref, uploadBytes, uploadString } from '@angular/fire/storage';
 import { Users } from './Users/users';
 
-
-
-
-
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -457,7 +451,7 @@ export class StudentsService {
 
   checkIfSocialFormExists(studentId: string): Promise<boolean> {
     const docRef = doc(this.firestore, `SocialForm/${studentId}`);
-  
+
     return getDoc(docRef)
       .then((docSnap) => {
         return docSnap.exists(); // Renvoie true si le document existe, sinon false
@@ -466,7 +460,7 @@ export class StudentsService {
         console.error("Erreur lors de la vérification du SocialForm :", error);
         return false; // En cas d'erreur, on renvoie false par sécurité
       });
-    }
+  }
 
 
 
@@ -495,7 +489,7 @@ export class StudentsService {
   async deleteAccount() {
     // Affichage d'une alerte de confirmation avant la suppression
     const confirmDelete = window.confirm('Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.');
-  
+
     if (confirmDelete) {
       try {
         if (this.auth.currentUser) {
@@ -510,7 +504,7 @@ export class StudentsService {
       console.log('Suppression annulée.');
     }
   }
-  
+
 
 
   // async deleteAccount() {
@@ -535,7 +529,7 @@ export class StudentsService {
 
   // }
 
-//  OK mais ne prenait pas en considération l'update du compte
+  //  OK mais ne prenait pas en considération l'update du compte
   // updateStudent(id: string, student: any) {
   //   // let $studentRef = doc(this.firestore, "students/" + id);
   //   // setDoc($studentRef, student);
@@ -551,7 +545,7 @@ export class StudentsService {
   //   }
 
   //   try 
-    
+
   //   {
   //     // Vérification si l'email a changé
   //     if (student.email && student.email !== user.email) {
@@ -575,49 +569,49 @@ export class StudentsService {
 
   async updateStudent(id: string, student: any): Promise<void> {
     const user = this.auth.currentUser;
-  
+
     if (!user) {
       throw new Error("User is not authenticated");
     }
-  
+
     try {
       // Vérification si l'email a changé
       if (student.email && student.email !== user.email) {
         if (!user.email) {
           throw new Error("User email is null, cannot update email");
         }
-  
+
         const currentPassword = student.currentPassword; // Récupère le mot de passe depuis les données du formulaire
         if (!currentPassword) {
           throw new Error("Current password is required for updating the email");
         }
-  
+
         // Ré-authentification avec le mot de passe actuel
         const credential = EmailAuthProvider.credential(user.email, currentPassword);
         await reauthenticateWithCredential(user, credential);
         console.log("User re-authenticated successfully");
-  
+
         // Mise à jour de l'email dans Firebase Auth
         await updateEmail(user, student.email);
         console.log("Email updated successfully in Firebase Auth");
       }
-  
+
       // Mise à jour du document dans Firestore
       const studentRef = doc(this.firestore, "students", id);
       await updateDoc(studentRef, student);
       alert("ok modifications prises en compte")
       console.log("Student updated successfully in Firestore");
-  
+
     } catch (error) {
       console.error("Error updating student: ", error);
       throw error; // Relancer l'erreur pour la capturer dans le composant
     }
   }
-  
-  
-  
-  
-  
+
+
+
+
+
 
   updateStudentEvaluation(id: string, evaluations: {}) {
     // let $studentRef = doc(this.firestore, "students/" + id);
@@ -839,16 +833,16 @@ export class StudentsService {
     return null;
   }
 
-  async activateSubscription(id: string, sigle: any, localTraining:string) {
+  async activateSubscription(id: string, sigle: any, localTraining: string) {
     const studentRef = doc(this.firestore, "students/" + id)
     const updateStudent = {
       subscriptions: sigle,
       // si on veut localiser la formation en cours...
-      localTraining:localTraining
+      localTraining: localTraining
     }
 
     console.log("updateStudent", updateStudent);
-    
+
     setDoc(studentRef, updateStudent, { merge: true })
   }
 
@@ -869,29 +863,29 @@ export class StudentsService {
     const studentRef = doc(this.firestore, "students/" + id);
     const date = new Date();
     const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
-  
+
     // Récupérer les données existantes
     const studentSnap = await getDoc(studentRef);
     let endedSubscriptions = [];
-  
+
     if (studentSnap.exists()) {
       const studentData = studentSnap.data();
       // Vérifier si endedSubscriptions est un tableau, sinon le transformer en tableau
-      endedSubscriptions = Array.isArray(studentData['endedSubscriptions']) 
-        ? studentData['endedSubscriptions'] 
+      endedSubscriptions = Array.isArray(studentData['endedSubscriptions'])
+        ? studentData['endedSubscriptions']
         : [];
     }
-  
+
     // ✅ Vérifier si le sigle est déjà enregistré avant d'ajouter
     if (!endedSubscriptions.some(sub => sub.sigle === sigle)) {
       endedSubscriptions.push({ date: formattedDate, sigle: sigle });
     }
-  
+
     // Mettre à jour Firestore
     await setDoc(studentRef, { endedSubscriptions }, { merge: true });
   }
-  
-  
+
+
 
   sendElearningInfo(id: string, info: any) {
     let $studentRef = doc(this.firestore, "students/" + id)
@@ -1077,107 +1071,107 @@ export class StudentsService {
   //   );
   // }
 
-//   getCentersAndSocialFormByUserId(userId: string) {
-//     const usersRef = collection(this.firestore, 'users');
-//     const centersRef = collection(this.firestore, 'centers');
-//     const socialFormRef = collection(this.firestore, 'SocialForm');
+  //   getCentersAndSocialFormByUserId(userId: string) {
+  //     const usersRef = collection(this.firestore, 'users');
+  //     const centersRef = collection(this.firestore, 'centers');
+  //     const socialFormRef = collection(this.firestore, 'SocialForm');
 
-//     // Récupère le document utilisateur dans la collection 'users' en fonction de l'ID donné
-//     const userDocRef = doc(usersRef, userId);
+  //     // Récupère le document utilisateur dans la collection 'users' en fonction de l'ID donné
+  //     const userDocRef = doc(usersRef, userId);
 
-//     return from(getDoc(userDocRef)).pipe(
-//       switchMap(userDocSnapshot => {
-//         const userDocData = userDocSnapshot.data() as Users | undefined;
-//         console.log('userDocData.cp', userDocData);
+  //     return from(getDoc(userDocRef)).pipe(
+  //       switchMap(userDocSnapshot => {
+  //         const userDocData = userDocSnapshot.data() as Users | undefined;
+  //         console.log('userDocData.cp', userDocData);
 
-// // subordonner ce qui suit à l'absence dans userDocRef d'une propriété centerId !!!!
+  // // subordonner ce qui suit à l'absence dans userDocRef d'une propriété centerId !!!!
 
-//         // Si `cp` dans `userDocData` est un tableau de chaînes de caractères
-//         if (userDocData && Array.isArray(userDocData.cp) && userDocData.cp.length > 0) {
-//           const cpArray = userDocData.cp; // Le tableau de CPs dans le document de l'utilisateur
-//           console.log('utilisateur référent de', cpArray);
+  //         // Si `cp` dans `userDocData` est un tableau de chaînes de caractères
+  //         if (userDocData && Array.isArray(userDocData.cp) && userDocData.cp.length > 0) {
+  //           const cpArray = userDocData.cp; // Le tableau de CPs dans le document de l'utilisateur
+  //           console.log('utilisateur référent de', cpArray);
 
-//           // Requête pour trouver tous les centres dont le `cp` est dans le tableau `cpArray`
-//           const centersQuery = query(centersRef, where('cp', 'in', cpArray));
-//           console.log('Exécution de la requête Firestore pour CPs:', cpArray);
+  //           // Requête pour trouver tous les centres dont le `cp` est dans le tableau `cpArray`
+  //           const centersQuery = query(centersRef, where('cp', 'in', cpArray));
+  //           console.log('Exécution de la requête Firestore pour CPs:', cpArray);
 
-//           return from(getDocs(centersQuery)).pipe(
-//             tap(querySnapshot => {
-//               console.log('Résultats de la requête centers:', querySnapshot.docs.map(doc => doc.data()));
-//             }),
-//             map(querySnapshot => {
-//               // Récupère les IDs des centres correspondant aux CPs
-//               const centerIDs = querySnapshot.docs.map(doc => doc.id);
-//               return centerIDs;
-//             }),
-//             switchMap(centerIDs => {
-//               if (centerIDs.length > 0) {
-//                 // Requête pour les documents SocialForm en fonction des centerIDs obtenus
-//                 const socialFormQuery = query(socialFormRef, where('center', 'in', centerIDs));
-//                 return from(getDocs(socialFormQuery));
-//               } else {
-//                 return of([]); // Aucun centre trouvé
-//               }
-//             }),
-//             map((socialFormQuerySnapshot: any) => {
-//               const returnedPriors = socialFormQuerySnapshot.docs.map((doc: any) => doc.id);
-//               return returnedPriors;
-//             })
-//           );
-//         } else {
-//           return of([]); // Si l'utilisateur n'a pas de CP
-//         }
-//       })
-//     );
-//   }
-// essai tentative optimisée si plusieurs codes postaux identiques
-getCentersAndSocialFormByUserId(userId: string) {
-  const usersRef = collection(this.firestore, 'users');
-  const centersRef = collection(this.firestore, 'centers');
-  const socialFormRef = collection(this.firestore, 'SocialForm');
+  //           return from(getDocs(centersQuery)).pipe(
+  //             tap(querySnapshot => {
+  //               console.log('Résultats de la requête centers:', querySnapshot.docs.map(doc => doc.data()));
+  //             }),
+  //             map(querySnapshot => {
+  //               // Récupère les IDs des centres correspondant aux CPs
+  //               const centerIDs = querySnapshot.docs.map(doc => doc.id);
+  //               return centerIDs;
+  //             }),
+  //             switchMap(centerIDs => {
+  //               if (centerIDs.length > 0) {
+  //                 // Requête pour les documents SocialForm en fonction des centerIDs obtenus
+  //                 const socialFormQuery = query(socialFormRef, where('center', 'in', centerIDs));
+  //                 return from(getDocs(socialFormQuery));
+  //               } else {
+  //                 return of([]); // Aucun centre trouvé
+  //               }
+  //             }),
+  //             map((socialFormQuerySnapshot: any) => {
+  //               const returnedPriors = socialFormQuerySnapshot.docs.map((doc: any) => doc.id);
+  //               return returnedPriors;
+  //             })
+  //           );
+  //         } else {
+  //           return of([]); // Si l'utilisateur n'a pas de CP
+  //         }
+  //       })
+  //     );
+  //   }
+  // essai tentative optimisée si plusieurs codes postaux identiques
+  getCentersAndSocialFormByUserId(userId: string) {
+    const usersRef = collection(this.firestore, 'users');
+    const centersRef = collection(this.firestore, 'centers');
+    const socialFormRef = collection(this.firestore, 'SocialForm');
 
-  const userDocRef = doc(usersRef, userId);
+    const userDocRef = doc(usersRef, userId);
 
-  return from(getDoc(userDocRef)).pipe(
-    switchMap(userDocSnapshot => {
-      const userDocData = userDocSnapshot.data() as Users | undefined;
-      console.log('userDocData:', userDocData);
+    return from(getDoc(userDocRef)).pipe(
+      switchMap(userDocSnapshot => {
+        const userDocData = userDocSnapshot.data() as Users | undefined;
+        console.log('userDocData:', userDocData);
 
-      // **Cas 1 :** Si `centerId` est défini et non vide
-      if (userDocData?.centerId && userDocData.centerId.length > 0) {
-        console.log(`Recherche avec centerIds: ${userDocData.centerId}`);
-        return of(userDocData.centerId); // On retourne directement le tableau `centerId`
-      }
+        // **Cas 1 :** Si `centerId` est défini et non vide
+        if (userDocData?.centerId && userDocData.centerId.length > 0) {
+          console.log(`Recherche avec centerIds: ${userDocData.centerId}`);
+          return of(userDocData.centerId); // On retourne directement le tableau `centerId`
+        }
 
-      // **Cas 2 :** Si `centerId` est absent, rechercher par `cp`
-      if (userDocData?.cp && Array.isArray(userDocData.cp) && userDocData.cp.length > 0) {
-        const cpArray = userDocData.cp;
-        console.log('Recherche de centres avec CPs:', cpArray);
+        // **Cas 2 :** Si `centerId` est absent, rechercher par `cp`
+        if (userDocData?.cp && Array.isArray(userDocData.cp) && userDocData.cp.length > 0) {
+          const cpArray = userDocData.cp;
+          console.log('Recherche de centres avec CPs:', cpArray);
 
-        const centersQuery = query(centersRef, where('cp', 'in', cpArray));
-        return from(getDocs(centersQuery)).pipe(
-          tap(querySnapshot => {
-            console.log('Résultats centers:', querySnapshot.docs.map(doc => doc.data()));
-          }),
-          map(querySnapshot => querySnapshot.docs.map(doc => doc.id)) // Récupère les IDs des centres
-        );
-      }
+          const centersQuery = query(centersRef, where('cp', 'in', cpArray));
+          return from(getDocs(centersQuery)).pipe(
+            tap(querySnapshot => {
+              console.log('Résultats centers:', querySnapshot.docs.map(doc => doc.data()));
+            }),
+            map(querySnapshot => querySnapshot.docs.map(doc => doc.id)) // Récupère les IDs des centres
+          );
+        }
 
-      // **Si ni `centerId` ni `cp`, on retourne un tableau vide**
-      return of([]);
-    }),
-    switchMap(centerIDs => {
-      if (centerIDs.length > 0) {
-        console.log('Recherche des SocialForms pour ces centers:', centerIDs);
-        const socialFormQuery = query(socialFormRef, where('center', 'in', centerIDs));
-        return from(getDocs(socialFormQuery)).pipe(
-          map(socialFormQuerySnapshot => socialFormQuerySnapshot.docs.map(doc => doc.id))
-        );
-      }
-      return of([]); // Aucun centre trouvé
-    })
-  );
-}
+        // **Si ni `centerId` ni `cp`, on retourne un tableau vide**
+        return of([]);
+      }),
+      switchMap(centerIDs => {
+        if (centerIDs.length > 0) {
+          console.log('Recherche des SocialForms pour ces centers:', centerIDs);
+          const socialFormQuery = query(socialFormRef, where('center', 'in', centerIDs));
+          return from(getDocs(socialFormQuery)).pipe(
+            map(socialFormQuerySnapshot => socialFormQuerySnapshot.docs.map(doc => doc.id))
+          );
+        }
+        return of([]); // Aucun centre trouvé
+      })
+    );
+  }
 
 
 
@@ -1370,11 +1364,11 @@ getCentersAndSocialFormByUserId(userId: string) {
     }
   }
 
-  
+
   // fonctionne pour une  propriété class qui n'est pas un tableau class[] OK
   // updateStudentClass(id: string, trainingClass: string) {
   //   const $studentRef = doc(this.firestore, "students/" + id);
-    
+
   //   updateDoc($studentRef, { class: trainingClass })
   //     .then(() => console.log("Document mis à jour avec succès"))
   //     .catch((error) => {
@@ -1387,24 +1381,24 @@ getCentersAndSocialFormByUserId(userId: string) {
   // }
 
 
-// ne sait  plus qour quoi ce test avait été ajouté - donc à virer a priori
+  // ne sait  plus qour quoi ce test avait été ajouté - donc à virer a priori
   // async updateStudentClass(id: string, trainingClass: string) {
   //   const $studentRef = doc(this.firestore, "students/" + id);
-  
+
   //   try {
   //     // Récupérer le document
   //     const docSnap = await getDoc($studentRef);
-  
+
   //     if (docSnap.exists()) {
   //       // Obtenir la propriété `class` (si elle existe)
   //       const data = docSnap.data();
   //       let classArray: string[] = data['class'] || []; // Utilise un tableau vide si `class` est inexistant
-  
+
   //       // Ajouter `trainingClass` si elle n'est pas déjà présente
   //       if (!classArray.includes(trainingClass)) {
   //         classArray.push(trainingClass);
   //       }
-  
+
   //       // Mettre à jour le document
   //       await updateDoc($studentRef, { class: classArray });
   //       console.log("Document mis à jour avec succès");
@@ -1420,21 +1414,21 @@ getCentersAndSocialFormByUserId(userId: string) {
   // pour gérer class comme un tableau dans students
   async updateStudentClass(id: string, trainingClass: string) {
     const $studentRef = doc(this.firestore, "students/" + id);
-  
+
     try {
       // Récupérer le document
       const docSnap = await getDoc($studentRef);
-  
+
       if (docSnap.exists()) {
         // Obtenir la propriété class (si elle existe)
         const data = docSnap.data();
         let classArray: string[] = data['class'] || []; // Initialise à un tableau vide si inexistant
-  
+
         // Ajouter trainingClass si elle n'est pas déjà présente
         if (!classArray.includes(trainingClass)) {
           classArray.push(trainingClass);
         }
-  
+
         // Mettre à jour le document
         await updateDoc($studentRef, { class: classArray });
         console.log("Document mis à jour avec succès :", classArray);
@@ -1445,106 +1439,106 @@ getCentersAndSocialFormByUserId(userId: string) {
       console.error("Erreur lors de la mise à jour :", error);
     }
   }
-  
-  
-  
 
 
-// Méthode pour récupérer les étudiants ayant commencé mais pas soumis
-// Méthode pour récupérer les étudiants ayant commencé mais pas soumis
-// Méthode pour récupérer les étudiants ayant commencé mais pas soumis
-// getStudentsNotSubmitted(): Observable<any[]> {
-//   // 1. Récupérer tous les étudiants ayant commencé à remplir le formulaire (tous les documents dans la collection SocialForm)
-//   const socialFormRef = collection(this.firestore, 'SocialForm');
-//   const socialFormStudents$ = from(getDocs(socialFormRef)).pipe(
-//     map((querySnapshot) => {
-//       const socialForms = querySnapshot.docs.map(doc => ({
-//         id: doc.id,
-//         ...doc.data()
-//       }));
-//       return socialForms;
-//     })
-//   );
 
-//   // 2. Récupérer tous les étudiants ayant soumis le formulaire (isSocialFormSent = true) dans la collection students
-//   const studentsRef = collection(this.firestore, 'students');
-//   const studentsQuery = query(studentsRef, where('isSocialFormSent', '==', true));
-//   const studentsSubmitted$ = from(getDocs(studentsQuery)).pipe(
-//     map((querySnapshot) => {
-//       const students = querySnapshot.docs.map(doc => doc.id);  // On prend uniquement les IDs (UIDs)
-//       return students;
-//     })
-//   );
 
-//   // 3. Comparer et retourner uniquement les étudiants qui ont commencé mais n'ont pas soumis
-//   return combineLatest([socialFormStudents$, studentsSubmitted$]).pipe(
-//     map(([socialForms, students]) => {
-//       // Créer un ensemble des UIDs des étudiants ayant soumis le formulaire (isSocialFormSent = true)
-//       const submittedUIDs = new Set(students);
 
-//       // Filtrer les étudiants ayant commencé mais pas soumis
-//       const notSubmittedStudents = socialForms.filter((socialForm: any) => {
-//         // On ne garde que ceux qui ne sont pas dans les étudiants ayant soumis
-//         return !submittedUIDs.has(socialForm.id); // Utilisation de 'id' de SocialForm pour comparaison
-//       });
+  // Méthode pour récupérer les étudiants ayant commencé mais pas soumis
+  // Méthode pour récupérer les étudiants ayant commencé mais pas soumis
+  // Méthode pour récupérer les étudiants ayant commencé mais pas soumis
+  // getStudentsNotSubmitted(): Observable<any[]> {
+  //   // 1. Récupérer tous les étudiants ayant commencé à remplir le formulaire (tous les documents dans la collection SocialForm)
+  //   const socialFormRef = collection(this.firestore, 'SocialForm');
+  //   const socialFormStudents$ = from(getDocs(socialFormRef)).pipe(
+  //     map((querySnapshot) => {
+  //       const socialForms = querySnapshot.docs.map(doc => ({
+  //         id: doc.id,
+  //         ...doc.data()
+  //       }));
+  //       return socialForms;
+  //     })
+  //   );
 
-//       return notSubmittedStudents;
-//     })
-//   );
-// }
+  //   // 2. Récupérer tous les étudiants ayant soumis le formulaire (isSocialFormSent = true) dans la collection students
+  //   const studentsRef = collection(this.firestore, 'students');
+  //   const studentsQuery = query(studentsRef, where('isSocialFormSent', '==', true));
+  //   const studentsSubmitted$ = from(getDocs(studentsQuery)).pipe(
+  //     map((querySnapshot) => {
+  //       const students = querySnapshot.docs.map(doc => doc.id);  // On prend uniquement les IDs (UIDs)
+  //       return students;
+  //     })
+  //   );
 
-getStudentsNotSubmitted(): Observable<any[]> {
-  // 1. Récupérer tous les étudiants ayant commencé à remplir le formulaire (tous les documents dans la collection SocialForm)
-  const socialFormRef = collection(this.firestore, 'SocialForm');
-  const socialFormStudents$ = from(getDocs(socialFormRef)).pipe(
-    map((querySnapshot) => {
-      const socialForms = querySnapshot.docs.map(doc => doc.id); // On récupère seulement les IDs
-      console.log(`Nombre d'étudiants ayant commencé le formulaire (SocialForm) : ${socialForms.length}`);
-      return socialForms;
-    })
-  );
+  //   // 3. Comparer et retourner uniquement les étudiants qui ont commencé mais n'ont pas soumis
+  //   return combineLatest([socialFormStudents$, studentsSubmitted$]).pipe(
+  //     map(([socialForms, students]) => {
+  //       // Créer un ensemble des UIDs des étudiants ayant soumis le formulaire (isSocialFormSent = true)
+  //       const submittedUIDs = new Set(students);
 
-  // 2. Récupérer tous les étudiants ayant soumis le formulaire (isSocialFormSent = true) dans la collection students
-  const studentsRef = collection(this.firestore, 'students');
-  const studentsQuery = query(studentsRef, where('isSocialFormSent', '==', true));
-  const studentsSubmitted$ = from(getDocs(studentsQuery)).pipe(
-    map((querySnapshot) => {
-      const students = querySnapshot.docs.map(doc => doc.id);  // On prend uniquement les IDs
-      console.log(`Nombre d'étudiants ayant soumis le formulaire (isSocialFormSent = true) : ${students.length}`);
-      return students;
-    })
-  );
+  //       // Filtrer les étudiants ayant commencé mais pas soumis
+  //       const notSubmittedStudents = socialForms.filter((socialForm: any) => {
+  //         // On ne garde que ceux qui ne sont pas dans les étudiants ayant soumis
+  //         return !submittedUIDs.has(socialForm.id); // Utilisation de 'id' de SocialForm pour comparaison
+  //       });
 
-  // 3. Comparer et retourner uniquement les étudiants qui ont commencé mais n'ont pas soumis
-  return combineLatest([socialFormStudents$, studentsSubmitted$]).pipe(
-    map(([socialForms, students]) => {
-      // Créer un ensemble des UIDs des étudiants ayant soumis le formulaire
-      const submittedUIDs = new Set(students);
+  //       return notSubmittedStudents;
+  //     })
+  //   );
+  // }
 
-      // Filtrer les étudiants ayant commencé mais pas soumis
-      const notSubmittedStudentIDs = socialForms.filter((socialFormId: string) => {
-        // On ne garde que ceux qui ne sont pas dans les étudiants ayant soumis
-        return !submittedUIDs.has(socialFormId);
-      });
+  getStudentsNotSubmitted(): Observable<any[]> {
+    // 1. Récupérer tous les étudiants ayant commencé à remplir le formulaire (tous les documents dans la collection SocialForm)
+    const socialFormRef = collection(this.firestore, 'SocialForm');
+    const socialFormStudents$ = from(getDocs(socialFormRef)).pipe(
+      map((querySnapshot) => {
+        const socialForms = querySnapshot.docs.map(doc => doc.id); // On récupère seulement les IDs
+        console.log(`Nombre d'étudiants ayant commencé le formulaire (SocialForm) : ${socialForms.length}`);
+        return socialForms;
+      })
+    );
 
-      console.log(`Nombre d'étudiants ayant commencé mais pas soumis le formulaire : ${notSubmittedStudentIDs.length}`);
+    // 2. Récupérer tous les étudiants ayant soumis le formulaire (isSocialFormSent = true) dans la collection students
+    const studentsRef = collection(this.firestore, 'students');
+    const studentsQuery = query(studentsRef, where('isSocialFormSent', '==', true));
+    const studentsSubmitted$ = from(getDocs(studentsQuery)).pipe(
+      map((querySnapshot) => {
+        const students = querySnapshot.docs.map(doc => doc.id);  // On prend uniquement les IDs
+        console.log(`Nombre d'étudiants ayant soumis le formulaire (isSocialFormSent = true) : ${students.length}`);
+        return students;
+      })
+    );
 
-      // 4. Maintenant on récupère les données de ces étudiants n'ayant pas soumis
-      // Utilisation d'une promesse pour résoudre les données des étudiants n'ayant pas soumis
-      const notSubmittedStudents$ = from(getDocs(
-        query(studentsRef, where(documentId(), 'in', notSubmittedStudentIDs))
-      )).pipe(
-        map((querySnapshot) => {
-          return querySnapshot.docs.map(doc => doc.data());  // Retourne les données complètes des étudiants
-        })
-      );
+    // 3. Comparer et retourner uniquement les étudiants qui ont commencé mais n'ont pas soumis
+    return combineLatest([socialFormStudents$, studentsSubmitted$]).pipe(
+      map(([socialForms, students]) => {
+        // Créer un ensemble des UIDs des étudiants ayant soumis le formulaire
+        const submittedUIDs = new Set(students);
 
-      // On retourne directement l'observable contenant les étudiants n'ayant pas soumis
-      return notSubmittedStudents$;
-    }),
-    switchMap(observable => observable)  // Flatten l'observable imbriqué
-  );
-}
+        // Filtrer les étudiants ayant commencé mais pas soumis
+        const notSubmittedStudentIDs = socialForms.filter((socialFormId: string) => {
+          // On ne garde que ceux qui ne sont pas dans les étudiants ayant soumis
+          return !submittedUIDs.has(socialFormId);
+        });
+
+        console.log(`Nombre d'étudiants ayant commencé mais pas soumis le formulaire : ${notSubmittedStudentIDs.length}`);
+
+        // 4. Maintenant on récupère les données de ces étudiants n'ayant pas soumis
+        // Utilisation d'une promesse pour résoudre les données des étudiants n'ayant pas soumis
+        const notSubmittedStudents$ = from(getDocs(
+          query(studentsRef, where(documentId(), 'in', notSubmittedStudentIDs))
+        )).pipe(
+          map((querySnapshot) => {
+            return querySnapshot.docs.map(doc => doc.data());  // Retourne les données complètes des étudiants
+          })
+        );
+
+        // On retourne directement l'observable contenant les étudiants n'ayant pas soumis
+        return notSubmittedStudents$;
+      }),
+      switchMap(observable => observable)  // Flatten l'observable imbriqué
+    );
+  }
 
 
 
@@ -1552,18 +1546,18 @@ getStudentsNotSubmitted(): Observable<any[]> {
   deleteStudentFromTutor(trainerId: string, studentUid: string) {
     // Référence au document Trainer dans Firestore
     const $tutorRef = doc(this.firestore, "tutors/" + trainerId);
-  
+
     // Lire le document actuel pour récupérer la liste des étudiants
     getDoc($tutorRef)
       .then((docSnapshot) => {
         if (docSnapshot.exists()) {
           const trainerData = docSnapshot.data(); // Obtenir les données du document
-  
+
           // Vérifier que 'students' est un tableau valide
-          if (trainerData['students'] && Array.isArray(trainerData['students'] )) {
+          if (trainerData['students'] && Array.isArray(trainerData['students'])) {
             // Supprimer le studentUid de la liste des étudiants
-            const updatedStudents = trainerData['students'] .filter((id: string) => id !== studentUid);
-  
+            const updatedStudents = trainerData['students'].filter((id: string) => id !== studentUid);
+
             // Mettre à jour uniquement le champ 'students' dans Firestore
             return updateDoc($tutorRef, { students: updatedStudents });
           } else {
@@ -1577,7 +1571,7 @@ getStudentsNotSubmitted(): Observable<any[]> {
       })
       .then(() => {
         console.log("Le champ 'students' a été mis à jour avec succès !");
-  
+
         // Réinitialiser la propriété 'trainer' dans le document de l'étudiant
         const $studentRef = doc(this.firestore, "students/" + studentUid);
         return updateDoc($studentRef, { tutor: "attribué ultérieurement" });
@@ -1588,6 +1582,25 @@ getStudentsNotSubmitted(): Observable<any[]> {
       .catch((error) => {
         console.error("Erreur lors de la mise à jour :", error);
       });
+  }
+
+
+
+  // Cette méthode interroge Firestore et retourne les tokens trouvés
+  async checkTokensForStudents(uids: string[]): Promise<any[]> {
+    const tokens = [];
+
+    // Pour chaque UID, on récupère le document de la collection 'tokens' dont l'ID est égal à l'UID
+    for (const uid of uids) {
+      const docRef = doc(this.firestore, `tokens/${uid}`); // Référence du document dans la collection 'tokens' avec l'ID correspondant à l'UID
+      const docSnap = await getDoc(docRef); // Récupération du document
+
+      if (docSnap.exists()) {
+        tokens.push(docSnap.data()); // Ajoute les données du token trouvé au tableau
+      }
+    }
+
+    return tokens; // Retourne le tableau des tokens trouvés
   }
 
 

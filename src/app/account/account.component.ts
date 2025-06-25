@@ -878,7 +878,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   public playText(): void {
-    const text = 'N\'oubliez pas de valider et soumettre le formulaire d\'inscription en formation pour être contacté par un conseiller projet.';
+    const text = 'N\'oubliez pas de valider et soumettre votre demande d\'inscription en formation pour être contacté par un conseiller projet.';
 
     this.textToSpeechService.synthesizeSpeech(text).subscribe(
       (response) => {

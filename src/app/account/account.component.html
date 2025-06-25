@@ -221,8 +221,8 @@
                     class="alert bg-warning p-4 mb-4 fade show m-2 assistant">
 
                     <span> <i class="bi bi-info-square-fill pe-2 danger"></i>Pour <strong> contacter le centre de votre
-                            choix,</strong> n'oubliez pas de compléter notre <a [routerLink]="['/socialregistration']">
-                            formulaire d'inscription en formation</a>.</span>
+                            choix,</strong> n'oubliez pas de compléter votre <a [routerLink]="['/socialregistration']">
+                            demande d'inscription en formation</a>.</span>
                 </div>
 
             </div>
@@ -235,7 +235,8 @@
                 <a class="collapsed btn text-light text-capitalize d-flex justify-content-between px-0"
                     data-bs-toggle="collapse" href="#collapseFullResults">
                     <div class="d-flex align-items-center gap-2 justify-content-between">
-                        <span class="text-nowrap">Estimations personnalisées</span>
+                        <span class="text-nowrap" *ngIf="displayPrices==true">Parcours de formation estimé</span>
+                        <span class="text-nowrap" *ngIf="displayPrices==false">Durées de formation estimées</span>
                         <i class="bi bi-caret-down-fill toggle-arrow fs-7"></i>
                     </div>
                     <i class="bi bi-card-list fs-4 text-light d-none d-sm-inline"></i>
@@ -268,8 +269,7 @@
                                         <!-- <em *ngIf="trades[trade]" class="text-primary fs-6">{{ trades[trade][i] }}</em> -->
                                         <em *ngIf="trades[trade]" class="text-primary fs-6">
                                             <i *ngIf="!trades[trade][i]" class="bi bi-exclamation-square-fill me-2"></i>
-                                            {{ trades[trade][i] ? trades[trade][i] : 'Attention : cette compétence ne
-                                            fait plus partie du référentiel actuel' }}
+                                            {{trades[trade][i] ? trades[trade][i] : 'Attention : cette compétence ne fait plus partie du référentiel actuel'}}
                                         </em>
 
 
@@ -309,9 +309,6 @@
                                             calculateTotalTime(trade)) }}h
                                             car nos journées de formation sont de 7 heures.
                                         </span>
-
-
-
                                     </div>
 
 
@@ -334,8 +331,8 @@
                     class="alert bg-warning p-4 mb-4 fade show m-2 assistant">
 
                     <span> <i class="bi bi-info-square-fill pe-2 danger"></i>Pour <strong> contacter le centre de votre
-                            choix,</strong> n'oubliez pas de compléter notre <a [routerLink]="['/socialregistration']">
-                            formulaire d'inscription en formation</a>.</span>
+                            choix,</strong> n'oubliez pas de compléter votre <a [routerLink]="['/socialregistration']">
+                            demande d'inscription en formation</a>.</span>
                 </div>
             </div>
         </div>
