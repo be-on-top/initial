@@ -26,10 +26,10 @@
                 <!-- <p *ngIf="user.sigle">Métiers d'affectation ({{user.sigle.length}}) :
                     <span *ngFor="let s of user.sigle">{{s}} </span>
                 </p> -->
-                <p *ngIf="studentsList"><strong>Candidats en cours de suivi ({{studentsList.length}})</strong> :
+                <p *ngIf="studentsList && userRouterLinks.user!=='referent'"><strong>Candidats en cours de suivi ({{studentsList.length}})</strong> :
                     {{studentsList}}
                 </p>
-                <p><strong>Enregistré en tant que</strong> : {{ user.isPrivate ? 'Privé' : 'Public' }}</p>
+                <p *ngIf="userRouterLinks.user!=='referent'"><strong>Enregistré en tant que</strong> : {{ user.isPrivate ? 'Privé' : 'Public' }}</p>
                 <p *ngIf="user.geographicScope"><strong>Son périmètre</strong> : {{permimeter}}</p>
                 <span *ngIf="user.structure"><strong>Organisme</strong>: {{user.structure}}</span><br>
                 <hr>
