@@ -73,8 +73,14 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   selectedRegion: string | null = null;
   selectedDepartment: string | null = null;
 
+  // Déclaration des variables pour lier la sélection à l'état des QCM
+  selectedTradeForFullQCM: string | null = null;
+  selectedTradeForQCMStarted: string | null = null;
+  selectedTradeOnTraining: string | null = null;
 
   isLoading: boolean = true
+
+  storedValue: any
 
   constructor(
     private service: StudentsService,
@@ -108,11 +114,10 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
 
     }
 
-
     // pour le cas très spécifique du contact ajouté par un referent
     if (this.userUid && this.userRouterLinks.user === 'referentsContacts') {
       this.userService.getUser(this.userUid).subscribe(data => {
-        console.log("tableau du doc", data.students)
+        // console.log("tableau du doc", data.students)
         this.contactStudents = data.students
       }
       )
@@ -136,17 +141,14 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     this.regionalService.getAllRegions().subscribe(regions => {
       this.regions = regions
       // console.log('regions récupérées', this.regions);
-
     })
-
 
     this.regionalService.getAllDepartments().subscribe(departments => {
       this.departments = departments
       // console.log('départements récupérées', this.departments);
-
     })
 
-
+    this.storedValue = localStorage.getItem('filter')
   }
 
   ngAfterViewInit() {
@@ -155,9 +157,6 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
         this.trades.push(element.sigle)
       });
     })
-
-
-
 
   }
 
@@ -469,12 +468,12 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     // puisqu'il faut désactiver la vue additionnelle des non actifs dès qu'un filtre est actif...
     this.showNoInterestStudents = false
 
-    if (this.isSocialFormSentFilter) {
+    if (this.isSocialFormSentFilter || this.storedValue === 'socialFormSentFilter') {
       // Si le filtre "formulaire social envoyé" est actif,
       // on ne garde que les étudiants qui ont effectivement envoyé ce formulaire
       this.allStudents = this.initialStudents.filter(student => student.isSocialFormSent);
 
-    } else if (this.noSocialFormSentFilter) {
+    } else if (this.noSocialFormSentFilter || this.storedValue === 'noSocialFormSentFilter') {
       // Si le filtre "aucun formulaire social envoyé" est actif,
       // on applique les conditions suivantes :
       this.allStudents = this.initialStudents.filter(student =>
@@ -492,24 +491,25 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
         !student.isSocialFormSent
       );
 
+
       // Extrait les UIDs des étudiants
       // const uids = this.allStudents.map(student => student.id)
       // console.log("all students with no socialFormSent", uids)
       // Passe les UIDs au service pour interroger Firestore (desactivé juste pour test OK)
-    //   this.service.checkTokensForStudents(uids).then(tokens => {
-    //   // Les tokens trouvés seront stockés ici
-    //   this.studentsWithToken = tokens;
-    //   console.log(this.studentsWithToken); // Ou fais ce que tu veux avec les tokens
-    // });
-  
+      //   this.service.checkTokensForStudents(uids).then(tokens => {
+      //   // Les tokens trouvés seront stockés ici
+      //   this.studentsWithToken = tokens;
+      //   console.log(this.studentsWithToken); // Ou fais ce que tu veux avec les tokens
+      // });
 
-    } else if (this.isSubscriptionFilter) {
+
+    } else if (this.isSubscriptionFilter || this.storedValue === 'isSubscriptionFilter') {
       this.allStudents = this.initialStudents.filter(student => student.subscriptions);
       this.tradesActivated = true
     }
 
     // missing subscriptions
-    else if (this.isSubscriptionMissingFilter) {
+    else if (this.isSubscriptionMissingFilter || this.storedValue === 'isSubscriptionMissingFilter') {
       this.allStudents = this.initialStudents.filter(student => !student.subscriptions);
       this.tradesActivated = true
     }
@@ -524,18 +524,18 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
         )
       );
 
-    } else if (this.isInnerStudentFilter) {
+    } else if (this.isInnerStudentFilter || this.storedValue === 'isInnerStudentFilter') {
       this.allStudents = this.initialStudents.filter(student => student.innerStudent);
     } else if (this.isTradeQCMStarted) {
       this.allStudents = this.initialStudents.filter(student => student['quizz_' + trade] && !student['quizz_' + trade].fullResults);
     }
     else if (this.isTradeFullQCM) {
       this.allStudents = this.initialStudents.filter(student => student['quizz_' + trade] && student['quizz_' + trade].fullResults);
-    } else if (this.isQualifiedFilter) {
+    } else if (this.isQualifiedFilter || this.storedValue === 'isQualifiedFilter') {
       this.allStudents = this.initialStudents.filter(student => student.endedSubscriptions);
-    } else if (this.isPriorFilter) {
+    } else if (this.isPriorFilter || this.storedValue === 'isPriorFilter') {
       this.allStudents = this.filteredStudents;
-    } else if (this.myCenterStudents) {
+    } else if (this.myCenterStudents || this.storedValue === 'myCenterStudentsFilter') {
       this.allStudents = this.initialStudents.filter(student => student.referent === this.userUid);
     } else {
       this.allStudents = [...this.initialStudents];
@@ -546,38 +546,81 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   }
 
   onCheckboxChangePrior(event: any) {
+    this.resetAllFilters()
     this.isPriorFilter = event.target.checked;
-    this.applyFilters();
+    if (event.target.checked) {
+      localStorage.setItem('filter', 'isPriorFilter');
+      this.storedValue = 'isPriorFilter'
+      this.applyFilters();
+    } else {
+      localStorage.removeItem('filter')
+      this.storedValue = ''
+      this.applyFilters()
+    }
   }
 
   onCheckboxChangeSocial(event: any) {
+    this.resetAllFilters()
     this.isSocialFormSentFilter = event.target.checked;
-    this.applyFilters();
+
+    if (event.target.checked) {
+      localStorage.setItem('filter', 'socialFormSentFilter');
+      this.storedValue = 'socialFormSentFilter'
+      this.applyFilters();
+    } else {
+      localStorage.removeItem('filter')
+      this.storedValue = ''
+      this.applyFilters()
+    }
+
   }
 
   onCheckboxChangeNoSocial(event: any) {
+    this.resetAllFilters()
     this.noSocialFormSentFilter = event.target.checked;
-    this.applyFilters();
+
+    if (event.target.checked) {
+      localStorage.setItem('filter', 'noSocialFormSentFilter');
+      this.storedValue = 'noSocialFormSentFilter'
+      this.applyFilters();
+
+    } else {
+      localStorage.removeItem('filter');
+      this.storedValue = ''
+      this.applyFilters();
+    }
   }
 
   onCheckboxChangeSubscriptions(event: any) {
+    this.resetAllFilters()
     this.isSubscriptionFilter = event.target.checked;
-    this.applyFilters();
+    if (event.target.checked) {
+      localStorage.setItem('filter', 'isSubscriptionFilter');
+      this.storedValue = 'isSubscriptionFilter'
+      this.applyFilters();
+
+    } else {
+      localStorage.removeItem('filter');
+      this.storedValue = ''
+      this.applyFilters();
+    }
   }
 
   onCheckboxChangeSubscriptionsMissing(event: any) {
+    this.resetAllFilters()
     this.isSubscriptionMissingFilter = event.target.checked;
-    this.applyFilters();
+    if (event.target.checked) {
+      localStorage.setItem('filter', 'isSubscriptionMissingFilter');
+      this.storedValue = 'isSubscriptionMissingFilter'
+      this.applyFilters();
+
+    } else {
+      localStorage.removeItem('filter');
+      this.storedValue = ''
+      this.applyFilters();
+    }
   }
 
-
-  // inititalement destiné aux inscriptions officielles
-  // onCheckboxChangeTrades(event: any, trade: string) {
-  //   this.isTradeFilter = event.target.checked;
-  //   this.applyFilters(trade);
-  // }
-
-  selectedTradeOnTraining: string | null = null;
 
   onTradeTrainingSelect(trade: string | null) {
     this.resetAllFilters();
@@ -588,29 +631,6 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   }
 
 
-  // puisqu'il faut compliquer
-
-  // si on substitue partout où on boucle sur trades un select aux cases à cocher !!! :
-  resetAllFilters() {
-    this.isSocialFormSentFilter = false;
-    this.noSocialFormSentFilter = false;
-    this.isSubscriptionFilter = false;
-    this.isSubscriptionMissingFilter = false;
-    this.isTradeFilter = false;
-    this.isTradeQCMStarted = false;
-    this.isTradeFullQCM = false;
-    this.isQualifiedFilter = false;
-    this.isPriorFilter = false;
-    this.myCenterStudents = false;
-    this.tradesActivated = false;
-    // this.noSocialFormSentFilter = false;
-  }
-  // onCheckboxChangeTradesForStartedQCM(event: any, trade: string) {
-  //   this.isTradeQCMStarted = event.target.checked;
-  //   this.applyFilters(trade);
-  // }
-  selectedTradeForQCMStarted: string | null = null;
-
   onTradeQCMStartedSelect(trade: string | null) {
     this.resetAllFilters();
     this.isTradeQCMStarted = !!trade;
@@ -619,13 +639,6 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     this.applyFilters(cleanTrade);
   }
 
-  // onCheckboxChangeTradesForFullQCM(event: any, trade: string) {
-  //   this.isTradeFullQCM = event.target.checked;
-  //   this.applyFilters(trade);
-  // }
-  // pour le changer en select
-  // Déclaration de la variable pour lier la sélection
-  selectedTradeForFullQCM: string | null = null;
 
   // Méthode appelée lors de la sélection dans le select
   onTradeFullQCMSelect(trade: string | null) {
@@ -639,26 +652,70 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   }
 
   onCheckboxChangeInner(event: any) {
+    this.resetAllFilters()
     this.isInnerStudentFilter = event.target.checked;
-    this.applyFilters();
+ if (event.target.checked) {
+      localStorage.setItem('filter', 'isInnerStudentFilter')
+      this.storedValue = 'isInnerStudentFilter'
+      this.applyFilters()
+    } else {
+      localStorage.removeItem('filter')
+      this.storedValue = ''
+      this.applyFilters()
+    }
   }
 
   onCheckboxChangeEndedTraining(event: any) {
+    this.resetAllFilters()
     this.isQualifiedFilter = event.target.checked;
-    this.applyFilters();
+    if (event.target.checked) {
+      localStorage.setItem('filter', 'isQualifiedFilter')
+      this.storedValue = 'isQualifiedFilter'
+      this.applyFilters()
+    } else {
+      localStorage.removeItem('filter')
+      this.storedValue = ''
+      this.applyFilters()
+    }
   }
 
+  //  que j'ai ajoutés
   onCheckboxChangeMyInitialStudents(event: any) {
+    this.resetAllFilters()
     this.myCenterStudents = event.target.checked;
-    this.applyFilters();
+    if (event.target.checked) {
+      localStorage.setItem('filter', 'myCenterStudentsFilter');
+      this.storedValue = 'myCenterStudentsFilter'
+      this.applyFilters()
+    } else {
+      localStorage.removeItem('filter');
+      this.storedValue = ''
+      this.applyFilters()
+    }
+  }
+
+    // si on substitue partout où on boucle sur trades un select aux cases à cocher !!! :
+  resetAllFilters() {
+    this.isSocialFormSentFilter = false;
+    this.noSocialFormSentFilter = false;
+    this.isSubscriptionFilter = false;
+    this.isSubscriptionMissingFilter = false;
+    this.isInnerStudentFilter = false;
+    this.isTradeFilter = false;
+    this.isTradeQCMStarted = false;
+    this.isTradeFullQCM = false;
+    this.isQualifiedFilter = false;
+    this.isPriorFilter = false;
+    this.myCenterStudents = false;
+    this.tradesActivated = false;
+    localStorage.removeItem('filter')
+    this.storedValue = ''
   }
 
   onSelectRegion(region: string | null) {
     this.selectedRegion = region && region !== 'null' ? region : null;
     console.log('Région sélectionnée :', this.selectedRegion);
-
     this.applyRegionalFilter()
-
   }
 
   applyRegionalFilter(): void {
@@ -887,7 +944,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     for (const item of data) {
       const row = headers.map(header => `"${(item[header] ?? '').toString().replace(/"/g, '""')}"`);
       csvRows.push(row.join(','));
-        // csvRows.push(row.join(';'));
+      // csvRows.push(row.join(';'));
     }
 
     return csvRows.join('\n');

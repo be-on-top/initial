@@ -123,8 +123,8 @@ export class CentersService {
             c.zip_code === city.zip_code && c.label === city.label
           ))
         );
-
-        console.log(uniqueCities); // Résultats filtrés et dédupliqués
+        // Résultats filtrés et dédupliqués
+        // console.log(uniqueCities);
         return uniqueCities;
       })
     )
@@ -152,7 +152,7 @@ export class CentersService {
   //   }
 
   //   // console.log('newCenter côté service', newCenter);
-    
+
 
   //   // Enregistre dans Firestore avec une collection centers qui aura de multiples propriétés
   //   let $centersRef = collection(this.firestore, "centers");
@@ -172,7 +172,7 @@ export class CentersService {
 
   createCenter(center: Centers) {
     let $centersRef = collection(this.firestore, "centers");
-  
+
     // Crée un objet center sans l'ID pour l'instant
     let newCenter = {
       created: Date.now(),
@@ -181,17 +181,17 @@ export class CentersService {
       address: center.address,
       cp: center.cp,
       city: center.city,
-      sigles: center.sigles, 
+      sigles: center.sigles,
       // Utilisez directement center.sigles
-      mainCity: center.mainCity, 
-      tel:center.tel
+      mainCity: center.mainCity,
+      tel: center.tel
     }
-  
+
     return from(addDoc($centersRef, newCenter)).pipe(
       mergeMap((docRef) => {
         // Ajoute l'id au document lui-même
         const updatedCenter = { ...newCenter, id: docRef.id };
-  
+
         // Met à jour le document pour inclure l'ID
         return from(setDoc(doc($centersRef, docRef.id), updatedCenter)).pipe(
           map(() => updatedCenter) // Retourne le centre mis à jour
@@ -203,7 +203,7 @@ export class CentersService {
       })
     );
   }
-  
+
 
 
   /**
@@ -252,14 +252,14 @@ export class CentersService {
 
     // Crée la référence au document
     const centerDocRef = doc(collection(this.firestore, 'centers'), id);
-    
+
     // Récupère les données et retourne uniquement le champ `name`
     // return docData(centerDocRef).pipe(
     //   map(data => data ? data['name'] : undefined)
     // );
     // Récupère les données et retourne uniquement le champ `name` et son CP
     return docData(centerDocRef).pipe(
-      map(data => data ? data['name']  + '-' + data['cp'] : undefined)
+      map(data => data ? data['name'] + '-' + data['cp'] : undefined)
     );
   }
 
@@ -281,7 +281,7 @@ export class CentersService {
     // Crée une référence à la collection et une requête avec le paramètre array-contains
     const myData = query(collection(this.firestore, 'centers'), where('sigles', 'array-contains', sigle));
     const querySnapshot = await getDocs(myData);
-    console.log('querySnapshot', querySnapshot);
+    // console.log('querySnapshot', querySnapshot);
 
 
     // Initialise un tableau pour stocker les documents
@@ -346,7 +346,7 @@ export class CentersService {
 
 
   async addIdToExistingCenters(): Promise<void> {
-    console.log("Début de la mise à jour des centres avec leur ID...");
+    // console.log("Début de la mise à jour des centres avec leur ID...");
 
     // Récupérer la référence de la collection "centers"
     const centersRef = collection(this.firestore, 'centers');
@@ -361,7 +361,7 @@ export class CentersService {
         return;
       }
 
-      console.log('Données récupérées : ', querySnapshot.size);
+      // console.log('Données récupérées : ', querySnapshot.size);
 
       // Parcourir chaque document récupéré
       const updatePromises = querySnapshot.docs.map(async (doc) => {
@@ -370,11 +370,11 @@ export class CentersService {
 
         // Récupération de l'ID du document Firestore
         const centerId = doc.id;
-        console.log('Centre à mettre à jour : ', center);
+        // console.log('Centre à mettre à jour : ', center);
 
         // Vérifier si le champ 'id' est déjà présent dans les données du document
         if (!center['id']) {
-          console.log(`L'ID est manquant pour le centre : ${center['name']}, ajout de l'ID...`);
+          // console.log(`L'ID est manquant pour le centre : ${center['name']}, ajout de l'ID...`);
 
           // Référence au document actuel
           const centerDocRef = doc.ref;
@@ -398,217 +398,217 @@ export class CentersService {
 
 
 
-// Méthode pour récupérer uniquement le tableau 'sigles' d'un centre spécifique
-// Cela évite de récupérer tout le document et optimise la requête Firestore
-// getCenterSigles pour obtenir les sigles d'un centre
-getCenterSigles(id: string): Observable<string[]> {
-  const $centerRef = doc(this.firestore, `centers/${id}`);
-  return docData($centerRef).pipe(
-    map((center: any) => center?.sigles || []), // Récupère les sigles ou un tableau vide
-    catchError(error => {
-      console.error('Erreur dans getCenterSigles:', error);
-      return of([]); // Retourne un tableau vide en cas d'erreur
-    })
-  );
-}
+  // Méthode pour récupérer uniquement le tableau 'sigles' d'un centre spécifique
+  // Cela évite de récupérer tout le document et optimise la requête Firestore
+  // getCenterSigles pour obtenir les sigles d'un centre
+  getCenterSigles(id: string): Observable<string[]> {
+    const $centerRef = doc(this.firestore, `centers/${id}`);
+    return docData($centerRef).pipe(
+      map((center: any) => center?.sigles || []), // Récupère les sigles ou un tableau vide
+      catchError(error => {
+        console.error('Erreur dans getCenterSigles:', error);
+        return of([]); // Retourne un tableau vide en cas d'erreur
+      })
+    );
+  }
 
-// Récupérer tous les sigles des centres liés à l'ID
-// getUserCentersSigles(centerIds: string[]): Observable<string[]> {
-//   alert('bngo')
-//   // Si le tableau est vide, retourner immédiatement un tableau vide
-//   if (!centerIds.length) return of([]);
+  // Récupérer tous les sigles des centres liés à l'ID
+  // getUserCentersSigles(centerIds: string[]): Observable<string[]> {
+  //   alert('bngo')
+  //   // Si le tableau est vide, retourner immédiatement un tableau vide
+  //   if (!centerIds.length) return of([]);
 
-//   return forkJoin(centerIds.map(id => this.getCenterSigles(id))).pipe(
-//     map(siglesArrays => {
-//       // Fusionner les tableaux et supprimer les doublons
-//       console.log('final', Array.from(new Set(siglesArrays.flat())));
-      
-//       return Array.from(new Set(siglesArrays.flat()));
-//     }),
-//     catchError(error => {
-//       console.error('Erreur dans getUserCentersSigles:', error);
-//       return of([]); // Retourne un tableau vide en cas d'erreur
-//     })
-//   );
-// }
+  //   return forkJoin(centerIds.map(id => this.getCenterSigles(id))).pipe(
+  //     map(siglesArrays => {
+  //       // Fusionner les tableaux et supprimer les doublons
+  //       console.log('final', Array.from(new Set(siglesArrays.flat())));
 
-// getUserCentersSigles(centerIds: string[]): Observable<string[]> {
-//   // Si le tableau est vide, retourner immédiatement un tableau vide
-//   if (!centerIds.length) return of([]);
+  //       return Array.from(new Set(siglesArrays.flat()));
+  //     }),
+  //     catchError(error => {
+  //       console.error('Erreur dans getUserCentersSigles:', error);
+  //       return of([]); // Retourne un tableau vide en cas d'erreur
+  //     })
+  //   );
+  // }
 
-//   // On démarre un tableau vide pour y pousser les sigles
-//   let allSigles: string[] = [];
+  // getUserCentersSigles(centerIds: string[]): Observable<string[]> {
+  //   // Si le tableau est vide, retourner immédiatement un tableau vide
+  //   if (!centerIds.length) return of([]);
 
-//   // Créer un observable qui va itérer sur les centerIds
-//   return from(centerIds).pipe(
-//     concatMap(id => 
-//       this.getCenterSigles(id).pipe(
-//         tap(sigles => {
-//           // On pousse les sigles dans le tableau au fur et à mesure
-//           allSigles = [...allSigles, ...sigles];
-//         })
-//       )
-//     ),
-//     map(() => {
-//       // Une fois tous les sigles récupérés, on supprime les doublons
-//       return Array.from(new Set(allSigles));
-//     }),
-//     catchError(error => {
-//       console.error('Erreur dans getUserCentersSigles:', error);
-//       return of([]); // Retourne un tableau vide en cas d'erreur
-//     })
-//   );
-// }
+  //   // On démarre un tableau vide pour y pousser les sigles
+  //   let allSigles: string[] = [];
 
-getUserCentersSigles(centerIds: string[]): Observable<string[]> {
-  if (!centerIds.length) return of([]);
+  //   // Créer un observable qui va itérer sur les centerIds
+  //   return from(centerIds).pipe(
+  //     concatMap(id => 
+  //       this.getCenterSigles(id).pipe(
+  //         tap(sigles => {
+  //           // On pousse les sigles dans le tableau au fur et à mesure
+  //           allSigles = [...allSigles, ...sigles];
+  //         })
+  //       )
+  //     ),
+  //     map(() => {
+  //       // Une fois tous les sigles récupérés, on supprime les doublons
+  //       return Array.from(new Set(allSigles));
+  //     }),
+  //     catchError(error => {
+  //       console.error('Erreur dans getUserCentersSigles:', error);
+  //       return of([]); // Retourne un tableau vide en cas d'erreur
+  //     })
+  //   );
+  // }
 
-  console.log('✅ Liste des centerIds reçus dans getUserCentersSigles:', centerIds);
+  getUserCentersSigles(centerIds: string[]): Observable<string[]> {
+    if (!centerIds.length) return of([]);
 
-  // Tableau pour accumuler tous les sigles
-  let allSigles: string[] = [];
+    // console.log('✅ Liste des centerIds reçus dans getUserCentersSigles:', centerIds);
 
-  return from(centerIds).pipe(
-    mergeMap(id => 
-      this.getCenterSigles(id).pipe(
-        tap(sigles => {
-          // Ajout des sigles de chaque centerId dans le tableau
-          allSigles = [...allSigles, ...sigles];
-        }),
-        catchError(error => {
-          console.error(`Erreur pour le centerId ${id}:`, error);
-          return of([]);  // Retourne un tableau vide en cas d'erreur pour cet ID
-        })
-      )
-    ),
-    map(() => {
-      // Après avoir récupéré tous les sigles, on fusionne et dédoublonne
-      const uniques = Array.from(new Set(allSigles));
-      console.log('✅ Sigles fusionnés et dédoublonnés:', uniques);
-      return uniques;
-    }),
-    catchError(error => {
-      console.error('Erreur générale dans getUserCentersSigles:', error);
-      return of([]);  // Retourne un tableau vide en cas d'erreur
-    })
-  );
-}
+    // Tableau pour accumuler tous les sigles
+    let allSigles: string[] = [];
 
-
+    return from(centerIds).pipe(
+      mergeMap(id =>
+        this.getCenterSigles(id).pipe(
+          tap(sigles => {
+            // Ajout des sigles de chaque centerId dans le tableau
+            allSigles = [...allSigles, ...sigles];
+          }),
+          catchError(error => {
+            console.error(`Erreur pour le centerId ${id}:`, error);
+            return of([]);  // Retourne un tableau vide en cas d'erreur pour cet ID
+          })
+        )
+      ),
+      map(() => {
+        // Après avoir récupéré tous les sigles, on fusionne et dédoublonne
+        const uniques = Array.from(new Set(allSigles));
+        // console.log('✅ Sigles fusionnés et dédoublonnés:', uniques);
+        return uniques;
+      }),
+      catchError(error => {
+        console.error('Erreur générale dans getUserCentersSigles:', error);
+        return of([]);  // Retourne un tableau vide en cas d'erreur
+      })
+    );
+  }
 
 
-// Cette méthode retourne une liste de régions uniques sous forme d'Observable<string[]>
-getAllRegions(): Observable<string[]> {
-  // On commence par faire un GET HTTP sur le fichier assets/cities.json
-  return this.http.get<{ cities: City[] }>(this.dataUrl).pipe(
-
-    // On utilise la fonction map pour transformer la réponse
-    map(response => {
-      // Étape 1 : On extrait toutes les régions depuis les objets 'city'
-      // Cela donne un tableau avec potentiellement des doublons
-      const allRegions = response.cities.map(city => city.region_name);
-
-      // Étape 2 : On utilise un Set pour supprimer les doublons automatiquement
-      const uniqueRegions = new Set(allRegions);
-
-      // Étape 3 : On transforme le Set en tableau pour le retourner
-      const regionsArray = Array.from(uniqueRegions);
-
-      // Étape 4 (optionnelle) : On trie les régions par ordre alphabétique
-      regionsArray.sort();
-
-      // On retourne la liste finale
-      return regionsArray;
-    })
-  );
-}
-
-getRegionsByPostalCodes(postalCodes: string[]): Observable<{ [postalCode: string]: string }> {
-  return this.http.get<{ cities: City[] }>(this.dataUrl).pipe(
-    map(response => {
-      const result: { [postalCode: string]: string } = {};
-
-      postalCodes.forEach(cp => {
-        const city = response.cities.find(c => c.zip_code === cp);
-        if (city) {
-          result[cp] = city.region_name;
-        } else {
-          result[cp] = 'Région inconnue';
-        }
-      });
-
-      return result;
-    })
-  );
-}
 
 
-// Cette méthode retourne une liste de départements uniques sous forme d'Observable<string[]>
-getAllDepartments(): Observable<string[]> {
-  return this.http.get<{ cities: City[] }>(this.dataUrl).pipe(
-    map(response => {
-      // Étape 1 : on extrait tous les noms de départements depuis les objets 'city'
-      const allDepartments = response.cities.map(city => city.department_name);
+  // Cette méthode retourne une liste de régions uniques sous forme d'Observable<string[]>
+  getAllRegions(): Observable<string[]> {
+    // On commence par faire un GET HTTP sur le fichier assets/cities.json
+    return this.http.get<{ cities: City[] }>(this.dataUrl).pipe(
 
-      // Étape 2 : suppression des doublons via un Set
-      const uniqueDepartments = new Set(allDepartments);
+      // On utilise la fonction map pour transformer la réponse
+      map(response => {
+        // Étape 1 : On extrait toutes les régions depuis les objets 'city'
+        // Cela donne un tableau avec potentiellement des doublons
+        const allRegions = response.cities.map(city => city.region_name);
 
-      // Étape 3 : on transforme en tableau
-      const departmentsArray = Array.from(uniqueDepartments);
+        // Étape 2 : On utilise un Set pour supprimer les doublons automatiquement
+        const uniqueRegions = new Set(allRegions);
 
-      // Étape 4 (optionnelle) : tri alphabétique
-      departmentsArray.sort();
+        // Étape 3 : On transforme le Set en tableau pour le retourner
+        const regionsArray = Array.from(uniqueRegions);
 
-      return departmentsArray;
-    })
-  );
-}
+        // Étape 4 (optionnelle) : On trie les régions par ordre alphabétique
+        regionsArray.sort();
+
+        // On retourne la liste finale
+        return regionsArray;
+      })
+    );
+  }
+
+  getRegionsByPostalCodes(postalCodes: string[]): Observable<{ [postalCode: string]: string }> {
+    return this.http.get<{ cities: City[] }>(this.dataUrl).pipe(
+      map(response => {
+        const result: { [postalCode: string]: string } = {};
+
+        postalCodes.forEach(cp => {
+          const city = response.cities.find(c => c.zip_code === cp);
+          if (city) {
+            result[cp] = city.region_name;
+          } else {
+            result[cp] = 'Région inconnue';
+          }
+        });
+
+        return result;
+      })
+    );
+  }
 
 
-getDepartmentsByPostalCodes(postalCodes: string[]): Observable<{ [postalCode: string]: string }> {
-  return this.http.get<{ cities: City[] }>(this.dataUrl).pipe(
-    map(response => {
-      const result: { [postalCode: string]: string } = {};
+  // Cette méthode retourne une liste de départements uniques sous forme d'Observable<string[]>
+  getAllDepartments(): Observable<string[]> {
+    return this.http.get<{ cities: City[] }>(this.dataUrl).pipe(
+      map(response => {
+        // Étape 1 : on extrait tous les noms de départements depuis les objets 'city'
+        const allDepartments = response.cities.map(city => city.department_name);
 
-      postalCodes.forEach(cp => {
-        const city = response.cities.find(c => c.zip_code === cp);
-        if (city) {
-          result[cp] = city.department_name; // c’est ce champ qui est dispo
-        } else {
-          result[cp] = 'Département inconnu';
-        }
-      });
+        // Étape 2 : suppression des doublons via un Set
+        const uniqueDepartments = new Set(allDepartments);
 
-      return result;
-    })
-  );
-}
+        // Étape 3 : on transforme en tableau
+        const departmentsArray = Array.from(uniqueDepartments);
+
+        // Étape 4 (optionnelle) : tri alphabétique
+        departmentsArray.sort();
+
+        return departmentsArray;
+      })
+    );
+  }
 
 
-getSocialForms(studentIds: string[]): Observable<{ [studentId: string]: any }> {
-  const observables = studentIds.map(id => {
-    const ref = doc(this.firestore, `SocialForm/${id}`);
-    return getDoc(ref).then(snapshot => ({ id, snapshot }));
-  });
+  getDepartmentsByPostalCodes(postalCodes: string[]): Observable<{ [postalCode: string]: string }> {
+    return this.http.get<{ cities: City[] }>(this.dataUrl).pipe(
+      map(response => {
+        const result: { [postalCode: string]: string } = {};
 
-  return from(Promise.all(observables)).pipe(
-    map(pairs => {
-      const result: { [studentId: string]: any } = {};
+        postalCodes.forEach(cp => {
+          const city = response.cities.find(c => c.zip_code === cp);
+          if (city) {
+            result[cp] = city.department_name; // c’est ce champ qui est dispo
+          } else {
+            result[cp] = 'Département inconnu';
+          }
+        });
 
-      pairs.forEach(({ id, snapshot }) => {
-        if (snapshot.exists()) {
-          const data = snapshot.data();
-          result[id] = data;
-        } else {
-          console.warn(`⚠️ socialForm non trouvé pour studentId : ${id}`);
-        }
-      });
+        return result;
+      })
+    );
+  }
 
-      console.log('📦 Résultat getSocialForms :', result);
-      return result;
-    })
-  );
-}
+
+  getSocialForms(studentIds: string[]): Observable<{ [studentId: string]: any }> {
+    const observables = studentIds.map(id => {
+      const ref = doc(this.firestore, `SocialForm/${id}`);
+      return getDoc(ref).then(snapshot => ({ id, snapshot }));
+    });
+
+    return from(Promise.all(observables)).pipe(
+      map(pairs => {
+        const result: { [studentId: string]: any } = {};
+
+        pairs.forEach(({ id, snapshot }) => {
+          if (snapshot.exists()) {
+            const data = snapshot.data();
+            result[id] = data;
+          } else {
+            console.warn(`⚠️ socialForm non trouvé pour studentId : ${id}`);
+          }
+        });
+
+        // console.log('📦 Résultat getSocialForms :', result);
+        return result;
+      })
+    );
+  }
 
 
 

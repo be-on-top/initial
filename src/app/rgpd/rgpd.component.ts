@@ -7,25 +7,25 @@ import { AfterViewInit, Component } from '@angular/core';
 })
 export class RgpdComponent implements AfterViewInit {
 
-  integratedBanner:boolean=false
+  integratedBanner: boolean = false
 
   constructor() {
     // alert(localStorage.getItem("userConsent"))
-    
 
-}
 
-ngAfterViewInit(): void {
-  const consentValue = localStorage.getItem("userConsent");
-    if (consentValue==="false") {
+  }
+
+  ngAfterViewInit(): void {
+    const consentValue = localStorage.getItem("userConsent");
+    setTimeout(() => {
+      if (consentValue === "false") {
         console.log('Consentement lu du stockage local depuis rgpd vérification : false', consentValue);
-        this.integratedBanner=true
-    } else {
-        console.log('Aucun consentement trouvé dans le stockage local ou positifi');
-        this.integratedBanner=false
-    }
-
-
+        this.integratedBanner = true;
+      } else {
+        console.log('Aucun consentement trouvé dans le stockage local ou positif');
+        this.integratedBanner = false;
+      }
+    });
   }
 
 }

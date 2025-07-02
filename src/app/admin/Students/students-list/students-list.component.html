@@ -54,45 +54,46 @@
                 <div class="form-check" *ngIf="userRouterLinks.user==='referent'">
                     <label class="form-check-label" for="priorCheckbox">Qui ont choisi mon centre*</label>
                     <input type="checkbox" (change)="onCheckboxChangePrior($event)" class="form-check-input"
-                        id="priorCheckbox">
+                        id="priorCheckbox" [checked]="storedValue=='isPriorFilter' || isPriorFilter===true">
                 </div>
                 <div class="form-check" *ngIf="userRouterLinks.user==='referent'">
                     <label class="form-check-label" for="myCenterStudents">Que j'ai ajouté(s)</label>
                     <input type="checkbox" (change)="onCheckboxChangeMyInitialStudents($event)" class="form-check-input"
-                        id="myCenterStudents">
+                        id="myCenterStudents" [checked]="storedValue=='myCenterStudentsFilter' || myCenterStudents===true">
                 </div>
                 <div class="form-check" *ngIf="userRouterLinks.user==='admin'|| userRouterLinks.user==='editor'">
                     <label class="form-check-label" for="socialCheckbox">Formulaire administratif renseigné</label>
                     <input type="checkbox" (change)="onCheckboxChangeSocial($event)" class="form-check-input"
-                        id="socialCheckbox">
+                        id="socialCheckbox"  [checked]="storedValue=='socialFormSentFilter' || isSocialFormSentFilter===true">
                 </div>
                 <div class="form-check" *ngIf="userRouterLinks.user==='admin'|| userRouterLinks.user==='editor'">
                     <label class="form-check-label" for="socialCheckbox">Formulaire administratif non renseigné</label>
                     <input type="checkbox" (change)="onCheckboxChangeNoSocial($event)" class="form-check-input"
-                        id="noSocialCheckbox">
+                        id="noSocialCheckbox" [checked]="storedValue=='noSocialFormSentFilter' || noSocialFormSentFilter===true">
                 </div>
                 <!-- étudiant interne : innerStudent -->
                 <div class="form-check" *ngIf="userRouterLinks.user==='admin'|| userRouterLinks.user==='editor'">
                     <label class="form-check-label" for="innerStudentCheckbox">Etudiants internes</label>
                     <input type="checkbox" (change)="onCheckboxChangeInner($event)" class="form-check-input"
-                        id="innerStudentCheckbox">
+                        id="innerStudentCheckbox"  [checked]="isInnerStudentFilter===true || storedValue==='isInnerStudentFilter'">
                 </div>
                 <!-- fin innerStudent -->
                 <div class="form-check">
+                    <!-- {{isSubscriptionFilter===true}} -->
                     <label class="form-check-label" for="subscriptionsCheckbox">Inscription formation finalisée</label>
                     <input type="checkbox" (change)="onCheckboxChangeSubscriptions($event)" class="form-check-input"
-                        id="subscriptionsCheckbox">
+                        id="subscriptionsCheckbox" [checked]="isSubscriptionFilter===true || storedValue==='isSubscriptionFilter'">
                 </div>
                 <div class="form-check" *ngIf="userRouterLinks.user==='referent'">
                     <label class="form-check-label" for="subscriptionsCheckbox">Inscription à finaliser</label>
                     <input type="checkbox" (change)="onCheckboxChangeSubscriptionsMissing($event)" class="form-check-input"
-                        id="subscriptionsMissingCheckbox">
+                        id="subscriptionsMissingCheckbox" [checked]="isSubscriptionMissingFilter===true || storedValue==='isSubscriptionMissingFilter'">
                 </div>
 
                 <div class="form-check">
                     <label class="form-check-label" for="endedCheckbox">A terminé sa formation</label>
                     <input type="checkbox" (change)="onCheckboxChangeEndedTraining($event)" class="form-check-input"
-                        id="endedCheckbox">
+                        id="endedCheckbox"  [checked]="isQualifiedFilter===true || storedValue==='isQualifiedFilter'">
                 </div>
 
                 <!-- puisqu'il faut compliquer -->

@@ -4,7 +4,7 @@
   "assetGroups": [
     {
       "name": "app",
-      "installMode": "prefetch",
+      "installMode": "lazy",
       "resources": {
         "files": [
           "/favicon.ico",
@@ -22,8 +22,7 @@
       "resources": {
         "files": [
           "/assets/**",
-          "/*.(svg|cur|jpg|jpeg|png|apng|webp|avif|gif|otf|ttf|woff|woff2)",
-          "gs://be-on-top-beta.appspot.com/images/trades/*"
+          "/*.(svg|cur|jpg|jpeg|png|apng|webp|avif|gif|otf|ttf|woff|woff2)"
         ]
       }
     }
@@ -41,26 +40,5 @@
         "maxSize": 300
       }
     }
-  ],
-  "navigationUrls": [
-  "/home",
-  "/home/**",
-  "/account",
-  "/rgpd",
-  "/partners",
-  "/benefits",
-  "/market-app",
-  "/centers",
-  "/center/**",
-  "/quizz/**",
-  "/trade/**",
-  "/formation/**",
-  "/chat/**",
-  "/socialregistration",
-  "/login",
-  "/register",
-  "/",
-  "!/assets/**",
-  "!/*.(js|css|png|jpg|jpeg|svg|ico|json|woff2?|ttf|map)"
-]
+  ]
 }

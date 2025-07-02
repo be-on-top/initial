@@ -62,7 +62,8 @@ export class CookieConsentBannerComponent implements OnInit {
   ngOnInit(): void {
     if (this.consentService.getConsent()) {
       this.showBanner = false;
-      this.loadMetaPixel(); // Recharger si consentement déjà donné
+      // Recharger si consentement déjà donné
+      // this.loadMetaPixel(); 
     }
   }
 
@@ -75,22 +76,57 @@ export class CookieConsentBannerComponent implements OnInit {
   //     this.loadMetaPixel();
   //  }
   
+// acceptCookies() {
+//   this.consentService.setConsent(true);
+//   this.showBanner = false;
+
+//   // Initialiser Meta Pixel avec un léger délai
+//   setTimeout(() => {
+//     if (!(window as any).fbq) {
+//       console.warn('Meta Pixel script non chargé ou bloqué');
+//       return;
+//     }
+
+//     (window as any).fbq('init', '622453283587163');
+//     (window as any).fbq('track', 'PageView');
+//     console.log('✅ fbq PageView envoyé (manuel avec délai)');
+//   }, 100); // ← délai de 100ms (ajustable si besoin)
+// }
 acceptCookies() {
   this.consentService.setConsent(true);
   this.showBanner = false;
 
-  // Initialiser Meta Pixel avec un léger délai
-  setTimeout(() => {
-    if (!(window as any).fbq) {
-      console.warn('Meta Pixel script non chargé ou bloqué');
-      return;
-    }
+  // Définir fbq manuellement avant le chargement
+  if (!(window as any).fbq) {
+    (window as any).fbq = function () {
+      (window as any).fbq.callMethod
+        ? (window as any).fbq.callMethod.apply((window as any).fbq, arguments)
+        : (window as any).fbq.queue.push(arguments);
+    };
+    (window as any).fbq.queue = [];
+    (window as any).fbq.loaded = true;
+    (window as any).fbq.version = '2.0';
+    (window as any).fbq.push = (window as any).fbq;
+  }
 
+  // Charger dynamiquement le script
+  const script = document.createElement('script');
+  script.src = 'https://connect.facebook.net/en_US/fbevents.js';
+  script.async = true;
+  script.onload = () => {
     (window as any).fbq('init', '622453283587163');
     (window as any).fbq('track', 'PageView');
-    console.log('✅ fbq PageView envoyé (manuel avec délai)');
-  }, 100); // ← délai de 100ms (ajustable si besoin)
+    console.log('✅ fbq chargé et PageView envoyé');
+  };
+  script.onerror = () => {
+    console.error('❌ Erreur chargement fbevents.js');
+  };
+
+  document.head.appendChild(script);
 }
+
+
+
 
 
 

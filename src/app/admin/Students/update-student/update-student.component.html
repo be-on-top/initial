@@ -227,7 +227,7 @@
                 <form class="form mb-5" #endSubscription="ngForm" (submit)="addEndingDate(endSubscription)"
                     class="was-validated">
                     <select class="form-select" name="sigle" ngModel required #sigle="ngModel">
-                        <option value>Enregistrer la fin d'inscription pour :</option>
+                        <option value>Enregistrer la fin de formation pour :</option>
                         <ng-container *ngFor="let element of student.subscriptions">
                             <ng-container
                                 *ngIf="!student.endedSubscriptions || student.endedSubscriptions.sigle !== element">

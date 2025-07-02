@@ -159,7 +159,7 @@ if (this.userRole?.includes('external') && this.userUid) {
 
         // Traite les données récupérées ici depuis base de données indexée my-database
         getAllRequest.onsuccess = (event) => {
-          console.log("métier récupéré depuis indexedDB")
+          // console.log("métier récupéré depuis indexedDB")
           this.trades = getAllRequest.result
         }
       }

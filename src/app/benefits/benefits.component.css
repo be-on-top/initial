@@ -51,6 +51,11 @@ background-repeat: no-repeat; */
 
 }
 
+#image>div>h1 {
+font-size: inherit;
+
+}
+
 /* pour les tabs */
 /* styles.css */
 .nav-item .btn {
@@ -83,6 +88,23 @@ background-repeat: no-repeat; */
 .accordion-item button {
     margin-inline-end: 2rem;
 }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+button.btn.active{
+   background-image: linear-gradient(to top, #0c5eea, #0062fe);
+}
+
 
 
 

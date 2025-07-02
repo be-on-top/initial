@@ -4,7 +4,7 @@ import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { Firestore, docData, doc } from '@angular/fire/firestore';
 import { DomSanitizer, Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { Student } from 'src/app/admin/Students/student';
 import { AuthService } from 'src/app/admin/auth.service';
 import { SettingsService } from 'src/app/admin/settings.service';
@@ -82,7 +82,10 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
       // Faire quelque chose avec this.tradeId ici si online
       if (!this.offline) {
         // 1 récupération du doc en ligne
-        this.service.getSigle(this.tradeId).subscribe(data => {
+        this.service.getSigle(this.tradeId).pipe(
+        take(1)  // Prendre seulement un résultat
+      ).subscribe(
+          data => {
           console.log("metier récupéré via le paramètre de route", data)
           this.tradeData = data
 
@@ -113,6 +116,7 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
 
           // console.log("Sum of first values:", this.firstValuesSum)
         })
+      
 
         // 2 récupérer l'image en ligne
 
@@ -582,10 +586,6 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
         });
       });
     }
-
-
-
-
   }
 
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ElementRef, Renderer2, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, Renderer2, AfterViewInit, ViewChild } from '@angular/core';
 
 import { Router } from '@angular/router';
 // je ne vois pas l'utilité de cette méthode pour le moment, donc on désactive !!!!
@@ -114,6 +114,8 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
   // pour savoir si y a un formulaire en cours de finalisation
   isSocialForm: boolean = false
 
+  @ViewChild('collapseLink') collapseLink!: ElementRef;
+
   constructor(
     private auth: Auth,
     // private firestore: Firestore, 
@@ -186,8 +188,9 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
               // console.log("Résultat Firestore :", this.isSocialForm);
               // console.log("Valeur de isSocialFormSent :", this.userData.isSocialFormSent);
 
-              if (this.isSocialForm && !this.userData.isSocialFormSent && !this.userData.innerStudent) {
-              // if (!this.userData.isSocialFormSent && !this.userData.innerStudent) {
+              // if (this.isSocialForm && !this.userData.isSocialFormSent && !this.userData.innerStudent) {
+              if (this.isOneQuizzAchieved && !this.userData.isSocialFormSent && !this.userData.innerStudent) {
+                // if (!this.userData.isSocialFormSent && !this.userData.innerStudent) {
                 console.log("Conditions validées, lancement du son...");
                 this.playText()
                 // this.playLocalMessage("remind.mp3");
@@ -280,6 +283,8 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         console.warn('⛔ Tracking désactivé ou Meta Pixel non chargé');
       }
     }, 0);
+
+
   }
 
 
@@ -878,7 +883,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   public playText(): void {
-    const text = 'N\'oubliez pas de valider et soumettre votre demande d\'inscription en formation pour être contacté par un conseiller projet.';
+    const text = 'N\'oubliez pas de renseigner votre demande d\'inscription en formation pour être contacté par un conseiller projet.';
 
     this.textToSpeechService.synthesizeSpeech(text).subscribe(
       (response) => {
@@ -891,6 +896,18 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     );
   }
+
+
+
+
+
+triggerCollapseClick() {
+  if (this.collapseLink?.nativeElement) {
+    this.collapseLink.nativeElement.click();
+  }
+}
+
+
 
 
 }

@@ -52,7 +52,7 @@ export class BenefitsComponent implements OnInit, AfterViewInit {
       // 🔹 Relance le carousel après un petit délai (nécessaire sur mobile)
       setTimeout(() => {
         carousel.cycle();
-      }, 1000);
+      }, 0);
     }
   }
   

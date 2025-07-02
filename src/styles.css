@@ -42,11 +42,6 @@
 
 }
 
-
-
-
-
-
 h2,
 .h5 {
     color: var(--text-dark) !important;
@@ -341,11 +336,6 @@ h1.d-inline {
 }
 
 
-
-
-
-
-
 .bg-success,
 .btn-success,
 .success {
@@ -572,6 +562,52 @@ abbr:hover::before {
     opacity: 0.99;
     /* Assez visible pour l'utilisateur, mais pas toujours détecté par Lighthouse */
     /* background-color: #E21937; */
+}
+
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  outline: none;
+}
+.tooltip-container::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 125%;
+  width:100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #0a1a2f;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease-in-out;
+  z-index: 1000;
+  white-space: normal;
+  word-wrap: break-word;
+}
+.tooltip-container::before {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: #0a1a2f;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.tooltip-container:hover::after,
+.tooltip-container:focus::after,
+.tooltip-container:hover::before,
+.tooltip-container:focus::before {
+  opacity: 1;
+  visibility: visible;
 }
 
 

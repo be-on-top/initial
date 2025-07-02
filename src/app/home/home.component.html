@@ -28,14 +28,6 @@
 
     <!-- test alert-dismissible for mission -->
     <ng-container *ngIf="!isLoading && !isOneQuizzAchieved && !offline; else yes">
-        <!-- <div *ngIf="!isLoading && !isOneQuizzAchieved && !offline"
-            class="alert w-100 p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show fs-5">
-            <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
-                aria-label="Fermer le message"></button>
-            Evaluez vos connaissances et démarrez rapidement une <h1 class="d-inline fs-5">formation
-                personnalisée</h1> qui vous hissera aux portes du métier de votre choix
-        </div> -->
-
         <div class="alert w-100 p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show display-5">
             <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
                 aria-label="Fermer le message be-on-top"></button>
@@ -51,21 +43,18 @@
             </div> -->
             <!-- fin popover -->
             <a role="button" (click)="toggleInfo()" *ngIf="user==undefined" class="showInfo text-light"
-                aria-label="Afficher les informations pour évaluer vos connaissances">Evaluez vos connaissances</a>
-            <span *ngIf="user!==undefined">Evaluez vos connaissances</span>
+                aria-label="Afficher les informations pour évaluer vos connaissances">Evaluez vos connaissances, </a>
+            <span *ngIf="user!==undefined">Evaluez vos connaissances, </span>
 
             <div class="popover-custom pb-2" *ngIf="showInfo" (clickOutside)="closeInfo()" role="region"
                 aria-live="polite">
                 <a role="link" aria-label="Avertissement : création de compte pour démarrer un questionnaire"
                     [routerLink]="['/login']">Identifiez-vous ou créez votre compte pour démarrer un
-                    questionnaire <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i></a>
+                    questionnaire <i class="bi bi-link text-light ps-2" aria-hidden="true"></i></a>
                 <!-- <button type="button" class="btn-close ms-2" (click)="closeInfo()" aria-label="Fermer"></button> -->
-            </div>
-
-            et <h1 class="d-inline fs-5"> <a [routerLink]="['/benefits']" class="text-light" role="link"
-                    aria-label="Démarrer une formation personnalisée pour développer vos compétences">intégrez
-                    rapidement une
-                    formation personnalisée
+            </div>découvrez en un clic vos résultats et intégrez <h1 class="d-inline fs-5"> <a [routerLink]="['/benefits']" class="text-light" role="link"
+                    aria-label="Démarrer une formation personnalisée pour développer vos compétences">une
+                    formation sur mesure
                 </a></h1> pour être au top des compétences du métier de votre choix.
         </div>
 
@@ -87,13 +76,14 @@
             <button type="button" class="btn-close btn-close mt-2" data-bs-dismiss="alert"
                 aria-label="Fermer le message"></button>
             <!-- Retrouvez vos résultats + finaliser votre inscription administrative -->
-            <span> <i aria-hidden="true" class="bi bi-info-square-fill pe-2"></i>Vos <span class="fw-bold">résultats</span>
+            <span> <i aria-hidden="true" class="bi bi-info-square-fill pe-2"></i>Vos <span class="fw-bold">résultats et
+                    estimations</span>
                 sont disponibles dans votre <a [routerLink]="['/account']" class="text-decoration-none fw-bold"
                     title="compte personnel be-on-top"><i class="bi bi-person-fill pe-1"></i>compte utilisateur</a>.
-                Pour <span class="fw-bold">intégrer rapidement une formation</span> dans <span
-                    class="fw-bold">le centre de votre choix,</span> compléter votre <a class="text-decoration-none fw-bold"
+                Pour <span class="fw-bold">intégrer rapidement une formation</span> dans <span class="fw-bold">le centre
+                    de votre choix,</span> compléter votre <a class="text-decoration-none fw-bold"
                     [routerLink]="['/socialregistration']">demande
-                     d'inscription.</a> Un conseiller projet prendra ensuite contact avec vous.</span>
+                    d'inscription.</a> Un conseiller projet prendra contact avec vous.</span>
         </div>
 
         <!-- si un innerStudent a terminé un questionnaire au minimum -->
@@ -114,7 +104,6 @@
 
 
         <!-- si au minimum un questionnaire achevé et le formulaire renseigné -->
-
         <div class="alert alert-light p-4 alert-dismissible mb-4 fade show pe-5"
             *ngIf="!isLoading && isOneQuizzAchieved && studentData.isSocialFormSent && !offline">
             <button type="button" class="btn-close btn-close mt-2" data-bs-dismiss="alert"
@@ -127,8 +116,6 @@
             consulter la <a class="text-decoration-none" [routerLink]="['/benefits']"
                 aria-label="Consulter la page d'information sur be-on-top">page info</a>
         </div>
-
-
 
     </ng-template>
     <!-- cas du offline -->
@@ -235,8 +222,26 @@
                             </button>
                         </div>
 
-                        <!-- pour switcher d'un intitulé à un autre selon que studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle -->
 
+                        <!-- partie additionnelle si besoin pour utilisateur non authentifié -->
+                        <ng-container *ngIf="user==undefined && !offline">
+                            <hr>
+                            <div class="d-flex justify-content-end">
+                                <a role="link"
+                                    aria-label="Avertissement : création de compte pour démarrer un questionnaire"
+                                    [routerLink]="['/login']"
+                                    title="Démarrer le questionnaire pour {{trade.denomination}}" type="button"
+                                    class="btn btn-transparent tooltip-container"
+                                    [attr.data-tooltip]="'Pour démarrer un questionnaire '+ trade.denomination + ' vous devez posséder un compte utilisateur'">
+                                    <i class="bi bi-link text-success" aria-hidden="true"></i>S'identifier pour
+                                    commencer</a>
+                            </div>
+                        </ng-container>
+                        <!-- fin partie additionnelle pour utilisateur non authentifié -->
+
+
+
+                        <!-- pour switcher d'un intitulé à un autre selon que studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle -->
                         <ng-container *ngIf="studentData && !offline">
                             <hr>
                             <a [routerLink]="[
@@ -253,8 +258,11 @@
                                 <div class="d-flex justify-content-end"
                                     *ngIf="(studentData && !studentData['quizz_'+trade.sigle])">
 
-                                    <button type="button" (click)="logStartEvaluationEvent(trade.denomination)"
-                                        aria-label="Démarrer le questionnaire be-on-top" class="btn btn-transparent"><i
+                                    <button title="Démarrer le questionnaire pour {{trade.denomination}}" type="button"
+                                        (click)="logStartEvaluationEvent(trade.denomination)"
+                                        aria-label="Démarrer le questionnaire be-on-top"
+                                        class="btn btn-transparent tooltip-container"
+                                        [attr.data-tooltip]="'Démarrer le questionnaire ' + trade.denomination"><i
                                             class="bi bi-clock-fill text-success"></i>
                                         Démarrer votre évaluation</button>
                                 </div>
@@ -318,7 +326,6 @@
         <!-- début boucle dynamique si plusieurs catégories -->
         <div *ngFor="let group of groupedTrades; let j = index">
             <div class="card pb-0 category mt-3">
-
 
                 <!-- Affichage de la catégorie (group[0] contient le nom de la catégorie) -->
                 <div class="card-header">
@@ -395,7 +402,7 @@
 
                                 <div *ngIf="isEditor" class="d-flex justify-content-end">
                                     <hr>
-                                    <button class="btn btn-transparent mt-3" aria-label="Edition du métier">
+                                    <button type="button" class="btn btn-transparent mt-3" aria-label="Edition du métier">
                                         <a class="text-dark" [routerLink]="['/admin/updateDescription', trade.sigle]">
                                             <i class="bi bi-pencil-square"></i>
                                             Editer</a>
@@ -559,10 +566,24 @@
                                     </div>
                                 </ng-container>
 
+                                <!-- partie additionnelle si besoin pour utilisateur non authentifié -->
+                                <ng-container *ngIf="user==undefined && !offline">
+                                    <hr>
+                                    <!-- <div class="d-flex justify-content-end"> -->
+                                    <a role="link"
+                                        aria-label="Avertissement : création de compte pour démarrer un questionnaire"
+                                        [routerLink]="['/login']"
+                                        title="Démarrer le questionnaire pour {{trade.denomination}}" type="button"
+                                        class="btn btn-transparent tooltip-container"
+                                        [attr.data-tooltip]="'Pour démarrer un questionnaire '+ trade.denomination + ' vous devez posséder un compte utilisateur'">
+                                        <i class="bi bi-link text-success" aria-hidden="true"></i>S'identifier pour
+                                        commencer</a>
+                                    <!-- </div> -->
+                                </ng-container>
+                                <!-- fin partie additionnelle pour utilisateur non authentifié -->
+
                             </div>
-
                         </div>
-
 
                     </ng-container>
                 </div>

@@ -1,87 +1,49 @@
 <!doctype html>
 <html lang="fr">
-
 <head>
   <meta charset="utf-8">
-  <title>Application BE-ON-TOP pour l'évaluation de compétences, le positionnement et la formation professionnelle</title>
+  <title>BE-ON-TOP - Évaluation & Formation Professionnelle</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description"
-    content="Application PWA de positionnement et évaluation pour des formations professionnelles personnalisées aux métiers de demain">
+  <meta name="description" content="Application PWA de positionnement et évaluation pour des formations professionnelles personnalisées aux métiers de demain">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="be-on-top">
   <meta name="application-name" content="be-on-top">
-  <!-- Charger le CSS de Bootstrap en priorité -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+  <meta name="language" content="fr">
 
-  <!-- <link rel="icon" type="image/x-icon" href="assets/favicon.ico"> -->
-
+  <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="./assets/icons/favicon.svg">
-<link rel="icon" type="image/png" href="./assets/icons/favicon.png" sizes="48x48">
-
-  <link rel="icon" type="image/x-icon" href="https://be-on-top.io/favicon.ico">
-  <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
-  
-  <link rel="icon" type="image/png" sizes="16x16" href="./assets/icons/favicon-16x16.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="./assets/icons/favicon-32x32.png">
-  <!-- <link rel="icon" type="image/png" sizes="48x48" href="https://be-on-top.io/assets/icons/favicon-48x48.png" size="48x48"> -->
+  <link rel="icon" type="image/png" href="./assets/icons/favicon.png" sizes="48x48">
+  <link rel="icon" type="image/x-icon" href="./favicon.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="./assets/icons/apple-touch-icon.png">
 
-  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'"> -->
-
-  <!-- <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"> -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" async defer></script>
-  <!-- <link href='https://fonts.googleapis.com/css?family=Plus Jakarta Sans' rel='stylesheet'> -->
+  <!-- PWA -->
   <link rel="manifest" href="manifest.webmanifest">
-  <!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
-  <!-- <meta name="theme-color" content="#1976d2"> -->
-  <!-- Spécifier la langue -->
-  <meta name="language" content="fr">
-  <link rel="preconnect" href="https://firebasestorage.googleapis.com">
-  <!-- <link rel="preload" href="https://firebasestorage.googleapis.com/v0/b/be-on-top-beta.appspot.com/o/images%2Ftrades%2Fcaces_R482_resized.jpeg?alt=media&token=e842a129-fca1-4dd2-95ea-eaf9c3de6176" as="image" />
-  <link rel="preload" href="https://firebasestorage.googleapis.com/v0/b/be-on-top-beta.appspot.com/o/images%2Ftrades%2Fcaces_R489_resized.jpeg?alt=media&token=97855958-375b-4fd5-aa2f-86c4ea2f17fc" as="image" /> -->
-
-  <!-- <link rel="canonical" href="https://be-on-top.io" /> -->
-   <!-- Open Graph Meta Tags -->
   <meta property="og:title" content="BE-ON-TOP Evaluation Formation">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://be-on-top.io/assets/icons/icon-512x512.png">
   <meta property="og:url" content="https://be-on-top.io">
   <meta property="og:description" content="Application pour l'évaluation de compétences, le positionnement et la formation professionnelle">
-  <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/> -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  
+
+  <!-- Préconnexion pour Firebase (évite délai DNS/TLS) -->
+  <link rel="preconnect" href="https://firebasestorage.googleapis.com">
+
+    <!-- Bootstrap JS ici pour que les menus fonctionnent ! -->
+   <!-- <script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+  crossorigin="anonymous"
+></script> -->
 
 </head>
-
 <body>
   <script>
     document.body.setAttribute('translate', 'no');
   </script>
   <app-root></app-root>
-
-  <noscript>Please enable JavaScript to continue using this application.
-    <!-- <link rel="stylesheet" href="assets/css/bootstrap.min.css"> -->
-  </noscript>
-
-  <!-- Meta Pixel Script (chargé partout, mais activé uniquement après consentement) -->
-<script>
-  !function(f,b,e,v,n,t,s)
-  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-  n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v + '?ngsw-bypass=true'; // ← C’est ici que j'ajoute' ?ngsw-bypass=true
-  t.setAttribute('ngsw-bypass', 'true'); // ← Ceinture + bretelles
-  s=b.getElementsByTagName(e)[0];
-  s.parentNode.insertBefore(t,s)}(window, document,'script',
-  'https://connect.facebook.net/en_US/fbevents.js');
-</script>
-
-
+  <noscript>Veuillez activer JavaScript pour utiliser cette application.</noscript>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
-
 </html>
