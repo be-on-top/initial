@@ -92,7 +92,7 @@ a[aria-expanded="true"] .toggle-arrow {
 /* Tablettes et écrans intermédiaires */
 @media (max-width: 1139px) and (min-width: 961px) {
   .assistant {
-      padding-left: 20% !important;
+      padding-left: 15% !important;
   }
 }
 

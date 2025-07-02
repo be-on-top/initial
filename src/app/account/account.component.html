@@ -32,8 +32,10 @@
                 class="text-decoration-none" [routerLink]="['/socialregistration']">incription en formation</a> peut
             maintenant commencer.</span> -->
         <span> <i class="bi bi-info-square-fill pe-2"></i>Vos <span class="fw-bold">résultats et estimations</span> sont
-            affichés <span class="fw-bold">ci-dessous</span> <i aria-label="Ouvrir les résultats et questionnaires" class="bi bi-box-arrow-down ms-1" role="button" (click)="triggerCollapseClick()"></i>
-. Pour <span class="fw-bold">intégrer une formation </span>dans <span class="fw-bold">le centre de votre choix,</span> compléter et
+            affichés <span class="fw-bold">ci-dessous</span> <i aria-label="Ouvrir les résultats et questionnaires"
+                class="bi bi-box-arrow-down ms-1" role="button" (click)="triggerCollapseClick()"></i>
+            . Pour <span class="fw-bold">intégrer une formation </span>dans <span class="fw-bold">le centre de votre
+                choix,</span> compléter et
             valider votre <a class="text-decoration-none fw-bold" [routerLink]="['/socialregistration']"> demande
                 d'inscription en formation</a>. Un conseiller projet prendra ensuite contact avec vous.</span><br>
     </div>
@@ -175,7 +177,17 @@
                 </a>
             </div>
             <div id="collapseQuizz" class="collapse" data-bs-parent="#accordion">
+                <!-- répétition message d'alerte -->
+                <div *ngIf="isOneQuizzAchieved && !userData.isSocialFormSent && !userData.subscriptions && userData.innerStudent!==true"
+                    class="alert bg-warning p-4 mb-4 fade show m-2 assistant">
+                    <span> <i class="bi bi-info-square-fill pe-2 danger"></i>Pour <strong> contacter le centre de
+                            votre
+                            choix,</strong> n'oubliez pas de compléter votre <a [routerLink]="['/socialregistration']">
+                            demande d'inscription en formation</a>.</span>
+                </div>
+
                 <div class="card-body">
+
                     <div *ngFor="let trade of tradesEvaluated; let last=last">
                         <p class="card-text">Métier concerné : <span class="fw-bold">{{ getDenomination(trade) | async
                                 }}</span></p>
@@ -218,7 +230,6 @@
                 <!-- répétition message d'alerte -->
                 <div *ngIf="isOneQuizzAchieved && !userData.isSocialFormSent && !userData.subscriptions && userData.innerStudent!==true"
                     class="alert bg-warning p-4 mb-4 fade show m-2 assistant">
-
                     <span> <i class="bi bi-info-square-fill pe-2 danger"></i>Pour <strong> contacter le centre de votre
                             choix,</strong> n'oubliez pas de compléter votre <a [routerLink]="['/socialregistration']">
                             demande d'inscription en formation</a>.</span>
@@ -242,6 +253,14 @@
                 </a>
             </div>
             <div id="collapseFullResults" class="collapse" data-bs-parent="#accordion">
+                <!-- répétition message d'alerte -->
+                <div *ngIf="isOneQuizzAchieved && !userData.isSocialFormSent && !userData.subscriptions && userData.innerStudent!==true"
+                    class="alert bg-warning p-4 mb-4 fade show m-2 assistant">
+                    <span> <i class="bi bi-info-square-fill pe-2 danger"></i>Pour <strong> contacter le centre de
+                            votre
+                            choix,</strong> n'oubliez pas de compléter votre <a [routerLink]="['/socialregistration']">
+                            demande d'inscription en formation</a>.</span>
+                </div>
                 <div class="card-body">
                     <div *ngIf="userData && tradesEvaluated.length > 0">
                         <div *ngFor="let trade of tradesEvaluated; let last=last">
@@ -268,7 +287,8 @@
                                         <!-- <em *ngIf="trades[trade]" class="text-primary fs-6">{{ trades[trade][i] }}</em> -->
                                         <em *ngIf="trades[trade]" class="text-primary fs-6">
                                             <i *ngIf="!trades[trade][i]" class="bi bi-exclamation-square-fill me-2"></i>
-                                            {{trades[trade][i] ? trades[trade][i] : 'Attention : cette compétence ne fait plus partie du référentiel actuel'}}
+                                            {{trades[trade][i] ? trades[trade][i] : 'Attention : cette compétence ne
+                                            fait plus partie du référentiel actuel'}}
                                         </em>
 
 
