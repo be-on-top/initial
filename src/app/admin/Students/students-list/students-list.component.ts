@@ -505,13 +505,14 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
 
     } else if (this.isSubscriptionFilter || this.storedValue === 'isSubscriptionFilter') {
       this.allStudents = this.initialStudents.filter(student => student.subscriptions);
-      this.tradesActivated = true
+      // this.tradesActivated = true
     }
 
     // missing subscriptions
     else if (this.isSubscriptionMissingFilter || this.storedValue === 'isSubscriptionMissingFilter') {
-      this.allStudents = this.initialStudents.filter(student => !student.subscriptions);
-      this.tradesActivated = true
+      this.allStudents = this.initialStudents.filter(student => !student.subscriptions || student.subscriptions.length === 0)
+
+      // this.tradesActivated = true
     }
 
     else if (this.isTradeFilter) {
