@@ -77,31 +77,31 @@ export class UpdateStudentComponent implements OnInit {
 
         for (const key in this.student.tutorials) {
           key === this.tutorialKey ? this.tutorialToUpdate = this.student.tutorials[key] : ''
-        } 
+        }
         // console.log("tutorialToUpdate", this.tutorialToUpdate)
       }
 
 
-// 1. Extraire les métiers évalués (métiers dont le questionnaire est terminé)
-const tradesEvaluated = Object.keys(this.student)
-  .filter(key => key.startsWith('quizz_') && (this.student[key] as { fullResults?: any }).fullResults)
-  .map(key => key.replace('quizz_', ''));
+      // 1. Extraire les métiers évalués (métiers dont le questionnaire est terminé)
+      const tradesEvaluated = Object.keys(this.student)
+        .filter(key => key.startsWith('quizz_') && (this.student[key] as { fullResults?: any }).fullResults)
+        .map(key => key.replace('quizz_', ''));
 
-// 2. Si endedSubscriptions existe, exclure les métiers déjà suivis
-if (this.student.endedSubscriptions && this.student.endedSubscriptions.length > 0) {
-  // Convertir achievedTrainings en Set pour des recherches plus rapides
-  const achievedTrainingsSet = new Set(
-    this.student.endedSubscriptions.map((sub: any) => sub.sigle)
-  );
+      // 2. Si endedSubscriptions existe, exclure les métiers déjà suivis
+      if (this.student.endedSubscriptions && this.student.endedSubscriptions.length > 0) {
+        // Convertir achievedTrainings en Set pour des recherches plus rapides
+        const achievedTrainingsSet = new Set(
+          this.student.endedSubscriptions.map((sub: any) => sub.sigle)
+        );
 
-  // Filtrer les traitsEvaluated en excluant ceux déjà réalisés
-  this.availableTrainings = tradesEvaluated.filter(
-    trade => !achievedTrainingsSet.has(trade)
-  );
-} else {
-  // Si endedSubscriptions est vide ou non défini, on laisse tradesEvaluated tel quel
-  this.availableTrainings = tradesEvaluated;
-}
+        // Filtrer les traitsEvaluated en excluant ceux déjà réalisés
+        this.availableTrainings = tradesEvaluated.filter(
+          trade => !achievedTrainingsSet.has(trade)
+        );
+      } else {
+        // Si endedSubscriptions est vide ou non défini, on laisse tradesEvaluated tel quel
+        this.availableTrainings = tradesEvaluated;
+      }
 
 
 
@@ -119,16 +119,16 @@ if (this.student.endedSubscriptions && this.student.endedSubscriptions.length > 
 
     // On peut maintenant utiliser cet UID pour d'autres opérations
     // if (this.userUid) {
-      // Une méthode qui s'en inspière mais va me retourner
-      // la liste des formateurs et ceux qui ont le même tableau de cp
-      // ou ceux dont un des cp du tableau est contenu dans le tableau des cp du compte authentifié
-      // this.getCenterPostalCode(id:string)
+    // Une méthode qui s'en inspière mais va me retourner
+    // la liste des formateurs et ceux qui ont le même tableau de cp
+    // ou ceux dont un des cp du tableau est contenu dans le tableau des cp du compte authentifié
+    // this.getCenterPostalCode(id:string)
 
-      // this.getTrainersWithSameCp(this.userUid)
-      // this.getDedicatedTrainer()
+    // this.getTrainersWithSameCp(this.userUid)
+    // this.getDedicatedTrainer()
 
-      // SI JE VEUX FAIRE un DEUX EN UN : n'est plus utile si pas de classe normée
-      // this.getTrainersWithSameCpAndSigle(this.userUid)
+    // SI JE VEUX FAIRE un DEUX EN UN : n'est plus utile si pas de classe normée
+    // this.getTrainersWithSameCpAndSigle(this.userUid)
 
     // }
 
@@ -519,6 +519,16 @@ if (this.student.endedSubscriptions && this.student.endedSubscriptions.length > 
     // console.log('Formateur sélectionné:', this.selectedTrainer);
     console.log('Formateur sélectionné:', this.selectedTrainer);
   }
+
+
+  // pour itérer sur endedSubscriptions et vérifier si on a déjà acté de la fin de formation
+  isSubscriptionEnded(sigle: string): boolean {
+    if (!this.student.endedSubscriptions) {
+      return false;
+    }
+    return this.student.endedSubscriptions.some((sub: any) => sub.sigle === sigle);
+  }
+
 
 
 

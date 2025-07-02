@@ -109,7 +109,7 @@
                 </div>
 
                 <p *ngIf="student.subscriptions && student.subscriptions.length !== 0">
-                   <strong>Inscriptions en cours :</strong> 
+                    <strong>Inscriptions en cours :</strong>
                     <span *ngFor="let sub of student.subscriptions">
                         <span *ngIf="!student.endedSubscriptions?.includes(sub)">
                             {{sub}}
@@ -158,7 +158,8 @@
 
                     <small class="text-muted">Fonctionnalité dédiée aux Conseillers Projets qui gèrent plusieurs
                         centres de formation OU candidats que vous avez ajoutés (dispensés de remplir le formulaire
-                        en ligne).</small><small class="text-muted" *ngIf="!student.innerStudent">Si rien n'est précisé, c'est le choix initial du candidat qui sera automatiquement associé à son
+                        en ligne).</small><small class="text-muted" *ngIf="!student.innerStudent">Si rien n'est précisé,
+                        c'est le choix initial du candidat qui sera automatiquement associé à son
                         inscription</small>
                     <input type="text" class="form-control mt-3" name="localTraining"
                         [(ngModel)]="student.localTraining" placeholder="code postal du centre">
@@ -220,17 +221,27 @@
                     Vous devrez valider la fin de formation ou sortie de formation (après présentiel + tutorial en
                     entreprise si tutorial)
                 </div>
+
+
+
                 <!-- ajout feedback  OK -->
                 <div class="alert alert-success" *ngIf="feedBackEndSubscription==true">Fin d'inscription (formation) OK
                 </div>
+
+                <p *ngIf="student.endedSubscriptions">
+                    <strong>Fin de formation déjà enregistrée pour :</strong>
+                    <span *ngFor="let sub of student.endedSubscriptions">
+                            {{sub.sigle}}                        
+                    </span>
+                </p>
 
                 <form class="form mb-5" #endSubscription="ngForm" (submit)="addEndingDate(endSubscription)"
                     class="was-validated">
                     <select class="form-select" name="sigle" ngModel required #sigle="ngModel">
                         <option value>Enregistrer la fin de formation pour :</option>
                         <ng-container *ngFor="let element of student.subscriptions">
-                            <ng-container
-                                *ngIf="!student.endedSubscriptions || student.endedSubscriptions.sigle !== element">
+                            <!-- <ng-container *ngIf="!student.endedSubscriptions || student.endedSubscriptions.sigle !== element"> -->
+                            <ng-container *ngIf="!student.endedSubscriptions || !isSubscriptionEnded(element)">
                                 <option [value]="element">{{ element }}</option>
                             </ng-container>
                         </ng-container>
