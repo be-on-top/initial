@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 // import { NgForm } from '@angular/forms';
 import { Auth, reauthenticateWithCredential, createUserWithEmailAndPassword, deleteUser, fetchSignInMethodsForEmail, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithRedirect, updateEmail, EmailAuthProvider } from "@angular/fire/auth";
-import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc, updateDoc, query, getDocs, where, getDoc, QuerySnapshot, arrayUnion, CollectionReference, DocumentData, orderBy, documentId } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc, updateDoc, query, getDocs, where, getDoc, QuerySnapshot, arrayUnion, CollectionReference, DocumentData, orderBy, documentId, QueryDocumentSnapshot, startAfter, limit } from '@angular/fire/firestore';
 // import { FirebaseApp } from '@angular/fire/app';
 import { combineLatest, from, map, Observable, of, switchMap, tap } from 'rxjs';
 // import { switchMap, tap } from 'rxjs/operators';
@@ -1604,7 +1604,39 @@ export class StudentsService {
   }
 
 
+  getStudentsPage(
+    order: 'asc' | 'desc' = 'desc',
+    pageSize: number = 50,
+    lastDoc?: QueryDocumentSnapshot<DocumentData>
+  ): Observable<{ data: Student[]; lastDoc?: QueryDocumentSnapshot<DocumentData> }> {
+    const studentsRef = collection(this.firestore, 'students');
 
+    let q;
+    if (lastDoc) {
+      q = query(
+        studentsRef,
+        orderBy('created', order),
+        startAfter(lastDoc),
+        limit(pageSize)
+      );
+    } else {
+      q = query(
+        studentsRef,
+        orderBy('created', order),
+        limit(pageSize)
+      );
+    }
+
+    return from(getDocs(q)).pipe(
+      map(snapshot => ({
+        data: snapshot.docs.map(doc => ({
+          ...(doc.data() as Student),
+          id: doc.id
+        })),
+        lastDoc: snapshot.docs.length > 0 ? snapshot.docs[snapshot.docs.length - 1] : undefined
+      }))
+    );
+  }
 
 }
 

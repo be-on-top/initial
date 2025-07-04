@@ -655,7 +655,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   onCheckboxChangeInner(event: any) {
     this.resetAllFilters()
     this.isInnerStudentFilter = event.target.checked;
- if (event.target.checked) {
+    if (event.target.checked) {
       localStorage.setItem('filter', 'isInnerStudentFilter')
       this.storedValue = 'isInnerStudentFilter'
       this.applyFilters()
@@ -695,7 +695,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     }
   }
 
-    // si on substitue partout où on boucle sur trades un select aux cases à cocher !!! :
+  // si on substitue partout où on boucle sur trades un select aux cases à cocher !!! :
   resetAllFilters() {
     this.isSocialFormSentFilter = false;
     this.noSocialFormSentFilter = false;
@@ -950,6 +950,95 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
 
     return csvRows.join('\n');
   }
+
+
+
+  // Nombre d'éléments à afficher par page (ici 50)
+  pageSize = 20;
+
+  // Numéro de la page actuellement affichée (on commence à 1)
+  currentPage = 1;
+
+  /**
+   * Getter calculé qui renvoie le sous-ensemble des étudiants à afficher sur la page courante.
+   * 
+   * Exemple :
+   * - Si currentPage = 1 et pageSize = 50, startIndex = 0 et endIndex = 50,
+   *   donc on affiche les étudiants d'indice 0 à 49.
+   * - Si currentPage = 2, startIndex = 50 et endIndex = 100,
+   *   donc on affiche les étudiants d'indice 50 à 99.
+   */
+  // get paginatedStudents() {
+  //   // Calcul de l'indice du premier élément de la page
+  //   const startIndex = (this.currentPage - 1) * this.pageSize;
+  //   // Calcul de l'indice de fin (non inclus dans slice)
+  //   const endIndex = startIndex + this.pageSize;
+  //   // Extraction de la tranche correspondante
+  //   return this.allStudents.slice(startIndex, endIndex);
+  // }
+
+  /**
+ * Getter calculé qui renvoie la liste des étudiants à afficher.
+ *
+ * 🔍 Si une recherche est en cours (searchText non vide) :
+ *    - On ignore la pagination.
+ *    - On affiche tous les résultats correspondants au filtre.
+ *
+ * 📄 Si aucune recherche n'est active :
+ *    - On affiche les étudiants paginés normalement,
+ *      en fonction de currentPage et pageSize.
+ */
+  get paginatedStudents(): Student[] {
+    if (this.searchText) {
+      return this.allStudents.filter(s =>
+        s.lastName.toLowerCase().includes(this.searchText.toLowerCase()) ||
+        s.firstName.toLowerCase().includes(this.searchText.toLowerCase()) ||
+        s.email.toLowerCase().includes(this.searchText.toLowerCase())
+      )
+    } else {
+      const startIndex = (this.currentPage - 1) * this.pageSize;
+      return this.allStudents.slice(startIndex, startIndex + this.pageSize)
+    }
+  }
+
+
+
+  /**
+   * Getter qui calcule le nombre total de pages à partir du nombre d'étudiants.
+   * Exemple : si 235 étudiants et pageSize = 50 => 5 pages.
+   */
+  get totalPages() {
+    return Math.ceil(this.allStudents.length / this.pageSize);
+  }
+
+  /**
+   * Permet de passer directement à une page spécifique.
+   * On peut par exemple appeler goToPage(3) pour aller à la page 3.
+   */
+  goToPage(page: number) {
+    this.currentPage = page;
+  }
+
+  /**
+   * Passe à la page suivante.
+   * Ne fait rien si on est déjà sur la dernière page.
+   */
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+    }
+  }
+
+  /**
+   * Passe à la page précédente.
+   * Ne fait rien si on est déjà sur la première page.
+   */
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
 
 
 

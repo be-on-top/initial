@@ -59,41 +59,47 @@
                 <div class="form-check" *ngIf="userRouterLinks.user==='referent'">
                     <label class="form-check-label" for="myCenterStudents">Que j'ai ajouté(s)</label>
                     <input type="checkbox" (change)="onCheckboxChangeMyInitialStudents($event)" class="form-check-input"
-                        id="myCenterStudents" [checked]="storedValue=='myCenterStudentsFilter' || myCenterStudents===true">
+                        id="myCenterStudents"
+                        [checked]="storedValue=='myCenterStudentsFilter' || myCenterStudents===true">
                 </div>
                 <div class="form-check" *ngIf="userRouterLinks.user==='admin'|| userRouterLinks.user==='editor'">
                     <label class="form-check-label" for="socialCheckbox">Formulaire administratif renseigné</label>
                     <input type="checkbox" (change)="onCheckboxChangeSocial($event)" class="form-check-input"
-                        id="socialCheckbox"  [checked]="storedValue=='socialFormSentFilter' || isSocialFormSentFilter===true">
+                        id="socialCheckbox"
+                        [checked]="storedValue=='socialFormSentFilter' || isSocialFormSentFilter===true">
                 </div>
                 <div class="form-check" *ngIf="userRouterLinks.user==='admin'|| userRouterLinks.user==='editor'">
                     <label class="form-check-label" for="socialCheckbox">Formulaire administratif non renseigné</label>
                     <input type="checkbox" (change)="onCheckboxChangeNoSocial($event)" class="form-check-input"
-                        id="noSocialCheckbox" [checked]="storedValue=='noSocialFormSentFilter' || noSocialFormSentFilter===true">
+                        id="noSocialCheckbox"
+                        [checked]="storedValue=='noSocialFormSentFilter' || noSocialFormSentFilter===true">
                 </div>
                 <!-- étudiant interne : innerStudent -->
                 <div class="form-check" *ngIf="userRouterLinks.user==='admin'|| userRouterLinks.user==='editor'">
                     <label class="form-check-label" for="innerStudentCheckbox">Etudiants internes</label>
                     <input type="checkbox" (change)="onCheckboxChangeInner($event)" class="form-check-input"
-                        id="innerStudentCheckbox"  [checked]="isInnerStudentFilter===true || storedValue==='isInnerStudentFilter'">
+                        id="innerStudentCheckbox"
+                        [checked]="isInnerStudentFilter===true || storedValue==='isInnerStudentFilter'">
                 </div>
                 <!-- fin innerStudent -->
                 <div class="form-check">
                     <!-- {{isSubscriptionFilter===true}} -->
                     <label class="form-check-label" for="subscriptionsCheckbox">Inscription formation finalisée</label>
                     <input type="checkbox" (change)="onCheckboxChangeSubscriptions($event)" class="form-check-input"
-                        id="subscriptionsCheckbox" [checked]="isSubscriptionFilter===true || storedValue==='isSubscriptionFilter'">
+                        id="subscriptionsCheckbox"
+                        [checked]="isSubscriptionFilter===true || storedValue==='isSubscriptionFilter'">
                 </div>
                 <div class="form-check" *ngIf="userRouterLinks.user==='referent'">
                     <label class="form-check-label" for="subscriptionsCheckbox">Inscription à finaliser</label>
-                    <input type="checkbox" (change)="onCheckboxChangeSubscriptionsMissing($event)" class="form-check-input"
-                        id="subscriptionsMissingCheckbox" [checked]="isSubscriptionMissingFilter===true || storedValue==='isSubscriptionMissingFilter'">
+                    <input type="checkbox" (change)="onCheckboxChangeSubscriptionsMissing($event)"
+                        class="form-check-input" id="subscriptionsMissingCheckbox"
+                        [checked]="isSubscriptionMissingFilter===true || storedValue==='isSubscriptionMissingFilter'">
                 </div>
 
                 <div class="form-check">
                     <label class="form-check-label" for="endedCheckbox">A terminé sa formation</label>
                     <input type="checkbox" (change)="onCheckboxChangeEndedTraining($event)" class="form-check-input"
-                        id="endedCheckbox"  [checked]="isQualifiedFilter===true || storedValue==='isQualifiedFilter'">
+                        id="endedCheckbox" [checked]="isQualifiedFilter===true || storedValue==='isQualifiedFilter'">
                 </div>
 
                 <!-- puisqu'il faut compliquer -->
@@ -298,7 +304,7 @@
             <div class="col-sm-3 h5 d-none d-md-inline">Détails</div>
         </div>
 
-        <div *ngFor="let student of allStudents">
+        <div *ngFor="let student of paginatedStudents">
 
             <div
                 *ngIf="userRouterLinks.user=='admin' || (userRouterLinks.user=='referent'&& !isLoading) || userRouterLinks.user=='editor', else external">
@@ -346,6 +352,51 @@
             </ng-template>
 
         </div>
+                <nav *ngIf="totalPages > 1 && searchText.length===0" class="mt-5 d-flex flex-wrap align-items-center gap-2">
+            <button class="btn btn-outline-primary btn-sm d-none d-md-inline" (click)="goToPage(1)" [disabled]="currentPage === 1">
+                <i class="bi bi-chevron-bar-left"></i> Première
+            </button>
+            <button class="btn btn-outline-primary btn-sm" [ngClass]="{'btn-primary':currentPage!==1}"
+                (click)="prevPage()" [disabled]="currentPage === 1">
+                <i class="bi bi-chevron-left"></i> Précédent
+            </button>
+
+            <span class="fw-semibold mx-2">
+                Page {{currentPage}} / {{totalPages}}
+            </span>
+
+            <button class="btn btn-outline-primary btn-sm" [ngClass]="{'btn-primary':currentPage!==totalPages}"
+                (click)="nextPage()" [disabled]="currentPage === totalPages">
+                Suivant <i class="bi bi-chevron-right"></i>
+            </button>
+            <button class="btn btn-outline-primary btn-sm d-none d-md-inline" (click)="goToPage(totalPages)"
+                [disabled]="currentPage === totalPages">
+                Dernière <i class="bi bi-chevron-bar-right"></i>
+            </button>
+        </nav>
+
+        <!-- <nav *ngIf="totalPages > 1" class="mt-3">
+  <button (click)="prevPage()" [disabled]="currentPage === 1">Précédent</button>
+  <span>Page {{currentPage}} / {{totalPages}}</span>
+  <button (click)="nextPage()" [disabled]="currentPage === totalPages">Suivant</button>
+</nav> -->
+
+        <!-- <nav *ngIf="totalPages > 1" class="mt-3 d-flex align-items-center gap-2">
+  <button (click)="goToPage(1)" [disabled]="currentPage === 1">Première</button>
+  <button (click)="prevPage()" [disabled]="currentPage === 1">Précédent</button>
+  <span>Page {{currentPage}} / {{totalPages}}</span>
+  <button (click)="nextPage()" [disabled]="currentPage === totalPages">Suivant</button>
+  <button (click)="goToPage(totalPages)" [disabled]="currentPage === totalPages">Dernière</button>
+</nav> -->
+
+
+
+
+
+
+
+
+
         <!-- {{userRouterLinks.user}} -->
         <button type="submit" class="btn btn-primary mt-5"
             *ngIf="userRouterLinks.user!=='external' && userRouterLinks.user!=='editor' && userRouterLinks.user!=='referentsContacts'"><a
@@ -359,8 +410,9 @@
                 de la collection</button>
             <!-- <button type="button" class="btn btn-primary mt-5 col-10 col-md-5" (click)="exportCollectionAsCSV()"><i
                     class="bi bi-box-arrow-down me-3"></i>Export au format csv de la collection</button> -->
-            <button type="button" class="btn btn-primary mt-5 col-10 col-md-5" (click)="exportFilteredStudentsAsCSV()"><i
-                    class="bi bi-box-arrow-down me-3"></i>Export au format csv de la collection</button>
+            <button type="button" class="btn btn-primary mt-5 col-10 col-md-5"
+                (click)="exportFilteredStudentsAsCSV()"><i class="bi bi-box-arrow-down me-3"></i>Export au format csv de
+                la collection</button>
         </div>
         <!-- </ng-container> -->
 

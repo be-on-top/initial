@@ -1,3 +1,7 @@
 .fw-bold{
     font-weight: 500!important;
 }
+
+nav{
+    box-shadow: none!important;
+}

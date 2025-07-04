@@ -17,21 +17,21 @@ export class LoginComponent {
   // isAuthentificated?:boolean;
   user?: any;
   // variables à passer à feedbackMessages component pour retours de firebase sur la soumission
-  feedbackMessages?:any=""
-  isSuccessMessage:boolean=true
+  feedbackMessages?: any = ""
+  isSuccessMessage: boolean = true
   // essai pour personnaliser les messages
   // https://firebase.google.com/docs/auth/admin/errors?hl=fr
-  firebaseErrors:any = {
+  firebaseErrors: any = {
     'auth/user-not-found': 'Aucun utilisateur ne correspond à cet email',
     'auth/email-already-in-use': 'Cet email est déjà utilisé pour un autre compte',
-    'auth/wrong-password' : 'Le mot de passe est incorrect',
-    'auth/invalid-email' : 'Aucun enregistrement ne correspond au mail fourni',
-    'auth/invalid-login-credentials' : 'Identifiants de connexion invalides. Veuillez vérifier votre e-mail et votre mot de passe'
+    'auth/wrong-password': 'Le mot de passe est incorrect',
+    'auth/invalid-email': 'Aucun enregistrement ne correspond au mail fourni',
+    'auth/invalid-login-credentials': 'Identifiants de connexion invalides. Veuillez vérifier votre e-mail et votre mot de passe'
   }; // list of firebase error codes to alternate error messages
 
   // je voudrais me faire importer onAuthStateChanged qui est une méthode de auth depuis le service. A faire plus tard
   // en attendant, j'importe Auth
-  constructor(private service: AuthService, private router: Router, private auth:Auth) {
+  constructor(private service: AuthService, private router: Router, private auth: Auth) {
     this.formLogin = new FormGroup({
       email: new FormControl(),
       password: new FormControl()
@@ -80,7 +80,9 @@ export class LoginComponent {
       .then(response => {
         console.log(response);
         this.feedbackMessages = "Login Success !";
-        
+        // Efface les filtres
+        localStorage.removeItem('filter');
+
         // Supprime la redirection vers 'home'
         // setTimeout(() => {
         //   this.router.navigate(['home']);
@@ -93,7 +95,7 @@ export class LoginComponent {
         this.isSuccessMessage = false;
       });
   }
-  
+
 
   onClick() {
     this.service.loginWithGoogle()
@@ -103,7 +105,7 @@ export class LoginComponent {
       })
       .catch(error => console.log(error))
   }
-  
+
   // reset(email: string): any {
   //   this.service.passwordReset(email)    
   //   // return this.fireAgent.firebase.auth().sendPasswordResetEmail(email, {
@@ -152,13 +154,13 @@ export class LoginComponent {
         this.isSuccessMessage = false;
       });
   }
-  
 
-  logOut(){
+
+  logOut() {
     this.service.logout()
     alert("Déconnection ok")
     this.router.navigate(['home']);
-  } 
+  }
 
   closeAlert() {
     // Réinitialiser l'état pour la fermeture de l'alerte
