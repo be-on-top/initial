@@ -43,8 +43,8 @@
             </div> -->
             <!-- fin popover -->
             <a role="button" (click)="toggleInfo()" *ngIf="user==undefined" class="showInfo text-light"
-                aria-label="Afficher les informations pour évaluer vos connaissances">Evaluez vos connaissances, </a>
-            <span *ngIf="user!==undefined">Evaluez vos connaissances, </span>
+                aria-label="Afficher les informations pour évaluer vos connaissances">Evaluez vos compétences, </a>
+            <span *ngIf="user!==undefined">Evaluez vos compétences, </span>
 
             <div class="popover-custom pb-2" *ngIf="showInfo" (clickOutside)="closeInfo()" role="region"
                 aria-live="polite">
@@ -52,10 +52,10 @@
                     [routerLink]="['/login']">Identifiez-vous ou créez votre compte pour démarrer un
                     questionnaire <i class="bi bi-link text-light ps-2" aria-hidden="true"></i></a>
                 <!-- <button type="button" class="btn-close ms-2" (click)="closeInfo()" aria-label="Fermer"></button> -->
-            </div>découvrez en un clic vos résultats et intégrez <h1 class="d-inline fs-5"> <a [routerLink]="['/benefits']" class="text-light" role="link"
+            </div>découvrez votre parcours personnalisé et intégrez <h1 class="d-inline"> <a [routerLink]="['/benefits']" class="text-light" role="link"
                     aria-label="Démarrer une formation personnalisée pour développer vos compétences">une
                     formation sur mesure
-                </a></h1> pour être au top des compétences du métier de votre choix.
+                </a></h1> pour être au top dans le métier de votre choix.
         </div>
 
     </ng-container>
@@ -333,7 +333,7 @@
                     <!-- <h2 class="h2">Conducteur d'engin (Réf. CACES®) ({{catGroup.length}})</h2> -->
                     <!-- <h2 class="h2">Conducteur d'engin (Certification&nbsp;CACES®)</h2> -->
 
-                    <h2 class="h2">
+                    <h2 class="h2 text-center">
                         {{ group[0].indexOf('(') !== -1 ? (group[0] | slice:0:group[0].indexOf('(')) : group[0] }}<br>
                         <span *ngIf="group[0].indexOf('(') !== -1">
                             {{ group[0] | slice:group[0].indexOf('(') }}

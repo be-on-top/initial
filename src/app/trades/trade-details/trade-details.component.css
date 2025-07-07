@@ -8,6 +8,11 @@ h1 {
   font-size: 2rem;
 }
 
+h2 {
+  margin:1rem,0;
+}
+
+
 .d-flex button:hover {
   transform: scale(1.05);
 }
