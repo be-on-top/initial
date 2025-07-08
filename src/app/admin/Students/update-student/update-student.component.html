@@ -96,7 +96,28 @@
             <hr>
 
 
-            <div class="mb-5" *ngIf="student.isSocialFormSent || student.innerStudent">
+
+            <div *ngIf="!student.innerStudent && !student.subscriptions">
+               
+                <h3>Réinitialiser les choix du candidat</h3>
+                <!-- ajout feedback  OK -->
+                <div class="alert alert-success" *ngIf="feedBackResetChoice==true">Le formulaire est à nouveau actif
+                    dans le compte candidat. Il pourra choisir à nouveau une autre localisation ou une autre
+                    formation que votre centre ne dispense pas
+                </div>
+
+                <div class="alert bg-danger"><i class="bi bi-exclamation-triangle-fill me-1"></i><span class="fw-bold">Attention :</span> Si vous permettez
+                    au candidat
+                    de réinitialiser ses choix, celui-ci pourra à nouveau acccéder à son formulaire pour changer ses
+                    préférences métiers et le choix de son centre de formation. <span class="fw-bold">Il disparaitra
+                        automatiquement de votre liste de candidats</span>. A n'utilisez que si le candidat en fait la demande explicite et que votre localisation ou vos formations ne correspondent pas ou plus à ses préférences.</div>
+                <button type="button" class="btn btn-primary mt-3" [disabled]="feedBackResetChoice==true"
+                    (click)="resetStudentChoice(studentId)">J'ai compris et je valide ma décision</button>
+                     <hr>
+            </div>
+
+
+            <div class="mb-5" *ngIf="(student.isSocialFormSent || student.innerStudent) && feedBackResetChoice!==true">
 
                 <!-- test intégration comme composant enfant du formulaire désormais déclaré dans admin.module -->
                 <h3>Inscription Formation</h3>
@@ -231,7 +252,7 @@
                 <p *ngIf="student.endedSubscriptions">
                     <strong>Fin de formation déjà enregistrée pour :</strong>
                     <span *ngFor="let sub of student.endedSubscriptions">
-                            {{sub.sigle}}                        
+                        {{sub.sigle}}
                     </span>
                 </p>
 

@@ -529,6 +529,24 @@ export class UpdateStudentComponent implements OnInit {
     return this.student.endedSubscriptions.some((sub: any) => sub.sigle === sigle);
   }
 
+  feedBackResetChoice: boolean = false
+
+  async resetStudentChoice(id: string) {
+    console.log(id);
+    if (this.student.isSocialFormSent) {
+      try {
+        // console.log(id);      
+        await this.service.resetFormSent(id);
+        this.feedBackResetChoice = true
+        // alert("Le formulaire est à nouveau actif dans le compte candidat. Il pourra à nouveau choisir son centre ou une autre formation que mon centre ne dispense pas.");
+      } catch (error) {
+        console.error("Erreur lors de la réinitialisation :", error);
+        alert("Une erreur est survenue. Veuillez réessayer.");
+      }
+    }
+  }
+
+
 
 
 
