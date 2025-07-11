@@ -75,7 +75,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     if (this.consentReaded) {
-      this.loadComponent();
+      setTimeout(() => this.loadComponent(), 500); // retarde juste un peu
     }
   }
 
