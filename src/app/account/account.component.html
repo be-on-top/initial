@@ -44,8 +44,7 @@
         class="alert alert-light p-4 alert-dismissible mb-4 fade show pe-5">
         <button type="button" class="btn-close mt-2" data-bs-dismiss="alert"
             aria-label="Fermer le message be-on-top"></button>
-        <span> Merci d'avoir pris le temps de remplir le formulaire d'inscription à nos formations. Un conseiller
-            référent va prendre contact avec vous.</span>
+        <span> Merci d'avoir pris le temps de remplir le formulaire d'inscription à nos formations. Le Conseiller Projet du centre que vous avez choisi va étudier votre dossier et prendre contact avec vous. Si vous souhaitez le contacter dès maintenant, <a [href]="centerUrl" target="_blank" rel="noopener noreferrer">cliquez ici</a></span>
     </div>
     <!-- ici, c'est une fois l'inscription actée -->
     <div *ngIf="userData && userData.isSocialFormSent && userData.subscriptions && !userData.elearning "

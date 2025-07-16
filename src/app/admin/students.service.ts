@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 // import { NgForm } from '@angular/forms';
 import { Auth, reauthenticateWithCredential, createUserWithEmailAndPassword, deleteUser, fetchSignInMethodsForEmail, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithRedirect, updateEmail, EmailAuthProvider } from "@angular/fire/auth";
-import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc, updateDoc, query, getDocs, where, getDoc, QuerySnapshot, arrayUnion, CollectionReference, DocumentData, orderBy, documentId, QueryDocumentSnapshot, startAfter, limit, deleteField} from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc, updateDoc, query, getDocs, where, getDoc, QuerySnapshot, arrayUnion, CollectionReference, DocumentData, orderBy, documentId, QueryDocumentSnapshot, startAfter, limit, deleteField } from '@angular/fire/firestore';
 import { FieldValue } from 'firebase/firestore';
 
 // import { FirebaseApp } from '@angular/fire/app';
@@ -1647,12 +1647,24 @@ export class StudentsService {
 
 
 
-async resetFormSent(id: string): Promise<void> {
-  const studentRef = doc(this.firestore, "students", id);
-  await updateDoc(studentRef, {
-    isSocialFormSent: deleteField()
-  });
-}
+  async resetFormSent(id: string): Promise<void> {
+    const studentRef = doc(this.firestore, "students", id);
+    await updateDoc(studentRef, {
+      isSocialFormSent: deleteField()
+    })
+  }
+
+
+  getUserCenter(id: string) {
+    const studentRef = doc(this.firestore, 'SocialForm', id);
+
+    return from(getDoc(studentRef)).pipe(
+      map(snapshot => {
+        const data = snapshot.data();
+        return data?.['center'] ?? null;
+      })
+    )
+  }
 
 
 

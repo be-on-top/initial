@@ -116,6 +116,8 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('collapseLink') collapseLink!: ElementRef;
 
+  centerUrl: string = ""
+
   constructor(
     private auth: Auth,
     // private firestore: Firestore, 
@@ -184,7 +186,6 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
             // puis on interroge socialForm savoir si un document existe avec l'uid
             this.studentService.checkIfSocialFormExists(user.uid).then(result => {
               this.isSocialForm = result;
-
               // console.log("Résultat Firestore :", this.isSocialForm);
               // console.log("Valeur de isSocialFormSent :", this.userData.isSocialFormSent);
 
@@ -194,6 +195,16 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
                 console.log("Conditions validées, lancement du son...");
                 this.playText()
                 // this.playLocalMessage("remind.mp3");
+              }
+
+              else if (this.userData.isSocialFormSent && !this.userData.innerStudent && !this.userData.subscriptions) {
+                this.studentService.getUserCenter(this.userData.id).subscribe(center => {
+                  // on peut rajouter la méthode pour questionner socialForm > center
+                  // console.log('center récupéré :', center)
+                  this.centerUrl = `https://be-on-top.io/center/${center}`;
+                  console.log('url du centre !!!!!!!!!!!!! :', this.centerUrl)
+                })
+
               } else {
                 console.log("Conditions non remplies, pas de son.");
               }
@@ -898,11 +909,11 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
 
-triggerCollapseClick() {
-  if (this.collapseLink?.nativeElement) {
-    this.collapseLink.nativeElement.click();
+  triggerCollapseClick() {
+    if (this.collapseLink?.nativeElement) {
+      this.collapseLink.nativeElement.click();
+    }
   }
-}
 
 
 

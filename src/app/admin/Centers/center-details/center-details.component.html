@@ -12,15 +12,19 @@
                 <p class="card-text"><span class="fw-bold">Nom</span> : {{center.name}}<br>
                     <span class="fw-bold">Adresse</span> : {{center.address}}<br>
                     <span class="fw-bold">CP</span> : {{center.cp}}<br>
-                    <span class="fw-bold">Ville</span> : {{center.city}}
-                    <span *ngIf="center.mainCity && center.city.trim().toLowerCase() !== center.mainCity?.trim()?.toLowerCase()"> (Proche de
+                    <span class="fw-bold">Ville</span> : {{center.city}} 
+                    <span
+                        *ngIf="center.mainCity && center.city.trim().toLowerCase() !== center.mainCity?.trim()?.toLowerCase()">
+                        (Proche de
                         {{ center.mainCity }})
-                      </span>
-                <hr>
-                <!-- puisque cette vue est partagée entre admin et utilisateur final -->
-                     <p *ngIf="userRouterLinks.user && userRouterLinks.user==='admin'"> <span *ngIf="center.status; else checkbox">Status : actif</span>
-                         <ng-template #checkbox> Status : inactif</ng-template>
-                     </p>
+                    </span><br>
+                    <span class="fw-bold" *ngIf="center.tel">Tel</span> : {{center.tel}}
+                    <hr>
+                    <!-- puisque cette vue est partagée entre admin et utilisateur final -->
+                <p *ngIf="userRouterLinks.user && userRouterLinks.user==='admin'"> <span
+                        *ngIf="center.status; else checkbox">Status : actif</span>
+                    <ng-template #checkbox> Status : inactif</ng-template>
+                </p>
 
                 <!-- affectation métiers -->
                 <!-- <p *ngIf="center.sigles">Formations métiers ({{center.sigles.length}}) : 
@@ -28,12 +32,13 @@
                 </p> -->
                 <!-- pour masquer ceux des métiers dont le statut est false (dépubliés) -->
                 <!-- <p *ngIf="center.sigles">Formations métiers <span *ngIf="userRouterLinks.user=='admin'">({{center.sigles.length}})</span> :  -->
-                <p *ngIf="center.sigles">Formations métiers <span *ngIf="userRouterLinks.user=='admin'"></span> : 
+                <p *ngIf="center.sigles">Formations métiers <span *ngIf="userRouterLinks.user=='admin'"></span> :
                     <span *ngFor="let s of center.sigles" class="badge bg-secondary me-2">
-                        <a class="text-white text-decoration-none" [routerLink]="[('/formation'),s]" *ngIf="activeTrades.includes(s)">{{s}}</a></span>
+                        <a class="text-white text-decoration-none" [routerLink]="[('/formation'),s]"
+                            *ngIf="activeTrades.includes(s)">{{s}}</a></span>
                 </p>
             </div>
-  
+
         </div>
         <div class="card mt-4">
             <div class="card-header text-muted">Coordonnées de localisation</div>
