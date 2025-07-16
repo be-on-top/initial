@@ -71,6 +71,7 @@ import { UpdateCenterComponent } from './Centers/update-center/update-center.com
 import { CollapsesAlertComponent } from '../collapses-alert/collapses-alert.component';
 import { ProfessionalsListComponent } from './professionals-list/professionals-list.component';
 import { DeleteAllQuestionsComponent } from './Questions/delete-all-questions/delete-all-questions.component';
+import { UpdatePersonalDataComponent } from './Trainers/update-personal-data/update-personal-data.component';
 
 
 
@@ -266,7 +267,8 @@ const routesAdmin: Routes = [
     UpdateCenterComponent,
     CollapsesAlertComponent,
     ProfessionalsListComponent,
-    DeleteAllQuestionsComponent
+    DeleteAllQuestionsComponent,
+    UpdatePersonalDataComponent
   ],
   imports: [
     BrowserModule,

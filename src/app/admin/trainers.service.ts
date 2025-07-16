@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 // import { trainers } from './trainers';
 
 // à vérifier
-import { Auth, createUserWithEmailAndPassword, sendPasswordResetEmail, deleteUser, signInWithEmailAndPassword } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, sendPasswordResetEmail, deleteUser, signInWithEmailAndPassword, updateEmail, reauthenticateWithCredential, EmailAuthProvider } from '@angular/fire/auth';
 import { Firestore, collectionData, collection, docData, setDoc, query, where, updateDoc, getDoc, writeBatch } from '@angular/fire/firestore';
 import { deleteDoc, doc, getDocs } from 'firebase/firestore';
 import { Observable, pipe } from 'rxjs';
@@ -38,7 +38,7 @@ export class TrainersService {
 
   //   // const adminEmail = this.auth.currentUser.email;
   //   // console.log(adminEmail);
-    
+
 
 
   //   // Suppression des espaces et découpage en tableau
@@ -119,67 +119,67 @@ export class TrainersService {
 
 
   async createTrainer(trainer: any) {
-  try {
-    // Vérifier si l'administrateur est connecté
-    if (!this.auth.currentUser || !this.auth.currentUser.email) {
-      console.error('Administrateur non connecté.');
-      return;
+    try {
+      // Vérifier si l'administrateur est connecté
+      if (!this.auth.currentUser || !this.auth.currentUser.email) {
+        console.error('Administrateur non connecté.');
+        return;
+      }
+
+      // Récupérer l'email de l'administrateur AVANT toute autre action
+      const adminEmail = this.auth.currentUser.email;
+      console.log(`Email de l'administrateur : ${adminEmail}`);
+
+      // Préparation des données
+      const cpArray = trainer.cp
+        .split(',')
+        .map((cp: string) => cp.trim())
+        .filter((cp: string) => cp);
+
+      trainer.cp = cpArray;
+      let newTrainer = { created: Date.now(), status: true, cp: cpArray, ...trainer };
+      let password = "password";
+
+      // Création dans Firebase Auth
+      this.result = await createUserWithEmailAndPassword(this.auth, trainer.email, password);
+      if (this.result && this.result.user) {
+        newTrainer.id = this.result.user.uid;
+      }
+
+      // Enregistrement dans Firestore
+      const $trainersRef = collection(this.firestore, "trainers");
+      await setDoc(doc($trainersRef, newTrainer.id), newTrainer);
+
+      const $rolesRef = collection(this.firestore, "roles");
+      await setDoc(doc($rolesRef, newTrainer.id), { role: 'trainer' });
+
+      // Envoi du mail de réinitialisation
+      await sendPasswordResetEmail(this.auth, newTrainer.email);
+
+      // Déconnexion de l'administrateur
+      await this.auth.signOut();
+      console.log("Administrateur déconnecté.");
+
+      // Demander le mot de passe administrateur
+      const adminPassword = prompt('Veuillez entrer votre mot de passe administrateur pour continuer.');
+      if (!adminPassword) {
+        throw new Error("Mot de passe administrateur non fourni.");
+      }
+
+      // Reconnexion de l'administrateur
+      const adminResult = await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
+      if (!adminResult || !adminResult.user) {
+        throw new Error("Échec de la reconnexion de l'administrateur.");
+      }
+
+      console.log("Administrateur reconnecté avec succès.");
+
+      // Redirection vers la page du formateur
+      this.router.navigate(['/admin/trainer', newTrainer.id]);
+    } catch (error) {
+      console.error("Erreur lors de la création du formateur :", error);
     }
-
-    // Récupérer l'email de l'administrateur AVANT toute autre action
-    const adminEmail = this.auth.currentUser.email;
-    console.log(`Email de l'administrateur : ${adminEmail}`);
-
-    // Préparation des données
-    const cpArray = trainer.cp
-      .split(',')
-      .map((cp: string) => cp.trim())
-      .filter((cp: string) => cp);
-
-    trainer.cp = cpArray;
-    let newTrainer = { created: Date.now(), status: true, cp: cpArray, ...trainer };
-    let password = "password";
-
-    // Création dans Firebase Auth
-    this.result = await createUserWithEmailAndPassword(this.auth, trainer.email, password);
-    if (this.result && this.result.user) {
-      newTrainer.id = this.result.user.uid;
-    }
-
-    // Enregistrement dans Firestore
-    const $trainersRef = collection(this.firestore, "trainers");
-    await setDoc(doc($trainersRef, newTrainer.id), newTrainer);
-
-    const $rolesRef = collection(this.firestore, "roles");
-    await setDoc(doc($rolesRef, newTrainer.id), { role: 'trainer' });
-
-    // Envoi du mail de réinitialisation
-    await sendPasswordResetEmail(this.auth, newTrainer.email);
-
-    // Déconnexion de l'administrateur
-    await this.auth.signOut();
-    console.log("Administrateur déconnecté.");
-
-    // Demander le mot de passe administrateur
-    const adminPassword = prompt('Veuillez entrer votre mot de passe administrateur pour continuer.');
-    if (!adminPassword) {
-      throw new Error("Mot de passe administrateur non fourni.");
-    }
-
-    // Reconnexion de l'administrateur
-    const adminResult = await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
-    if (!adminResult || !adminResult.user) {
-      throw new Error("Échec de la reconnexion de l'administrateur.");
-    }
-
-    console.log("Administrateur reconnecté avec succès.");
-
-    // Redirection vers la page du formateur
-    this.router.navigate(['/admin/trainer', newTrainer.id]);
-  } catch (error) {
-    console.error("Erreur lors de la création du formateur :", error);
   }
-}
 
 
   // gettrainers(): Observable<trainers[]> {
@@ -228,18 +228,18 @@ export class TrainersService {
   deleteStudentFromTrainer(trainerId: string, studentUid: string) {
     // Référence au document Trainer dans Firestore
     const $trainerRef = doc(this.firestore, "trainers/" + trainerId);
-  
+
     // Lire le document actuel pour récupérer la liste des étudiants
     getDoc($trainerRef)
       .then((docSnapshot) => {
         if (docSnapshot.exists()) {
           const trainerData = docSnapshot.data(); // Obtenir les données du document
-  
+
           // Vérifier que 'students' est un tableau valide
-          if (trainerData['students'] && Array.isArray(trainerData['students'] )) {
+          if (trainerData['students'] && Array.isArray(trainerData['students'])) {
             // Supprimer le studentUid de la liste des étudiants
-            const updatedStudents = trainerData['students'] .filter((id: string) => id !== studentUid);
-  
+            const updatedStudents = trainerData['students'].filter((id: string) => id !== studentUid);
+
             // Mettre à jour uniquement le champ 'students' dans Firestore
             return updateDoc($trainerRef, { students: updatedStudents });
           } else {
@@ -253,7 +253,7 @@ export class TrainersService {
       })
       .then(() => {
         console.log("Le champ 'students' a été mis à jour avec succès !");
-  
+
         // Réinitialiser la propriété 'trainer' dans le document de l'étudiant
         const $studentRef = doc(this.firestore, "students/" + studentUid);
         return updateDoc($studentRef, { trainer: "attribué ultérieurement" });
@@ -265,8 +265,8 @@ export class TrainersService {
         console.error("Erreur lors de la mise à jour :", error);
       });
   }
-  
-  
+
+
 
 
   // ne gère  pas le cas où comment est undefined
@@ -304,15 +304,15 @@ export class TrainersService {
   //     .split(',')
   //     .map((cp: string) => cp.trim())
   //     .filter((cp: string) => cp);
-  
+
   //   // Mise à jour des codes postaux
   //   trainer.cp = cpArray;
-  
+
   //   // Supprimer uniquement la propriété "comment" si elle est undefined
   //   if (trainer.comment === undefined) {
   //     delete trainer.comment;
   //   }
-  
+
   //   // Référence du document dans Firestore
   //   let $trainerRef = doc(this.firestore, "trainers/" + id);
   //   setDoc($trainerRef, trainer)
@@ -322,7 +322,7 @@ export class TrainersService {
   //     .catch((error) => {
   //       console.error("Erreur lors de la mise à jour du trainer :", error);
   //     });
-  
+
   //   // Mise à jour et notification des étudiants
   //   for (let student of trainer.students) {
   //     let $studentRef = doc(this.firestore, "students/" + student);
@@ -339,25 +339,25 @@ export class TrainersService {
   // faut traiter le cas où students n'est pas encore renseigné pour éviter erreurs en console du 25042025
   // updateTrainer(id: string, trainer: any) {
   //   const $trainerRef = doc(this.firestore, "trainers/" + id);
-  
+
   //   // Nettoyage des codes postaux
   //   const cpArray = trainer.cp
   //     .split(',')
   //     .map((cp: string) => cp.trim())
   //     .filter((cp: string) => cp);
-  
+
   //   trainer.cp = cpArray;
-  
+
   //   // Suppression des champs optionnels vides ou undefined
   //   if (trainer.comment === undefined) {
   //     delete trainer.comment;
   //   }
-  
+
   //   // Vérifier si "students" est bien un tableau non vide, sinon le supprimer
   //   if (!Array.isArray(trainer.students) || trainer.students.length === 0) {
   //     delete trainer.students;
   //   }
-  
+
   //   // Mise à jour du document trainer
   //   updateDoc($trainerRef, trainer)
   //     .then(() => {
@@ -366,7 +366,7 @@ export class TrainersService {
   //     .catch((error) => {
   //       console.error("Erreur lors de la mise à jour du trainer :", error);
   //     });
-  
+
   //   // Mise à jour et notification des étudiants uniquement si students est un tableau non vide
   //   if (Array.isArray(trainer.students) && trainer.students.length > 0) {
   //     for (let student of trainer.students) {
@@ -387,24 +387,24 @@ export class TrainersService {
 
   // updateTrainer(id: string, trainer: any) {
   //   const $trainerRef = doc(this.firestore, "trainers/" + id);
-  
+
   //   // Nettoyage des codes postaux
   //   const cpArray = trainer.cp
   //     .split(',')
   //     .map((cp: string) => cp.trim())
   //     .filter((cp: string) => cp);
   //   trainer.cp = cpArray;
-  
+
   //   // Suppression des champs optionnels vides ou undefined
   //   if (trainer.comment === undefined) {
   //     delete trainer.comment;
   //   }
-  
+
   //   // Vérifier si "students" est bien un tableau non vide, sinon le supprimer
   //   if (!Array.isArray(trainer.students) || trainer.students.length === 0) {
   //     delete trainer.students;
   //   }
-  
+
   //   // Mise à jour du document trainer
   //   updateDoc($trainerRef, trainer)
   //     .then(() => {
@@ -413,30 +413,30 @@ export class TrainersService {
   //     .catch((error) => {
   //       console.error("Erreur lors de la mise à jour du trainer :", error);
   //     });
-  
+
   //   // Mise à jour des étudiants concernés (si la liste des students est bien présente)
   //   if (Array.isArray(trainer.students) && trainer.students.length > 0) {
   //     const fullName = trainer.lastName + " " + trainer.firstName;
   //     const normalizedFullName = fullName.toLowerCase();
-  
+
   //     for (let studentId of trainer.students) {
   //       const $studentRef = doc(this.firestore, "students/" + studentId);
-  
+
   //       getDoc($studentRef).then((snapshot) => {
   //         if (!snapshot.exists()) return;
-  
+
   //         const studentData = snapshot.data();
   //         let updatedTrainers = studentData['trainers'] || [];
-  
+
   //         // Vérifie si ce formateur est déjà dans la liste (insensible à la casse)
   //         const isAlreadyPresent = updatedTrainers.some(
   //           (name: string) => name.toLowerCase() === normalizedFullName
   //         );
-  
+
   //         if (!isAlreadyPresent) {
   //           updatedTrainers.push(fullName);
   //         }
-  
+
   //         // Mise à jour du champ 'trainers' uniquement
   //         updateDoc($studentRef, { trainers: updatedTrainers })
   //           .then(() => {
@@ -450,29 +450,76 @@ export class TrainersService {
   //   }
   // }
 
-  updateTrainer(id: string, trainer: any) {
+  async updateTrainer(id: string, trainer: any) {
+    const user = this.auth.currentUser;
+    if (!user) {
+      throw new Error("User is not authenticated");
+    }
+
+    // Mise à jour du document dans Firestore
     const $trainerRef = doc(this.firestore, "trainers/" + id);
-  
+
+
+    try {
+
+
+
+      // Vérification si l'email a changé
+      if (trainer.email && trainer.email !== user.email) {
+        if (!user.email) {
+          throw new Error("User email is null, cannot update email");
+        }
+
+        const currentPassword = trainer.currentPassword; // Récupère le mot de passe depuis les données du formulaire
+        if (!currentPassword) {
+          throw new Error("Current password is required for updating the email");
+        }
+
+        // Ré-authentification avec le mot de passe actuel
+        const credential = EmailAuthProvider.credential(user.email, currentPassword);
+        await reauthenticateWithCredential(user, credential);
+        console.log("User re-authenticated successfully");
+
+        // Mise à jour de l'email dans Firebase Auth
+        await updateEmail(user, trainer.email);
+        console.log("Email updated successfully in Firebase Auth");
+
+      }      // Mise à jour du document dans Firestore
+      await updateDoc($trainerRef, trainer);
+      // alert("ok modifications prises en compte")
+      console.log("Trainer updated successfully in Firestore");
+
+      // On arrête ici si l'email a été modifié
+      return;
+
+    } catch (error) {
+      console.error("Error updating strainer email: ", error);
+      throw error; // Relancer l'erreur pour la capturer dans le composant
+    }
+
+    // ci-dessous le code initial qui ne devrait pas être rappelé si on a déjà couvert le cas où l'email a été modifié :
     const fullName = trainer.lastName + " " + trainer.firstName;
-  
+
     // Nettoyage des codes postaux
-    const cpArray = trainer.cp
-      .split(',')
-      .map((cp: string) => cp.trim())
-      .filter((cp: string) => cp);
-    trainer.cp = cpArray;
-  
+    // const cpArray = trainer.cp
+    //   .split(',')
+    //   .map((cp: string) => cp.trim())
+    //   .filter((cp: string) => cp);
+    // trainer.cp = cpArray;
+
+
     // Suppression des champs optionnels vides ou undefined
-    if (trainer.comment === undefined) {
+    if (trainer.comment === undefined || trainer.comment === null) {
       delete trainer.comment;
     }
-  
+
+
     // Vérifier si "students" est bien un tableau non vide, sinon le supprimer
     // const hasStudents = Array.isArray(trainer.students) && trainer.students.length > 0;
     // if (!hasStudents) {
     //   delete trainer.students;
     // }
-  
+
     // Mise à jour du document trainer
     updateDoc($trainerRef, trainer)
       .then(() => {
@@ -481,28 +528,27 @@ export class TrainersService {
       .catch((error) => {
         console.error("Erreur lors de la mise à jour du trainer :", error);
       });
-  
 
 
-      
+
     // Mise à jour des étudiants concernés
     const studentsCollection = collection(this.firestore, "students");
-  
+
     getDocs(studentsCollection).then((querySnapshot) => {
       querySnapshot.forEach((docSnapshot) => {
         const studentId = docSnapshot.id;
         const studentData = docSnapshot.data();
         let trainersList = studentData['trainers'] || [];
-  
+
         const hasThisTrainer = trainersList.includes(fullName);
         const stillAssigned = trainer.students && trainer.students.includes(studentId);
-  
+
         if (hasThisTrainer && !stillAssigned) {
           // Si l'étudiant avait ce formateur mais qu'il n'est plus dans la liste
           trainersList = trainersList.filter(
             (name: string) => name !== fullName
           );
-  
+
           updateDoc(docSnapshot.ref, { trainers: trainersList })
             .then(() => {
               console.log(`Formateur retiré de ${studentId}`);
@@ -511,11 +557,11 @@ export class TrainersService {
               console.error(`Erreur lors de la suppression du formateur chez ${studentId}:`, error);
             });
         }
-  
+
         if (!hasThisTrainer && stillAssigned) {
           // S'il est censé l'avoir mais ne l'a pas encore
           trainersList.push(fullName);
-  
+
           updateDoc(docSnapshot.ref, { trainers: trainersList })
             .then(() => {
               console.log(`Formateur ajouté pour ${studentId}`);
@@ -529,38 +575,38 @@ export class TrainersService {
       console.error("Erreur lors de la lecture des étudiants :", error);
     });
   }
-  
-
-  
-
-
- 
-  
-  
 
 
 
-  
-  
 
 
 
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   // methode à tester pour récupérer le nom
@@ -884,6 +930,47 @@ export class TrainersService {
     } catch (error) {
       console.error("Erreur lors de la récupération du rôle :", error);
       return false;
+    }
+  }
+
+
+  async updateStudent(id: string, student: any): Promise<void> {
+    const user = this.auth.currentUser;
+
+    if (!user) {
+      throw new Error("User is not authenticated");
+    }
+
+    try {
+      // Vérification si l'email a changé
+      if (student.email && student.email !== user.email) {
+        if (!user.email) {
+          throw new Error("User email is null, cannot update email");
+        }
+
+        const currentPassword = student.currentPassword; // Récupère le mot de passe depuis les données du formulaire
+        if (!currentPassword) {
+          throw new Error("Current password is required for updating the email");
+        }
+
+        // Ré-authentification avec le mot de passe actuel
+        const credential = EmailAuthProvider.credential(user.email, currentPassword);
+        await reauthenticateWithCredential(user, credential);
+        console.log("User re-authenticated successfully");
+
+        // Mise à jour de l'email dans Firebase Auth
+        await updateEmail(user, student.email);
+        console.log("Email updated successfully in Firebase Auth");
+      }
+
+      // Mise à jour du document dans Firestore
+      const studentRef = doc(this.firestore, "students", id);
+      await updateDoc(studentRef, student);
+      console.log("Student updated successfully in Firestore");
+
+    } catch (error) {
+      console.error("Error updating student: ", error);
+      throw error; // Relancer l'erreur pour la capturer dans le composant
     }
   }
 

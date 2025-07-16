@@ -1,9 +1,12 @@
 <div class="container py-5">
 
-    <h3 *ngIf="userRouterLinks.user!=='trainer'"  class="mb-3">Détails du Formateur !!!</h3>
+    <h3 *ngIf="userRouterLinks.user!=='trainer'" class="mb-3">Détails du Formateur !!!</h3>
     <h3 *ngIf="userRouterLinks.user==='trainer'" class="mb-3">Détails de mon Compte Formateur</h3>
 
-    <div class="alert alert-light mt-4"><i class="bi bi-info-square-fill me-1"></i>Chaque formateur est associé à une liste des Métiers (domaines d'intervention) pour lesquels il est compétent + une liste des CP (codes postaux) où il est susceptible d'intervenir. <span class="fw-bold">Tant qu'aucun conseiller projet ne lui a affecté d'étudiants, sa liste reste vide..</span> </div>
+    <div class="alert alert-light mt-4"><i class="bi bi-info-square-fill me-1"></i>Chaque formateur est associé à une
+        liste des Métiers (domaines d'intervention) pour lesquels il est compétent + une liste des CP (codes postaux) où
+        il est susceptible d'intervenir. <span class="fw-bold">Tant qu'aucun conseiller projet ne lui a affecté
+            d'étudiants, sa liste reste vide..</span> </div>
 
 
     <div *ngIf="user">
@@ -21,10 +24,12 @@
                 <p> <span *ngIf="user.status; else checkbox">Status : actif</span>
                     <ng-template #checkbox> Status : inactif</ng-template>
                 </p>
+
                 <ng-template #checkbox> Status : inactif</ng-template>
                 <!-- affectation métiers -->
                 <p *ngIf="user.sigle">Métiers d'affectation ({{user.sigle.length}}) :
-                    <span *ngFor="let s of user.sigle, let i = index"> <a class="text-decoration-none" target="_blank" [routerLink]="[('/formation'),s]">{{s}}</a>{{i < user.sigle.length - 1 ? ', ' : ''}}</span>
+                    <span *ngFor="let s of user.sigle, let i = index"> <a class="text-decoration-none" target="_blank"
+                            [routerLink]="[('/formation'),s]">{{s}}</a>{{i < user.sigle.length - 1 ? ', ' : '' }}</span>
                 </p>
                 <p *ngIf="user.comment && user.comment!=''">Commentaire : <span
                         class="fst-italic">{{user.comment}}</span>
@@ -40,8 +45,20 @@
             <div class="card-footer text-muted">
                 <span *ngIf="user.created">Date de création : {{user.created | date:'dd/MM/yyyy' }}</span><br>
             </div>
+
+            <!-- pour éditer son email - et eventuellement nom prénom -->
+            <div *ngIf="userRouterLinks.user==='trainer'" class="m-2">
+                <hr>
+                <button type="button" class="btn btn-success mt-3" data-bs-toggle="collapse" data-bs-target="#demo"
+                    (click)="toogleText()">{{editButtonLabel}}</button>
+                <div id="demo" class="collapse">
+                    <app-update-personal-data [trainer]="user"></app-update-personal-data>
+                </div>
+            </div>
+
+
         </div>
-        <div class="d-flex my-4 justify-content-end gap-5"  *ngIf="userRouterLinks.user!=='trainer'" >
+        <div class="d-flex my-4 justify-content-end gap-5" *ngIf="userRouterLinks.user!=='trainer'">
 
             <!-- <button class="btn btn-primary">
                 <a class="text-white" [routerLink]="['/admin/trainers']">Retour à la liste</a>
@@ -62,9 +79,10 @@
 
 
             <button type="button" class="btn btn-warning">
-                <a *ngIf="userRouterLinks.user!=='referent'" class="text-white" [routerLink]="['/admin/updateTrainer', user.id]">Modifier</a>
-                <a *ngIf="userRouterLinks.user==='referent'" class="text-white" [routerLink]="['/admin/referent/updateTrainer', user.id]">Modifier</a>
-                
+                <a *ngIf="userRouterLinks.user!=='referent'" class="text-white"
+                    [routerLink]="['/admin/updateTrainer', user.id]">Modifier</a>
+                <a *ngIf="userRouterLinks.user==='referent'" class="text-white"
+                    [routerLink]="['/admin/referent/updateTrainer', user.id]">Modifier</a>
             </button>
 
             <button type="button" class="btn btn-danger" [disabled]="userRouterLinks.user=='referent'">

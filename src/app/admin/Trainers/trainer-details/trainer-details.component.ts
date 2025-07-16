@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { TrainersService } from '../../trainers.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StudentsService } from '../../students.service';
@@ -25,18 +25,19 @@ export class TrainerDetailsComponent implements OnInit {
   private trainerSubscription: Subscription = new Subscription();  // Abonnement pour le formateur
   private studentsSubscriptions: Subscription[] = [];  // Tableau pour les abonnements des étudiants
 
-    // pour différencier la vue si user trainer
-    userRouterLinks:any
+  // pour différencier la vue si user trainer
+  userRouterLinks: any
 
+  // pour afficher le formulaire d'édition
+  // editMode: boolean = false
+  feedbackMessages: any
+  editButtonLabel: string = "Modifier votre email"
+  @ViewChild('collapseDiv') collapseDiv!: ElementRef;
 
-
-
-  constructor(private service: TrainersService, private ac: ActivatedRoute, private router: Router, private studentsService: StudentsService, private authService:AuthService) {
+  constructor(private service: TrainersService, private ac: ActivatedRoute, private router: Router, private studentsService: StudentsService, private authService: AuthService, private renderer: Renderer2) {
     // this.userId = this.ac.snapshot.params["id"];
-    this.ac.snapshot.params["id"]?this.userId = this.ac.snapshot.params["id"]:this.userId=this.authService.getCurrentUserUid();
+    this.ac.snapshot.params["id"] ? this.userId = this.ac.snapshot.params["id"] : this.userId = this.authService.getCurrentUserUid();
     this.userRouterLinks = this.ac.snapshot.data;
-    
-
   }
 
   // fonctionne  bien mais doublons dans le rendu après génère doublons
@@ -74,7 +75,7 @@ export class TrainerDetailsComponent implements OnInit {
     this.service.getTrainer(this.userId).subscribe(data => {
       console.log("data de getTrainer", data);
       this.user = data;
-      console.log('élément des étudiants:', this.user.students);
+      // console.log('élément des étudiants:', this.user.students);
 
       // Vérification si des étudiants sont associés au formateur
       if (this.user.students) {
@@ -90,7 +91,7 @@ export class TrainerDetailsComponent implements OnInit {
             if (list.length === this.user.students.length) {
               // Utilisation de Set pour supprimer les doublons
               this.studentsList = [...new Set(list)];
-              console.log('Liste des étudiants sans doublons:', this.studentsList);
+              // console.log('Liste des étudiants sans doublons:', this.studentsList);
             }
           });
         });
@@ -100,6 +101,15 @@ export class TrainerDetailsComponent implements OnInit {
     // Vérifier si l'utilisateur authentifié est un référent
     this.isReferent = await this.service.isCurrentUserReferent();
     console.log("Est-ce un référent ?", this.isReferent);
+
+
+    // On attend que le DOM soit prêt
+    this.renderer.listen(document, 'hidden.bs.collapse', (event: any) => {
+      if (event.target.id === 'demo') {
+        console.log('Le collapse "demo" s\'est fermé');
+        this.editButtonLabel = 'Modifier votre email';
+      }
+    });
   }
 
 
@@ -112,9 +122,6 @@ export class TrainerDetailsComponent implements OnInit {
     return studentData.map(dataStudent => dataStudent.lastName);
   }
 
-
-
-
   deleteUser(userId: string) {
     console.log(userId);
     this.service.deleteTrainer(userId)
@@ -125,5 +132,15 @@ export class TrainerDetailsComponent implements OnInit {
     this.studentsList = []
 
   }
+
+  // pour le bouton d'édition de l'email (datas persos)
+  toogleText() {
+    if (this.editButtonLabel === 'Modifier votre email') {
+      this.editButtonLabel = 'Annuler';
+    } else {
+      this.editButtonLabel = 'Modifier votre email';
+    }
+  }
+
 
 }

@@ -128,7 +128,8 @@
                                     class="d-block">
                                     <span class="fw-bold">Formateur</span> : {{userData.trainer}}
                                 </span>
-                                <!-- Nouveau champ trainers (tableau) -->
+                            </li>
+                            <li *ngIf="userData.trainers && userData.subscriptions" class="list-group-item">
                                 <span *ngIf="userData.trainers && userData.trainers.length > 0" class="d-block">
                                     <span class="fw-bold">Formateur(s)</span> :
                                     <span *ngFor="let t of userData.trainers; let isLast = last">

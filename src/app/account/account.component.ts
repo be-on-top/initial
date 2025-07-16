@@ -200,9 +200,6 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
 
             });
 
-
-
-
           });
       }
     })

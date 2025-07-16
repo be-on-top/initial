@@ -1,0 +1,50 @@
+<div *ngIf="trainer">
+    <!-- <div class="container py-5"> -->
+        <app-feedback-messages [feedbackMessages]="feedbackMessages" [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
+        <form class="form" #f="ngForm" (submit)="updatePerso(f)" class="was-validated">
+
+            <input type="text" id="created" [(ngModel)]="trainer.created" name="created" class="form-control invisible"
+                placeholder="Date de création : non modifiable">
+            <input type="text" id="id" [(ngModel)]="trainer.id" name="id" class="form-control"
+                placeholder="id d'authentification : non modifiable" class="form-control text-white" disabled>
+
+            <label for="firstName" class="form-label mt-3">Prénom</label>
+            <input type="text" id="firstName" [(ngModel)]="trainer.firstName" name="firstName" class="form-control"
+                placeholder="Prénom">
+
+            <label for="lastName" class="form-label mt-3">Nom *</label>
+            <input type="text" id="lastName" [(ngModel)]="trainer.lastName" name="lastName" class="form-control"
+                #lastName="ngModel" placeholder="Nom" required>
+            <div class="valid-feedback" *ngIf="lastName.valid">Champ correctement renseigné</div>
+            <div class="invalid-feedback" *ngIf="lastName.invalid">Merci de renseigner le champ nom.</div>
+
+            <label for="email" class="form-label mt-3 disabled text">Email *</label>
+            <div class="input-group">
+                <span class="input-group-text" id="inputGroupPrepend2">&#64;</span>
+                <input type="email" id="email" [(ngModel)]="trainer.email" name="email" class="form-control"
+                    #email="ngModel" placeholder="Email" >
+            </div>
+            <div>
+                <label for="currentPassword" class="form-label mt-3">Mot de passe actuel *</label>
+                <input
+                  type="password"
+                  id="currentPassword"
+                  [(ngModel)]="currentPassword"
+                  name="currentPassword"
+                  class="form-control"
+                  placeholder="Entrez votre mot de passe actuel"
+                  required
+                />
+              </div>        
+
+
+            <!-- <label for="cp" class="form-label mt-3">CP</label>
+            <input type="text" id="cp" [(ngModel)]="student.cp" name="cp" class="form-control"
+                placeholder="Code Postal Optionnel..."> -->
+            <button type="submit" id="submit" class="btn btn-primary mt-3"
+                [ngClass]="{'disabled':f.invalid}" data-bs-toggle="collapse" data-bs-target="#demo">Valider</button>
+        </form>
+
+
+    <!-- </div> -->
+</div>

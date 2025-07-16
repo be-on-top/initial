@@ -154,6 +154,14 @@ export class UpdateTrainerComponent implements OnInit {
   
     // Sécurité : on aligne form.value.students sur selectedStudent
     form.value.students = this.selectedStudent;
+
+      // 🚨 Conversion de cp en tableau si c’est une string
+  if (typeof form.value.cp === 'string') {
+    form.value.cp = form.value.cp
+      .split(',')
+      .map((cp: string) => cp.trim())
+      .filter((cp: string) => cp); // enlève les vides
+  }
   
     console.log('form update values', form.value);
   
