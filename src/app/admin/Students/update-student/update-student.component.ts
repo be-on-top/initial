@@ -185,13 +185,18 @@ export class UpdateStudentComponent implements OnInit {
 
   getUsers() {
     if (this.userRouterLinks.user == "trainer") {
-      alert("C'est un formateur !!!")
+      // alert("C'est un formateur !!!")
+      console.log("C'est un formateur !!!");
+
     }
     else if (this.userRouterLinks.user == "tutor") {
-      alert("C'est un tuteur !!!")
+      // alert("C'est un tuteur !!!")
+      console.log("C'est un tuteur !!!");
     }
     else if (this.userRouterLinks.user == "admin") {
-      alert("C'est un super administrateur !!!")
+      // alert("C'est un super administrateur !!!")
+      console.log("C'est un super admin !!!");
+
     }
 
   }
@@ -203,7 +208,7 @@ export class UpdateStudentComponent implements OnInit {
     this.settingsService.getSigleIds()
       .then((sigleIds) => {
         this.sigleIds = sigleIds
-        console.log(sigleIds);
+        // console.log(sigleIds);
       })
       .catch((error) => {
         console.error('Erreur lors de la récupération des IDs de documents :', error);
@@ -235,8 +240,8 @@ export class UpdateStudentComponent implements OnInit {
   // poura voir des feedback explicites
   feedBackSubscribe: boolean = false
   async subscribeStudent(subscribeStudent: NgForm) {
-    console.log('this.priorCenterPostalCode', this.priorCenterPostalCode);
-    console.log('localTraining du formulaire', subscribeStudent.value.localTraining);
+    // console.log('this.priorCenterPostalCode', this.priorCenterPostalCode);
+    // console.log('localTraining du formulaire', subscribeStudent.value.localTraining);
 
     let localTraining = subscribeStudent.value.localTraining
       ? subscribeStudent.value.localTraining

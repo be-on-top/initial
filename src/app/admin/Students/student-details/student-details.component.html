@@ -40,9 +40,9 @@
                         <span *ngIf="student.details" class="d-block"><span class="fw-bold">Détails</span> :
                             {{student.details}}</span>
                         <!-- Ancien champ trainer affiché uniquement s'il est différent de "Attribué ultérieurement" -->
-                        <span *ngIf="student.trainer && student.trainer !== 'Attribué ultérieurement'" class="d-block">
+                        <!-- <span *ngIf="student.trainer && student.trainer !== 'Attribué ultérieurement'" class="d-block">
                             <span class="fw-bold">Formateur</span> : {{student.trainer}}
-                        </span>
+                        </span> -->
 
                         <!-- Nouveau champ trainers (tableau) -->
                         <span *ngIf="student.trainers && student.trainers.length > 0" class="d-block">

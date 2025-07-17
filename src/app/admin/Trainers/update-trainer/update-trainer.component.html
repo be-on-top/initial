@@ -45,7 +45,10 @@
         <div class="invalid-feedback" *ngIf="email.invalid">Merci de renseigner le champ email.</div>
     
         <!-- Code postal optionnel -->
-        <label for="cp" class="form-label mt-3">CP</label>
+        <label for="cp" class="form-label mt-3">CP :</label>
+        <div class="d-flex text-muted small mb-2">
+            Codes postaux séparés par une virgule
+        </div>
         <input type="text" id="cp" [(ngModel)]="user.cp" name="cp" class="form-control"
             placeholder="Code Postal Optionnel...">
     
