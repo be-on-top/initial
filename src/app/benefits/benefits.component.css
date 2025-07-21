@@ -105,8 +105,6 @@ button.btn.active{
    background-image: linear-gradient(to top, #0c5eea, #0062fe);
 }
 
-
-
 @media only screen and (max-width:720px) {
     /* 
     #image>img {

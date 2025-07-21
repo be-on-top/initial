@@ -42,13 +42,8 @@
     ],
     "redirects": [
       {
-        "source": "/trade/:id/:slug",
+        "source": "/formation/:id",
         "destination": "https://be-on-top.io/formation/:id/:slug",
-        "type": 301
-      },
-      {
-        "source": "/trade/:id",
-        "destination": "https://be-on-top.io/formation/:id",
         "type": 301
       },
       {
