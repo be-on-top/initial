@@ -11,6 +11,13 @@
   <ng-template #evaluation>
 
     <h3 *ngIf="userRouterLinks=='trainer', else evaluation">Nouvelle évaluation pédagogique pour {{fullName}}</h3>
+        <div class="alert alert-light mb-4">
+        <span class="fw-bold"><i class="bi bi-info-square-fill me-1"></i>Rappel contextuel</span> : Le candidat
+        apprenant a finalisé son évaluation de positionnement, son inscription en formation a été validée par un
+        conseiller projet, il a été notifié qu'un ou plusieurs formateur lui ont été attribué. Les formations en présentiel on commencé.
+        Vous pouvez procéder à des évaluations de suivi pédagogique. Evaluations individuelles, que
+        l'utilisateur pourra consulter dans son compte personnel et que vous pourrez retrouver dans la vue de détail du candidat.
+    </div>
   </ng-template>
   <!-- <app-feedback-messages [feedbackMessages]="feedbackMessages" [isSuccessMessage]="isSuccessMessage"></app-feedback-messages> -->
 
@@ -54,16 +61,14 @@
               CP{{ i + 1 }}: {{ relatedCompetences['competences_' + selectedSigle][key] }}
             </option> -->
 
-<option
-  *ngFor="let key of getKeys(relatedCompetences['competences_' + selectedSigle]); let i = index"
-  [value]="selectedSigle + '_CP' + (i + 1)"
-  [disabled]="alreadyUsedCompetences.includes(selectedSigle + '_CP' + (i + 1))"
->
-  <span *ngIf="alreadyUsedCompetences.includes(selectedSigle + '_CP' + (i + 1))" class="checkmark-icon">
-    ✔ <!-- Caractère checkmark Unicode -->
-  </span>
-  CP{{ i + 1 }}: {{ relatedCompetences['competences_' + selectedSigle][key] }}
-</option>
+            <option *ngFor="let key of getKeys(relatedCompetences['competences_' + selectedSigle]); let i = index"
+              [value]="selectedSigle + '_CP' + (i + 1)"
+              [disabled]="alreadyUsedCompetences.includes(selectedSigle + '_CP' + (i + 1))">
+              <span *ngIf="alreadyUsedCompetences.includes(selectedSigle + '_CP' + (i + 1))" class="checkmark-icon">
+                ✔ <!-- Caractère checkmark Unicode -->
+              </span>
+              CP{{ i + 1 }}: {{ relatedCompetences['competences_' + selectedSigle][key] }}
+            </option>
 
 
           </select>
@@ -126,6 +131,8 @@
           #date="ngModel" />
         <!-- <div class="valid-feedback" *ngIf="date.valid">Champ correctement renseigné</div> -->
         <div class="invalid-feedback" *ngIf="date.invalid">Merci de renseigner la date</div>
+        <small class="text-muted">Date réelle du jour de l'épreuve</small>
+
       </div>
 
 

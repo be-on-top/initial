@@ -315,7 +315,7 @@ export class StudentsService {
             firstName: student.firstName?.trim() || '',
             lastName: student.lastName?.trim() || '',
             email: student.email?.trim() || '',
-            roles: [],
+            // roles: [],
             details: "", // Ajoutez des détails ou initialisez-les en fonction du modèle
           };
 
@@ -423,7 +423,6 @@ export class StudentsService {
     if (result && result.user) {
       newStudent.id = result.user.uid
     }
-
 
     let studentsRef = collection(this.firestore, "students");
     setDoc(doc(studentsRef, newStudent.id), newStudent)

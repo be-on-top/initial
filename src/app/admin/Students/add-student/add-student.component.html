@@ -4,15 +4,26 @@
     <app-feedback-messages [feedbackMessages]="feedbackMessages"
         [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
 
-        <div  class="alert w-100 p-4 pe-5 bg-warning alert-dismissible text-white mb-4 fade show fs-5">
-            <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
-                aria-label="Fermer le message"></button>
+    <div class="alert w-100 p-4 pe-5 bg-warning alert-dismissible text-white mb-4 fade show fs-5">
+        <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
+            aria-label="Fermer le message"></button>
 
-            Si vous ajoutez un apprenant, donc que vous prenez l'initiave de lui créer un compte sur be-on-top, <span class="fw-bold">il ne vous appartient pas de lui communiquer un mot de passe</span>. Il recevra immédiatement sur sa boite mail un lien pour personnaliser (réinitialisation) son mot de passe. Si le lien de réinitialisation ne fonctionne plus parce que ces liens ne sont opérationnels qu'une courte durée, il faudra inviter chaque candidat apprenant à se rendre sur la page de <a class="text-light fw-bold" target="_blank" [routerLink]="['/login']" >connexion</a> et cliquer sur <span class="fw-bold">réinitialiser mon mot de passe</span>. </div>
-        <div  class="alert w-100 p-4 pe-5 bg-danger alert-dismissible text-white mb-4 fade show fs-5">
-            <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
-                aria-label="Fermer le message"></button>
-            Ces candidats n’auront pas à remplir le formulaire de pré-inscription destiné aux candidats externes, car vous disposez déjà des informations nécessaires en interne. Ils seront donc automatiquement rattachés à votre centre. <span class="fw-bold">ATTENTION à vous munir de votre mot de passe, il vous sera demandé pour des raisons de sécurité</span>.</div>
+        Si vous ajoutez un apprenant, donc que vous prenez l'initiave de lui créer un compte sur be-on-top, <span
+            class="fw-bold">il ne vous appartient pas de lui communiquer un mot de passe</span>. Il recevra
+        immédiatement sur sa boite mail un lien pour personnaliser (réinitialisation) son mot de passe. Si le lien de
+        réinitialisation ne fonctionne plus parce que ces liens ne sont opérationnels qu'une courte durée, il faudra
+        inviter chaque candidat apprenant à se rendre sur la page de <a class="text-light fw-bold" target="_blank"
+            [routerLink]="['/login']">connexion</a> et cliquer sur <span class="fw-bold">réinitialiser mon mot de
+            passe</span>.
+    </div>
+    <div class="alert w-100 p-4 pe-5 bg-danger alert-dismissible text-white mb-4 fade show fs-5">
+        <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
+            aria-label="Fermer le message"></button>
+        Ces candidats n’auront pas à remplir le formulaire de pré-inscription destiné aux candidats externes, car vous
+        disposez déjà des informations nécessaires en interne. Ils seront donc automatiquement rattachés à votre centre.
+        <span class="fw-bold">ATTENTION à vous munir de votre mot de passe, il vous sera demandé pour des raisons de
+            sécurité</span>.
+    </div>
     <!-- pour les messages de retour/validation des champs du formulaire ou form validation, on utilisera BOOTSTRAP plutôt que des directives structurelles -->
     <form class="form" #f="ngForm" (submit)="addStudent(f)" class="was-validated">
 
@@ -73,9 +84,18 @@
 
 
 
-    <div class="alert alert-warning mt-5 text-light">Votre fichier CSV devrait contenir des colonnes correspondant aux
-        propriétés nécessaires, comme : <br>firstName,lastName,email <br>John,Doe,john.doe@example.com
-        <br>Jane,Smith,jane.smith@example.com </div>
+    <div class="alert alert-warning mt-5 text-light">Votre fichier CSV devra contenir des colonnes suivantes: <span class="fw-bold"><br>firstName,lastName,email</span>  <br>John,Doe,john.doe@example.com
+        <br>Jane,Smith,jane.smith@example.com
+    </div>
+    <div>
+        Un fichier vide au bon format csv (UTF-8) avec les noms de colonnes qui conviennent est téléchargeable en
+        <a title="télécharger un modèle"
+            href="https://firebasestorage.googleapis.com/v0/b/be-on-top-beta.appspot.com/o/admin-docs%2Fbe-on-top-import-innerStudents.csv?alt=media&token=50904582-dd17-4f71-bae6-67d8997bc0f5"
+            target="_blank" rel="noopener noreferrer">
+            suivant ce lien <i class="bi bi-download ms-1"></i>
+        </a>
+    </div>
+
 
 
 </div>

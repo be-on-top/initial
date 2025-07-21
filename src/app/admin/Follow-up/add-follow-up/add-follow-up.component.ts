@@ -89,18 +89,18 @@ export class AddFollowUpComponent implements OnInit {
       }
 
       // 🧠 Parcours des évaluations existantes pour en extraire les compétences
-if (data.evaluations) {
-  for (const evalKey in data.evaluations) {
-    const evaluation = data.evaluations[evalKey];
+      if (data.evaluations) {
+        for (const evalKey in data.evaluations) {
+          const evaluation = data.evaluations[evalKey];
 
-    // Vérifie que la propriété est bien présente et de type string
-    if (typeof evaluation.competence === 'string') {
-      this.alreadyUsedCompetences.push(evaluation.competence);
-      console.log('this.alreadyUsedCompetences', this.alreadyUsedCompetences);
-      
-    }
-  }
-}
+          // Vérifie que la propriété est bien présente et de type string
+          if (typeof evaluation.competence === 'string') {
+            this.alreadyUsedCompetences.push(evaluation.competence);
+            console.log('this.alreadyUsedCompetences', this.alreadyUsedCompetences);
+
+          }
+        }
+      }
 
 
       this.getRelatedCompetences()
@@ -125,7 +125,18 @@ if (data.evaluations) {
   addEvaluation(studentId: string, evaluation: NgForm) {
     console.log(evaluation.value.date)
     // let evaluations:any={}
-    let evalKey: string = 'evaluation-' + evaluation.value.date + Math.floor(Math.random() * 2)
+    // let evalKey: string = 'evaluation-' + evaluation.value.date + Math.floor(Math.random() * 2)
+
+    // alternative 1
+    // let randomSuffix = Math.floor(Math.random() * 100000);
+    // let evalKey = `evaluation-${evaluation.value.date}-${randomSuffix}`;
+
+    // alternative 2 unicité garantie
+    const now = new Date();
+    const timeSuffix = `${now.getHours()}${now.getMinutes()}${now.getSeconds()}`.padStart(6, '0');
+    let evalKey = `evaluation-${evaluation.value.date}-${timeSuffix}`;
+
+
     const evaluations = { [evalKey]: evaluation.value }
     this.service.addFollowUpEvaluation(studentId, { evaluations }).then(() => {
 
