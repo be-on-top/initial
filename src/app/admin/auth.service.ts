@@ -65,33 +65,59 @@ export class AuthService {
     //   }
     // });
 
-    onAuthStateChanged(this.auth, user => {
-      if (this.userRoleSubscription) {
-        this.userRoleSubscription.unsubscribe(); // 🔴 Nettoie l'abonnement précédent
-        this.userRoleSubscription = null;
-      }
-  
-      if (user) {
-        const uid = user.uid;
-        const rolesRef = doc(this.firestore, `roles/${uid}`);
-  
-        this.userRoleSubscription = docData(rolesRef).subscribe(roleDoc => {
-          this.currentUserInfoSubject.next({
-            uid,
-            role: roleDoc?.['role'] || null,
-          });
-        });
-      } else {
-        this.currentUserInfoSubject.next(null);
-      }
-    });
+      onAuthStateChanged(this.auth, user => {
+        if (this.userRoleSubscription) {
+          this.userRoleSubscription.unsubscribe(); // 🔴 Nettoie l'abonnement précédent
+          this.userRoleSubscription = null;
+        }
 
-  }
+        if (user) {
+          const uid = user.uid;
+          const rolesRef = doc(this.firestore, `roles/${uid}`);
+
+          this.userRoleSubscription = docData(rolesRef).subscribe(roleDoc => {
+            this.currentUserInfoSubject.next({
+              uid,
+              role: roleDoc?.['role'] || null,
+            });
+          });
+        } else {
+          this.currentUserInfoSubject.next(null);
+        }
+      });
+
+    }
+
+
+  //   onAuthStateChanged(this.auth, async user => {
+  //     if (this.userRoleSubscription) {
+  //       this.userRoleSubscription.unsubscribe();
+  //       this.userRoleSubscription = null;
+  //     }
+
+  //     if (user) {
+  //       const uid = user.uid;
+  //       const rolesRef = doc(this.firestore, `roles/${uid}`);
+
+  //       // 🔄 Utilise getDoc pour ne pas bloquer le rendu initial
+  //       const roleSnap = await getDoc(rolesRef);
+  //       const roleDoc = roleSnap.data();
+
+  //       this.currentUserInfoSubject.next({
+  //         uid,
+  //         role: roleDoc?.['role'] || null,
+  //       });
+  //     } else {
+  //       this.currentUserInfoSubject.next(null)
+  //     }
+  //   })
+  // }
+
 
   getCurrentUserInfo(): Observable<{ uid: string, role: string | string[] | null } | null> {
     return this.currentUserInfoSubject.asObservable();
   }
-  
+
   setCurrentUserInfo(userInfo: { uid: string, role: string | string[] | null }) {
     this.currentUserInfoSubject.next(userInfo);
   }
@@ -382,7 +408,7 @@ export class AuthService {
     return user ? user.email : null;  // Retourne l'UID si l'utilisateur est connecté, sinon null
   }
 
-//  fonctionne bien mais je récupère pas admin (?)
+  //  fonctionne bien mais je récupère pas admin (?)
   getCurrentUserRole(): Observable<string | string[] | null> {
     return new Observable(observer => {
       onAuthStateChanged(this.auth, user => {
@@ -417,14 +443,14 @@ export class AuthService {
   //         observer.complete();
   //         return;
   //       }
-  
+
   //       const rolesRef = doc(this.firestore, `roles/${user.uid}`);
   //       docData(rolesRef).subscribe(roleDoc => {
   //         console.log("Données Firestore pour l'utilisateur :", roleDoc);  // Debug
-  
+
   //         if (roleDoc && roleDoc['role']) {
   //           const role = roleDoc['role'];
-  
+
   //           // Si role est un tableau, on peut vérifier si 'admin' en fait partie
   //           if (Array.isArray(role)) {
   //             // Si rôle est un tableau, on vérifie si l'admin y est présent
@@ -440,7 +466,7 @@ export class AuthService {
   //     });
   //   });
   // }
-  
+
 
 
   // getCurrentUserInfo(): Observable<{ uid: string, role: string | string[] | null } | null> {

@@ -449,6 +449,12 @@ export class StudentsService {
     const studentRef = doc(this.firestore, 'students/' + studentId);
     return docData(studentRef) as Observable<Student>;
   }
+  // essai  pour éviter les écoutes en temps réel et améliorer le FCP
+  getStudentForHome(studentId: string): Observable<Student> {
+    const studentRef = doc(this.firestore, 'students/' + studentId);
+    return docData(studentRef, { idField: 'id' }) as Observable<Student>;
+  }
+
 
   checkIfSocialFormExists(studentId: string): Promise<boolean> {
     const docRef = doc(this.firestore, `SocialForm/${studentId}`);

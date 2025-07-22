@@ -162,44 +162,78 @@ export class HomeComponent implements OnInit {
         console.log('UserRole:', this.userRole);
       })
 
-      // pour récupérer la data de l'utilisateur authentifié si c'est un étudiant 
+      // // pour récupérer la data de l'utilisateur authentifié si c'est un étudiant 
+      // onAuthStateChanged(this.auth, (user: any) => {
+      //   if (user && (this.userRole == 'student' || this.userRole == '')) {
+      //     // User is signed in, see docs for a list of available properties
+      //     // https://firebase.google.com/docs/reference/js/firebase.User
+      //     this.user = user.uid
+      //     this.studentService.getStudentById(user.uid).
+      //       subscribe((data) => {
+      //         // console.log("data", data);
+      //         this.studentData = data
+      //         this.checkIfQuizzAchieved()
+      //         this.dataLoading = false
+
+      //         // Forcer la détection de changement
+      //         this.cdr.detectChanges();
+      //       })
+      //     this.authService.getUserId();
+      //     // retourne this.ui tout de suite après la connexion. undefined plus tard, donc ne convient pas...
+      //     // console.log("log de ui", this.ui);
+      //     // tests ok pour information, mais ne semble pas être très utile 
+      //     this.authService.getToken()?.then(res => console.log("token authentification depuis authService", res.token))
+      //     // fonctionne parfaitement !!!!!!!!!!!!!!!!!!
+      //     this.authService.authStatusListener()
+      //   }
+
+      //   else if ((user && (this.userRole == 'editor'))) {
+      //     this.isEditor = true
+
+      //   }
+
+      //   // pour le cas où non authentifié
+      //   else {
+      //     // L'utilisateur n'est pas authentifié
+      //     console.log("Utilisateur non authentifié");
+      //     // Rediriger vers la page de connexion si nécessaire
+      //     // this.router.navigate(['/login']);
+      //   }
+      // })
+
+      // Vérification de l'authentification
       onAuthStateChanged(this.auth, (user: any) => {
         if (user && (this.userRole == 'student' || this.userRole == '')) {
-          // User is signed in, see docs for a list of available properties
-          // https://firebase.google.com/docs/reference/js/firebase.User
-          this.user = user.uid
-          this.studentService.getStudentById(user.uid).
-            subscribe((data) => {
-              // console.log("data", data);
-              this.studentData = data
-              this.checkIfQuizzAchieved()
-              this.dataLoading = false
+          this.user = user.uid;
+          this.dataLoading = false;
 
-              // Forcer la détection de changement
-              this.cdr.detectChanges();
-            })
+          // Utilisation de setTimeout pour retarder l'appel à Firestore après le LCP
+          setTimeout(() => {
+            this.studentService.getStudentById(user.uid)
+              .subscribe((data) => {
+                this.studentData = data;
+                this.checkIfQuizzAchieved();
+                // this.dataLoading = false;
+
+                // Forcer la détection de changements si nécessaire
+                this.cdr.detectChanges();
+              });
+          }, 100); // Retarde d'un petit délai (100 ms ici)
+
+          // Appels aux autres services (en même temps ou après le délai)
           this.authService.getUserId();
-          // retourne this.ui tout de suite après la connexion. undefined plus tard, donc ne convient pas...
-          // console.log("log de ui", this.ui);
-          // tests ok pour information, mais ne semble pas être très utile 
-          this.authService.getToken()?.then(res => console.log("token authentification depuis authService", res.token))
-          // fonctionne parfaitement !!!!!!!!!!!!!!!!!!
-          this.authService.authStatusListener()
-        }
+          // this.authService.getToken()?.then(res => console.log("token authentification depuis authService", res.token));
+          // this.authService.authStatusListener();
 
-        else if ((user && (this.userRole == 'editor'))) {
-          this.isEditor = true
-
-        }
-
-        // pour le cas où non authentifié
-        else {
-          // L'utilisateur n'est pas authentifié
+        } else if (user && this.userRole == 'editor') {
+          this.isEditor = true;
+        } else {
           console.log("Utilisateur non authentifié");
-          // Rediriger vers la page de connexion si nécessaire
-          // this.router.navigate(['/login']);
         }
-      })
+      });
+
+
+
 
       //--------------------
       // pour récupérer les métiers (sigles) enregistrés en base qui détermineront les différentes zones éditioriales
@@ -306,20 +340,21 @@ export class HomeComponent implements OnInit {
 
   }
 
+
   showInfo = false;
 
-toggleInfo() {
-  this.showInfo = !this.showInfo;
-}
+  toggleInfo() {
+    this.showInfo = !this.showInfo;
+  }
   showadditional = false;
 
-toggleInfoAdditional() {
-  this.showadditional = !this.showadditional;
-}
+  toggleInfoAdditional() {
+    this.showadditional = !this.showadditional;
+  }
 
-closeInfo() {
-  this.showInfo = false;
-}
+  closeInfo() {
+    this.showInfo = false;
+  }
 
 
   selectTrade(id: string) {

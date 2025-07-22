@@ -1,0 +1,15 @@
+h1 {
+
+    position: relative;
+
+}
+h1::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    height: 2px;
+    width: 100%;
+    /* Soulignement sur toute la largeur du titre */
+    background-color: #82BC00 !important;
+    opacity: 1 !important;
+}

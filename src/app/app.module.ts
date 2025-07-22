@@ -56,6 +56,7 @@ import { AddNbspBeforeQuestionMarkPipe } from './add-nbsp-before-question-mark.p
 import { MarketAppComponent } from './market-app/market-app.component';
 import { ChatComponent } from './chat/chat.component';
 import { ContactInformationComponent } from './contact-information/contact-information.component';
+import { AccessibilityComplianceReportComponent } from './accessibility-compliance-report/accessibility-compliance-report.component';
 // import { CollapsesAlertComponent } from './collapses-alert/collapses-alert.component';
 // import { AutoChangeDirective } from './auto-change.directive';
 
@@ -96,6 +97,7 @@ import { ContactInformationComponent } from './contact-information/contact-infor
     MarketAppComponent,
     ChatComponent,
     ContactInformationComponent,
+    AccessibilityComplianceReportComponent,
     // CollapsesAlertComponent,
     // AutoChangeDirective,
     // TooltipComponent

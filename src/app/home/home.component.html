@@ -20,31 +20,19 @@
     <!-- fin tests de notification desktop -->
 
 
-    <div *ngIf="isLoading" class="loading">
+    <!-- <div *ngIf="dataLoading" class="loading">
         <div class="spinner-border text-success" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
-    </div>
+    </div> -->
 
     <!-- test alert-dismissible for mission -->
-    <ng-container *ngIf="!isLoading && !isOneQuizzAchieved && !offline; else yes">
+    <ng-container *ngIf="user==undefined && !offline">
         <div class="alert w-100 p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show display-5">
             <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
                 aria-label="Fermer le message be-on-top"></button>
-            <!-- popover -->
-            <!-- <button type="button" aria-label="Plus d'informations" *ngIf="user==undefined"
-                class="btn text-light p-0 relative-btn me-1 mb-1" (click)="toggleInfo()" aria-label="Plus d'informations">
-                <i [ngClass]="!showInfo?'bi bi-info-square-fill icon-align':'bi bi-info-square icon-align'"></i>
-            </button>
-            <div class="popover-custom fade show" *ngIf="showInfo" (clickOutside)="closeInfo()">
-                <a role="link" aria-label="Avertissement : création de compte pour démarrer un questionnaire"
-                    [routerLink]="['/register']">Identifiez-vous ou créez votre compte pour démarrer un
-                    questionnaire</a>
-            </div> -->
-            <!-- fin popover -->
-            <a role="button" (click)="toggleInfo()" *ngIf="user==undefined" class="showInfo text-light"
+            <a role="button" (click)="toggleInfo()" class="showInfo text-light"
                 aria-label="Afficher les informations pour évaluer vos connaissances">Evaluez vos compétences, </a>
-            <span *ngIf="user!==undefined">Evaluez vos compétences, </span>
 
             <div class="popover-custom pb-2" *ngIf="showInfo" (clickOutside)="closeInfo()" role="region"
                 aria-live="polite">
@@ -52,26 +40,32 @@
                     [routerLink]="['/login']">Identifiez-vous ou créez votre compte pour démarrer un
                     questionnaire <i class="bi bi-link text-light ps-2" aria-hidden="true"></i></a>
                 <!-- <button type="button" class="btn-close ms-2" (click)="closeInfo()" aria-label="Fermer"></button> -->
-            </div>découvrez votre parcours personnalisé et intégrez rapidement <h1 class="d-inline"> <a [routerLink]="['/benefits']" class="text-light" role="link"
+            </div>découvrez votre parcours personnalisé et intégrez rapidement <h1 class="d-inline"> <a
+                    [routerLink]="['/benefits']" class="text-light" role="link"
+                    aria-label="Démarrer une formation personnalisée pour développer vos compétences">une
+                    formation sur mesure
+                </a></h1> pour être au top dans le métier de votre choix.
+        </div>
+    </ng-container>
+
+
+    <ng-container *ngIf="user!==undefined && !isOneQuizzAchieved && !offline; else yes">
+        <div class="alert w-100 p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show display-5">
+            <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
+                aria-label="Fermer le message be-on-top"></button>
+            Evaluez vos compétences, découvrez votre parcours personnalisé et intégrez rapidement <h1 class="d-inline">
+                <a [routerLink]="['/benefits']" class="text-light" role="link"
                     aria-label="Démarrer une formation personnalisée pour développer vos compétences">une
                     formation sur mesure
                 </a></h1> pour être au top dans le métier de votre choix.
         </div>
 
     </ng-container>
+
     <ng-template #yes>
-        <!-- <div class="alert alert-light p-4 alert-dismissible mb-4 fade show pe-5"
-            *ngIf="!isLoading && isOneQuizzAchieved && !offline">
-            <button type="button" class="btn-close btn-close mt-2" data-bs-dismiss="alert"
-                aria-label="Fermer le message"></button>
-            Retrouvez <span class="fw-bold">tous vos résultats</span> et <span class="fw-bold">vos estimations
-                personnalisées</span> depuis <a [routerLink]="['/account']" class="text-decoration-none"
-                title="compte personnel be-on-top"> votre compte
-                personnel</a>.
-        </div> -->
         <!-- si un questionnaire achevé et le formulaire non renseigné -->
         <div class="alert bg-warning p-4 alert-dismissible mb-4 fade show pe-5"
-            *ngIf="!isLoading && isOneQuizzAchieved && !studentData.isSocialFormSent && !offline && !studentData.innerStudent ">
+            *ngIf="!dataLoading && isOneQuizzAchieved && !studentData.isSocialFormSent && !offline && !studentData.innerStudent ">
             <!-- <button type="button" class="btn-close btn-close-light" data-bs-dismiss="alert"></button> -->
             <button type="button" class="btn-close btn-close mt-2" data-bs-dismiss="alert"
                 aria-label="Fermer le message"></button>
@@ -88,7 +82,7 @@
 
         <!-- si un innerStudent a terminé un questionnaire au minimum -->
         <div class="alert alert-light p-4 alert-dismissible mb-4 fade show pe-5"
-            *ngIf="!isLoading && isOneQuizzAchieved && !offline && studentData.innerStudent ">
+            *ngIf="!dataLoading && isOneQuizzAchieved && !offline && studentData.innerStudent ">
             <!-- <button type="button" class="btn-close btn-close-light" data-bs-dismiss="alert"></button> -->
             <button type="button" class="btn-close btn-close mt-2" data-bs-dismiss="alert"
                 aria-label="Fermer le message"></button>
@@ -105,7 +99,7 @@
 
         <!-- si au minimum un questionnaire achevé et le formulaire renseigné -->
         <div class="alert alert-light p-4 alert-dismissible mb-4 fade show pe-5"
-            *ngIf="!isLoading && isOneQuizzAchieved && studentData.isSocialFormSent && !offline">
+            *ngIf="!dataLoading && isOneQuizzAchieved && studentData.isSocialFormSent && !offline">
             <button type="button" class="btn-close btn-close mt-2" data-bs-dismiss="alert"
                 aria-label="Fermer le message"></button>
             <i aria-hidden="true" class="bi bi-info-square-fill pe-2"></i> Vous pouvez accéder au suivi de <span
@@ -402,7 +396,8 @@
 
                                 <div *ngIf="isEditor" class="d-flex justify-content-end">
                                     <hr>
-                                    <button type="button" class="btn btn-transparent mt-3" aria-label="Edition du métier">
+                                    <button type="button" class="btn btn-transparent mt-3"
+                                        aria-label="Edition du métier">
                                         <a class="text-dark" [routerLink]="['/admin/updateDescription', trade.sigle]">
                                             <i class="bi bi-pencil-square"></i>
                                             Editer</a>

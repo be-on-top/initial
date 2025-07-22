@@ -16,6 +16,7 @@ import { MarketAppComponent } from './market-app/market-app.component';
 import { CenterDetailsComponent } from './admin/Centers/center-details/center-details.component';
 import { CentersListComponent } from './admin/Centers/centers-list/centers-list.component';
 import { ChatComponent } from './chat/chat.component';
+import { AccessibilityComplianceReportComponent } from './accessibility-compliance-report/accessibility-compliance-report.component';
 
 // const routes: Routes = [
 //   { path: 'home', component: HomeComponent, pathMatch: 'full', canActivate: [AuthGuardService] },
@@ -58,6 +59,7 @@ const routes: Routes = [
   { path: 'formation/:id', component: TradeDetailsComponent},
   { path: 'center/:id', component: CenterDetailsComponent},
   { path: 'chat/:id/:name', component: ChatComponent},
+  { path: 'accessibility', component: AccessibilityComplianceReportComponent},
 
 
 ];
