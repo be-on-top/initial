@@ -159,7 +159,7 @@ export class HomeComponent implements OnInit {
       // pour récupérer le role si il est passé
       this.ac.queryParams.subscribe(params => {
         this.userRole = params['userRole'] || '';
-        console.log('UserRole:', this.userRole);
+        // console.log('UserRole:', this.userRole);
       })
 
       // // pour récupérer la data de l'utilisateur authentifié si c'est un étudiant 
@@ -244,7 +244,7 @@ export class HomeComponent implements OnInit {
           // pour inverser temporairement (retarder l'appariton des CACES si parentCategory inexploitée)
           // this.tradesData = data.reverse();
           this.tradesData = data;
-          console.log("this.tradesData", this.tradesData);
+          // console.log("this.tradesData", this.tradesData);
 
           // si on méthode à l'identique de header pour le cas où plusieurs catégories
           this.groupTrades()
@@ -642,8 +642,8 @@ export class HomeComponent implements OnInit {
       this.openFullCatItems(matchingGroupIndex);
     }
 
-    console.log("Search Value:", searchValue);
-    console.log("Normalized Search Value:", normalizedSearchValue);
+    // console.log("Search Value:", searchValue);
+    // console.log("Normalized Search Value:", normalizedSearchValue);
   }
 
 
@@ -684,12 +684,12 @@ export class HomeComponent implements OnInit {
   // Fonction pour filtrer ceux dont le sigle commence par la valeur de parentCategory (exemple caces)
   onSearchCatEntered(catValue: string) {
     this.catGroup = this.tradesData.filter((trade: Trade) => trade.sigle.includes(catValue))
-    console.log('catGroup', this.catGroup)
+    // console.log('catGroup', this.catGroup)
     // console.log(this.searchText);
   }
 
   groupTrades() {
-    console.log("Trades initiaux:", this.tradesData);
+    // console.log("Trades initiaux:", this.tradesData);
 
     const grouped = new Map<string, any[]>();
 
@@ -706,8 +706,8 @@ export class HomeComponent implements OnInit {
 
     this.groupedTrades = Array.from(grouped.entries());
     // j'obtiens [Array(2)] dont 0 est parentCategory et 1 le tableau d'objets
-    console.log("Métiers regroupés:", this.groupedTrades);
-    console.log("Métiers non groupés:", this.ungroupedTrades);
+    // console.log("Métiers regroupés:", this.groupedTrades);
+    // console.log("Métiers non groupés:", this.ungroupedTrades);
 
   }
 
