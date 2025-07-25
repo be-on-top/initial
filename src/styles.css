@@ -24,14 +24,14 @@
 
 /* plus-jakarta-sans-regular - latin */
 @font-face {
-    font-display: swap;
-    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: 'Plus Jakarta Sans';
-    font-style: normal;
-    font-weight: 400;
-    src: url('/assets/fonts/plus-jakarta-sans-v11-latin-regular.woff2') format('woff2');
-    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  font-family: 'Plus Jakarta Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Plus Jakarta Sans Regular'),
+       url('/assets/fonts/plus-jakarta-sans-v11-latin-regular.woff2') format('woff2');
+  font-display: swap;
 }
+
 
 /* plus-jakarta-sans-italic - latin */
 @font-face {

@@ -120,13 +120,13 @@
             <div class="mb-5" *ngIf="(student.isSocialFormSent || student.innerStudent) && feedBackResetChoice!==true">
 
                 <!-- test intégration comme composant enfant du formulaire désormais déclaré dans admin.module -->
-                <h3>Inscription Formation</h3>
+                <h3>Inscription en formation</h3>
                 <!-- <p *ngIf="student.subscriptions && student.subscriptions.length!==0">Inscriptions actuelles :
                     {{student.subscriptions}}</p> -->
 
                 <div class="alert bg-warning text-dark">
                     <i class="bi bi-info-square-fill me-1"></i>Etape indispensable, aux interactions qui vont suivre,
-                    notamment avec le formateur, pour le suvi pédagogique...
+                    notamment avec le formateur, pour le suvi pédagogique... 
                 </div>
 
                 <p *ngIf="student.subscriptions && student.subscriptions.length !== 0">
