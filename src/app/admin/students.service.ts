@@ -196,6 +196,7 @@ export class StudentsService {
   //   if (this.auth.currentUser && this.auth.currentUser.email) {
   //     // Récupérer l'email de l'administrateur
   //     const adminEmail = this.auth.currentUser.email;
+  //     const adminUid = this.auth.currentUser.uid;
 
   //     try {
   //       // Parcours de chaque étudiant pour les ajouter un par un
@@ -207,6 +208,7 @@ export class StudentsService {
   //           status: true,
   //           trainer: "Attribué ultérieurement",
   //           innerStudent: true,
+  //           referent:adminUid,
   //           firstName: student.firstName?.trim() || '',
   //           lastName: student.lastName?.trim() || '',
   //           email: student.email?.trim() || '',
@@ -237,12 +239,12 @@ export class StudentsService {
 
   //               // Envoi d'un email de réinitialisation avec URL personnalisée
   //               await sendPasswordResetEmail(this.auth, newStudent.email
-  //                 //     ,{
-  //                 //        // URL de redirection après personnalisation du mot de passe
-  //                 //     url: 'https://be-on-top.io/login',
-  //                 //     // Utilisation de l'application pour traiter cette action
-  //                 //     handleCodeInApp: true 
-  //                 // }
+  //                     ,{
+  //                        // URL de redirection après personnalisation du mot de passe
+  //                     url: 'https://be-on-top.io/login',
+  //                     // Utilisation de l'application pour traiter cette action
+  //                     handleCodeInApp: true 
+  //                 }
 
   //               )
   //                 .then(() => {
@@ -301,17 +303,19 @@ export class StudentsService {
     if (this.auth.currentUser && this.auth.currentUser.email) {
       // Récupérer l'email de l'administrateur
       const adminEmail = this.auth.currentUser.email;
+      const adminUid = this.auth.currentUser.uid;
 
       try {
         // Parcours de chaque étudiant pour les ajouter un par un
         for (let student of students) {
           // Nettoyer les champs et créer un nouvel étudiant
           let newStudent: Partial<Student> = {
-            created: new Date(),
+            created: Date.now(),
             role: 'student',
             status: true,
             trainer: "Attribué ultérieurement",
             innerStudent: true,
+            referent:adminUid,
             firstName: student.firstName?.trim() || '',
             lastName: student.lastName?.trim() || '',
             email: student.email?.trim() || '',
@@ -355,12 +359,12 @@ export class StudentsService {
                 // Envoi d'un email de réinitialisation avec URL personnalisée
                 await sendPasswordResetEmail(this.auth, newStudent.email
 
-                  // , {
-                  //   // URL de redirection après personnalisation du mot de passe
-                  //   url: 'https://be-on-top.io/login',
-                  //   // Utilisation de l'application pour traiter cette action
-                  //   handleCodeInApp: true
-                  // }
+                  , {
+                    // URL de redirection après personnalisation du mot de passe
+                    url: 'https://be-on-top.io/login',
+                    // Utilisation de l'application pour traiter cette action
+                    handleCodeInApp: true
+                  }
 
 
                 ).then(() => {
@@ -387,6 +391,7 @@ export class StudentsService {
             // Reconnexion de l'administrateur
             await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
             console.log('Reconnexion réussie.');
+            
 
             // Naviguer vers la page des étudiants avant de recharger la page si admin
             // this.router.navigate(['/admin/students']); // Redirection vers la page des étudiants
@@ -411,6 +416,106 @@ export class StudentsService {
     }
 
   }
+
+  // avec feedback ?
+//   async createStudents(students: any[]): Promise<string> {
+//   if (this.auth.currentUser && this.auth.currentUser.email) {
+//     const adminEmail = this.auth.currentUser.email;
+//     const adminUid = this.auth.currentUser.uid;
+
+//     try {
+//       for (let student of students) {
+//         let newStudent: Partial<Student> = {
+//           created: Date.now(),
+//           role: 'student',
+//           status: true,
+//           trainer: "Attribué ultérieurement",
+//           innerStudent: true,
+//           referent: adminUid,
+//           firstName: student.firstName?.trim() || '',
+//           lastName: student.lastName?.trim() || '',
+//           email: student.email?.trim() || '',
+//           details: "",
+//         };
+
+//         if (newStudent.email) {
+//           try {
+//             const signInMethods = await fetchSignInMethodsForEmail(this.auth, newStudent.email);
+//             if (signInMethods.length > 0) {
+//               console.error(`Email déjà utilisé : ${newStudent.email}`);
+//               continue;
+//             }
+//           } catch (error: any) {
+//             console.error(`Erreur de vérification pour ${newStudent.email}:`, error.message);
+//             continue;
+//           }
+
+//           let password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
+
+//           try {
+//             const result = await createUserWithEmailAndPassword(this.auth, newStudent.email, password);
+
+//             if (result && result.user) {
+//               newStudent.id = result.user.uid;
+
+//               let $studentsRef = collection(this.firestore, "students");
+//               await setDoc(doc($studentsRef, newStudent.id), newStudent);
+
+//               let $rolesRef = collection(this.firestore, "roles");
+//               await setDoc(doc($rolesRef, newStudent.id), { role: 'student' });
+
+//               await sendPasswordResetEmail(this.auth, newStudent.email, {
+//                 url: 'https://be-on-top.io/login',
+//                 handleCodeInApp: true
+//               }).then(() => {
+//                 console.log("Email de réinitialisation envoyé.");
+//               }).catch((error) => {
+//                 console.error("Erreur d'envoi de l'email :", error.message);
+//               });
+//             }
+//           } catch (error: any) {
+//             console.error(`Erreur de création : ${newStudent.email}`, error.message);
+//           }
+//         } else {
+//           console.error('Email manquant, importation ignorée.');
+//         }
+//       }
+
+//       await this.auth.signOut();
+
+//       const adminPassword = prompt('Veuillez entrer votre mot de passe pour vous reconnecter.');
+//       if (adminPassword) {
+//         try {
+//           await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
+//           this.router.navigate(['/admin/referentStudentsList']);
+//           setTimeout(() => {
+//             window.location.reload();
+//           }, 500);
+//         } catch (error) {
+//           console.error('Erreur de reconnexion :', error);
+//           return "Importation partielle : erreur de reconnexion.";
+//         }
+//       } else {
+//         console.error('Mot de passe non fourni.');
+//         return "Importation partielle : pas de mot de passe admin.";
+//       }
+
+//       return "Importation terminée avec succès.";
+//     } catch (error) {
+//       console.error("Erreur globale :", error);
+//       return "Erreur lors de l'importation.";
+//     }
+//   } else {
+//     console.error("Administrateur non connecté.");
+//     return "Administrateur non connecté.";
+//   }
+// }
+
+
+
+
+
+
 
 
   async register(student: any) {

@@ -118,68 +118,122 @@ export class TrainersService {
   // }
 
 
+  // async createTrainer(trainer: any) {
+  //   try {
+  //     // Vérifier si l'administrateur est connecté
+  //     if (!this.auth.currentUser || !this.auth.currentUser.email) {
+  //       console.error('Administrateur non connecté.');
+  //       return;
+  //     }
+
+  //     // Récupérer l'email de l'administrateur AVANT toute autre action
+  //     const adminEmail = this.auth.currentUser.email;
+  //     console.log(`Email de l'administrateur : ${adminEmail}`);
+
+  //     // Préparation des données
+  //     const cpArray = trainer.cp
+  //       .split(',')
+  //       .map((cp: string) => cp.trim())
+  //       .filter((cp: string) => cp);
+
+  //     trainer.cp = cpArray;
+  //     let newTrainer = { created: Date.now(), status: true, cp: cpArray, ...trainer };
+  //     let password = "password";
+
+  //     // Création dans Firebase Auth
+  //     this.result = await createUserWithEmailAndPassword(this.auth, trainer.email, password);
+  //     if (this.result && this.result.user) {
+  //       newTrainer.id = this.result.user.uid;
+  //     }
+
+  //     // Enregistrement dans Firestore
+  //     const $trainersRef = collection(this.firestore, "trainers");
+  //     await setDoc(doc($trainersRef, newTrainer.id), newTrainer);
+
+  //     const $rolesRef = collection(this.firestore, "roles");
+  //     await setDoc(doc($rolesRef, newTrainer.id), { role: 'trainer' });
+
+  //     // Envoi du mail de réinitialisation
+  //     await sendPasswordResetEmail(this.auth, newTrainer.email);
+
+  //     // Déconnexion de l'administrateur
+  //     await this.auth.signOut();
+  //     console.log("Administrateur déconnecté.");
+
+  //     // Demander le mot de passe administrateur
+  //     const adminPassword = prompt('Veuillez entrer votre mot de passe administrateur pour continuer.');
+  //     if (!adminPassword) {
+  //       throw new Error("Mot de passe administrateur non fourni.");
+  //     }
+
+  //     // Reconnexion de l'administrateur
+  //     const adminResult = await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
+  //     if (!adminResult || !adminResult.user) {
+  //       throw new Error("Échec de la reconnexion de l'administrateur.");
+  //     }
+
+  //     console.log("Administrateur reconnecté avec succès.");
+
+  //     // Redirection vers la page du formateur
+  //     this.router.navigate(['/admin/trainer', newTrainer.id]);
+  //   } catch (error) {
+  //     console.error("Erreur lors de la création du formateur :", error);
+  //   }
+  // }
+
   async createTrainer(trainer: any) {
-    try {
-      // Vérifier si l'administrateur est connecté
-      if (!this.auth.currentUser || !this.auth.currentUser.email) {
-        console.error('Administrateur non connecté.');
-        return;
-      }
-
-      // Récupérer l'email de l'administrateur AVANT toute autre action
-      const adminEmail = this.auth.currentUser.email;
-      console.log(`Email de l'administrateur : ${adminEmail}`);
-
-      // Préparation des données
-      const cpArray = trainer.cp
-        .split(',')
-        .map((cp: string) => cp.trim())
-        .filter((cp: string) => cp);
-
-      trainer.cp = cpArray;
-      let newTrainer = { created: Date.now(), status: true, cp: cpArray, ...trainer };
-      let password = "password";
-
-      // Création dans Firebase Auth
-      this.result = await createUserWithEmailAndPassword(this.auth, trainer.email, password);
-      if (this.result && this.result.user) {
-        newTrainer.id = this.result.user.uid;
-      }
-
-      // Enregistrement dans Firestore
-      const $trainersRef = collection(this.firestore, "trainers");
-      await setDoc(doc($trainersRef, newTrainer.id), newTrainer);
-
-      const $rolesRef = collection(this.firestore, "roles");
-      await setDoc(doc($rolesRef, newTrainer.id), { role: 'trainer' });
-
-      // Envoi du mail de réinitialisation
-      await sendPasswordResetEmail(this.auth, newTrainer.email);
-
-      // Déconnexion de l'administrateur
-      await this.auth.signOut();
-      console.log("Administrateur déconnecté.");
-
-      // Demander le mot de passe administrateur
-      const adminPassword = prompt('Veuillez entrer votre mot de passe administrateur pour continuer.');
-      if (!adminPassword) {
-        throw new Error("Mot de passe administrateur non fourni.");
-      }
-
-      // Reconnexion de l'administrateur
-      const adminResult = await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
-      if (!adminResult || !adminResult.user) {
-        throw new Error("Échec de la reconnexion de l'administrateur.");
-      }
-
-      console.log("Administrateur reconnecté avec succès.");
-
-      // Redirection vers la page du formateur
-      this.router.navigate(['/admin/trainer', newTrainer.id]);
-    } catch (error) {
-      console.error("Erreur lors de la création du formateur :", error);
-    }
+  // Vérifier si l'administrateur est connecté
+  if (!this.auth.currentUser || !this.auth.currentUser.email) {
+    throw new Error('Administrateur non connecté.');
   }
+
+  const adminEmail = this.auth.currentUser.email;
+  const cpArray = trainer.cp
+    .split(',')
+    .map((cp: string) => cp.trim())
+    .filter((cp: string) => cp);
+
+  trainer.cp = cpArray;
+  let newTrainer = { created: Date.now(), status: true, cp: cpArray, ...trainer };
+  let password = "password";
+
+  // Création dans Firebase Auth
+  const result = await createUserWithEmailAndPassword(this.auth, trainer.email, password);
+
+  if (result && result.user) {
+    newTrainer.id = result.user.uid;
+  }
+
+  // Enregistrement Firestore
+  const $trainersRef = collection(this.firestore, "trainers");
+  await setDoc(doc($trainersRef, newTrainer.id), newTrainer);
+
+  const $rolesRef = collection(this.firestore, "roles");
+  await setDoc(doc($rolesRef, newTrainer.id), { role: 'trainer' });
+
+  // Envoi du mail de réinitialisation
+  await sendPasswordResetEmail(this.auth, newTrainer.email);
+
+  // Déconnexion de l’administrateur
+  await this.auth.signOut();
+
+  const adminPassword = prompt('Veuillez entrer votre mot de passe administrateur pour continuer.');
+  if (!adminPassword) {
+    throw new Error("Mot de passe administrateur non fourni.");
+  }
+
+  // Reconnexion
+  const adminResult = await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
+  if (!adminResult || !adminResult.user) {
+    throw new Error("Échec de la reconnexion de l'administrateur.");
+  }
+
+  // Redirection
+  this.router.navigate(['/admin/trainer', newTrainer.id]);
+
+  return result.user;
+}
+
 
 
   // gettrainers(): Observable<trainers[]> {

@@ -15,7 +15,7 @@ export interface Student {
     evaluations?:{};
     tutorials?:{};
     cp?: number;
-    created: Date;
+    created: Date | number;
     status:boolean;
     roles:[];
     details:string;

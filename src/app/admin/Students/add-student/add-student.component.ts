@@ -145,6 +145,7 @@ export class AddStudentComponent {
       .then(() => {
         console.log('Tous les étudiants ont été importés avec succès.');
         this.router.navigate(['/admin/referentStudentsList']);
+        // alert('Tous les étudiants ont été importés avec succès')
         this.feedbackMessages = "Tous les étudiants ont été importés avec succès";
         this.isSuccessMessage = true
       })
