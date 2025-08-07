@@ -20,6 +20,10 @@
         ...loading
     </div>
 
+        <div *ngIf="userRouterLinks.user==='referent'" class="alert alert-warning text-light"><i
+            class="bi bi-info-square-fill me-1"></i><span class="fw-bold">Rappel :</span> Ne figureront dans cette liste que des candidats ayant au minimum terminé UN questionnaire de positionnement
+    </div>
+
     <div *ngIf="allStudents">
 
         <!-- Tests préalables à l'activation du nouveau filtre, maintenant inutiles -->

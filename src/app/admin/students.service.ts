@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 // import { NgForm } from '@angular/forms';
 import { Auth, reauthenticateWithCredential, createUserWithEmailAndPassword, deleteUser, fetchSignInMethodsForEmail, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithRedirect, updateEmail, EmailAuthProvider } from "@angular/fire/auth";
-import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc, updateDoc, query, getDocs, where, getDoc, QuerySnapshot, arrayUnion, CollectionReference, DocumentData, orderBy, documentId, QueryDocumentSnapshot, startAfter, limit, deleteField } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc, updateDoc, query, getDocs, where, getDoc, QuerySnapshot, arrayUnion, CollectionReference, DocumentData, orderBy, documentId, QueryDocumentSnapshot, startAfter, limit, deleteField, writeBatch } from '@angular/fire/firestore';
 import { FieldValue } from 'firebase/firestore';
 
 // import { FirebaseApp } from '@angular/fire/app';
@@ -315,7 +315,7 @@ export class StudentsService {
             status: true,
             trainer: "Attribué ultérieurement",
             innerStudent: true,
-            referent:adminUid,
+            referent: adminUid,
             firstName: student.firstName?.trim() || '',
             lastName: student.lastName?.trim() || '',
             email: student.email?.trim() || '',
@@ -391,7 +391,7 @@ export class StudentsService {
             // Reconnexion de l'administrateur
             await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
             console.log('Reconnexion réussie.');
-            
+
 
             // Naviguer vers la page des étudiants avant de recharger la page si admin
             // this.router.navigate(['/admin/students']); // Redirection vers la page des étudiants
@@ -418,98 +418,199 @@ export class StudentsService {
   }
 
   // avec feedback ?
-//   async createStudents(students: any[]): Promise<string> {
-//   if (this.auth.currentUser && this.auth.currentUser.email) {
-//     const adminEmail = this.auth.currentUser.email;
-//     const adminUid = this.auth.currentUser.uid;
+  //   async createStudents(students: any[]): Promise<string> {
+  //   if (this.auth.currentUser && this.auth.currentUser.email) {
+  //     const adminEmail = this.auth.currentUser.email;
+  //     const adminUid = this.auth.currentUser.uid;
 
-//     try {
-//       for (let student of students) {
-//         let newStudent: Partial<Student> = {
-//           created: Date.now(),
-//           role: 'student',
-//           status: true,
-//           trainer: "Attribué ultérieurement",
-//           innerStudent: true,
-//           referent: adminUid,
-//           firstName: student.firstName?.trim() || '',
-//           lastName: student.lastName?.trim() || '',
-//           email: student.email?.trim() || '',
-//           details: "",
-//         };
+  //     try {
+  //       for (let student of students) {
+  //         let newStudent: Partial<Student> = {
+  //           created: Date.now(),
+  //           role: 'student',
+  //           status: true,
+  //           trainer: "Attribué ultérieurement",
+  //           innerStudent: true,
+  //           referent: adminUid,
+  //           firstName: student.firstName?.trim() || '',
+  //           lastName: student.lastName?.trim() || '',
+  //           email: student.email?.trim() || '',
+  //           details: "",
+  //         };
 
-//         if (newStudent.email) {
-//           try {
-//             const signInMethods = await fetchSignInMethodsForEmail(this.auth, newStudent.email);
-//             if (signInMethods.length > 0) {
-//               console.error(`Email déjà utilisé : ${newStudent.email}`);
-//               continue;
-//             }
-//           } catch (error: any) {
-//             console.error(`Erreur de vérification pour ${newStudent.email}:`, error.message);
-//             continue;
-//           }
+  //         if (newStudent.email) {
+  //           try {
+  //             const signInMethods = await fetchSignInMethodsForEmail(this.auth, newStudent.email);
+  //             if (signInMethods.length > 0) {
+  //               console.error(`Email déjà utilisé : ${newStudent.email}`);
+  //               continue;
+  //             }
+  //           } catch (error: any) {
+  //             console.error(`Erreur de vérification pour ${newStudent.email}:`, error.message);
+  //             continue;
+  //           }
 
-//           let password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
+  //           let password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
 
-//           try {
-//             const result = await createUserWithEmailAndPassword(this.auth, newStudent.email, password);
+  //           try {
+  //             const result = await createUserWithEmailAndPassword(this.auth, newStudent.email, password);
 
-//             if (result && result.user) {
-//               newStudent.id = result.user.uid;
+  //             if (result && result.user) {
+  //               newStudent.id = result.user.uid;
 
-//               let $studentsRef = collection(this.firestore, "students");
-//               await setDoc(doc($studentsRef, newStudent.id), newStudent);
+  //               let $studentsRef = collection(this.firestore, "students");
+  //               await setDoc(doc($studentsRef, newStudent.id), newStudent);
 
-//               let $rolesRef = collection(this.firestore, "roles");
-//               await setDoc(doc($rolesRef, newStudent.id), { role: 'student' });
+  //               let $rolesRef = collection(this.firestore, "roles");
+  //               await setDoc(doc($rolesRef, newStudent.id), { role: 'student' });
 
-//               await sendPasswordResetEmail(this.auth, newStudent.email, {
-//                 url: 'https://be-on-top.io/login',
-//                 handleCodeInApp: true
-//               }).then(() => {
-//                 console.log("Email de réinitialisation envoyé.");
-//               }).catch((error) => {
-//                 console.error("Erreur d'envoi de l'email :", error.message);
-//               });
-//             }
-//           } catch (error: any) {
-//             console.error(`Erreur de création : ${newStudent.email}`, error.message);
-//           }
-//         } else {
-//           console.error('Email manquant, importation ignorée.');
-//         }
-//       }
+  //               await sendPasswordResetEmail(this.auth, newStudent.email, {
+  //                 url: 'https://be-on-top.io/login',
+  //                 handleCodeInApp: true
+  //               }).then(() => {
+  //                 console.log("Email de réinitialisation envoyé.");
+  //               }).catch((error) => {
+  //                 console.error("Erreur d'envoi de l'email :", error.message);
+  //               });
+  //             }
+  //           } catch (error: any) {
+  //             console.error(`Erreur de création : ${newStudent.email}`, error.message);
+  //           }
+  //         } else {
+  //           console.error('Email manquant, importation ignorée.');
+  //         }
+  //       }
 
-//       await this.auth.signOut();
+  //       await this.auth.signOut();
 
-//       const adminPassword = prompt('Veuillez entrer votre mot de passe pour vous reconnecter.');
-//       if (adminPassword) {
-//         try {
-//           await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
-//           this.router.navigate(['/admin/referentStudentsList']);
-//           setTimeout(() => {
-//             window.location.reload();
-//           }, 500);
-//         } catch (error) {
-//           console.error('Erreur de reconnexion :', error);
-//           return "Importation partielle : erreur de reconnexion.";
-//         }
-//       } else {
-//         console.error('Mot de passe non fourni.');
-//         return "Importation partielle : pas de mot de passe admin.";
-//       }
+  //       const adminPassword = prompt('Veuillez entrer votre mot de passe pour vous reconnecter.');
+  //       if (adminPassword) {
+  //         try {
+  //           await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
+  //           this.router.navigate(['/admin/referentStudentsList']);
+  //           setTimeout(() => {
+  //             window.location.reload();
+  //           }, 500);
+  //         } catch (error) {
+  //           console.error('Erreur de reconnexion :', error);
+  //           return "Importation partielle : erreur de reconnexion.";
+  //         }
+  //       } else {
+  //         console.error('Mot de passe non fourni.');
+  //         return "Importation partielle : pas de mot de passe admin.";
+  //       }
 
-//       return "Importation terminée avec succès.";
-//     } catch (error) {
-//       console.error("Erreur globale :", error);
-//       return "Erreur lors de l'importation.";
-//     }
-//   } else {
-//     console.error("Administrateur non connecté.");
-//     return "Administrateur non connecté.";
-//   }
-// }
+  //       return "Importation terminée avec succès.";
+  //     } catch (error) {
+  //       console.error("Erreur globale :", error);
+  //       return "Erreur lors de l'importation.";
+  //     }
+  //   } else {
+  //     console.error("Administrateur non connecté.");
+  //     return "Administrateur non connecté.";
+  //   }
+  // }
+
+
+  // Méthode pour importer les candidats comme on importe les formateurs depuis un fichier CSV
+async importStudents(students: any[]): Promise<{ success: boolean, imported: string[], errors: string[] }> {
+  const adminEmail = this.auth.currentUser?.email;
+  const adminUid = this.auth.currentUser?.uid;
+
+  const feedback = {
+    success: true,
+    imported: [] as string[],
+    errors: [] as string[],
+  };
+
+  const batch = writeBatch(this.firestore);
+
+  for (const student of students) {
+    try {
+      const newStudent: Partial<Student> = {
+        created: Date.now(),
+        role: 'student',
+        status: true,
+        trainer: "Attribué ultérieurement",
+        innerStudent: true,
+        referent: adminUid,
+        firstName: student.firstName?.trim() || '',
+        lastName: student.lastName?.trim() || '',
+        email: student.email?.trim() || '',
+        details: ""
+      };
+
+      if (!newStudent.email) {
+        feedback.errors.push(`⛔ Email manquant pour un étudiant.`);
+        continue;
+      }
+
+      const password = "password2025#"; // Temporaire
+      const result = await createUserWithEmailAndPassword(this.auth, newStudent.email, password);
+      newStudent.id = result.user.uid;
+
+      // Ajout Firestore
+      const studentRef = doc(collection(this.firestore, "students"), newStudent.id);
+      batch.set(studentRef, newStudent);
+
+      const roleRef = doc(collection(this.firestore, "roles"), newStudent.id);
+      batch.set(roleRef, { role: 'student' });
+
+      feedback.imported.push(newStudent.email);
+
+    } catch (error: any) {
+      console.error(`Erreur pour ${student.email}:`, error);
+      feedback.errors.push(`⛔ ${student.email}: ${error.message}`);
+    }
+  }
+
+  // Commit du batch
+  try {
+    await batch.commit();
+  } catch (batchError: any) {
+    feedback.success = false;
+    feedback.errors.push('❌ Erreur lors du commit Firestore : ' + batchError.message);
+  }
+
+  // Envoi emails de réinitialisation
+  for (const email of feedback.imported) {
+    sendPasswordResetEmail(this.auth, email
+      , {
+      url: 'https://be-on-top.io/login',
+      handleCodeInApp: true
+    }
+  ).catch(err => {
+      feedback.errors.push(`⚠️ Email non envoyé à ${email} : ${err.message}`);
+    });
+  }
+
+  // Reconnexion admin
+  await this.auth.signOut();
+  const adminPassword = prompt('Veuillez entrer votre mot de passe pour terminer et vous reconnecter.');
+  if (adminPassword && adminEmail) {
+    try {
+      await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
+      console.log('Reconnexion réussie.');
+      // this.router.navigate(['/admin/addStudent']);
+      // setTimeout(() => {
+      //   window.location.reload();
+      // }, 500);
+    } catch (error: any) {
+      feedback.errors.push('Erreur de reconnexion administrateur : ' + error.message);
+      feedback.success = false;
+    }
+  } else {
+    feedback.errors.push('Mot de passe non fourni pour la reconnexion.');
+    feedback.success = false;
+  }
+
+  // Marquer échec s'il n'y a aucun import
+  if (feedback.imported.length === 0) {
+    feedback.success = false;
+  }
+
+  return feedback;
+}
 
 
 

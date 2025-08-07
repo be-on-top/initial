@@ -134,26 +134,81 @@ export class AddStudentComponent {
 
   // fonctionnait avec createStudent mais faut l'admin n'est pas reconnecté
   // alors on essait createStudents
-  uploadStudentsToFirestore(): void {
-    if (!this.parsedStudents || this.parsedStudents.length === 0) {
-      this.errorMessage = 'Aucun étudiant valide à importer.';
-      return;
-    }
+  // uploadStudentsToFirestore(): void {
+  //   if (!this.parsedStudents || this.parsedStudents.length === 0) {
+  //     this.errorMessage = 'Aucun étudiant valide à importer.';
+  //     return;
+  //   }
 
-    // Appeler createStudentsFromImport avec l'ensemble des étudiants
-    this.service.createStudents(this.parsedStudents)
-      .then(() => {
-        console.log('Tous les étudiants ont été importés avec succès.');
-        this.router.navigate(['/admin/referentStudentsList']);
-        // alert('Tous les étudiants ont été importés avec succès')
-        this.feedbackMessages = "Tous les étudiants ont été importés avec succès";
-        this.isSuccessMessage = true
-      })
-      .catch(error => {
-        console.error('Erreur lors de l\'importation des étudiants :', error.message);
-        this.errorMessage = 'Erreur lors de l\'importation des étudiants.';
-      });
+  //   // Appeler createStudentsFromImport avec l'ensemble des étudiants
+  //   this.service.createStudents(this.parsedStudents)
+  //     .then(() => {
+  //       console.log('Tous les étudiants ont été importés avec succès.');
+  //       this.router.navigate(['/admin/referentStudentsList']);
+  //       // alert('Tous les étudiants ont été importés avec succès')
+  //       this.feedbackMessages = "Tous les étudiants ont été importés avec succès";
+  //       this.isSuccessMessage = true
+  //     })
+  //     .catch(error => {
+  //       console.error('Erreur lors de l\'importation des étudiants :', error.message);
+  //       this.errorMessage = 'Erreur lors de l\'importation des étudiants.';
+  //     });
+  // }
+
+  // avec feedback optimisé
+//   uploadStudentsToFirestore(): void {
+//   if (!this.parsedStudents || this.parsedStudents.length === 0) {
+//     this.errorMessage = 'Aucun étudiant valide à importer.';
+//     return;
+//   }
+
+//   this.service.importStudents(this.parsedStudents)
+//     .then((feedback) => {
+//       if (feedback.success) {
+//         // alert("Etudiant(s) importé(s) avec succès")
+//         this.feedbackMessages = `✅ ${feedback.imported.length} étudiant(s) importé(s) avec succès.`;
+//         this.isSuccessMessage = true;
+//       }
+
+//       if (feedback.errors.length > 0) {
+//         this.errorMessage = `⚠️ ${feedback.errors.length} erreur(s) détectée(s):\n\n${feedback.errors.join('\n')}`;
+//       }
+//     })
+//     .catch(error => {
+//       this.errorMessage = '❌ Erreur critique lors de l\'importation : ' + error.message;
+//     });
+// }
+
+uploadStudentsToFirestore(): void {
+  if (!this.parsedStudents || this.parsedStudents.length === 0) {
+    this.errorMessage = 'Aucun étudiant valide à importer.';
+    return;
   }
+
+  this.service.importStudents(this.parsedStudents)
+    .then((feedback) => {
+      if (feedback.success) {
+        alert(`✅ ${feedback.imported.length} étudiant(s) importé(s) avec succès.`);
+        this.feedbackMessages = `✅ ${feedback.imported.length} étudiant(s) importé(s) avec succès.`;
+        this.isSuccessMessage = true;
+
+        // ✅ Redirection ici, après affichage
+        this.router.navigate(['/admin/referentStudentsList']);
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
+      }
+
+      if (feedback.errors.length > 0) {
+        this.errorMessage = `⚠️ ${feedback.errors.length} erreur(s):\n\n${feedback.errors.join('\n')}`;
+      }
+    })
+    .catch(error => {
+      this.errorMessage = '❌ Erreur critique lors de l\'importation : ' + error.message;
+    });
+}
+
+
 
 
 
