@@ -143,4 +143,17 @@ export class TrainerDetailsComponent implements OnInit {
   }
 
 
+  changeUserStatus(userId: string, currentStatus: boolean) {
+    const newStatus = !currentStatus;
+    this.service.updateTrainerStatus(userId, newStatus)
+      .then(() => {
+        // On met à jour l'utilisateur dans la liste
+        this.user.status = newStatus
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la mise à jour du statut :", error);
+      });
+  }
+
+
 }

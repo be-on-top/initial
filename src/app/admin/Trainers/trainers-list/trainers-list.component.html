@@ -9,8 +9,11 @@
     </div>
 
     <div class="alert alert-light my-3">
-        <i class="bi bi-info-square-fill me-1"></i><span class="fw-bold">Rappel contextuel</span> : L'objectif est ici de vous
-        permettre d'accéder aux formateurs que vous avez renseignés comme devant être rattachés à votre ou vos centre(s) de formation, d'en vérifier les détails et de pouvoir leur affecter des étudiants/apprenants une fois ces derniers inscrits en formation.
+        <i class="bi bi-info-square-fill me-1"></i><span class="fw-bold">Rappel contextuel</span> : L'objectif est ici
+        de vous
+        permettre d'accéder aux formateurs que vous avez renseignés comme devant être rattachés à votre ou vos centre(s)
+        de formation, d'en vérifier les détails et de pouvoir leur affecter des étudiants/apprenants une fois ces
+        derniers inscrits en formation.
     </div>
 
     <div *ngIf="trainersList">
@@ -30,9 +33,20 @@
                 <div class="col-sm-3 col-6">{{user.lastName}}</div>
                 <div class="col-sm-3 col-6 order-perso2">{{user.firstName}}</div>
                 <!-- {{userRouterLinks.user|json}} -->
-                <div class="col-sm-3 col-6"><button type="button" class="btn btn-danger" (click)="deleteUser(user.id)"
+                <!-- <div class="col-sm-3 col-6"><button type="button" class="btn btn-danger" (click)="deleteUser(user.id)"
+                        [disabled]="userRouterLinks.user=='referent'"><i
+                            class="bi bi-person-dash-fill"></i>Suppression</button></div> -->
+                <div *ngIf="userRouterLinks.user=='admin'" class="col-sm-3 col-6"><button type="button"
+                        class="btn btn-danger" (click)="deleteUser(user.id)"
                         [disabled]="userRouterLinks.user=='referent'"><i
                             class="bi bi-person-dash-fill"></i>Suppression</button></div>
+                <div *ngIf="userRouterLinks.user=='referent'" class="col-sm-3 col-6">
+                    <button type="button" class="btn btn-dark" (click)="changeUserStatus(user.id, user.status)">
+                        {{ user.status ? 'Désactiver' : 'Réactiver' }}
+                    </button>
+                </div>
+
+
                 <div class="col-sm-3 col-6 order-perso4"><button type="button" class="btn btn-primary">
                         <a *ngIf="userRouterLinks.user!=='referent'" [routerLink]="['/admin/trainer', user.id]"
                             class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>

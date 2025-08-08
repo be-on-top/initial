@@ -17,6 +17,10 @@ export class MyStudentsComponent implements OnInit {
   myStudents: Student[] = [];
   user?: any
   userLastName: string = ""
+  // va falloir revoir ce que j'avais fait à l'époque...
+  // en attendant, pour afficher un message contextuel si désactivé : 
+  userStatus?:boolean
+
   // essai pour différencier le tuteur du formateur
   userRouterLinks: any
   userTrades: string[] = [];
@@ -46,6 +50,7 @@ export class MyStudentsComponent implements OnInit {
             // console.log("userData from myStudents 0...", data)
             console.log("userData lastName from myStudents...", data.lastName)
             this.userLastName = data.lastName
+            this.userStatus = data.status
             // on ne devrait plus utiliser cette propriété pour tutor
             // this.userTrades= data.sigle
             // console.log('trades récupérés pour tutor', this.userTrades= data.sigle);
@@ -75,6 +80,7 @@ export class MyStudentsComponent implements OnInit {
               console.log("userData from myStudents 0...", data)
               console.log("userData lastName from myStudents...", data.lastName)
               this.userLastName = data.lastName
+              this.userStatus = data.status
               this.userTrades= data.sigle
               console.log('trades récupérés pour trainer', this.userTrades= data.sigle);
               

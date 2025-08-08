@@ -60,6 +60,8 @@
         </div>
         <div class="d-flex my-4 justify-content-end gap-5" *ngIf="userRouterLinks.user!=='trainer'">
 
+
+
             <!-- <button class="btn btn-primary">
                 <a class="text-white" [routerLink]="['/admin/trainers']">Retour à la liste</a>
             </button> -->
@@ -78,18 +80,28 @@
               </button> -->
 
 
-            <button type="button" class="btn btn-warning">
+            <button type="button" class="btn btn-warning" [disabled]="user.status===false">
                 <a *ngIf="userRouterLinks.user!=='referent'" class="text-white"
                     [routerLink]="['/admin/updateTrainer', user.id]">Modifier</a>
                 <a *ngIf="userRouterLinks.user==='referent'" class="text-white"
                     [routerLink]="['/admin/referent/updateTrainer', user.id]">Modifier</a>
             </button>
 
-            <button type="button" class="btn btn-danger" [disabled]="userRouterLinks.user=='referent'">
+            <!-- <button type="button" class="btn btn-danger" [disabled]="userRouterLinks.user=='referent'">
+                <a class="text-white" (click)="deleteUser(user.id)">Supprimer</a>
+            </button> -->
+            <button type="button" class="btn btn-danger" *ngIf="userRouterLinks.user!=='referent'">
                 <a class="text-white" (click)="deleteUser(user.id)">Supprimer</a>
             </button>
+            <button *ngIf="userRouterLinks.user==='referent'" type="button" class="btn btn-dark"
+                (click)="changeUserStatus(user.id, user.status)">
+                {{ user.status ? 'Désactiver' : 'Réactiver' }}
+            </button>
+
+
 
         </div>
+        <small *ngIf="user.status === false" class="text-muted">Utilisateur désactivé !</small>
     </div>
 
 </div>

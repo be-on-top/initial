@@ -8,22 +8,36 @@
         ...loading
     </div>
 
-    <div class="alert alert-light" *ngIf="userRouterLinks.user=='trainer'">
-        <span class="fw-bold"><i class="bi bi-info-square-fill me-1"></i>Rappel contextuel</span> : Le candidat
-        apprenant a finalisé son évaluation de positionnement, son inscription en formation a été validée par un
-        conseiller projet, il a été notifié qu'un formateur lui a été attribué. Les formations en présentiel démarrent.
-        Il vous faudra pouvoir procéder à des évaluations de suivi pédagogique. Evaluations individuelles, que
-        l'utilisateur pourra consulter dans son compte personnel.
-    </div>
-    <div class="alert alert-light" *ngIf="userRouterLinks.user=='tutor'">
-        <span class="fw-bold"><i class="bi bi-info-square-fill me-1"></i>Rappel contextuel</span> : Les formations en présentiel sont terminées.
-        Le candidat apprenant vient de démarrer son stage en entreprise. Il vous faudra pouvoir procéder à des évaluations de suivi en entreprise. Evaluations individuelles, que
-        l'utilisateur pourra consulter dans son compte personnel.
-    </div>
-    <div *ngIf="myStudents.length===0" class="alert alert-warning text-light"><i class="bi bi-exclamation-lg me-1"></i>
-        Tant qu'aucun Conseiller Projet ne vous a attribué de candidats, votre liste de suivi restera vide.</div>
+    <ng-container  *ngIf="user && userStatus === true; else disabled">
 
-    <div *ngIf="myStudents" class="text-center">
+        <div class="alert alert-light" *ngIf="userRouterLinks.user=='trainer'">
+            <span class="fw-bold"><i class="bi bi-info-square-fill me-1"></i>Rappel contextuel</span> : Le candidat
+            apprenant a finalisé son évaluation de positionnement, son inscription en formation a été validée par un
+            conseiller projet, il a été notifié qu'un formateur lui a été attribué. Les formations en présentiel
+            démarrent.
+            Il vous faudra pouvoir procéder à des évaluations de suivi pédagogique. Evaluations individuelles, que
+            l'utilisateur pourra consulter dans son compte personnel.
+        </div>
+        <div class="alert alert-light" *ngIf="userRouterLinks.user=='tutor'">
+            <span class="fw-bold"><i class="bi bi-info-square-fill me-1"></i>Rappel contextuel</span> : Les formations
+            en présentiel sont terminées.
+            Le candidat apprenant vient de démarrer son stage en entreprise. Il vous faudra pouvoir procéder à des
+            évaluations de suivi en entreprise. Evaluations individuelles, que
+            l'utilisateur pourra consulter dans son compte personnel.
+        </div>
+        <div *ngIf="myStudents.length===0" class="alert alert-warning text-light"><i
+                class="bi bi-exclamation-lg me-1"></i>
+            Tant qu'aucun Conseiller Projet ne vous a attribué de candidats, votre liste de suivi restera vide.</div>
+    </ng-container>
+
+    <ng-template #disabled>
+        <div class="alert alert-warning text-light">
+            <span class="fw-bold"><i class="bi bi-info-square-fill me-1"></i>Rappel</span> : Votre compte formateur a
+            été désactivé ! 
+        </div>
+    </ng-template>
+
+    <div *ngIf="myStudents && userStatus===true" class="text-center">
         <!-- on introduit un champ de recherche -->
         <!-- <app-search (searchTextChanged)="onSearchTextEntered($event)"></app-search> -->
         <!-- <div class="row mt-5"> -->

@@ -262,7 +262,25 @@ export class TrainersListComponent {
     });
   }
   
-  
+
+
+
+changeUserStatus(userId: string, currentStatus: boolean) {
+  const newStatus = !currentStatus;
+  this.service.updateTrainerStatus(userId, newStatus)
+    .then(() => {
+      // On met à jour l'utilisateur dans la liste
+      const user = this.trainersList.find(u => u.id === userId);
+      if (user) {
+        user.status = newStatus;
+      }
+    })
+    .catch((error) => {
+      console.error("Erreur lors de la mise à jour du statut :", error);
+    });
+}
+
+
 
 
 
