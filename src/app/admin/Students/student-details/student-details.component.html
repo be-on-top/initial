@@ -70,7 +70,7 @@
                             routerLink="/admin/referent/updateStudent/{{student.id}}">Modifier</a>
                     </button>
                     <button type="button" class="btn btn-danger"
-                        [ngClass]="{'disabled':userRouterLinks.user=='referent' || userRouterLinks.user=='editor'|| userRouterLinks.user=='external'|| userRouterLinks.user=='referentsContacts'}">
+                        [ngClass]="{'disabled':userRouterLinks.user=='referent' || userRouterLinks.user=='editor'|| userRouterLinks.user=='external'|| userRouterLinks.user=='referentsContacts'|| userRouterLinks.user=='trainer'}">
                         <a class="text-white" (click)="delete(student)">Supprimer</a>
                     </button>
                 </div>

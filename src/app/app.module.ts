@@ -57,6 +57,7 @@ import { MarketAppComponent } from './market-app/market-app.component';
 import { ChatComponent } from './chat/chat.component';
 import { ContactInformationComponent } from './contact-information/contact-information.component';
 import { AccessibilityComplianceReportComponent } from './accessibility-compliance-report/accessibility-compliance-report.component';
+import { SocialDataComponent } from './social-data/social-data.component';
 // import { CollapsesAlertComponent } from './collapses-alert/collapses-alert.component';
 // import { AutoChangeDirective } from './auto-change.directive';
 
@@ -98,6 +99,7 @@ import { AccessibilityComplianceReportComponent } from './accessibility-complian
     ChatComponent,
     ContactInformationComponent,
     AccessibilityComplianceReportComponent,
+    SocialDataComponent,
     // CollapsesAlertComponent,
     // AutoChangeDirective,
     // TooltipComponent

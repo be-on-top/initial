@@ -1,0 +1,16 @@
+/* .card-body{
+    background-image: url('/assets/divers_friends.webp');
+    background-position: center;
+    background-size: cover;
+} */
+
+
+
+.carousel-control-prev,
+.carousel-control-next {
+  width: 3rem; /* largeur bouton */
+  height: 3rem;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 1 !important;
+}

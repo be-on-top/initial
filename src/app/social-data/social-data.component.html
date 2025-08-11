@@ -1,0 +1,36 @@
+<hr>
+<div #socialCarousel id="socialCarousel" class="carousel slide"
+     data-bs-ride="carousel"
+     data-bs-interval="3000"
+     aria-label="Carrousel des réseaux sociaux">
+
+  <div class="carousel-inner">
+    <div class="carousel-item" *ngFor="let card of socialCards; let i = index" [class.active]="i === 0">
+      <div class="card mx-auto" >
+        <div class="card-body text-center">
+          <a [href]="card.url" target="_blank" rel="noopener noreferrer" [attr.aria-label]="card.name">
+            <i [class]="'bi ' + card.icon + ' fs-1 text-primary'"></i>
+          </a>
+          <h3 class="card-title mt-3">{{ card.name }}</h3>
+          <p class="card-text">{{ card.description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <button class="carousel-control-prev" type="button" data-bs-target="#socialCarousel" data-bs-slide="prev" aria-label="Précédent">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#socialCarousel" data-bs-slide="next" aria-label="Suivant">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+  </button> -->
+
+  <button class="carousel-control-prev" type="button" data-bs-target="#socialCarousel" data-bs-slide="prev" aria-label="Précédent">
+  <i class="bi bi-chevron-left fs-2 text-primary"></i>
+  <span class="visually-hidden">Précédent</span>
+</button>
+<button class="carousel-control-next" type="button" data-bs-target="#socialCarousel" data-bs-slide="next" aria-label="Suivant">
+  <i class="bi bi-chevron-right fs-2 text-primary"></i>
+  <span class="visually-hidden">Suivant</span>
+</button>
+</div>
