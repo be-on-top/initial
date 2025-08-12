@@ -231,6 +231,7 @@ li.nav-item.dropdown.active {
 .card-footer {
     background-color: var(--bg-light) !important;
     border: none !important;
+    color: #0a1a2f !important;
 }
 
 nav {
