@@ -295,6 +295,23 @@ nav {
     opacity: 1 !important;
 }
 
+/* .custom-hr{
+  color: var(--primary-color);
+  border: none; 
+  height: 3px; 
+  width: 25%;  
+  background-color: var(--primary-color);
+  margin: auto;
+  border-radius: 2px;
+} */
+.divider {
+  width: 25%; /* longueur du trait */
+  height: 3px; /* épaisseur */
+  background: var(--primary-color); /* dégradé stylé */
+  margin: 0 auto; /* centré horizontalement avec marge verticale */
+  border-radius: 4px; /* coins arrondis */
+}
+
 #cta,
 #account {
     border: 2px solid white;
@@ -599,4 +616,11 @@ abbr:hover::before {
     .btn.btn-transparent.text-center.fs-5 {
         font-size: 1rem !important;
     }
+
+    .isLargeScreen{
+    display: block;
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+}
 }

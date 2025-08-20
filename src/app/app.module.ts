@@ -58,6 +58,7 @@ import { ChatComponent } from './chat/chat.component';
 import { ContactInformationComponent } from './contact-information/contact-information.component';
 import { AccessibilityComplianceReportComponent } from './accessibility-compliance-report/accessibility-compliance-report.component';
 import { SocialDataComponent } from './social-data/social-data.component';
+import { PunchlinesComponent } from './punchlines/punchlines.component';
 // import { CollapsesAlertComponent } from './collapses-alert/collapses-alert.component';
 // import { AutoChangeDirective } from './auto-change.directive';
 
@@ -100,6 +101,7 @@ import { SocialDataComponent } from './social-data/social-data.component';
     ContactInformationComponent,
     AccessibilityComplianceReportComponent,
     SocialDataComponent,
+    PunchlinesComponent,
     // CollapsesAlertComponent,
     // AutoChangeDirective,
     // TooltipComponent

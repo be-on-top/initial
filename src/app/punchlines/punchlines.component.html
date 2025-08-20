@@ -1,0 +1,26 @@
+<div class="d-flex justify-content-center align-items-center bg-light">
+  <div class="card text-center p-5 w-100">
+    <div class="card-body position-relative">
+
+      <!-- Gros quotes décoratifs -->
+      <span class="quote-start">“</span>
+      <span class="quote-end">”</span>
+
+      <!-- Punchline -->
+      <p class="card-text fs-5 fst-italic text-dark quote-text">
+        {{ punchline }}
+      </p>
+
+      <!-- Étoiles -->
+      <div class="mt-3">
+        <ng-container *ngFor="let star of [1,2,3,4,5]; let i = index">
+          <span class="text-warning" [class.filled]="i < rating">★</span>
+        </ng-container>
+      </div>
+    </div>
+   {{ name}}
+  </div>
+</div>
+
+
+

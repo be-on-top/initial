@@ -184,6 +184,10 @@
 
   <!-- accordion.component.html -->
 
+  <app-punchlines></app-punchlines>
+
+  <hr>
+
   <div class="accordion accordion-flush row" id="accordionFlushExample">
     <div class="col-md-6">
       <div class="accordion-item">
@@ -250,13 +254,13 @@
         </div>
       </div>
       <div class="accordion-item">
-        <h2 class="accordion-header" id="flush-headingFor">
+        <h2 class="accordion-header" id="flush-headingFour">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-            data-bs-target="#flush-collapseFor" aria-expanded="false" aria-controls="flush-collapseFor">
+            data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
             <i class="bi bi-4-square-fill me-3 text-primary"></i>Les formations sont-elles finançables&nbsp;?
           </button>
         </h2>
-        <div id="flush-collapseFor" class="accordion-collapse collapse" aria-labelledby="flush-headingFor"
+        <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour"
           data-bs-parent="#accordionFlushExample">
           <div class="accordion-body">Si vous suivez une formation validée par France Travail (anciennement Pôle
             emploi), vous pourrez bénéficier, sous certaines conditions, d'aides financières, selon votre situation. A
@@ -343,14 +347,14 @@
         </div>
       </div>
       <div class="accordion-item">
-        <h2 class="accordion-header" id="flush-headingHeight">
+        <h2 class="accordion-header" id="flush-headingEight">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-            data-bs-target="#flush-collapseHeight" aria-expanded="false" aria-controls="flush-collapseHeight">
+            data-bs-target="#flush-collapseEight" aria-expanded="false" aria-controls="flush-collapseEight">
             <i class="bi bi-8-square-fill me-3 text-primary"></i>{{'Qui a accès à mes résultats ?'|
             addNbspBeforeQuestionMark}}
           </button>
         </h2>
-        <div id="flush-collapseHeight" class="accordion-collapse collapse" aria-labelledby="flush-headingHeight"
+        <div id="flush-collapseEight" class="accordion-collapse collapse" aria-labelledby="flush-headingEight"
           data-bs-parent="#accordionFlushExample">
           <div class="accordion-body">Après avoir terminé un questionnaire d'évaluation et nous avoir fourni toutes les
             informations utiles à votre incription, le <strong>Conseiller Projet</strong> en charge de finaliser
@@ -402,18 +406,22 @@
         <div id="flush-collapseTen" class="accordion-collapse collapse" aria-labelledby="flush-headingSix"
           data-bs-parent="#accordionFlushExample">
           <div class="accordion-body">
-            <p>Avant de valider votre demande d'entrée en formation, vous allez pouvoir choisir le centre qui correspond à vos
+            <p>Avant de valider votre demande d'entrée en formation, vous allez pouvoir choisir le centre qui correspond
+              à vos
               objectifs.</p>
 
-            📌<span class="fw-bold">Si vous avez terminé un seul questionnaire métier</span>: L'application vous proposera les centres qui
+            📌<span class="fw-bold">Si vous avez terminé un seul questionnaire métier</span>: L'application vous
+            proposera les centres qui
             dispensent la formation liée à ce métier. Il vous suffit de choisir celui qui vous convient, sans contrainte
             géographique. <br><br>
 
-            📌<span class="fw-bold">Si vous avez exploré plusieurs métiers</span>: Choisissez d'abord la formation qui correspond à vos préférences,
+            📌<span class="fw-bold">Si vous avez exploré plusieurs métiers</span>: Choisissez d'abord la formation qui
+            correspond à vos préférences,
             celle qui se rapproche le plus de vos objectifs, puis découvrez les centres qui la proposent. <br>
 
-            <p class="mt-3">Tous les centres disponibles seront affichés avec leur code postal, pour vous aider à faire le meilleur
-            choix !</p>
+            <p class="mt-3">Tous les centres disponibles seront affichés avec leur code postal, pour vous aider à faire
+              le meilleur
+              choix !</p>
 
 
           </div>
@@ -422,41 +430,42 @@
 
 
     </div>
+  </div>
 
 
 
-    <hr>
-    <!-- collapse -->
-    <div class="container mt-5">
-      <ul class="nav row justify-content-around" id="myTab" role="tablist">
-        <li class="nav-item col-4" role="presentation">
-          <button class="btn w-100 active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button"
-            role="tab" aria-controls="info" aria-selected="true">Edition</button>
-        </li>
-        <li class="nav-item col-4" role="presentation">
-          <button class="btn w-100" id="rgpd-tab" data-bs-toggle="tab" data-bs-target="#rgpd" type="button" role="tab"
-            aria-controls="rgpd" aria-selected="false">RGPD</button>
-        </li>
-        <li class="nav-item col-4" role="presentation">
-          <button class="btn w-100" id="rgpd-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button"
-            role="tab" aria-controls="contact" aria-selected="false">Contact</button>
-        </li>
-      </ul>
-      <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
-          <app-legal-info></app-legal-info>
-        </div>
-        <div class="tab-pane fade" id="rgpd" role="tabpanel" aria-labelledby="rgpd-tab">
-
-          <app-rgpd></app-rgpd>
-        </div>
-        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-
-          <app-contact-information></app-contact-information>
-        </div>
+  <hr>
+  <!-- collapse -->
+  <div class="container mt-5">
+    <ul class="nav row justify-content-around" id="myTab" role="tablist">
+      <li class="nav-item col-4" role="presentation">
+        <button class="btn w-100 active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button"
+          role="tab" aria-controls="info" aria-selected="true">Edition</button>
+      </li>
+      <li class="nav-item col-4" role="presentation">
+        <button class="btn w-100" id="rgpd-tab" data-bs-toggle="tab" data-bs-target="#rgpd" type="button" role="tab"
+          aria-controls="rgpd" aria-selected="false">RGPD</button>
+      </li>
+      <li class="nav-item col-4" role="presentation">
+        <button class="btn w-100" id="rgpd-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab"
+          aria-controls="contact" aria-selected="false">Contact</button>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
+        <app-legal-info></app-legal-info>
       </div>
-      <!-- 3 -->
-      <!-- <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade" id="rgpd" role="tabpanel" aria-labelledby="rgpd-tab">
+
+        <app-rgpd></app-rgpd>
+      </div>
+      <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+
+        <app-contact-information></app-contact-information>
+      </div>
+    </div>
+    <!-- 3 -->
+    <!-- <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="contact" role="tabpanel" aria-labelledby="info-tab">
         <app-legal-info></app-legal-info>
       </div>
@@ -465,13 +474,13 @@
         <app-contact-information></app-contact-information>
       </div>
     </div> -->
-    </div>
-
-    <!-- app.component.html -->
-    <!-- fin collapse -->
-
-    <app-social-data></app-social-data>
   </div>
 
+  <!-- app.component.html -->
+  <!-- fin collapse -->
 
-  <!-- <app-legal-info></app-legal-info> -->
+  <app-social-data></app-social-data>
+</div>
+
+
+<!-- <app-legal-info></app-legal-info> -->

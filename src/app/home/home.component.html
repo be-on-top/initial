@@ -32,7 +32,8 @@
             <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
                 aria-label="Fermer le message be-on-top"></button>
             <a role="button" (click)="toggleInfo()" class="showInfo text-light"
-                aria-label="Afficher les informations pour évaluer vos connaissances">Evaluez vos compétences, </a>
+                aria-label="Afficher les informations pour évaluer vos connaissances">Evaluez vos compétences à votre
+                rythme, </a>
 
             <div class="popover-custom pb-2" *ngIf="showInfo" (clickOutside)="closeInfo()" role="region"
                 aria-live="polite">
@@ -40,11 +41,10 @@
                     [routerLink]="['/login']">Identifiez-vous ou créez votre compte pour démarrer un
                     questionnaire <i class="bi bi-link text-light ps-2" aria-hidden="true"></i></a>
                 <!-- <button type="button" class="btn-close ms-2" (click)="closeInfo()" aria-label="Fermer"></button> -->
-            </div>découvrez votre parcours personnalisé et intégrez rapidement <h1 class="d-inline"> <a
+            </div>découvrez vos résultats en quelques clics, puis démarrez rapidement <h1 class="d-inline"> <a
                     [routerLink]="['/benefits']" class="text-light" role="link"
-                    aria-label="Démarrer une formation personnalisée pour développer vos compétences">une
-                    formation sur mesure
-                </a></h1> pour être au top dans le métier de votre choix.
+                    aria-label="Démarrer une formation personnalisée pour développer vos compétences">une formation
+                    calculée sur mesure </a></h1> pour être au top dans le métier de votre choix.
         </div>
     </ng-container>
 
@@ -57,7 +57,8 @@
                 <a [routerLink]="['/benefits']" class="text-light" role="link"
                     aria-label="Démarrer une formation personnalisée pour développer vos compétences">une
                     formation sur mesure
-                </a></h1> pour être au top dans le métier de votre choix.
+                </a>
+            </h1> pour être au top dans le métier de votre choix.
         </div>
 
     </ng-container>
@@ -290,6 +291,22 @@
 
         </ng-container>
     </div>
+
+    <!-- <app-punchlines></app-punchlines> -->
+<div class="d-flex justify-content-center align-items-center bg-light">
+  <div class="card text-center p-4 w-100">
+    <p class="text-dark fs-5 fst-italic">
+       <span class="isLargeScreen">Vous ne savez pas encore quoi choisir ? C'est normal.</span>
+      Explorez, testez, et laissez vos résultats parler !
+    </p>
+
+    <!-- Trait décoratif -->
+    <div class="divider"></div>
+  </div>
+</div>
+
+
+
 
     <!-- essai pour forcer le regroupement de certains métiers  -->
 
