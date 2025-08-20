@@ -480,6 +480,20 @@
   <!-- fin collapse -->
 
   <app-social-data></app-social-data>
+
+  <!-- juste pour tester la recherche -->
+  <hr>
+  <button type="button" (click)="prepareFaq()">Préparer FAQ</button>
+  <input #userQ type="text" placeholder="Posez votre question" />
+  <button type="button" (click)="result = searchFaqFuzzy(userQ.value)">Rechercher</button>
+
+  <div *ngIf="result">
+    <!-- <h4>Réponse :</h4> -->
+    <p [innerHTML]="result"></p>
+  </div>
+  <!-- fin recherche pour tester -->
+
+
 </div>
 
 
