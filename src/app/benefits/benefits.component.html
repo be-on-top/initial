@@ -29,8 +29,8 @@
         aria-label="Aller à la diapositive 3"></button>
       <button title="Aller à la diapositive 4" type="button" data-bs-target="#demo" data-bs-slide-to="3"
         aria-label="Aller à la diapositive 4"></button>
-      <button title="Aller à la diapositive 5" type="button" data-bs-target="#demo" data-bs-slide-to="4"
-        aria-label="Aller à la diapositive 4"></button>
+      <!-- <button title="Aller à la diapositive 5" type="button" data-bs-target="#demo" data-bs-slide-to="4"
+        aria-label="Aller à la diapositive 5"></button> -->
     </div>
 
     <button class="carousel-control-prev sr-only" type="button" data-bs-target="#demo" data-bs-slide="prev">
@@ -62,11 +62,11 @@
           Intégrez une formation sur mesure
         </div>
       </div>
-      <div class="carousel-item" aria-live="polite">
+      <!-- <div class="carousel-item" aria-live="polite">
         <div class="alert bg-primary text-white display-5 fade show text-center w-100 pb-5">
           Développez vos compétences <span>professionnelles</span>
         </div>
-      </div>
+      </div> -->
       <div class="carousel-item" aria-live="polite">
         <div class="alert bg-primary text-white display-5 fade show text-center w-100 pb-5">
           Faites-vous connaître des recruteurs
@@ -275,7 +275,7 @@
               Formation</h3>
             (CPF) qui permet à tout travailleur d'acquérir des droits à la formation pouvant être mobilisés à tout
             instant (changement de statut, période de chômage, période travaillée…).
-            <strong>Quelle que soit votre situation personnelle, un référent administratif prendra contact avec vous
+            <strong>Quelle que soit votre situation personnelle, un Conseiller Projet prendra contact avec vous
               pour
               finaliser au mieux l'inscription et son financement</strong>.
           </div>
@@ -427,9 +427,29 @@
           </div>
         </div>
       </div>
-
-
     </div>
+
+    <!-- juste pour tester la recherche -->
+
+    <hr>
+
+    <form (ngSubmit)="result = searchFaqFuzzy(userQ.value)" class="m-3">
+      <div class="input-group">
+        <input #userQ type="text" class="form-control flex-grow-1" placeholder="Posez votre question"
+          aria-label="Question utilisateur" aria-describedby="faqHelp" autofocus />
+        <button type="submit" class="btn btn-outline-primary">Rechercher</button>
+      </div>
+    </form>
+
+    <div *ngIf="result" class="alert alert-light mx-3" role="alert">
+      <p [innerHTML]="result"></p>
+    </div>
+
+    <p id="faqHelp" *ngIf="result">Pour toute autre question, vous pouvez nous écrire à l'adresse suivante :
+      contact@be-on-top.io ou consulter les pages Nos Métiers.</p>
+
+    <!-- fin recherche pour tester -->
+
   </div>
 
 
@@ -481,17 +501,7 @@
 
   <app-social-data></app-social-data>
 
-  <!-- juste pour tester la recherche -->
-  <hr>
-  <button type="button" (click)="prepareFaq()">Préparer FAQ</button>
-  <input #userQ type="text" placeholder="Posez votre question" />
-  <button type="button" (click)="result = searchFaqFuzzy(userQ.value)">Rechercher</button>
 
-  <div *ngIf="result">
-    <!-- <h4>Réponse :</h4> -->
-    <p [innerHTML]="result"></p>
-  </div>
-  <!-- fin recherche pour tester -->
 
 
 </div>
