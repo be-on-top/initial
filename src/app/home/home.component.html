@@ -293,18 +293,16 @@
     </div>
 
     <!-- <app-punchlines></app-punchlines> -->
-<div class="d-flex justify-content-center align-items-center bg-light">
-  <div class="card text-center p-4 w-100">
-    <p class="text-dark fs-5 fst-italic">
-       <span class="isLargeScreen">Vous ne savez pas encore quoi choisir ? C'est normal.</span>
-      Explorez, testez, et laissez vos résultats parler !
-    </p>
 
-    <!-- Trait décoratif -->
-    <div class="divider"></div>
-  </div>
-</div>
+    <div class="alert w-100 p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show display-5 text-center">
+        <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
+            aria-label="Fermer le message be-on-top"></button>
+        <span class="isLargeScreen">Vous ne savez pas encore quoi choisir ? C'est normal.</span>
+        Explorez, testez, et laissez vos résultats parler !
 
+        <!-- Trait décoratif -->
+        <!-- <div class="divider"></div> -->
+    </div>
 
 
 
@@ -345,7 +343,8 @@
                     <!-- <h2 class="h2">Conducteur d'engin (Certification&nbsp;CACES®)</h2> -->
 
                     <h2 class="h2 text-center">
-                        {{ group[0].indexOf('(') !== -1 ? (group[0] | slice:0:group[0].indexOf('(')) : group[0] }}<br>
+                        {{ group[0].indexOf('(') !== -1 ? (group[0] | slice:0:group[0].indexOf('(')) : group[0]
+                        }}<br>
                         <span *ngIf="group[0].indexOf('(') !== -1">
                             {{ group[0] | slice:group[0].indexOf('(') }}
                         </span>

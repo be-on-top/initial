@@ -184,9 +184,7 @@
 
   <!-- accordion.component.html -->
 
-  <app-punchlines></app-punchlines>
 
-  <hr>
 
   <div class="accordion accordion-flush row" id="accordionFlushExample">
     <div class="col-md-6">
@@ -429,29 +427,31 @@
       </div>
     </div>
 
+      <hr class="light">
+
+  <app-punchlines></app-punchlines>
+
     <!-- juste pour tester la recherche -->
+    <div>
+      <hr class="light">
+      <form (ngSubmit)="result = searchFaqFuzzy(userQ.value)" class="m-3">
+        <div class="input-group">
+          <input #userQ type="text" class="form-control flex-grow-1" placeholder="Posez votre question"
+            aria-label="Question utilisateur" aria-describedby="faqHelp" />
+          <button type="submit" class="btn btn-outline-primary">Rechercher</button>
+        </div>
+      </form>
 
-    <hr>
-
-    <form (ngSubmit)="result = searchFaqFuzzy(userQ.value)" class="m-3">
-      <div class="input-group">
-        <input #userQ type="text" class="form-control flex-grow-1" placeholder="Posez votre question"
-          aria-label="Question utilisateur" aria-describedby="faqHelp" autofocus />
-        <button type="submit" class="btn btn-outline-primary">Rechercher</button>
+      <div *ngIf="result" class="alert alert-light mx-3" role="alert">
+        <p [innerHTML]="result"></p>
       </div>
-    </form>
 
-    <div *ngIf="result" class="alert alert-light mx-3" role="alert">
-      <p [innerHTML]="result"></p>
+      <p id="faqHelp" *ngIf="result">Pour toute autre question, vous pouvez nous écrire à l'adresse suivante :
+        contact@be-on-top.io ou consulter les pages Nos Métiers.</p>
     </div>
-
-    <p id="faqHelp" *ngIf="result">Pour toute autre question, vous pouvez nous écrire à l'adresse suivante :
-      contact@be-on-top.io ou consulter les pages Nos Métiers.</p>
-
     <!-- fin recherche pour tester -->
 
   </div>
-
 
 
   <hr>
@@ -498,6 +498,12 @@
 
   <!-- app.component.html -->
   <!-- fin collapse -->
+
+  <hr>
+
+  <app-punchlines></app-punchlines>
+
+
 
   <app-social-data></app-social-data>
 

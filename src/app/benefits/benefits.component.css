@@ -105,6 +105,10 @@ button.btn.active{
    background-image: linear-gradient(to top, #0c5eea, #0062fe);
 }
 
+hr.light{
+    color:var(--bs-border-color)
+}
+
 @media only screen and (max-width:720px) {
     /* 
     #image>img {

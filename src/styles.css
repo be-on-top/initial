@@ -24,12 +24,12 @@
 
 /* plus-jakarta-sans-regular - latin */
 @font-face {
-  font-family: 'Plus Jakarta Sans';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Plus Jakarta Sans Regular'),
-       url('/assets/fonts/plus-jakarta-sans-v11-latin-regular.woff2') format('woff2');
-  font-display: swap;
+    font-family: 'Plus Jakarta Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Plus Jakarta Sans Regular'),
+        url('/assets/fonts/plus-jakarta-sans-v11-latin-regular.woff2') format('woff2');
+    font-display: swap;
 }
 
 
@@ -295,22 +295,14 @@ nav {
     opacity: 1 !important;
 }
 
-/* .custom-hr{
-  color: var(--primary-color);
-  border: none; 
-  height: 3px; 
-  width: 25%;  
-  background-color: var(--primary-color);
-  margin: auto;
-  border-radius: 2px;
+/* en lieu et place des étoiles : devenu inutile */
+/* .divider {
+    width: 25%;
+    height: 3px;
+    background: var(--primary-color);
+    margin: 0 auto;
+    border-radius: 4px;
 } */
-.divider {
-  width: 25%; /* longueur du trait */
-  height: 3px; /* épaisseur */
-  background: var(--primary-color); /* dégradé stylé */
-  margin: 0 auto; /* centré horizontalement avec marge verticale */
-  border-radius: 4px; /* coins arrondis */
-}
 
 #cta,
 #account {
@@ -319,20 +311,21 @@ nav {
 }
 
 .custom-icon-10::before {
-  content: "10";
-  display: inline-block;
-  width: 1.05rem;
-  height: 1.05rem;
-  line-height: 1rem; /* ✅ centrage vertical du texte */
-  text-align: center;
-  font-size: 0.7rem;
-  border-radius: 0.15rem;
-  background-color: var(--bs-primary);
-  color: white;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-style: normal;
-  vertical-align: middle;
-  box-shadow: 0 0 0.05rem rgba(0, 0, 0, 0.2);
+    content: "10";
+    display: inline-block;
+    width: 1.05rem;
+    height: 1.05rem;
+    line-height: 1rem;
+    /* ✅ centrage vertical du texte */
+    text-align: center;
+    font-size: 0.7rem;
+    border-radius: 0.15rem;
+    background-color: var(--bs-primary);
+    color: white;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-style: normal;
+    vertical-align: middle;
+    box-shadow: 0 0 0.05rem rgba(0, 0, 0, 0.2);
 }
 
 
@@ -605,6 +598,13 @@ abbr:hover::before {
     .dropdown-item {
         padding: 10px;
     }
+
+    .isLargeScreen {
+        display: block;
+        font-size: 1.4rem;
+        font-weight: 400;
+        margin-bottom: 1rem;
+    }
 }
 
 /* DESKTOP & + */
@@ -617,10 +617,5 @@ abbr:hover::before {
         font-size: 1rem !important;
     }
 
-    .isLargeScreen{
-    display: block;
-    font-size: 1.4rem;
-    font-weight: 400;
-    margin-bottom: 1rem;
-}
+
 }
