@@ -52,7 +52,7 @@ background-repeat: no-repeat; */
 }
 
 #image>div>h1 {
-font-size: inherit;
+    font-size: inherit;
 
 }
 
@@ -90,23 +90,66 @@ font-size: inherit;
 }
 
 .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+button.btn.active {
+    background-image: linear-gradient(to top, #0c5eea, #0062fe);
+}
+
+hr.light {
+    color: var(--bs-border-color)
+}
+
+
+/* pour chatBox */
+.chat-user {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.chat-user::after {
+  content: "";
   position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+  bottom: 0;
+  left: 10px; /* décalage horizontal de la flèche */
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-top-color: #0d6efd; /* même couleur que la bulle */
+  border-bottom: 0;
+  margin-left: 5px;
+  margin-bottom: -10px;
 }
 
-button.btn.active{
-   background-image: linear-gradient(to top, #0c5eea, #0062fe);
+/* Réponse FAQ */
+.chat-bot {
+  position: relative;
+  margin-bottom: 1rem;  
+  border-radius: 5;
 }
 
-hr.light{
-    color:var(--bs-border-color)
+
+.chat-bot::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-top-color: #f8f9fa;
+  border-bottom: 0;
+  margin-right: 5px;
+  margin-bottom: -10px;
 }
 
 @media only screen and (max-width:720px) {

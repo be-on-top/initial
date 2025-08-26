@@ -13,7 +13,7 @@ export class PunchlinesComponent {
     "Ici, pas besoin de vous battre pour faire valider un projet de formation : le projet colle à votre profil. Il est cohérent, concret et se défendra tout seul !",
     "On vous propose un parcours métier sur mesure, qui vous ressemble et répond aux besoins du marché du travail. Résultat ? Vous n'aurez pas à justifier pourquoi c'est le choix qui convient.",
     "Ce n'est pas un bilan de compétences façon quiz psychologique ou test de logique hors-sol. Ici, on parle métier. Concret. Réel. Utile.",
-    "BE-ON-TOP transforme l'exploration de vos compétences en jeu : testez, explorez, comparez… et démarrez votre formation sur-mesure dès demain.",
+    // "BE-ON-TOP transforme l'exploration de vos compétences en jeu : testez, explorez, comparez… et démarrez votre formation sur-mesure dès demain.",
     "Explorez vos aptitudes et découvrez, en quelques clics, une offre de formation calculée sur mesure. Pas de promesse floue, pas d'attente. Vous savez immédiatement ce qu'il vous faut pour progresser… et combien de temps cela vous prendra",
     "Pas besoin de cocher des cases absurdes pour valider votre projet professionnel. C'est un outil d'orientation qui parle vrai, parle métier, parle terrain.",
     "BE-ON-TOP, n'est pas un simple catalogue de formations. C'est un outil pour tester vos compétences, explorer vos envies… et avancer sans pression...",
