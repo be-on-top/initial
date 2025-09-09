@@ -24,6 +24,14 @@
       <label for="mainCity" class="form-label mt-3">Ville la plus proche</label>
       <input type="text" id="city" name="mainCity" [(ngModel)]="center.mainCity" class="form-control">
 
+      <!-- pour pouvoir modifier la propriété partenaire -->
+      <hr>
+      <div class="form-check form-switch mt-3">
+        <label class="form-check-label" for="partner">Est un simple partenaire ?</label>
+        <input class="form-check-input" type="checkbox" id="partnerCheckbox" name="partner"
+          [(ngModel)]="center.partner"> <span> {{center.partner ?"Oui":"Non"}}</span>
+      </div>
+
 
       <button type="submit" class="btn btn-primary mt-4" [disabled]="editForm.invalid">Mettre à jour</button>
     </div>

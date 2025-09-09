@@ -72,9 +72,18 @@
 
     <!-- pour pouvoir remonter mainCity : ville la plus proche -->
     <!-- <div class="form-control mt-5"> -->
-      <label for="mainCity" class="form-label mt-3">Ville la plus proche</label>
-      <input type="text" id="city" name="mainCity" ngModel class="form-control">
+    <label for="mainCity" class="form-label mt-3">Ville la plus proche</label>
+    <input type="text" id="city" name="mainCity" ngModel class="form-control">
     <!-- </div> -->
+
+    <hr>
+
+    <!-- option pour spécifier SI partenaire -->
+    <div class="form-check form-switch mt-3">
+      <label for="partner" class="form-check-label">Centre Partenaire ?</label>
+      <input class="form-check-input" type="checkbox" name="partner" [(ngModel)]="partner"
+        aria-label="Est un centre partenaire ou pas ?">
+    </div>
 
 
 

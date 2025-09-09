@@ -12,7 +12,7 @@
                 <p class="card-text"><span class="fw-bold">Nom</span> : {{center.name}}<br>
                     <span class="fw-bold">Adresse</span> : {{center.address}}<br>
                     <span class="fw-bold">CP</span> : {{center.cp}}<br>
-                    <span class="fw-bold">Ville</span> : {{center.city}} 
+                    <span class="fw-bold">Ville</span> : {{center.city}}
                     <span
                         *ngIf="center.mainCity && center.city.trim().toLowerCase() !== center.mainCity?.trim()?.toLowerCase()">
                         (Proche de
@@ -24,6 +24,13 @@
                 <p *ngIf="userRouterLinks.user && userRouterLinks.user==='admin'"> <span
                         *ngIf="center.status; else checkbox">Status : actif</span>
                     <ng-template #checkbox> Status : inactif</ng-template>
+                </p>
+
+                <!-- <hr> -->
+                <!-- puisque cette vue est partagée entre admin et utilisateur final -->
+                <p *ngIf="userRouterLinks.user && userRouterLinks.user==='admin'"> <span
+                        *ngIf="center.partner; else checkbox">Partenaire : oui</span>
+                    <ng-template #checkbox> Membre du réseaux principal</ng-template>
                 </p>
 
                 <!-- affectation métiers -->

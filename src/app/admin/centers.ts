@@ -8,5 +8,6 @@ export interface Centers {
     status: boolean;
     sigles: string[];
     mainCity?:string;
-    tel?:string
+    tel?:string;
+    partner?: boolean;
 }

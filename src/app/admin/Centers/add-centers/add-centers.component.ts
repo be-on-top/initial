@@ -38,6 +38,9 @@ export class AddCentersComponent implements OnInit {
   csvFile: File | null = null; // Variable pour stocker le fichier CSV sélectionné
   parsedCenters: any[] = [];   // Tableau pour stocker les données analysées
 
+  // pour faire la différence selon que c'est ou non un centre partenaire
+  partner: boolean = false
+
 
   constructor(private service: CentersService, private settingsService: SettingsService, private papa: Papa) {
     // Setup RxJS pipeline for capturing postal code changes
@@ -224,36 +227,45 @@ export class AddCentersComponent implements OnInit {
 
 
   // Fonction pour importer et analyser le fichier CSV
-  importCSV(): void {
-    if (!this.csvFile) {
-      this.errorMessage = 'Veuillez sélectionner un fichier CSV avant de procéder.';
-      return;
-    }
+// Fonction pour importer et analyser le fichier CSV
+importCSV(): void {
+  if (!this.csvFile) {
+    this.errorMessage = 'Veuillez sélectionner un fichier CSV avant de procéder.';
+    return;
+  }
 
-    // Analyse du fichier CSV grâce à PapaParse. 
-    this.papa.parse(this.csvFile, {
-      // Considère la première ligne comme des en-têtes
-      header: true,
-      skipEmptyLines: true, // Ignore les lignes vides !!!
-      complete: (result) => {
-        // Filtrage des objets vides ou des champs manquants
-        this.parsedCenters = result.data.filter((center: any) => {
-          return center.name && center.address && center.cp && center.sigles && center.city && center.tel && center.email && center.mainCity;
-        }).map((center: any) => {
-          // Transformation de la colonne sigles en tableau
-          center.sigles = center.sigles.split(',').map((sigle: string) => sigle.trim()); // Nettoyage des espaces
-          return center; // On retourne l'objet modifié
+  this.papa.parse(this.csvFile, {
+    header: true,
+    skipEmptyLines: true,
+    delimiter: ";",
+    complete: (result) => {
+      console.log("Résultat brut PapaParse:", result.data);
+
+      this.parsedCenters = result.data
+        .filter((center: any) => {
+          return center.name && center.address && center.cp && center.sigles &&
+                 center.city && center.tel && center.email && center.mainCity;
+        })
+        .map((center: any) => {
+          // sigles en tableau
+          center.sigles = center.sigles.split(",").map((sigle: string) => sigle.trim());
+
+          // partner en booléen
+          center.partner = center.partner?.trim().toLowerCase() === "oui";
+
+          return center;
         });
 
-        console.log('Données analysées:', this.parsedCenters);
-        this.uploadCentersToFirestore();
-      },
-      error: (error) => {
-        console.error('Erreur lors de l\'analyse du fichier CSV:', error);
-        this.errorMessage = 'Erreur lors de l\'analyse du fichier CSV.';
-      }
-    });
-  }
+      console.log('Données analysées:', this.parsedCenters);
+      this.uploadCentersToFirestore();
+    },
+    error: (error) => {
+      console.error("Erreur lors de l'analyse du fichier CSV:", error);
+      this.errorMessage = "Erreur lors de l'analyse du fichier CSV.";
+    }
+  });
+}
+
 
 
 
