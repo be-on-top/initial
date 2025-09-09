@@ -53,10 +53,11 @@
         <div class="alert w-100 p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show display-5">
             <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
                 aria-label="Fermer le message be-on-top"></button>
-            Evaluez vos compétences, découvrez votre parcours personnalisé et intégrez rapidement <h1 class="d-inline">
+            Evaluez vos compétences à votre rythme, découvrez vos résultats en quelques clics, puis démarrez rapidement
+            <h1 class="d-inline">
                 <a [routerLink]="['/benefits']" class="text-light" role="link"
                     aria-label="Démarrer une formation personnalisée pour développer vos compétences">une
-                    formation sur mesure
+                    formation calculée sur mesure
                 </a>
             </h1> pour être au top dans le métier de votre choix.
         </div>
@@ -293,16 +294,15 @@
     </div>
 
     <!-- <app-punchlines></app-punchlines> -->
-
-    <div class="alert w-100 p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show display-5 text-center">
-        <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
-            aria-label="Fermer le message be-on-top"></button>
-        <span class="isLargeScreen">Vous ne savez pas encore quoi choisir ? C'est normal.</span>
-        Explorez, testez, et laissez vos résultats parler !
-
-        <!-- Trait décoratif -->
-        <!-- <div class="divider"></div> -->
-    </div>
+    <ng-container *ngIf="user!==undefined && !isOneQuizzAchieved && !offline">
+        <div 
+            class="alert w-100 p-4 pe-5 bg-primary alert-dismissible text-white mb-4 fade show display-5 text-center">
+            <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
+                aria-label="Fermer le message be-on-top"></button>
+            <span class="isLargeScreen">Vous ne savez pas encore quoi choisir&nbsp;?</span>
+            Explorez, testez, et laissez vos résultats parler&nbsp;!
+        </div>
+    </ng-container>
 
 
 
