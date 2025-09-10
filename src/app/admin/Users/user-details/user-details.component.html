@@ -22,14 +22,26 @@
                     <ng-template #checkbox> <strong>Status</strong> : inactif</ng-template>
                 </p>
                 <ng-template #checkbox> <strong>Status</strong> : inactif</ng-template>
+                <!-- pour voir à récupérer la propriété additionnelle si existante  -->
+                <hr>
+                <p> <span *ngIf="user.partner; else checkboxPartner"><strong>Associé à en tant que Conseiller d'un centre partenaire ou pas ?</strong> : Oui</span>
+                    <ng-template #checkbox> <strong>Associé à en tant que Conseiller d'un centre partenaire ?</strong> : Non</ng-template>
+                </p>
+                <ng-template #checkboxPartner> <strong>Associé à en tant que Conseiller d'un centre partenaire ?</strong> : Non</ng-template>
+
                 <!-- affectation métiers -->
                 <!-- <p *ngIf="user.sigle">Métiers d'affectation ({{user.sigle.length}}) :
                     <span *ngFor="let s of user.sigle">{{s}} </span>
                 </p> -->
-                <p *ngIf="studentsList && userRouterLinks.user!=='referent'"><strong>Candidats en cours de suivi ({{studentsList.length}})</strong> :
+
+                <!-- on ne cherche pas à masquer cette information pour le référent qui se connecte mais à ne remonter l'information que SI l'utilisateur est un tuteur -->
+                <!-- <p *ngIf="studentsList && userRouterLinks.user!=='referent'"><strong>Candidats en cours de suivi ({{studentsList.length}})</strong> :
+                    {{studentsList}}
+                </p> -->
+                <p *ngIf="studentsList && user.role=='tutor'"><strong>Candidats en cours de suivi ({{studentsList.length}})</strong> :
                     {{studentsList}}
                 </p>
-                <p *ngIf="userRouterLinks.user!=='referent'"><strong>Enregistré en tant que</strong> : {{ user.isPrivate ? 'Privé' : 'Public' }}</p>
+                <p *ngIf="user.role=='external'"><strong>Enregistré en tant que</strong> : {{ user.isPrivate ? 'Privé' : 'Public' }}</p>
                 <p *ngIf="user.geographicScope"><strong>Son périmètre</strong> : {{permimeter}}</p>
                 <span *ngIf="user.structure"><strong>Organisme</strong>: {{user.structure}}</span><br>
                 <hr>

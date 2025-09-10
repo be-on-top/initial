@@ -81,13 +81,13 @@ export class UserDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "referents") {
-      // this.title = "Référents Administratifs"
+      this.title = "Conseiller Projet"
       this.linkBackToList = "/admin/referents"
     }
     else if (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "editors") {
       this.title = "Contributeur"
       this.linkBackToList = "/admin/editors"
-    } else if (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "externals") {
+    } else if ((this.userRouterLinks.user == "admin" || this.userRouterLinks.user=="referent") && this.userRouterLinks.data == "externals") {
       this.title = "Observateur Externe"
       this.linkBackToList = "/admin/externals"
     }
@@ -96,7 +96,6 @@ export class UserDetailsComponent implements OnInit {
       this.title = "Responsable métier"
       this.linkBackToList = "/admin/managers"
     }
-
     // pour pouvoir utiliser la même route initiale par moment
     this.authSubscription = this.authService.getCurrentUserInfo().subscribe(userInfo => {
       this.userRole = userInfo?.role ?? null;

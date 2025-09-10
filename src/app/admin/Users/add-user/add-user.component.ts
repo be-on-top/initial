@@ -49,6 +49,9 @@ export class AddUserComponent {
   // si on partage ce formulaire avec un referent, autaht aller récupérer le role directement en base
   userRole?: any
 
+  // pour faire la différence selon que le référent est associé ou non à un centre partenaire
+  partner: boolean = false
+
   constructor(private service: UsersService,
     private router: Router,
     private ac: ActivatedRoute,
@@ -88,12 +91,12 @@ export class AddUserComponent {
 
     // si on partage ce formulaire avec un referent qui n'aura pas accès à isPrivate ni role...
     if (this.userRole === 'referent') {
-      newUser = { ...form.value, role: 'external', isPrivate: false, status:true }
+      newUser = { ...form.value, role: 'external', isPrivate: false, status: true }
     } else { newUser = form.value }
     // ... et on passe newUser au service
 
     console.log("newUser", newUser);
-    
+
     this.service.createUser(newUser).then(() => {
       // Signed in 
       // const user = userCredential
@@ -149,6 +152,7 @@ export class AddUserComponent {
     this.papa.parse(this.csvFile, {
       header: true,
       skipEmptyLines: true,
+      delimiter: ";",
       complete: (result) => {
         console.log("result data", result.data);
 
@@ -157,6 +161,8 @@ export class AddUserComponent {
 
         result.data.forEach((user: Users) => {
           if (user.email) {
+            const isPartner = (user.partner ?? '').toString().trim().toLowerCase() === 'oui';
+
             if (userMap[user.email]) {
               // Si l'email existe déjà, ajouter le cp à la liste des cps
               userMap[user.email].cp.push(user.cp);
@@ -168,11 +174,13 @@ export class AddUserComponent {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 role: 'referent',
-                tel: user.tel
+                tel: user.tel,
+                partner: isPartner, // ← ajout du booléen ici
               };
             }
           }
         });
+
 
         // Convertir l'objet en tableau
         this.parsedReferents = Object.values(userMap);

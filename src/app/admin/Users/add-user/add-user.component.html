@@ -10,9 +10,12 @@
 
     <div class="alert w-100 p-4 pe-5 bg-danger alert-dismissible text-white mb-4 fade show fs-5">
         <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
-            aria-label="Fermer le message"></button><span class="fw-bold">ATTENTION : Pensez à vous munir de votre mot de passe. </span> 
-        A l'issue de cette étape votre contact recevra automatiquement par mail un lien pour personnaliser (réinitialisation) son mot de passe. Si le lien de
-        réinitialisation ne fonctionne plus parce que ces liens ne sont opérationnels qu'une courte durée, invitez le à se rendre sur la
+            aria-label="Fermer le message"></button><span class="fw-bold">ATTENTION : Pensez à vous munir de votre mot
+            de passe. </span>
+        A l'issue de cette étape votre contact recevra automatiquement par mail un lien pour personnaliser
+        (réinitialisation) son mot de passe. Si le lien de
+        réinitialisation ne fonctionne plus parce que ces liens ne sont opérationnels qu'une courte durée, invitez le à
+        se rendre sur la
         page de <a class="text-light fw-bold" target="_blank" [routerLink]="['/login']">connexion</a> et cliquer sur
         <span class="fw-bold">réinitialiser mon mot de
             passe</span>.
@@ -67,12 +70,25 @@
                 <select class="form-select text-secundary" name="role" id="role" ngModel required #role="ngModel">
                     <option value>Merci de préciser...</option>
                     <option value="editor">Editeur (marketing)</option>
-                    <option value="referent">Référent administratif (gestion des inscriptions)</option>
+                    <option value="referent">Conseiller Projet (gestion des inscriptions)</option>
                     <option value="manager">Responsable métiers (optionnel)</option>
                     <option value="external">Observateur externe (droits de consultations)</option>
                 </select>
             </div>
         </div>
+
+        <!-- si referent en cours de création ajouter la propriété optionnelle partner (?) -->
+        <!-- <div *ngIf="f.value.role==='referent'">dfsrdfdfsesdfe</div> -->
+
+        <!-- option pour spécifier SI partenaire -->
+        <div class="form-check form-switch mt-3" *ngIf="f.value.role==='referent'">
+            <label for="partner" class="form-check-label">Rattaché à un centre "Partenaire" ?</label>
+            <input class="form-check-input" type="checkbox" name="partner" [(ngModel)]="partner"
+                aria-label="Est un centre partenaire ou pas ?">
+        </div>
+
+
+
 
         <!-- pour périmètre + caractère privé/public -->
         <!-- <ng-container *ngIf="f.value.role=='external'"> -->
@@ -105,7 +121,7 @@
             <option value="departmental">Départemental</option>
             <option value="local">Local</option>
         </select>
-
+        <!-- fin des champs réservés aux observateurs externes -->
         <!-- </ng-container> -->
         <hr>
 
