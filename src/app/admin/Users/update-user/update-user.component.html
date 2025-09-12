@@ -80,7 +80,7 @@
 
 
             <label for="geographicScopeSelect" class="my-2">🌍 Son périmètre géographique :</label>
-            <select id="geographicScopeSelect" class="form-control" [(ngModel)]="user.geographicScope" name="geographicScope">
+            <select id="geographicScopeSelect" class="form-control mb-2" [(ngModel)]="user.geographicScope" name="geographicScope">
               <option [ngValue]="undefined" disabled>-- Choisir un périmètre --</option>
               <option [ngValue]="'regional'">Régional</option>
               <option [ngValue]="'departmental'">Départemental</option>
