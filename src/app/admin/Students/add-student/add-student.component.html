@@ -20,7 +20,7 @@
         <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
             aria-label="Fermer le message"></button>
         Ces candidats n'auront pas à remplir le formulaire de pré-inscription destiné aux candidats externes, car vous
-        disposez déjà des informations nécessaires en interne. Ils seront donc automatiquement rattachés à votre centre.
+        disposez déjà des informations nécessaires en interne. Ils seront automatiquement rattachés à votre centre.
         <span class="fw-bold">ATTENTION à vous munir de votre mot de passe, il vous sera demandé pour des raisons de
             sécurité</span>.
     </div>
@@ -75,11 +75,13 @@
 
     <!-- Section d'importation CSV -->
 
-    <h3 class="mt-3">Importer plusieurs apprenants déjà en centre de formation</h3>
+    <h3 class="mt-3">Importer plusieurs candidats apprenants</h3>
+        <app-feedback-messages [feedbackMessages]="feedbackMessages"
+        [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
 
     <p class="text-muted">📌 Un popup vous demandant de
         saisir votre mot de passe s'affichera en cours d'import. Selon votre connexion un petit délai est nécessaire
-        avant de voir le popup s'afficher.</p>
+        avant de voir le popup s'afficher et le processus se terminer.</p>
 
     <div class="form-group">
 
