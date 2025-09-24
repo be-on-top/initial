@@ -13,7 +13,7 @@ import { SettingsService } from '../admin/settings.service';
 import { StudentsService } from '../admin/students.service';
 // import { Student } from '../admin/Students/student';
 import { UpdateService } from '../update.service';
-import { Subject, distinctUntilChanged, map, takeUntil } from 'rxjs';
+import { BehaviorSubject, Subject, combineLatest, distinctUntilChanged, map, takeUntil } from 'rxjs';
 // import { NetworkService } from '../network.service';
 import { PRECONNECT_CHECK_BLOCKLIST } from '@angular/common';
 import { Analytics, logEvent } from '@angular/fire/analytics';
@@ -78,7 +78,7 @@ export class HomeComponent implements OnInit {
   isOneQuizzAchieved: boolean = false;
 
   // ne sert pas et ne doit pas avoir à être nécessaire. 
-  userRole: string = ""
+  userRole: any = ""
 
   // on le prépare à recevoir un terme de recherche
   searchText: string = ''
@@ -101,6 +101,9 @@ export class HomeComponent implements OnInit {
 
   // null signifie qu'aucune catégorie n'est ouverte
   openCategoryIndex: number | null = null;
+
+  // dans ton component
+  private userRole$ = new BehaviorSubject<string>(this.userRole || ''); // valeur initiale
 
 
   constructor(
@@ -139,16 +142,6 @@ export class HomeComponent implements OnInit {
 
     this.titleService.setTitle('Accueil - BE-ON-TOP formation application'); // Mettre à jour le titre de la page
 
-    // this.networkService.getOnlineStatus()
-    //   .pipe(
-    //     takeUntil(this.destroy$),
-    //     distinctUntilChanged()
-    //   )
-    //   .subscribe(online => {
-    //     if (!online) {
-    //       this.offline = true
-    //     }
-    //   });
 
 
     // window.addEventListener('online', () => {   
@@ -156,56 +149,24 @@ export class HomeComponent implements OnInit {
       // alert("on est en ligne")   
       // pour tenter de détecter des updates côté template
       this.updateService.checkForUpdates();
+      
       // pour récupérer le role si il est passé
-      this.ac.queryParams.subscribe(params => {
-        this.userRole = params['userRole'] || '';
-        // console.log('UserRole:', this.userRole);
-      })
-
-      // // pour récupérer la data de l'utilisateur authentifié si c'est un étudiant 
-      // onAuthStateChanged(this.auth, (user: any) => {
-      //   if (user && (this.userRole == 'student' || this.userRole == '')) {
-      //     // User is signed in, see docs for a list of available properties
-      //     // https://firebase.google.com/docs/reference/js/firebase.User
-      //     this.user = user.uid
-      //     this.studentService.getStudentById(user.uid).
-      //       subscribe((data) => {
-      //         // console.log("data", data);
-      //         this.studentData = data
-      //         this.checkIfQuizzAchieved()
-      //         this.dataLoading = false
-
-      //         // Forcer la détection de changement
-      //         this.cdr.detectChanges();
-      //       })
-      //     this.authService.getUserId();
-      //     // retourne this.ui tout de suite après la connexion. undefined plus tard, donc ne convient pas...
-      //     // console.log("log de ui", this.ui);
-      //     // tests ok pour information, mais ne semble pas être très utile 
-      //     this.authService.getToken()?.then(res => console.log("token authentification depuis authService", res.token))
-      //     // fonctionne parfaitement !!!!!!!!!!!!!!!!!!
-      //     this.authService.authStatusListener()
-      //   }
-
-      //   else if ((user && (this.userRole == 'editor'))) {
-      //     this.isEditor = true
-
-      //   }
-
-      //   // pour le cas où non authentifié
-      //   else {
-      //     // L'utilisateur n'est pas authentifié
-      //     console.log("Utilisateur non authentifié");
-      //     // Rediriger vers la page de connexion si nécessaire
-      //     // this.router.navigate(['/login']);
-      //   }
+      // this.ac.queryParams.subscribe(params => {
+      //   this.userRole = params['userRole'] || '';
+      //   // this.userRole$.next(this.userRole); // pousse la valeur
+      //   // console.log('UserRole:', this.userRole);
       // })
+      this.authService.getCurrentUserInfo().subscribe(userInfo => {
+  this.userRole = userInfo?.role;
+});
+
 
       // Vérification de l'authentification
       onAuthStateChanged(this.auth, (user: any) => {
         if (user && (this.userRole == 'student' || this.userRole == '')) {
           this.user = user.uid;
           this.dataLoading = false;
+          // this.userRole$.next(this.userRole); // pousse la valeur
 
           // Utilisation de setTimeout pour retarder l'appel à Firestore après le LCP
           setTimeout(() => {
@@ -225,10 +186,13 @@ export class HomeComponent implements OnInit {
           // this.authService.getToken()?.then(res => console.log("token authentification depuis authService", res.token));
           // this.authService.authStatusListener();
 
-        } else if (user && this.userRole == 'editor') {
-          this.isEditor = true;
+        } else if (user && this.userRole !== '') {
+          // this.isEditor = true;
+          this.user = user.uid;
+          // this.userRole$.next(this.userRole); // pousse la valeur
         } else {
           console.log("Utilisateur non authentifié");
+          // this.userRole$.next(this.userRole); // pousse la valeur
         }
       });
 
@@ -238,8 +202,20 @@ export class HomeComponent implements OnInit {
       //--------------------
       // pour récupérer les métiers (sigles) enregistrés en base qui détermineront les différentes zones éditioriales
 
-      this.settingsService.getTrades()
-        .pipe(map(data => data.filter(item => item.status && item.status === true)))
+      // this.settingsService.getTrades()
+      //   .pipe(map(data => data.filter(item => item.status && item.status === true)))
+      // pour ne pas bouger l'appel getTrades()
+      combineLatest([
+        this.settingsService.getTrades(),
+        this.authService.getCurrentUserInfo()
+      ])
+        .pipe(
+          map(([data, userInfo]) =>
+            userInfo?.role !== 'editor'
+              ? data.filter(item => item.status === true)
+              : data
+          )
+        )
         .subscribe(data => {
           // pour inverser temporairement (retarder l'appariton des CACES si parentCategory inexploitée)
           // this.tradesData = data.reverse();
@@ -256,33 +232,6 @@ export class HomeComponent implements OnInit {
 
           // pour surveiller la taille de l'écran
           this.checkScreenSize();
-
-          // // Étape 1 : Calculer les occurrences de chaque parentCategory
-          // const parentCategoryCounts = this.tradesData.reduce((acc: { [key: string]: number }, item: Trade) => {
-          //   if (item.parentCategory) {
-          //     alert("bingo")
-          //     acc[item.parentCategory] = (acc[item.parentCategory] || 0) + 1;
-          //   }
-          //   return acc;
-          // }, {} as { [key: string]: number });
-
-          // console.log('parentCategoryCounts', parentCategoryCounts);
-
-
-          // // Étape 2 : Filtrer les éléments
-          // const filteredItems = this.tradesData.filter((item: Trade) =>
-          //   item.parentCategory && parentCategoryCounts[item.parentCategory] > 1
-          // );
-
-          // const remainingItems = this.tradesData.filter((item: Trade) =>
-          //   !item.parentCategory || parentCategoryCounts[item.parentCategory] === 1
-          // );
-
-          // console.log('Filtered Items:', filteredItems);
-          // console.log('Remaining Items:', remainingItems);
-
-
-
 
 
           // Charge les images pour chaque métier

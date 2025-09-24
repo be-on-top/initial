@@ -570,6 +570,17 @@ abbr:hover::before {
     pointer-events: auto;
 }
 
+.underProgress {
+  background-color: #f0f0f0; /* couleur de base */
+  background-image: repeating-linear-gradient(
+    45deg,           /* angle des lignes */
+    #cccccc,         /* couleur des lignes */
+    #cccccc 2px,     /* largeur de la ligne */
+    transparent 2px, /* espace transparent */
+    transparent 6px  /* espacement total entre lignes */
+  )
+}
+
 
 /* === Media queries === */
 /* TABLETTE & + */

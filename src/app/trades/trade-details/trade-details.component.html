@@ -1,7 +1,7 @@
-<div class="container py-5 fade-page " *ngIf="tradeData" [class.loaded]="isPageLoaded">
+<div class="container py-5 fade-page " *ngIf="tradeData" [class.loaded]="isPageLoaded" [ngClass]="{'underProgress':tradeData.status===false}">
 
     <!-- <h3>{{tradeData.denomination}}</h3> -->
-    <div class="p-2 bg-primary text-white rounded row fade show mx-1">
+    <div class="p-2 bg-primary text-white rounded row fade show mx-1" [ngClass]="{'underProgress':tradeData.status===false}">
         <!-- {{imageUrl}} -->
         <!-- <h1 class="d-flex justify-content-between mt-3">{{tradeData.denomination}}<app-share-button></app-share-button> -->
         <h1 class="d-flex justify-content-between mt-3"><span
@@ -115,13 +115,13 @@
     {{tradeData | json}} -->
     <div class="mt-4 p-2 position-relative">
 
-        <div *ngIf="isLoading" class="spinner-container">
+        <div *ngIf="isLoading && imageUrl!==''" class="spinner-container">
             <div class="spinner-border text-success" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
         </div>
 
-        <img *ngIf="!offline" [ngClass]="{'loaded': !isLoading}"
+        <img *ngIf="!offline && imageUrl!==''" [ngClass]="{'loaded': !isLoading}"
             class="rounded img-fluid mb-2 border border-1 m-auto w-100 fade-in" [src]="imageUrl"
             [attr.srcset]="imageUrlReduced ? imageUrlReduced + ' 575w, ' + imageUrl + ' 1024w' : imageUrl"
             sizes="(max-width: 575px) 575px, 1024px" alt="formation be-on-top au métier {{tradeId}}"

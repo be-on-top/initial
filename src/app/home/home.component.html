@@ -141,9 +141,9 @@
                 *ngIf="searchText === '' || removeAccents(trade.denomination).toLowerCase().includes(removeAccents(searchText).toLowerCase()) || removeAccents(trade.description).toLowerCase().includes(removeAccents(searchText).toLowerCase())">
 
                 <!-- <a [routerLink]="['/quizz/',  trade.sigle, studentData && studentData['quizz_'+trade.sigle] && studentData['quizz_'+trade.sigle].lastIndexQuestion?(studentData['quizz_'+trade.sigle].lastIndexQuestion | number)+1:0, studentData && studentData['quizz_'+trade.sigle] && studentData['quizz_'+trade.sigle].scoreCounter?studentData['quizz_'+trade.sigle].scoreCounter:0, studentData && studentData['quizz_'+trade.sigle]?true:false, studentData && studentData.id?studentData.id:'']" class="text-decoration-none text-dark"> -->
-                <div class="card my-3" (click)="selectTrade(trade.id)">
+                <div class="card my-3" (click)="selectTrade(trade.id)" [ngClass]="{'underProgress':trade.status===false}">
 
-                    <div class="card-header"
+                    <div class="card-header" 
                         [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]">
                         <!-- essai à conserver !!! -->
                         <!-- <h2 class="h5 text-start ps-2" [innerHTML]="trade.denomination | firstWord"></h2> -->
@@ -208,8 +208,8 @@
 
                         <!-- si on utilise l'éditeur de texte, pour récupérer le texte tronqué et brut -->
                         <!-- <div class="card-text"><a [routerLink]="['/trade', trade.sigle]" class="text-decoration-none" [innerHTML]="sanitizer.bypassSecurityTrustHtml((trade.description | slice:0:100) +'...')"></a></div> -->
-
-                        <div *ngIf="isEditor" class="d-flex justify-content-end">
+<!-- {{userRole}} -->
+                        <div *ngIf="userRole && userRole=='editor'" class="d-flex justify-content-end">
                             <hr>
                             <button type="button" class="btn btn-transparent mt-3" aria-label="Edition du métier">
                                 <a class="text-dark" [routerLink]="['/admin/updateDescription', trade.sigle]">
@@ -220,7 +220,7 @@
 
 
                         <!-- partie additionnelle si besoin pour utilisateur non authentifié -->
-                        <ng-container *ngIf="user==undefined && !offline">
+                        <ng-container *ngIf="user==undefined && !offline && userRole!=='editor'">
                             <hr>
                             <div class="d-flex justify-content-end">
                                 <a role="link"
@@ -342,7 +342,7 @@
                     <!-- <h2 class="h2">Conducteur d'engin (Réf. CACES®) ({{catGroup.length}})</h2> -->
                     <!-- <h2 class="h2">Conducteur d'engin (Certification&nbsp;CACES®)</h2> -->
 
-                    <h2 class="h2 text-center">
+                    <h2 class="h2 text-center" >
                         {{ group[0].indexOf('(') !== -1 ? (group[0] | slice:0:group[0].indexOf('(')) : group[0]
                         }}<br>
                         <span *ngIf="group[0].indexOf('(') !== -1">
@@ -360,9 +360,10 @@
                         <!-- <div *ngIf="!isFullCatItemsOpen && i <= 1" class="col-md-6 pt-3"> -->
                         <div *ngIf="openCategoryIndex !== j && i <= 1" class="col-md-6 pt-3">
 
-                            <div (click)="selectTrade(trade.id)">
+                            <div (click)="selectTrade(trade.id)" [ngClass]="{'underProgress':trade.status===false}">
                                 <div
                                     [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]">
+                                    <!-- {{trade.status}} -->
 
                                     <h3 class="h5 text-start ps-2">
                                         <i class="bi bi-{{i+1}}-square-fill text-success me-2"></i>
@@ -410,7 +411,8 @@
                                 <!-- si on utilise l'éditeur de texte, pour récupérer le texte tronqué et brut -->
                                 <!-- <div class="card-text"><a [routerLink]="['/trade', trade.sigle]" class="text-decoration-none" [innerHTML]="sanitizer.bypassSecurityTrustHtml((trade.description | slice:0:100) +'...')"></a></div> -->
 
-                                <div *ngIf="isEditor" class="d-flex justify-content-end">
+                                <!-- <div *ngIf="isEditor" class="d-flex justify-content-end"> -->
+                                <div *ngIf="userRole && userRole==='editor'" class="d-flex justify-content-end">
                                     <hr>
                                     <button type="button" class="btn btn-transparent mt-3"
                                         aria-label="Edition du métier">
@@ -481,7 +483,7 @@
                             [ngClass]="{'col-md-6': !(i === group[1].length - 1 && group[1].length % 2 !== 0)}">
                             <!-- dsfdsfdsfd{{group[1].length |json}} -->
 
-                            <div (click)="selectTrade(trade.id)">
+                            <div (click)="selectTrade(trade.id)" [ngClass]="{'underProgress':trade.status===false}">
                                 <div
                                     [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]">
                                     <h3 class="h5 text-start ps-2">
@@ -526,7 +528,7 @@
                                 <!-- si on utilise l'éditeur de texte, pour récupérer le texte tronqué et brut -->
                                 <!-- <div class="card-text"><a [routerLink]="['/trade', trade.sigle]" class="text-decoration-none" [innerHTML]="sanitizer.bypassSecurityTrustHtml((trade.description | slice:0:100) +'...')"></a></div> -->
 
-                                <div *ngIf="isEditor" class="d-flex justify-content-end">
+                                <div *ngIf="userRole && userRole==='editor'" class="d-flex justify-content-end">
                                     <hr>
                                     <button type="button" class="btn btn-transparent mt-3"
                                         aria-label="Edition du métier">
@@ -578,7 +580,7 @@
                                 </ng-container>
 
                                 <!-- partie additionnelle si besoin pour utilisateur non authentifié -->
-                                <ng-container *ngIf="user==undefined && !offline">
+                                <ng-container *ngIf="user==undefined && !offline && userRole!=='editor'">
                                     <hr>
                                     <!-- <div class="d-flex justify-content-end"> -->
                                     <a role="link"
