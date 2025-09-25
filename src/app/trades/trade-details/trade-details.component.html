@@ -1,7 +1,9 @@
-<div class="container py-5 fade-page " *ngIf="tradeData" [class.loaded]="isPageLoaded" [ngClass]="{'underProgress':tradeData.status===false}">
+<div class="container py-5 fade-page " *ngIf="tradeData" [class.loaded]="isPageLoaded"
+    [ngClass]="{'underProgress':tradeData.status===false}">
 
     <!-- <h3>{{tradeData.denomination}}</h3> -->
-    <div class="p-2 bg-primary text-white rounded row fade show mx-1" [ngClass]="{'underProgress':tradeData.status===false}">
+    <div class="p-2 bg-primary text-white rounded row fade show mx-1"
+        [ngClass]="{'underProgress':tradeData.status===false}">
         <!-- {{imageUrl}} -->
         <!-- <h1 class="d-flex justify-content-between mt-3">{{tradeData.denomination}}<app-share-button></app-share-button> -->
         <h1 class="d-flex justify-content-between mt-3"><span
@@ -21,18 +23,28 @@
                     Qualifiante !</span>
                 <span class="d-block" *ngIf="tradeData.isCPF && tradeData.isCPF===true">Finançable CPF</span>
                 <!-- <span class="d-block" *ngIf="!tradeData.isCPF" >Non Finançable CPF</span> -->
-                <br *ngIf="tradeData.requirements">
-                <span *ngIf="tradeData.requirements && tradeData.requirements!==''" class="text-light">Prérequis :
-                    {{tradeData.requirements}}</span>
-                <br *ngIf="tradeData.parentCategory">
-                <span *ngIf="tradeData.parentCategory && tradeData.parentCategory!==''" class="text-light">Catégorie :
-                    {{tradeData.parentCategory}}</span>
 
-                <!-- <p class="rounded bg-dark p-2 mt-2 small">Pour vérification du rôle récupéré : {{userRole}}</p> -->
-                <br>
-                <span class="d-block mt-2" (click)="backToPrevious()">
-                    <i class="bi bi-arrow-left"></i>
-                </span>
+                <!-- <br>
+                <span *ngIf="tradeData.requirements && tradeData.requirements!==''" class="text-light mt-5">
+                    Prérequis :
+                    <ul>
+                        <li *ngFor="let req of tradeData.requirements.split(',')">
+                            {{ req.trim() }}
+                        </li>
+                    </ul>
+                </span> -->
+
+            <span *ngIf="tradeData.requirements && tradeData.requirements!==''" class="text-light">Prérequis :
+                {{tradeData.requirements}}</span>
+            <br *ngIf="tradeData.parentCategory">
+            <span *ngIf="tradeData.parentCategory && tradeData.parentCategory!==''" class="text-light">Catégorie :
+                {{tradeData.parentCategory}}</span>
+
+            <!-- <p class="rounded bg-dark p-2 mt-2 small">Pour vérification du rôle récupéré : {{userRole}}</p> -->
+            <br>
+            <span class="d-block mt-2" (click)="backToPrevious()">
+                <i class="bi bi-arrow-left"></i>
+            </span>
             </p>
         </div>
         <!-- il faut différencier le cas d'un userRole=none...  -->
