@@ -193,8 +193,8 @@
                 <!-- si il faut relancer (l'admin décidera à qui l'honneur) -->
                 <button button class="btn btn-primary position-relative me-sm-2"
                     *ngIf="userRouterLinks.user==='admin' || userRouterLinks.user=='editor'"
-                    (click)="getStudentsWithNoInterest()">{{showNoInterestStudents ? 'Masquer les prospects à relancer'
-                    : 'Afficher les prospects à relancer' }}
+                    (click)="getStudentsWithNoInterest()">{{showNoInterestStudents ? 'Masquer les comptes inactifs à relancer'
+                    : 'Afficher les comptes inactifs à relancer' }}
                     <span *ngIf="showNoInterestStudents"
                         class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                         {{studentsWithNoInterest.length}}
@@ -231,7 +231,7 @@
             <div class="col-sm-3 h5 d-none d-md-inline">Détails</div>
             <!-- Liste conditionnelle qui doit être désactivée dès l'application d'un filtre pour plus de lisibilité -->
             <div *ngIf="showNoInterestStudents">
-                <div class="alert alert-warning mx-0 fw-regular fs-auto">Prospects inscrits mais inactifs<span
+                <div class="alert alert-warning mx-0 fw-regular fs-auto">Comptes inactifs<span
                         class="badge bg-danger ms-2">{{studentsWithNoInterest.length}}</span> </div>
                 <div *ngFor="let student of studentsWithNoInterest">
                     <div *ngIf="userRouterLinks.user==='admin' || userRouterLinks.user==='editor'">
@@ -295,7 +295,7 @@
             <!-- parce que isTradeFilter initialement était réservé aux formations métiers -->
             <div class="alert alert-info mx-0 fw-bold fs-auto">
                 {{isSubscriptionFilter || isTradeFilter ? "Inscriptions formation finalisées":isTradeQCMStarted ||
-                isTradeFullQCM ? "Prospects concernés":"Prospects inscrits et actifs"}}
+                isTradeFullQCM ? "Prospects concernés":"Comptes actifs"}}
                 <span class="badge bg-dark ms-2">{{allStudents.length}}</span>
             </div>
         </div>

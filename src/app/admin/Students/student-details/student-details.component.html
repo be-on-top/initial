@@ -34,6 +34,7 @@
                         <span class="fw-bold">Nom</span> : {{student.lastName}}<br>
                         <span class="fw-bold">Prénom</span> : {{student.firstName}}<br>
                         <span class="fw-bold">Email</span> : <a href="#" class="card-link">{{student.email}}</a><br>
+                        <span *ngIf="student.referent" class="fw-bold">Candidat interne de {{referentName}}</span><br>
                         <!-- <span *ngIf="student.cp" class="d-block"><span class="fw-bold">CP</span> :
                             {{student.cp}}</span> -->
                         <span class="fw-bold">Date de création</span> : {{student.created | date:'dd/MM/yyyy'}}<br>
@@ -56,8 +57,8 @@
                             {{student.tutor}}</span>
                     </p>
                     <hr>
-                    <p *ngIf="student.status"><span class="fw-bold">Status</span> : actif</p>
-                    <p *ngIf="!student.status"><span class="fw-bold">Status</span> : inactif</p>
+                    <p *ngIf="student.status"><span class="fw-bold">Status</span> : activé</p>
+                    <p *ngIf="!student.status"><span class="fw-bold">Status</span> : désactivé</p>
                 </div>
 
                 <!-- zone dédiée à l'administrateur en charge de la gestion des comptes - à désactiver si role trainer -->

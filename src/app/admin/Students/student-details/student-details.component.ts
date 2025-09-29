@@ -12,6 +12,7 @@ import { SettingsService } from '../../settings.service';
 import { Observable, forkJoin, map, of } from 'rxjs';
 // pour anticiper des essais de chart.js
 import { ChartService } from '../../chart.service';
+import { UsersService } from '../../users.service';
 
 
 
@@ -75,12 +76,18 @@ export class StudentDetailsComponent implements OnInit, AfterViewInit {
   // pour les settings application display
   isTrainingTimeMultiple7: boolean = false
 
+  // pour récupérer le nom du refernt SI innerStudent
+  referentName:string=""
+
+  
+
   constructor(
     private service: StudentsService,
     private route: ActivatedRoute,
     private settingsService: SettingsService,
     public sanitizer: DomSanitizer,
-    private tradesService: SettingsService
+    private tradesService: SettingsService,
+    private usersService : UsersService
     // private chartService:ChartService
   ) {
 
@@ -103,6 +110,7 @@ export class StudentDetailsComponent implements OnInit, AfterViewInit {
     // })
 
     this.settingsService.getDisplayPrices().subscribe(element => this.isTrainingTimeMultiple7 = element['isMultiple7TrainingTime'])
+
 
   }
 
@@ -144,6 +152,12 @@ export class StudentDetailsComponent implements OnInit, AfterViewInit {
           // console.log("this.tutorials", this.tutorials)
           // essai pour alimenter la data de graph.js date 2<
           // this.chartService.getThirdCpForGraph(this.tutorials)
+        }
+
+        if (this.student.referent) {
+              // pour requêtee croisée permettant de récupérer le nom du referent de innerStudent SI innerStudent
+             this.usersService.getUser(this.student.referent).subscribe(data=> this.referentName=data.firstName+' '+data.lastName)
+          
         }
 
       }

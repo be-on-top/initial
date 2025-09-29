@@ -123,6 +123,22 @@ a[aria-expanded="true"] .toggle-arrow {
   
 }
 
+@media print {
+  .collapse,
+  .collapsing {
+    display: block !important;
+    height: auto !important;
+    visibility: visible !important;
+  }
+
+  button{
+    display: none;
+  }
+}
+
+
+
+
 /* @media screen and (max-width:420px) {
   .justify-content-between{
     justify-content:center!important;
