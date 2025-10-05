@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 // import { NgForm } from '@angular/forms';
 import { Auth, reauthenticateWithCredential, createUserWithEmailAndPassword, deleteUser, fetchSignInMethodsForEmail, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithRedirect, updateEmail, EmailAuthProvider } from "@angular/fire/auth";
-import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc, updateDoc, query, getDocs, where, getDoc, QuerySnapshot, arrayUnion, CollectionReference, DocumentData, orderBy, documentId, QueryDocumentSnapshot, startAfter, limit, deleteField, writeBatch } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc, updateDoc, query, getDocs, where, getDoc, QuerySnapshot, arrayUnion, CollectionReference, DocumentData, orderBy, documentId, QueryDocumentSnapshot, startAfter, limit, deleteField, writeBatch, serverTimestamp } from '@angular/fire/firestore';
 import { FieldValue } from 'firebase/firestore';
+  // import { serverTimestamp } from "firebase/firestore";
 
 // import { FirebaseApp } from '@angular/fire/app';
 import { combineLatest, from, map, Observable, of, switchMap, tap } from 'rxjs';
@@ -1014,13 +1015,29 @@ async importStudents(students: any[]): Promise<{ success: boolean, imported: str
   // }
 
 
-  updateFullResults(id: string, fullResults: any, trade: string) {
-    const studentRef = doc(this.firestore, "students/" + id);
-    const updateStudent = {
-      ['quizz_' + trade]: { fullResults: fullResults }
+  // updateFullResults(id: string, fullResults: any, trade: string) {
+  //   const studentRef = doc(this.firestore, "students/" + id);
+  //   const updateStudent = {
+  //     ['quizz_' + trade]: { fullResults: fullResults }
+  //   }
+  //   setDoc(studentRef, updateStudent, { merge: true })
+  // }
+  // ATTENTION CRITIQUE : si je veux essayer de rajouter à ce moment un createdAt dans l'objet quizz_
+
+
+
+updateFullResults(id: string, fullResults: any, trade: string) {
+  const studentRef = doc(this.firestore, "students/" + id);
+  const updateStudent = {
+    ['quizz_' + trade]: { 
+      fullResults: fullResults,
+      createdAt: serverTimestamp() // timestamp Firestore
     }
-    setDoc(studentRef, updateStudent, { merge: true })
   }
+  setDoc(studentRef, updateStudent, { merge: true });
+}
+
+
 
   async addFollowUpEvaluation(id: string, evaluation: any) {
     const studentRef = doc(this.firestore, "students/" + id)

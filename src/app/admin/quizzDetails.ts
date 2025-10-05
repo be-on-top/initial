@@ -4,6 +4,7 @@ export interface QuizDetails {
     scoreCounter:number;
     studentCompetences: { [key: string]: number }[];
     tradeEvaluated:string;
+    createdAt?:any
 }
 
 

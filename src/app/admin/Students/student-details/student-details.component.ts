@@ -61,6 +61,7 @@ export class StudentDetailsComponent implements OnInit, AfterViewInit {
   achievedTrainings?: any
 
   trades: { [key: string]: string[] } = {};
+  
   // pour les compétences évaluées
 
   cpEvaluated: string = ""
@@ -569,6 +570,12 @@ export class StudentDetailsComponent implements OnInit, AfterViewInit {
     // return parseFloat(maxTotalCost.toFixed(2));
     // Arrondir le résultat final à l'entier le plus proche
     return Math.round(maxTotalCost);
+  }
+
+  getEvaluatedDate(trade:any){
+
+    
+
   }
 
 }

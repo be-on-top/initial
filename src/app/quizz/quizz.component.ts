@@ -656,6 +656,7 @@ export class QuizzComponent implements OnInit {
   async prepareDataForResults() {
     const durationsByLevels: any = {};
     const estimatedCPCost: any = {};
+    const createdAt:Date | number =Date.now();
 
     // Récupérer toutes les valeurs asynchrones en parallèle
     await Promise.all(

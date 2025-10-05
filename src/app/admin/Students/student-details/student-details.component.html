@@ -139,6 +139,7 @@
 
                             <!-- Partie 1 si QCM en cours -->
                             <!-- <div *ngIf="student.lastIndexQuestions[trade]<2, else done"> -->
+
                             <div *ngIf="getTradeDetails(trade) as quizDetails">
                                 <ng-container *ngIf="!quizDetails.fullResults, else done">
                                     <p class="card-text">A déjà répondu à
@@ -158,6 +159,15 @@
                                         class="bi bi-check-lg ms-2 text-success fs-4"></i>
                                     <!-- <i class="bi bi-arrow-down-square-fill ms-auto text-light"></i> -->
                                 </h4>
+
+
+                                <div *ngIf="getTradeDetails(trade) as quizDetails">
+                                    <p class="card-text mb-3" *ngIf="quizDetails.createdAt">
+                                        Date de l'évaluation : <span class="fw-bold">
+                                            {{ quizDetails.createdAt?.toDate() | date:'dd/MM/yyyy HH:mm' }}
+                                        </span>
+                                    </p>
+                                </div>
 
 
                                 <!-- on peut les mettre en vis à vis pour les grands écrans -->
@@ -185,9 +195,9 @@
                                 </div>
 
                                 <hr>
-   
-                                <p *ngIf="tradesData?.length > 0"><span class="fw-bold">Total</span> : {{totalTime}}/{{ calculateTotalTime(trade) | json }} heures de formation pour <span
-                                        class="cost">
+
+                                <p *ngIf="tradesData?.length > 0"><span class="fw-bold">Total</span> : {{totalTime}}/{{
+                                    calculateTotalTime(trade) | json }} heures de formation pour <span class="cost">
                                         {{totalCost}}/{{
                                         calculateTotalCost(trade) }}€</span>
 
@@ -199,7 +209,7 @@
                                         car vos journées de formation sont de 7 heures.
                                     </span>
                                 </p>
-  
+
 
                             </ng-template>
 

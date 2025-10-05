@@ -137,7 +137,7 @@
 
     <!-- Section d'importation CSV -->
     <ng-container *ngIf="userRouterLinks.user == 'admin' && userRouterLinks.data == 'referents'">
-        <h3 class="mt-3">Importer plusieurs référents administratifs (avec le code postal qui leur sera affecté)</h3>
+        <h3 class="mt-3">Importer plusieurs Conseillers Projets (avec le code postal qui leur sera affecté)</h3>
         <div class="form-group">
             <label for="csvFile" class="form-label">Choisissez un fichier CSV</label>
             <input type="file" id="csvFile" (change)="onFileChange($event)" accept=".csv" class="form-control">

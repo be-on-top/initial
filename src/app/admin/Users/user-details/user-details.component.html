@@ -21,13 +21,13 @@
                 <p> <span *ngIf="user.status; else checkbox"><strong>Status</strong> : actif</span>
                     <ng-template #checkbox> <strong>Status</strong> : inactif</ng-template>
                 </p>
-                <ng-template #checkbox> <strong>Status</strong> : inactif</ng-template>
+                <ng-template #checkbox> <strong>Status</strong> : actif</ng-template>
                 <!-- pour voir à récupérer la propriété additionnelle si existante  -->
                 <hr>
                 <p> <span *ngIf="user.partner; else checkboxPartner"><strong>Associé à en tant que Conseiller d'un centre partenaire ou pas ?</strong> : Oui</span>
-                    <ng-template #checkbox> <strong>Associé à en tant que Conseiller d'un centre partenaire ?</strong> : Non</ng-template>
+                    <ng-template #checkbox> <strong>Associé en tant que Conseiller d'un centre partenaire ?</strong> : Non</ng-template>
                 </p>
-                <ng-template #checkboxPartner> <strong>Associé à en tant que Conseiller d'un centre partenaire ?</strong> : Non</ng-template>
+                <ng-template #checkboxPartner> <strong>Associé en tant que Conseiller d'un centre partenaire ?</strong> : Non</ng-template>
 
                 <!-- affectation métiers -->
                 <!-- <p *ngIf="user.sigle">Métiers d'affectation ({{user.sigle.length}}) :
