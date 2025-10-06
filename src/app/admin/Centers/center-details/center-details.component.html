@@ -28,7 +28,9 @@
 
                 <!-- <hr> -->
                 <!-- puisque cette vue est partagée entre admin et utilisateur final -->
-                <p *ngIf="userRouterLinks.user && userRouterLinks.user==='admin'"> <span
+                <!-- <p *ngIf="userRouterLinks.user && userRouterLinks.user==='admin'"> -->
+                <p>
+                    <span
                         *ngIf="center.partner; else checkbox">Partenaire : oui</span>
                     <ng-template #checkbox> Membre du réseaux principal</ng-template>
                 </p>
