@@ -5,7 +5,7 @@ import { DocumentSnapshot, Firestore, addDoc, collection, doc, docData, getDocs,
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { getDoc } from 'firebase/firestore';
-import { Observable, from, map, of } from 'rxjs';
+import { Observable, from, map, of, tap } from 'rxjs';
 import { StudentsService } from 'src/app/admin/students.service';
 import { Student } from '../admin/Students/student';
 import { SettingsService } from '../admin/settings.service';
@@ -234,9 +234,9 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
       this.userData = data
       // pour éjecter le innerStudent
       if (this.userData.innerStudent) {
-      alert('Accès refusé : cette page n\'est pas destinée à votre profil utilisateur.');
-      this.router.navigate(['/home']); // redirige vers la page d’accueil
-    }
+        alert('Accès refusé : cette page n\'est pas destinée à votre profil utilisateur.');
+        this.router.navigate(['/home']); // redirige vers la page d’accueil
+      }
       this.processStudentData();
     })
     // on récupère la data de la collection SocialForm
@@ -265,7 +265,12 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
             console.log('Data récupérée dans checkIfSelected:', data);
 
             // Filtrage des centres basés sur le sigle
-            this.dataFiltered = data.filter(center => center.sigles.includes(this.socialData.priorTrade));
+            // this.dataFiltered = data.filter(center => center.sigles.includes(this.socialData.priorTrade));
+            // ✅ Filtrage : sigle correspondant + status actif
+            this.dataFiltered = data.filter(center =>
+              center.status === true &&
+              center.sigles.includes(this.socialData.priorTrade)
+            )
             console.log("Données filtrées !!!!!!!!!!!!! :", this.dataFiltered);
 
             // Arrêter le chargement dès que les données sont chargées
@@ -567,23 +572,90 @@ export class StudentFormComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
 
+  // private centerNameCache = new Map<string, Observable<string | undefined>>();
+  // getCenterName(id: string): Observable<string | undefined> {
+  //   // Si le nom du centre est déjà dans le cache, retourne l'Observable en cache
+  //   if (this.centerNameCache.has(id)) {
+  //     return this.centerNameCache.get(id)!;
+  //   }
+
+  //   // Sinon, interroge Firestore pour obtenir le nom du centre
+  //   const centerName$ = this.centersService.getCenterName(id).pipe(
+  //     map(name => name || 'Nom non trouvé')
+  //   );
+
+  //   // Ajoute l'Observable au cache
+  //   this.centerNameCache.set(id, centerName$);
+
+  //   return centerName$;
+  // }
+
+  // ATTENTION modification très critique
   private centerNameCache = new Map<string, Observable<string | undefined>>();
+
+  // getCenterName(id: string): Observable<string | undefined> {
+  //   // Si déjà en cache → retourne directement
+  //   if (this.centerNameCache.has(id)) {
+  //     return this.centerNameCache.get(id)!;
+  //   }
+
+  //   // Sinon, on récupère les données du centre complet
+  //   const center$ = this.centersService.getCenterById(id).pipe(
+  //     map(center => {
+  //       if (!center) return 'Nom non trouvé';
+
+  //       // ⚠️ Vérifie le status et alerte si inactif
+  //       if (center.status === false) {
+  //         console.warn(`⚠️ Centre "${center.name}" (id: ${id}) est inactif.`);
+  //         // Tu peux aussi ici déclencher un toast / snackbar / message utilisateur
+  //       }
+
+  //       return center.name;
+  //     })
+  //   );
+
+  //   // Mise en cache
+  //   this.centerNameCache.set(id, center$);
+
+  //   return center$;
+  // }
+
+
   getCenterName(id: string): Observable<string | undefined> {
-    // Si le nom du centre est déjà dans le cache, retourne l'Observable en cache
+    // Si déjà en cache, renvoie directement
     if (this.centerNameCache.has(id)) {
       return this.centerNameCache.get(id)!;
     }
 
-    // Sinon, interroge Firestore pour obtenir le nom du centre
+    // Observable principal du nom (ta logique initiale)
     const centerName$ = this.centersService.getCenterName(id).pipe(
+      tap(() => {
+        // 👇 Ici, on interroge Firestore une seule fois pour vérifier le status
+        const docRef = doc(this.firestore, `centers/${id}`);
+        getDoc(docRef).then((snapshot) => {
+          if (snapshot.exists()) {
+            const data = snapshot.data();
+            if (data && data['status'] === false) {
+              console.warn(`⚠️ Centre "${data['name']}" est inactif.`);
+              // 👉 Ici faudrait aussi déclencher un toast / snackbar si besoin
+              alert(`⚠️ Attention : le centre "${data['name']} ${data['cp']}" choisi par le candidat est désactivé. Si vous ne l'avez pas déjà inscrit en formation il vous faut absolument activer la fonction : Réinitialiser les choix du candidat`);
+            }
+          }
+        }).catch((err) => console.error("Erreur lors de la vérification du status :", err));
+      }),
       map(name => name || 'Nom non trouvé')
     );
 
-    // Ajoute l'Observable au cache
+    // Mise en cache
     this.centerNameCache.set(id, centerName$);
-
     return centerName$;
   }
+
+
+
+
+
+
 
 
   // print () {

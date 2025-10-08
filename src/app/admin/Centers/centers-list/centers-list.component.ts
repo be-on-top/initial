@@ -16,7 +16,7 @@ export class CentersListComponent {
   searchText: string = ''
 
 
-  constructor(private router: Router, private service: CentersService, private activatedRoute:ActivatedRoute) {
+  constructor(private router: Router, private service: CentersService, private activatedRoute: ActivatedRoute) {
     this.userRouterLinks = this.activatedRoute.snapshot.data;
   }
 
@@ -36,8 +36,8 @@ export class CentersListComponent {
       this.allCenters = data
       return this.allCenters
     })
-
   }
+
 
   deleteCenter(centerId: string) {
     // Demande de confirmation à l'utilisateur
@@ -52,9 +52,44 @@ export class CentersListComponent {
         // Vous pouvez afficher un message d'erreur à l'utilisateur si nécessaire
       });
     }
-    
+
   }
-  
+
+  disableCenter(centerId: string) {
+    const confirmed = window.confirm('Êtes-vous sûr de vouloir désactiver ce centre ?');
+
+    if (!confirmed) return; // on quitte directement si l'utilisateur annule
+
+    this.service.disableCenter(centerId)
+      .then(() => {
+        console.log('✅ Centre désactivé avec succès');
+        alert('Le centre a bien été désactivé.');
+        this.router.navigate(['/admin/centers']); // redirection
+      })
+      .catch((error) => {
+        console.error('❌ Erreur lors de la désactivation du centre :', error);
+        alert('Une erreur est survenue lors de la désactivation du centre.');
+      });
+  }
+
+  enableCenter(centerId: string) {
+    const confirmed = window.confirm('Êtes-vous sûr de vouloir réactiver ce centre ?');
+
+    if (!confirmed) return; // on quitte directement si l'utilisateur annule
+
+    this.service.enableCenter(centerId)
+      .then(() => {
+        console.log('✅ Centre réactivé avec succès');
+        alert('Le centre a bien été réactivé.');
+        this.router.navigate(['/admin/centers']); // redirection
+      })
+      .catch((error) => {
+        console.error('❌ Erreur lors de la réactivation du centre :', error);
+        alert('Une erreur est survenue lors de la réactivation du centre.');
+      });
+  }
+
+
 
   // pour utiliser le composant de recherche
   onSearchTextEntered(searchValue: string) {

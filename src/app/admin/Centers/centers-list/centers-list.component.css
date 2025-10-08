@@ -1,0 +1,9 @@
+.rwd {
+  display: none;
+}
+
+@media screen and (min-width: 975px) {
+  .rwd {
+    display: inline-block;
+  }
+}

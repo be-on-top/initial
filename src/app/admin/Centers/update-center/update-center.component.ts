@@ -44,25 +44,54 @@ export class UpdateCenterComponent implements OnInit {
 
   }
 
-  updateCenter(form: NgForm): void {
-    if (form.valid && this.center) {
-      const updatedCenter = { ...this.center, ...form.value };
-      console.log('updatedCenter', updatedCenter);
+  // updateCenter(form: NgForm): void {
+  //   if (form.valid && this.center) {
+  //     const updatedCenter = { ...this.center, ...form.value };
+  //     console.log('updatedCenter', updatedCenter);
 
-      this.service.updateCenter(this.centerId, updatedCenter).subscribe({
-        next: (response) => {
-          this.successMessage = 'Centre mis à jour avec succès.';
-          this.errorMessage = '';
-        },
-        error: (error) => {
-          this.errorMessage = error.message;
-          this.successMessage = '';
-        }
-      });
-    } else {
-      this.errorMessage = 'Veuillez remplir correctement le formulaire avant de soumettre.';
-    }
+  //     this.service.updateCenter(this.centerId, updatedCenter).subscribe({
+  //       next: (response) => {
+  //         this.successMessage = 'Centre mis à jour avec succès.';
+  //         this.errorMessage = '';
+  //       },
+  //       error: (error) => {
+  //         this.errorMessage = error.message;
+  //         this.successMessage = '';
+  //       }
+  //     });
+  //   } else {
+  //     this.errorMessage = 'Veuillez remplir correctement le formulaire avant de soumettre.';
+  //   }
+  // }
+
+  // optimisation 
+  updateCenter(form: NgForm): void {
+  if (form.valid && this.center) {
+    const updatedCenter = { ...this.center, ...form.value };
+
+    // 🔹 Supprimer les champs undefined pour éviter les erreurs Firestore
+    const cleanedCenter = Object.fromEntries(
+      Object.entries(updatedCenter).filter(([_, v]) => v !== undefined)
+    );
+
+    console.log('cleanedCenter', cleanedCenter);
+
+    this.service.updateCenter(this.centerId, cleanedCenter).subscribe({
+      next: () => {
+        this.successMessage = 'Centre mis à jour avec succès.';
+        this.errorMessage = '';
+      },
+      error: (error) => {
+        this.errorMessage = error.message;
+        this.successMessage = '';
+      }
+    });
+  } else {
+    this.errorMessage = 'Veuillez remplir correctement le formulaire avant de soumettre.';
   }
+}
+
+
 
   fetchSigleIds() {
     this.settingsService.getSigleIds()

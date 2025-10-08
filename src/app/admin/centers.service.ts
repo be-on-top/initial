@@ -277,6 +277,41 @@ export class CentersService {
   }
 
 
+
+async disableCenter(centerId: string): Promise<void> {
+  if (!centerId) {
+    console.error("ID du centre invalide !");
+    return;
+  }
+
+  const centerRef = doc(this.firestore, 'centers', centerId);
+
+  try {
+    await updateDoc(centerRef, { status: false });
+    console.log(`✅ Centre ${centerId} désactivé (status=false)`);
+  } catch (error) {
+    console.error("❌ Erreur lors de la désactivation du centre :", error);
+  }
+}
+
+async enableCenter(centerId: string): Promise<void> {
+  if (!centerId) {
+    console.error("ID du centre invalide !");
+    return;
+  }
+
+  const centerRef = doc(this.firestore, 'centers', centerId);
+
+  try {
+    await updateDoc(centerRef, { status: true });
+    console.log(`✅ Centre ${centerId} désactivé (status=false)`);
+  } catch (error) {
+    console.error("❌ Erreur lors de la désactivation du centre :", error);
+  }
+}
+
+
+
   async getDocsByParam(sigle: string): Promise<any[]> {
     console.log('Sigle recherché:', sigle); // Vérifie ce qui est passé comme sigle
     // Crée une référence à la collection et une requête avec le paramètre array-contains
@@ -616,6 +651,10 @@ export class CentersService {
 
 
 
+getCenterById(id: string): Observable<any> {
+  const docRef = doc(this.firestore, `centers/${id}`);
+  return docData(docRef, { idField: 'id' });
+}
 
 
 

@@ -427,7 +427,7 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
     try {
       const centers = await this.centerService.getDocsByParam(this.tradeId);
       console.log('Centres récupérés:', centers);
-      this.tradeCenters = centers
+      this.tradeCenters = centers.filter(center=>center.status===true)
       // on désactive tant qu'on n'a pas pu tester à grande échelle...
       // this.addMarkers(centers); // Ajoute les marqueurs après que la carte soit initialisée
     } catch (error) {

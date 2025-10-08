@@ -16,25 +16,35 @@
             <div class="row mt-4 ps-5 ps-sm-0"
                 *ngIf="searchText==='' || center.name.includes(searchText) || center.name.toLowerCase().includes(searchText) || center.cp.toLowerCase().includes(searchText) || center.id.includes(searchText) ">
 
-                <div class="col-sm-3 col-6">{{center.name}}</div>
+                <div class="col-md-3 col-4">{{center.name}}</div>
 
-                <div class="col-sm-3 col-6 order-perso2">{{center.cp}}</div>
+                <!-- <div class="col-sm-3 col-6 order-perso2">{{center.cp}}</div> -->
+                <div class="col-md-3 col-8">{{center.cp}}</div>
 
                 <!-- <div class="col-sm-3 col-6 order-perso2">{{center.id}}</div> -->
 
-                <div *ngIf="userRouterLinks.user=='admin'" class="col-sm-3 col-6"><button class="btn btn-danger"
-                        (click)="deleteCenter(center.id)"><i class="bi bi-trash-fill"></i>Suppression</button></div>
+                <div *ngIf="userRouterLinks.user=='admin' && center.status" class="col-md-2 col-4"><button
+                        class="btn btn-secondary" (click)="disableCenter(center.id)">{{"Désactiver"}}</button></div>
 
-                <div class="col-sm-3 col-6 order-perso4"><button class="btn btn-primary">
+                <div *ngIf="userRouterLinks.user=='admin' && !center.status" class="col-md-2 col-4">
+                    <button *ngIf="!center.status || center.status===false" (click)="enableCenter(center.id)"
+                        class="btn btn-light">Réactiver</button>
+                </div>
+
+
+
+                <div *ngIf="userRouterLinks.user=='admin'" class="col-md-2 col-4"><button class="btn btn-danger"
+                        (click)="deleteCenter(center.id)"><i class="bi bi-trash-fill rwd"></i>Suppression</button></div>
+
+                <!-- <div class="col-sm-2 col-4 order-perso4"><button class="btn btn-primary"> -->
+                <div class="col-md-2 col-4"><button class="btn btn-primary">
 
                         <a *ngIf="userRouterLinks.user=='admin'" [routerLink]="['/admin/center', center.id]"
-                            class="text-white"><i class="bi bi-eye-fill"></i>Détails</a>
+                            class="text-white"><i class="bi bi-eye-fill rwd"></i>Détails</a>
 
                         <a *ngIf="userRouterLinks.user!=='admin'" [routerLink]="['/center', center.id]"
                             class="text-white"><i class="bi bi-eye-fill"></i>Détails</a>
-
                     </button></div>
-
             </div>
 
         </div>
