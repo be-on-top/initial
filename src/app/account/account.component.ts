@@ -915,6 +915,17 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+    // Méthode pour récupérer legalDuration du métier côté composant
+  legalDurationMap: Map<string, Observable<string | null>> = new Map();
+
+  getLegalDuration(trade: string): Observable<string | null> {
+    const sigle = trade.replace('quizz_', '');
+    if (!this.legalDurationMap.has(trade)) {
+      this.legalDurationMap.set(trade, this.settingsService.getLegalDuration(sigle));
+    }
+    return this.legalDurationMap.get(trade) || of(null);
+  }
+
 
 
 

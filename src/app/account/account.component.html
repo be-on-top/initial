@@ -44,7 +44,10 @@
         class="alert alert-light p-4 alert-dismissible mb-4 fade show pe-5">
         <button type="button" class="btn-close mt-2" data-bs-dismiss="alert"
             aria-label="Fermer le message be-on-top"></button>
-        <span> Merci d'avoir pris le temps de remplir le formulaire d'inscription à nos formations. Le Conseiller Projet du centre que vous avez choisi va étudier votre dossier et prendre contact avec vous. Si vous souhaitez le contacter dès maintenant, <a [href]="centerUrl" target="_blank" rel="noopener noreferrer">cliquez ici</a></span>
+        <span> Merci d'avoir pris le temps de remplir le formulaire d'inscription à nos formations. Le Conseiller Projet
+            du centre que vous avez choisi va étudier votre dossier et prendre contact avec vous. Si vous souhaitez le
+            contacter dès maintenant, <a [href]="centerUrl" target="_blank" rel="noopener noreferrer">cliquez
+                ici</a></span>
     </div>
     <!-- ici, c'est une fois l'inscription actée -->
     <div *ngIf="userData && userData.isSocialFormSent && userData.subscriptions && !userData.elearning "
@@ -287,8 +290,7 @@
                                         <!-- <em *ngIf="trades[trade]" class="text-primary fs-6">{{ trades[trade][i] }}</em> -->
                                         <em *ngIf="trades[trade]" class="text-primary fs-6">
                                             <i *ngIf="!trades[trade][i]" class="bi bi-exclamation-square-fill me-2"></i>
-                                            {{trades[trade][i] ? trades[trade][i] : 'Attention : cette compétence ne
-                                            fait plus partie du référentiel actuel'}}
+                                            {{trades[trade][i] ? trades[trade][i] : 'Attention : cette compétence ne  fait plus partie du référentiel actuel'}}
                                         </em>
 
 
@@ -309,6 +311,13 @@
                                             journées de formation sont de 7 heures.
                                         </span> -->
 
+                                    <!-- partie pour le cas legalDuration est true -->
+                                    <div *ngIf="lastEstimate && (getLegalDuration(trade) | async)"
+                                        class="alert alert-light">
+                                        La durée de cette formation est fixée par la réglementation.
+                                        Nous ne pouvons la modifier. Votre formateur tiendra compte de vos résultats
+                                        pour adapter le contenu ou s'adapter à votre niveau.
+                                    </div>
 
                                     <div *ngIf="lastEstimate && displayPrices==false" class="mb-5">
                                         <span class="fw-bolder">
@@ -330,7 +339,6 @@
                                         </span>
                                     </div>
 
-
                                     <!-- partie si on affiche tout  -->
                                     <div *ngIf="lastEstimate && displayPrices==true && trade?.durations" class="mb-5">
                                         <span class="fw-bolder">Total estimé: {{
@@ -339,6 +347,8 @@
                                             class="fw-bolder">{{ calculateSubtotalCost(trade) }}€</span>/{{
                                         calculateTotalCost(trade) | json }}€ (moyenne nationale)
                                     </div>
+
+
                                 </div>
                             </div>
                         </div>
@@ -502,8 +512,8 @@
                                                     {{trades['quizz_'+evaluation.value.sigle][getCpIndex(evaluation.value.competence)]}}
                                                     ({{ evaluation.value.competence }}) <span
                                                         (click)="toggleCollapse(e)"
-                                                        *ngIf="evaluation.value.subject || evaluation.value.details"> <a
-                                                            title="vos compétences" href='#collapseEvaluation{{e}}'
+                                                        *ngIf="evaluation.value.subject || evaluation.value.details">
+                                                        <a title="vos compétences" href='#collapseEvaluation{{e}}'
                                                             data-bs-toggle="collapse"><i
                                                                 [ngClass]="{'bi bi-caret-down-fill': !evaluationsState[e], 'bi bi-caret-up-fill': evaluationsState[e]}"></i></a></span>
                                                 </p>

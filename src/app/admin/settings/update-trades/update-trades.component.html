@@ -65,6 +65,15 @@
         <label class="form-check-label" for="statusCheckbox">Status Actif ?</label>
       </div>
 
+      <hr>
+      <!-- option pour pouvoir acter des exceptions (toutes les durées par compétence seront équivalentes) -->
+      <label class="form-label mt-3">Durée légale règlementaire (fixe) :</label>
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="legalDurationCheckbox" name="legalDuration"
+          [(ngModel)]="trade.legalDuration">
+        <label class="form-check-label" for="legalDurationCheckbox">{{!trade.legalDuration?'Non':'Oui'}}</label>
+      </div>
+
       <!-- pour arrêter le nombre de compétences par métier -->
       <label for="totalCP" class="form-label mt-3">Nombre de compétences au référentiel métier</label>
       <input type="number" name="totalCP" [(ngModel)]="trade.totalCP" #totalCP="ngModel" class="form-control mb-1"

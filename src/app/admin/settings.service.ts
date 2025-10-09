@@ -196,6 +196,23 @@ export class SettingsService {
     );
   }
 
+  getLegalDuration(quizzKey: string): Observable<string | null> {
+    console.log('Entrée dans getLegalDuration avec quizzKey :', quizzKey);
+
+    if (!quizzKey) {
+      // Gérer le cas où quizzKey est undefined
+      return of(null);
+    }
+
+    // const sigle = quizzKey.replace('quizz_', '');
+    const sigleRef = doc(this.firestore, 'sigles', quizzKey);
+
+    return docData(sigleRef).pipe(
+      tap(data => console.log('data de sigles', data)),  // Ajoutez cette ligne pour afficher les données dans la console
+      map((data: any) => (data && data['legalDuration'] && data['legalDuration']===true) ? data['legalDuration'] : null)
+    );
+  }
+
 
 
 

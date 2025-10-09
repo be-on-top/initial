@@ -14,7 +14,7 @@ import { Partner } from '../../partner';
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
-  sigles: Trade = { sigle: "", denomination: "", status: true, isQualifying: false,  isCPF: false, competences: [], totalCP: 0, durations: {}, costs: {} }
+  sigles: Trade = { sigle: "", denomination: "", status: true, isQualifying: false, isCPF: false, competences: [], totalCP: 0, durations: {}, costs: {}, legalDuration: false }
   form: any
   total: any = []
 
@@ -56,7 +56,7 @@ export class SettingsComponent implements OnInit {
 
   addSigles(form: NgForm) {
     this.durations = []; // Réinitialise le tableau avant d'ajouter les durées
-    this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, parentCategory:form.value.parentCategory, rncp: form.value.rncp, isQualifying: form.value.isQualifying, isCPF: form.value.isCPF, requirements: form.value.requirements, status: form.value.status, totalCP: form.value.totalCP, competences: [], durations: {}, costs: {}, description:'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu lectus porttitor, facilisis diam in, tristique eros. Donec vulputate faucibus metus, nec sodales dolor pharetra sit amet. Nullam vel dictum magna. Aliquam gravida eu est convallis tempus. Vivamus elit odio, aliquam ut consectetur non, mollis vitae ante. Mauris bibendum rhoncus odio, sit amet porttitor quam venenatis non. In commodo purus eget lacus venenatis pulvinar.' }
+    this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, parentCategory: form.value.parentCategory, rncp: form.value.rncp, isQualifying: form.value.isQualifying, isCPF: form.value.isCPF, requirements: form.value.requirements, status: form.value.status, legalDuration: form.value.legalDuration, totalCP: form.value.totalCP, competences: [], durations: {}, costs: {}, description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu lectus porttitor, facilisis diam in, tristique eros. Donec vulputate faucibus metus, nec sodales dolor pharetra sit amet. Nullam vel dictum magna. Aliquam gravida eu est convallis tempus. Vivamus elit odio, aliquam ut consectetur non, mollis vitae ante. Mauris bibendum rhoncus odio, sit amet porttitor quam venenatis non. In commodo purus eget lacus venenatis pulvinar.' }
     // si on souhaite un objet, comme ceux écrits initialement en dur exemple : competences:{CP1:"", CP2:""}
     // this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, totalCP: form.value.totalCP, competences: {} }
     for (let i = 1; i <= form.value.totalCP; i++) {
@@ -86,11 +86,11 @@ export class SettingsComponent implements OnInit {
       console.log('this.sigles.costs', this.sigles.costs);
 
     }
-    
+
     if (!this.sigles.parentCategory || this.sigles.parentCategory.trim() === '') {
       delete this.sigles.parentCategory;
     }
-    
+
 
     console.log("form récupéré", form.value);
     console.log("form optimisé", this.sigles);
@@ -212,7 +212,7 @@ export class SettingsComponent implements OnInit {
         description: partnersForm.value.description,
         url: partnersForm.value.url
       };
-  
+
       const submitPartner = (finalPartner: any) => {
         this.partners = [finalPartner, ...this.partners];
         this.service.addPartners(this.partners).subscribe(() => {
@@ -223,7 +223,7 @@ export class SettingsComponent implements OnInit {
           this.previewUrl = null;
         });
       };
-  
+
       if (this.selectedFile) {
         this.service.uploadPartnerWithLogo(partnerData, this.selectedFile).subscribe(
           (partnerWithLogo) => submitPartner(partnerWithLogo),
@@ -234,7 +234,7 @@ export class SettingsComponent implements OnInit {
       }
     }
   }
-  
+
 
 
 
@@ -248,7 +248,7 @@ export class SettingsComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.selectedFile = input.files[0];
-  
+
       // Préparation de l'aperçu
       const reader = new FileReader();
       reader.onload = () => {

@@ -21,11 +21,11 @@ export class UpdateTradesComponent {
   userRole: string = ""
 
   sigleId: string = ""
-  trade: Trade = { sigle: "", denomination: "", rncp: "", isQualifying: false, isCPF: false, status: true, requirements: "", competences: [], totalCP: 0, durations: {}, costs: {}, description: "", parentCategory: '' }
+  trade: Trade = { sigle: "", denomination: "", rncp: "", isQualifying: false, isCPF: false, status: true, requirements: "", legalDuration:false, competences: [], totalCP: 0, durations: {}, costs: {}, description: "", parentCategory: '' }
 
 
   // sigles: Trade = { sigle: "", denomination: "", competences: [], totalCP: 0, durations: {}, costs: {}, description:"" }
-  sigles: Trade = { sigle: "", denomination: "", rncp: "", isQualifying: false, isCPF: false, status: true, requirements: "", competences: [], totalCP: 0, durations: {}, costs: {}, description: "" }
+  sigles: Trade = { sigle: "", denomination: "", rncp: "", isQualifying: false, isCPF: false, status: true, requirements: "", competences: [], totalCP: 0, durations: {}, costs: {}, description: "", legalDuration:false }
   form: any
   total: any = []
   minValue: number = 0; // Valeur minimale pour toute nouvelle compétence
@@ -125,7 +125,8 @@ export class UpdateTradesComponent {
         costs: {},
         parentCategory: form.value.parentCategory,
         description: form.value.description,
-        createdAt:this.trade.createdAt
+        createdAt:this.trade.createdAt,
+        legalDuration:this.trade.legalDuration
     }
       // si on souhaite un objet, comme ceux écrits initialement en dur exemple : competences:{CP1:"", CP2:""}
       // this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, totalCP: form.value.totalCP, competences: {} }
