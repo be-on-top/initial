@@ -3,26 +3,50 @@
 
     <h3>Connexion Utilisateur</h3>
     <ng-template #login>
-        <app-feedback-messages [feedbackMessages]="feedbackMessages"
-            [isSuccessMessage]="isSuccessMessage"  (closeAlert)="closeAlert()"></app-feedback-messages>
+        <app-feedback-messages [feedbackMessages]="feedbackMessages" [isSuccessMessage]="isSuccessMessage"
+            (closeAlert)="closeAlert()"></app-feedback-messages>
         <form class="form mx-auto" [formGroup]="formLogin" (ngSubmit)="onSubmit()">
+            <!-- <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="text" class="form-control" formControlName="email" required>
+            </div> -->
             <div class="mb-3">
                 <label class="form-label">Email</label>
-                <input type="text" class="form-control" formControlName="email">
+                <input type="text" class="form-control" formControlName="email" placeholder="renseigner votre email"
+                    required [ngClass]="{
+      'is-invalid': formLogin.get('email')?.invalid && formLogin.get('email')?.touched
+    }">
+                <div class="invalid-feedback">
+                    <!-- message d'erreur contextuel -->
+                    <span *ngIf="formLogin.get('email')?.errors?.['required']">
+                        L'email est requis.
+                    </span>
+                    <span *ngIf="formLogin.get('email')?.errors?.['email']">
+                        L'email n'est pas valide.
+                    </span>
+                </div>
             </div>
+
             <div class="mb-3">
                 <label class="form-label">Password</label>
-                <input type="password" class="form-control" formControlName="password">
+                <input type="password" class="form-control" formControlName="password"
+                    placeholder="renseigner votre mot de passe">
             </div>
             <input type="submit" class="btn btn-primary mt-4" value="Valider">
         </form>
         <!-- <button class="btn btn-primary mt-4" (click)="onClick()">S'identifier avec Google</button> -->
         <hr>
-        <button type="button" class="btn btn-warning my-4" (click)="reset(formLogin.value.email)">Réinitialiser son mot de
+        <div>Mot de passe perdu / besoin de le personnaliser ? </div>
+        <div class="text-muted small mb-2 fst-italic">
+            Renseigner juste <u>l'email ci dessus</u> et cliquer sur le bouton réinitialiser mon mot de passe
+        </div>
+
+        <button [disabled]="formLogin.get('email')?.invalid" type="button" class="btn btn-warning my-4"
+            (click)="reset(formLogin.value.email)">Réinitialiser son mot de
             passe</button>
         <hr>
         <p>Pas encore de compte BE-ON-TOP ?</p>
-        <button type="button" class="btn btn-primary"><a class="dropdown-item" [routerLink]="['/register']">Créer son compte</a></button>
+        <a class="btn btn-primary" [routerLink]="['/register']">Créer son compte</a>
     </ng-template>
 
     <hr>

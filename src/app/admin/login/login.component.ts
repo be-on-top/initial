@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 // pour changer un peu, on va faire des reactiive forms !!!!
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 // je voudrais me le faire importer
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 
@@ -29,13 +29,19 @@ export class LoginComponent {
     'auth/invalid-login-credentials': 'Identifiants de connexion invalides. Veuillez vérifier votre e-mail et votre mot de passe'
   }; // list of firebase error codes to alternate error messages
 
+  
+
   // je voudrais me faire importer onAuthStateChanged qui est une méthode de auth depuis le service. A faire plus tard
   // en attendant, j'importe Auth
   constructor(private service: AuthService, private router: Router, private auth: Auth) {
+    // this.formLogin = new FormGroup({
+    //   email: new FormControl(),
+    //   password: new FormControl()
+    // })
     this.formLogin = new FormGroup({
-      email: new FormControl(),
-      password: new FormControl()
-    })
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('')
+  });
 
   }
   ngOnInit(): void {
@@ -167,6 +173,9 @@ export class LoginComponent {
     this.feedbackMessages = '';
     this.isSuccessMessage = true;
   }
+
+
+
 
 
 }
