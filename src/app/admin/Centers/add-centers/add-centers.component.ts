@@ -39,7 +39,21 @@ export class AddCentersComponent implements OnInit {
   parsedCenters: any[] = [];   // Tableau pour stocker les données analysées
 
   // pour faire la différence selon que c'est ou non un centre partenaire
-  partner: boolean = false
+  // partner: boolean = false
+  // subsidiary:boolean = false
+  // member:boolean = false
+  // independent:boolean = false
+
+  // la valeur centrale, liée au ngModel dans le template
+  centerType: 'partner' | 'subsidiary' | 'member' | 'independent' = 'independent';
+
+  // liste des options pour la boucle ngFor
+  centerTypes = [
+    { value: 'partner', label: 'Centre partenaire' },
+    { value: 'subsidiary', label: 'Filiale' },
+    { value: 'member', label: 'Adhérent' },
+    { value: 'independent', label: 'Indépendant' }
+  ];
 
 
   constructor(private service: CentersService, private settingsService: SettingsService, private papa: Papa) {
@@ -48,8 +62,8 @@ export class AddCentersComponent implements OnInit {
       debounceTime(300), // Debounce for smoother input handling
       distinctUntilChanged(), // Ignore if the value hasn't changed
       switchMap(postalCode => {
-        // Check for a minimum input length
-        if (postalCode.length >= 3) {
+        // Check for a minimum input length        
+        if (postalCode && postalCode.length >= 3) {
           return this.service.getCitiesByPartialPostalCode(postalCode);
         } else {
           return of([]); // Return an empty array if input is too short
@@ -82,32 +96,73 @@ export class AddCentersComponent implements OnInit {
 
   }
 
-  addCenters(form: NgForm): void {
-    if (form.valid) {
-      const formData = form.value;
-      // Vérifie si mainCity n'est pas renseigné (null, undefined ou vide) et le remplace par city
-      if (!formData.mainCity || formData.mainCity.trim() === '') {
-        formData.mainCity = formData.city;
-      }
-      console.log('Données du formulaire:', formData);
+  // addCenters(form: NgForm): void {
+  //   if (form.valid) {
+  //     const formData = form.value;
+  //     // Vérifie si mainCity n'est pas renseigné (null, undefined ou vide) et le remplace par city
+  //     if (!formData.mainCity || formData.mainCity.trim() === '') {
+  //       formData.mainCity = formData.city;
+  //     }
+  //     console.log('Données du formulaire:', formData);
 
-      this.service.createCenter(formData).subscribe({
-        next: (response) => {
-          console.log('Centre créé avec succès:', response);
-          this.successMessage = 'Centre créé avec succès.';
-          this.errorMessage = ''; // Clear error message
-          form.resetForm(); // Optionally reset the form
-        },
-        error: (error) => {
-          console.error('Erreur lors de la création du centre:', error);
-          this.errorMessage = error.message; // Set error message
-          this.successMessage = ''; // Clear success message
-        },
-      });
-    } else {
+  //     this.service.createCenter(formData).subscribe({
+  //       next: (response) => {
+  //         console.log('Centre créé avec succès:', response);
+  //         this.successMessage = 'Centre créé avec succès.';
+  //         this.errorMessage = ''; // Clear error message
+  //         form.resetForm(); // Optionally reset the form
+  //       },
+  //       error: (error) => {
+  //         console.error('Erreur lors de la création du centre:', error);
+  //         this.errorMessage = error.message; // Set error message
+  //         this.successMessage = ''; // Clear success message
+  //       },
+  //     });
+  //   } else {
+  //     this.errorMessage = 'Veuillez remplir correctement le formulaire avant de soumettre.';
+  //   }
+  // }
+
+  addCenters(form: NgForm): void {
+    if (!form.valid) {
       this.errorMessage = 'Veuillez remplir correctement le formulaire avant de soumettre.';
+      return;
     }
+
+    const formData = { ...form.value };
+
+    // fallback mainCity
+    formData.mainCity ||= formData.city;
+
+    // affecte les booléens directement via les getters
+    ['partner', 'subsidiary', 'member', 'independent'].forEach(t => {
+      formData[t] = this[t as keyof this];
+    });
+
+    delete formData.centerType;
+    // ⚡ Normalise les champs undefined → null
+    Object.keys(formData).forEach(k => {
+      if (formData[k] === undefined) formData[k] = null;
+    });
+
+    console.log('Données prêtes pour envoi:', formData);
+
+    this.service.createCenter(formData).subscribe({
+      next: () => {
+        this.successMessage = 'Centre créé avec succès.';
+        this.errorMessage = '';
+        form.resetForm();
+      },
+      error: (error) => {
+        this.errorMessage = error.message || 'Erreur';
+        this.successMessage = '';
+      },
+    });
   }
+
+
+
+
 
   // premier essai déprécié
   // onPostalCodeChange(form: NgForm): void {
@@ -227,44 +282,44 @@ export class AddCentersComponent implements OnInit {
 
 
   // Fonction pour importer et analyser le fichier CSV
-// Fonction pour importer et analyser le fichier CSV
-importCSV(): void {
-  if (!this.csvFile) {
-    this.errorMessage = 'Veuillez sélectionner un fichier CSV avant de procéder.';
-    return;
-  }
-
-  this.papa.parse(this.csvFile, {
-    header: true,
-    skipEmptyLines: true,
-    delimiter: ";",
-    complete: (result) => {
-      console.log("Résultat brut PapaParse:", result.data);
-
-      this.parsedCenters = result.data
-        .filter((center: any) => {
-          return center.name && center.address && center.cp && center.sigles &&
-                 center.city && center.tel && center.email && center.mainCity;
-        })
-        .map((center: any) => {
-          // sigles en tableau
-          center.sigles = center.sigles.split(",").map((sigle: string) => sigle.trim());
-
-          // partner en booléen
-          center.partner = center.partner?.trim().toLowerCase() === "oui";
-
-          return center;
-        });
-
-      console.log('Données analysées:', this.parsedCenters);
-      this.uploadCentersToFirestore();
-    },
-    error: (error) => {
-      console.error("Erreur lors de l'analyse du fichier CSV:", error);
-      this.errorMessage = "Erreur lors de l'analyse du fichier CSV.";
+  // Fonction pour importer et analyser le fichier CSV
+  importCSV(): void {
+    if (!this.csvFile) {
+      this.errorMessage = 'Veuillez sélectionner un fichier CSV avant de procéder.';
+      return;
     }
-  });
-}
+
+    this.papa.parse(this.csvFile, {
+      header: true,
+      skipEmptyLines: true,
+      delimiter: ";",
+      complete: (result) => {
+        console.log("Résultat brut PapaParse:", result.data);
+
+        this.parsedCenters = result.data
+          .filter((center: any) => {
+            return center.name && center.address && center.cp && center.sigles &&
+              center.city && center.tel && center.email && center.mainCity;
+          })
+          .map((center: any) => {
+            // sigles en tableau
+            center.sigles = center.sigles.split(",").map((sigle: string) => sigle.trim());
+
+            // partner en booléen
+            center.partner = center.partner?.trim().toLowerCase() === "oui";
+
+            return center;
+          });
+
+        console.log('Données analysées:', this.parsedCenters);
+        this.uploadCentersToFirestore();
+      },
+      error: (error) => {
+        console.error("Erreur lors de l'analyse du fichier CSV:", error);
+        this.errorMessage = "Erreur lors de l'analyse du fichier CSV.";
+      }
+    });
+  }
 
 
 
@@ -362,6 +417,33 @@ importCSV(): void {
   //   // Affiche dans la console les données analysées
   //   console.log('Données analysées:', this.parsedCenters);
   // }
+
+  // 🔥 Les getters : renvoient un booléen automatiquement
+  get partner(): boolean {
+    return this.centerType === 'partner';
+  }
+
+  get subsidiary(): boolean {
+    return this.centerType === 'subsidiary';
+  }
+
+  get member(): boolean {
+    return this.centerType === 'member';
+  }
+
+  get independent(): boolean {
+    return this.centerType === 'independent';
+  }
+
+  // Exemple d’utilisation à la soumission du formulaire
+  onSubmit() {
+    console.log('Centre Type :', this.centerType);
+    console.log('partner =', this.partner);
+    console.log('subsidiary =', this.subsidiary);
+    console.log('member =', this.member);
+    console.log('independent =', this.independent);
+  }
+
 
 
 }

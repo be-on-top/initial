@@ -174,19 +174,7 @@ export class CentersService {
     let $centersRef = collection(this.firestore, "centers");
 
     // Crée un objet center sans l'ID pour l'instant
-    let newCenter = {
-      created: Date.now(),
-      status: true,
-      name: center.name,
-      address: center.address,
-      cp: center.cp,
-      city: center.city,
-      sigles: center.sigles,
-      // Utilisez directement center.sigles
-      mainCity: center.mainCity,
-      tel: center.tel,
-      partner:center.partner
-    }
+    let newCenter = {...center, created: Date.now() }
 
     return from(addDoc($centersRef, newCenter)).pipe(
       mergeMap((docRef) => {

@@ -50,6 +50,11 @@
                                 class="dropdown-item" (click)="navigateTo('/admin/settings')">Paramètres</a>
                             <hr>
                         </li>
+                        <!-- pour explicitement accéder à la gestion des centres -->
+                        <li *ngIf="userRole?.includes('admin')"><a
+                                class="dropdown-item" (click)="navigateTo('/admin/centers')">Centres</a>
+                            <hr>
+                        </li>
                         <!-- pour vue des filtres quantitatifs -->
                         <li *ngIf="userRole?.includes('editor')"><a class="dropdown-item"
                                 (click)="navigateTo('/admin/leads')">Vue quantitative candidats</a>

@@ -10,4 +10,7 @@ export interface Centers {
     mainCity?:string;
     tel?:string;
     partner?: boolean;
+    subsidiary?: boolean;
+    member?: boolean;
+    independent?: boolean;
 }

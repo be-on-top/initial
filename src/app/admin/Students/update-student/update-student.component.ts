@@ -94,7 +94,7 @@ export class UpdateStudentComponent implements OnInit {
           this.student.endedSubscriptions.map((sub: any) => sub.sigle)
         );
 
-        // Filtrer les traitsEvaluated en excluant ceux déjà réalisés
+        // Filtrer les traidesEvaluated en excluant les formations déjà suivies
         this.availableTrainings = tradesEvaluated.filter(
           trade => !achievedTrainingsSet.has(trade)
         );
@@ -102,8 +102,6 @@ export class UpdateStudentComponent implements OnInit {
         // Si endedSubscriptions est vide ou non défini, on laisse tradesEvaluated tel quel
         this.availableTrainings = tradesEvaluated;
       }
-
-
 
 
     })

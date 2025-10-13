@@ -20,6 +20,16 @@ export class UpdateCenterComponent implements OnInit {
   // essai pour connecter la collection sigles au doc de centers
   sigleIds: string[] = []
 
+  // pour les différents "types" de centre dont les valeurs sont des boléens on le rappel
+  centerTypes = [
+    { value: 'partner', label: 'Centre partenaire' },
+    { value: 'subsidiary', label: 'Filiale' },
+    { value: 'member', label: 'Adhérent' },
+    { value: 'independent', label: 'Indépendant' }
+  ];
+
+  centerType?: string = ''
+
   constructor(
     private ac: ActivatedRoute,
     private router: Router,
@@ -32,6 +42,12 @@ export class UpdateCenterComponent implements OnInit {
     this.service.getCenter(this.centerId).subscribe({
       next: (center) => {
         this.center = center;
+        // ce qu'il en est du type du centre
+        if (this.center.partner) this.centerType = 'partner';
+        else if (this.center.subsidiary) this.centerType = 'subsidiary';
+        else if (this.center.member) this.centerType = 'member';
+        else if (this.center.independent) this.centerType = 'independent';
+
       },
       error: (error) => {
         this.errorMessage = error.message;
@@ -66,30 +82,40 @@ export class UpdateCenterComponent implements OnInit {
 
   // optimisation 
   updateCenter(form: NgForm): void {
-  if (form.valid && this.center) {
-    const updatedCenter = { ...this.center, ...form.value };
+    if (form.valid && this.center) {
+      const updatedCenter = { ...this.center, ...form.value };
 
-    // 🔹 Supprimer les champs undefined pour éviter les erreurs Firestore
-    const cleanedCenter = Object.fromEntries(
-      Object.entries(updatedCenter).filter(([_, v]) => v !== undefined)
-    );
 
-    console.log('cleanedCenter', cleanedCenter);
+      // 🔹 Réaffecter les booléens en fonction du type sélectionné
+      ['partner', 'subsidiary', 'member', 'independent'].forEach(type => {
+        updatedCenter[type] = (updatedCenter.centerType === type);
+      });
 
-    this.service.updateCenter(this.centerId, cleanedCenter).subscribe({
-      next: () => {
-        this.successMessage = 'Centre mis à jour avec succès.';
-        this.errorMessage = '';
-      },
-      error: (error) => {
-        this.errorMessage = error.message;
-        this.successMessage = '';
-      }
-    });
-  } else {
-    this.errorMessage = 'Veuillez remplir correctement le formulaire avant de soumettre.';
+      // 🔹 Supprimer centerType (si Firestore ne le stocke pas)
+      delete updatedCenter.centerType;
+
+
+      // 🔹 Supprimer les champs undefined pour éviter les erreurs Firestore
+      const cleanedCenter = Object.fromEntries(
+        Object.entries(updatedCenter).filter(([_, v]) => v !== undefined)
+      );
+
+      console.log('cleanedCenter', cleanedCenter);
+
+      this.service.updateCenter(this.centerId, cleanedCenter).subscribe({
+        next: () => {
+          this.successMessage = 'Centre mis à jour avec succès.';
+          this.errorMessage = '';
+        },
+        error: (error) => {
+          this.errorMessage = error.message;
+          this.successMessage = '';
+        }
+      });
+    } else {
+      this.errorMessage = 'Veuillez remplir correctement le formulaire avant de soumettre.';
+    }
   }
-}
 
 
 

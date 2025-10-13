@@ -62,6 +62,10 @@
       </div>
     </div>
 
+    <label for="tel" class="form-label mt-3">Tel</label>
+    <input type="text" id="tel" name="tel" ngModel class="form-control">
+
+
     <!-- avec le rattachement des sigles aux centres de formaiton -->
     <label for="sigles" class="form-label mt-3">Affectation métier(s) :</label>
     <select class="form-select" name="sigles" id="sigles" ngModel required #sigles="ngModel" multiple>
@@ -79,11 +83,19 @@
     <hr>
 
     <!-- option pour spécifier SI partenaire -->
-    <div class="form-check form-switch mt-3">
+    <!-- <div class="form-check form-switch mt-3">
       <label for="partner" class="form-check-label">Centre Partenaire ?</label>
       <input class="form-check-input" type="checkbox" name="partner" [(ngModel)]="partner"
         aria-label="Est un centre partenaire ou pas ?">
+    </div> -->
+    <div class="mt-3">
+      <label class="form-label">Type de centre</label>
+      <div class="form-check" *ngFor="let type of centerTypes">
+        <input class="form-check-input" type="radio" name="centerType" [value]="type.value" [(ngModel)]="centerType">
+        <label class="form-check-label">{{ type.label }}</label>
+      </div>
     </div>
+
 
 
 

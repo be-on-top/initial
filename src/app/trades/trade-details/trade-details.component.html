@@ -13,6 +13,9 @@
         <div class="col-md-7">
             <p class="fs-5 mt-3">
                 Réf.: {{tradeData.sigle}}.
+                <br *ngIf="tradeData.parentCategory">
+                <span *ngIf="tradeData.parentCategory && tradeData.parentCategory!==''" class="text-light">Catégorie :
+                    {{tradeData.parentCategory}}</span>
                 <br>Nombre de compétences: {{tradeData.competences.length}}.
                 <br>Durée maximale: {{firstValuesSum}} heures.
                 <!-- <br><span *ngIf="tradeData.rncp">Code RNCP : {{tradeData.rncp}}.</span> -->
@@ -34,17 +37,15 @@
                     </ul>
                 </span> -->
 
-            <span *ngIf="tradeData.requirements && tradeData.requirements!==''" class="text-light">Prérequis :
-                {{tradeData.requirements}}</span>
-            <br *ngIf="tradeData.parentCategory">
-            <span *ngIf="tradeData.parentCategory && tradeData.parentCategory!==''" class="text-light">Catégorie :
-                {{tradeData.parentCategory}}</span>
+                <span *ngIf="tradeData.requirements && tradeData.requirements!==''" class="text-light">Prérequis :
+                    {{tradeData.requirements}}</span>
 
-            <!-- <p class="rounded bg-dark p-2 mt-2 small">Pour vérification du rôle récupéré : {{userRole}}</p> -->
-            <br>
-            <span class="d-block mt-2" (click)="backToPrevious()">
-                <i class="bi bi-arrow-left"></i>
-            </span>
+
+                <!-- <p class="rounded bg-dark p-2 mt-2 small">Pour vérification du rôle récupéré : {{userRole}}</p> -->
+                <br>
+                <span class="d-block mt-2" (click)="backToPrevious()">
+                    <i class="bi bi-arrow-left"></i>
+                </span>
             </p>
         </div>
         <!-- il faut différencier le cas d'un userRole=none...  -->

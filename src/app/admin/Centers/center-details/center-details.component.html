@@ -18,7 +18,7 @@
                         (Proche de
                         {{ center.mainCity }})
                     </span><br>
-                    <span class="fw-bold" *ngIf="center.tel">Tel</span> : {{center.tel}}
+                    <span class="fw-bold" *ngIf="center.tel && center.tel.length>0">Tel : {{center.tel}}</span>
                     <hr>
                     <!-- puisque cette vue est partagée entre admin et utilisateur final -->
                 <p *ngIf="userRouterLinks.user && userRouterLinks.user==='admin'"> <span
@@ -29,11 +29,25 @@
                 <!-- <hr> -->
                 <!-- puisque cette vue est partagée entre admin et utilisateur final -->
                 <!-- <p *ngIf="userRouterLinks.user && userRouterLinks.user==='admin'"> -->
-                <p>
+
+                <!-- si on doit boucler sur tous les "types" possibles -->
+                <!-- <p>
+                    <span
+                        *ngIf="center.partner; else checkbox">Partenaire : oui</span>
+                    <ng-template #checkbox> Membre du réseaux principal</ng-template>
+                </p> -->
+                <p *ngIf="userRouterLinks.user==='admin'">
+                    <span *ngIf="center.partner">Partenaire : oui</span>
+                    <span *ngIf="center.member">Adhérant : oui</span>
+                    <span *ngIf="center.subsidiary">Affilié : oui</span>
+                    <span *ngIf="center.independent">Indépendant : oui</span>      
+                </p>
+                       <p *ngIf="userRouterLinks.user!=='admin'">
                     <span
                         *ngIf="center.partner; else checkbox">Partenaire : oui</span>
                     <ng-template #checkbox> Membre du réseaux principal</ng-template>
                 </p>
+
 
                 <!-- affectation métiers -->
                 <!-- <p *ngIf="center.sigles">Formations métiers ({{center.sigles.length}}) : 
@@ -47,7 +61,6 @@
                             *ngIf="activeTrades.includes(s)">{{s}}</a></span>
                 </p>
             </div>
-
         </div>
         <div class="card mt-4">
             <div class="card-header text-muted">Coordonnées de localisation</div>

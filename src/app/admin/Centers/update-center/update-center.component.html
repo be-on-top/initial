@@ -26,11 +26,20 @@
 
       <!-- pour pouvoir modifier la propriété partenaire -->
       <hr>
-      <div class="form-check form-switch mt-3">
+      <!-- très bien mais faut s'aligner avec l'ajout pour une liste alternative de types de centres -->
+      <!-- <div class="form-check form-switch mt-3">
         <label class="form-check-label" for="partner">Est un simple partenaire ?</label>
         <input class="form-check-input" type="checkbox" id="partnerCheckbox" name="partner"
           [(ngModel)]="center.partner"> <span> {{center.partner ?"Oui":"Non"}}</span>
+      </div> -->
+      <div class="mt-3">
+        <label class="form-label">Type de centre</label>
+        <div class="form-check" *ngFor="let type of centerTypes">
+          <input class="form-check-input" type="radio" name="centerType" [value]="type.value" [(ngModel)]="centerType">
+          <label class="form-check-label">{{ type.label }}</label>
+        </div>
       </div>
+
 
 
       <button type="submit" class="btn btn-primary mt-4" [disabled]="editForm.invalid">Mettre à jour</button>
