@@ -172,10 +172,9 @@ export class LoginComponent {
     // Réinitialiser l'état pour la fermeture de l'alerte
     this.feedbackMessages = '';
     this.isSuccessMessage = true;
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+    this.router.navigate(['/login']);
+  });
   }
-
-
-
-
 
 }
