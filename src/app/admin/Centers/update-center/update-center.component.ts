@@ -22,10 +22,10 @@ export class UpdateCenterComponent implements OnInit {
 
   // pour les différents "types" de centre dont les valeurs sont des boléens on le rappel
   centerTypes = [
-    { value: 'partner', label: 'Centre partenaire' },
-    { value: 'subsidiary', label: 'Filiale' },
-    { value: 'member', label: 'Adhérent' },
-    { value: 'independent', label: 'Indépendant' }
+    { value: 'partner', label: 'Partenaire du réseau' },
+    { value: 'subsidiary', label: 'Filiale du réseau' },
+    { value: 'member', label: 'Adhérent du réseau' },
+    { value: 'independent', label: 'Centre hors réseau' }
   ];
 
   centerType?: string = ''

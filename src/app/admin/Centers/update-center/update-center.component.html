@@ -24,6 +24,30 @@
       <label for="mainCity" class="form-label mt-3">Ville la plus proche</label>
       <input type="text" id="mainCity" name="mainCity" [(ngModel)]="center.mainCity" class="form-control">
 
+      <hr>
+      <div class="form-check form-switch mt-3">
+        <label class="form-check-label" for="status">Est actif ?</label>
+        <input class="form-check-input" type="checkbox" id="statusCheckbox" name="status" [(ngModel)]="center.status">
+        <span> {{center.status ?"Oui":"Non (est désactivé)"}}</span>
+      </div>
+      <label for="comment" class="form-label mt-3">Commentaires</label>
+      <textarea [required]="!center.status" cols="100" rows="10"
+        placeholder="Les commentaires sont optionnels sauf si vous décidez de désactiver le centre. Dans ce cas, merci de motiver votre décision..."
+        id="comment" name="comment" [minlength]="!center.status ? 20 : 0" #comment="ngModel"
+        [(ngModel)]="center.comment" class="form-control"></textarea>
+      <!-- ✅ Feedback utilisateur -->
+      <div *ngIf="!center.status && comment.invalid && comment.untouched" class="text-danger mt-1">
+        Merci de renseigner un commentaire d'au moins 20 caractères si le centre est désactivé.
+      </div>
+
+      <div *ngIf="!center.status && comment.valid" class="text-success mt-1">
+        Champ correctement renseigné.
+      </div>
+      <!-- <div *ngIf="!center.status && !center.comment" class="text-danger mt-1">
+        Merci de renseigner en commentaire votre décision si le centre est désactivé (minimum de 20 caractères).
+      </div> -->
+
+
       <!-- pour pouvoir modifier la propriété partenaire -->
       <hr>
       <!-- très bien mais faut s'aligner avec l'ajout pour une liste alternative de types de centres -->
