@@ -7,11 +7,22 @@
     </div>
 
     <div *ngIf="allCenters">
+        <div class="mb-3">
+            <!-- <label class="form-label">Filtrer par type :</label> -->
+            <div class="form-check form-check-inline mb-3" *ngFor="let type of centerTypes">
+                <input class="form-check-input" type="radio" name="centerTypeFilter" [value]="type.value"
+                    [(ngModel)]="selectedType" (change)="applyFilter()" />
+                <label class="form-check-label">{{ type.label }}</label>
+            </div>
+        </div>
+
+
         <!-- on introduit un champ de recherche -->
         <app-search (searchTextChanged)="onSearchTextEntered($event)"></app-search>
         <!-- <div class="row mt-5"> -->
 
-        <div *ngFor="let center of allCenters">
+        <!-- <div *ngFor="let center of allCenters"> -->
+        <div *ngFor="let center of filteredCenters">
 
             <div class="row mt-4 ps-5 ps-sm-0"
                 *ngIf="searchText==='' || center.name.includes(searchText) || center.name.toLowerCase().includes(searchText) || center.cp.toLowerCase().includes(searchText) || center.id.includes(searchText) ">

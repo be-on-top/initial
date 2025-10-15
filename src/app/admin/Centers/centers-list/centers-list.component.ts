@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CentersService } from '../../centers.service';
+import { Centers } from '../../centers';
 
 @Component({
   selector: 'app-centers-list',
@@ -11,93 +12,90 @@ export class CentersListComponent {
 
   userRouterLinks: any;
 
-  allCenters?: any
-  // on le prépare à recevoir un terme de recherche
-  searchText: string = ''
+  // ✅ Option 1 : initialiser comme tableau vide (jamais undefined)
+  allCenters: Centers[] = [];
+  
+  searchText: string = '';
 
+  // filtre : '' = tous, sinon 'partner'|'subsidiary'|'member'|'independent'
+  selectedType: '' | 'partner' | 'subsidiary' | 'member' | 'independent' = '';
 
-  constructor(private router: Router, private service: CentersService, private activatedRoute: ActivatedRoute) {
+  centerTypes = [
+    { value: '', label: 'Tous les centres' },
+    { value: 'partner', label: 'Partenaires du réseau' },
+    { value: 'subsidiary', label: 'Filiales du réseau' },
+    { value: 'member', label: 'Adhérents du réseau' },
+    { value: 'independent', label: 'Centres hors réseau' }
+  ];
+
+  filteredCenters: Centers[] = [];
+
+  constructor(
+    private router: Router,
+    private service: CentersService,
+    private activatedRoute: ActivatedRoute
+  ) {
     this.userRouterLinks = this.activatedRoute.snapshot.data;
   }
 
   ngOnInit(): void {
-    this.getCenters()
-    // n'a été utilisé qu'une fois pour ajouter un d'ID du doc dans chaque doc
-    // this.updateCentersWithId()
-
-
+    this.getCenters();
+    // this.updateCentersWithId() // ponctuel si nécessaire
   }
 
   getCenters() {
-    // attention, puisque on récupère un observable depuis le service, on doit y souscrire
-    // this.allCenters=this.service.get(); devient donc nécessairement
     this.service.getCenters().subscribe(data => {
-      console.log("data de getCenters()", data)
-      this.allCenters = data
-      return this.allCenters
-    })
+      console.log("data de getCenters()", data);
+      this.allCenters = data;
+      this.applyFilter(); // initialiser la vue
+    });
   }
 
-
   deleteCenter(centerId: string) {
-    // Demande de confirmation à l'utilisateur
     const confirmed = window.confirm('Êtes-vous sûr de vouloir supprimer ce centre ?');
-    if (confirmed) {
-      // Si l'utilisateur confirme, procéder à la suppression
-      this.service.deleteCenter(centerId).then(() => {
-        console.log('Centre supprimé avec succès');
-        this.router.navigate(['/admin/centers']); // Naviguer vers la liste des centres
-      }).catch((error) => {
-        console.error('Erreur lors de la suppression du centre:', error);
-        // Vous pouvez afficher un message d'erreur à l'utilisateur si nécessaire
-      });
-    }
+    if (!confirmed) return;
 
+    this.service.deleteCenter(centerId).then(() => {
+      console.log('Centre supprimé avec succès');
+      this.router.navigate(['/admin/centers']);
+    }).catch(error => {
+      console.error('Erreur lors de la suppression du centre:', error);
+    });
   }
 
   disableCenter(centerId: string) {
     const confirmed = window.confirm('Êtes-vous sûr de vouloir désactiver ce centre ?');
+    if (!confirmed) return;
 
-    if (!confirmed) return; // on quitte directement si l'utilisateur annule
-
-    this.service.disableCenter(centerId)
-      .then(() => {
-        console.log('✅ Centre désactivé avec succès');
-        alert('Le centre a bien été désactivé.');
-        this.router.navigate(['/admin/centers']); // redirection
-      })
-      .catch((error) => {
-        console.error('❌ Erreur lors de la désactivation du centre :', error);
-        alert('Une erreur est survenue lors de la désactivation du centre.');
-      });
+    this.service.disableCenter(centerId).then(() => {
+      console.log('✅ Centre désactivé avec succès');
+      alert('Le centre a bien été désactivé.');
+      this.router.navigate(['/admin/centers']);
+    }).catch(error => {
+      console.error('❌ Erreur lors de la désactivation du centre :', error);
+      alert('Une erreur est survenue lors de la désactivation du centre.');
+    });
   }
 
   enableCenter(centerId: string) {
     const confirmed = window.confirm('Êtes-vous sûr de vouloir réactiver ce centre ?');
+    if (!confirmed) return;
 
-    if (!confirmed) return; // on quitte directement si l'utilisateur annule
-
-    this.service.enableCenter(centerId)
-      .then(() => {
-        console.log('✅ Centre réactivé avec succès');
-        alert('Le centre a bien été réactivé.');
-        this.router.navigate(['/admin/centers']); // redirection
-      })
-      .catch((error) => {
-        console.error('❌ Erreur lors de la réactivation du centre :', error);
-        alert('Une erreur est survenue lors de la réactivation du centre.');
-      });
+    this.service.enableCenter(centerId).then(() => {
+      console.log('✅ Centre réactivé avec succès');
+      alert('Le centre a bien été réactivé.');
+      this.router.navigate(['/admin/centers']);
+    }).catch(error => {
+      console.error('❌ Erreur lors de la réactivation du centre :', error);
+      alert('Une erreur est survenue lors de la réactivation du centre.');
+    });
   }
 
-
-
-  // pour utiliser le composant de recherche
   onSearchTextEntered(searchValue: string) {
-    this.searchText = searchValue
+    this.searchText = searchValue;
     console.log(this.searchText);
   }
 
-  // mettre ponctuellement à jour chaque doc avec son ID en paramètre
   async updateCentersWithId() {
     try {
       await this.service.addIdToExistingCenters();
@@ -107,7 +105,16 @@ export class CentersListComponent {
     }
   }
 
+  applyFilter(): void {
+    if (!this.selectedType) {
+      this.filteredCenters = this.allCenters.slice();
+      return;
+    }
+
+    // Sécurité : traite undefined comme false
+    this.filteredCenters = this.allCenters.filter(
+      (center: Centers) => !!(center as any)[this.selectedType]
+    );
+  }
+
 }
-
-
-
