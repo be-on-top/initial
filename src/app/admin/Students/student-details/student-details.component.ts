@@ -9,10 +9,11 @@ import { Student } from '../student';
 import { Evaluation } from '../../evaluation';
 import { QuizDetails } from '../../quizzDetails';
 import { SettingsService } from '../../settings.service';
-import { Observable, forkJoin, map, of } from 'rxjs';
+import { Observable, forkJoin, map, of, switchMap } from 'rxjs';
 // pour anticiper des essais de chart.js
 import { ChartService } from '../../chart.service';
 import { UsersService } from '../../users.service';
+import { CentersService } from '../../centers.service';
 
 
 
@@ -61,7 +62,7 @@ export class StudentDetailsComponent implements OnInit, AfterViewInit {
   achievedTrainings?: any
 
   trades: { [key: string]: string[] } = {};
-  
+
   // pour les compétences évaluées
 
   cpEvaluated: string = ""
@@ -78,9 +79,11 @@ export class StudentDetailsComponent implements OnInit, AfterViewInit {
   isTrainingTimeMultiple7: boolean = false
 
   // pour récupérer le nom du refernt SI innerStudent
-  referentName:string=""
+  referentName: string = ""
 
-  
+  centerPriorName?: string = ""
+
+
 
   constructor(
     private service: StudentsService,
@@ -88,8 +91,9 @@ export class StudentDetailsComponent implements OnInit, AfterViewInit {
     private settingsService: SettingsService,
     public sanitizer: DomSanitizer,
     private tradesService: SettingsService,
-    private usersService : UsersService
-    // private chartService:ChartService
+    private usersService: UsersService,
+    // private chartService:ChartService,
+    private centerService: CentersService
   ) {
 
     this.userRouterLinks = this.route.snapshot.data;
@@ -111,6 +115,18 @@ export class StudentDetailsComponent implements OnInit, AfterViewInit {
     // })
 
     this.settingsService.getDisplayPrices().subscribe(element => this.isTrainingTimeMultiple7 = element['isMultiple7TrainingTime'])
+
+    // pour tenter la récupération du nom du centre choisi
+    this.service.getUserCenter(this.studentId).pipe(
+      switchMap(center => this.centerService.getCenterName(center))
+    ).subscribe(name => {
+      this.centerPriorName = name;
+      console.log('✅ centerPriorName mis à jour :', this.centerPriorName);
+    });
+
+
+
+
 
 
   }
@@ -156,9 +172,9 @@ export class StudentDetailsComponent implements OnInit, AfterViewInit {
         }
 
         if (this.student.referent) {
-              // pour requêtee croisée permettant de récupérer le nom du referent de innerStudent SI innerStudent
-             this.usersService.getUser(this.student.referent).subscribe(data=> this.referentName=data.firstName+' '+data.lastName)
-          
+          // pour requêtee croisée permettant de récupérer le nom du referent de innerStudent SI innerStudent
+          this.usersService.getUser(this.student.referent).subscribe(data => this.referentName = data.firstName + ' ' + data.lastName)
+
         }
 
       }
@@ -572,9 +588,9 @@ export class StudentDetailsComponent implements OnInit, AfterViewInit {
     return Math.round(maxTotalCost);
   }
 
-  getEvaluatedDate(trade:any){
+  getEvaluatedDate(trade: any) {
 
-    
+
 
   }
 

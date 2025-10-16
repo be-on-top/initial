@@ -34,7 +34,9 @@
                         <span class="fw-bold">Nom</span> : {{student.lastName}}<br>
                         <span class="fw-bold">Prénom</span> : {{student.firstName}}<br>
                         <span class="fw-bold">Email</span> : <a href="#" class="card-link">{{student.email}}</a><br>
-                        <span *ngIf="student.referent" class="fw-bold">Candidat interne de {{referentName}}</span><br>
+                        <ng-container *ngIf="student.referent"><span  class="fw-bold">Candidat interne de {{referentName}}</span><br></ng-container>           
+                        <ng-container *ngIf="student.isSocialFormSent"><span class="fw-bold">Centre choisi</span>: {{centerPriorName}}<br></ng-container>
+                        
                         <!-- <span *ngIf="student.cp" class="d-block"><span class="fw-bold">CP</span> :
                             {{student.cp}}</span> -->
                         <span class="fw-bold">Date de création</span> : {{student.created | date:'dd/MM/yyyy'}}<br>

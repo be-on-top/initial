@@ -67,7 +67,7 @@
                         [checked]="storedValue=='myCenterStudentsFilter' || myCenterStudents===true">
                 </div>
                 <div class="form-check" *ngIf="userRouterLinks.user==='admin'|| userRouterLinks.user==='editor'">
-                    <label class="form-check-label" for="socialCheckbox">Formulaire administratif renseigné</label>
+                    <label class="form-check-label" for="socialCheckbox">Formulaire administratif envoyé</label>
                     <input type="checkbox" (change)="onCheckboxChangeSocial($event)" class="form-check-input"
                         id="socialCheckbox"
                         [checked]="storedValue=='socialFormSentFilter' || isSocialFormSentFilter===true">
