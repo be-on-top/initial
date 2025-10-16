@@ -21,11 +21,11 @@ export class UpdateTradesComponent {
   userRole: string = ""
 
   sigleId: string = ""
-  trade: Trade = { sigle: "", denomination: "", rncp: "", isQualifying: false, isCPF: false, status: true, requirements: "", legalDuration:false, competences: [], totalCP: 0, durations: {}, costs: {}, description: "", parentCategory: '' }
+  trade: Trade = { sigle: "", denomination: "", rncp: "", isQualifying: false, isCPF: false, status: true, requirements: "", legalDuration: false, competences: [], totalCP: 0, durations: {}, costs: {}, description: "", parentCategory: '' }
 
 
   // sigles: Trade = { sigle: "", denomination: "", competences: [], totalCP: 0, durations: {}, costs: {}, description:"" }
-  sigles: Trade = { sigle: "", denomination: "", rncp: "", isQualifying: false, isCPF: false, status: true, requirements: "", competences: [], totalCP: 0, durations: {}, costs: {}, description: "", legalDuration:false }
+  sigles: Trade = { sigle: "", denomination: "", rncp: "", isQualifying: false, isCPF: false, status: true, requirements: "", competences: [], totalCP: 0, durations: {}, costs: {}, description: "", legalDuration: false }
   form: any
   total: any = []
   minValue: number = 0; // Valeur minimale pour toute nouvelle compétence
@@ -89,23 +89,23 @@ export class UpdateTradesComponent {
 
 
       // if (form.value.description !== this.trade.description) {
-        // alert(form.value.description)
-        this.service.updateDescription(form.value, this.sigleId).then(() => {
-          this.feedbackMessages = `Modification de la description OK`;
-          this.isSuccessMessage = true
-          setTimeout(() => {
-            form.reset()
-            this.router.navigate(['/trade', this.sigleId, this.slugService.generateSlug(this.trade.denomination)])
-          }, 1000)
-        })
-          .catch((error) => {
-            this.feedbackMessages = error.message;
-            // this.feedbackMessages = this.firebaseErrors[error.code];
-            this.isSuccessMessage = false;
-            console.log(this.feedbackMessages);
+      // alert(form.value.description)
+      this.service.updateDescription(form.value, this.sigleId).then(() => {
+        this.feedbackMessages = `Modification de la description OK`;
+        this.isSuccessMessage = true
+        setTimeout(() => {
+          form.reset()
+          this.router.navigate(['/trade', this.sigleId, this.slugService.generateSlug(this.trade.denomination)])
+        }, 1000)
+      })
+        .catch((error) => {
+          this.feedbackMessages = error.message;
+          // this.feedbackMessages = this.firebaseErrors[error.code];
+          this.isSuccessMessage = false;
+          console.log(this.feedbackMessages);
 
-            // ..};
-          })
+          // ..};
+        })
       // }
     }
 
@@ -125,9 +125,9 @@ export class UpdateTradesComponent {
         costs: {},
         parentCategory: form.value.parentCategory,
         description: form.value.description,
-        createdAt:this.trade.createdAt,
-        legalDuration:this.trade.legalDuration
-    }
+        createdAt: this.trade.createdAt,
+        legalDuration: this.trade.legalDuration
+      }
       // si on souhaite un objet, comme ceux écrits initialement en dur exemple : competences:{CP1:"", CP2:""}
       // this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, totalCP: form.value.totalCP, competences: {} }
 
@@ -197,25 +197,22 @@ export class UpdateTradesComponent {
       }
 
       if (this.trade.legalDuration === undefined) {
-  this.trade.legalDuration = false;
-}
+        this.trade.legalDuration = false;
+      }
 
-// Avant d'envoyer à Firestore
-this.sigles = this.cleanForFirestore(this.sigles);
+      // Avant d'envoyer à Firestore
+      this.sigles = this.cleanForFirestore(this.sigles);
 
       this.service.updateTrade(this.sigles, totalToRegister)
         .then(() => {
           this.feedbackMessages = `Enregistrement du métier et ses compétences OK`;
           this.isSuccessMessage = true
 
-          // setTimeout(() => {
-
-            
-          //   form.reset()
-          //   // this.router.navigate(['/trade', this.sigleId, ])
-          //   // avec l'ajout du slug pour SEO, pas le choix :
-          //   // this.router.navigate(['/trade', this.sigleId, this.slugService.generateSlug(this.trade.denomination)])
-          // }, 1000)
+          // ⏳ Laisser un petit délai pour afficher le message de succès
+          setTimeout(() => {
+            // Redirection vers la liste admin/settings
+            this.router.navigate(['/admin/settings']);
+          }, 1500);
         })
         .catch((error) => {
           this.feedbackMessages = error.message;
@@ -231,30 +228,30 @@ this.sigles = this.cleanForFirestore(this.sigles);
   }
 
   private cleanForFirestore(obj: any): any {
-  if (Array.isArray(obj)) {
-    return obj.map(v => v === undefined ? 0 : (typeof v === 'object' ? this.cleanForFirestore(v) : v));
-  }
+    if (Array.isArray(obj)) {
+      return obj.map(v => v === undefined ? 0 : (typeof v === 'object' ? this.cleanForFirestore(v) : v));
+    }
 
-  if (obj && typeof obj === 'object') {
-    const cleaned: any = {};
-    Object.entries(obj).forEach(([key, value]) => {
-      if (value === undefined) {
-        // Valeurs par défaut selon le type attendu
-        cleaned[key] = (typeof value === 'boolean') ? false
-                      : (typeof value === 'number') ? 0
-                      : (typeof value === 'string') ? ''
-                      : null;
-      } else if (typeof value === 'object') {
-        cleaned[key] = this.cleanForFirestore(value); // récursion pour objets imbriqués
-      } else {
-        cleaned[key] = value;
-      }
-    });
-    return cleaned;
-  }
+    if (obj && typeof obj === 'object') {
+      const cleaned: any = {};
+      Object.entries(obj).forEach(([key, value]) => {
+        if (value === undefined) {
+          // Valeurs par défaut selon le type attendu
+          cleaned[key] = (typeof value === 'boolean') ? false
+            : (typeof value === 'number') ? 0
+              : (typeof value === 'string') ? ''
+                : null;
+        } else if (typeof value === 'object') {
+          cleaned[key] = this.cleanForFirestore(value); // récursion pour objets imbriqués
+        } else {
+          cleaned[key] = value;
+        }
+      });
+      return cleaned;
+    }
 
-  return obj;
-}
+    return obj;
+  }
 
 
 
