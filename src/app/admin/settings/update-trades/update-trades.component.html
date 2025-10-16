@@ -7,8 +7,7 @@
     compétences</h3>
   <h3 class="mb-3" *ngIf="userRouterLinks && userRouterLinks.user=='editor'">Edition métiers</h3>
   <!-- <h2 class="alert bg-info" *ngIf="userRouterLinks">userRouterLinks : {{userRouterLinks.user}}</h2> -->
-  <app-feedback-messages [feedbackMessages]="feedbackMessages"
-    [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
+
 
   <form #settingsForm="ngForm" class="mt-4" (submit)="updateSigles(settingsForm)" class="was-validated" novalidate>
 
@@ -110,7 +109,7 @@
       </div>
 
 
-      <label for="totalNewCP" class="form-label mt-3">Ajout d'une compétence au référenciel métier</label>
+      <label for="totalNewCP" class="form-label mt-3">Ajout d'une compétence au référentiel métier</label>
       <input type="number" name="totalNewCP" ngModel #totalNewCP="ngModel" class="form-control mb-1"
         (change)="getNewTotal(totalNewCP)">
 
@@ -153,6 +152,16 @@
     <button id="settingsForm" type="submit" class="btn btn-primary mt-4"
       [disabled]=settingsForm.invalid>Modifier</button>
   </form>
+
+  <app-feedback-messages [feedbackMessages]="feedbackMessages"
+    [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
+
+  <div class="mt-4 d-flex">
+    <a class="btn btn-secondary ms-auto" [routerLink]="['/admin/settings']">
+      ← Retour à la liste
+    </a>
+  </div>
+
 
 
 

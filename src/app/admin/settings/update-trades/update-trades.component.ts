@@ -196,16 +196,26 @@ export class UpdateTradesComponent {
         delete this.sigles.parentCategory;
       }
 
+      if (this.trade.legalDuration === undefined) {
+  this.trade.legalDuration = false;
+}
+
+// Avant d'envoyer à Firestore
+this.sigles = this.cleanForFirestore(this.sigles);
+
       this.service.updateTrade(this.sigles, totalToRegister)
         .then(() => {
           this.feedbackMessages = `Enregistrement du métier et ses compétences OK`;
           this.isSuccessMessage = true
-          setTimeout(() => {
-            form.reset()
-            // this.router.navigate(['/trade', this.sigleId, ])
-            // avec l'ajout du slug pour SEO, pas le choix :
-            this.router.navigate(['/trade', this.sigleId, this.slugService.generateSlug(this.trade.denomination)])
-          }, 1000)
+
+          // setTimeout(() => {
+
+            
+          //   form.reset()
+          //   // this.router.navigate(['/trade', this.sigleId, ])
+          //   // avec l'ajout du slug pour SEO, pas le choix :
+          //   // this.router.navigate(['/trade', this.sigleId, this.slugService.generateSlug(this.trade.denomination)])
+          // }, 1000)
         })
         .catch((error) => {
           this.feedbackMessages = error.message;
@@ -219,6 +229,33 @@ export class UpdateTradesComponent {
     }
 
   }
+
+  private cleanForFirestore(obj: any): any {
+  if (Array.isArray(obj)) {
+    return obj.map(v => v === undefined ? 0 : (typeof v === 'object' ? this.cleanForFirestore(v) : v));
+  }
+
+  if (obj && typeof obj === 'object') {
+    const cleaned: any = {};
+    Object.entries(obj).forEach(([key, value]) => {
+      if (value === undefined) {
+        // Valeurs par défaut selon le type attendu
+        cleaned[key] = (typeof value === 'boolean') ? false
+                      : (typeof value === 'number') ? 0
+                      : (typeof value === 'string') ? ''
+                      : null;
+      } else if (typeof value === 'object') {
+        cleaned[key] = this.cleanForFirestore(value); // récursion pour objets imbriqués
+      } else {
+        cleaned[key] = value;
+      }
+    });
+    return cleaned;
+  }
+
+  return obj;
+}
+
 
 
   // addField(ref: string) {

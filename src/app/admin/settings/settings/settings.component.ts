@@ -99,10 +99,10 @@ export class SettingsComponent implements OnInit {
         // Signed in 
         this.feedbackMessages = `Enregistrement du métier et ses compétences OK`;
         this.isSuccessMessage = true
+        // Redirection vers la liste après un court délai pour que l’utilisateur puisse voir le feedback
         setTimeout(() => {
-          form.reset()
-          // this.router.navigate([''])
-        }, 1000)
+          this.router.navigate(['/admin/settings']);
+        }, 1000);
       })
       .catch((error) => {
         this.feedbackMessages = error.message;
