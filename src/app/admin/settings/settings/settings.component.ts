@@ -5,6 +5,8 @@ import { SettingsService } from '../../settings.service';
 import { Router } from '@angular/router';
 import { Denominator } from 'src/app/quizz/denominator';
 import { Partner } from '../../partner';
+import { AuthGuardService } from 'src/app/auth-guard.service';
+import { AuthService } from '../../auth.service';
 
 
 
@@ -39,9 +41,20 @@ export class SettingsComponent implements OnInit {
 
   // partners: Partner = { name: "", description: "", url: "" }
   partners: Partner[] = [];
+  userRole: any
 
 
-  constructor(private service: SettingsService, private router: Router) {
+  constructor(private service: SettingsService, private router: Router, private authService: AuthService) {
+    this.authService.getCurrentUserRole().subscribe(role => {
+      console.log('Rôle reçu :', role);
+
+      if (role) {
+        this.userRole = role;
+      } else {
+        this.userRole = 'Aucun rôle trouvé';
+      }
+    });
+
 
   }
 

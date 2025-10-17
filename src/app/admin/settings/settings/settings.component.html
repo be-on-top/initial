@@ -9,13 +9,22 @@
 
     <div class="form-group">
       <label for="sigle" class="form-label mt-3">Sigle</label>
-      <input type="text" name="sigle" ngModel #sigle="ngModel" class="form-control" required minlength="3">
+      <div class="d-flex border-start ps-2 text-muted small mb-2">
+        📌 Clé immuable utilisée comme identifiant de référence dans toutes les tables de l'application.
+      </div>
+      <input type="text" name="sigle" ngModel #sigle="ngModel" class="form-control" required minlength="3"
+        placeholder="Très court sans espace. Exemple:chauffeur_clvul">
       <div *ngIf="sigle.dirty || (sigle.touched && sigle.invalid)" class="invalid-feedback">
         Veuillez fournir un sigle valide.
       </div>
       <label for="denomination" class="form-label mt-3">Dénomination</label>
-      <input type="text" name="denomination" ngModel #denomination="ngModel" class="form-control" required
-        minlength="3">
+      <div class="d-flex border-start ps-2 text-muted small mb-2">
+        📌 Si cette dénomination contient un acronyme, écrivez-le toujours en MAJUSCULES à la fin, suivi de sa
+        définition entre
+        parenthèses.
+      </div>
+      <input type="text" name="denomination" ngModel #denomination="ngModel" class="form-control" required minlength="3"
+        placeholder="Dénomination métier (son titre)">
       <div *ngIf="denomination.dirty || (denomination.touched && denomination.invalid)" class="invalid-feedback">
         Veuillez fournir une dénomination valide.
       </div>
@@ -25,7 +34,14 @@
       <!-- pour categorie parente -->
       <!-- Catégorie parente -->
       <label for="parentCategory" class="form-label mt-3">Catégorie parente (facultatif)</label>
-      <input type="text" placeholder="Le libellé de la catégorie qui devra être rigoureusement le même pour tous les métiers concernés" name="parentCategory" ngModel #parentCategory="ngModel" class="form-control" minlength="4">
+      <div class="d-flex border-start ps-2 text-muted small mb-2">
+        📌 Évitez les noms de catégorie trop longs afin de limiter la charge cognitive et d'assurer une bonne lisibilité
+        sur mobile (RWD).
+      </div>
+
+      <input type="text"
+        placeholder="Le libellé de la catégorie devra être rigoureusement le même pour tous les métiers concernés"
+        name="parentCategory" ngModel #parentCategory="ngModel" class="form-control" minlength="4">
 
       <!-- Message d'erreur : affiché si le champ est modifié mais invalide -->
       <div *ngIf="(parentCategory.dirty || parentCategory.touched) && parentCategory.invalid" class="invalid-feedback">
@@ -73,7 +89,8 @@
       <!-- option pour pouvoir acter des exceptions (toutes les durées par compétence seront équivalentes) -->
       <label class="form-label mt-3">Durée légale règlementaire (fixe) :</label>
       <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="legalDurationCheckbox" name="legalDuration" [(ngModel)]="sigles.legalDuration">
+        <input class="form-check-input" type="checkbox" id="legalDurationCheckbox" name="legalDuration"
+          [(ngModel)]="sigles.legalDuration">
         <label class="form-check-label" for="legalDurationCheckbox">{{sigles.legalDuration===false?'Non':'Oui'}}</label>
       </div>
 
@@ -125,48 +142,52 @@
   </form>
   <!-- 2 ème partie -->
 
-  <h4 class="mt-5">Ajout de curseurs personnalisés pour le calcul des 3 niveaux de résultat au terme du positionnement
-    des
-    candidats
-  </h4>
+  <hr>
 
-  <!-- pour les curseurs -->
-  <form #setCursorsForm="ngForm" class="mt-4" (submit)="addLevelCursors(setCursorsForm)" class="was-validated">
+  <ng-container *ngIf="userRole==='admin'">
 
-    <div class="form-group">
+    <h4 class="mt-5">Ajout de curseurs personnalisés pour le calcul des 3 niveaux de résultat au terme du positionnement
+      des
+      candidats
+    </h4>
 
-      <label for="firstCursor" class="form-label mt-3">Curseur 1</label>
-      <input type="number" name="firstCursor" ngModel #firstCursor="ngModel" class="form-control" required>
-      <div *ngIf="firstCursor.touched && firstCursor.invalid" class="invalid-feedback">
-        Veuillez fournir un sigle valide.
+    <!-- pour les curseurs -->
+    <form #setCursorsForm="ngForm" class="mt-4" (submit)="addLevelCursors(setCursorsForm)" class="was-validated">
+
+      <div class="form-group">
+
+        <label for="firstCursor" class="form-label mt-3">Curseur 1</label>
+        <input type="number" name="firstCursor" ngModel #firstCursor="ngModel" class="form-control" required>
+        <div *ngIf="firstCursor.touched && firstCursor.invalid" class="invalid-feedback">
+          Veuillez fournir un sigle valide.
+        </div>
+        <div *ngIf="secondCursor.valid" class="valid-feedback">
+          Ok. Curseur pris en compte
+        </div>
+        <label for="secondCursor" class="form-label mt-3">Curseur 2</label>
+        <input type="number" name="secondCursor" ngModel #secondCursor="ngModel" class="form-control" required>
+        <div *ngIf="secondCursor.touched && secondCursor.invalid" class="invalid-feedback">
+          Veuillez fournir un nombre
+        </div>
+        <div *ngIf="secondCursor.valid" class="valid-feedback">
+          Ok. Curseur pris en compte
+        </div>
+
       </div>
-      <div *ngIf="secondCursor.valid" class="valid-feedback">
-        Ok. Curseur pris en compte
-      </div>
-      <label for="secondCursor" class="form-label mt-3">Curseur 2</label>
-      <input type="number" name="secondCursor" ngModel #secondCursor="ngModel" class="form-control" required>
-      <div *ngIf="secondCursor.touched && secondCursor.invalid" class="invalid-feedback">
-        Veuillez fournir un nombre
-      </div>
-      <div *ngIf="secondCursor.valid" class="valid-feedback">
-        Ok. Curseur pris en compte
-      </div>
 
-    </div>
+      <button id="settingsForm" type="submit" class="btn btn-primary mt-4"
+        [disabled]=setCursorsForm.invalid>Ajouter</button>
+    </form>
 
-    <button id="settingsForm" type="submit" class="btn btn-primary mt-4"
-      [disabled]=setCursorsForm.invalid>Ajouter</button>
-  </form>
+    <!-- 3ème partie inexploitée -->
 
-  <!-- 3ème partie inexploitée -->
-
-  <!-- <hr>
+    <!-- <hr>
 
   <h4 class="mt-5">Nombre de questions nécessaires à la finalisation d'un QCM de positionnement
   </h4> -->
 
 
-  <!-- <form #setMaxForm="ngForm" class="mt-4" (submit)="addMaxIndexQuestion(setMaxForm)" class="was-validated">
+    <!-- <form #setMaxForm="ngForm" class="mt-4" (submit)="addMaxIndexQuestion(setMaxForm)" class="was-validated">
 
     <div class="form-group">
 
@@ -185,50 +206,55 @@
     <button id="settingsForm" type="submit" class="btn btn-primary mt-4" [disabled]=setMaxForm.invalid>Ajouter</button>
   </form> -->
 
-  <!-- 4ème partie pour partenaires -->
+    <!-- 4ème partie pour partenaires -->
 
-  <h4 class="mt-5">Ajout d'un nouveau partenaire</h4>
-  <form #partnersForm="ngForm" class="mt-4" (submit)="addPartners(partnersForm)" class="was-validated">
-    <div class="form-group">
-      <label for="name" class="form-label mt-3">Nom</label>
-      <input type="text" name="name" ngModel #name="ngModel" class="form-control" required minlength="3">
-      <div *ngIf="name.dirty || (name.touched && name.invalid)" class="invalid-feedback">
-        Veuillez fournir un nom valid.
-      </div>
-      <div *ngIf="name.valid" class="valid-feedback">
-        Nom OK.
-      </div>
-      <label for="description" class="form-label mt-3">Description</label>
-      <input type="text" name="description" ngModel #description="ngModel" class="form-control" required minlength="50">
-      <div *ngIf="description.dirty || (description.touched && description.invalid)" class="invalid-feedback">
-        Veuillez fournir une description valide.
-      </div>
-      <div *ngIf="description.valid" class="valid-feedback">
-        Description OK.
-      </div>
-      <label for="url" class="form-label mt-3">Lien</label>
-      <input type="url" name="url" ngModel #url="ngModel" class="form-control">
-      <div *ngIf="url.dirty || (url.touched && url.invalid)" class="invalid-feedback">
-        Veuillez fournir une url valide.
-      </div>
-      <div *ngIf="description.valid" class="valid-feedback">
-        Url OK.
-      </div>
-      <!-- logo image additionnel -->
-      <label for="logo" class="form-label mt-3">Logo</label>
-      <input type="file" (change)="onFileSelected($event)" class="form-control" accept="image/*">
-      
-      <div *ngIf="previewUrl" class="mt-3">
-        <label>Aperçu du logo :</label>
-        <img [src]="previewUrl" alt="Aperçu du logo" class="img-thumbnail mt-2" style="max-height: 150px;">
-      </div>
-      
-    </div>
+    <h4 class="mt-5">Ajout d'un nouveau partenaire</h4>
+    <form #partnersForm="ngForm" class="mt-4" (submit)="addPartners(partnersForm)" class="was-validated">
+      <div class="form-group">
+        <label for="name" class="form-label mt-3">Nom</label>
+        <input type="text" name="name" ngModel #name="ngModel" class="form-control" required minlength="3">
+        <div *ngIf="name.dirty || (name.touched && name.invalid)" class="invalid-feedback">
+          Veuillez fournir un nom valid.
+        </div>
+        <div *ngIf="name.valid" class="valid-feedback">
+          Nom OK.
+        </div>
+        <label for="description" class="form-label mt-3">Description</label>
+        <input type="text" name="description" ngModel #description="ngModel" class="form-control" required
+          minlength="50">
+        <div *ngIf="description.dirty || (description.touched && description.invalid)" class="invalid-feedback">
+          Veuillez fournir une description valide.
+        </div>
+        <div *ngIf="description.valid" class="valid-feedback">
+          Description OK.
+        </div>
+        <label for="url" class="form-label mt-3">Lien</label>
+        <input type="url" name="url" ngModel #url="ngModel" class="form-control">
+        <div *ngIf="url.dirty || (url.touched && url.invalid)" class="invalid-feedback">
+          Veuillez fournir une url valide.
+        </div>
+        <div *ngIf="description.valid" class="valid-feedback">
+          Url OK.
+        </div>
+        <!-- logo image additionnel -->
+        <label for="logo" class="form-label mt-3">Logo</label>
+        <input type="file" (change)="onFileSelected($event)" class="form-control" accept="image/*">
 
-    <button type="submit" class="btn btn-primary mt-4" [disabled]=partnersForm.invalid>Ajouter</button>
-  </form>
+        <div *ngIf="previewUrl" class="mt-3">
+          <label>Aperçu du logo :</label>
+          <img [src]="previewUrl" alt="Aperçu du logo" class="img-thumbnail mt-2" style="max-height: 150px;">
+        </div>
 
-  <hr>
+      </div>
+
+      <button type="submit" class="btn btn-primary mt-4" [disabled]=partnersForm.invalid>Ajouter</button>
+    </form>
+
+    <hr>
+
+  </ng-container>
+
+
 
 
 </div>

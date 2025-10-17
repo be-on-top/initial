@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SettingsService } from '../../settings.service';
 import { ThemeService } from '../theme.service';
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-settings-list',
@@ -18,14 +19,25 @@ export class SettingsListComponent implements OnInit {
   // on le prépare à recevoir un terme de recherche
   searchText: string = ''
 
-  partners?:any
-  displayPrices:boolean=true
+  partners?: any
+  displayPrices: boolean = true
+
+  userRole: any
 
 
-  constructor(private router: Router, private service: SettingsService, private themeService:ThemeService) {
-        // Initialise la variable avec la couleur actuelle du thème
-        this.primaryColor = this.themeService.getPrimaryColor();
-   }
+  constructor(private router: Router, private service: SettingsService, private themeService: ThemeService, private authService: AuthService) {
+    // Initialise la variable avec la couleur actuelle du thème
+    this.primaryColor = this.themeService.getPrimaryColor();
+    this.authService.getCurrentUserRole().subscribe(role => {
+      console.log('Rôle reçu :', role);
+
+      if (role) {
+        this.userRole = role;
+      } else {
+        this.userRole = 'Aucun rôle trouvé';
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.getSettings();
@@ -57,8 +69,8 @@ export class SettingsListComponent implements OnInit {
     }
     )
 
-    this.service.fetchPartners().subscribe(data=>{
-      this.partners=data
+    this.service.fetchPartners().subscribe(data => {
+      this.partners = data
     })
 
     // Récupérer la valeur initiale de displayPrices depuis Firestore
@@ -76,7 +88,7 @@ export class SettingsListComponent implements OnInit {
     console.log(this.searchText);
   }
 
-  primaryColor: string='';
+  primaryColor: string = '';
 
 
 
@@ -91,16 +103,16 @@ export class SettingsListComponent implements OnInit {
     this.primaryColor = this.themeService.getPrimaryColor();
   }
 
- // Mettre à jour displayPrices dans Firestore
- toggleDisplayPrices(event: Event): void {
-  const inputElement = event.target as HTMLInputElement;
-  this.displayPrices = inputElement.checked;  // Récupère l'état de la checkbox
-  console.log("this.displayPrices", this.displayPrices);
-  
-  this.service.setDisplayPrices(this.displayPrices)
-    .then(() => console.log('displayPrices mis à jour dans Firestore'))
-    .catch(error => console.error('Erreur de mise à jour', error));
-}
+  // Mettre à jour displayPrices dans Firestore
+  toggleDisplayPrices(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    this.displayPrices = inputElement.checked;  // Récupère l'état de la checkbox
+    console.log("this.displayPrices", this.displayPrices);
+
+    this.service.setDisplayPrices(this.displayPrices)
+      .then(() => console.log('displayPrices mis à jour dans Firestore'))
+      .catch(error => console.error('Erreur de mise à jour', error));
+  }
 
 
 }

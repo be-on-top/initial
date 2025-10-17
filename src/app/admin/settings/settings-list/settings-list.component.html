@@ -53,7 +53,11 @@
 
     <hr>
 
-    <!-- <h4 class="my-5">Ajustement des Maximums</h4>
+    <ng-container *ngIf="userRole==='admin'">
+
+
+
+        <!-- <h4 class="my-5">Ajustement des Maximums</h4>
 
     <div *ngIf="maximums" class="mx-auto">
         <div *ngFor="let max of maximums | keyvalue" class="row">
@@ -65,82 +69,84 @@
     </div>
     <hr> -->
 
-    <h4 class="my-5">Gestion des Partenaires</h4>
+        <h4 class="my-5">Gestion des Partenaires</h4>
 
-    <!-- <div *ngIf="(!allSettings)">
+        <!-- <div *ngIf="(!allSettings)">
         ...loading
     </div> -->
 
-    <div *ngIf="partners" class="mx-auto">
-        <!-- on introduit un champ de recherche -->
-        <!-- <app-search (searchTextChanged)="onSearchTextEntered($event)"></app-search> -->
+        <div *ngIf="partners" class="mx-auto">
+            <!-- on introduit un champ de recherche -->
+            <!-- <app-search (searchTextChanged)="onSearchTextEntered($event)"></app-search> -->
 
-        <!-- <div class="row mt-5"> -->
-        <div class="row justify-content-center mt-4 d-xs-none">
-            <div class="col-sm-4 h5">Nom</div>
-            <!-- <div class="col-sm-3 h5">Dénomination</div> -->
-            <div class="col-sm-4 h5">Description</div>
-            <div class="col-sm-4 h5">Lien</div>
-        </div>
+            <!-- <div class="row mt-5"> -->
+            <div class="row justify-content-center mt-4 d-xs-none">
+                <div class="col-sm-4 h5">Nom</div>
+                <!-- <div class="col-sm-3 h5">Dénomination</div> -->
+                <div class="col-sm-4 h5">Description</div>
+                <div class="col-sm-4 h5">Lien</div>
+            </div>
 
-        <div *ngFor="let partner of partners">
-            <div class="row justify-content-center mt-4 ps-5 ps-sm-0"
-                *ngIf="searchText==='' || partner.name.toLowerCase().includes(searchText)">
-                <div class="col-sm-4 col-6">{{partner.name}}</div>
-                <div class="col-sm-4 col-8">{{partner.description}}</div>
-                <div class="col-sm-4 col-4 text-center d-flex justify-content-between flex-column">
-                    <a href="{{partner.url}}" target="_blank" rel="noopener noreferrer">{{partner.url}}</a>
-                    <div>
-                        <button class="btn btn-primary"><a [routerLink]="['/admin/updateSettings', partner.id]"
-                                class="text-white"><i class="bi bi-pencil-square"></i>Editer</a></button>
+            <div *ngFor="let partner of partners">
+                <div class="row justify-content-center mt-4 ps-5 ps-sm-0"
+                    *ngIf="searchText==='' || partner.name.toLowerCase().includes(searchText)">
+                    <div class="col-sm-4 col-6">{{partner.name}}</div>
+                    <div class="col-sm-4 col-8">{{partner.description}}</div>
+                    <div class="col-sm-4 col-4 text-center d-flex justify-content-between flex-column">
+                        <a href="{{partner.url}}" target="_blank" rel="noopener noreferrer">{{partner.url}}</a>
+                        <div>
+                            <button class="btn btn-primary"><a [routerLink]="['/admin/updateSettings', partner.id]"
+                                    class="text-white"><i class="bi bi-pencil-square"></i>Editer</a></button>
+                        </div>
                     </div>
                 </div>
+                <hr>
             </div>
-            <hr>
-        </div>
-        <div class="row my-5 justify-content-end ps-5 ps-sm-0">
-            <div class="col-sm-4 col-6"><button class="btn btn-primary"><a [routerLink]="['/admin/addSettings']"
-                        class="text-white"><i class="bi bi-file-earmark-plus"></i>Ajouter</a></button></div>
-        </div>
-    </div>
-
-    <hr>
-
-    <h4 class="my-5"> Paramètres de Couleurs</h4>
-    <div class="container my-4">
-        <form>
-            <div class="form-group mb-3">
-                <label for="primaryColor">Choisissez votre Couleur Principale</label>
-                <input type="color" id="primaryColor" class="form-control mt-2" [(ngModel)]="primaryColor"
-                    (change)="updatePrimaryColor(primaryColor)" name="primaryColor">
+            <div class="row my-5 justify-content-end ps-5 ps-sm-0">
+                <div class="col-sm-4 col-6"><button class="btn btn-primary"><a [routerLink]="['/admin/addSettings']"
+                            class="text-white"><i class="bi bi-file-earmark-plus"></i>Ajouter</a></button></div>
             </div>
-
-            <button type="button" class="btn btn-secondary" (click)="resetColor()">Réinitialiser la Couleur</button>
-        </form>
-    </div>
-
-    <hr>
-
-
-    <h4 class="my-5"> Affichage des tarifs (montants) </h4>
-
-    <!-- Tooggle Switch for Price Display status -->
-    <div class="form-check form-switch my-3 d-flex mx-auto justify-content-center">
-        <div>
-
-            <input class="form-check-input" type="checkbox" id="status" name="status"
-            [checked]="displayPrices"
-            (change)="toggleDisplayPrices($event)">
         </div>
-        <div class="ms-3">
-            <label class="form-check-label" for="status">Status :</label>
+
+        <hr>
+
+        <h4 class="my-5"> Paramètres de Couleurs</h4>
+        <div class="container my-4">
+            <form>
+                <div class="form-group mb-3">
+                    <label for="primaryColor">Choisissez votre Couleur Principale</label>
+                    <input type="color" id="primaryColor" class="form-control mt-2" [(ngModel)]="primaryColor"
+                        (change)="updatePrimaryColor(primaryColor)" name="primaryColor">
+                </div>
+
+                <button type="button" class="btn btn-secondary" (click)="resetColor()">Réinitialiser la Couleur</button>
+            </form>
+        </div>
+
+        <hr>
+
+
+        <h4 class="my-5"> Affichage des tarifs (montants) </h4>
+
+        <!-- Tooggle Switch for Price Display status -->
+        <div class="form-check form-switch my-3 d-flex mx-auto justify-content-center">
+            <div>
+
+                <input class="form-check-input" type="checkbox" id="status" name="status" [checked]="displayPrices"
+                    (change)="toggleDisplayPrices($event)">
+            </div>
+            <div class="ms-3">
+                <label class="form-check-label" for="status">Status :</label>
                 <span *ngIf="displayPrices; else elseBlock" class="fw-bold"> Actif</span>
                 <ng-template #elseBlock> <span class="fw-bold"> Inactif</span></ng-template>
+            </div>
+
+
+
+
         </div>
- 
-        
-    </div>
-    
+    </ng-container>
+
 
 
 
