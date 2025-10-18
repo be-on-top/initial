@@ -138,17 +138,32 @@ export class SettingsComponent implements OnInit {
   // }
 
 
-  getTotal(e: any) {
-    console.log(e.value)
-    this.total.push(e.value)
-    // ce qui suit fonctionne si on fait abstraction du fait que ngForm transforme HTMLElement en object.
-    // donc même si les champs s'affichent, ils ne sont pas reconnus pour autant comme les propriétés/valeurs de l'objet settingsForm
-    // let cpField=`<input id="dfsdf" type="text" name="CP${e.value}" placeholder="CP${e.value} à renseigner" ngModel class="form-control my-1" required minlength="3">`
-    // let fiedl= document.createElement("div")
-    // let formButton:any = document.querySelector("#settingsForm")
-    // fiedl.innerHTML+=cpField
-    // formButton.insertAdjacentElement('beforebegin',fiedl)
+  // getTotal(e: any) {
+  //   console.log(e.value)
+  //   this.total.push(e.value)
+  //   // ce qui suit fonctionne si on fait abstraction du fait que ngForm transforme HTMLElement en object.
+  //   // donc même si les champs s'affichent, ils ne sont pas reconnus pour autant comme les propriétés/valeurs de l'objet settingsForm
+  //   // let cpField=`<input id="dfsdf" type="text" name="CP${e.value}" placeholder="CP${e.value} à renseigner" ngModel class="form-control my-1" required minlength="3">`
+  //   // let fiedl= document.createElement("div")
+  //   // let formButton:any = document.querySelector("#settingsForm")
+  //   // fiedl.innerHTML+=cpField
+  //   // formButton.insertAdjacentElement('beforebegin',fiedl)
+    
+  // }
+  getTotal(value: any) {
+  const num = Number(value);
+
+  // Vérifie que c’est bien un entier valide
+  if (isNaN(num) || num < 1 || num > 50 || !Number.isInteger(num)) {
+    console.warn('Valeur non valide pour totalCP :', value);
+    this.total = []; // Vide la liste si erreur
+    return;
   }
+
+  // Génère le tableau [1, 2, 3, ..., num]
+  this.total = Array.from({ length: num }, (_, i) => i + 1);
+}
+
 
   addLevelCursors(form: NgForm) {
 
@@ -270,6 +285,9 @@ export class SettingsComponent implements OnInit {
       reader.readAsDataURL(this.selectedFile);
     }
   }
+
+
+
 
 
 

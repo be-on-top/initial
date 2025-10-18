@@ -105,8 +105,13 @@
       </div> -->
       <!-- pour arrêter le nombre de compétences par métier -->
       <label for="totalCP" class="form-label mt-3">Nombre de compétences au référentiel métier</label>
-      <input type="number" name="totalCP" ngModel #totalCP="ngModel" class="form-control mb-1" required
-        (change)="getTotal(totalCP)">
+      <div class="d-flex border-start ps-2 text-muted small mb-2">
+        📌 Indiquez le nombre total de compétences du référentiel à l'aide des flèches ou en saisissant la valeur, puis
+        validez avec Entrée.
+      </div>
+
+      <input type="number" name="totalCP" ngModel #totalCP="ngModel" class="form-control mb-1" required min="1" max="50"
+        step="1" (change)="getTotal(totalCP.value)">
       <div *ngIf="totalCP.touched && totalCP.invalid" class="invalid-feedback">Veuillez fournir un nombre minimum de
         compétences.
       </div>
@@ -141,6 +146,12 @@
     <button type="submit" class="btn btn-primary mt-4" [disabled]=settingsForm.invalid>Ajouter</button>
   </form>
   <!-- 2 ème partie -->
+
+  <div class="mt-4 d-flex">
+    <a class="btn btn-secondary ms-auto" [routerLink]="['/admin/settings']">
+      ← Retour à la liste
+    </a>
+  </div>
 
   <hr>
 
