@@ -13,7 +13,7 @@
         📌 Clé immuable utilisée comme identifiant de référence dans toutes les tables de l'application.
       </div>
       <input type="text" name="sigle" ngModel #sigle="ngModel" class="form-control" required minlength="3"
-        placeholder="Très court sans espace. Exemple:chauffeur_clvul">
+        placeholder="Très court sans espace. Exemple: chauffeur_clvul">
       <div *ngIf="sigle.dirty || (sigle.touched && sigle.invalid)" class="invalid-feedback">
         Veuillez fournir un sigle valide.
       </div>
@@ -81,6 +81,10 @@
       </div>
       <!-- option pour pouvoir masquer un metier du catalogue -->
       <label class="form-label mt-3">Publication :</label>
+      <div class="d-flex border-start ps-2 text-muted small mb-2">
+        📌 Activer cette option une fois le questionnaire finalisé pour que le métier soit visisble dans le catalogue
+        des formations disponibles.
+      </div>
       <div class="form-check form-switch">
         <input class="form-check-input" type="checkbox" id="statusCheckbox" name="status" [(ngModel)]="sigles.status">
         <label class="form-check-label" for="statusCheckbox">Active</label>

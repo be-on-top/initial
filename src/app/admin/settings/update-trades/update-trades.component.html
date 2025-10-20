@@ -17,6 +17,11 @@
 
     <div class="form-group" *ngIf="userRouterLinks && userRouterLinks.user=='admin'">
       <label for="denomination" class="form-label mt-3">Dénomination</label>
+      <div class="d-flex border-start ps-2 text-muted small mb-2">
+        📌 Si cette dénomination contient un acronyme, écrivez-le toujours en MAJUSCULES à la fin, suivi de sa
+        définition entre
+        parenthèses.
+      </div>
       <input type="text" name="denomination" [(ngModel)]="trade.denomination" #denomination="ngModel"
         class="form-control" required minlength="3">
       <div *ngIf="denomination.dirty || (denomination.touched && denomination.invalid)" class="invalid-feedback">
@@ -27,6 +32,10 @@
       </div>
       <!-- pour categorie parente -->
       <label for="parentCategory" class="form-label mt-3">Catégorie parente</label>
+      <div class="d-flex border-start ps-2 text-muted small mb-2">
+        📌 Évitez les noms de catégorie trop longs afin de limiter la charge cognitive et d'assurer une bonne lisibilité
+        sur mobile (RWD).
+      </div>
       <input type="text" name="parentCategory" [(ngModel)]="trade.parentCategory" #parentCategory="ngModel"
         class="form-control" minlength="4">
       <div *ngIf="parentCategory.dirty || (parentCategory.touched && parentCategory.invalid)" class="invalid-feedback">
@@ -60,6 +69,11 @@
       </div>
 
       <div class="form-check form-switch mt-3">
+        <div class="d-flex border-start ps-2 text-muted small mb-2">
+          📌 N'activer cette option qu'une fois le questionnaire finalisé pour que le métier soit visisble dans le
+          catalogue
+          des formations disponibles.
+        </div>
         <input class="form-check-input" type="checkbox" id="statusCheckbox" name="status" [(ngModel)]="trade.status">
         <label class="form-check-label" for="statusCheckbox">Status Actif ?</label>
       </div>
