@@ -29,9 +29,11 @@
         <div class="valid-feedback" *ngIf="email.valid">Email Valide </div>
         <div class="invalid-feedback" *ngIf="email.invalid">Merci de renseigner le champ email.</div>
 
-        <label for="cp" class="form-label mt-3">CP</label>
-        <input type="text" id="cp" [(ngModel)]="evaluator.cp" name="cp" class="form-control"
-            placeholder="Code Postal Optionnel...">
+        <ng-container *ngIf="userRole=='admin'">
+            <label for="cp" class="form-label mt-3">CP</label>
+            <input type="text" id="cp" [(ngModel)]="evaluator.cp" name="cp" class="form-control"
+                placeholder="Code Postal Optionnel...">
+        </ng-container>
 
         <!-- Tooggle Swith for Evaluator status -->
         <div class="form-check form-switch my-3">
@@ -62,5 +64,11 @@
         <button type="submit" id="submit" class="btn btn-primary mt-3"
             [ngClass]="{'disabled':f.invalid}">Valider</button>
     </form>
+
+  <div class="mt-4 d-flex">
+    <a class="btn btn-secondary ms-auto" [routerLink]="['/admin/evaluators']">
+      ← Retour à la liste
+    </a>
+  </div>
 
 </div>

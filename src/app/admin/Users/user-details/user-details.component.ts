@@ -93,7 +93,7 @@ export class UserDetailsComponent implements OnInit {
     }
     // Responsable métiers
     else if (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "managers") {
-      this.title = "Responsable métier"
+      this.title = "Responsable métiers"
       this.linkBackToList = "/admin/managers"
     }
     // pour pouvoir utiliser la même route initiale par moment

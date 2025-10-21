@@ -23,8 +23,8 @@
                 </p>
                 <ng-template #checkbox> <strong>Status</strong> : actif</ng-template>
                 <!-- pour voir à récupérer la propriété additionnelle si existante  -->
-                <hr>
-                <p> <span *ngIf="user.partner; else checkboxPartner"><strong>Associé à en tant que Conseiller d'un centre partenaire ou pas ?</strong> : Oui</span>
+                <!-- <hr> -->
+                <p *ngIf="user.role==='referent'"> <span *ngIf="user.partner; else checkboxPartner"><strong>Associé à en tant que Conseiller d'un centre partenaire ou pas ?</strong> : Oui</span>
                     <ng-template #checkbox> <strong>Associé en tant que Conseiller d'un centre partenaire ?</strong> : Non</ng-template>
                 </p>
                 <ng-template #checkboxPartner> <strong>Associé en tant que Conseiller d'un centre partenaire ?</strong> : Non</ng-template>

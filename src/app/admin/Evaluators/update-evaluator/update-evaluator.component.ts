@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 // import { Evaluators } from '../../evaluators';
 import { EvaluatorsService } from '../../evaluators.service';
 import { SettingsService } from '../../settings.service';
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-update-evaluator',
@@ -18,8 +19,9 @@ export class UpdateEvaluatorComponent implements OnInit {
 
   // essai pour connecter le tableau des sigles aux documents de la collection sigles destinée aux paramétrages métier
   sigleIds: string[] = []
+  userRole:string | string[] | null = null;
 
-  constructor(private service: EvaluatorsService, private ac: ActivatedRoute, private router: Router, private settingsService: SettingsService) {
+  constructor(private service: EvaluatorsService, private ac: ActivatedRoute, private router: Router, private settingsService: SettingsService, private authService:AuthService) {
     this.evaluatorId = this.ac.snapshot.params["id"];
     // on fait appel à getEvaluator pour récupérer les entrées de l'existant. méthode qui pour memo renvoie un observable
     this.service.getEvaluator(this.evaluatorId).subscribe((data) => {
@@ -27,6 +29,7 @@ export class UpdateEvaluatorComponent implements OnInit {
       this.evaluator = data
       this.selectedSigles=this.evaluator.sigle
     })
+    this.authService.getCurrentUserRole().subscribe(role=>this.userRole=role)
 
   }
 

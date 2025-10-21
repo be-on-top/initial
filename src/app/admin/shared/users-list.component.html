@@ -57,7 +57,7 @@
                     <div class="col-sm-3 col-6">{{user.lastName}}</div>
                     <div class="col-sm-3 col-6 order-perso2">{{user.firstName}}</div>
                 </ng-container>
-                <div class="col-sm-3 col-6"><button type="button" class="btn btn-danger" (click)="deleteUser(user.id)" [disabled]="userRole==='referent'"><i
+                <div class="col-sm-3 col-6"><button type="button" class="btn btn-danger" (click)="deleteUser(user.id)" [disabled]="userRole==='referent'|| userRole==='manager'"><i
                             class="bi bi-person-dash-fill"></i>Suppression</button></div>
                 <div class="col-sm-3 col-6 order-perso4"><button type="button" class="btn btn-primary">
                         <!-- <a [routerLink]="['/admin/user', user.id]" class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a> -->

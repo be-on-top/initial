@@ -46,8 +46,13 @@
                     <!-- <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Admin</a> -->
                     <ul class="dropdown-menu"
                         aria-label="Menu de navigation pour la création d'utilisateurs ayant des droits spécifiques">
-                        <li *ngIf="userRole?.includes('admin') || userRole?.includes('manager')"><a
+                        <li *ngIf="userRole?.includes('admin')"><a
                                 class="dropdown-item" (click)="navigateTo('/admin/settings')">Paramètres</a>
+                            <hr>
+                        </li>
+                        <!-- je le duplique justse pour que le référent métier ne soit pas dérouté par l'intitulé -->
+                        <li *ngIf="userRole?.includes('manager')"><a
+                                class="dropdown-item" (click)="navigateTo('/admin/settings')">Paramètres (métiers)</a>
                             <hr>
                         </li>
                         <!-- pour explicitement accéder à la gestion des centres -->
@@ -60,7 +65,7 @@
                                 (click)="navigateTo('/admin/leads')">Vue quantitative candidats</a>
                         </li>
 
-                        <li *ngIf="userRole?.includes('admin')"><a class="dropdown-item"
+                        <li *ngIf="userRole?.includes('admin')|| userRole?.includes('manager')"><a class="dropdown-item"
                                 [routerLink]="['/admin/evaluators']">Gestion des évaluateurs</a>
                         </li>
                         <li><a class="dropdown-item" [routerLink]="['/admin/trainers']"
