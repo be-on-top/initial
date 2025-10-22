@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CentersService } from '../../centers.service';
 import { Centers } from '../../centers';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-centers-list',
@@ -234,6 +235,87 @@ exportCentersToCSV(): void {
   document.body.removeChild(link);
 }
 
+
+
+selectedCsvFile: File | null = null;
+
+onCsvSelected(event: any) {
+  this.selectedCsvFile = event.target.files[0] || null;
+}
+
+/**
+   * Met à jour les sigles (codes métiers) des centres à partir d’un fichier CSV
+   * Le CSV doit contenir au moins :
+   *   - une colonne "id" (identifiant du document Firestore)
+   *   - une colonne "sigles" (chaîne de codes séparés par des virgules ou espaces)
+   */
+  // async updateNewTradeForCenter(event: any): Promise<void> {
+  async updateNewTradeForCenter(): Promise<void> {
+    // const file: File = event.target.files[0];
+      if (!this.selectedCsvFile) return;
+
+  const file = this.selectedCsvFile;
+    if (!file) return;
+ 
+    const text = await file.text();
+    const rows = text.split('\n').map(r => r.trim()).filter(r => r.length > 0);
+ 
+    // Lecture de la première ligne (entêtes)
+    const headers = rows[0].split(';').map(h => h.replace(/"/g, '').trim());
+    const idIndex = headers.indexOf('id');
+    const siglesIndex = headers.indexOf('sigles');
+ 
+    if (idIndex === -1 || siglesIndex === -1) {
+      alert('❌ Le fichier doit contenir les colonnes "id" et "sigles".');
+      return;
+    }
+ 
+    // Parcours de chaque ligne du CSV
+    for (let i = 1; i < rows.length; i++) {
+      const cols = rows[i].split(';').map(c => c.replace(/"/g, '').trim());
+      const centerId = cols[idIndex];
+      const siglesStr = cols[siglesIndex];
+ 
+      if (!centerId || !siglesStr) continue;
+ 
+      // Découper la chaîne en tableau (ex: "AUTO, MOTO" → ["AUTO", "MOTO"])
+      const newSigles = siglesStr.split(',').map(s => s.trim()).filter(s => s);
+ 
+      try {
+        // Récupération du document Firestore correspondant
+        const center = await firstValueFrom(this.service.getCenterById(centerId));
+        // const center = await this.service.getCenterById(centerId);
+        if (!center) {
+          console.warn(`⚠️ Centre introuvable pour l'id : ${centerId}`);
+          continue;
+        }
+ 
+        // Sigles actuels dans Firestore
+        const existingSigles = center.sigles || [];
+ 
+        // Détermination des codes à ajouter
+        const siglesToAdd = newSigles.filter(s => !existingSigles.includes(s));
+ 
+        if (siglesToAdd.length === 0) {
+          console.log(`✅ Aucun nouveau code à ajouter pour ${center.name}`);
+          continue;
+        }
+ 
+        // Fusionner les anciens et nouveaux sigles
+        const updatedSigles = [...existingSigles, ...siglesToAdd];
+ 
+        // Mise à jour du document Firestore
+        await this.service.updateCenter(centerId, { sigles: updatedSigles });
+ 
+        console.log(`🟢 Centre "${center.name}" mis à jour avec :`, siglesToAdd);
+ 
+      } catch (err) {
+        console.error(`❌ Erreur sur le centre ${centerId} :`, err);
+      }
+    }
+ 
+    alert('✅ Mise à jour des sigles terminée.');
+  }
 
 
 

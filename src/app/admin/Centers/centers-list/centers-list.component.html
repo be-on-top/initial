@@ -66,9 +66,35 @@
                         class="text-white"><i class="bi bi-plus-circle-fill"></i>Ajouter</a></button></div>
         </div>
     </div>
-
+    <hr>
+    <label for="csvUpload" class="mb-3">
+        Si vous ne l'avez encore jamais fait, et que vous avez ajouté déjà de nombreux centres, cet export vous
+        permettra de récupérer les identifiants associés à chaque centre afin de pouvoir faire des mises à jour en
+        nombre.
+    </label>
     <button (click)="exportCentersToCSV()" class="btn btn-primary">
-  📁 Exporter la liste en CSV
-</button>
+        📁 Exporter la liste en CSV
+    </button>
+    <hr>
+
+    <!-- <label for="csvUpload" class="mb-3">
+  📤 Importer CSV (pour mise à jour sigles)
+</label>
+<input 
+  id="csvUpload"
+  type="file"
+  accept=".csv"
+  class="form-control"
+  (change)="updateNewTradeForCenter($event)" /> -->
+    <label for="csvUpload" class="mb-3">
+        📤 Importer CSV (pour mise à jour sigles)
+    </label>
+    <input id="csvUpload" type="file" accept=".csv" class="form-control" (change)="onCsvSelected($event)" />
+
+    <button class="btn btn-success mt-2" [disabled]="!selectedCsvFile" (click)="updateNewTradeForCenter()">
+        Valider l'import
+    </button>
+
+
 
 </div>
