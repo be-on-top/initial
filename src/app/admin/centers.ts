@@ -13,5 +13,6 @@ export interface Centers {
     subsidiary?: boolean;
     member?: boolean;
     independent?: boolean;
-    comment?:string
+    comment?:string;
+    siret?:string
 }

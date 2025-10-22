@@ -87,13 +87,30 @@
   class="form-control"
   (change)="updateNewTradeForCenter($event)" /> -->
     <label for="csvUpload" class="mb-3">
-        📤 Importer CSV (pour mise à jour sigles)
+        📤 Importer CSV pour mise à jour des nouveaux codes métiers (colonne sigles)
     </label>
     <input id="csvUpload" type="file" accept=".csv" class="form-control" (change)="onCsvSelected($event)" />
 
     <button class="btn btn-success mt-2" [disabled]="!selectedCsvFile" (click)="updateNewTradeForCenter()">
         Valider l'import
     </button>
+    <hr>
+
+    <!-- Import / mise à jour des SIRET -->
+    <div class="mt-4">
+        <label for="siretCsvUpload" class="mb-3">
+            📤 Importer CSV (pour ajout des seuls numéros SIRET si besoin)
+        </label>
+
+        <input id="siretCsvUpload" type="file" accept=".csv" class="form-control"
+            (change)="onSiretCsvSelected($event)" />
+
+        <button class="btn btn-success mt-2" [disabled]="!selectedSiretCsvFile" (click)="updateSiretForCenter()">
+            Valider l'import de la colonne SIRET
+        </button>
+    </div>
+
+
 
 
 

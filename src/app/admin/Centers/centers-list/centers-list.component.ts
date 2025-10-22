@@ -319,5 +319,81 @@ onCsvSelected(event: any) {
 
 
 
+selectedSiretCsvFile: File | null = null;
+
+onSiretCsvSelected(event: any) {
+  this.selectedSiretCsvFile = event.target.files[0] || null;
+}
+
+/**
+ * Met à jour les numéros SIRET des centres à partir d’un fichier CSV.
+ * Le CSV doit contenir les colonnes :
+ *  - "id" : identifiant du document Firestore
+ *  - "siret" : numéro SIRET à renseigner s’il est vide
+ */
+async updateSiretForCenter(): Promise<void> {
+  if (!this.selectedSiretCsvFile) return;
+
+  const confirmed = window.confirm(
+    '⚠️ Confirmer la mise à jour des SIRET à partir du fichier CSV ?'
+  );
+  if (!confirmed) return;
+
+  const file = this.selectedSiretCsvFile;
+  const text = await file.text();
+  const rows = text.split('\n').map(r => r.trim()).filter(r => r.length > 0);
+
+  const headers = rows[0].split(';').map(h => h.replace(/"/g, '').trim());
+  const idIndex = headers.indexOf('id');
+  const siretIndex = headers.indexOf('siret');
+
+  if (idIndex === -1 || siretIndex === -1) {
+    alert('❌ Le fichier doit contenir les colonnes "id" et "siret".');
+    return;
+  }
+
+  let updatedCount = 0, skippedCount = 0, notFoundCount = 0;
+
+  for (let i = 1; i < rows.length; i++) {
+    const cols = rows[i].split(';').map(c => c.replace(/"/g, '').trim());
+    const centerId = cols[idIndex];
+    const siretValue = cols[siretIndex];
+
+    if (!centerId || !siretValue) continue;
+
+    try {
+      const center = await firstValueFrom(this.service.getCenterById(centerId));
+      if (!center) {
+        console.warn(`⚠️ Centre introuvable pour l'id : ${centerId}`);
+        notFoundCount++;
+        continue;
+      }
+
+      if (center.siret && center.siret.trim() !== '') {
+        console.log(`⏭️ Centre "${center.name}" déjà doté d’un SIRET : ${center.siret}`);
+        skippedCount++;
+        continue;
+      }
+
+      await firstValueFrom(this.service.updateCenter(centerId, { siret: siretValue }));
+      console.log(`🟢 Centre "${center.name}" mis à jour avec le SIRET ${siretValue}`);
+      updatedCount++;
+
+    } catch (err) {
+      console.error(`❌ Erreur sur le centre ${centerId} :`, err);
+    }
+  }
+
+  alert(`✅ Mise à jour terminée :
+- ${updatedCount} centres mis à jour
+- ${skippedCount} déjà renseignés
+- ${notFoundCount} introuvables`);
+
+  this.selectedSiretCsvFile = null; // Réinitialiser le fichier après import
+}
+
+
+
+
 
 }
