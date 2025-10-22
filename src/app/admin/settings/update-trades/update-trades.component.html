@@ -68,16 +68,16 @@
           placeholder="Renseigner la liste des prérequis..."></textarea>
       </div>
 
-      <div class="form-check form-switch mt-3">
-        <div class="d-flex border-start ps-2 text-muted small mb-2">
-          📌 N'activer cette option qu'une fois le questionnaire finalisé pour que le métier soit visisble dans le
-          catalogue
-          des formations disponibles.
-        </div>
-        <input class="form-check-input" type="checkbox" id="statusCheckbox" name="status" [(ngModel)]="trade.status">
-        <label class="form-check-label" for="statusCheckbox">Status Actif ?</label>
+      <label class="form-label mt-3">Publication :</label>
+      <div class="d-flex border-start ps-2 text-muted small mb-2">
+        📌 N'activer cette option qu'une fois le questionnaire finalisé pour que le métier soit visisble dans le
+        catalogue
+        des formations disponibles.
       </div>
-
+      <div class="form-check form-switch mt-3">
+        <input class="form-check-input" type="checkbox" id="statusCheckbox" name="status" [(ngModel)]="trade.status">
+        <label class="form-check-label" for="statusCheckbox">Status Actif (pour publication) ?</label>
+      </div>
       <hr>
       <!-- option pour pouvoir acter des exceptions (toutes les durées par compétence seront équivalentes) -->
       <label class="form-label mt-3">Durée légale règlementaire (fixe) :</label>
