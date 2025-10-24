@@ -90,39 +90,64 @@
 
 
 
-        
-        <hr>
+
+        <!-- <hr> -->
         <!-- Optionnel : afficher le statut (Public/Privé) -->
         <!-- {{userRole|json}} -->
-        <div class="alert alert-danger" *ngIf="userRole?.includes('admin')">Les champs ci-dessous sont réservés à la
-            création d'observateurs externes
-        </div>
-        <div class="form-check form-switch" *ngIf="userRole?.includes('admin')">
-            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" [(ngModel)]="isPrivate"
-            name="isPrivate" (change)="onPrivateToggle()">
-            
-            <label class="form-check-label" for="flexSwitchCheckChecked"><span class="text-dark">Propriété:</span><span
-                [ngClass]="{'text-danger':isPrivate}"> {{ isPrivate ? 'Privé (accès à la base candidats payant)'
-                    :'Public (accès à la base candidat immédiat)' }}</span></label>
-        </div>
-        
-        <!-- pour périmètre + caractère privé/public -->
-        <!-- <ng-container *ngIf="f.value.role=='external'"> -->
-        <div class="form-group col-md-6">
-            <label for="structure" class="form-label mt-3">Organisme (réservé à l'observateur externe)</label>
-            <input type="text" id="structure" ngModel name="structure" class="form-control"
-                placeholder="Ex : mission locale, agence locale, centre d'information jeunesse...">
-        </div>
-        <label for="geographicScopeSelect" class="my-2">🌍 Son périmètre géographique :</label>
-        <select id="geographicScopeSelect" class="form-control" ngModel name="geographicScope">
-            <option value>-- Sélectionner un périmètre (pour plus de lisibilité quand vous partagerez le
-                contact)</option>
-            <option value="regional">Régional</option>
-            <option value="departmental">Départemental</option>
-            <option value="local">Local</option>
-        </select>
-        <!-- fin des champs réservés aux observateurs externes -->
-        <!-- </ng-container> -->
+        <ng-container *ngIf="f.value.role==='external' && userRole?.includes('admin')">
+            <hr>
+
+            <div class="alert alert-danger">Les champs ci-dessous sont réservés à la
+                création d'observateurs externes
+            </div>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" [(ngModel)]="isPrivate"
+                    name="isPrivate" (change)="onPrivateToggle()">
+
+                <label class="form-check-label" for="flexSwitchCheckChecked"><span
+                        class="text-dark">Propriété:</span><span [ngClass]="{'text-danger':isPrivate}"> {{ isPrivate ?
+                        'Privé (accès à la base candidats payant)'
+                        :'Public (accès à la base candidat immédiat)' }}</span></label>
+            </div>
+
+            <!-- test {{isPrivate}} -->
+            <!-- cas typique où la mutualisation bloque l'affichage parce que les *ngIf s’excluent mutuellement dans le flux du DOM. -->
+            <ng-container *ngIf="!isPrivate">
+                <div class="form-group col-md-6">
+                    <label for="structure" class="form-label mt-3">Organisme (réservé à l'observateur externe)</label>
+                    <input type="text" id="structure" ngModel name="structure" class="form-control"
+                        placeholder="Ex : mission locale, agence locale, centre d'information jeunesse...">
+                </div>
+                <label for="geographicScopeSelect" class="my-2">🌍 Son périmètre géographique :</label>
+                <select id="geographicScopeSelect" class="form-control" ngModel name="geographicScope">
+                    <option value>-- Sélectionner un périmètre (pour plus de lisibilité quand vous partagerez le
+                        contact)</option>
+                    <option value="regional">Régional</option>
+                    <option value="departmental">Départemental</option>
+                    <option value="local">Local</option>
+                </select>
+            </ng-container>
+            <!-- fin des champs réservés aux observateurs externes -->
+        </ng-container>
+
+
+        <!-- pour le référent qui ne gère que des cas ou isPrivate n'est pas et la gestion du périmètre-->
+        <ng-container *ngIf="userRole=='referent'">
+            <div class="form-group col-md-6">
+                <label for="structure" class="form-label mt-3">Organisme (réservé à l'observateur externe)</label>
+                <input type="text" id="structure" ngModel name="structure" class="form-control"
+                    placeholder="Ex : mission locale, agence locale, centre d'information jeunesse...">
+            </div>
+            <label for="geographicScopeSelect" class="my-2">🌍 Son périmètre géographique :</label>
+            <select id="geographicScopeSelect" class="form-control" ngModel name="geographicScope">
+                <option value>-- Sélectionner un périmètre (pour plus de lisibilité quand vous partagerez le
+                    contact)</option>
+                <option value="regional">Régional</option>
+                <option value="departmental">Départemental</option>
+                <option value="local">Local</option>
+            </select>
+            <!-- fin des champs réservés aux observateurs externes -->
+        </ng-container>
         <hr>
 
         <!-- <label for="details" class="form-label mt-3">Commentaires optionnels</label> -->

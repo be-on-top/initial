@@ -16,5 +16,7 @@ export interface Users {
     address?: number;
     referentUid?:string;
     students:string[];
-    partner?:boolean
+    partner?:boolean;
+    details?:string;
+    comment?:string;
 }

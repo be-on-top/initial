@@ -3,8 +3,8 @@
     <h3 *ngIf="userRouterLinks.user==='admin'" class="mb-3">Détails de l'utilisateur ({{title}})</h3>
     <h3 *ngIf="userRouterLinks.user==='referent'" class="mb-3">Mon compte professionnel</h3>
 
-    
-<!-- title {{title}} -->
+
+    <!-- title {{title}} -->
 
     <div *ngIf="user">
 
@@ -18,16 +18,45 @@
                     <span *ngIf="user.cp"><span class="fw-bold">CP</span> : {{user.cp}}</span>
                 </p>
                 <hr>
-                <p> <span *ngIf="user.status; else checkbox"><strong>Status</strong> : actif</span>
+                <!-- <p> <span *ngIf="user.status; else checkbox"><strong>Status</strong> : actif</span>
                     <ng-template #checkbox> <strong>Status</strong> : inactif</ng-template>
                 </p>
-                <ng-template #checkbox> <strong>Status</strong> : actif</ng-template>
+                <ng-template #checkbox> <strong>Status</strong> : actif</ng-template> -->
+
+                <!-- alternative préférable si pas de status en base -->
+                <!-- <p>
+                    <ng-container *ngIf="user.status === true; else maybeInactive">
+                        <strong>Status</strong> : actif
+                    </ng-container>
+
+                    <ng-template #maybeInactive>
+                        <span *ngIf="user.status === false">
+                            <strong>Status</strong> : inactif
+                        </span>
+                    </ng-template>
+                </p> -->
+
+                <!-- autre alternative plus simple même si moins explicite -->
+                <p>
+                    <ng-container *ngIf="user.status !== false; else inactive">
+                        <strong>Status</strong> : actif
+                    </ng-container>
+
+                    <ng-template #inactive>
+                        <strong>Status</strong> : inactif
+                    </ng-template>
+                </p>
+
+
                 <!-- pour voir à récupérer la propriété additionnelle si existante  -->
                 <!-- <hr> -->
-                <p *ngIf="user.role==='referent'"> <span *ngIf="user.partner; else checkboxPartner"><strong>Associé à en tant que Conseiller d'un centre partenaire ou pas ?</strong> : Oui</span>
-                    <ng-template #checkbox> <strong>Associé en tant que Conseiller d'un centre partenaire ?</strong> : Non</ng-template>
+                <p *ngIf="user.role==='referent'"> <span *ngIf="user.partner; else checkboxPartner"><strong>Associé à en
+                            tant que Conseiller d'un centre partenaire ou pas ?</strong> : Oui</span>
+                    <ng-template #checkbox> <strong>Associé en tant que Conseiller d'un centre partenaire ?</strong> :
+                        Non</ng-template>
                 </p>
-                <ng-template #checkboxPartner> <strong>Associé en tant que Conseiller d'un centre partenaire ?</strong> : Non</ng-template>
+                <ng-template #checkboxPartner> <strong>Associé en tant que Conseiller d'un centre partenaire ?</strong>
+                    : Non</ng-template>
 
                 <!-- affectation métiers -->
                 <!-- <p *ngIf="user.sigle">Métiers d'affectation ({{user.sigle.length}}) :
@@ -38,17 +67,16 @@
                 <!-- <p *ngIf="studentsList && userRouterLinks.user!=='referent'"><strong>Candidats en cours de suivi ({{studentsList.length}})</strong> :
                     {{studentsList}}
                 </p> -->
-                <p *ngIf="studentsList && user.role=='tutor'"><strong>Candidats en cours de suivi ({{studentsList.length}})</strong> :
+                <p *ngIf="studentsList && user.role=='tutor'"><strong>Candidats en cours de suivi
+                        ({{studentsList.length}})</strong> :
                     {{studentsList}}
                 </p>
-                <p *ngIf="user.role=='external'"><strong>Enregistré en tant que</strong> : {{ user.isPrivate ? 'Privé' : 'Public' }}</p>
+                <p *ngIf="user.role=='external'"><strong>Enregistré en tant que</strong> : {{ user.isPrivate ? 'Privé' :
+                    'Public' }}</p>
                 <p *ngIf="user.geographicScope"><strong>Son périmètre</strong> : {{permimeter}}</p>
                 <span *ngIf="user.structure"><strong>Organisme</strong>: {{user.structure}}</span><br>
                 <hr>
-                <p *ngIf="user.structure"><strong>Détails</strong> : Nulla facilisi. Duis faucibus nisi ut arcu rhoncus venenatis. 
-                    Aenean vehicula dui tincidunt, rutrum metus sed, ultrices risus. 
-                    Maecenas semper, ante at volutpat sodales, felis ipsum tempor urna, ac fringilla ex felis sit amet ex. 
-                    Praesent suscipit metus nulla, ac tristique sapien sodales ut.</p>
+                <p *ngIf="user.details"><strong>Détails</strong> : {{user.details}}.</p>
             </div>
             <div class="card-footer text-muted">
                 <span *ngIf="user.created">Date de création : {{user.created | date:'dd/MM/yyyy' }}</span><br>
@@ -57,12 +85,13 @@
         <!-- {{userRouterLinks.user}} - {{userRouterLinks.data}}  -->
         <!-- il n'y a pas de risque qu'un referent demande à accéder à la liste de ceux dont la gestion est mutualisée donc -->
         <div *ngIf="userRouterLinks.user==='admin'" class="d-flex my-4 justify-content-end gap-5">
-            <button type="button" class="btn btn-primary text-white" [routerLink]="[linkBackToList]">Retour à la liste</button>
-            <button type="button" class="btn btn-warning text-white"
-                [routerLink]="['/admin/updateUser', user.id]">
+            <button type="button" class="btn btn-primary text-white" [routerLink]="[linkBackToList]">Retour à la
+                liste</button>
+            <button type="button" class="btn btn-warning text-white" [routerLink]="['/admin/updateUser', user.id]">
                 Modifier
             </button>
-            <button [disabled]="userRole==='referent'" type="button" class="btn btn-danger text-white" (click)="deleteUser(user.id)">Supprimer </button>
+            <button [disabled]="userRole==='referent'" type="button" class="btn btn-danger text-white"
+                (click)="deleteUser(user.id)">Supprimer </button>
         </div>
     </div>
 

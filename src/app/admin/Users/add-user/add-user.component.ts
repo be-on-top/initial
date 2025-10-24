@@ -89,11 +89,30 @@ export class AddUserComponent {
 
     let newUser: Users
 
-    // si on partage ce formulaire avec un referent qui n'aura pas accès à isPrivate ni role...
+    // // si on partage ce formulaire avec un referent qui n'aura pas accès à isPrivate ni role...
+    // if (this.userRole === 'referent') {
+    //   newUser = { ...form.value, role: 'external', isPrivate: false, status: true }
+    // }
+    // // si l'admin  enregistre  un contact qui n'est pas privé
+    // if (this.userRole !== 'referent' && form.value.isPrivate === true) {
+    //   // alert('isPrivate false détecté');
+    //   newUser = { ...form.value, status: false }
+    // }
+
+    // else { newUser = { ...form.value, status: true } }
+    // // ... et on passe newUser au service
+
+    // pour simplifier ce qui précède : 
     if (this.userRole === 'referent') {
       newUser = { ...form.value, role: 'external', isPrivate: false, status: true }
-    } else { newUser = form.value }
-    // ... et on passe newUser au service
+    }
+    if (this.userRole !== 'referent' && form.value.isPrivate === true) {
+      newUser = { ...form.value, status: false }
+    }
+    else {
+      newUser = { ...form.value, status: true }
+    }
+
 
     console.log("newUser", newUser);
 
@@ -255,7 +274,7 @@ export class AddUserComponent {
   // Méthode qui sera appelée à chaque changement de l'état du switch
   onPrivateToggle() {
     console.log('Le statut privé a été changé:', this.isPrivate);
-    this.isPrivate = !this.isPrivate
+    // this.isPrivate = !this.isPrivate
   }
 
 
