@@ -74,6 +74,7 @@ export class UpdateStudentComponent implements OnInit {
     this.service.getStudentById(this.studentId).subscribe((data) => {
       this.student = data
 
+
       if (this.student.evaluations || this.student.tutorials) {
         for (const key in this.student.evaluations) {
           key === this.evaluationKey ? this.evaluationToUpdate = this.student.evaluations[key] : ''
@@ -421,6 +422,12 @@ export class UpdateStudentComponent implements OnInit {
       // alert(data.cp)
       this.priorCenterPostalCode = data.cp
       console.log('this.priorCenterPostalCode !!!!!!!!!!!', this.priorCenterPostalCode);
+
+      // on peut ajouter pour l'hypothèse d'un candidat externe 
+      if(!this.student.innerStudent){
+        // alert(this.priorCenterPostalCode)
+        this.student.localTraining=this.priorCenterPostalCode
+      }
 
     })
 

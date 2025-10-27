@@ -172,13 +172,13 @@
                     <!-- utile si candidat inscrit par le conseiller projet OU si changement de lieu d'affectation suite à entretien -->
                     <!-- devra être réinitialiser à chaque fin de formation pour obtenir un filtre plus spécifique lors de l'affectation de candidats au formateur -->
                     <label class="form-label mt-3" for="localTraining">Modifier ou préciser le lieu de la formation<i
-                            class="bi bi-arrow-down-square-fill ms-1"></i>.
+                            class="bi bi-arrow-down-square-fill ms-1"></i>
                     </label>
                     <br>
 
                     <small class="text-muted">Fonctionnalité dédiée aux Conseillers Projets qui gèrent plusieurs
                         centres de formation OU candidats que vous avez ajoutés (dispensés de remplir le formulaire
-                        en ligne).</small><small class="text-muted" *ngIf="!student.innerStudent">Si rien n'est précisé,
+                        en ligne).</small><small class="text-muted" *ngIf="!student.innerStudent"></small><small> Si rien n'est précisé,
                         c'est le choix initial du candidat qui sera automatiquement associé à son
                         inscription</small>
 

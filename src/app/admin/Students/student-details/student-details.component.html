@@ -70,7 +70,7 @@
                         <a *ngIf="userRouterLinks.user=='admin'" class="text-white"
                             routerLink="/admin/updateStudent/{{student.id}}">Modifier</a>
                         <a *ngIf="userRouterLinks.user=='referent'" class="text-white"
-                            routerLink="/admin/referent/updateStudent/{{student.id}}">Modifier</a>
+                            routerLink="/admin/referent/updateStudent/{{student.id}}">Modifier (inscriptions)</a>
                     </button>
                     <button type="button" class="btn btn-danger"
                         [ngClass]="{'disabled':userRouterLinks.user=='referent' || userRouterLinks.user=='editor'|| userRouterLinks.user=='external'|| userRouterLinks.user=='referentsContacts'|| userRouterLinks.user=='trainer'}">
