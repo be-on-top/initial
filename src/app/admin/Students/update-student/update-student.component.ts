@@ -9,6 +9,7 @@ import { TrainersService } from '../../trainers.service';
 import { AuthService } from '../../auth.service';
 import { Trainer } from '../../trainer';
 import { CentersService } from '../../centers.service';
+import { UsersService } from '../../users.service';
 // import { AnimationKeyframesSequenceMetadata } from '@angular/animations';
 
 @Component({
@@ -47,6 +48,8 @@ export class UpdateStudentComponent implements OnInit {
   // pour récupérer côté composant l'uid dont on va avoir besoin pour le changement de paradigme...
   userUid: string | null = '';
 
+  cpArray: string[] = []
+
   constructor(
     private service: StudentsService,
     private ac: ActivatedRoute,
@@ -54,7 +57,9 @@ export class UpdateStudentComponent implements OnInit {
     private settingsService: SettingsService,
     private trainerService: TrainersService,
     private authService: AuthService,
-    private centersService: CentersService
+    private centersService: CentersService,
+    // juste pour pouvoir récupérer éventuellement les cp gérés par le referent
+    private usersService: UsersService
   ) {
     this.userRouterLinks = this.ac.snapshot.data;
   }
@@ -103,6 +108,36 @@ export class UpdateStudentComponent implements OnInit {
         this.availableTrainings = tradesEvaluated;
       }
 
+      // Récupérer l'UID de manière synchrone
+      this.userUid = this.authService.getCurrentUserUid();
+      // console.log('UID de l\'utilisateur authentifié dans le composant :', this.userUid);
+      if (!this.userUid) {
+        console.log('uid utilisateur authentifié non récupéré');
+      } else {
+        this.usersService.getUser(this.userUid).subscribe(data => {
+          // // Transformer la string CSV en tableau
+          // const cpList: string[] = data.cp.split(',');   // ["44980","35230","44150", ...]
+          // // Simuler 1 code postal pour tester la branche length === 1
+          // this.cpArray = cpList.slice(0, 1);             // ["44980"]
+          // this.cpArray = data.cp.split(',')
+          this.cpArray = data.cp
+
+          console.log('cpArray simulé :', this.cpArray);
+          console.log('length :', this.cpArray.length);
+          console.log('premier élément :', this.cpArray[0]);
+
+          if (Array.isArray(this.cpArray) && this.cpArray.length === 1 && this.student['innerStudent']) {
+            this.student.localTraining = this.cpArray[0];  // "44980"
+          } else {
+            this.student.localTraining = '';
+          }
+
+          console.log('student.localTraining :', this.student.localTraining);
+        });
+
+      }
+
+
 
     })
 
@@ -110,9 +145,6 @@ export class UpdateStudentComponent implements OnInit {
     this.fetchSigleIds()
 
     // implémenter la méthode conçue pour les "conseillers projets" (référents admin)
-    // Récupérer l'UID de manière synchrone
-    this.userUid = this.authService.getCurrentUserUid();
-    // console.log('UID de l\'utilisateur authentifié dans le composant :', this.userUid);
 
 
     // On peut maintenant utiliser cet UID pour d'autres opérations
@@ -129,6 +161,8 @@ export class UpdateStudentComponent implements OnInit {
     // this.getTrainersWithSameCpAndSigle(this.userUid)
 
     // }
+
+
 
 
   }

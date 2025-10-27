@@ -176,14 +176,15 @@
                     </label>
                     <br>
 
-
                     <small class="text-muted">Fonctionnalité dédiée aux Conseillers Projets qui gèrent plusieurs
                         centres de formation OU candidats que vous avez ajoutés (dispensés de remplir le formulaire
                         en ligne).</small><small class="text-muted" *ngIf="!student.innerStudent">Si rien n'est précisé,
                         c'est le choix initial du candidat qui sera automatiquement associé à son
                         inscription</small>
+
                     <input type="text" class="form-control mt-3" name="localTraining"
                         [(ngModel)]="student.localTraining" placeholder="code postal du centre">
+                        <small class="text-muted d-block mt-2" *ngIf="cpArray.length===1  && student.innerStudent">Puisque vous ne gérez qu'une seule localisation le champ est déjà pré-rempli</small>
                     <!-- fin -->
                     <button type="submit" class="btn btn-primary mt-3"
                         [ngClass]="{'disabled':subscription.invalid}">Valider</button>
