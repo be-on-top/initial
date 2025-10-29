@@ -42,11 +42,6 @@
     ],
     "redirects": [
       {
-        "source": "/formation/:id",
-        "destination": "https://be-on-top.io/formation/:id/:slug",
-        "type": 301
-      },
-      {
         "source": "https://be-on-top-reseau-cs.web.app/**",
         "destination": "https://be-on-top.io/:path",
         "type": 301
