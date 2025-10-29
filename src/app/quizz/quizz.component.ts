@@ -123,7 +123,8 @@ export class QuizzComponent implements OnInit {
     // private notificationService: PushNotificationService,
     private networkService: NetworkService,
     // private updateService: UpdateService
-    private consentService: ConsentService
+    private consentService: ConsentService,
+    private tradesService: SettingsService
   ) {
 
     // this.networkService.getOnlineStatus().subscribe(online => {
@@ -269,48 +270,59 @@ export class QuizzComponent implements OnInit {
       this.resultingDurationsByCompetences = this.competences.map((item: number) => ({ [item]: 0 }));
 
       // pour traiter en dur la dénomination 
-      if (this.trade == "cl_vul") {
-        this.title = "Chauffeur Livreur VUL"
+      // if (this.trade == "cl_vul") {
+      //   this.title = "Chauffeur Livreur VUL"
 
-      } else if (this.trade == "prepa_cdes") {
-        this.title = "Préparateur de Commandes"
+      // } else if (this.trade == "prepa_cdes") {
+      //   this.title = "Préparateur de Commandes"
 
-      } else if (this.trade == "poseur_ite") {
-        this.title = "Poseur ITE"
-      }
-      else if (this.trade == "mac_vrd") {
-        this.title = "Maçon VRD"
-      }
-      else if (this.trade == "caces_R489") {
-        this.title = "Conducteur chariot élévateur R489"
-      }
-      else if (this.trade == "caces_R482") {
-        this.title = "Conducteur engins de chantier R482 Cat.A"
-      }
-      else if (this.trade == "caces_R482B1") {
-        this.title = "Conducteur engins de chantier R482 Cat.B1"
-      }
-      else if (this.trade == "caces_R482C1") {
-        this.title = "Conducteur engins de chantier R482 Cat.C1"
-      }
-      else if (this.trade == "caces_R482F") {
-        this.title = "Conducteur engins de chantier R482 Cat.F"
-      }
-      else if (this.trade == "caces_R482Commun") {
-        this.title = "Conducteur engins de chantier R482 Commun"
-      }
-      else if (this.trade == "escr") {
-        this.title = "Enseignant ECSR"
-      }
-      else if (this.trade == "ctrmp_2025") {
-        this.title = "CTRMP Parcours complet 2025"
-      }
-      else if (this.trade == "ctrmp_2025PermisC") {
-        this.title = "CTRMP Parcours initial 2025"
-      }
-      else if (this.trade == "permis_c") {
-        this.title = "CTRMP Permis C"
-      }
+      // } else if (this.trade == "poseur_ite") {
+      //   this.title = "Poseur ITE"
+      // }
+      // else if (this.trade == "mac_vrd") {
+      //   this.title = "Maçon VRD"
+      // }
+      // else if (this.trade == "caces_R489") {
+      //   this.title = "Conducteur chariot élévateur R489"
+      // }
+      // else if (this.trade == "caces_R482") {
+      //   this.title = "Conducteur engins de chantier R482 Cat.A"
+      // }
+      // else if (this.trade == "caces_R482B1") {
+      //   this.title = "Conducteur engins de chantier R482 Cat.B1"
+      // }
+      // else if (this.trade == "caces_R482C1") {
+      //   this.title = "Conducteur engins de chantier R482 Cat.C1"
+      // }
+      // else if (this.trade == "caces_R482F") {
+      //   this.title = "Conducteur engins de chantier R482 Cat.F"
+      // }
+      // else if (this.trade == "caces_R482Commun") {
+      //   this.title = "Conducteur engins de chantier R482 Commun"
+      // }
+      // else if (this.trade == "escr") {
+      //   this.title = "Enseignant ECSR"
+      // }
+      // else if (this.trade == "ctrmp_2025") {
+      //   this.title = "CTRMP Parcours complet 2025"
+      // }
+      // else if (this.trade == "ctrmp_2025PermisC") {
+      //   this.title = "CTRMP Parcours initial 2025"
+      // }
+      // else if (this.trade == "permis_c") {
+      //   this.title = "CTRMP Permis C"
+      // }
+
+      if (!this.trade) return;
+
+      this.tradesService.getSigle(this.trade).subscribe(doc => {
+        if (doc && doc.denomination) {
+          this.title = doc.denomination;
+        } else {
+          // fallback si jamais le doc n’existe pas
+          this.title = 'en cours...';
+        }
+      });
 
     })
 
@@ -656,7 +668,7 @@ export class QuizzComponent implements OnInit {
   async prepareDataForResults() {
     const durationsByLevels: any = {};
     const estimatedCPCost: any = {};
-    const createdAt:Date | number =Date.now();
+    const createdAt: Date | number = Date.now();
 
     // Récupérer toutes les valeurs asynchrones en parallèle
     await Promise.all(
