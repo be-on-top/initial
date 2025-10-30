@@ -1,4 +1,4 @@
-import { AfterViewChecked, AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, Inject, OnInit } from '@angular/core';
 import { Meta, SafeHtml } from '@angular/platform-browser';
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { Firestore, docData, doc } from '@angular/fire/firestore';
@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/admin/auth.service';
 import { SettingsService } from 'src/app/admin/settings.service';
 import { StudentsService } from 'src/app/admin/students.service';
 import { Trade } from 'src/app/admin/trade';
-import { Location } from '@angular/common';
+import { DOCUMENT, Location } from '@angular/common';
 import { CentersService } from 'src/app/admin/centers.service';
 import { Centers } from 'src/app/admin/centers';
 
@@ -56,7 +56,6 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
   // ne vise qu'à retarder avec css l'affichage de tout le contenu
   isPageLoaded: boolean = false;
 
-
   constructor(
     private service: SettingsService,
     private ac: ActivatedRoute,
@@ -70,12 +69,16 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
     private metaService: Meta,
     private centerService: CentersService,
     private router: Router,
-    private consentService: ConsentService
+    private consentService: ConsentService,
+    @Inject(DOCUMENT) private document: Document
   ) {
     this.offline = !navigator.onLine
   }
 
   ngOnInit(): void {
+
+    this.setCanonicalURL();
+
     // this.tradeId = this.ac.snapshot.params["id"]
     this.ac.paramMap.subscribe(params => {
       this.tradeId = params.get('id') ?? ''
@@ -86,7 +89,7 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
         take(1)  // Prendre seulement un résultat
       ).subscribe(
           data => {
-          console.log("metier récupéré via le paramètre de route", data)
+          // console.log("metier récupéré via le paramètre de route", data)
           this.tradeData = data
 
 
@@ -134,7 +137,6 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
         });
 
 
-
       } else if (this.offline) {
 
         alert("offline")
@@ -151,7 +153,7 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
 
           // Traite les données récupérées ici depuis base de données indexée my-database
           getOneRequest.onsuccess = (event) => {
-            console.log("métier récupéré depuis indexedDB")
+            // console.log("métier récupéré depuis indexedDB")
             this.tradeData = getOneRequest.result
             // Pour extraire et additionner les premières valeurs des tableaux associés aux clés spécifiques dans l'objet tradeData.durations, vous pouvez utiliser TypeScript avec Angular de la manière suivante :  
             const keysToExtractFrom = Object.keys(this.tradeData.durations)
@@ -174,10 +176,6 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
 
         // pour récupérer l'image locale si image locale
         this.imageUrl = `../../assets/${this.tradeId}.jpeg`
-
-
-
-
 
       }
 
@@ -217,14 +215,12 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
           // alert("pour commencer un quizz, vous identifier ou vous créer un compte !!!!")
         }
 
-
       })
 
 
       // alert(this.hasStartedEvaluation)
 
       // this.structuredData = this.generateStructuredData(this.tradeData);
-
 
       // fin ac.paramMap.subscribe
     })
@@ -261,10 +257,6 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
 
 
 
-
-
-
-
   getRole(id: any) {
     // finalement, compte tenu du fait que les evaluators peuvent potentiellement aussi être des tuteurs (formateurs) roles sera un tableau
     // au niveau de getRole, cela ne change pas grand chose
@@ -296,8 +288,6 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
     // this.isCPCollapsed && this.isCentersCollapsed ? this.toggleCentersCollapse() : ''
 
   }
-
-
 
 
   toggleCentersCollapse() {
@@ -367,33 +357,82 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
 
 
 
-  generateStructuredData(trade: Trade): SafeHtml {
-    const data = {
-      "@context": "https://schema.org",
-      "@type": "Article",
-      "headline": trade.denomination,
-      "description": "Formation BE-ON-TOP - fiche métier compétences et objectifs",
-      "articleBody": trade.description,
-      "image": "https://be-on-top.io/assets/" + trade.sigle + ".jpeg", // Utilisez une URL d'image appropriée
-      "author": {
+  // generateStructuredData(trade: Trade): SafeHtml {
+  //   const data = {
+  //     "@context": "https://schema.org",
+  //     "@type": "Article",
+  //     "headline": trade.denomination,
+  //     "description": "Formation BE-ON-TOP - fiche métier compétences et objectifs",
+  //     "articleBody": trade.description,
+  //     "image": "https://be-on-top.io/assets/" + trade.sigle + ".jpeg", // Utilisez une URL d'image appropriée
+  //     "author": {
+  //       "@type": "Person",
+  //       "name": "M.Hervé"
+  //     },
+  //     "publisher": {
+  //       "@type": "Organization",
+  //       "name": "BE-ON-TOP",
+  //       "logo": {
+  //         "@type": "ImageObject",
+  //         "url": "https://be-on-top.io/assets/BE-ON-TOP_picto_LOGO.svg"
+  //       }
+  //     },
+  //     // Propriétés supplémentaires
+  //     "identifiant": trade.sigle,
+  //     "Competence": this.tradeData.competences,
+  //     "Durée max de formation en heures": this.firstValuesSum,
+  //   };
+  //   return this.sanitizer.bypassSecurityTrustHtml(`<script type="application/ld+json">${JSON.stringify(data)}</script>`);
+  // }
+
+  // pour changer le type : 
+  cleanText(html: string): string {
+  const temp = document.createElement('div');
+  temp.innerHTML = html;
+  return (temp.textContent || temp.innerText || '').trim();
+}
+
+generateStructuredData(trade: Trade): SafeHtml {
+  const description = trade.description ?? ''; // <-- valeur par défaut vide
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": trade.denomination,
+    "description": this.cleanText(description),
+    "identifier": trade.sigle,
+    "provider": {
+      "@type": "Organization",
+      "name": "BE-ON-TOP",
+      "url": "https://be-on-top.io",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://be-on-top.io/assets/BE-ON-TOP_picto_LOGO.svg"
+      }
+    },
+    "hasCourseInstance": {
+      "@type": "CourseInstance",
+      "courseMode": "Présentiel et distanciel",
+      "duration": `PT${this.firstValuesSum}H`,
+      "instructor": {
         "@type": "Person",
-        "name": "M.Hervé"
+        "name": "Formateurs BE-ON-TOP"
       },
-      "publisher": {
-        "@type": "Organization",
-        "name": "BE-ON-TOP",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://be-on-top.io/assets/BE-ON-TOP_picto_LOGO.svg"
-        }
-      },
-      // Propriétés supplémentaires
-      "identifiant": trade.sigle,
-      "Competence": this.tradeData.competences,
-      "Durée max de formation en heures": this.firstValuesSum,
-    };
-    return this.sanitizer.bypassSecurityTrustHtml(`<script type="application/ld+json">${JSON.stringify(data)}</script>`);
-  }
+      "location": {
+        "@type": "Place",
+        "name": "Centres BE-ON-TOP",
+        "address": "France"
+      }
+    },
+    "about": trade.competences
+  };
+
+  return this.sanitizer.bypassSecurityTrustHtml(
+    `<script type="application/ld+json">${JSON.stringify(data)}</script>`
+  );
+}
+
+
+
 
 
 
@@ -422,11 +461,32 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
 
   // }
 
+setCanonicalURL(): void {
+    try {
+      const canonicalUrl = window.location.origin + window.location.pathname;
+      let link: HTMLLinkElement | null = this.document.querySelector("link[rel='canonical']");
+
+      if (!link) {
+        link = this.document.createElement('link');
+        link.setAttribute('rel', 'canonical');
+        this.document.head.appendChild(link);
+        console.log('[SEO] Balise canonique créée');
+      }
+
+      link.setAttribute('href', canonicalUrl);
+      console.log(`[SEO] Canonical défini → ${canonicalUrl}`);
+    } catch (err) {
+      console.error('[SEO] Erreur lors de la mise à jour du canonical :', err);
+    }
+  }
+
+
+
 
   private async fetchCenters(): Promise<void> {
     try {
       const centers = await this.centerService.getDocsByParam(this.tradeId);
-      console.log('Centres récupérés:', centers);
+      // console.log('Centres récupérés:', centers);
       this.tradeCenters = centers.filter(center=>center.status===true)
       // on désactive tant qu'on n'a pas pu tester à grande échelle...
       // this.addMarkers(centers); // Ajoute les marqueurs après que la carte soit initialisée
