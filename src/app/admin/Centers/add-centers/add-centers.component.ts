@@ -36,7 +36,7 @@ export class AddCentersComponent implements OnInit {
 
   // si on envisage l'import csv
   csvFile: File | null = null; // Variable pour stocker le fichier CSV sélectionné
-  parsedCenters: any[] = [];   // Tableau pour stocker les données analysées
+  parsedCenters: Centers[] = [];   // Tableau pour stocker les données analysées
 
   // pour faire la différence selon que c'est ou non un centre partenaire
   // partner: boolean = false
@@ -283,43 +283,113 @@ export class AddCentersComponent implements OnInit {
 
   // Fonction pour importer et analyser le fichier CSV
   // Fonction pour importer et analyser le fichier CSV
+  // importCSV(): void {
+  //   if (!this.csvFile) {
+  //     this.errorMessage = 'Veuillez sélectionner un fichier CSV avant de procéder.';
+  //     return;
+  //   }
+
+  //   this.papa.parse(this.csvFile, {
+  //     header: true,
+  //     skipEmptyLines: true,
+  //     delimiter: ";",
+  //     complete: (result) => {
+  //       console.log("Résultat brut PapaParse:", result.data);
+
+  //       this.parsedCenters = result.data
+  //         .filter((center: Centers) => {
+  //           return center.name && center.address && center.cp && center.sigles &&
+  //             center.city && center.tel && center.mainCity && center.member && center.subsidiary && center.independent;
+  //         })
+  //         .map((center: Centers) => {
+  //           // sigles en tableau
+  //           // center.sigles = center.sigles.split(",").map((sigle: string) => sigle.trim());
+  //           center.sigles = center.sigles.map((sigle: string) => sigle.trim());
+
+  //           // partner en booléen
+  //           center.partner = result.data.partner?.trim().toLowerCase() === "oui";
+  //           center.member = result.data.subsidiary?.trim().toLowerCase() === "oui";
+  //           center.subsidiary = result.data.independant?.trim().toLowerCase() === "oui";
+  //           center.subsidiary = result.data.independant?.trim().toLowerCase() === "oui";
+
+  //           return center;
+  //         });
+
+  //       console.log('Données analysées:', this.parsedCenters);
+  //       // this.uploadCentersToFirestore();
+  //     },
+  //     error: (error) => {
+  //       console.error("Erreur lors de l'analyse du fichier CSV:", error);
+  //       this.errorMessage = "Erreur lors de l'analyse du fichier CSV.";
+  //     }
+  //   });
+  // }
+
+
   importCSV(): void {
     if (!this.csvFile) {
       this.errorMessage = 'Veuillez sélectionner un fichier CSV avant de procéder.';
       return;
     }
 
+    // Analyse du fichier CSV grâce à PapaParse. 
     this.papa.parse(this.csvFile, {
+      // Considère la première ligne comme des en-têtes
       header: true,
-      skipEmptyLines: true,
-      delimiter: ";",
+      skipEmptyLines: true, // Ignore les lignes vides !!!
       complete: (result) => {
-        console.log("Résultat brut PapaParse:", result.data);
-
+        // Filtrage des objets vides ou des champs manquants
         this.parsedCenters = result.data
-          .filter((center: any) => {
-            return center.name && center.address && center.cp && center.sigles &&
-              center.city && center.tel && center.email && center.mainCity;
-          })
+          .filter((center: Centers) =>
+            center.name &&
+            center.address &&
+            center.cp &&
+            // center.sigles &&
+            center.city &&
+            center.tel &&
+            center.mainCity
+          )
           .map((center: any) => {
-            // sigles en tableau
-            center.sigles = center.sigles.split(",").map((sigle: string) => sigle.trim());
+            const obj: any = {
+              name: center.name,
+              address: center.address,
+              cp: center.cp,
+              sigles: center.sigles.split(',').map((s: string) => s.trim()),
+              city: center.city,
+              tel: center.tel,
+              mainCity: center.mainCity
+            };
 
-            // partner en booléen
-            center.partner = center.partner?.trim().toLowerCase() === "oui";
+            // conversion
+            const member = this.cleanBoolean(center.member);
+            const subsidiary = this.cleanBoolean(center.subsidiary);
+            const independent = this.cleanBoolean(center.independent);
+            const partner = this.cleanBoolean(center.partner);
 
-            return center;
+            // n'ajoute la clé QUE si true
+            return {
+              ...obj,
+              ...(member && { member }),
+              ...(subsidiary && { subsidiary }),
+              ...(independent && { independent }),
+              ...(partner && { partner })
+            };
           });
 
         console.log('Données analysées:', this.parsedCenters);
         this.uploadCentersToFirestore();
       },
       error: (error) => {
-        console.error("Erreur lors de l'analyse du fichier CSV:", error);
-        this.errorMessage = "Erreur lors de l'analyse du fichier CSV.";
+        console.error('Erreur lors de l\'analyse du fichier CSV:', error);
+        this.errorMessage = 'Erreur lors de l\'analyse du fichier CSV.';
       }
     });
   }
+
+  cleanBoolean(value: any): boolean {
+    return String(value).trim().toLowerCase() === 'oui';
+  }
+
 
 
 
@@ -332,6 +402,7 @@ export class AddCentersComponent implements OnInit {
       this.errorMessage = 'Aucune donnée à importer depuis le fichier CSV.';
       return;
     }
+
 
     this.parsedCenters.forEach(center => {
 
@@ -348,9 +419,6 @@ export class AddCentersComponent implements OnInit {
       });
     });
   }
-
-
-
 
 
 

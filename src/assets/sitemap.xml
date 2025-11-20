@@ -83,12 +83,6 @@
     <priority>0.8</priority>
   </url>
 
-  <!-- ❌ Supprimer ces deux URLs, elles contiennent un slug ou une répétition inutile -->
-  <!--
-  <url><loc>https://be-on-top.io/formation/ctrmp_2025PermisC</loc></url>
-  <url><loc>https://be-on-top.io/formation/permis_c/permis_c</loc></url>
-  -->
-
   <url>
     <loc>https://be-on-top.io/formation/ctrmtv_2025</loc>
     <changefreq>monthly</changefreq>
@@ -103,6 +97,18 @@
 
   <url>
     <loc>https://be-on-top.io/formation/permis_ce</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://be-on-top.io/formation/permis_c</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://be-on-top.io/formation/permis_d</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
