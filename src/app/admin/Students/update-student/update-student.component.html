@@ -322,12 +322,17 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="details" class="form-label mt-3">Details</label>
+                    <label for="details" class="form-label mt-3">Details : </label><span class="text-muted fst-italic"> Si vous êtes plusieurs formateurs à intervenir sur l'évaluation de cette compétence, évitez de supprimer les commentaires existants afin d'en conserver la traçabilité.</span>
                     <!-- Si on utilise TinyCME comme éditeur de texte pour enrichir la propriété details -->
-                    <editor apiKey="ahl0yg86w69zh9viflcvku8m2k333o942kc9fpttussom153"
-                        [init]="{ plugins: 'link image', toolbar: 'undo redo | bold italic | link image' }"
-                        [id]="'details'" [ngModel]="evaluationToUpdate.details" name="details"
-                        placeholder="Saisissez l'évaluation reçue en présentiel"></editor>
+<editor
+  apiKey="ahl0yg86w69zh9viflcvku8m2k333o942kc9fpttussom153"
+  [init]="tinyInit"
+  [id]="'details'"
+  [(ngModel)]="evaluationToUpdate.details"
+  name="details"
+  placeholder="Saisissez l'évaluation reçue en présentiel">
+</editor>
+
                     <div class="valid-feedback" *ngIf="details.valid">Evaluation correctement renseignée</div>
                     <div class="invalid-feedback" *ngIf="details.invalid">Merci de saisir votre évaluation de suivi
                     </div>

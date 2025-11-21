@@ -50,6 +50,12 @@ export class UpdateStudentComponent implements OnInit {
 
   cpArray: string[] = []
 
+  tinyInit: any;
+  initialContent: string = '';
+
+  // Si vrai → on ne demande plus de confirmation
+deleteConfirmed = false;
+
   constructor(
     private service: StudentsService,
     private ac: ActivatedRoute,
@@ -76,9 +82,16 @@ export class UpdateStudentComponent implements OnInit {
 
 
       if (this.student.evaluations || this.student.tutorials) {
+
+
         for (const key in this.student.evaluations) {
           key === this.evaluationKey ? this.evaluationToUpdate = this.student.evaluations[key] : ''
+
+
+          // Valeur initiale venant de Firestore
+          this.initialContent = this.evaluationToUpdate.details || '';
         }
+
         // console.log("evaluationToUpdate", this.evaluationToUpdate)
 
         for (const key in this.student.tutorials) {
@@ -162,6 +175,180 @@ export class UpdateStudentComponent implements OnInit {
     // this.getTrainersWithSameCpAndSigle(this.userUid)
 
     // }
+
+// this.tinyInit = {
+//   plugins: 'link image',
+//   toolbar: 'undo redo | bold italic | link image',
+
+//   setup: (editor: any) => {
+
+//     let initialLength = 0;
+
+//     editor.on('init', () => {
+//       // Charger texte initial + paragraphe vide pour écrire à la suite
+//       editor.setContent(this.initialContent + '<p><br></p>');
+
+//       // Sauvegarder longueur du texte initial
+//       initialLength = editor.getContent({ format: 'text' }).length;
+
+//       // Placer le curseur dans le paragraphe vide
+//       setTimeout(() => {
+//         const body = editor.getBody();
+//         const lastNode = body.lastChild;
+//         editor.selection.select(lastNode, true);
+//         editor.selection.collapse(false);
+//       }, 50);
+//     });
+
+//     const moveCaretToEnd = () => {
+//       const body = editor.getBody();
+//       const lastNode = body.lastChild;
+//       editor.selection.select(lastNode, true);
+//       editor.selection.collapse(false);
+//     };
+
+//     editor.on('keydown', (e: KeyboardEvent) => {
+//       if (this.deleteConfirmed) return;
+
+//       if (e.key === 'Backspace' || e.key === 'Delete') {
+//         const text = editor.getContent({ format: 'text' });
+//         const rng = editor.selection.getRng();
+
+//         // Calculer la position de début de la sélection dans le texte brut
+//         const startOffset = editor.selection.getRng().startOffset;
+//         let caretPos = 0;
+
+//         const traverse = (node: any): boolean => {
+//           if (node === rng.startContainer) {
+//             caretPos += rng.startOffset;
+//             return true;
+//           }
+//           if (node.nodeType === 3) {
+//             caretPos += node.textContent.length;
+//           }
+//           if (node.childNodes) {
+//             for (let child of node.childNodes) {
+//               if (traverse(child)) return true;
+//             }
+//           }
+//           return false;
+//         };
+
+//         traverse(editor.getBody());
+
+//         // 🔹 Alerte uniquement si la sélection touche le texte initial
+//         if (caretPos < initialLength) {
+//           e.preventDefault();
+//           e.stopPropagation();
+
+//           const ok = confirm(
+//             "⚠️ Vous tentez de supprimer le partie du commentaire initial.\n" +
+//             "Confirmez-vous cette suppression ?"
+//           );
+
+//           if (ok) {
+//             this.deleteConfirmed = true;
+//           } else {
+//             // Restaurer texte initial + paragraphe vide
+//             editor.setContent(this.initialContent + '<p><br></p>');
+//             setTimeout(() => moveCaretToEnd(), 0);
+//           }
+//         }
+//       }
+//     });
+//   }
+// };
+
+
+this.tinyInit = {
+  // plugins: 'link image',
+  // toolbar: 'undo redo | bold italic | link image',
+  plugins: '',                   // désactive images + liens
+  toolbar: 'undo redo | bold italic', 
+  menubar: false,                // optionnel : retire le menu "Insert"
+
+  setup: (editor: any) => {
+
+    editor.on('init', () => {
+
+      // On enveloppe le texte initial dans un conteneur reconnu et stable
+      const initialHTML =
+        `<div data-initial="true">${this.initialContent}</div><p><br></p>`;
+
+      editor.setContent(initialHTML);
+
+      // On place le curseur dans la zone libre
+      setTimeout(() => {
+        const body = editor.getBody();
+        const last = body.lastChild;
+        editor.selection.select(last, true);
+        editor.selection.collapse(false);
+      }, 50);
+    });
+
+    const moveCaretToEnd = () => {
+      const body = editor.getBody();
+      const last = body.lastChild;
+      editor.selection.select(last, true);
+      editor.selection.collapse(false);
+    };
+
+    editor.on('keydown', (e: KeyboardEvent) => {
+      if (this.deleteConfirmed) return;
+
+      if (e.key === 'Backspace' || e.key === 'Delete') {
+        const rng = editor.selection.getRng();
+
+        // On récupère le conteneur initial PAR data-attribute (fiable)
+        const initialBlock = editor.getBody().querySelector('[data-initial="true"]');
+
+        if (!initialBlock) return; // sécurité
+
+        // Vérifier si le caret ou la sélection touche ce bloc
+        const touchesInitial =
+          initialBlock.contains(rng.startContainer) ||
+          initialBlock.contains(rng.endContainer);
+
+        if (touchesInitial) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          const ok = confirm(
+            "⚠️ Vous tentez de supprimer le texte initial.\n" +
+            "Confirmez-vous cette suppression ?"
+          );
+
+          if (ok) {
+            this.deleteConfirmed = true;
+            initialBlock.removeAttribute('data-initial');
+          } else {
+            editor.setContent(
+              `<div data-initial="true">${this.initialContent}</div><p><br></p>`
+            );
+            setTimeout(() => moveCaretToEnd(), 0);
+          }
+        }
+      }
+    });
+
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -424,9 +611,9 @@ export class UpdateStudentComponent implements OnInit {
       console.log('this.priorCenterPostalCode !!!!!!!!!!!', this.priorCenterPostalCode);
 
       // on peut ajouter pour l'hypothèse d'un candidat externe 
-      if(!this.student.innerStudent){
+      if (!this.student.innerStudent) {
         // alert(this.priorCenterPostalCode)
-        this.student.localTraining=this.priorCenterPostalCode
+        this.student.localTraining = this.priorCenterPostalCode
       }
 
     })
@@ -590,6 +777,31 @@ export class UpdateStudentComponent implements OnInit {
     }
   }
 
+getAbsoluteCaretPos(editor: any): number {
+  const sel = editor.selection.getRng();
+  let pos = 0;
+
+  const traverse = (node: any) => {
+    if (node === sel.startContainer) {
+      pos += sel.startOffset;
+      throw 'done';
+    }
+    if (node.nodeType === 3) {
+      pos += node.textContent.length;
+    }
+    if (node.childNodes) {
+      for (let child of node.childNodes) {
+        traverse(child);
+      }
+    }
+  };
+
+  try {
+    traverse(editor.getBody());
+  } catch {}
+
+  return pos;
+}
 
 
 
