@@ -373,6 +373,9 @@ this.tinyInit = {
       /* console.log('form valid'); */
       return
     }
+
+  // 🔥 Nettoyage avant soumission (important : réassigner !)
+  form.value.details = this.cleanEmptyParagraphs(form.value.details);
     /* console.log("form update values", form.value); */
     const updatedEvaluations: any = { evaluations: { ...this.student.evaluations } }
     // pour actualiser la date à l'update
@@ -803,6 +806,15 @@ getAbsoluteCaretPos(editor: any): number {
   return pos;
 }
 
+cleanEmptyParagraphs(html: string): string {
+  if (!html) return html;
+
+  // Supprime <p> vides, <p><br></p>, <p>&nbsp;</p>
+  html = html.replace(/<p>(\s|&nbsp;|<br>|<br\/>|<br \/>)*<\/p>/gi, '');
+
+  // Trim final pour éviter les artefacts
+  return html.trim();
+}
 
 
 

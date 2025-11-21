@@ -57,7 +57,7 @@
             </div>
 
             <!-- Tooggle Swith for student status -->
-            <div class="form-check form-switch my-3">
+            <div class="form-check form-switch my-3" [ngClass]="{'d-none':userRouterLinks.user==='trainer'}">
                 <input class="form-check-input" type="checkbox" id="status" name="status" value="true"
                     [(checked)]="student.status" [(ngModel)]="student.status"
                     [disabled]="userRouterLinks.user==='trainer'">
