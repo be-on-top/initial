@@ -54,7 +54,10 @@ export class UpdateStudentComponent implements OnInit {
   initialContent: string = '';
 
   // Si vrai → on ne demande plus de confirmation
-deleteConfirmed = false;
+  deleteConfirmed = false;
+
+    trainerLastName: string = ""
+  trainerFirstName: string = ""
 
   constructor(
     private service: StudentsService,
@@ -151,6 +154,13 @@ deleteConfirmed = false;
 
       }
 
+          if (this.userUid) {
+      this.trainerService.getTrainer(this.userUid).subscribe(trainer => {
+        this.trainerLastName = trainer.lastName
+        this.trainerFirstName = trainer.firstName
+      })
+    }
+
 
 
     })
@@ -176,163 +186,163 @@ deleteConfirmed = false;
 
     // }
 
-// this.tinyInit = {
-//   plugins: 'link image',
-//   toolbar: 'undo redo | bold italic | link image',
+    // this.tinyInit = {
+    //   plugins: 'link image',
+    //   toolbar: 'undo redo | bold italic | link image',
 
-//   setup: (editor: any) => {
+    //   setup: (editor: any) => {
 
-//     let initialLength = 0;
+    //     let initialLength = 0;
 
-//     editor.on('init', () => {
-//       // Charger texte initial + paragraphe vide pour écrire à la suite
-//       editor.setContent(this.initialContent + '<p><br></p>');
+    //     editor.on('init', () => {
+    //       // Charger texte initial + paragraphe vide pour écrire à la suite
+    //       editor.setContent(this.initialContent + '<p><br></p>');
 
-//       // Sauvegarder longueur du texte initial
-//       initialLength = editor.getContent({ format: 'text' }).length;
+    //       // Sauvegarder longueur du texte initial
+    //       initialLength = editor.getContent({ format: 'text' }).length;
 
-//       // Placer le curseur dans le paragraphe vide
-//       setTimeout(() => {
-//         const body = editor.getBody();
-//         const lastNode = body.lastChild;
-//         editor.selection.select(lastNode, true);
-//         editor.selection.collapse(false);
-//       }, 50);
-//     });
+    //       // Placer le curseur dans le paragraphe vide
+    //       setTimeout(() => {
+    //         const body = editor.getBody();
+    //         const lastNode = body.lastChild;
+    //         editor.selection.select(lastNode, true);
+    //         editor.selection.collapse(false);
+    //       }, 50);
+    //     });
 
-//     const moveCaretToEnd = () => {
-//       const body = editor.getBody();
-//       const lastNode = body.lastChild;
-//       editor.selection.select(lastNode, true);
-//       editor.selection.collapse(false);
-//     };
+    //     const moveCaretToEnd = () => {
+    //       const body = editor.getBody();
+    //       const lastNode = body.lastChild;
+    //       editor.selection.select(lastNode, true);
+    //       editor.selection.collapse(false);
+    //     };
 
-//     editor.on('keydown', (e: KeyboardEvent) => {
-//       if (this.deleteConfirmed) return;
+    //     editor.on('keydown', (e: KeyboardEvent) => {
+    //       if (this.deleteConfirmed) return;
 
-//       if (e.key === 'Backspace' || e.key === 'Delete') {
-//         const text = editor.getContent({ format: 'text' });
-//         const rng = editor.selection.getRng();
+    //       if (e.key === 'Backspace' || e.key === 'Delete') {
+    //         const text = editor.getContent({ format: 'text' });
+    //         const rng = editor.selection.getRng();
 
-//         // Calculer la position de début de la sélection dans le texte brut
-//         const startOffset = editor.selection.getRng().startOffset;
-//         let caretPos = 0;
+    //         // Calculer la position de début de la sélection dans le texte brut
+    //         const startOffset = editor.selection.getRng().startOffset;
+    //         let caretPos = 0;
 
-//         const traverse = (node: any): boolean => {
-//           if (node === rng.startContainer) {
-//             caretPos += rng.startOffset;
-//             return true;
-//           }
-//           if (node.nodeType === 3) {
-//             caretPos += node.textContent.length;
-//           }
-//           if (node.childNodes) {
-//             for (let child of node.childNodes) {
-//               if (traverse(child)) return true;
-//             }
-//           }
-//           return false;
-//         };
+    //         const traverse = (node: any): boolean => {
+    //           if (node === rng.startContainer) {
+    //             caretPos += rng.startOffset;
+    //             return true;
+    //           }
+    //           if (node.nodeType === 3) {
+    //             caretPos += node.textContent.length;
+    //           }
+    //           if (node.childNodes) {
+    //             for (let child of node.childNodes) {
+    //               if (traverse(child)) return true;
+    //             }
+    //           }
+    //           return false;
+    //         };
 
-//         traverse(editor.getBody());
+    //         traverse(editor.getBody());
 
-//         // 🔹 Alerte uniquement si la sélection touche le texte initial
-//         if (caretPos < initialLength) {
-//           e.preventDefault();
-//           e.stopPropagation();
+    //         // 🔹 Alerte uniquement si la sélection touche le texte initial
+    //         if (caretPos < initialLength) {
+    //           e.preventDefault();
+    //           e.stopPropagation();
 
-//           const ok = confirm(
-//             "⚠️ Vous tentez de supprimer le partie du commentaire initial.\n" +
-//             "Confirmez-vous cette suppression ?"
-//           );
+    //           const ok = confirm(
+    //             "⚠️ Vous tentez de supprimer le partie du commentaire initial.\n" +
+    //             "Confirmez-vous cette suppression ?"
+    //           );
 
-//           if (ok) {
-//             this.deleteConfirmed = true;
-//           } else {
-//             // Restaurer texte initial + paragraphe vide
-//             editor.setContent(this.initialContent + '<p><br></p>');
-//             setTimeout(() => moveCaretToEnd(), 0);
-//           }
-//         }
-//       }
-//     });
-//   }
-// };
+    //           if (ok) {
+    //             this.deleteConfirmed = true;
+    //           } else {
+    //             // Restaurer texte initial + paragraphe vide
+    //             editor.setContent(this.initialContent + '<p><br></p>');
+    //             setTimeout(() => moveCaretToEnd(), 0);
+    //           }
+    //         }
+    //       }
+    //     });
+    //   }
+    // };
 
 
-this.tinyInit = {
-  // plugins: 'link image',
-  // toolbar: 'undo redo | bold italic | link image',
-  plugins: '',                   // désactive images + liens
-  toolbar: 'undo redo | bold italic', 
-  menubar: false,                // optionnel : retire le menu "Insert"
+    this.tinyInit = {
+      // plugins: 'link image',
+      // toolbar: 'undo redo | bold italic | link image',
+      plugins: '',                   // désactive images + liens
+      toolbar: 'undo redo | bold italic',
+      menubar: false,                // optionnel : retire le menu "Insert"
 
-  setup: (editor: any) => {
+      setup: (editor: any) => {
 
-    editor.on('init', () => {
+        editor.on('init', () => {
 
-      // On enveloppe le texte initial dans un conteneur reconnu et stable
-      const initialHTML =
-        `<div data-initial="true">${this.initialContent}</div><p><br></p>`;
+          // On enveloppe le texte initial dans un conteneur reconnu et stable
+          const initialHTML =
+            `<div data-initial="true">${this.initialContent}</div><p><br></p>`;
 
-      editor.setContent(initialHTML);
+          editor.setContent(initialHTML);
 
-      // On place le curseur dans la zone libre
-      setTimeout(() => {
-        const body = editor.getBody();
-        const last = body.lastChild;
-        editor.selection.select(last, true);
-        editor.selection.collapse(false);
-      }, 50);
-    });
+          // On place le curseur dans la zone libre
+          setTimeout(() => {
+            const body = editor.getBody();
+            const last = body.lastChild;
+            editor.selection.select(last, true);
+            editor.selection.collapse(false);
+          }, 50);
+        });
 
-    const moveCaretToEnd = () => {
-      const body = editor.getBody();
-      const last = body.lastChild;
-      editor.selection.select(last, true);
-      editor.selection.collapse(false);
-    };
+        const moveCaretToEnd = () => {
+          const body = editor.getBody();
+          const last = body.lastChild;
+          editor.selection.select(last, true);
+          editor.selection.collapse(false);
+        };
 
-    editor.on('keydown', (e: KeyboardEvent) => {
-      if (this.deleteConfirmed) return;
+        editor.on('keydown', (e: KeyboardEvent) => {
+          if (this.deleteConfirmed) return;
 
-      if (e.key === 'Backspace' || e.key === 'Delete') {
-        const rng = editor.selection.getRng();
+          if (e.key === 'Backspace' || e.key === 'Delete') {
+            const rng = editor.selection.getRng();
 
-        // On récupère le conteneur initial PAR data-attribute (fiable)
-        const initialBlock = editor.getBody().querySelector('[data-initial="true"]');
+            // On récupère le conteneur initial PAR data-attribute (fiable)
+            const initialBlock = editor.getBody().querySelector('[data-initial="true"]');
 
-        if (!initialBlock) return; // sécurité
+            if (!initialBlock) return; // sécurité
 
-        // Vérifier si le caret ou la sélection touche ce bloc
-        const touchesInitial =
-          initialBlock.contains(rng.startContainer) ||
-          initialBlock.contains(rng.endContainer);
+            // Vérifier si le caret ou la sélection touche ce bloc
+            const touchesInitial =
+              initialBlock.contains(rng.startContainer) ||
+              initialBlock.contains(rng.endContainer);
 
-        if (touchesInitial) {
-          e.preventDefault();
-          e.stopPropagation();
+            if (touchesInitial) {
+              e.preventDefault();
+              e.stopPropagation();
 
-          const ok = confirm(
-            "⚠️ Vous tentez de supprimer le texte initial.\n" +
-            "Confirmez-vous cette suppression ?"
-          );
+              const ok = confirm(
+                "⚠️ Vous tentez de supprimer le texte initial.\n" +
+                "Confirmez-vous cette suppression ?"
+              );
 
-          if (ok) {
-            this.deleteConfirmed = true;
-            initialBlock.removeAttribute('data-initial');
-          } else {
-            editor.setContent(
-              `<div data-initial="true">${this.initialContent}</div><p><br></p>`
-            );
-            setTimeout(() => moveCaretToEnd(), 0);
+              if (ok) {
+                this.deleteConfirmed = true;
+                initialBlock.removeAttribute('data-initial');
+              } else {
+                editor.setContent(
+                  `<div data-initial="true">${this.initialContent}</div><p><br></p>`
+                );
+                setTimeout(() => moveCaretToEnd(), 0);
+              }
+            }
           }
-        }
-      }
-    });
+        });
 
-  }
-};
+      }
+    };
 
 
 
@@ -368,26 +378,74 @@ this.tinyInit = {
     this.userRouterLinks.user === 'referent' ? this.router.navigate(['/admin/referent/studentDetails', this.studentId]) : this.router.navigate(['/admin/student', this.studentId])
   }
 
+  // updateStudentEvaluation(form: NgForm) {
+  //   if (!form.valid) {
+  //     /* console.log('form valid'); */
+  //     return
+  //   }
+
+
+  // // 🔥 1. Nettoyage du wrapper data-initial (évite les imbrications infinies)
+  // form.value.details = this.cleanInitialWrapper(form.value.details);
+
+  // // 🔥 2. Nettoyage des paragraphes vides
+  // form.value.details = this.cleanEmptyParagraphs(form.value.details);
+
+    
+
+  //   // Ajouter la signature du formateur (ça marche mais pas souhaitable si intégré dans details)
+  //   form.value.details = this.appendTrainerSignature(form.value.details);   
+
+
+
+  //   /* console.log("form update values", form.value); */
+  //   const updatedEvaluations: any = { evaluations: { ...this.student.evaluations } }
+  //   // pour actualiser la date à l'update
+  //   const currentDate: string = formatDate(new Date(), 'yyyy-MM-dd', 'en');
+  //   // updatedEvaluations.evaluations[this.evaluationKey]=form.value
+  //   updatedEvaluations.evaluations[this.evaluationKey] = { "sigle": this.evaluationToUpdate.sigle, "competence": this.evaluationToUpdate.competence, "level": form.value.level, "date": currentDate, "details": form.value.details, "subject": form.value.subject }
+  //   console.log("this.student.evaluations après lecture du formulaire d'update", updatedEvaluations)
+
+  //   this.service.updateStudentEvaluation(this.studentId, updatedEvaluations)
+  //   // il faudra prévoir une redirection... 
+  //   this.router.navigate(['/admin/myStudentDetails', this.studentId])
+  // }
   updateStudentEvaluation(form: NgForm) {
-    if (!form.valid) {
-      /* console.log('form valid'); */
-      return
-    }
-
-  // 🔥 Nettoyage avant soumission (important : réassigner !)
-  form.value.details = this.cleanEmptyParagraphs(form.value.details);
-    /* console.log("form update values", form.value); */
-    const updatedEvaluations: any = { evaluations: { ...this.student.evaluations } }
-    // pour actualiser la date à l'update
-    const currentDate: string = formatDate(new Date(), 'yyyy-MM-dd', 'en');
-    // updatedEvaluations.evaluations[this.evaluationKey]=form.value
-    updatedEvaluations.evaluations[this.evaluationKey] = { "sigle": this.evaluationToUpdate.sigle, "competence": this.evaluationToUpdate.competence, "level": form.value.level, "date": currentDate, "details": form.value.details, "subject": form.value.subject }
-    console.log("this.student.evaluations après lecture du formulaire d'update", updatedEvaluations)
-
-    this.service.updateStudentEvaluation(this.studentId, updatedEvaluations)
-    // il faudra prévoir une redirection... 
-    this.router.navigate(['/admin/myStudentDetails', this.studentId])
+  if (!form.valid) {
+    return;
   }
+
+  // 🔥 1. Nettoyage du wrapper data-initial
+  form.value.details = this.cleanInitialWrapper(form.value.details);
+
+  // 🔥 2. Nettoyage des paragraphes vides
+  form.value.details = this.cleanEmptyParagraphs(form.value.details);
+
+  // 🔥 3. Ajout ou gestion de la signature formateur
+  form.value.details = this.appendTrainerSignature(form.value.details);
+
+  // 🔥 4. Mise à jour de la date de l'évaluation
+  const currentDate: string = formatDate(new Date(), 'yyyy-MM-dd', 'en');
+
+  // 🔥 5. On prépare SEULEMENT le champ à mettre à jour dans Firestore
+  const dataToPatch = {
+    [`evaluations.${this.evaluationKey}`]: {
+      sigle: this.evaluationToUpdate.sigle,
+      competence: this.evaluationToUpdate.competence,
+      level: form.value.level,
+      date: currentDate,             // ✔️ la date est bien écrasée désormais
+      details: form.value.details,   // ✔️ détails nettoyés + signature
+      subject: form.value.subject
+    }
+  };
+
+  // 🔥 6. Patch Firestore (ne modifie QUE la sous-clé ciblée)
+  this.service.updateStudentEvaluation(this.studentId, dataToPatch);
+
+  // 🔥 7. Redirection
+  this.router.navigate(['/admin/myStudentDetails', this.studentId]);
+}
+
 
   updateStudentTutorial(form: NgForm) {
     if (!form.valid) {
@@ -780,42 +838,235 @@ this.tinyInit = {
     }
   }
 
-getAbsoluteCaretPos(editor: any): number {
-  const sel = editor.selection.getRng();
-  let pos = 0;
+  getAbsoluteCaretPos(editor: any): number {
+    const sel = editor.selection.getRng();
+    let pos = 0;
 
-  const traverse = (node: any) => {
-    if (node === sel.startContainer) {
-      pos += sel.startOffset;
-      throw 'done';
-    }
-    if (node.nodeType === 3) {
-      pos += node.textContent.length;
-    }
-    if (node.childNodes) {
-      for (let child of node.childNodes) {
-        traverse(child);
+    const traverse = (node: any) => {
+      if (node === sel.startContainer) {
+        pos += sel.startOffset;
+        throw 'done';
       }
+      if (node.nodeType === 3) {
+        pos += node.textContent.length;
+      }
+      if (node.childNodes) {
+        for (let child of node.childNodes) {
+          traverse(child);
+        }
+      }
+    };
+
+    try {
+      traverse(editor.getBody());
+    } catch { }
+
+    return pos;
+  }
+
+  cleanEmptyParagraphs(html: string): string {
+    if (!html) return html;
+
+    // Supprime <p> vides, <p><br></p>, <p>&nbsp;</p>
+    html = html.replace(/<p>(\s|&nbsp;|<br>|<br\/>|<br \/>)*<\/p>/gi, '');
+
+    // Trim final pour éviter les artefacts
+    return html.trim();
+  }
+
+
+  // appendTrainerSignature(details: string): string {
+
+  //   // alert(this.userUid)
+
+  //   const signature = `<p class="fst-italic">— ${this.trainerFirstName} ${this.trainerLastName}</p>`;
+
+  //    alert(this.trainerFirstName)
+
+  //   // Détecter si déjà signé pour éviter doublons
+  //   if (details.includes(this.trainerFirstName) && details.includes(this.trainerLastName)) {
+  //     return details; // déjà signé
+  //   }
+
+  //   return details + signature;
+  // }
+
+  // ok
+//   appendTrainerSignature(details: string): string {
+//   if (!details) return details;
+
+//   const signature = `<p class="fst-italic">— ${this.trainerFirstName} ${this.trainerLastName}</p>`.trim();
+
+//   // 1. Normaliser pour éviter les faux négatifs
+//   const cleanDetails = details.trim();
+
+//   // 2. Si la signature n’existe pas → l’ajouter
+//   if (!cleanDetails.includes(signature)) {
+//     return cleanDetails + signature;
+//   }
+
+//   // 3. Si elle existe → vérifier doublons consécutifs
+//   const container = document.createElement('div');
+//   container.innerHTML = cleanDetails;
+
+//   const paragraphs = Array.from(container.querySelectorAll('p'));
+
+//   for (let i = 0; i < paragraphs.length - 1; i++) {
+//     const p1 = paragraphs[i].outerHTML.trim();
+//     const p2 = paragraphs[i + 1].outerHTML.trim();
+
+//     if (p1 === signature && p2 === signature) {
+//       // Supprimer le second doublon
+//       paragraphs[i + 1].remove();
+//       break;
+//     }
+//   }
+
+//   return container.innerHTML;
+// }
+
+// ok avec cas additionnel où si toutes signatures identiques on ne garde que la dernière
+// appendTrainerSignature(details: string): string {
+//   if (!details) return details;
+
+//   const signatureHtml = `<p class="fst-italic">— ${this.trainerFirstName} ${this.trainerLastName}</p>`.trim();
+
+//   // On normalise
+//   const cleanDetails = details.trim();
+
+//   // Si la signature n’est pas présente du tout → l’ajouter simplement
+//   if (!cleanDetails.includes(signatureHtml)) {
+//     return cleanDetails + signatureHtml;
+//   }
+
+//   // Sinon : analyser
+//   const container = document.createElement('div');
+//   container.innerHTML = cleanDetails;
+
+//   const paragraphs = Array.from(container.querySelectorAll('p'));
+
+//   // On collecte toutes les signatures identiques trouvées
+//   const signaturesOfTrainer = paragraphs.filter(
+//     p => p.outerHTML.trim() === signatureHtml
+//   );
+
+//   // S’il n’y en a qu’une → rien à faire
+//   if (signaturesOfTrainer.length <= 1) {
+//     return container.innerHTML;
+//   }
+
+//   // ➜ Si plusieurs signatures identiques et AUCUNE signature différente rencontrée :
+//   //    → garder uniquement la dernière occurrence
+//   let otherSignatureFound = false;
+
+//   for (let p of paragraphs) {
+//     const content = p.textContent?.trim() || "";
+
+//     // signature d'un autre formateur ?
+//     if (
+//       content.startsWith("— ") &&
+//       content !== `— ${this.trainerFirstName} ${this.trainerLastName}`
+//     ) {
+//       otherSignatureFound = true;
+//       break;
+//     }
+//   }
+
+//   // Seulement si AUCUNE autre signature distincte trouvée
+//   if (!otherSignatureFound) {
+//     // supprimer toutes sauf la dernière
+//     const lastSignature = signaturesOfTrainer[signaturesOfTrainer.length - 1];
+
+//     signaturesOfTrainer.forEach(sig => {
+//       if (sig !== lastSignature) {
+//         sig.remove();
+//       }
+//     });
+//   }
+
+//   return container.innerHTML;
+// }
+
+// cas où on rajoute la date dans chaque signature dans le détail
+appendTrainerSignature(details: string): string {
+  if (!details) return details;
+
+  // Date en format français
+  const today = formatDate(new Date(), 'dd/MM/yyyy', 'en');
+
+  // Signature complète (unique modification ici)
+  const signatureHtml = `<p class="fst-italic small">— ${this.trainerFirstName} ${this.trainerLastName} (${today})</p>`.trim();
+
+  const cleanDetails = details.trim();
+
+  // Signature absente → ajouter
+  if (!cleanDetails.includes(signatureHtml)) {
+    return cleanDetails + signatureHtml;
+  }
+
+  // La signature existe → gérer doublons
+  const container = document.createElement('div');
+  container.innerHTML = cleanDetails;
+
+  const paragraphs = Array.from(container.querySelectorAll('p'));
+
+  const signaturesOfTrainer = paragraphs.filter(
+    p => p.outerHTML.trim() === signatureHtml
+  );
+
+  // Si une seule signature → OK
+  if (signaturesOfTrainer.length <= 1) {
+    return container.innerHTML;
+  }
+
+  // Vérifier si un autre formateur a aussi signé
+  let otherSignatureFound = false;
+  for (let p of paragraphs) {
+    const content = p.textContent?.trim() || "";
+
+    // Commence par "— " mais nom différent → signature d’un autre formateur
+    if (
+      content.startsWith("— ") &&
+      !content.startsWith(`— ${this.trainerFirstName} ${this.trainerLastName} `)
+    ) {
+      otherSignatureFound = true;
+      break;
     }
-  };
+  }
 
-  try {
-    traverse(editor.getBody());
-  } catch {}
+  // Si pas d'autre signature → garder uniquement la dernière du formateur
+  if (!otherSignatureFound) {
+    const lastSignature = signaturesOfTrainer[signaturesOfTrainer.length - 1];
 
-  return pos;
+    signaturesOfTrainer.forEach(sig => {
+      if (sig !== lastSignature) sig.remove();
+    });
+  }
+
+  return container.innerHTML;
 }
 
-cleanEmptyParagraphs(html: string): string {
-  if (!html) return html;
 
-  // Supprime <p> vides, <p><br></p>, <p>&nbsp;</p>
-  html = html.replace(/<p>(\s|&nbsp;|<br>|<br\/>|<br \/>)*<\/p>/gi, '');
 
-  // Trim final pour éviter les artefacts
-  return html.trim();
+cleanInitialWrapper(details: string): string {
+  if (!details) return details;
+
+  const container = document.createElement('div');
+  container.innerHTML = details;
+
+  // Trouver le wrapper data-initial
+  const initialDiv = container.querySelector('[data-initial="true"]');
+
+  if (initialDiv) {
+    // On remplace le wrapper par son contenu
+    const fragment = document.createElement('div');
+    fragment.innerHTML = initialDiv.innerHTML;
+
+    initialDiv.replaceWith(...Array.from(fragment.childNodes));
+  }
+
+  return container.innerHTML;
 }
-
 
 
 }
