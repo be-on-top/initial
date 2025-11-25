@@ -995,7 +995,7 @@ appendTrainerSignature(details: string): string {
   const today = formatDate(new Date(), 'dd/MM/yyyy', 'en');
 
   // Signature complète (unique modification ici)
-  const signatureHtml = `<p class="fst-italic small">— ${this.trainerFirstName} ${this.trainerLastName} (${today})</p>`.trim();
+  const signatureHtml = `<p class="trainer-signature" contenteditable="false">— ${this.trainerFirstName} ${this.trainerLastName} (${today})</p>`.trim();
 
   const cleanDetails = details.trim();
 

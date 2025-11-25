@@ -582,6 +582,14 @@ abbr:hover::before {
   )
 }
 
+.trainer-signature {
+  font-style: italic;
+  font-size: 0.8rem;
+  color: var(--text-dark);
+  pointer-events: none; /* empêche toute sélection */
+  opacity: 0.7;
+}
+
 
 /* === Media queries === */
 /* TABLETTE & + */

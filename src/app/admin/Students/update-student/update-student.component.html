@@ -5,18 +5,38 @@
 
         student.subscription : {{student.subscriptions}} -->
 
-        <h3>Mise à jour du statut de <span class="text-capitalize">{{student.lastName}} {{student.firstName}}</span>
-        </h3>
+        <ng-container *ngIf="userRouterLinks.user=='referent'">
+            <h3>Mise à jour du statut de <span class="text-capitalize">{{student.lastName}} {{student.firstName}}</span>
+            </h3>
 
-        <div class="alert bg-warning alert-dismissible fade show" role="alert">
-            <button type="button" class="btn-close btn-close mt-2" data-bs-dismiss="alert"
-                aria-label="Fermer le message"></button>
-            <span class="fw-bold"><i class="bi bi-exclamation-triangle-fill me-1"></i>Rappel</span> : Le positionnement
-            en amont a servi de fil conducteur au développement de l'application et du parcours utilisateur. Il permet
-            de formaliser une offre de formation personnalisée (durée, contenu, coûts) très en amont de l'inscription.
-            <span class="fw-bold">Toute utilisation qui mobilisera dans l'urgence conseiller projet, formateur ou
-                candidats, n'a pas vocation à devenir un réflexe opérationnel.</span>
-        </div>
+            <div class="alert bg-warning alert-dismissible fade show" role="alert">
+                <button type="button" class="btn-close btn-close mt-2" data-bs-dismiss="alert"
+                    aria-label="Fermer le message"></button>
+                <span class="fw-bold"><i class="bi bi-exclamation-triangle-fill me-1"></i>Rappel</span> : Le
+                positionnement
+                en amont a servi de fil conducteur au développement de l'application et du parcours utilisateur. Il
+                permet
+                de formaliser une offre de formation personnalisée (durée, contenu, coûts) très en amont de
+                l'inscription en formation.
+                <span class="fw-bold">Toute utilisation qui mobilisera dans l'urgence conseiller projet, formateur ou
+                    candidats, n'a pas vocation à devenir un réflexe opérationnel.</span>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="userRouterLinks.user=='trainer'">
+            <h3>Mise à jour des évaluations de <span class="text-capitalize">{{student.lastName}}
+                    {{student.firstName}}</span>
+            </h3>
+
+            <div class="alert bg-warning alert-dismissible fade show" role="alert">
+                <button type="button" class="btn-close btn-close mt-2" data-bs-dismiss="alert"
+                    aria-label="Fermer le message"></button>
+                <span class="fw-bold"><i class="bi bi-exclamation-triangle-fill me-1"></i>Rappel</span> : Il a été
+                décidé qu'une seule évaluation par compétence pouvait être enregistrée donc archivée pour une même formation métier.
+                BE-ON-TOP n'a donc pas vocation à tenir lieu d'historique de toutes les évaluations archivées pour une même compétence mais de
+                    rendre compte de l'état des compétences à un instant T.
+            </div>
+        </ng-container>
 
 
         <form class="form mb-5 was-validated" #f="ngForm" (submit)="updateStudent(f)">
@@ -98,7 +118,7 @@
 
 
             <div *ngIf="!student.innerStudent && !student.subscriptions">
-               
+
                 <h3>Réinitialiser les choix du candidat</h3>
                 <!-- ajout feedback  OK -->
                 <div class="alert alert-success" *ngIf="feedBackResetChoice==true">Le formulaire est à nouveau actif
@@ -106,14 +126,17 @@
                     formation que votre centre ne dispense pas
                 </div>
 
-                <div class="alert bg-danger"><i class="bi bi-exclamation-triangle-fill me-1"></i><span class="fw-bold">Attention :</span> Si vous permettez
+                <div class="alert bg-danger"><i class="bi bi-exclamation-triangle-fill me-1"></i><span
+                        class="fw-bold">Attention :</span> Si vous permettez
                     au candidat
                     de réinitialiser ses choix, celui-ci pourra à nouveau acccéder à son formulaire pour changer ses
                     préférences métiers et le choix de son centre de formation. <span class="fw-bold">Il disparaitra
-                        automatiquement de votre liste de candidats</span>. A n'utilisez que si le candidat en fait la demande explicite et que votre localisation ou vos formations ne correspondent pas ou plus à ses préférences.</div>
+                        automatiquement de votre liste de candidats</span>. A n'utilisez que si le candidat en fait la
+                    demande explicite et que votre localisation ou vos formations ne correspondent pas ou plus à ses
+                    préférences.</div>
                 <button type="button" class="btn btn-primary mt-3" [disabled]="feedBackResetChoice==true"
                     (click)="resetStudentChoice(studentId)">J'ai compris et je valide ma décision</button>
-                     <hr>
+                <hr>
             </div>
 
 
@@ -126,7 +149,7 @@
 
                 <div class="alert bg-warning text-dark">
                     <i class="bi bi-info-square-fill me-1"></i>Etape indispensable, aux interactions qui vont suivre,
-                    notamment avec le formateur, pour le suvi pédagogique... 
+                    notamment avec le formateur, pour le suvi pédagogique...
                 </div>
 
                 <p *ngIf="student.subscriptions && student.subscriptions.length !== 0">
@@ -178,13 +201,15 @@
 
                     <small class="text-muted">Fonctionnalité dédiée aux Conseillers Projets qui gèrent plusieurs
                         centres de formation OU candidats que vous avez ajoutés (dispensés de remplir le formulaire
-                        en ligne).</small><small class="text-muted" *ngIf="!student.innerStudent"></small><small> Si rien n'est précisé,
+                        en ligne).</small><small class="text-muted" *ngIf="!student.innerStudent"></small><small> Si
+                        rien n'est précisé,
                         c'est le choix initial du candidat qui sera automatiquement associé à son
                         inscription</small>
 
                     <input type="text" class="form-control mt-3" name="localTraining"
                         [(ngModel)]="student.localTraining" placeholder="code postal du centre">
-                        <small class="text-muted d-block mt-2" *ngIf="cpArray.length===1  && student.innerStudent">Puisque vous ne gérez qu'une seule localisation le champ est déjà pré-rempli</small>
+                    <small class="text-muted d-block mt-2" *ngIf="cpArray.length===1  && student.innerStudent">Puisque
+                        vous ne gérez qu'une seule localisation le champ est déjà pré-rempli</small>
                     <!-- fin -->
                     <button type="submit" class="btn btn-primary mt-3"
                         [ngClass]="{'disabled':subscription.invalid}">Valider</button>
@@ -295,7 +320,7 @@
 
         <!-- spécifiquement, pour la saisie des évaluations de suivi -->
         <ng-container *ngIf="userRouterLinks.user=='trainer'">
-            <h3>Mise à jour de ses évaluations de suivi</h3>
+            <h3>Mise à jour de son évaluation de suivi</h3>
             <p>Compétence : {{evaluationToUpdate.competence}}</p>
 
             <form class="form" #followUp="ngForm" (submit)="updateStudentEvaluation(followUp)" class="was-validated">
@@ -322,24 +347,23 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="details" class="form-label mt-3">Details : </label><span class="text-muted fst-italic small lh-sm d-inline-block mb-2"> Si vous êtes plusieurs formateurs à intervenir sur l'évaluation de cette compétence, évitez de supprimer les commentaires existants afin d'en conserver la traçabilité.</span>
+                    <label for="details" class="form-label mt-3">Details : </label><span
+                        class="text-muted fst-italic small lh-sm d-inline-block mb-2"> Si vous êtes plusieurs formateurs
+                        à intervenir sur l'évaluation de cette compétence, évitez de supprimer les commentaires
+                        existants pour en conserver la traçabilité.</span>
                     <!-- Si on utilise TinyCME comme éditeur de texte pour enrichir la propriété details -->
-<editor
-  apiKey="ahl0yg86w69zh9viflcvku8m2k333o942kc9fpttussom153"
-  [init]="tinyInit"
-  [id]="'details'"
-  [(ngModel)]="evaluationToUpdate.details"
-  name="details"
-  placeholder="Saisissez l'évaluation reçue en présentiel">
-</editor>
+                    <editor apiKey="ahl0yg86w69zh9viflcvku8m2k333o942kc9fpttussom153" [init]="tinyInit" [id]="'details'"
+                        [(ngModel)]="evaluationToUpdate.details" name="details"
+                        placeholder="Saisissez l'évaluation reçue en présentiel">
+                    </editor>
 
                     <div class="valid-feedback" *ngIf="details.valid">Evaluation correctement renseignée</div>
                     <div class="invalid-feedback" *ngIf="details.invalid">Merci de saisir votre évaluation de suivi
                     </div>
 
                     <div class="text-muted small mt-2">
-  Modification en cours par : {{ trainerFirstName }} {{ trainerLastName }}
-</div>
+                        Modification en cours par : {{ trainerFirstName }} {{ trainerLastName }}
+                    </div>
 
                 </div>
                 <button type="submit" class="btn btn-primary mt-3"
