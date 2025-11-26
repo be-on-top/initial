@@ -102,22 +102,19 @@ export class AddFollowUpComponent implements OnInit {
         }
       }
 
-
       this.getRelatedCompetences()
 
     })
 
-
-
-
-
-
-
-
   }
+
+  isSubmitting = false;
 
   // si on opte pour une méthode commune : 
   addFollowUp(studentId: string, evaluation: NgForm) {
+    if (this.isSubmitting) return;   // Sécurité supplémentaire 
+    this.isSubmitting = true;
+
     console.log(evaluation.value.date)
     this.userRouterLinks == 'tutor' ? this.addTutorial(studentId, evaluation) : this.addEvaluation(studentId, evaluation)
   }
