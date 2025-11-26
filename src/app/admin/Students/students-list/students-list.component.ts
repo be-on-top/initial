@@ -535,6 +535,9 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     } else if (this.isQualifiedFilter || this.storedValue === 'isQualifiedFilter') {
       this.allStudents = this.initialStudents.filter(student => student.endedSubscriptions);
     } else if (this.isPriorFilter || this.storedValue === 'isPriorFilter') {
+    } else if (this.hasEvaluationFilter || this.storedValue === 'hasEvaluationFilter') {
+      this.allStudents = this.initialStudents.filter(student => student.evaluations);
+    } else if (this.isPriorFilter || this.storedValue === 'isPriorFilter') {
       this.allStudents = this.filteredStudents;
     } else if (this.myCenterStudents || this.storedValue === 'myCenterStudentsFilter') {
       this.allStudents = this.initialStudents.filter(student => student.referent === this.userUid);
@@ -672,6 +675,21 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     if (event.target.checked) {
       localStorage.setItem('filter', 'isQualifiedFilter')
       this.storedValue = 'isQualifiedFilter'
+      this.applyFilters()
+    } else {
+      localStorage.removeItem('filter')
+      this.storedValue = ''
+      this.applyFilters()
+    }
+  }
+
+  hasEvaluationFilter:boolean=false
+  onCheckboxChangeHasEvaluation(event: any) {
+    this.resetAllFilters()
+    this.hasEvaluationFilter = event.target.checked;
+    if (event.target.checked) {
+      localStorage.setItem('filter', 'hasEvaluationFilter')
+      this.storedValue = 'hasEvaluationFilter'
       this.applyFilters()
     } else {
       localStorage.removeItem('filter')

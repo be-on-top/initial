@@ -105,6 +105,12 @@
                     <input type="checkbox" (change)="onCheckboxChangeEndedTraining($event)" class="form-check-input"
                         id="endedCheckbox" [checked]="isQualifiedFilter===true || storedValue==='isQualifiedFilter'">
                 </div>
+                <!-- pour fliquer ce que font les formateurs quand ils sont formés par quelqu'un qui les induit en erreur -->
+                <div class="form-check">
+                    <label class="form-check-label" for="hasEvaluationCheckbox">A déjà reçu une évaluation pédagogique</label>
+                    <input type="checkbox" (change)="onCheckboxChangeHasEvaluation($event)" class="form-check-input"
+                        id="evaluationCheckbox" [checked]="hasEvaluationFilter===true || storedValue==='hasEvaluationFilter'">
+                </div>
 
                 <!-- puisqu'il faut compliquer -->
                 <!-- ici, pour restreindre la liste des filtres additionnels au seul admin -->
