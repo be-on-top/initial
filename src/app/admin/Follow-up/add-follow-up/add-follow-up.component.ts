@@ -3,6 +3,9 @@ import { StudentsService } from '../../students.service';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SettingsService } from '../../settings.service';
+import { formatDate } from '@angular/common';
+import { TrainersService } from '../../trainers.service';
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-add-follow-up',
@@ -49,9 +52,15 @@ export class AddFollowUpComponent implements OnInit {
 
   alreadyUsedCompetences: string[] = [];
 
+  trainerLastName: string = ""
+  trainerFirstName: string = ""
+  userUid: string | null = '';
+
 
   constructor(
     private service: StudentsService,
+    private trainerService: TrainersService,
+    private authService: AuthService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private settingsService: SettingsService) {
@@ -106,6 +115,15 @@ export class AddFollowUpComponent implements OnInit {
 
     })
 
+    // pour la signature:
+    this.userUid = this.authService.getCurrentUserUid()
+    if (this.userUid) {
+      this.trainerService.getTrainer(this.userUid).subscribe(trainer => {
+        this.trainerLastName = trainer.lastName
+        this.trainerFirstName = trainer.firstName
+      })
+    }
+
   }
 
   isSubmitting = false;
@@ -119,44 +137,75 @@ export class AddFollowUpComponent implements OnInit {
     this.userRouterLinks == 'tutor' ? this.addTutorial(studentId, evaluation) : this.addEvaluation(studentId, evaluation)
   }
 
+  // addEvaluation(studentId: string, evaluation: NgForm) {
+  //   console.log(evaluation.value.date)
+  //   // let evaluations:any={}
+  //   // let evalKey: string = 'evaluation-' + evaluation.value.date + Math.floor(Math.random() * 2)
+
+  //   // alternative 1
+  //   // let randomSuffix = Math.floor(Math.random() * 100000);
+  //   // let evalKey = `evaluation-${evaluation.value.date}-${randomSuffix}`;
+
+  //   // alternative 2 unicité garantie
+  //   const now = new Date();
+  //   const timeSuffix = `${now.getHours()}${now.getMinutes()}${now.getSeconds()}`.padStart(6, '0');
+  //   let evalKey = `evaluation-${evaluation.value.date}-${timeSuffix}`;
+
+
+  //   const evaluations = { [evalKey]: evaluation.value }
+  //   this.service.addFollowUpEvaluation(studentId, { evaluations }).then(() => {
+
+  //     this.feedbackMessages = `Enregistrement OK`;
+  //     setTimeout(() => {
+  //       this.router.navigate(['/admin/myStudentDetails', studentId])
+  //     }, 2000)
+  //     // this.router.navigate(['/admin/trainers']);
+  //     // ...
+  //   })
+  //     .catch((error) => {
+  //       this.feedbackMessages = error.message;
+  //       // this.feedbackMessages = this.firebaseErrors[error.code];
+  //       this.isSuccessMessage = false;
+  //       console.log(this.feedbackMessages);
+
+  //       // ..};
+  //     })
+  //   // form.reset();
+  //   // redirige vers la vue de détail 
+  //   // this.router.navigate(['/admin/trainers']);
+
+  // }
+
+  // version pour ajouter une signature
   addEvaluation(studentId: string, evaluation: NgForm) {
-    console.log(evaluation.value.date)
-    // let evaluations:any={}
-    // let evalKey: string = 'evaluation-' + evaluation.value.date + Math.floor(Math.random() * 2)
+    console.log(evaluation.value.date);
 
-    // alternative 1
-    // let randomSuffix = Math.floor(Math.random() * 100000);
-    // let evalKey = `evaluation-${evaluation.value.date}-${randomSuffix}`;
+    // 1️⃣ Ajout automatique de la signature dans le champ details
+    evaluation.value.details = this.appendTrainerSignature(evaluation.value.details, evaluation.value.date);
 
-    // alternative 2 unicité garantie
+    // 2️⃣ Génération de la clé unique
     const now = new Date();
     const timeSuffix = `${now.getHours()}${now.getMinutes()}${now.getSeconds()}`.padStart(6, '0');
     let evalKey = `evaluation-${evaluation.value.date}-${timeSuffix}`;
 
+    // 3️⃣ Construction de l'objet
+    const evaluations = { [evalKey]: evaluation.value };
 
-    const evaluations = { [evalKey]: evaluation.value }
+    // 4️⃣ Enregistrement Firestore
     this.service.addFollowUpEvaluation(studentId, { evaluations }).then(() => {
-
       this.feedbackMessages = `Enregistrement OK`;
+
       setTimeout(() => {
-        this.router.navigate(['/admin/myStudentDetails', studentId])
-      }, 2000)
-      // this.router.navigate(['/admin/trainers']);
-      // ...
-    })
-      .catch((error) => {
-        this.feedbackMessages = error.message;
-        // this.feedbackMessages = this.firebaseErrors[error.code];
-        this.isSuccessMessage = false;
-        console.log(this.feedbackMessages);
+        this.router.navigate(['/admin/myStudentDetails', studentId]);
+      }, 2000);
 
-        // ..};
-      })
-    // form.reset();
-    // redirige vers la vue de détail 
-    // this.router.navigate(['/admin/trainers']);
-
+    }).catch((error) => {
+      this.feedbackMessages = error.message;
+      this.isSuccessMessage = false;
+      console.log(this.feedbackMessages);
+    });
   }
+
 
   addTutorial(studentId: string, tutorial: NgForm) {
     console.log(tutorial.value.date)
@@ -250,6 +299,81 @@ export class AddFollowUpComponent implements OnInit {
   isAlreadyUsed(key: string): boolean {
     return this.alreadyUsedCompetences.includes(key);
   }
+
+  // compte tenu que personne ne saisit les détails d'une évaluation si il n'y est pas contraint... 
+
+  detailsValue = '';
+  detailsInvalid = false;
+
+  checkDetails() {
+    this.detailsInvalid = this.detailsValue.trim().length === 0;
+  }
+
+
+  // cas où on rajoute la date dans chaque signature dans le détail
+  appendTrainerSignature(details: string, customDate?: string): string {
+    if (!details) return details;
+
+    // 1️⃣ Date à utiliser
+    let today: string;
+
+    if (customDate) {
+      // customDate est au format yyyy-MM-dd (format Firestore)
+      const parts = customDate.split('-');
+      today = `${parts[2]}/${parts[1]}/${parts[0]}`; // format français
+    } else {
+      // Sinon date du jour
+      today = formatDate(new Date(), 'dd/MM/yyyy', 'en');
+    }
+
+    // 2️⃣ Signature complète
+    const signatureHtml = `<p class="trainer-signature" contenteditable="false">— ${this.trainerFirstName} ${this.trainerLastName} (${today})</p>`.trim();
+
+    const cleanDetails = details.trim();
+
+    // 3️⃣ Si signature absente → ajouter
+    if (!cleanDetails.includes(signatureHtml)) {
+      return cleanDetails + signatureHtml;
+    }
+
+    // 4️⃣ Sinon gérer doublons & règles
+    const container = document.createElement('div');
+    container.innerHTML = cleanDetails;
+
+    const paragraphs = Array.from(container.querySelectorAll('p'));
+
+    const signaturesOfTrainer = paragraphs.filter(
+      p => p.outerHTML.trim() === signatureHtml
+    );
+
+    if (signaturesOfTrainer.length <= 1) {
+      return container.innerHTML;
+    }
+
+    // Vérifier si un autre formateur est présent
+    let otherSignatureFound = false;
+    for (let p of paragraphs) {
+      const content = p.textContent?.trim() || "";
+      if (
+        content.startsWith("— ") &&
+        !content.startsWith(`— ${this.trainerFirstName} ${this.trainerLastName} `)
+      ) {
+        otherSignatureFound = true;
+        break;
+      }
+    }
+
+    // Si pas d'autre formateur → garder uniquement la dernière
+    if (!otherSignatureFound) {
+      const lastSignature = signaturesOfTrainer[signaturesOfTrainer.length - 1];
+      signaturesOfTrainer.forEach(sig => {
+        if (sig !== lastSignature) sig.remove();
+      });
+    }
+
+    return container.innerHTML;
+  }
+
 
 
 }
