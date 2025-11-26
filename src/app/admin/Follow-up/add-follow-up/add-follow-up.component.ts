@@ -59,8 +59,10 @@ export class AddFollowUpComponent implements OnInit {
 
   constructor(
     private service: StudentsService,
+    // pour la signature additionnelle en option...
     private trainerService: TrainersService,
     private authService: AuthService,
+    // fin des services nécessaires à l'ajout de la signature...
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private settingsService: SettingsService) {
