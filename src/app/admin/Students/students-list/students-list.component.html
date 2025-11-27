@@ -106,7 +106,7 @@
                         id="endedCheckbox" [checked]="isQualifiedFilter===true || storedValue==='isQualifiedFilter'">
                 </div>
                 <!-- pour fliquer ce que font les formateurs quand ils sont formés par quelqu'un qui les induit en erreur -->
-                <div class="form-check">
+                <div class="form-check" *ngIf="userRouterLinks.user==='admin' || userRouterLinks.user==='editor'">
                     <label class="form-check-label" for="hasEvaluationCheckbox">A déjà reçu une évaluation pédagogique</label>
                     <input type="checkbox" (change)="onCheckboxChangeHasEvaluation($event)" class="form-check-input"
                         id="evaluationCheckbox" [checked]="hasEvaluationFilter===true || storedValue==='hasEvaluationFilter'">
