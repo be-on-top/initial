@@ -59,6 +59,7 @@ import { ContactInformationComponent } from './contact-information/contact-infor
 import { AccessibilityComplianceReportComponent } from './accessibility-compliance-report/accessibility-compliance-report.component';
 import { SocialDataComponent } from './social-data/social-data.component';
 import { PunchlinesComponent } from './punchlines/punchlines.component';
+import { TrainingStatsComponent } from './training-stats/training-stats.component';
 // import { CollapsesAlertComponent } from './collapses-alert/collapses-alert.component';
 // import { AutoChangeDirective } from './auto-change.directive';
 
@@ -102,6 +103,7 @@ import { PunchlinesComponent } from './punchlines/punchlines.component';
     AccessibilityComplianceReportComponent,
     SocialDataComponent,
     PunchlinesComponent,
+    TrainingStatsComponent,
     // CollapsesAlertComponent,
     // AutoChangeDirective,
     // TooltipComponent

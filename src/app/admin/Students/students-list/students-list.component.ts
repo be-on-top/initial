@@ -65,11 +65,12 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   studentsWithNoInterest: any[] = [];
 
   myCenterStudents: boolean = false
+  hasEvaluationFilter: boolean = false
 
   cpArray: string[] = []
   regions: string[] = []
   departments: string[] = []
-  // quelle région l'utilisateur a sélectionné dans l'interface
+  // quelle région l'utilisateur a sélectionnée dans l'interface
   selectedRegion: string | null = null;
   selectedDepartment: string | null = null;
 
@@ -534,10 +535,14 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       this.allStudents = this.initialStudents.filter(student => student['quizz_' + trade] && student['quizz_' + trade].fullResults);
     } else if (this.isQualifiedFilter || this.storedValue === 'isQualifiedFilter') {
       this.allStudents = this.initialStudents.filter(student => student.endedSubscriptions);
-    } else if (this.isPriorFilter || this.storedValue === 'isPriorFilter') {
-    } else if (this.hasEvaluationFilter || this.storedValue === 'hasEvaluationFilter') {
+    }
+    // pour observer les formateurs
+    else if (this.hasEvaluationFilter || this.storedValue === 'hasEvaluationFilter') {
       this.allStudents = this.initialStudents.filter(student => student.evaluations);
-    } else if (this.isPriorFilter || this.storedValue === 'isPriorFilter') {
+    } 
+
+    // fin du filtre dédié aux formateurs
+    else if (this.isPriorFilter || this.storedValue === 'isPriorFilter') {
       this.allStudents = this.filteredStudents;
     } else if (this.myCenterStudents || this.storedValue === 'myCenterStudentsFilter') {
       this.allStudents = this.initialStudents.filter(student => student.referent === this.userUid);
@@ -683,7 +688,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     }
   }
 
-  hasEvaluationFilter:boolean=false
+
   onCheckboxChangeHasEvaluation(event: any) {
     this.resetAllFilters()
     this.hasEvaluationFilter = event.target.checked;
