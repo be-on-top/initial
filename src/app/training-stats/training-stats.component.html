@@ -9,7 +9,7 @@
       <div class="card mb-4 shadow">
         <div class="card-body">
 
-          <h4 class="card-title">{{ trade }}</h4>
+          <h4 class="card-title">{{ trade }}</h4><small class="text-muted">{{ getDenomination(trade) }}</small>
 
           <!-- <small *ngIf="statsByTrade[trade].total <= 2">
             - UID(s):
@@ -18,7 +18,7 @@
             </span>
           </small> -->
 
-          <p class="text-muted">Total inscriptions : {{ statsByTrade[trade].total }}</p>
+          <p class="text-muted mt-2">Total inscriptions : {{ statsByTrade[trade].total }}</p>
 
           <ul class="list-group">
 

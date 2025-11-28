@@ -20,6 +20,7 @@ import { collection, collectionData, Firestore } from '@angular/fire/firestore';
 export class TrainingStatsComponent {
 
   trades: string[] = [];
+  denominations: string[] = [];
   allStudents: any[] = [];
   allSocialForms: any[] = [];
   // statsByTrade: any[] = [];
@@ -27,6 +28,9 @@ export class TrainingStatsComponent {
 
 
 statsByTrade: Record<string, TradeStats> = {};
+
+allTradesRaw: any[] = [];
+
 
 
   constructor(
@@ -44,6 +48,8 @@ statsByTrade: Record<string, TradeStats> = {};
   /** Charger tous les trades/formations */
   loadTrades() {
     this.tradeService.getTrades().subscribe(data => {
+      this.allTradesRaw = data;           // <--- garder brut
+
       this.trades = data.map(t => t.sigle);
       console.log("Trades chargés :", this.trades);
       this.computeStatsByTradeIfReady();
@@ -170,6 +176,11 @@ computeStatsByTradeIfReady() {
   });
 }
 
+/** Retourne la dénomination métier correspondant au sigle */
+getDenomination(sigle: string): string {
+  const t = this.allTradesRaw?.find(x => x.sigle === sigle);
+  return t?.denomination ?? sigle;
+}
 
 
 }
