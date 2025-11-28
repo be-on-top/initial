@@ -1,52 +1,78 @@
-
 <div class="container py-4">
 
   <h2 class="mb-4">Training Statistics</h2>
 
-  <!-- Liste des trades -->
   <div *ngFor="let trade of trades">
 
-    <!-- On récupère les étudiants correspondant à ce trade -->
     <ng-container *ngIf="statsByTrade[trade] && statsByTrade[trade].total > 0">
 
       <div class="card mb-4 shadow">
         <div class="card-body">
 
           <h4 class="card-title">{{ trade }}</h4>
-          <p class="text-muted">Total candidates : {{ statsByTrade[trade].total }}</p>
+
+          <!-- <small *ngIf="statsByTrade[trade].total <= 2">
+            - UID(s):
+            <span *ngFor="let s of allStudents | tradeFilter:trade; let i = index">
+              {{ s.id }}<span *ngIf="i < (allStudents | tradeFilter:trade).length - 1">, </span>
+            </span>
+          </small> -->
+
+          <p class="text-muted">Total inscriptions : {{ statsByTrade[trade].total }}</p>
 
           <ul class="list-group">
 
             <!-- Demandeurs d'emploi -->
             <li class="list-group-item d-flex justify-content-between">
-              <span>Unemployed (France Travail)</span>
-              <span>{{ statsByTrade[trade].unemployed }}</span>
+              <span>France Travail</span>
+              <span>
+                {{ statsByTrade[trade].unemployed }}
+                ({{ statsByTrade[trade].total
+                ? (statsByTrade[trade].unemployed / statsByTrade[trade].total * 100 | number:'1.0-0')
+                : 0 }}%)
+              </span>
             </li>
 
             <!-- Étudiants -->
             <li class="list-group-item d-flex justify-content-between">
-              <span>Students</span>
-              <span>{{ statsByTrade[trade].students }}</span>
+              <span>Etudiants</span>
+              <span>
+                {{ statsByTrade[trade].students }}
+                ({{ statsByTrade[trade].total
+                ? (statsByTrade[trade].students / statsByTrade[trade].total * 100 | number:'1.0-0')
+                : 0 }}%)
+              </span>
             </li>
 
             <!-- CDD -->
             <li class="list-group-item d-flex justify-content-between">
               <span>CDD</span>
-              <span>{{ statsByTrade[trade].cdd }}</span>
+              <span>
+                {{ statsByTrade[trade].cdd }}
+                ({{ statsByTrade[trade].total
+                ? (statsByTrade[trade].cdd / statsByTrade[trade].total * 100 | number:'1.0-0')
+                : 0 }}%)
+              </span>
             </li>
 
             <!-- CDI -->
             <li class="list-group-item d-flex justify-content-between">
               <span>CDI</span>
-              <span>{{ statsByTrade[trade].cdi }}</span>
+              <span>
+                {{ statsByTrade[trade].cdi }}
+                ({{ statsByTrade[trade].total
+                ? (statsByTrade[trade].cdi / statsByTrade[trade].total * 100 | number:'1.0-0')
+                : 0 }}%)
+              </span>
             </li>
 
           </ul>
 
         </div>
+
       </div>
+
     </ng-container>
   </div>
 
 </div>
-

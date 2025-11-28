@@ -81,10 +81,57 @@ statsByTrade: Record<string, TradeStats> = {};
   }
 
   /** Calculer les stats par trade quand toutes les données sont chargées */
+// computeStatsByTradeIfReady() {
+//   if (!this.trades.length || !this.allStudents.length || !this.allSocialForms.length) return;
+
+//   this.statsByTrade = {}; // on réinitialise proprement
+
+//   this.trades.forEach(trade => {
+
+//     // Étudiants inscrits dans ce trade
+//     const studentsInTrade = this.allStudents.filter(s =>
+//       Array.isArray(s.subscriptions) && s.subscriptions.includes(trade)
+//     );
+
+//     // Stats de base
+//     const stats = {
+//       total: studentsInTrade.length,
+//       unemployed: 0,
+//       students: 0,
+//       cdd: 0,
+//       cdi: 0
+//     };
+
+//     // Pour chaque étudiant inscrit → aller chercher le socialForm correspondant
+//     studentsInTrade.forEach(student => {
+//       const sf = this.allSocialForms.find(f => f.id === student.id);
+//       if (!sf) return;
+
+//       if (sf.isPoleEmploi) stats.unemployed++;
+//       if (sf.isStudent) stats.students++;
+//       if (sf.cddDuration) stats.cdd++;
+
+//       // un CDI = un de ces champs renseignés
+//       if (
+//         sf.sentCompanyEmployee !== undefined ||
+//         sf.lookingForSupport !== undefined ||
+//         sf.cdiRequiredDuration !== undefined
+//       ) {
+//         stats.cdi++;
+//       }
+//     });
+
+//     // On sauvegarde dans le dictionnaire
+//     this.statsByTrade[trade] = stats;
+//   });
+// }
+
+// pour éviter les faux  positifs
+/** Calculer les stats par trade quand toutes les données sont chargées */
 computeStatsByTradeIfReady() {
   if (!this.trades.length || !this.allStudents.length || !this.allSocialForms.length) return;
 
-  this.statsByTrade = {}; // on réinitialise proprement
+  this.statsByTrade = {}; // réinitialisation
 
   this.trades.forEach(trade => {
 
@@ -93,8 +140,7 @@ computeStatsByTradeIfReady() {
       Array.isArray(s.subscriptions) && s.subscriptions.includes(trade)
     );
 
-    // Stats de base
-    const stats = {
+    const stats: TradeStats = {
       total: studentsInTrade.length,
       unemployed: 0,
       students: 0,
@@ -102,29 +148,28 @@ computeStatsByTradeIfReady() {
       cdi: 0
     };
 
-    // Pour chaque étudiant inscrit → aller chercher le socialForm correspondant
     studentsInTrade.forEach(student => {
       const sf = this.allSocialForms.find(f => f.id === student.id);
       if (!sf) return;
 
-      if (sf.isPoleEmploi) stats.unemployed++;
-      if (sf.isStudent) stats.students++;
-      if (sf.cddDuration) stats.cdd++;
+      // --- Normalisation booléens ---
+      const isUnemployed = sf.isPoleEmploi === true || sf.isPoleEmploi === 'oui';
+      const isStudent = sf.isStudent === true || sf.isStudent === 'oui';
+      const hasCDD = sf.cddDuration !== undefined && sf.cddDuration !== null && sf.cddDuration !== '';
+      const hasCDI = sf.sentCompanyEmployee === true || sf.sentCompanyEmployee === 'oui'
+                 || sf.lookingForSupport === true || sf.lookingForSupport === 'oui'
+                 || sf.cdiRequiredDuration === true || sf.cdiRequiredDuration === 'oui';
 
-      // un CDI = un de ces champs renseignés
-      if (
-        sf.sentCompanyEmployee !== undefined ||
-        sf.lookingForSupport !== undefined ||
-        sf.cdiRequiredDuration !== undefined
-      ) {
-        stats.cdi++;
-      }
+      if (isUnemployed) stats.unemployed++;
+      if (isStudent) stats.students++;
+      if (hasCDD) stats.cdd++;
+      if (hasCDI) stats.cdi++;
     });
 
-    // On sauvegarde dans le dictionnaire
     this.statsByTrade[trade] = stats;
   });
 }
+
 
 
 }

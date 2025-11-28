@@ -60,6 +60,7 @@ import { AccessibilityComplianceReportComponent } from './accessibility-complian
 import { SocialDataComponent } from './social-data/social-data.component';
 import { PunchlinesComponent } from './punchlines/punchlines.component';
 import { TrainingStatsComponent } from './training-stats/training-stats.component';
+import { TradeFilterPipe } from './trade-filter.pipe';
 // import { CollapsesAlertComponent } from './collapses-alert/collapses-alert.component';
 // import { AutoChangeDirective } from './auto-change.directive';
 
@@ -104,6 +105,7 @@ import { TrainingStatsComponent } from './training-stats/training-stats.componen
     SocialDataComponent,
     PunchlinesComponent,
     TrainingStatsComponent,
+    TradeFilterPipe,
     // CollapsesAlertComponent,
     // AutoChangeDirective,
     // TooltipComponent
