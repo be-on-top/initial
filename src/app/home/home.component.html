@@ -334,7 +334,7 @@
 
         <!-- début boucle dynamique si plusieurs catégories -->
         <div *ngFor="let group of groupedTrades; let j = index">
-            <div class="card pb-0 category mt-3">
+            <div class="card pb-0 category mt-3" *ngIf="shouldDisplayCategory(j)">
 
                 <!-- Affichage de la catégorie (group[0] contient le nom de la catégorie) -->
                 <div class="card-header">
@@ -358,7 +358,8 @@
                     <ng-container *ngFor="let trade of group[1], let i = index">
                         <!-- n'affichera que les 2 premiers de la liste catGroup tant que !isFullCatItempsOpen -->
                         <!-- <div *ngIf="!isFullCatItemsOpen && i <= 1" class="col-md-6 pt-3"> -->
-                        <div *ngIf="openCategoryIndex !== j && i <= 1" class="col-md-6 pt-3">
+                        <!-- <div *ngIf="openCategoryIndex !== j && i <= 1" class="col-md-6 pt-3"> -->
+                        <div *ngIf="!openCategoryIndex.includes(j) && i <= 1" class="col-md-6 pt-3">
 
                             <div (click)="selectTrade(trade.id)" [ngClass]="{'underProgress':trade.status===false}">
                                 <div
@@ -473,7 +474,7 @@
 
 
 
-                        <div *ngIf="openCategoryIndex === j && (searchText===''
+                        <div *ngIf="openCategoryIndex.includes(j) && (searchText===''
                 || trade.denomination.includes(searchText)
                 || removeAccents(trade.denomination).toLowerCase().includes(removeAccents(searchText).toLowerCase())
                 || trade.denomination.includes(searchText)
@@ -616,10 +617,10 @@
                 <!-- refacto si catégories multiples -->
                 <div class="card-footer" *ngIf="group[1].length > 2">
                     <button type="button" class="btn btn-primary w-100 mx-auto" (click)="openFullCatItems(j)">
-                        <span *ngIf="openCategoryIndex !== j">
+                        <span *ngIf="!openCategoryIndex.includes(j)">
                             Toutes les formations ({{ group[1].length }})
                         </span>
-                        <span *ngIf="openCategoryIndex === j">
+                        <span *ngIf="openCategoryIndex.includes(j)">
                             Fermer
                         </span>
                     </button>

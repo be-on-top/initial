@@ -100,7 +100,10 @@ export class HomeComponent implements OnInit {
   ungroupedTrades: any[] = [];  // Pour les métiers sans parentCategory
 
   // null signifie qu'aucune catégorie n'est ouverte
-  openCategoryIndex: number | null = null;
+  // openCategoryIndex: number | null = null;
+  openCategoryIndex: number[] = [];
+
+  
 
   // dans ton component
   private userRole$ = new BehaviorSubject<string>(this.userRole || ''); // valeur initiale
@@ -504,13 +507,23 @@ export class HomeComponent implements OnInit {
   //   this.isFullCatItemsOpen = !this.isFullCatItemsOpen
   // }
 
+  // openFullCatItems(index: number): void {
+  //   // Si la catégorie cliquée est déjà ouverte, la fermer; sinon, l'ouvrir
+  //   this.openCategoryIndex = this.openCategoryIndex === index ? null : index;
+
+  //   // this.isFullCatItemsOpen = !this.isFullCatItemsOpen
+
+  // }
   openFullCatItems(index: number): void {
-    // Si la catégorie cliquée est déjà ouverte, la fermer; sinon, l'ouvrir
-    this.openCategoryIndex = this.openCategoryIndex === index ? null : index;
-
-    // this.isFullCatItemsOpen = !this.isFullCatItemsOpen
-
+  if (this.openCategoryIndex.includes(index)) {
+    // Si la catégorie est déjà ouverte → la fermer
+    this.openCategoryIndex = this.openCategoryIndex.filter(i => i !== index);
+  } else {
+    // Sinon → l'ouvrir (ajouter l'index)
+    this.openCategoryIndex = [...this.openCategoryIndex, index];
   }
+}
+
 
   onSearchCat() {
     // Étape 1 : Calculer les occurrences de chaque parentCategory
@@ -566,34 +579,102 @@ export class HomeComponent implements OnInit {
   //   console.log("Normalized Search Value:", normalizedSearchValue);
   // }
 
-  onSearchTextEntered(searchValue: string) {
-    const normalizedSearchValue = this.removeAccents(searchValue).toLowerCase().trim();
-    this.searchText = searchValue; // mise à jour pour l'affichage
+  // onSearchTextEntered(searchValue: string) {
+  //   const normalizedSearchValue = this.removeAccents(searchValue).toLowerCase().trim();
+  //   this.searchText = searchValue; // mise à jour pour l'affichage
 
-    // Si la recherche est vide, on ferme toutes les catégories
-    if (!normalizedSearchValue) {
-      this.openCategoryIndex = null;
-      return;
-    }
+  //   // Si la recherche est vide, on ferme toutes les catégories
+  //   if (!normalizedSearchValue) {
+  //     this.openCategoryIndex = null;
+  //     return;
+  //   }
 
-    // Recherche dans chaque groupe : ouvrir le premier groupe où une correspondance est trouvée
-    const matchingGroupIndex = this.groupedTrades.findIndex((group: any) =>
-      group[1].some((trade: any) => {
-        const normalizedDenomination = this.removeAccents(trade.denomination).toLowerCase();
-        const normalizedDescription = this.removeAccents(trade.description).toLowerCase();
-        return normalizedDenomination.includes(normalizedSearchValue) ||
-          normalizedDescription.includes(normalizedSearchValue);
-      })
-    );
+  //   // Recherche dans chaque groupe : ouvrir le premier groupe où une correspondance est trouvée
+  //   const matchingGroupIndex = this.groupedTrades.findIndex((group: any) =>
+  //     group[1].some((trade: any) => {
+  //       const normalizedDenomination = this.removeAccents(trade.denomination).toLowerCase();
+  //       const normalizedDescription = this.removeAccents(trade.description).toLowerCase();
+  //       return normalizedDenomination.includes(normalizedSearchValue) ||
+  //         normalizedDescription.includes(normalizedSearchValue);
+  //     })
+      
+  //   );
 
-    // Si une correspondance est trouvée et que ce groupe n'est pas déjà ouvert, on l'ouvre
-    if (matchingGroupIndex !== -1 && this.openCategoryIndex !== matchingGroupIndex) {
-      this.openFullCatItems(matchingGroupIndex);
-    }
+  //   // Si une correspondance est trouvée et que ce groupe n'est pas déjà ouvert, on l'ouvre
+  //   if (matchingGroupIndex !== -1 && this.openCategoryIndex !== matchingGroupIndex) {
+  //     this.openFullCatItems(matchingGroupIndex);
+  //   }
 
-    // console.log("Search Value:", searchValue);
-    // console.log("Normalized Search Value:", normalizedSearchValue);
+    
+
+    
+
+  //   // console.log("Search Value:", searchValue);
+  //   // console.log("Normalized Search Value:", normalizedSearchValue);
+  // }
+
+// onSearchTextEntered(searchValue: string) {
+//   const normalizedSearchValue = this.removeAccents(searchValue).toLowerCase().trim();
+//   this.searchText = searchValue; // mise à jour pour l'affichage
+
+//   // Si la recherche est vide, on ferme toutes les catégories
+//   // if (!normalizedSearchValue) {
+//   //   this.openCategoryIndex = null;
+//   //   return;
+//   // }
+
+//   // Trouver tous les groupes contenant une correspondance
+//   const matchingGroupIndexes = this.groupedTrades
+//     .map((group: any, index: number) => {
+//       const hasMatch = group[1].some((trade: any) => {
+//         const normalizedDenomination = this.removeAccents(trade.denomination).toLowerCase();
+//         const normalizedDescription = this.removeAccents(trade.description).toLowerCase();
+//         return normalizedDenomination.includes(normalizedSearchValue) ||
+//                normalizedDescription.includes(normalizedSearchValue);
+//       });
+//       return hasMatch ? index : null;
+//     })
+//     .filter((index: number | null) => index !== null) as number[];
+
+//   // Ouvrir tous les groupes trouvés
+//   matchingGroupIndexes.forEach(index => {
+//     this.openFullCatItems(index);
+//   });
+// }
+
+// version optimisée ++
+onSearchTextEntered(searchValue: string) {
+  const normalizedSearchValue = this.removeAccents(searchValue).toLowerCase().trim();
+  this.searchText = searchValue;
+
+  // Si la recherche est vide → fermer toutes les catégories
+  if (!normalizedSearchValue) {
+    this.openCategoryIndex = [];
+    return;
   }
+
+  // Réinitialiser les catégories ouvertes
+  this.openCategoryIndex = [];
+
+  // Scanner chaque groupe de trades
+  this.groupedTrades.forEach((group: any, index: number) => {
+    const hasMatch = group[1].some((trade: any) => {
+      const nom = this.removeAccents(trade.denomination).toLowerCase();
+      const desc = this.removeAccents(trade.description).toLowerCase();
+      return nom.includes(normalizedSearchValue) || desc.includes(normalizedSearchValue);
+    });
+
+    // Si le groupe contient au moins 1 résultat → l'ouvrir
+    if (hasMatch) {
+      this.openCategoryIndex.push(index);
+    }
+  });
+}
+
+
+
+
+
 
 
 
@@ -684,7 +765,21 @@ export class HomeComponent implements OnInit {
   //   }
   // }
 
+
+
+  shouldDisplayCategory(index: number) {
+  // Si aucune recherche : tout afficher
+  if (!this.searchText || this.searchText.trim() === '') return true;
+
+  // Sinon : n'afficher QUE les catégories ouvertes
+  return this.openCategoryIndex.includes(index);
 }
+
+
+}
+
+
+
 
 
 
