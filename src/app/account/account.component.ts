@@ -915,7 +915,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-    // Méthode pour récupérer legalDuration du métier côté composant
+  // Méthode pour récupérer legalDuration du métier côté composant
   legalDurationMap: Map<string, Observable<string | null>> = new Map();
 
   getLegalDuration(trade: string): Observable<string | null> {
@@ -925,6 +925,26 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     return this.legalDurationMap.get(trade) || of(null);
   }
+  // markAsRead(evaluationKey: string) {
+  //   // console.log(evaluationKey);  
+  //   // return this.studentService.updateEvaluationField(this.user, evaluationKey, 'readen', true);
+  // }
+
+
+  markAsRead(evaluationKey: string) {
+    this.studentService.updateEvaluationField(
+      this.user,
+      evaluationKey,
+      'readen',
+      true
+    )
+  }
+
+
+
+
+
+
 
 
 

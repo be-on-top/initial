@@ -5,5 +5,6 @@ export interface Evaluation {
     date: string;
     competence?:string;
     level?:string;
+    readen?:boolean;
 
 }

@@ -290,7 +290,8 @@
                                         <!-- <em *ngIf="trades[trade]" class="text-primary fs-6">{{ trades[trade][i] }}</em> -->
                                         <em *ngIf="trades[trade]" class="text-primary fs-6">
                                             <i *ngIf="!trades[trade][i]" class="bi bi-exclamation-square-fill me-2"></i>
-                                            {{trades[trade][i] ? trades[trade][i] : 'Attention : cette compétence ne  fait plus partie du référentiel actuel'}}
+                                            {{trades[trade][i] ? trades[trade][i] : 'Attention : cette compétence ne
+                                            fait plus partie du référentiel actuel'}}
                                         </em>
 
 
@@ -528,6 +529,19 @@
                                                 <div class="card-text"
                                                     [innerHTML]="sanitizer.bypassSecurityTrustHtml(evaluation.value.details)">
                                                 </div>
+                                                <!-- pour l'hypothèse où on ajoute des accusés de réception -->
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input"
+                                                        [checked]="evaluation.value.readen"
+                                                        [disabled]="evaluation.value.readen"
+                                                        (change)="markAsRead(evaluation.key)"
+                                                        id="readen-{{ evaluation.key }}">
+
+                                                    <label class="form-check-label" [for]="'readen-' + evaluation.key">
+                                                        {{ evaluation.value.readen ? 'Lu' : 'Marquer comme lu' }}
+                                                    </label>
+                                                </div>
+                                                <!-- fin de l'hypothèse -->
                                             </div>
                                             <!-- fin de la sous partie censée être cachée -->
                                         </div>

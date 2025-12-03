@@ -1999,6 +1999,18 @@ updateFullResults(id: string, fullResults: any, trade: string) {
 
 
 
+  updateEvaluationField(studentId: string, evalKey: string, field: string, value: any) {
+  const studentRef = doc(this.firestore, `students/${studentId}`);
+ 
+  const patch = {
+    [`evaluations.${evalKey}.${field}`]: value
+  };
+ 
+  return updateDoc(studentRef, patch);
+}
+
+
+
 }
 
 

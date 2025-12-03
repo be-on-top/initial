@@ -78,6 +78,8 @@ a[aria-expanded="true"] .toggle-arrow {
   transform: rotate(180deg);
 }
 
+
+
 /* RESPONSIVE DESIGN */
 /* Grand écran */
 @media (min-width: 1140px) {
