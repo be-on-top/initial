@@ -34,9 +34,11 @@
                         <span class="fw-bold">Nom</span> : {{student.lastName}}<br>
                         <span class="fw-bold">Prénom</span> : {{student.firstName}}<br>
                         <span class="fw-bold">Email</span> : <a href="#" class="card-link">{{student.email}}</a><br>
-                        <ng-container *ngIf="student.referent"><span  class="fw-bold">Candidat interne de {{referentName}}</span><br></ng-container>           
-                        <ng-container *ngIf="student.isSocialFormSent"><span class="fw-bold">Centre choisi</span>: {{centerPriorName}}<br></ng-container>
-                        
+                        <ng-container *ngIf="student.referent"><span class="fw-bold">Candidat interne de
+                                {{referentName}}</span><br></ng-container>
+                        <ng-container *ngIf="student.isSocialFormSent"><span class="fw-bold">Centre choisi</span>:
+                            {{centerPriorName}}<br></ng-container>
+
                         <!-- <span *ngIf="student.cp" class="d-block"><span class="fw-bold">CP</span> :
                             {{student.cp}}</span> -->
                         <span class="fw-bold">Date de création</span> : {{student.created | date:'dd/MM/yyyy'}}<br>
@@ -369,7 +371,7 @@
                                                     ({{ evaluation.value.competence }}) <span
                                                         (click)="toggleCollapse(e)"
                                                         *ngIf="(evaluation.value.subject || evaluation.value.details ) && userRouterLinks.user!=='external'">
-                                                        <a href='#collapseEvaluation{{e}}' data-bs-toggle="collapse"><i
+                                                        <a aria-label="Ouvrir ou fermer l'évaluation" href='#collapseEvaluation{{e}}' data-bs-toggle="collapse"><i
                                                                 [ngClass]="{'bi bi-caret-down-fill': !evaluationsState[e], 'bi bi-caret-up-fill': evaluationsState[e]}"></i></a></span>
                                                 </p>
                                             </ng-container>
@@ -383,6 +385,16 @@
                                                 <div class="card-text"
                                                     [innerHTML]="sanitizer.bypassSecurityTrustHtml(evaluation.value.details)">
                                                 </div>
+
+                                                <div class="d-flex align-items-center">
+                                                    <i class="bi"
+                                                        [ngClass]="evaluation.value.readen ? 'bi-check-square-fill text-success' : 'bi-x-square-fill text-danger'">
+                                                    </i>
+                                                    <span class="ms-2">
+                                                        {{ evaluation.value.readen ? "Lue" : "Non lue" }}
+                                                    </span>
+                                                </div>
+
                                             </div>
                                             <!-- fin de la sous partie censée être cachée -->
 
@@ -531,7 +543,7 @@
                                                 ({{ tutorial.value.competence }})
                                                 <span (click)="toggleCollapse(t)"
                                                     *ngIf="(tutorial.value.subject || tutorial.value.details) && userRouterLinks.user!=='external'">
-                                                    <a href='#collapseEvaluation{{t}}' data-bs-toggle="collapse"><i
+                                                    <a aria-label="Ouvrir ou fermer l'évaluation" href='#collapseEvaluation{{t}}' data-bs-toggle="collapse"><i
                                                             [ngClass]="{'bi bi-caret-down-fill': !evaluationsState[t], 'bi bi-caret-up-fill': evaluationsState[t]}"></i></a></span>
 
                                             </p>
