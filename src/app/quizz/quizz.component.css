@@ -41,6 +41,18 @@ button.btn.btn-primary:disabled {
     overflow: hidden;
 }
 
+.no-select {
+    -webkit-user-select: none;
+    /* Chrome, Safari */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* IE10+ */
+    user-select: none;
+    /* Standard */
+}
+
+
 @media (min-width: 1200px) {
 
     h3 {

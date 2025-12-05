@@ -1023,5 +1023,13 @@ export class QuizzComponent implements OnInit {
   }
 
 
+  preventEvent(event: ClipboardEvent) {
+  event.preventDefault();
+  alert("Copier-coller désactivé dans le questionnaire !")
+  console.log("Copier-coller désactivé dans le questionnaire !");
+}
+
+
+
 
 }

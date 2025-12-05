@@ -1,4 +1,5 @@
-<div class="container py-4 text-center">
+<div class="container py-4 text-center no-select" (paste)="preventEvent($event)" (copy)="preventEvent($event)"
+    (cut)="preventEvent($event)">
 
     <!-- <h3>Quizz pour métier {{trade}}</h3> -->
 
