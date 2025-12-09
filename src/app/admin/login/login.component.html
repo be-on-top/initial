@@ -50,12 +50,12 @@
         <!-- <button class="btn btn-primary mt-4" (click)="onClick()">S'identifier avec Google</button> -->
         <hr>
         <div>Mot de passe perdu / besoin de le personnaliser ? </div>
-        <div class="text-muted small mb-2 fst-italic"><mark>
-            📌 Renseigner <u>juste votre email ci dessus</u> et cliquer sur le bouton réinitialiser mon mot de passe
+        <div class="text-muted fst-italic"><mark>
+            Ne renseigner <u>que votre email</u> puis cliquer sur le bouton réinitialiser mon mot de passe. Un lien pour réinitialiser votre mot de passe vous sera envoyé.
             </mark>
         </div>
 
-        <button [disabled]="formLogin.get('email')?.invalid" type="button" class="btn btn-warning my-4"
+        <button [disabled]="formLogin.get('email')?.invalid || formLogin.get('password')?.value" type="button" class="btn btn-warning my-4"
             (click)="reset(formLogin.value.email)">Réinitialiser mon mot de
             passe</button>
         <hr>

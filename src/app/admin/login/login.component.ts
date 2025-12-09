@@ -4,7 +4,7 @@ import { AuthService } from '../auth.service';
 // pour changer un peu, on va faire des reactiive forms !!!!
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 // je voudrais me le faire importer
-import { Auth, onAuthStateChanged } from '@angular/fire/auth';
+import { Auth, onAuthStateChanged, fetchSignInMethodsForEmail } from '@angular/fire/auth';
 
 
 @Component({
@@ -139,27 +139,68 @@ export class LoginComponent {
   // }
 
   // Appel pour réinitialiser le mot de passe
-  reset(email: string): void {
-    if (!email) {
-      this.feedbackMessages = "Veuillez entrer un email pour réinitialiser le mot de passe.";
-      this.isSuccessMessage = false;
-      return;
-    }
+  // reset(email: string): void {
+  //   if (!email) {
+  //     this.feedbackMessages = "Veuillez entrer un email pour réinitialiser le mot de passe.";
+  //     this.isSuccessMessage = false;
+  //     return;
+  //   }
 
-    // Réinitialiser les messages avant d'envoyer le lien de réinitialisation
-    this.feedbackMessages = '';
-    this.isSuccessMessage = true;
+  //   // Réinitialiser les messages avant d'envoyer le lien de réinitialisation
+  //   this.feedbackMessages = '';
+  //   this.isSuccessMessage = true;
 
-    this.service.passwordReset(email)
-      .then(() => {
+  //   this.service.passwordReset(email)
+  //     .then(() => {
+  //       this.feedbackMessages = "Un lien de réinitialisation a été envoyé à votre adresse email.";
+  //       this.isSuccessMessage = true;
+  //     })
+  //     .catch(error => {
+  //       this.feedbackMessages = this.firebaseErrors[error.code] || error.message || "Une erreur est survenue.";
+  //       this.isSuccessMessage = false;
+  //     });
+  // }
+
+
+
+// Appel pour réinitialiser le mot de passe
+reset(email: string): void {
+  if (!email) {
+    this.feedbackMessages = "Veuillez entrer un email pour réinitialiser le mot de passe.";
+    this.isSuccessMessage = false;
+    return;
+  }
+
+  // On nettoie les messages
+  this.feedbackMessages = '';
+  this.isSuccessMessage = true;
+
+  // Étape 1 : Vérifier que le compte existe réellement dans Firebase
+  fetchSignInMethodsForEmail(this.service.getAuth(), email)
+    .then(methods => {
+      if (methods.length === 0) {
+        // Aucun compte associé → FIN
+        this.feedbackMessages = "Aucun compte n'est associé à cet email.";
+        this.isSuccessMessage = false;
+        return;
+      }
+
+      // Étape 2 : Le compte existe → on envoie le mail de reset
+      return this.service.passwordReset(email);
+    })
+    .then(() => {
+      // Si passwordReset() a bien été lancé
+      if (this.isSuccessMessage) {
         this.feedbackMessages = "Un lien de réinitialisation a été envoyé à votre adresse email.";
         this.isSuccessMessage = true;
-      })
-      .catch(error => {
-        this.feedbackMessages = this.firebaseErrors[error.code] || error.message || "Une erreur est survenue.";
-        this.isSuccessMessage = false;
-      });
-  }
+      }
+    })
+    .catch(error => {
+      this.feedbackMessages = this.firebaseErrors[error.code] || error.message || "Une erreur est survenue.";
+      this.isSuccessMessage = false;
+    });
+}
+
 
 
   logOut() {

@@ -65,28 +65,28 @@ export class AuthService {
     //   }
     // });
 
-      onAuthStateChanged(this.auth, user => {
-        if (this.userRoleSubscription) {
-          this.userRoleSubscription.unsubscribe(); // 🔴 Nettoie l'abonnement précédent
-          this.userRoleSubscription = null;
-        }
+    onAuthStateChanged(this.auth, user => {
+      if (this.userRoleSubscription) {
+        this.userRoleSubscription.unsubscribe(); // 🔴 Nettoie l'abonnement précédent
+        this.userRoleSubscription = null;
+      }
 
-        if (user) {
-          const uid = user.uid;
-          const rolesRef = doc(this.firestore, `roles/${uid}`);
+      if (user) {
+        const uid = user.uid;
+        const rolesRef = doc(this.firestore, `roles/${uid}`);
 
-          this.userRoleSubscription = docData(rolesRef).subscribe(roleDoc => {
-            this.currentUserInfoSubject.next({
-              uid,
-              role: roleDoc?.['role'] || null,
-            });
+        this.userRoleSubscription = docData(rolesRef).subscribe(roleDoc => {
+          this.currentUserInfoSubject.next({
+            uid,
+            role: roleDoc?.['role'] || null,
           });
-        } else {
-          this.currentUserInfoSubject.next(null);
-        }
-      });
+        });
+      } else {
+        this.currentUserInfoSubject.next(null);
+      }
+    });
 
-    }
+  }
 
 
   //   onAuthStateChanged(this.auth, async user => {
@@ -495,6 +495,9 @@ export class AuthService {
 
 
 
+  public getAuth() {
+    return this.auth;
+  }
 
 
 
