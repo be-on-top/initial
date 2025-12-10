@@ -51,7 +51,12 @@ export class LoginComponent {
       resetEmail: new FormControl('', [
         Validators.required,
         Validators.email,
-        Validators.pattern(/^\S+$/) // interdit les espaces
+        // Validators.pattern(/^\S+$/), // interdit les espaces
+        // Validators.pattern(/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i) // vérifie qu'il y a un TLD
+        // Validators.pattern(/^[^\s@]+@[a-z0-9.-]+\.[a-z]{2,}$/)
+        Validators.pattern(/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i)
+
+
       ])
     })
 
@@ -183,6 +188,9 @@ export class LoginComponent {
       this.isSuccessMessage = false;
       return;
     }
+
+    // Nettoyage : suppression des espaces et uniformisation en minuscules
+    email = email.trim().toLowerCase();
 
     // On nettoie les messages
     this.feedbackMessages = '';

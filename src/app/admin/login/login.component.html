@@ -1,55 +1,55 @@
 <div class="container py-5">
-    <!-- {{user}} -->
+  <!-- {{user}} -->
 
-    <h3>Connexion Utilisateur</h3>
-    <ng-template #login>
-        <app-feedback-messages [feedbackMessages]="feedbackMessages" [isSuccessMessage]="isSuccessMessage"
-            (closeAlert)="closeAlert()"></app-feedback-messages>
-        <form class="form mx-auto" [formGroup]="formLogin" (ngSubmit)="onSubmit()">
-            <!-- <div class="mb-3">
+  <h3>Connexion Utilisateur</h3>
+  <ng-template #login>
+    <app-feedback-messages [feedbackMessages]="feedbackMessages" [isSuccessMessage]="isSuccessMessage"
+      (closeAlert)="closeAlert()"></app-feedback-messages>
+    <form class="form mx-auto" [formGroup]="formLogin" (ngSubmit)="onSubmit()">
+      <!-- <div class="mb-3">
                 <label class="form-label">Email</label>
                 <input type="text" class="form-control" formControlName="email" required>
             </div> -->
-            <div class="mb-3">
-                <label class="form-label">Email</label>
-                <input type="text" class="form-control" formControlName="email" placeholder="renseigner votre email"
-                    required [ngClass]="{
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="text" class="form-control" formControlName="email" placeholder="renseigner votre email" required
+          [ngClass]="{
       'is-invalid': formLogin.get('email')?.invalid && formLogin.get('email')?.touched
     }">
-                <div class="invalid-feedback">
-                    <!-- message d'erreur contextuel -->
-                    <span *ngIf="formLogin.get('email')?.errors?.['required']">
-                        L'email est requis.
-                    </span>
-                    <span *ngIf="formLogin.get('email')?.errors?.['email']">
-                        L'email n'est pas valide.
-                    </span>
-                </div>
-            </div>
+        <div class="invalid-feedback">
+          <!-- message d'erreur contextuel -->
+          <span *ngIf="formLogin.get('email')?.errors?.['required']">
+            L'email est requis.
+          </span>
+          <span *ngIf="formLogin.get('email')?.errors?.['email']">
+            L'email n'est pas valide.
+          </span>
+        </div>
+      </div>
 
-            <!-- <div class="mb-3">
+      <!-- <div class="mb-3">
                 <label class="form-label">Password</label>
                 <input type="password" class="form-control" formControlName="password"
                     placeholder="renseigner votre mot de passe">
             </div> -->
-            <div class="mb-3">
-                <label class="form-label">Password</label>
-                <input type="password" class="form-control" formControlName="password"
-                    placeholder="renseigner votre mot de passe" required [ngClass]="{
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-control" formControlName="password"
+          placeholder="renseigner votre mot de passe" required [ngClass]="{
       'is-invalid': formLogin.get('password')?.invalid && formLogin.get('password')?.touched
     }">
-                <div class="invalid-feedback">
-                    <span *ngIf="formLogin.get('password')?.errors?.['required']">
-                        Le mot de passe est requis pour vous connecter.
-                    </span>
-                </div>
-            </div>
+        <div class="invalid-feedback">
+          <span *ngIf="formLogin.get('password')?.errors?.['required']">
+            Le mot de passe est requis pour vous connecter.
+          </span>
+        </div>
+      </div>
 
-            <input type="submit" class="btn btn-primary mt-4" value="Valider">
-        </form>
-        <!-- <button class="btn btn-primary mt-4" (click)="onClick()">S'identifier avec Google</button> -->
-        <hr>
-        <!-- <div>Mot de passe perdu / besoin de le personnaliser ? </div>
+      <input type="submit" class="btn btn-primary mt-4" value="Valider">
+    </form>
+    <!-- <button class="btn btn-primary mt-4" (click)="onClick()">S'identifier avec Google</button> -->
+    <hr>
+    <!-- <div>Mot de passe perdu / besoin de le personnaliser ? </div>
         <div class="text-muted fst-italic"><mark>
             Ne renseigner <u>que votre email</u> puis cliquer sur le bouton réinitialiser mon mot de passe. Un lien pour réinitialiser votre mot de passe vous sera envoyé.
             </mark>
@@ -61,7 +61,7 @@
 
 
 
-<!-- <form #resetForm="ngForm" (ngSubmit)="reset(resetEmail.value)" class="mt-3">
+    <!-- <form #resetForm="ngForm" (ngSubmit)="reset(resetEmail.value)" class="mt-3">
 
   <div class="mb-3">
     <label class="form-label">Email</label>
@@ -99,7 +99,7 @@
 
 </form> -->
 
-<!-- <div class="mb-3">
+    <!-- <div class="mb-3">
   <label class="form-label">Email pour réinitialiser le mot de passe</label>
 
   <input type="text"
@@ -131,54 +131,53 @@
 </button> -->
 
 
-<!-- <form [formGroup]="resetForm" (ngSubmit)="reset(resetForm.get('resetEmail')?.value)"> -->
-<h4 class="text-center">Mot de passe oublié ou besoin de le personnaliser ?</h4>
+    <!-- <form [formGroup]="resetForm" (ngSubmit)="reset(resetForm.get('resetEmail')?.value)"> -->
+    <h4 class="text-center">Mot de passe oublié ou besoin de le personnaliser ?</h4>
 
-<div class="text-muted fst-italic mb-3 text-center">
-  <mark>
-    Renseigner <u>l'email ci-dessous</u> puis cliquer sur le bouton "Réinitialiser mon mot de passe".
-    Un email de réinitialisation vous sera envoyé.
-  </mark>
-</div>
+    <div class="text-muted small fst-italic mb-3 text-center">
 
-<form [formGroup]="resetForm" (ngSubmit)="reset(resetForm.get('resetEmail')?.value || '')" class="mt-3">
-  <div class="mb-3">
-    <label class="form-label">Email</label>
-    <input type="text"
-           class="form-control"
-           formControlName="resetEmail"
-           placeholder="Votre email"
-       [ngClass]="{ 
+          Renseigner <u>l'email ci-dessous</u> puis cliquer sur le bouton "Réinitialiser mon mot de passe".
+          Un lien vous sera envoyé.
+
+    </div>
+
+    <form [formGroup]="resetForm" (ngSubmit)="reset(resetForm.get('resetEmail')?.value || '')" class="mt-3">
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="text" class="form-control" formControlName="resetEmail" placeholder="Votre email" [ngClass]="{ 
   'is-invalid': resetForm.get('resetEmail')?.invalid && (resetForm.get('resetEmail')?.touched || resetForm.get('resetEmail')?.dirty) 
 }">
-           
-    <div class="invalid-feedback">
-      <span *ngIf="resetForm.get('resetEmail')?.errors?.['required']">L'email est requis.</span>
-      <span *ngIf="resetForm.get('resetEmail')?.errors?.['email']">L'email n'est pas valide.</span>
-      <span *ngIf="resetForm.get('resetEmail')?.errors?.['pattern']">L'email ne doit pas contenir d'espaces.</span>
-    </div>
-  </div>
 
-  <button type="submit" class="btn btn-warning mt-3" [disabled]="resetForm.invalid">
-    Réinitialiser mon mot de passe
-  </button>
-</form>
+        <div class="invalid-feedback">
+          <span *ngIf="resetForm.get('resetEmail')?.errors?.['required']">L'email est requis.</span>
+          <span *ngIf="resetForm.get('resetEmail')?.errors?.['email']">L'email n'est pas valide.</span>
+          <!-- <span *ngIf="resetForm.get('resetEmail')?.errors?.['pattern']">L'email ne doit pas contenir d'espaces.</span> -->
+          <span *ngIf="resetForm.get('resetEmail')?.errors?.['pattern']">L'email doit contenir un domaine valide et sans
+            espaces.</span>
+
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-warning mt-3" [disabled]="resetForm.invalid">
+        Réinitialiser mon mot de passe
+      </button>
+    </form>
 
 
 
 
-
-        <hr>
-        <p>Pas encore de compte BE-ON-TOP ?</p>
-        <a class="btn btn-primary" [routerLink]="['/register']">Créer son compte</a>
-    </ng-template>
 
     <hr>
-    <div *ngIf="user, else login">
-        <p class="alert bg-success my-3 p-3">Vous êtes authentifié</p>
+    <p>Pas encore de compte BE-ON-TOP ?</p>
+    <a class="btn btn-primary" [routerLink]="['/register']">Créer son compte</a>
+  </ng-template>
 
-        <button type="button" class="btn btn-primary mt-3" (click)="onClick()"><a class="dropdown-item"
-                (click)="logOut()">Logout</a></button>
-    </div>
+  <hr>
+  <div *ngIf="user, else login">
+    <p class="alert bg-success my-3 p-3">Vous êtes authentifié</p>
+
+    <button type="button" class="btn btn-primary mt-3" (click)="onClick()"><a class="dropdown-item"
+        (click)="logOut()">Logout</a></button>
+  </div>
 
 </div>
