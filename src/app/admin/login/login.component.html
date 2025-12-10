@@ -49,7 +49,7 @@
         </form>
         <!-- <button class="btn btn-primary mt-4" (click)="onClick()">S'identifier avec Google</button> -->
         <hr>
-        <div>Mot de passe perdu / besoin de le personnaliser ? </div>
+        <!-- <div>Mot de passe perdu / besoin de le personnaliser ? </div>
         <div class="text-muted fst-italic"><mark>
             Ne renseigner <u>que votre email</u> puis cliquer sur le bouton réinitialiser mon mot de passe. Un lien pour réinitialiser votre mot de passe vous sera envoyé.
             </mark>
@@ -57,7 +57,117 @@
 
         <button [disabled]="formLogin.get('email')?.invalid || formLogin.get('password')?.value" type="button" class="btn btn-warning my-4"
             (click)="reset(formLogin.value.email)">Réinitialiser mon mot de
-            passe</button>
+            passe</button> -->
+
+
+
+<!-- <form #resetForm="ngForm" (ngSubmit)="reset(resetEmail.value)" class="mt-3">
+
+  <div class="mb-3">
+    <label class="form-label">Email</label>
+
+    <input
+      type="text"
+      class="form-control"
+      name="resetEmail"
+      #resetEmail="ngModel"
+      ngModel
+      placeholder="Votre email"
+      required
+      email
+      [ngClass]="{
+        'is-invalid': resetEmail.invalid && resetEmail.touched
+      }"
+    >
+
+    <div class="invalid-feedback">
+      <span *ngIf="resetEmail.errors?.['required']">
+        L'email est requis.
+      </span>
+      <span *ngIf="resetEmail.errors?.['email']">
+        L'email n'est pas valide.
+      </span>
+    </div>
+  </div>
+
+  <button
+    type="submit"
+    class="btn btn-warning mt-3"
+    [disabled]="resetForm.invalid">
+    Réinitialiser mon mot de passe
+  </button>
+
+</form> -->
+
+<!-- <div class="mb-3">
+  <label class="form-label">Email pour réinitialiser le mot de passe</label>
+
+  <input type="text"
+         class="form-control"
+         [formControl]="resetEmail"
+         placeholder="Votre email"
+         [ngClass]="{
+           'is-invalid': resetEmail.invalid && resetEmail.touched
+         }">
+
+  <div class="invalid-feedback">
+    <span *ngIf="resetEmail.errors?.['required']">
+      L'email est requis.
+    </span>
+    <span *ngIf="resetEmail.errors?.['email']">
+      L'email n'est pas valide.
+    </span>
+    <span *ngIf="resetEmail.errors?.['pattern']">
+      L'email ne doit pas contenir d'espace.
+    </span>
+  </div>
+</div>
+
+<button type="button"
+        class="btn btn-warning mt-3"
+        [disabled]="resetEmail.invalid"
+        (click)="reset(resetEmail.value!)">
+  Réinitialiser mon mot de passe
+</button> -->
+
+
+<!-- <form [formGroup]="resetForm" (ngSubmit)="reset(resetForm.get('resetEmail')?.value)"> -->
+<h4 class="text-center">Mot de passe oublié ou besoin de le personnaliser ?</h4>
+
+<div class="text-muted fst-italic mb-3 text-center">
+  <mark>
+    Renseigner <u>l'email ci-dessous</u> puis cliquer sur le bouton "Réinitialiser mon mot de passe".
+    Un email de réinitialisation vous sera envoyé.
+  </mark>
+</div>
+
+<form [formGroup]="resetForm" (ngSubmit)="reset(resetForm.get('resetEmail')?.value || '')" class="mt-3">
+  <div class="mb-3">
+    <label class="form-label">Email</label>
+    <input type="text"
+           class="form-control"
+           formControlName="resetEmail"
+           placeholder="Votre email"
+       [ngClass]="{ 
+  'is-invalid': resetForm.get('resetEmail')?.invalid && (resetForm.get('resetEmail')?.touched || resetForm.get('resetEmail')?.dirty) 
+}">
+           
+    <div class="invalid-feedback">
+      <span *ngIf="resetForm.get('resetEmail')?.errors?.['required']">L'email est requis.</span>
+      <span *ngIf="resetForm.get('resetEmail')?.errors?.['email']">L'email n'est pas valide.</span>
+      <span *ngIf="resetForm.get('resetEmail')?.errors?.['pattern']">L'email ne doit pas contenir d'espaces.</span>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-warning mt-3" [disabled]="resetForm.invalid">
+    Réinitialiser mon mot de passe
+  </button>
+</form>
+
+
+
+
+
         <hr>
         <p>Pas encore de compte BE-ON-TOP ?</p>
         <a class="btn btn-primary" [routerLink]="['/register']">Créer son compte</a>

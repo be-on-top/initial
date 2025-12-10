@@ -14,6 +14,9 @@ import { Auth, onAuthStateChanged, fetchSignInMethodsForEmail } from '@angular/f
 })
 export class LoginComponent {
   formLogin: FormGroup;
+
+  resetForm: FormGroup;
+
   // isAuthentificated?:boolean;
   user?: any;
   // variables à passer à feedbackMessages component pour retours de firebase sur la soumission
@@ -29,7 +32,8 @@ export class LoginComponent {
     'auth/invalid-login-credentials': 'Identifiants de connexion invalides. Veuillez vérifier votre e-mail et votre mot de passe'
   }; // list of firebase error codes to alternate error messages
 
-  
+
+
 
   // je voudrais me faire importer onAuthStateChanged qui est une méthode de auth depuis le service. A faire plus tard
   // en attendant, j'importe Auth
@@ -39,11 +43,20 @@ export class LoginComponent {
     //   password: new FormControl()
     // })
     this.formLogin = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('')
-  });
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('')
+    });
+
+    this.resetForm = new FormGroup({
+      resetEmail: new FormControl('', [
+        Validators.required,
+        Validators.email,
+        Validators.pattern(/^\S+$/) // interdit les espaces
+      ])
+    })
 
   }
+
   ngOnInit(): void {
     this.service.currentUser
     // this.userUid=this.service.getUserId()
@@ -163,43 +176,43 @@ export class LoginComponent {
 
 
 
-// Appel pour réinitialiser le mot de passe
-reset(email: string): void {
-  if (!email) {
-    this.feedbackMessages = "Veuillez entrer un email pour réinitialiser le mot de passe.";
-    this.isSuccessMessage = false;
-    return;
-  }
-
-  // On nettoie les messages
-  this.feedbackMessages = '';
-  this.isSuccessMessage = true;
-
-  // Étape 1 : Vérifier que le compte existe réellement dans Firebase
-  fetchSignInMethodsForEmail(this.service.getAuth(), email)
-    .then(methods => {
-      if (methods.length === 0) {
-        // Aucun compte associé → FIN
-        this.feedbackMessages = "Aucun compte n'est associé à cet email.";
-        this.isSuccessMessage = false;
-        return;
-      }
-
-      // Étape 2 : Le compte existe → on envoie le mail de reset
-      return this.service.passwordReset(email);
-    })
-    .then(() => {
-      // Si passwordReset() a bien été lancé
-      if (this.isSuccessMessage) {
-        this.feedbackMessages = "Un lien de réinitialisation a été envoyé à votre adresse email.";
-        this.isSuccessMessage = true;
-      }
-    })
-    .catch(error => {
-      this.feedbackMessages = this.firebaseErrors[error.code] || error.message || "Une erreur est survenue.";
+  // Appel pour réinitialiser le mot de passe
+  reset(email: string): void {
+    if (!email) {
+      this.feedbackMessages = "Veuillez entrer un email pour réinitialiser le mot de passe.";
       this.isSuccessMessage = false;
-    });
-}
+      return;
+    }
+
+    // On nettoie les messages
+    this.feedbackMessages = '';
+    this.isSuccessMessage = true;
+
+    // Étape 1 : Vérifier que le compte existe réellement dans Firebase
+    fetchSignInMethodsForEmail(this.service.getAuth(), email)
+      .then(methods => {
+        if (methods.length === 0) {
+          // Aucun compte associé → FIN
+          this.feedbackMessages = "Aucun compte n'est associé à cet email.";
+          this.isSuccessMessage = false;
+          return;
+        }
+
+        // Étape 2 : Le compte existe → on envoie le mail de reset
+        return this.service.passwordReset(email);
+      })
+      .then(() => {
+        // Si passwordReset() a bien été lancé
+        if (this.isSuccessMessage) {
+          this.feedbackMessages = "Un lien de réinitialisation a été envoyé à votre adresse email.";
+          this.isSuccessMessage = true;
+        }
+      })
+      .catch(error => {
+        this.feedbackMessages = this.firebaseErrors[error.code] || error.message || "Une erreur est survenue.";
+        this.isSuccessMessage = false;
+      });
+  }
 
 
 
@@ -213,9 +226,9 @@ reset(email: string): void {
     // Réinitialiser l'état pour la fermeture de l'alerte
     this.feedbackMessages = '';
     this.isSuccessMessage = true;
-      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-    this.router.navigate(['/login']);
-  });
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/login']);
+    });
   }
 
 }
