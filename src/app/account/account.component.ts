@@ -931,6 +931,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
   // }
 
 
+//  fonctionne très bien mais fonctionnalité suspendue pour le moment : pas d'impératif juridique
   markAsRead(evaluationKey: string) {
     this.studentService.updateEvaluationField(
       this.user,

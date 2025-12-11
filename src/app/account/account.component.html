@@ -529,8 +529,8 @@
                                                 <div class="card-text"
                                                     [innerHTML]="sanitizer.bypassSecurityTrustHtml(evaluation.value.details)">
                                                 </div>
-                                                <!-- pour l'hypothèse où on ajoute des accusés de réception -->
-                                                <div class="form-check">
+                                                <!-- pour l'hypothèse où on ajoute des accusés de réception : pas d'impératif juridique -->
+                                                <!-- <div class="form-check">
                                                     <input type="checkbox" class="form-check-input"
                                                         [checked]="evaluation.value.readen"
                                                         [disabled]="evaluation.value.readen"
@@ -540,7 +540,7 @@
                                                     <label class="form-check-label" [for]="'readen-' + evaluation.key">
                                                         {{ evaluation.value.readen ? 'Lu' : 'Marquer comme lu' }}
                                                     </label>
-                                                </div>
+                                                </div> -->
                                                 <!-- fin de l'hypothèse -->
                                             </div>
                                             <!-- fin de la sous partie censée être cachée -->
