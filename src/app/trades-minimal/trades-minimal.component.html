@@ -1,0 +1,33 @@
+<div class="container py-3">
+
+  <h1 class="h4 mb-3">Inventaire des formations métiers</h1>
+
+  <ul class="list-group">
+
+    <!-- Métiers sans catégorie -->
+    <li *ngFor="let trade of ungroupedTrades" class="list-group-item">
+      <a [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]" class="d-block">
+        <span>{{ trade.denomination }}</span><br>
+        <small class="text-muted fst-italic">{{ trade.sigle }}</small>
+      </a>
+    </li>
+
+  </ul>
+
+  <!-- Métiers groupés par catégorie -->
+  <div *ngFor="let group of groupedTrades" class="mt-4">
+
+    <h2 class="h4 mb-2">{{ group.key }}</h2>
+
+    <ul class="list-group">
+      <li *ngFor="let trade of group.value" class="list-group-item">
+        <a [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]" class="d-block">
+          <span>{{ trade.denomination }}</span><br>
+          <small class="text-muted fst-italic">{{ trade.sigle }}</small>
+        </a>
+      </li>
+    </ul>
+
+  </div>
+
+</div>

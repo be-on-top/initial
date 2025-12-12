@@ -18,6 +18,7 @@ import { CentersListComponent } from './admin/Centers/centers-list/centers-list.
 import { ChatComponent } from './chat/chat.component';
 import { AccessibilityComplianceReportComponent } from './accessibility-compliance-report/accessibility-compliance-report.component';
 import { TrainingStatsComponent } from './training-stats/training-stats.component';
+import { TradesMinimalComponent } from './trades-minimal/trades-minimal.component';
 
 // const routes: Routes = [
 //   { path: 'home', component: HomeComponent, pathMatch: 'full', canActivate: [AuthGuardService] },
@@ -61,7 +62,8 @@ const routes: Routes = [
   { path: 'center/:id', component: CenterDetailsComponent},
   { path: 'chat/:id/:name', component: ChatComponent},
   { path: 'accessibility', component: AccessibilityComplianceReportComponent},
-  { path: 'trainingStats', component: TrainingStatsComponent}
+  { path: 'trainingStats', component: TrainingStatsComponent},
+  { path: 'trainingsIndex', component: TradesMinimalComponent}
 
 ];
 
