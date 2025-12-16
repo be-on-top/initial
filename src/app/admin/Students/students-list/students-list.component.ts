@@ -732,6 +732,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     this.isPriorFilter = false;
     this.myCenterStudents = false;
     this.tradesActivated = false;
+    this.hasEvaluationFilter = false;
     localStorage.removeItem('filter')
     this.storedValue = ''
   }

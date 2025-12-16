@@ -211,8 +211,14 @@
                     </a>
                     <ul class="dropdown-menu mb-2" aria-labelledby="metiersDropdown">
                         <li *ngFor="let trade of ungroupedTrades">
-                            <a class="dropdown-item"
+                            <!-- parce qu'on doit composer avec un référent métier obtus  -->
+                            <!-- <a class="dropdown-item"
                                 [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]"
+                                (click)="closeNavbar()">
+                                {{ trade.denomination | truncateTitle }}
+                            </a> -->
+                            <a class="dropdown-item"
+                                [routerLink]="['/formation', trade.sigle]"
                                 (click)="closeNavbar()">
                                 {{ trade.denomination | truncateTitle }}
                             </a>
@@ -248,8 +254,12 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li *ngFor="let trade of group.value">
-                                    <a class="dropdown-item" (click)="closeNavbar()"
+                                    <!-- <a class="dropdown-item" (click)="closeNavbar()"
                                         [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]">
+                                        {{ trade.denomination | truncateTitle }}
+                                    </a> -->
+                                    <a class="dropdown-item" (click)="closeNavbar()"
+                                        [routerLink]="['/formation', trade.sigle]">
                                         {{ trade.denomination | truncateTitle }}
                                     </a>
                                 </li>
