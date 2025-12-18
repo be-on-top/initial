@@ -454,36 +454,34 @@
 
 
 
-<div>
-  <!-- Liste des échanges (questions + réponses) -->
-  <div class="chat-messages my-3">
-    <div *ngFor="let msg of chatHistory"
-         [ngClass]="{'chat-user': msg.from === 'user', 'chat-bot': msg.from === 'bot'}">
-      <div class="p-2 rounded"
-           [ngClass]="{'bg-primary text-white': msg.from === 'user', 'bg-light': msg.from === 'bot'}">
-        <span [innerHTML]="msg.text"></span>
+    <div>
+      <!-- Liste des échanges (questions + réponses) -->
+      <div class="chat-messages my-3">
+        <div *ngFor="let msg of chatHistory"
+          [ngClass]="{'chat-user': msg.from === 'user', 'chat-bot': msg.from === 'bot'}">
+          <div class="p-2 rounded"
+            [ngClass]="{'bg-primary text-white': msg.from === 'user', 'bg-light': msg.from === 'bot'}">
+            <span [innerHTML]="msg.text"></span>
+          </div>
+        </div>
       </div>
+
+      <!-- Champ input + bouton -->
+      <div class="input-group mb-3">
+        <input #userQ type="text" class="form-control" placeholder="Votre question ?"
+          (keydown.enter)="sendMessage(userQ.value); userQ.value=''" />
+        <button type="button" class="btn btn-outline-primary" (click)="sendMessage(userQ.value); userQ.value=''">
+          Envoyer
+        </button>
+      </div>
+
+      <!-- Paragraphe qui n’apparaît que si l’utilisateur a cliqué sur Rechercher -->
+      <p *ngIf="result">
+        Pour toute autre question, vous pouvez nous écrire à :
+        <a href="mailto:contact@be-on-top.io">contact@be-on-top.io</a> ou consulter les pages Nos Métiers.
+      </p>
+
     </div>
-  </div>
-
-  <!-- Champ input + bouton -->
-  <div class="input-group mb-3">
-    <input #userQ type="text" class="form-control"
-           placeholder="Votre question ?"
-           (keydown.enter)="sendMessage(userQ.value); userQ.value=''"/>
-    <button type="button" class="btn btn-outline-primary"
-            (click)="sendMessage(userQ.value); userQ.value=''">
-      Envoyer
-    </button>
-  </div>
-
-  <!-- Paragraphe qui n’apparaît que si l’utilisateur a cliqué sur Rechercher -->
-  <p *ngIf="result">
-    Pour toute autre question, vous pouvez nous écrire à :
-    <a href="mailto:contact@be-on-top.io">contact@be-on-top.io</a> ou consulter les pages Nos Métiers.
-  </p>
-
-</div>
 
 
 
@@ -491,30 +489,36 @@
     <hr>
     <!-- collapse -->
     <div class="container mt-5">
-      <ul class="nav row justify-content-around" id="myTab" role="tablist">
-        <li class="nav-item col-4" role="presentation">
+      <ul class="nav row justify-content-around g-1" id="myTab" role="tablist">
+        <li class="nav-item col-3" role="presentation">
           <button class="btn w-100 active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button"
             role="tab" aria-controls="info" aria-selected="true">Edition</button>
         </li>
-        <li class="nav-item col-4" role="presentation">
+        <li class="nav-item col-3" role="presentation">
           <button class="btn w-100" id="rgpd-tab" data-bs-toggle="tab" data-bs-target="#rgpd" type="button" role="tab"
             aria-controls="rgpd" aria-selected="false">RGPD</button>
         </li>
-        <li class="nav-item col-4" role="presentation">
+        <li class="nav-item col-3" role="presentation">
+          <button class="btn w-100" id="rse-tab" data-bs-toggle="tab" data-bs-target="#rse" type="button" role="tab"
+            aria-controls="rse" aria-selected="false">RSE</button>
+        </li>
+        <li class="nav-item col-3" role="presentation">
           <button class="btn w-100" id="rgpd-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button"
             role="tab" aria-controls="contact" aria-selected="false">Contact</button>
         </li>
+
       </ul>
       <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
           <app-legal-info></app-legal-info>
         </div>
         <div class="tab-pane fade" id="rgpd" role="tabpanel" aria-labelledby="rgpd-tab">
-
           <app-rgpd></app-rgpd>
         </div>
+        <div class="tab-pane fade" id="rse" role="tabpanel" aria-labelledby="rse-tab">
+          <app-rse></app-rse>
+        </div>
         <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-
           <app-contact-information></app-contact-information>
         </div>
       </div>

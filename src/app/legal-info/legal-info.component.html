@@ -14,7 +14,8 @@
 
     <h2 class="h5"><i class="bi bi-r-square me-3"></i>Marque déposée</h2>
     <p>La marque BE-ON-TOP.io et son logo sont la propriété de la SAS RÉSEAU C&S et sont déposées à l'INPI sous le
-        numéro 4886397. <strong>Ce dépôt la protège des contrefaçons ou d'un usage de la marque qui ne serait pas conforme à la
+        numéro 4886397. <strong>Ce dépôt la protège des contrefaçons ou d'un usage de la marque qui ne serait pas
+            conforme à la
             volonté de son créateur ou sa mission</strong></p>
 
     <h2 class="h5"><i class="bi bi-info-square me-3"></i>Fondateur</h2>
@@ -26,16 +27,22 @@
 
 
     <h2 class="h5"><i class="bi bi-code-square me-3"></i>Développement</h2>
-    <p class="mt-">Application (Progressive Web Application) développée en interne par SAS RÉSEAU C&S, écrite en JavaScript (également du code TypeScript). Repose sur Cloud Firestore base de données
+    <p class="mt-">Application (Progressive Web Application) développée en interne par SAS RÉSEAU C&S, écrite en
+        JavaScript (également du code TypeScript). Repose sur Cloud Firestore base de données
         conçue pour le développement mobile, Web et serveur à partir de Firebase et Google Cloud.</p>
- 
-        <h2 class="h5"><i class="bi bi-info-square me-3"></i>Application cofinancée par l'Etat</h2>
-    <p class="mt-">Opération cofinancée par l'Etat dans le cadre de l'Action "Adaptation et qualification de la main d'œuvre". "Dispositifs France Formation Innovante Numérique (DEFFINUM) opéré par la Caisse des Dépôts" (Banque des Territoires)
+
+    <h2 class="h5"><i class="bi bi-info-square me-3"></i>Application cofinancée par l'Etat</h2>
+    <p class="mt-">Opération cofinancée par l'Etat dans le cadre de l'Action "Adaptation et qualification de la main
+        d'œuvre". "Dispositifs France Formation Innovante Numérique (DEFFINUM) opéré par la Caisse des Dépôts" (Banque
+        des Territoires)
     </p>
 
-        <h2 class="h5"><i class="bi bi-code-square me-3"></i>Accessibilité</h2>
-    <p class="mt-">Cette application respecte en grande partie les exigences du RGAA 4.1 et de la norme européenne EN 301 549. Une attention particulière a été portée à l'accessibilité des contenus, de la navigation, et de la compatibilité avec les lecteurs d'écran. Vous pouvez consulter notre <a href="https://be-on-top.io/accessibility">Déclaration d'accessibilité</a></p>
- 
+    <h2 class="h5"><i class="bi bi-code-square me-3"></i>Accessibilité</h2>
+    <p class="mt-">Cette application respecte en grande partie les exigences du RGAA 4.1 et de la norme européenne EN
+        301 549. Une attention particulière a été portée à l'accessibilité des contenus, de la navigation, et de la
+        compatibilité avec les lecteurs d'écran. Vous pouvez consulter notre <a href="#accessibilityModal"
+            data-bs-toggle="modal">Déclaration d'accessibilité</a></p>
+
 
     <!-- <hr>
     <h2 class="h4">Contact</h2>
@@ -45,7 +52,22 @@
         <li>Par courrier : S.A.S. RÉSEAU C&S, 8 rue Jean Walton, ZAE Taillefer, 33450 MONTUSSAN, France.</li>
     </ul> -->
 
-
-
-
 </div>
+
+    <div class="modal fade" id="accessibilityModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h2 class="modal-title fs-5">Déclaration d'accessibilité</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                </div>
+
+                <div class="modal-body">
+                    <!-- ton contenu / composant Angular -->
+                    <app-accessibility-compliance-report></app-accessibility-compliance-report>
+                </div>
+
+            </div>
+        </div>
+    </div>

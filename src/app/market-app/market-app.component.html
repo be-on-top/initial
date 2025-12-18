@@ -403,7 +403,7 @@
         </div>
       </div>
     </div>
-    
+
     <hr class="light">
 
     <app-punchlines></app-punchlines>
@@ -413,24 +413,35 @@
   <hr>
   <!-- collapse -->
   <div class="container mt-5">
-    <ul class="nav row justify-content-around" id="myTab" role="tablist">
-      <li class="nav-item col-6" role="presentation">
+    <ul class="nav row justify-content-around g-1" id="myTab" role="tablist">
+      <li class="nav-item col-4" role="presentation">
         <button class="btn w-100 active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button"
           role="tab" aria-controls="info" aria-selected="true">BE-ON-TOP.io</button>
       </li>
-      <li class="nav-item col-6" role="presentation">
+      <li class="nav-item col-4" role="presentation">
         <button class="btn w-100" id="rgpd-tab" data-bs-toggle="tab" data-bs-target="#rgpd" type="button" role="tab"
           aria-controls="rgpd" aria-selected="false">Vie privée</button>
       </li>
+      <li class="nav-item col-4" role="presentation">
+        <button class="btn w-100" id="rse-tab" data-bs-toggle="tab" data-bs-target="#rse" type="button" role="tab"
+          aria-controls="rse" aria-selected="false">RSE</button>
+      </li>
+      
     </ul>
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
         <app-legal-info></app-legal-info>
       </div>
       <div class="tab-pane fade" id="rgpd" role="tabpanel" aria-labelledby="rgpd-tab">
-
         <app-rgpd></app-rgpd>
       </div>
+      <div class="tab-pane fade" id="rgpd" role="tabpanel" aria-labelledby="rgpd-tab">
+        <app-rgpd></app-rgpd>
+      </div>
+      <div class="tab-pane fade" id="rse" role="tabpanel" aria-labelledby="rse-tab">
+        <app-rse></app-rse>
+      </div>
+
     </div>
   </div>
 

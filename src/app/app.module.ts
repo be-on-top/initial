@@ -62,6 +62,7 @@ import { PunchlinesComponent } from './punchlines/punchlines.component';
 import { TrainingStatsComponent } from './training-stats/training-stats.component';
 import { TradeFilterPipe } from './trade-filter.pipe';
 import { TradesMinimalComponent } from './trades-minimal/trades-minimal.component';
+import { RseComponent } from './rse/rse.component';
 // import { CollapsesAlertComponent } from './collapses-alert/collapses-alert.component';
 // import { AutoChangeDirective } from './auto-change.directive';
 
@@ -108,6 +109,7 @@ import { TradesMinimalComponent } from './trades-minimal/trades-minimal.componen
     TrainingStatsComponent,
     TradeFilterPipe,
     TradesMinimalComponent,
+    RseComponent,
     // CollapsesAlertComponent,
     // AutoChangeDirective,
     // TooltipComponent
