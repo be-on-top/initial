@@ -36,6 +36,9 @@ export class AddStudentComponent {
   successMessage: string = '';
   errorMessage: string = '';
 
+  // pour éviter le double click
+  isSubmitting = false;
+
   constructor(private service: StudentsService, private router: Router, private papa: Papa) { }
 
   ngOnInit(): void {
@@ -100,6 +103,10 @@ export class AddStudentComponent {
       return;
     }
 
+    if (this.isSubmitting) return;   // Sécurité supplémentaire
+
+    this.isSubmitting = true;
+
     // Analyse du fichier CSV grâce à PapaParse
     this.papa.parse(this.csvFile, {
       header: true,
@@ -156,57 +163,57 @@ export class AddStudentComponent {
   // }
 
   // avec feedback optimisé
-//   uploadStudentsToFirestore(): void {
-//   if (!this.parsedStudents || this.parsedStudents.length === 0) {
-//     this.errorMessage = 'Aucun étudiant valide à importer.';
-//     return;
-//   }
+  //   uploadStudentsToFirestore(): void {
+  //   if (!this.parsedStudents || this.parsedStudents.length === 0) {
+  //     this.errorMessage = 'Aucun étudiant valide à importer.';
+  //     return;
+  //   }
 
-//   this.service.importStudents(this.parsedStudents)
-//     .then((feedback) => {
-//       if (feedback.success) {
-//         // alert("Etudiant(s) importé(s) avec succès")
-//         this.feedbackMessages = `✅ ${feedback.imported.length} étudiant(s) importé(s) avec succès.`;
-//         this.isSuccessMessage = true;
-//       }
+  //   this.service.importStudents(this.parsedStudents)
+  //     .then((feedback) => {
+  //       if (feedback.success) {
+  //         // alert("Etudiant(s) importé(s) avec succès")
+  //         this.feedbackMessages = `✅ ${feedback.imported.length} étudiant(s) importé(s) avec succès.`;
+  //         this.isSuccessMessage = true;
+  //       }
 
-//       if (feedback.errors.length > 0) {
-//         this.errorMessage = `⚠️ ${feedback.errors.length} erreur(s) détectée(s):\n\n${feedback.errors.join('\n')}`;
-//       }
-//     })
-//     .catch(error => {
-//       this.errorMessage = '❌ Erreur critique lors de l\'importation : ' + error.message;
-//     });
-// }
+  //       if (feedback.errors.length > 0) {
+  //         this.errorMessage = `⚠️ ${feedback.errors.length} erreur(s) détectée(s):\n\n${feedback.errors.join('\n')}`;
+  //       }
+  //     })
+  //     .catch(error => {
+  //       this.errorMessage = '❌ Erreur critique lors de l\'importation : ' + error.message;
+  //     });
+  // }
 
-uploadStudentsToFirestore(): void {
-  if (!this.parsedStudents || this.parsedStudents.length === 0) {
-    this.errorMessage = 'Aucun étudiant valide à importer.';
-    return;
+  uploadStudentsToFirestore(): void {
+    if (!this.parsedStudents || this.parsedStudents.length === 0) {
+      this.errorMessage = 'Aucun étudiant valide à importer.';
+      return;
+    }
+
+    this.service.importStudents(this.parsedStudents)
+      .then((feedback) => {
+        if (feedback.success) {
+          alert(`✅ ${feedback.imported.length} étudiant(s) importé(s) avec succès.`);
+          this.feedbackMessages = `✅ ${feedback.imported.length} étudiant(s) importé(s) avec succès.`;
+          this.isSuccessMessage = true;
+
+          // ✅ Redirection ici, après affichage
+          this.router.navigate(['/admin/referentStudentsList']);
+          setTimeout(() => {
+            window.location.reload();
+          }, 500);
+        }
+
+        if (feedback.errors.length > 0) {
+          this.errorMessage = `⚠️ ${feedback.errors.length} erreur(s):\n\n${feedback.errors.join('\n')}`;
+        }
+      })
+      .catch(error => {
+        this.errorMessage = '❌ Erreur critique lors de l\'importation : ' + error.message;
+      });
   }
-
-  this.service.importStudents(this.parsedStudents)
-    .then((feedback) => {
-      if (feedback.success) {
-        alert(`✅ ${feedback.imported.length} étudiant(s) importé(s) avec succès.`);
-        this.feedbackMessages = `✅ ${feedback.imported.length} étudiant(s) importé(s) avec succès.`;
-        this.isSuccessMessage = true;
-
-        // ✅ Redirection ici, après affichage
-        this.router.navigate(['/admin/referentStudentsList']);
-        setTimeout(() => {
-          window.location.reload();
-        }, 500);
-      }
-
-      if (feedback.errors.length > 0) {
-        this.errorMessage = `⚠️ ${feedback.errors.length} erreur(s):\n\n${feedback.errors.join('\n')}`;
-      }
-    })
-    .catch(error => {
-      this.errorMessage = '❌ Erreur critique lors de l\'importation : ' + error.message;
-    });
-}
 
 
 

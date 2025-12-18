@@ -89,17 +89,15 @@
     <!-- fin du rappel -->
 
     <p class="text-muted">📌 Un popup vous demandant de
-        saisir votre mot de passe s'affichera en cours d'import. Selon votre connexion un petit délai est nécessaire
-        avant de voir le popup s'afficher et le processus se terminer.</p>
+        saisir votre mot de passe s'affichera en cours d'import. <span class="fw-bold">Selon votre connexion un petit délai est nécessaire
+        avant de voir le popup s'afficher et le processus se terminer</span>.</p>
 
     <div class="form-group">
 
         <label for="csvFile" class="form-label">Choisissez un fichier CSV</label>
         <input type="file" id="csvFile" (change)="onFileChange($event)" accept=".csv" class="form-control">
     </div>
-    <button type="submit" class="btn btn-secondary mt-4" (click)="importCSV()" [disabled]="!csvFile">Importer</button>
-
-
+    <button type="submit" [disabled]="isSubmitting" class="btn btn-secondary mt-4" (click)="importCSV()" [disabled]="!csvFile">Importer</button>
 
     <div class="alert alert-warning mt-5 text-light">Votre fichier CSV devra contenir des colonnes suivantes: <span
             class="fw-bold"><br>firstName,lastName,email</span> <br>John,Doe,john.doe@example.com
