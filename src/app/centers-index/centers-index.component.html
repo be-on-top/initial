@@ -1,0 +1,81 @@
+<div class="container py-3">
+
+  <!-- Champ de recherche -->
+  <div class="mb-4">
+    <label for="centerSearch" class="form-label">Rechercher un centre</label>
+    <input type="text"
+           id="centerSearch"
+           [(ngModel)]="query"
+           class="form-control"
+           placeholder="Nom, ville ou code postal…"
+           aria-label="Rechercher un centre">
+  </div>
+
+  <div class="row">
+
+    <!-- Centres Filiales -->
+    <div *ngIf="filteredCenters(subsidiaryCenters).length" class="mt-4 col-md-3">
+      <h2 class="h4 mb-2">Filiales du réseau</h2>
+      <ul class="list-group">
+        <li *ngFor="let center of filteredCenters(subsidiaryCenters)" class="list-group-item">
+          <a [routerLink]="['/center', center.id]" class="d-block">
+            <span [ngClass]="{'text-muted': !center.status}">
+              {{ center.name }} ({{ center.city }})
+            </span>
+            <i *ngIf="!center.status" class="bi bi-eye-slash ms-1" title="Centre désactivé"></i><br>
+            <small class="text-muted fst-italic">{{ center.cp }}</small>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Centres membres -->
+    <div *ngIf="filteredCenters(memberCenters).length" class="mt-4 col-md-3">
+      <h2 class="h4 mb-2">Adhérents du réseau</h2>
+      <ul class="list-group">
+        <li *ngFor="let center of filteredCenters(memberCenters)" class="list-group-item">
+          <a [routerLink]="['/center', center.id]" class="d-block">
+            <span [ngClass]="{'text-muted': !center.status}">
+              {{ center.name }} ({{ center.city }})
+            </span>
+            <i *ngIf="!center.status" class="bi bi-eye-slash ms-1" title="Centre désactivé"></i><br>
+            <small class="text-muted fst-italic">{{ center.cp }}</small>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Centres partenaires -->
+    <div *ngIf="filteredCenters(partnerCenters).length" class="mt-4 col-md-3">
+      <h2 class="h4 mb-2">Partenaires du réseau</h2>
+      <ul class="list-group">
+        <li *ngFor="let center of filteredCenters(partnerCenters)" class="list-group-item">
+          <a [routerLink]="['/center', center.id]" class="d-block">
+            <span [ngClass]="{'text-muted': !center.status}">
+              {{ center.name }} ({{ center.city }})
+            </span>
+            <i *ngIf="!center.status" class="bi bi-eye-slash ms-1" title="Centre désactivé"></i><br>
+            <small class="text-muted fst-italic">{{ center.cp }}</small>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Centres indépendants -->
+    <div *ngIf="filteredCenters(independentCenters).length" class="mt-4 col-md-3">
+      <h2 class="h4 mb-2">Centres hors réseau</h2>
+      <ul class="list-group">
+        <li *ngFor="let center of filteredCenters(independentCenters)" class="list-group-item">
+          <a [routerLink]="['/center', center.id]" class="d-block">
+            <span [ngClass]="{'text-muted': !center.status}">
+              {{ center.name }} ({{ center.city }})
+            </span>
+            <i *ngIf="!center.status" class="bi bi-eye-slash ms-1" title="Centre désactivé"></i><br>
+            <small class="text-muted fst-italic">{{ center.cp }}</small>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</div>

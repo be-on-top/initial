@@ -63,6 +63,7 @@ import { TrainingStatsComponent } from './training-stats/training-stats.componen
 import { TradeFilterPipe } from './trade-filter.pipe';
 import { TradesMinimalComponent } from './trades-minimal/trades-minimal.component';
 import { RseComponent } from './rse/rse.component';
+import { CentersIndexComponent } from './centers-index/centers-index.component';
 // import { CollapsesAlertComponent } from './collapses-alert/collapses-alert.component';
 // import { AutoChangeDirective } from './auto-change.directive';
 
@@ -110,6 +111,7 @@ import { RseComponent } from './rse/rse.component';
     TradeFilterPipe,
     TradesMinimalComponent,
     RseComponent,
+    CentersIndexComponent,
     // CollapsesAlertComponent,
     // AutoChangeDirective,
     // TooltipComponent
