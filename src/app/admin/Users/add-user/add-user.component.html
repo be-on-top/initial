@@ -157,7 +157,7 @@
               <p class="text-muted pt-3">📌 Un popup vous demandant de
         saisir votre mot de passe s'affichera. <span class="fw-bold">Un léger délai peut être nécessaire selon votre connexion pour voir le popup s'afficher et la procédure de création de compte se terminer.</span>.</p>
 
-        <button type="submit" id="submit" class="btn btn-primary mt-3"
+        <button [disabled]="isSubmitting" type="submit" id="submit" class="btn btn-primary mt-3"
             [ngClass]="{'disabled':f.invalid}">Ajouter</button>
     </form>
 

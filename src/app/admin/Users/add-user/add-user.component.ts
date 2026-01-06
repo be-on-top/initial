@@ -52,6 +52,9 @@ export class AddUserComponent {
   // pour faire la différence selon que le référent est associé ou non à un centre partenaire
   partner: boolean = false
 
+  // pour éviter le double click
+  isSubmitting = false;
+
   constructor(private service: UsersService,
     private router: Router,
     private ac: ActivatedRoute,
@@ -87,6 +90,8 @@ export class AddUserComponent {
       return
     }
 
+    // pour éviter le double click
+    this.isSubmitting = true
     let newUser: Users
 
     // // si on partage ce formulaire avec un referent qui n'aura pas accès à isPrivate ni role...
@@ -106,13 +111,12 @@ export class AddUserComponent {
     if (this.userRole === 'referent') {
       newUser = { ...form.value, role: 'external', isPrivate: false, status: true }
     }
-    if (this.userRole !== 'referent' && form.value.isPrivate === true) {
+    else if (form.value.isPrivate === true) {
       newUser = { ...form.value, status: false }
     }
     else {
       newUser = { ...form.value, status: true }
     }
-
 
     console.log("newUser", newUser);
 
