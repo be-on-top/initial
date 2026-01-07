@@ -23,7 +23,7 @@
 
     <ul class="list-group">
       <li *ngFor="let trade of group.value" class="list-group-item">
-        <a [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]" class="d-block">
+        <a [routerLink]="['/formation', trade.sigle]" class="d-block">
           <span>{{ trade.denomination }}</span><br>
           <small class="text-muted fst-italic">{{ trade.sigle }}</small>
         </a>

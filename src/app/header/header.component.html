@@ -46,18 +46,18 @@
                     <!-- <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Admin</a> -->
                     <ul class="dropdown-menu"
                         aria-label="Menu de navigation pour la création d'utilisateurs ayant des droits spécifiques">
-                        <li *ngIf="userRole?.includes('admin')"><a
-                                class="dropdown-item" (click)="navigateTo('/admin/settings')">Paramètres</a>
+                        <li *ngIf="userRole?.includes('admin')"><a class="dropdown-item"
+                                (click)="navigateTo('/admin/settings')">Paramètres</a>
                             <hr>
                         </li>
                         <!-- je le duplique justse pour que le référent métier ne soit pas dérouté par l'intitulé -->
-                        <li *ngIf="userRole?.includes('manager')"><a
-                                class="dropdown-item" (click)="navigateTo('/admin/settings')">Paramètres (métiers)</a>
+                        <li *ngIf="userRole?.includes('manager')"><a class="dropdown-item"
+                                (click)="navigateTo('/admin/settings')">Paramètres (métiers)</a>
                             <hr>
                         </li>
                         <!-- pour explicitement accéder à la gestion des centres -->
-                        <li *ngIf="userRole?.includes('admin')"><a
-                                class="dropdown-item" (click)="navigateTo('/admin/centers')">Centres</a>
+                        <li *ngIf="userRole?.includes('admin')"><a class="dropdown-item"
+                                (click)="navigateTo('/admin/centers')">Centres</a>
                             <hr>
                         </li>
                         <!-- pour vue des filtres quantitatifs -->
@@ -217,9 +217,7 @@
                                 (click)="closeNavbar()">
                                 {{ trade.denomination | truncateTitle }}
                             </a> -->
-                            <a class="dropdown-item"
-                                [routerLink]="['/formation', trade.sigle]"
-                                (click)="closeNavbar()">
+                            <a class="dropdown-item" [routerLink]="['/formation', trade.sigle]" (click)="closeNavbar()">
                                 {{ trade.denomination | truncateTitle }}
                             </a>
                         </li>
@@ -348,7 +346,8 @@
                                 (click)="closeNavbar()">Mon compte Tuteur</a>
                         </li>
                         <li *ngIf="!userRole || userRole == ''">
-                            <a class="dropdown-item" [routerLink]="['register']" (click)="closeNavbar()" aria-label="Création de compte candidat">Création de compte</a>
+                            <a class="dropdown-item" [routerLink]="['register']" (click)="closeNavbar()"
+                                aria-label="Création de compte candidat">Création de compte</a>
                         </li>
                         <li
                             *ngIf="!offline && isOneQuizzAchieved && !studentData?.isSocialFormSent && !studentData?.innerStudent">
@@ -482,12 +481,39 @@
                 <!-- fin tuteurs -->
 
                 <!-- pour marketing momentanné -->
-                <li *ngIf="userRole?.includes('editor')" class="nav-item" [routerLinkActive]="['active']">
-                    <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown"
-                        (click)="goToInfoPage()">Informations
+                <li *ngIf="userRole?.includes('editor')" class="nav-item dropdown" [routerLinkActive]="['active']">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Informations
                         <!-- <i class="bi bi-info-square-fill ms-2"></i> -->
                     </a>
+
+                    <ul class="dropdown-menu mb-2">
+                        <li *ngIf="userRole?.includes('editor')" class="nav-item" [routerLinkActive]="['active']">
+                            <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown"
+                                (click)="goToInfoPage()">Info prescripteurs
+                                <!-- <i class="bi bi-info-square-fill ms-2"></i> -->
+                            </a>
+                        </li>
+                        <li><a class="dropdown-item" (click)="closeNavbar()" target="_blank" rel="noopener noreferrer"
+                                role="button" aria-label="Tous les centres en ligne" [routerLink]="['centersIndex']">Nos
+                                Centres</a>
+                        </li>
+                        <li><a class="dropdown-item" (click)="closeNavbar()" target="_blank" rel="noopener noreferrer"
+                                role="button" aria-label="Toutes les formations" [routerLink]="['trainingsIndex']">Nos
+                                formations</a>
+                        </li>
+                        <li><a class="dropdown-item" (click)="closeNavbar()" target="_blank" rel="noopener noreferrer"
+                                role="button" aria-label="Tous les comptes professionnels"
+                                [routerLink]="['/admin/professionalsList']">Nos comptes
+                                professionnels</a>
+                        </li>
+                        <li><a class="dropdown-item" (click)="closeNavbar()" target="_blank" rel="noopener noreferrer"
+                                role="button" aria-label="Types de candidats par inscription formation"
+                                (click)="navigateTo('trainingStats')">Typologie des candidats</a>
+                        </li>
+
+                    </ul>
                 </li>
+
                 <!-- fin marketing -->
 
             </ul>
