@@ -416,6 +416,18 @@
                         <li><a class="dropdown-item" (click)="closeNavbar()" [routerLink]="['market-app']">Mission
                                 BE-ON-TOP</a>
                         </li>
+
+                        <!-- NOUVEL ITEM -->
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li class="nav-item">
+                            <a class="dropdown-item" [routerLink]="['/admin/my-centers']" role="button"
+                                aria-label="Consulter les centres associés à votre compte" (click)="closeNavbar()">
+                                Mon/mes centre(s)
+                            </a>
+                        </li>
+
                     </ul>
                 </li>
                 <!-- fin de l'alternative -->
