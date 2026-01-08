@@ -68,6 +68,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   hasEvaluationFilter: boolean = false
 
   cpArray: string[] = []
+  centersUrl?: any
   regions: string[] = []
   departments: string[] = []
   // quelle région l'utilisateur a sélectionnée dans l'interface
@@ -112,6 +113,46 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       // la liste des formateurs et ceux qui ont le même tableau de cp
       // ou ceux dont un des cp du tableau est contenu dans le tableau des cp du compte authentifié
       // this.getTrainersWithSameCp(this.userUid)
+
+      // pour lister le ou les centres associés 
+      // this.regionalService.getCenters().pipe(
+      //   map(centers =>
+      //     centers
+      //       .filter(center => this.cpArray.includes(center.cp) && center.status)
+      //       .map(center => center.id)
+      //   )
+      // ).subscribe(centerIds => console.log(centerIds));
+
+
+
+      // this.regionalService.getCenters().pipe(
+      //   map(centers =>
+      //     centers
+      //       .filter(center => this.cpArray.includes(center.cp) && center.status)
+      //       .map(center => ({
+      //         name: center.name,
+      //         cp: center.cp,
+      //         link: ['/center', center.id]
+      //       }))
+      //   )
+      // ).subscribe(centersUrl => {
+      //   this.centersUrl = centersUrl;
+      // });
+
+      // si les liens doivent pointer  vers une url externe
+      this.regionalService.getCenters().pipe(
+        map(centers =>
+          centers
+            .filter(center => this.cpArray.includes(center.cp) && center.status)
+            .map(center => ({
+              name: center.name,
+              cp: center.cp,
+              url: `/center/${center.id}` // ou baseUrl + id si domaine complet
+            }))
+        )
+      ).subscribe(centersUrl => {
+        this.centersUrl = centersUrl;
+      });
 
     }
 
@@ -539,7 +580,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     // pour observer les formateurs
     else if (this.hasEvaluationFilter || this.storedValue === 'hasEvaluationFilter') {
       this.allStudents = this.initialStudents.filter(student => student.evaluations);
-    } 
+    }
 
     // fin du filtre dédié aux formateurs
     else if (this.isPriorFilter || this.storedValue === 'isPriorFilter') {
