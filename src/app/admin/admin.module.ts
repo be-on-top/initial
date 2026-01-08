@@ -72,6 +72,7 @@ import { CollapsesAlertComponent } from '../collapses-alert/collapses-alert.comp
 import { ProfessionalsListComponent } from './professionals-list/professionals-list.component';
 import { DeleteAllQuestionsComponent } from './Questions/delete-all-questions/delete-all-questions.component';
 import { UpdatePersonalDataComponent } from './Trainers/update-personal-data/update-personal-data.component';
+import { MyCentersComponent } from './my-centers/my-centers.component';
 
 
 
@@ -88,14 +89,14 @@ const routesAdmin: Routes = [
       { path: 'evaluator/:id', component: EvaluatorDetailsComponent },
       { path: 'updateEvaluator/:id', component: UpdateEvaluatorComponent, data: { user: 'evaluator' } },
       // essai mutualisation des vues pour la liste des formateurs + trainers (pas pertinent pour la gestion de trainers par referents)
-      { path: 'trainers', component: TrainersListComponent, data: { user: 'admin' }  },
-      { path: 'myTrainers', component: TrainersListComponent, data: { user: 'referent' }  },
+      { path: 'trainers', component: TrainersListComponent, data: { user: 'admin' } },
+      { path: 'myTrainers', component: TrainersListComponent, data: { user: 'referent' } },
       // { path: 'trainers', component: UsersListComponent, data: { user: 'trainer' } },
       { path: 'addTrainer', component: AddTrainerComponent },
       // essai mutualisation des vues pour le détail depuis la liste des evaluateurs + formateurs
       // { path: 'trainer/:id', component: TrainerDetailsComponent },
       { path: 'trainer/:id', component: TrainerDetailsComponent },
-      { path: 'myTrainerAccount', component: TrainerDetailsComponent, data: { user: 'trainer' }  },
+      { path: 'myTrainerAccount', component: TrainerDetailsComponent, data: { user: 'trainer' } },
       { path: 'updateTrainer/:id', component: UpdateTrainerComponent },
       { path: 'tutors', component: TutorsListComponent },
       // { path: 'tutors', component: UsersListComponent, data: { user: 'tutor' } },
@@ -162,7 +163,7 @@ const routesAdmin: Routes = [
       { path: 'referent/trainerDetails/:id', component: TrainerDetailsComponent, data: { user: 'referent' } },
       { path: 'referent/updateTrainer/:id', component: UpdateTrainerComponent, data: { user: 'referent' } },
       { path: 'referent/trainersList', component: TrainersListComponent, data: { user: 'referent' } },
-      { path: 'myReferentAccount/:id', component: UserDetailsComponent, data: { user: 'referent' }  },
+      { path: 'myReferentAccount/:id', component: UserDetailsComponent, data: { user: 'referent' } },
 
 
       { path: 'addStudentEvaluation/:id', component: AddFollowUpComponent, data: { user: 'trainer' } },
@@ -192,13 +193,16 @@ const routesAdmin: Routes = [
       { path: 'professionalsList', component: ProfessionalsListComponent },
 
       // pour le tuteur
-      { path: 'myTutorAccount/:id', component: TutorDetailsComponent, data: { user: 'tutor' }  },
+      { path: 'myTutorAccount/:id', component: TutorDetailsComponent, data: { user: 'tutor' } },
       // pour le marketing
-      { path: 'leads', component: StudentsListComponent, data: { user: 'editor' }  },
-      { path: 'leads/studentDetails/:id', component: StudentDetailsComponent, data: { user: 'editor' }  },
+      { path: 'leads', component: StudentsListComponent, data: { user: 'editor' } },
+      { path: 'leads/studentDetails/:id', component: StudentDetailsComponent, data: { user: 'editor' } },
       // pour l'external ajouté par referent
       { path: 'contactStudentsList', component: StudentsListComponent, data: { user: 'referentsContacts' } },
-      { path: 'contactStudentDetails/:id', component: StudentDetailsComponent, data: { user: 'referentsContacts' }  },
+      { path: 'contactStudentDetails/:id', component: StudentDetailsComponent, data: { user: 'referentsContacts' } },
+      { path: 'my-centers', component: MyCentersComponent
+      }
+
 
     ],
     // canActivate: [AuthGuardService]
@@ -268,7 +272,8 @@ const routesAdmin: Routes = [
     CollapsesAlertComponent,
     ProfessionalsListComponent,
     DeleteAllQuestionsComponent,
-    UpdatePersonalDataComponent
+    UpdatePersonalDataComponent,
+    MyCentersComponent
   ],
   imports: [
     BrowserModule,

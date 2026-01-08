@@ -1,0 +1,48 @@
+<section class="container py-3">
+    <!-- <h3>Centre(s) associé(s) à vos localiations</h3> -->
+    <h3>
+        {{ centersUrl.length > 1 ? 'Mes centres associés' : 'Mon centre associé' }}
+    </h3>
+
+
+    <!-- <div class="alert alert-info alert-dismissible fade show" role="alert">
+        Le(s) centre(s) associé(s) à vos localisations sont affiché(s) à titre informatif uniquement. L'accès à chacun vous permet de voir toutes les informations acessibles  aux utilisateurs, ainsi que les formations métiers qui leur sont rattachés.
+        Pour toute correction ou mise à jour, veuillez cliquer sur suivre la procédure interne de votre organisation.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div> -->
+
+<div class="alert bg-info text-white alert-dismissible fade show" role="alert">
+
+  <ng-container *ngIf="centersUrl.length === 1; else plural">
+    Le centre associé à votre localisation est affiché et accessible
+  </ng-container>
+  <ng-template #plural>
+    Les centres associés à vos localisations sont affichés et accessibles
+  </ng-template>
+
+  <span class="fw-bold"> à titre informatif uniquement.</span>
+  L'accès à chacun permet de consulter les informations destinées aux utilisateurs,
+  ainsi que les formations métiers qui leur sont rattachées.
+  Pour toute correction ou mise à jour, veuillez suivre la procédure interne de l’organisation de votre réseau.
+
+  <button type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="alert"
+          aria-label="Fermer">
+  </button>
+</div>
+
+
+
+    <div class="text-center" *ngIf="!isLoading; else loading">
+        <span *ngFor="let center of centersUrl; let last = last">
+            <a [href]="center.url" target="_blank" rel="noopener">
+                {{ center.name }} ({{ center.cp }})
+            </a><span *ngIf="!last"> - </span>
+        </span>
+    </div>
+
+    <ng-template #loading>
+        <p>Chargement des centres...</p>
+    </ng-template>
+</section>
