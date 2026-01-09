@@ -13,17 +13,14 @@
     <!-- <h3 *ngIf="userRouterLinks.user=='referent'">Suivi administratif des candidats ({{userUid}})</h3> -->
     <h3 *ngIf="userRouterLinks.user=='referent'">Suivi administratif des candidats</h3>
     <p *ngIf="userRouterLinks.user=='referent'" class="smaller primary text-center mt-0">Pour rappel, vous sont associés :
-        {{cpArray}} <br>
-
-        <!-- <a *ngFor="let center of centersUrl; let last = last" [routerLink]="center.link">
-            {{ center.name }} ({{ center.cp }})<span *ngIf="!last"> - </span>
-        </a> -->
+        {{cpArray}}
+        <!-- déportée vers my-centers -->
+        <!-- <br>
         <a *ngFor="let center of centersUrl; let last = last"
    [href]="center.url"
    target="_blank" rel="noopener">
   {{ center.name }} ({{ center.cp }})<span *ngIf="!last"> - </span>
-</a>
-
+        </a> -->
     </p>
 
     <h3 *ngIf="userRouterLinks.user=='external' || userRouterLinks.user=='referentsContacts'">Annuaire étudiants</h3>

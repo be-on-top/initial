@@ -68,7 +68,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   hasEvaluationFilter: boolean = false
 
   cpArray: string[] = []
-  centersUrl?: any
+  // centersUrl?: any
   regions: string[] = []
   departments: string[] = []
   // quelle région l'utilisateur a sélectionnée dans l'interface
@@ -139,20 +139,20 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       //   this.centersUrl = centersUrl;
       // });
 
-      // si les liens doivent pointer  vers une url externe
-      this.regionalService.getCenters().pipe(
-        map(centers =>
-          centers
-            .filter(center => this.cpArray.includes(center.cp) && center.status)
-            .map(center => ({
-              name: center.name,
-              cp: center.cp,
-              url: `/center/${center.id}` // ou baseUrl + id si domaine complet
-            }))
-        )
-      ).subscribe(centersUrl => {
-        this.centersUrl = centersUrl;
-      });
+      // si les liens doivent pointer  vers une url externe : finalement  déporté vers my-centers
+      // this.regionalService.getCenters().pipe(
+      //   map(centers =>
+      //     centers
+      //       .filter(center => this.cpArray.includes(center.cp) && center.status)
+      //       .map(center => ({
+      //         name: center.name,
+      //         cp: center.cp,
+      //         url: `/center/${center.id}` // ou baseUrl + id si domaine complet
+      //       }))
+      //   )
+      // ).subscribe(centersUrl => {
+      //   this.centersUrl = centersUrl;
+      // });
 
     }
 
