@@ -2,7 +2,7 @@
     [ngClass]="{'underProgress':tradeData.status===false}">
 
     <!-- <h3>{{tradeData.denomination}}</h3> -->
-    <div class="p-2 bg-primary text-white rounded row fade show mx-1"
+    <div class="p-2 bg-primary text-white rounded row fade show mx-1 justify-content-between align-items-start g-5 pe-3"
         [ngClass]="{'underProgress':tradeData.status===false}">
         <!-- {{imageUrl}} -->
         <!-- <h1 class="d-flex justify-content-between mt-3">{{tradeData.denomination}}<app-share-button></app-share-button> -->
@@ -10,7 +10,7 @@
                 [innerHTML]="processDenomination(tradeData.denomination)"></span> <app-share-button></app-share-button>
         </h1>
 
-        <div class="col-md-7">
+        <div class="col-md-7 mt-0">
             <p class="fs-5 mt-3">
                 Réf.: {{tradeData.sigle}}.
                 <br *ngIf="tradeData.parentCategory">
@@ -48,27 +48,28 @@
                 </span>
             </p>
         </div>
-        <!-- il faut différencier le cas d'un userRole=none...  -->
-        <!-- <div *ngIf="userRole==='none' else switch" class="col-md-5 text-white mt-md-5">
-            <p class="text-md-left fs-5">Afin de commencer un QCM, merci de <a [routerLink]="[
-                '/login']" class="text-white fw-bold">vous authentifier</a> ou <a [routerLink]="[
-                '/register']" class="text-white fw-bold">vous enregister</a></p>
-        </div> -->
-        <!-- pour tenter les méthodes onLogin  et onRegister qui enregistrent l'url actuelle-->
-        <div *ngIf="userRole === 'none' else switch" class="col-md-5 text-white mt-md-5">
+
+        <div *ngIf="userRole === 'none' else switch"
+            class="col-md-5 mt-0 mt-md-3 text-white p-3 rounded border-start border-4 border-warning bg-dark">
             <p class="text-md-left fs-5 accessibility">
-                Afin de démarrer un questionnaire, merci de
-                <button type="button" (click)="onLogin()" class="btn-as-link text-white fw-bold px-1"
-                    title="Vous authentifier pour passer des évaluations en ligne sur BE-ON-TOP"
-                    aria-label="Vous authentifier pour passer des évaluations en ligne sur BE-ON-TOP">vous
-                    identifier</button>
+                <i class="bi bi-info-circle me-2"></i>Pour démarrer un questionnaire, merci de
+                <a role="button" tabindex="0" (click)="onLogin()" (keydown.space)="onLogin()"
+                    class="btn-as-link text-white fw-semibold px-1 link-underline-warning">
+                    vous identifier
+                </a>
                 ou
-                <button type="button" (click)="onRegister()" class="btn-as-link text-white fw-bold px-1"
+                <a role="button" tabindex="0" (click)="onRegister()" (keydown.space)="onRegister()"
+                    class="btn-as-link text-white fw-semibold px-1 link-underline-warning"
                     title="Vous créer un compte pour passer des évaluations en ligne sur BE-ON-TOP"
-                    aria-label="Vous créer un compte pour passer des évaluations en ligne sur BE-ON-TOP">vous créer un
-                    compte</button>
+                    aria-label="Vous créer un compte pour passer des évaluations en ligne sur BE-ON-TOP">
+                    vous créer un compte
+                </a>
             </p>
         </div>
+
+
+
+
         <!-- ...des autres cas -->
         <ng-template #switch>
             <div class="col-md-5 text-white mt-md-5">

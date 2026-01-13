@@ -122,6 +122,19 @@ p.btn:hover {
 .accessibility{
   line-height: 1.6rem;
 }
+.link-underline-warning {
+  color: inherit;
+  text-decoration-line: underline;
+  text-decoration-color: #ffc107 !important; /* warning Bootstrap */
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+.link-underline-warning:hover,
+.link-underline-warning:focus-visible {
+  text-decoration-color: #ffca2c; /* warning un poil plus clair */
+}
+
 
 
 
