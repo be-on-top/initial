@@ -1,0 +1,59 @@
+<div class="card">
+
+    <div class="card-body">
+
+        <h5 class="card-title">
+            Export des candidats
+        </h5>
+
+        <p class="card-text text-muted">
+            Cet export génère un fichier CSV standard destiné à être importé
+            dans un ERP ou un outil tiers de gestion.
+        </p>
+
+        <!-- Bouton export -->
+        <button class="btn btn-primary" (click)="export()" [disabled]="exporting">
+            {{ exporting ? 'Export en cours…' : 'Exporter les candidats (CSV)' }}
+        </button>
+
+        <!-- Message d’erreur -->
+        <div *ngIf="error" class="alert alert-danger mt-3">
+            {{ error }}
+        </div>
+
+        <!-- Section explicative ERP -->
+        <div class="mt-4 p-3 bg-light border-start border-3 border-primary">
+
+            <strong>Compatibilité ERP</strong>
+
+            <ul class="mt-2 mb-2">
+                <li>Format CSV standard (UTF-8, séparateur virgule)</li>
+                <li>Données plates, sans structure imbriquée</li>
+                <li>Colonnes explicites pour le mapping ERP</li>
+                <li>Email utilisé comme identifiant fonctionnel (1)</li>
+                <li>Date de création au format ISO 8601</li>
+                <li>Inscriptions (codes métiers) séparées par des virgules (2)</li>
+            </ul>
+
+            <p class="text-muted mb-2">
+                Ce format est compatible avec la majorité des ERP du marché
+                (SAP, Sage, Odoo, Dynamics, etc.).
+            </p>
+
+            <hr>
+            <small class="text-muted mb-2">(1) : L'email sert d'identifiant unique pour le candidat dans le système cible.<br>
+                (2) : Les inscriptions (codes métiers de la colonne subscriptions) correspondent à celles validées par le
+                Conseiller Projet via l'interface de gestion des candidats dans l'application. 
+                
+            </small>
+
+
+
+            <a href="assets/documents/export-csv-erp.pdf" target="_blank" class="text-primary text-decoration-underline mt-5">
+                Documentation détaillée (PDF)
+            </a>
+
+        </div>
+
+    </div>
+</div>

@@ -73,6 +73,7 @@ import { ProfessionalsListComponent } from './professionals-list/professionals-l
 import { DeleteAllQuestionsComponent } from './Questions/delete-all-questions/delete-all-questions.component';
 import { UpdatePersonalDataComponent } from './Trainers/update-personal-data/update-personal-data.component';
 import { MyCentersComponent } from './my-centers/my-centers.component';
+import { ExportStudentsComponent } from './export-students/export-students.component';
 
 
 
@@ -273,7 +274,8 @@ const routesAdmin: Routes = [
     ProfessionalsListComponent,
     DeleteAllQuestionsComponent,
     UpdatePersonalDataComponent,
-    MyCentersComponent
+    MyCentersComponent,
+    ExportStudentsComponent
   ],
   imports: [
     BrowserModule,

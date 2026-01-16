@@ -1,9 +1,5 @@
 <div class="container py-5">
 
-    <app-feedback-messages [feedbackMessages]="feedbackMessages"
-        [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
-
-
     <!-- partie réservée à l'administrateur principal -->
 
     <ng-container *ngIf="userRole!=='referent'">
@@ -58,10 +54,13 @@
             Conseiller Projet va vous être demandé</span> .
     </div>
 
+    
+    <app-feedback-messages [feedbackMessages]="feedbackMessages"
+        [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
+
 
     <!-- pour les messages de retour/validation des champs du formulaire ou form validation, on utilisera BOOTSTRAP plutôt que des directives structurelles -->
     <form class="form" #f="ngForm" (submit)="addTrainer(f)" class="was-validated">
-
         <!-- attention à virer les fonctions pour l'exercice sur (change) et (input) !!!!!! -->
         <div class="row">
             <div class="form-group col-md-6">
@@ -126,10 +125,13 @@
         </select>
 
         <!-- <label for="details" class="form-label mt-3">Commentaires optionnels</label> -->
-        <textarea name="details" id="details" ngModel name="details" cols="100" rows="10" class="form-control mt-3"
+        <textarea name="details" id="details" ngModel name="details" cols="100" rows="6" class="form-control mt-3"
             #details="ngModel" [ngClass]="{'.is-valid':details.value && details.touched}"
             placeholder="Commentaires optionnels...">Détails / Remarques & Objectifs...</textarea>
-        <button type="submit" class="btn btn-primary mt-3" [ngClass]="{'disabled':f.invalid}">Ajouter</button>
+        <p class="text-muted pt-3">📌 Un popup vous demandant de
+            saisir votre mot de passe s'affichera. <span class="fw-bold">Un léger délai peut être nécessaire selon votre
+                connexion pour voir le popup s'afficher et la procédure de création de compte se terminer.</span>.</p>
+        <button type="submit" class="btn btn-primary mt-3" [ngClass]="{'disabled':f.invalid}" [disabled]="isSubmitting">Ajouter</button>
     </form>
 
     <!-- {{userRole}} -->

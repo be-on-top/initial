@@ -37,14 +37,17 @@ export class AddTrainerComponent {
   tradesData: string[] = []
 
   // si on partage ce composant avec un referent
-  userRole:string | string[] | null=""
+  userRole: string | string[] | null = ""
+
+  // pour éviter le double click
+  isSubmitting = false;
 
   constructor(
     private service: TrainersService,
     private router: Router,
     private evaluatorsService: EvaluatorsService,
     private settinsService: SettingsService,
-    private authService:AuthService,
+    private authService: AuthService,
     private papa: Papa) { }
 
   ngOnInit(): void {
@@ -80,9 +83,9 @@ export class AddTrainerComponent {
       console.log('this.tradesData', this.tradesData);
     })
 
-    this.authService.getCurrentUserRole().subscribe((role:any)=>
-      this.userRole=role)
-    
+    this.authService.getCurrentUserRole().subscribe((role: any) =>
+      this.userRole = role)
+
 
 
 
@@ -95,6 +98,9 @@ export class AddTrainerComponent {
       console.log('form valid');
       return
     }
+
+    // pour éviter le double click
+    this.isSubmitting = true
 
     console.log("form registration", form.value);
     this.service.createTrainer(form.value).then((userCredential) => {
