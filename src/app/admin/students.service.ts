@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Auth, reauthenticateWithCredential, createUserWithEmailAndPassword, deleteUser, fetchSignInMethodsForEmail, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithRedirect, updateEmail, EmailAuthProvider } from "@angular/fire/auth";
 import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc, updateDoc, query, getDocs, where, getDoc, QuerySnapshot, arrayUnion, CollectionReference, DocumentData, orderBy, documentId, QueryDocumentSnapshot, startAfter, limit, deleteField, writeBatch, serverTimestamp } from '@angular/fire/firestore';
 import { FieldValue } from 'firebase/firestore';
-  // import { serverTimestamp } from "firebase/firestore";
+// import { serverTimestamp } from "firebase/firestore";
 
 // import { FirebaseApp } from '@angular/fire/app';
 import { combineLatest, from, map, Observable, of, switchMap, tap } from 'rxjs';
@@ -514,104 +514,104 @@ export class StudentsService {
 
 
   // Méthode pour importer les candidats comme on importe les formateurs depuis un fichier CSV
-async importStudents(students: any[]): Promise<{ success: boolean, imported: string[], errors: string[] }> {
-  const adminEmail = this.auth.currentUser?.email;
-  const adminUid = this.auth.currentUser?.uid;
+  async importStudents(students: any[]): Promise<{ success: boolean, imported: string[], errors: string[] }> {
+    const adminEmail = this.auth.currentUser?.email;
+    const adminUid = this.auth.currentUser?.uid;
 
-  const feedback = {
-    success: true,
-    imported: [] as string[],
-    errors: [] as string[],
-  };
+    const feedback = {
+      success: true,
+      imported: [] as string[],
+      errors: [] as string[],
+    };
 
-  const batch = writeBatch(this.firestore);
+    const batch = writeBatch(this.firestore);
 
-  for (const student of students) {
-    try {
-      const newStudent: Partial<Student> = {
-        created: Date.now(),
-        role: 'student',
-        status: true,
-        trainer: "Attribué ultérieurement",
-        innerStudent: true,
-        referent: adminUid,
-        firstName: student.firstName?.trim() || '',
-        lastName: student.lastName?.trim() || '',
-        email: student.email?.trim() || '',
-        details: ""
-      };
+    for (const student of students) {
+      try {
+        const newStudent: Partial<Student> = {
+          created: Date.now(),
+          role: 'student',
+          status: true,
+          trainer: "Attribué ultérieurement",
+          innerStudent: true,
+          referent: adminUid,
+          firstName: student.firstName?.trim() || '',
+          lastName: student.lastName?.trim() || '',
+          email: student.email?.trim() || '',
+          details: ""
+        };
 
-      if (!newStudent.email) {
-        feedback.errors.push(`⛔ Email manquant pour un étudiant.`);
-        continue;
+        if (!newStudent.email) {
+          feedback.errors.push(`⛔ Email manquant pour un étudiant.`);
+          continue;
+        }
+
+        const password = "password2025#"; // Temporaire
+        const result = await createUserWithEmailAndPassword(this.auth, newStudent.email, password);
+        newStudent.id = result.user.uid;
+
+        // Ajout Firestore
+        const studentRef = doc(collection(this.firestore, "students"), newStudent.id);
+        batch.set(studentRef, newStudent);
+
+        const roleRef = doc(collection(this.firestore, "roles"), newStudent.id);
+        batch.set(roleRef, { role: 'student' });
+
+        feedback.imported.push(newStudent.email);
+
+      } catch (error: any) {
+        console.error(`Erreur pour ${student.email}:`, error);
+        feedback.errors.push(`⛔ ${student.email}: ${error.message}`);
       }
-
-      const password = "password2025#"; // Temporaire
-      const result = await createUserWithEmailAndPassword(this.auth, newStudent.email, password);
-      newStudent.id = result.user.uid;
-
-      // Ajout Firestore
-      const studentRef = doc(collection(this.firestore, "students"), newStudent.id);
-      batch.set(studentRef, newStudent);
-
-      const roleRef = doc(collection(this.firestore, "roles"), newStudent.id);
-      batch.set(roleRef, { role: 'student' });
-
-      feedback.imported.push(newStudent.email);
-
-    } catch (error: any) {
-      console.error(`Erreur pour ${student.email}:`, error);
-      feedback.errors.push(`⛔ ${student.email}: ${error.message}`);
     }
-  }
 
-  // Commit du batch
-  try {
-    await batch.commit();
-  } catch (batchError: any) {
-    feedback.success = false;
-    feedback.errors.push('❌ Erreur lors du commit Firestore : ' + batchError.message);
-  }
-
-  // Envoi emails de réinitialisation
-  for (const email of feedback.imported) {
-    sendPasswordResetEmail(this.auth, email
-      , {
-      url: 'https://be-on-top.io/login',
-      handleCodeInApp: true
-    }
-  ).catch(err => {
-      feedback.errors.push(`⚠️ Email non envoyé à ${email} : ${err.message}`);
-    });
-  }
-
-  // Reconnexion admin
-  await this.auth.signOut();
-  const adminPassword = prompt('Veuillez entrer votre mot de passe pour terminer et vous reconnecter.');
-  if (adminPassword && adminEmail) {
+    // Commit du batch
     try {
-      await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
-      console.log('Reconnexion réussie.');
-      // this.router.navigate(['/admin/addStudent']);
-      // setTimeout(() => {
-      //   window.location.reload();
-      // }, 500);
-    } catch (error: any) {
-      feedback.errors.push('Erreur de reconnexion administrateur : ' + error.message);
+      await batch.commit();
+    } catch (batchError: any) {
+      feedback.success = false;
+      feedback.errors.push('❌ Erreur lors du commit Firestore : ' + batchError.message);
+    }
+
+    // Envoi emails de réinitialisation
+    for (const email of feedback.imported) {
+      sendPasswordResetEmail(this.auth, email
+        , {
+          url: 'https://be-on-top.io/login',
+          handleCodeInApp: true
+        }
+      ).catch(err => {
+        feedback.errors.push(`⚠️ Email non envoyé à ${email} : ${err.message}`);
+      });
+    }
+
+    // Reconnexion admin
+    await this.auth.signOut();
+    const adminPassword = prompt('Veuillez entrer votre mot de passe pour terminer et vous reconnecter.');
+    if (adminPassword && adminEmail) {
+      try {
+        await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
+        console.log('Reconnexion réussie.');
+        // this.router.navigate(['/admin/addStudent']);
+        // setTimeout(() => {
+        //   window.location.reload();
+        // }, 500);
+      } catch (error: any) {
+        feedback.errors.push('Erreur de reconnexion administrateur : ' + error.message);
+        feedback.success = false;
+      }
+    } else {
+      feedback.errors.push('Mot de passe non fourni pour la reconnexion.');
       feedback.success = false;
     }
-  } else {
-    feedback.errors.push('Mot de passe non fourni pour la reconnexion.');
-    feedback.success = false;
-  }
 
-  // Marquer échec s'il n'y a aucun import
-  if (feedback.imported.length === 0) {
-    feedback.success = false;
-  }
+    // Marquer échec s'il n'y a aucun import
+    if (feedback.imported.length === 0) {
+      feedback.success = false;
+    }
 
-  return feedback;
-}
+    return feedback;
+  }
 
 
 
@@ -1026,16 +1026,16 @@ async importStudents(students: any[]): Promise<{ success: boolean, imported: str
 
 
 
-updateFullResults(id: string, fullResults: any, trade: string) {
-  const studentRef = doc(this.firestore, "students/" + id);
-  const updateStudent = {
-    ['quizz_' + trade]: { 
-      fullResults: fullResults,
-      createdAt: serverTimestamp() // timestamp Firestore
+  updateFullResults(id: string, fullResults: any, trade: string) {
+    const studentRef = doc(this.firestore, "students/" + id);
+    const updateStudent = {
+      ['quizz_' + trade]: {
+        fullResults: fullResults,
+        createdAt: serverTimestamp() // timestamp Firestore
+      }
     }
+    setDoc(studentRef, updateStudent, { merge: true });
   }
-  setDoc(studentRef, updateStudent, { merge: true });
-}
 
 
 
@@ -1595,107 +1595,107 @@ updateFullResults(id: string, fullResults: any, trade: string) {
   // }
 
   async createStudent(student: any) {
-  if (!this.auth.currentUser || !this.auth.currentUser.email) {
-    console.error('Administrateur non connecté.');
-    return;
-  }
-
-  const adminEmail = this.auth.currentUser.email;
-  const adminPassword = prompt('Veuillez entrer votre mot de passe administrateur pour continuer.');
-  if (!adminPassword) {
-    console.error('Mot de passe administrateur non fourni.');
-    return;
-  }
-
-  const adminUid = this.auth.currentUser.uid;
-
-  // Nettoyer l'email
-  const cleanedEmail = student.email.trim();
-
-  // Vérification doublons Firestore
-  const emailExistsInFirestore = async (email: string): Promise<boolean> => {
-    const studentsRef = collection(this.firestore, "students");
-    const q = query(studentsRef, where("email", "==", email));
-    const snapshot = await getDocs(q);
-    return !snapshot.empty;
-  };
-
-  // Initialiser l'étudiant
-  const newStudent: Student = {
-    created: Date.now(),
-    status: true,
-    trainer: "Attribué ultérieurement",
-    innerStudent: true,
-    referent: adminUid,
-    ...student,
-    email: cleanedEmail,
-  };
-
-  try {
-    console.log("Vérification des doublons pour l'email :", cleanedEmail);
-
-    // 🔎 Double vérification (Auth + Firestore)
-    const signInMethods = await fetchSignInMethodsForEmail(this.auth, cleanedEmail);
-    const existsInFirestore = await emailExistsInFirestore(cleanedEmail);
-
-    if (signInMethods.length > 0 || existsInFirestore) {
-      console.error('Un utilisateur avec cet email existe déjà (Auth ou Firestore).');
-      alert('Un utilisateur avec cet email existe déjà.');
+    if (!this.auth.currentUser || !this.auth.currentUser.email) {
+      console.error('Administrateur non connecté.');
       return;
     }
 
-    console.log("Aucun doublon détecté. Création de l'étudiant...");
-
-    // Génération d'un mot de passe temporaire
-    const password = Math.random().toString(36).slice(2) + 
-                     Math.random().toString(36).toUpperCase().slice(2);
-
-    // Création dans Firebase Auth
-    const result = await createUserWithEmailAndPassword(this.auth, cleanedEmail, password);
-    if (!result || !result.user) {
-      throw new Error("Échec de la création de l'utilisateur Firebase.");
+    const adminEmail = this.auth.currentUser.email;
+    const adminPassword = prompt('Veuillez entrer votre mot de passe administrateur pour continuer.');
+    if (!adminPassword) {
+      console.error('Mot de passe administrateur non fourni.');
+      return;
     }
 
-    newStudent.id = result.user.uid;
+    const adminUid = this.auth.currentUser.uid;
 
-    // Enregistrement dans Firestore
-    const studentsRef = collection(this.firestore, "students");
-    await setDoc(doc(studentsRef, newStudent.id), newStudent);
+    // Nettoyer l'email
+    const cleanedEmail = student.email.trim();
 
-    const rolesRef = collection(this.firestore, "roles");
-    await setDoc(doc(rolesRef, newStudent.id), { role: 'student' });
+    // Vérification doublons Firestore
+    const emailExistsInFirestore = async (email: string): Promise<boolean> => {
+      const studentsRef = collection(this.firestore, "students");
+      const q = query(studentsRef, where("email", "==", email));
+      const snapshot = await getDocs(q);
+      return !snapshot.empty;
+    };
 
-    console.log("Étudiant ajouté avec succès :", newStudent);
+    // Initialiser l'étudiant
+    const newStudent: Student = {
+      created: Date.now(),
+      status: true,
+      trainer: "Attribué ultérieurement",
+      innerStudent: true,
+      referent: adminUid,
+      ...student,
+      email: cleanedEmail,
+    };
 
-    // Envoi de l’email de réinitialisation
-    await sendPasswordResetEmail(this.auth, cleanedEmail, {
-      url: 'https://be-on-top.io/login',
-      handleCodeInApp: true
-    });
-    console.log("E-mail de réinitialisation envoyé à :", cleanedEmail);
+    try {
+      console.log("Vérification des doublons pour l'email :", cleanedEmail);
 
-    // Déconnexion du compte étudiant
-    await this.auth.signOut();
-    console.log("Déconnexion de l'utilisateur étudiant.");
+      // 🔎 Double vérification (Auth + Firestore)
+      const signInMethods = await fetchSignInMethodsForEmail(this.auth, cleanedEmail);
+      const existsInFirestore = await emailExistsInFirestore(cleanedEmail);
 
-    // Reconnexion de l'admin
-    const adminResult = await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
-    if (!adminResult || !adminResult.user) {
-      throw new Error('Échec de la reconnexion de l\'administrateur.');
+      if (signInMethods.length > 0 || existsInFirestore) {
+        console.error('Un utilisateur avec cet email existe déjà (Auth ou Firestore).');
+        alert('Un utilisateur avec cet email existe déjà.');
+        return;
+      }
+
+      console.log("Aucun doublon détecté. Création de l'étudiant...");
+
+      // Génération d'un mot de passe temporaire
+      const password = Math.random().toString(36).slice(2) +
+        Math.random().toString(36).toUpperCase().slice(2);
+
+      // Création dans Firebase Auth
+      const result = await createUserWithEmailAndPassword(this.auth, cleanedEmail, password);
+      if (!result || !result.user) {
+        throw new Error("Échec de la création de l'utilisateur Firebase.");
+      }
+
+      newStudent.id = result.user.uid;
+
+      // Enregistrement dans Firestore
+      const studentsRef = collection(this.firestore, "students");
+      await setDoc(doc(studentsRef, newStudent.id), newStudent);
+
+      const rolesRef = collection(this.firestore, "roles");
+      await setDoc(doc(rolesRef, newStudent.id), { role: 'student' });
+
+      console.log("Étudiant ajouté avec succès :", newStudent);
+
+      // Envoi de l’email de réinitialisation
+      await sendPasswordResetEmail(this.auth, cleanedEmail, {
+        url: 'https://be-on-top.io/login',
+        handleCodeInApp: true
+      });
+      console.log("E-mail de réinitialisation envoyé à :", cleanedEmail);
+
+      // Déconnexion du compte étudiant
+      await this.auth.signOut();
+      console.log("Déconnexion de l'utilisateur étudiant.");
+
+      // Reconnexion de l'admin
+      const adminResult = await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
+      if (!adminResult || !adminResult.user) {
+        throw new Error('Échec de la reconnexion de l\'administrateur.');
+      }
+
+      console.log("Administrateur reconnecté avec succès.");
+
+      // Redirection vers la page de détails étudiant
+      this.router.navigate(['/admin/referent/studentDetails', newStudent.id]);
+      console.log("Redirection vers la page des détails de l'étudiant.");
+
+    } catch (error: any) {
+      console.error("Erreur lors de la création de l'étudiant :", error.message);
+      alert(`Erreur : ${error.message}`);
     }
 
-    console.log("Administrateur reconnecté avec succès.");
-
-    // Redirection vers la page de détails étudiant
-    this.router.navigate(['/admin/referent/studentDetails', newStudent.id]);
-    console.log("Redirection vers la page des détails de l'étudiant.");
-
-  } catch (error: any) {
-    console.error("Erreur lors de la création de l'étudiant :", error.message);
-    alert(`Erreur : ${error.message}`);
   }
-
-}
 
 
   // fonctionne pour une  propriété class qui n'est pas un tableau class[] OK
@@ -2000,14 +2000,34 @@ updateFullResults(id: string, fullResults: any, trade: string) {
 
 
   updateEvaluationField(studentId: string, evalKey: string, field: string, value: any) {
-  const studentRef = doc(this.firestore, `students/${studentId}`);
- 
-  const patch = {
-    [`evaluations.${evalKey}.${field}`]: value
-  };
- 
-  return updateDoc(studentRef, patch);
-}
+    const studentRef = doc(this.firestore, `students/${studentId}`);
+
+    const patch = {
+      [`evaluations.${evalKey}.${field}`]: value
+    };
+
+    return updateDoc(studentRef, patch);
+  }
+
+  // Service Firestore : annulation d'une fin d'inscription
+  async updateEndedSubscriptions(studentId: string, endedSubscriptions: any[]) {
+    try {
+      const studentRef = doc(this.firestore, `students/${studentId}`);
+
+      // Vérifier que c'est bien un tableau
+      const updatedSubscriptions = Array.isArray(endedSubscriptions) ? endedSubscriptions : [];
+
+      // Mise à jour dans Firestore
+      await setDoc(studentRef, { endedSubscriptions: updatedSubscriptions }, { merge: true });
+
+      return true; // succès
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour des fins d'inscription :", error);
+      throw error; // à gérer côté composant
+    }
+  }
+
+  
 
 
 

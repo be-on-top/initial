@@ -1068,5 +1068,58 @@ cleanInitialWrapper(details: string): string {
   return container.innerHTML;
 }
 
+feedBackCancel: boolean = false;
+showCancelEnd: boolean = false;
+
+
+cancelEndingDate(form: NgForm) {
+  if (form.invalid) return; // sécurité : rien si le formulaire est invalide
+
+  // 1️⃣ Récupérer le sigle sélectionné
+  const sigleToCancel = form.value.endedSigle;
+  if (!sigleToCancel) return;
+
+  // 2️⃣ Vérifier que cette fin de formation existe réellement
+  const exists = this.student.endedSubscriptions.some(
+    (sub: any) => sub.sigle === sigleToCancel
+  );
+
+  if (!exists) {
+    console.warn(`Fin de formation ${sigleToCancel} introuvable.`);
+    return;
+  }
+
+  // 3️⃣ Filtrer student.endedSubscriptions pour supprimer la fin sélectionnée
+  this.student.endedSubscriptions = this.student.endedSubscriptions.filter(
+    (sub: any) => sub.sigle !== sigleToCancel
+  );
+
+  // 4️⃣ Optionnel : mettre à jour availableTrainings
+  // if (!this.student.endedSubscriptions || this.student.endedSubscriptions.length === 0) {
+  //   this.availableTrainings = this.tradesEvaluated;
+  // } else {
+  //   const endedSet = new Set(
+  //     this.student.endedSubscriptions.map((sub: any) => sub.sigle)
+  //   );
+  //   this.availableTrainings = this.tradesEvaluated.filter(
+  //     trade => !endedSet.has(trade)
+  //   );
+  // }
+
+  // 5️⃣ Persistency : mettre à jour Firestore 
+this.service.updateEndedSubscriptions(this.student.id, this.student.endedSubscriptions)
+  .then(() => {
+    alert("fin de formation annulée")
+    this.feedBackCancel = true;       // message succès
+    form.resetForm();                 // reset formulaire
+    this.showCancelEnd = false;       // masquer le formulaire si besoin
+  })
+  .catch(err => {
+    console.error("Erreur lors de l'annulation :", err);
+    this.feedBackCancel = false;      // message erreur
+  });
+}
+
+
 
 }

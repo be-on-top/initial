@@ -32,9 +32,11 @@
                 <button type="button" class="btn-close btn-close mt-2" data-bs-dismiss="alert"
                     aria-label="Fermer le message"></button>
                 <span class="fw-bold"><i class="bi bi-exclamation-triangle-fill me-1"></i>Rappel</span> : Il a été
-                décidé qu'une seule évaluation par compétence pouvait être enregistrée donc archivée pour une même formation métier.
-                BE-ON-TOP n'a donc pas vocation à tenir lieu d'historique de toutes les évaluations archivées pour une même compétence mais de
-                    rendre compte de l'état des compétences à un instant T.
+                décidé qu'une seule évaluation par compétence pouvait être enregistrée donc archivée pour une même
+                formation métier.
+                BE-ON-TOP n'a donc pas vocation à tenir lieu d'historique de toutes les évaluations archivées pour une
+                même compétence mais de
+                rendre compte de l'état des compétences à un instant T.
             </div>
         </ng-container>
 
@@ -296,6 +298,42 @@
                     <button type="submit" class="btn btn-primary mt-3"
                         [ngClass]="{'disabled':endSubscription.invalid}">Valider</button>
                 </form>
+
+                <!-- pour annuler la fin de formation validée par erreur -->
+                <p class="mt-2" *ngIf="student.endedSubscriptions && student.endedSubscriptions.length!==0">
+                    <em><span class="fw-bold">Correctif :</span> Vous avez enregistré une fin de formation par erreur
+                        ?</em>
+                </p>
+
+                <div class="alert alert-success mt-3" *ngIf="feedBackCancel==true">Fin d'inscription (formation) annulée
+                </div>
+
+                <form #cancelEndForm="ngForm" (ngSubmit)="cancelEndingDate(cancelEndForm)"
+                    *ngIf="student.endedSubscriptions && student.endedSubscriptions.length!==0">
+
+                    <select class="form-select" name="endedSigle" ngModel required>
+
+                        <option value>
+                            Sélectionner la fin de formation à annuler
+                        </option>
+
+                        <option *ngFor="let sub of student.endedSubscriptions" [value]="sub.sigle">
+                            {{ sub.sigle }}
+                        </option>
+
+                    </select>
+
+                    <button type="submit" class="btn btn-danger mt-3" [ngClass]="{'disabled': cancelEndForm.invalid}">
+                        Confirmer l'annulation
+                    </button>
+
+                </form>
+
+                <!-- <button type="button" class="btn btn-outline-danger mt-3 ms-2"
+                    *ngIf="student.endedSubscriptions?.length" (click)="showCancelEnd = !showCancelEnd">
+                    Annuler une fin de formation
+                </button> -->
+
 
                 <hr>
                 <h3>Fichier Joint au format PDF</h3>
