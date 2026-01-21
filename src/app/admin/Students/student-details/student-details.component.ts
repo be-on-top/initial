@@ -83,6 +83,8 @@ export class StudentDetailsComponent implements OnInit, AfterViewInit {
 
   centerPriorName?: string = ""
 
+  
+
 
 
   constructor(
@@ -522,9 +524,24 @@ export class StudentDetailsComponent implements OnInit, AfterViewInit {
   // }
 
   tradesData?: any
+  // état de l'onglet principal
+  isEvaluationsOpen: boolean = false; 
 
   ngAfterViewInit(): void {
     this.tradesService.getTrades().subscribe(data => this.tradesData = data)
+
+    this.isEvaluationsOpen= this.userRouterLinks.user === 'trainer';
+
+
+    // // si l'utilisateur est trainer, on ouvre automatiquement le collapse "Évaluations"
+    // if(this.userRouterLinks.user === 'trainer') {
+    //   const collapseEl = document.getElementById('collapseEvaluations');
+    //   if(collapseEl) {
+    //     // bootstrap.Collapse avec toggle = true ouvre le collapse et déclenche les events
+    //     new bootstrap.Collapse(collapseEl, { toggle: true });
+    //   }
+    // }
+  
   }
 
 
@@ -593,5 +610,14 @@ export class StudentDetailsComponent implements OnInit, AfterViewInit {
 
 
   }
+
+
+
+toggleEvaluations() {
+  this.isEvaluationsOpen = !this.isEvaluationsOpen;
+}
+
+
+
 
 }

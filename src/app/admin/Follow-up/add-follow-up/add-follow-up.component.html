@@ -15,14 +15,17 @@
       <span class="fw-bold"><i class="bi bi-info-square-fill me-1"></i>Rappel contextuel</span> : Le candidat
       apprenant a finalisé son évaluation de positionnement, son inscription en formation a été validée par un
       conseiller projet, il a été notifié qu'un ou plusieurs formateur lui ont été attribué. Les formations en
-      présentiel on commencé.
+      présentiel ont commencé.
       Vous pouvez procéder à des évaluations de suivi pédagogique. Evaluations individuelles, que
-      l'utilisateur pourra consulter dans son compte personnel et que vous pourrez retrouver dans la vue de détail du
-      candidat.
+      l'utilisateur pourra consulter dans son compte personnel et que vous pourrez retrouver dans <a [routerLink]="['/admin/myStudentDetails', studentId]">la vue de détail du
+      candidat</a>.
     </div>
 
     <div class="alert alert-info mb-3">
-      Rappel : Une seule évaluation est autorisée par compétence et par métier. Si une compétence est grisée, lorque vous la sélectionnez, c'est qu'elle a déjà fait l'objet d'une évaluation. Consultez la vue de détail du candidat pour visualiser ou modifier l’existant.
+      <span class="fw-bold">Rappel fonctionnel</span> : Une seule évaluation est autorisée par compétence et par métier.
+      Si une compétence est grisée lorque vous la sélectionnez, c'est qu'elle a déjà fait l'objet d'une évaluation
+      <span>(✔ = déjà évaluée)</span>. Utiliser la <a [routerLink]="['/admin/myStudentDetails', studentId]">vue de détail du candidat</a> pour consulter ou mettre à jour
+      l'existante.
     </div>
 
   </ng-template>
@@ -57,29 +60,21 @@
 
       <div class="form-group col-sm-4">
         <ng-container *ngIf="relatedCompetences">
+
           <select class="form-select" name="competence" id="competence" ngModel #competence="ngModel"
             [disabled]="!isRealStudent" [required]="f.value.subject === ''">
-            <option value>Compétence métier à évaluer</option>
 
-            <!-- <option *ngFor="let key of getKeys(relatedCompetences['competences_' + selectedSigle]); let i = index"
-              [value]="selectedSigle + '_CP' + (i + 1)" [ngClass]="{
-      'already-used': alreadyUsedCompetences.includes(selectedSigle + '_CP' + (i + 1))
-    }">
-              CP{{ i + 1 }}: {{ relatedCompetences['competences_' + selectedSigle][key] }}
-            </option> -->
+            <option value>Compétence métier à évaluer</option>
 
             <option *ngFor="let key of getKeys(relatedCompetences['competences_' + selectedSigle]); let i = index"
               [value]="selectedSigle + '_CP' + (i + 1)"
               [disabled]="alreadyUsedCompetences.includes(selectedSigle + '_CP' + (i + 1))">
-              <span *ngIf="alreadyUsedCompetences.includes(selectedSigle + '_CP' + (i + 1))" class="checkmark-icon">
-                ✔ <!-- Caractère checkmark Unicode -->
-              </span>
+
+              {{ alreadyUsedCompetences.includes(selectedSigle + '_CP' + (i + 1)) ? '✔\u00A0\u00A0' : '' }}
               CP{{ i + 1 }}: {{ relatedCompetences['competences_' + selectedSigle][key] }}
+
             </option>
-
-
           </select>
-
 
           <div class="valid-feedback" *ngIf="competence.valid">Champ correctement renseigné</div>
           <div class="invalid-feedback" *ngIf="competence.invalid">Merci de choisir la compétence concernée.</div>

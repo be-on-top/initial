@@ -55,9 +55,11 @@
                 <div class="col-sm-3 col-6 order-perso2">{{student.firstName}}</div>
                 <div class="col-sm-3 col-6 order-perso4">
                     <button class="btn btn-primary">
-                        <a *ngIf="userRouterLinks.user=='trainer'"
+                        <!-- <a *ngIf="userRouterLinks.user=='trainer'"
                             [routerLink]="['/admin/myStudentDetails', student.id]" class="text-white"><i
-                                class="bi bi-person-lines-fill"></i>Détails</a>
+                                class="bi bi-person-lines-fill"></i>Détails & modification des évaluations</a> -->
+                        <a *ngIf="userRouterLinks.user=='trainer'"
+                            [routerLink]="['/admin/myStudentDetails', student.id]" class="text-white">Vue de détails & Modification des évaluations</a>
                         <a *ngIf="userRouterLinks.user=='tutor'"
                             [routerLink]="['/admin/tutor/myStudentDetails', student.id]" class="text-white"><i
                                 class="bi bi-person-lines-fill"></i>Détails</a>

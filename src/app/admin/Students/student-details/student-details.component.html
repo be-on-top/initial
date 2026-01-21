@@ -2,7 +2,7 @@
     <!-- <h3>Détails utilisateur ({{title}})</h3> -->
     <h3>Détails utilisateur</h3>
 
-    <app-collapses-alert></app-collapses-alert>
+    <!-- <app-collapses-alert></app-collapses-alert> -->
     <!-- {{userRouterLinks.user}} -->
 
     <div *ngIf="userRouterLinks.user==='trainer'" class="alert alert-light"><i
@@ -21,12 +21,15 @@
                     href="#collapseOne" aria-expanded="true">
                     <div class="d-flex align-items-center gap-2 justify-content-between">
                         <span class="text-nowrap">Données personnelles</span>
-                        <i class="bi bi-caret-down-fill toggle-arrow fs-7"></i>
+                        <i class="bi toggle-arrow fs-7"
+                            [ngClass]="{'bi-caret-down-fill': !isEvaluationsOpen, 'bi-caret-up-fill': isEvaluationsOpen}">
+                        </i>
                     </div>
                     <i class="bi bi-person-fill fs-4 text-light d-none d-sm-inline"></i>
                 </a>
             </div>
-            <div class="collapse show" data-bs-parent="#accordion" id="collapseOne">
+            <div class="collapse" data-bs-parent="#accordion" id="collapseOne"
+                [ngClass]="{'show': userRouterLinks.user != 'trainer'}">
                 <div class="card-body">
                     <!-- <h4 class="card-title">id : {{student.id}}</h4> -->
                     <p class="card-text">
@@ -289,20 +292,25 @@
 
         <!-- affichage des évaluations -->
         <!-- <ng-container *ngIf="student && evaluations"> -->
-        <div class="card" *ngIf="student && evaluationsNotEmpty()">
+        <div class="card" *ngIf="student && (evaluationsNotEmpty() || userRouterLinks.user==='trainer') ">
             <div class="card-header bg-primary">
                 <a class="btn text-light d-flex justify-content-between p-0" data-bs-toggle="collapse"
-                    href="#collapseEvaluations">
+                    href="#collapseEvaluations" (click)="toggleEvaluations()">
+
                     <div class="d-flex align-items-center gap-2 justify-content-between">
                         <span class="text-nowrap">Ses évaluations de suivi pédagogique</span>
-                        <i class="bi bi-caret-down-fill toggle-arrow fs-7"></i>
+                        <!-- flèche qui suit l'état -->
+                        <i class="bi toggle-arrow fs-7"
+                            [ngClass]="{'bi-caret-down-fill': !isEvaluationsOpen, 'bi-caret-up-fill': isEvaluationsOpen}">
+                        </i>
                     </div>
 
                     <i class="bi bi-clipboard-data-fill fs-4 text-light d-none d-sm-inline"></i>
                 </a>
             </div>
-            <div class="collapse" data-bs-parent="#accordion" id="collapseEvaluations">
 
+            <div class="collapse p-2" id="collapseEvaluations" data-bs-parent="#accordion"
+                [ngClass]="{'show': isEvaluationsOpen}">
                 <!-- si on a plusieurs inscriptions potentielles, pour bien faire, va falloir boucler sur l'ensemble -->
                 <ng-container *ngIf="student.subscriptions">
                     <div *ngFor="let subscription of student.subscriptions, let m=index" class="px-2">
@@ -371,7 +379,8 @@
                                                     ({{ evaluation.value.competence }}) <span
                                                         (click)="toggleCollapse(e)"
                                                         *ngIf="(evaluation.value.subject || evaluation.value.details ) && userRouterLinks.user!=='external'">
-                                                        <a aria-label="Ouvrir ou fermer l'évaluation" href='#collapseEvaluation{{e}}' data-bs-toggle="collapse"><i
+                                                        <a aria-label="Ouvrir ou fermer l'évaluation"
+                                                            href='#collapseEvaluation{{e}}' data-bs-toggle="collapse"><i
                                                                 [ngClass]="{'bi bi-caret-down-fill': !evaluationsState[e], 'bi bi-caret-up-fill': evaluationsState[e]}"></i></a></span>
                                                 </p>
                                             </ng-container>
@@ -446,7 +455,10 @@
                     <!-- bouton additionnel pour ajouter une évaluation depuis la vue -->
                     <button class="btn btn-primary my-3 mx-2" *ngIf="userRouterLinks.user=='trainer'"
                         [routerLink]="['/admin/addStudentEvaluation', studentId]"><i class="bi bi-pen"></i>Ajouter une
-                        évaluation de suivi pédagogique</button>
+                        évaluation <ng-container *ngIf="evaluationsNotEmpty()">
+                            pour une nouvelle compétence
+                        </ng-container>
+                    </button>
                 </ng-container>
             </div>
 
@@ -457,16 +469,22 @@
         <div class="card" *ngIf="student && tutorialsNotEmpty()">
             <div class="card-header bg-primary">
                 <a class="btn text-light d-flex justify-content-between p-0" data-bs-toggle="collapse"
-                    href="#collapseFive">
+                    href="#collapseFive" [attr.aria-expanded]="userRouterLinks.user === 'trainer' ? 'true' : 'false'">
+
                     <div class="d-flex align-items-center gap-2 justify-content-between">
                         <span class="text-nowrap">Ses évaluations de suivi en entreprise</span>
-                        <i class="bi bi-caret-down-fill toggle-arrow fs-7"></i>
+                        <!-- Flèche principale -->
+                        <i class="bi toggle-arrow fs-7" [ngClass]="{'bi-caret-up-fill': userRouterLinks.user === 'trainer', 
+                       'bi-caret-down-fill': userRouterLinks.user !== 'trainer'}">
+                        </i>
                     </div>
+
                     <i class="bi bi-activity fs-4 text-light d-none d-sm-inline"></i>
                 </a>
             </div>
 
-            <div class="collapse p-2" data-bs-parent="#accordion" id="collapseFive">
+            <div class="collapse p-2" id="collapseFive" data-bs-parent="#accordion"
+                [ngClass]="{'show': userRouterLinks.user === 'trainer'}">
                 <!-- si on a plusieurs inscriptions potentielles, pour bien faire, va falloir boucler sur l'ensemble -->
                 <ng-container *ngFor="let subscription of student.subscriptions, let m=index">
                     <div *ngIf="getFilteredTutorialsForSubscription(subscription).length!==0"
@@ -543,7 +561,8 @@
                                                 ({{ tutorial.value.competence }})
                                                 <span (click)="toggleCollapse(t)"
                                                     *ngIf="(tutorial.value.subject || tutorial.value.details) && userRouterLinks.user!=='external'">
-                                                    <a aria-label="Ouvrir ou fermer l'évaluation" href='#collapseEvaluation{{t}}' data-bs-toggle="collapse"><i
+                                                    <a aria-label="Ouvrir ou fermer l'évaluation"
+                                                        href='#collapseEvaluation{{t}}' data-bs-toggle="collapse"><i
                                                             [ngClass]="{'bi bi-caret-down-fill': !evaluationsState[t], 'bi bi-caret-up-fill': evaluationsState[t]}"></i></a></span>
 
                                             </p>
