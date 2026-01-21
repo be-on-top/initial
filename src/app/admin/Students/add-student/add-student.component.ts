@@ -52,6 +52,9 @@ export class AddStudentComponent {
       console.log('form valid');
       return
     }
+    
+    // pour éviter le double clic
+    this.isSubmitting = true;
 
     // juste pour l'exercice à virer !!!
     // form.value.firstName.length<8? alert(`la longueur de ${form.value.firstName} est de ${form.value.firstName.length} alors qu'un minimum de 8 est requis`):""
