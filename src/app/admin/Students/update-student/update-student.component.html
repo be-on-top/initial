@@ -375,9 +375,15 @@
 
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label for="subject" class="form-label mt-3">Sujet *</label>
-                        <input type="text" [ngModel]="evaluationToUpdate.subject" name="subject" class="form-control"
+                        <label for="subject" class="form-label mt-3 me-1">Sujet * </label><span class="text-muted fst-italic small lh-sm d-inline-block mb-2">
+                            Modifier le sujet uniquement si nécessaire.
+                        </span>
+                        <!-- <input type="text" [ngModel]="evaluationToUpdate.subject" name="subject" class="form-control"
+                            #subject="ngModel" required> -->
+                        <!-- Sujet modifiable -->
+                        <input type="text" [(ngModel)]="evaluationToUpdate.subject" name="subject" class="form-control"
                             #subject="ngModel" required>
+
                         <div class="valid-feedback" *ngIf="subject.valid">Champ correctement renseigné</div>
                         <div class="invalid-feedback" *ngIf="subject.invalid">Merci de renseigner le sujet de
                             l'évaluation.
@@ -385,7 +391,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="details" class="form-label mt-3">Details : </label><span
+                    <label for="details" class="form-label mt-3 me-1">Details :</label><span
                         class="text-muted fst-italic small lh-sm d-inline-block mb-2"> Si vous êtes plusieurs formateurs
                         à intervenir sur l'évaluation de cette compétence, évitez de supprimer les commentaires
                         existants pour en conserver la traçabilité.</span>

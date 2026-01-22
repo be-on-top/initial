@@ -17,18 +17,27 @@ export class ProfessionalsListComponent implements OnInit {
     private usersService: UsersService,
     private trainersService: TrainersService,
     private evaluatorsService: EvaluatorsService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.isLoading = true;
 
     // Récupération des formateurs
+    // this.trainersService.getTrainers().subscribe(trainers => {
+    //   trainers.forEach(trainer => {
+    //     console.log("Ajout du formateur:", trainer.firstName, trainer.lastName, "UID:", trainer.id, "avec le type: trainer");
+    //     this.totalProAccounts.push({ ...trainer, type: 'trainer' });
+    //   });
+    // });
+
     this.trainersService.getTrainers().subscribe(trainers => {
-      trainers.forEach(trainer => {
-        console.log("Ajout du formateur:", trainer.firstName, trainer.lastName, "UID:", trainer.id, "avec le type: trainer");
-        this.totalProAccounts.push({ ...trainer, type: 'trainer' });
-      });
+      trainers
+        .filter(t => this.isValidTrainer(t))
+        .forEach(trainer => {
+          this.totalProAccounts.push({ ...trainer, type: 'trainer' });
+        });
     });
+
 
     // Récupération des évaluateurs
     this.evaluatorsService.getEvaluators().subscribe(evaluators => {
@@ -51,7 +60,7 @@ export class ProfessionalsListComponent implements OnInit {
           // Si role est un tableau, alors vérifier les rôles possibles
           if (Array.isArray(user.role)) {
             console.log(`${user.firstName} ${user.lastName} a ces rôles : ${user.role.join(', ')}`);
-            user.role.forEach((role:string) => {
+            user.role.forEach((role: string) => {
               console.log(`Ajout de l'utilisateur avec rôle : ${role}`);
               this.totalProAccounts.push({ ...user, type: role });
             });
@@ -61,6 +70,12 @@ export class ProfessionalsListComponent implements OnInit {
         });
 
         this.totalProAccountsFiltered = this.totalProAccounts.filter(pro => pro.type === this.activeFilter);
+        // 🔒 Déduplication finale : supprimer les doublons par email
+this.totalProAccounts = this.deduplicateByEmail(this.totalProAccounts);
+
+// Mise à jour filtrée
+this.totalProAccountsFiltered = this.totalProAccounts.filter(pro => pro.type === this.activeFilter);
+
 
 
         // Vérification de l'ensemble des données
@@ -110,11 +125,11 @@ export class ProfessionalsListComponent implements OnInit {
     editor: 'Éditeur (Marketing)',
     external: 'Observateur Externe',
     evaluator: 'Évaluateur',
-    manager:'Responsable Métier'
+    manager: 'Responsable Métier'
   };
 
 
-  
+
   // Méthode pour obtenir le label affiché
   getTypeLabel(type: string): string {
     return this.typeLabels[type] || type; // Retourne le label ou le type brut si non trouvé
@@ -122,6 +137,30 @@ export class ProfessionalsListComponent implements OnInit {
 
 
 
+  // Garde-fou minimal contre les comptes de test
+  isValidTrainer(trainer: any): boolean {
+    if (!trainer?.email) return false;
+
+    const email = trainer.email.toLowerCase();
+
+    return email.includes('@')
+      && !email.includes('test')
+      && !email.includes('exemple')
+      && !email.includes('fake')
+      && !email.includes('bidon');
+  }
+
+  // Déduplication défensive par email
+  private deduplicateByEmail(list: any[]) {
+    const seen = new Set<string>();
+
+    return list.filter(item => {
+      if (!item.email) return false;
+      if (seen.has(item.email)) return false;
+      seen.add(item.email);
+      return true;
+    });
+  }
 
 
 }
