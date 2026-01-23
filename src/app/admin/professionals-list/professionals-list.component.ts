@@ -183,48 +183,54 @@ export class ProfessionalsListComponent implements OnInit {
    */
   downloadCsv(list: any[]) {
 
+    // -----------------------------
     // En-têtes du fichier CSV
-    const headers = ['UID', 'firstName', 'lastName', 'Email', 'Type'];
+    // -----------------------------
+    // On ajoute CP et Competences pour l'export, même si elles ne sont pas affichées
+    // dans la vue. Cela permet d'avoir un CSV complet pour mailing / reporting.
+    const headers = ['UID', 'firstName', 'lastName', 'Email', 'Type', 'CP', 'Competences'];
 
+    // -----------------------------
     // Transformation des données en lignes CSV
+    // -----------------------------
     const rows = list.map(item => [
-      item.id ?? '',               // UID du compte
-      item.firstName ?? '',        // Prénom
-      item.lastName ?? '',         // Nom
-      item.email ?? '',            // Email
-      this.getTypeLabel(item.type) // Libellé lisible du type
+      item.id ?? '',                  // UID
+      item.firstName ?? '',           // Prénom
+      item.lastName ?? '',            // Nom
+      item.email ?? '',               // Email
+      this.getTypeLabel(item.type),   // Type lisible
+
+      // Conversion des tableaux en texte CSV lisible
+      // Chaque élément de 'cp' est séparé par une virgule pour lisibilité
+      Array.isArray(item.cp) ? item.cp.join(',') : '',
+
+      // Chaque élément de 'sigle' (compétences) est séparé par une virgule
+      Array.isArray(item.sigle) ? item.sigle.join(',') : ''
     ]);
 
+    // -----------------------------
     // Construction du contenu CSV
-    // '\uFEFF' = BOM UTF-8 → indispensable pour Excel (accents)
-    const csvContent =
-      '\uFEFF' + [
-        headers.join(';'),
-        ...rows.map(r => r.join(';'))
-      ].join('\n');
+    // -----------------------------
+    // '\uFEFF' = BOM UTF-8 → indispensable pour Excel (gestion des accents)
+    const csvContent = '\uFEFF' + [
+      headers.join(';'),           // séparateur de colonnes
+      ...rows.map(r => r.join(';'))
+    ].join('\n');
 
-    // Création du fichier Blob en UTF-8
-    const blob = new Blob([csvContent], {
-      type: 'text/csv;charset=utf-8;'
-    });
-
-    // Génération d'une URL temporaire pour déclencher le téléchargement
+    // -----------------------------
+    // Création du fichier Blob et déclenchement du téléchargement
+    // -----------------------------
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
-
     link.href = url;
 
     // Nom du fichier basé sur le filtre actif (trainer, evaluator, etc.)
-    link.setAttribute(
-      'download',
-      `professionnels_${this.activeFilter}.csv`
-    );
+    link.setAttribute('download', `professionnels_${this.activeFilter}.csv`);
 
     // Déclenchement du téléchargement
     link.click();
   }
-
-
 
 
 
