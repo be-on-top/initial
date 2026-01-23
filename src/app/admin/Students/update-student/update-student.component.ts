@@ -988,64 +988,94 @@ export class UpdateStudentComponent implements OnInit {
 // }
 
 // cas où on rajoute la date dans chaque signature dans le détail
+// appendTrainerSignature(details: string): string {
+//   if (!details) return details;
+
+//   // Date en format français
+//   const today = formatDate(new Date(), 'dd/MM/yyyy', 'en');
+
+//   // Signature complète (unique modification ici)
+//   const signatureHtml = `<p class="trainer-signature" contenteditable="false">— ${this.trainerFirstName} ${this.trainerLastName} (${today})</p>`.trim();
+
+//   const cleanDetails = details.trim();
+
+//   // Signature absente → ajouter
+//   if (!cleanDetails.includes(signatureHtml)) {
+//     return cleanDetails + signatureHtml;
+//   }
+
+//   // La signature existe → gérer doublons
+//   const container = document.createElement('div');
+//   container.innerHTML = cleanDetails;
+
+//   const paragraphs = Array.from(container.querySelectorAll('p'));
+
+//   const signaturesOfTrainer = paragraphs.filter(
+//     p => p.outerHTML.trim() === signatureHtml
+//   );
+
+//   // Si une seule signature → OK
+//   if (signaturesOfTrainer.length <= 1) {
+//     return container.innerHTML;
+//   }
+
+//   // Vérifier si un autre formateur a aussi signé
+//   let otherSignatureFound = false;
+//   for (let p of paragraphs) {
+//     const content = p.textContent?.trim() || "";
+
+//     // Commence par "— " mais nom différent → signature d’un autre formateur
+//     if (
+//       content.startsWith("— ") &&
+//       !content.startsWith(`— ${this.trainerFirstName} ${this.trainerLastName} `)
+//     ) {
+//       otherSignatureFound = true;
+//       break;
+//     }
+//   }
+
+//   // Si pas d'autre signature → garder uniquement la dernière du formateur
+//   if (!otherSignatureFound) {
+//     const lastSignature = signaturesOfTrainer[signaturesOfTrainer.length - 1];
+
+//     signaturesOfTrainer.forEach(sig => {
+//       if (sig !== lastSignature) sig.remove();
+//     });
+//   }
+
+//   return container.innerHTML;
+// }
+
 appendTrainerSignature(details: string): string {
   if (!details) return details;
 
-  // Date en format français
   const today = formatDate(new Date(), 'dd/MM/yyyy', 'en');
+  const newSignatureText = `— ${this.trainerFirstName} ${this.trainerLastName} (${today})`;
 
-  // Signature complète (unique modification ici)
-  const signatureHtml = `<p class="trainer-signature" contenteditable="false">— ${this.trainerFirstName} ${this.trainerLastName} (${today})</p>`.trim();
-
-  const cleanDetails = details.trim();
-
-  // Signature absente → ajouter
-  if (!cleanDetails.includes(signatureHtml)) {
-    return cleanDetails + signatureHtml;
-  }
-
-  // La signature existe → gérer doublons
+  // Crée un container temporaire pour manipuler le HTML
   const container = document.createElement('div');
-  container.innerHTML = cleanDetails;
+  container.innerHTML = details.trim();
 
   const paragraphs = Array.from(container.querySelectorAll('p'));
 
-  const signaturesOfTrainer = paragraphs.filter(
-    p => p.outerHTML.trim() === signatureHtml
-  );
+  // Cherche les signatures existantes du formateur
+  const existingSignature = paragraphs.find(p =>
+    p.textContent?.trim().startsWith(`— ${this.trainerFirstName} ${this.trainerLastName}`));
 
-  // Si une seule signature → OK
-  if (signaturesOfTrainer.length <= 1) {
-    return container.innerHTML;
-  }
-
-  // Vérifier si un autre formateur a aussi signé
-  let otherSignatureFound = false;
-  for (let p of paragraphs) {
-    const content = p.textContent?.trim() || "";
-
-    // Commence par "— " mais nom différent → signature d’un autre formateur
-    if (
-      content.startsWith("— ") &&
-      !content.startsWith(`— ${this.trainerFirstName} ${this.trainerLastName} `)
-    ) {
-      otherSignatureFound = true;
-      break;
-    }
-  }
-
-  // Si pas d'autre signature → garder uniquement la dernière du formateur
-  if (!otherSignatureFound) {
-    const lastSignature = signaturesOfTrainer[signaturesOfTrainer.length - 1];
-
-    signaturesOfTrainer.forEach(sig => {
-      if (sig !== lastSignature) sig.remove();
-    });
+  if (existingSignature) {
+    // Remplace le texte existant par la nouvelle date
+    existingSignature.textContent = newSignatureText;
+  } else {
+    // Ajoute la signature à la fin
+    const p = document.createElement('p');
+    p.className = 'trainer-signature';
+    p.setAttribute('contenteditable', 'false');
+    p.textContent = newSignatureText;
+    container.appendChild(p);
   }
 
   return container.innerHTML;
 }
-
 
 
 cleanInitialWrapper(details: string): string {
@@ -1064,7 +1094,6 @@ cleanInitialWrapper(details: string): string {
 
     initialDiv.replaceWith(...Array.from(fragment.childNodes));
   }
-
   return container.innerHTML;
 }
 
