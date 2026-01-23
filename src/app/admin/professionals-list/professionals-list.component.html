@@ -1,7 +1,7 @@
 <div *ngIf="isLoading" aria-live="polite">Chargement...</div>
 
 
-<div *ngIf="!isLoading"  class="container py-3">
+<div *ngIf="!isLoading" class="container py-3">
   <h2 class="my-3">Total des comptes professionnels : {{ totalProAccounts.length }}</h2>
 
   <div class="container">
@@ -13,16 +13,12 @@
     </button>
   </div> -->
     <!-- Filtres dynamiques -->
-    <button 
-    *ngFor="let type of getUniqueTypes()" 
-    class="btn btn-sm me-2"
-    [ngClass]="{ 'btn-primary': activeFilter === type, 'btn-outline-primary': activeFilter !== type }"
-    (click)="filterByType(type)"
-    [attr.aria-pressed]="activeFilter === type"
-  >
-    {{ getTypeLabel(type) }} ({{ countByType(type) }})
-  </button>
-  
+    <button *ngFor="let type of getUniqueTypes()" class="btn btn-sm me-2"
+      [ngClass]="{ 'btn-primary': activeFilter === type, 'btn-outline-primary': activeFilter !== type }"
+      (click)="filterByType(type)" [attr.aria-pressed]="activeFilter === type">
+      {{ getTypeLabel(type) }} ({{ countByType(type) }})
+    </button>
+
 
     <!-- Liste comptable sous forme de tableau Bootstrap -->
 
@@ -37,19 +33,38 @@
     </div> -->
 
     <!-- Liste filtrée des professionnels -->
-  <div class="row">
-    <div *ngFor="let pro of totalProAccountsFiltered" class="col-md-6 col-lg-4 mb-3">
-      <div class="card shadow-sm border-0 p-3">
-        <h5 class="card-title">{{ pro.firstName }} {{ pro.lastName }}</h5>
-        <p class="card-text">
-          <strong>{{ getTypeLabel(pro.type) }}</strong><br>
-          <small class="text-muted">UID: {{ pro.id }}</small><br>
-          <small class="text-muted">email: {{ pro.email }}</small>
-        </p>
+    <div class="row">
+      <div *ngFor="let pro of totalProAccountsFiltered" class="col-md-6 col-lg-4 mb-3">
+        <div class="card shadow-sm border-0 p-3">
+          <h5 class="card-title">{{ pro.firstName }} {{ pro.lastName }}</h5>
+          <p class="card-text">
+            <strong>{{ getTypeLabel(pro.type) }}</strong><br>
+            <small class="text-muted">UID: {{ pro.id }}</small><br>
+            <small class="text-muted">email: {{ pro.email }}</small>
+          </p>
+        </div>
       </div>
     </div>
-  </div>
 
-  
+    <!-- <button *ngIf="activeFilter === 'trainer' && totalProAccountsFiltered.length"
+      (click)="downloadCsv(totalProAccountsFiltered)">
+      ⬇️ Télécharger la liste des formateurs (CSV)
+    </button> -->
+    <!-- pour un bouton générique -->
+    <p class="text-muted mt-3 mb-1">
+      Export destiné à des usages de communication (emailing).
+      Le fichier contient uniquement des informations génériques
+      communes à tous les profils.
+    </p>
+
+    <button *ngIf="activeFilter && totalProAccountsFiltered.length" class="btn btn-outline-secondary btn-sm"
+      (click)="downloadCsv(totalProAccountsFiltered)">
+      ⬇️ Télécharger la liste des {{ getTypeLabel(activeFilter).toLowerCase() }} (CSV)
+    </button>
+
+
+
+
+
   </div>
 </div>
