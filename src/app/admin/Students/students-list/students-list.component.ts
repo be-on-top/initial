@@ -423,8 +423,8 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   // pour utiliser le composant de recherche
   onSearchTextEntered(searchValue: string) {
     console.log(searchValue);
-
-    this.searchText = searchValue
+    // this.searchText = searchValue
+    this.searchText = this.normalize(searchValue)
     console.log(this.searchText);
 
   }
@@ -1104,9 +1104,13 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     }
   }
 
-
-
-
+  normalize(value: string | null | undefined): string {
+    return (value ?? '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .trim();
+  }
 
 
 
