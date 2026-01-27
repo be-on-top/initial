@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UsersService } from '../users.service';
 import { TrainersService } from '../trainers.service';
 import { EvaluatorsService } from '../evaluators.service';
+import { Trainer } from '../trainer';
 
 @Component({
   selector: 'app-professionals-list',
@@ -41,6 +42,7 @@ export class ProfessionalsListComponent implements OnInit {
           this.totalProAccounts.push({ ...trainer, type: 'trainer' });
         });
       this.updateFilteredList();
+      this.logDisabledTrainers(this.totalProAccounts)
     });
 
     // On récupère les évaluateurs
@@ -155,6 +157,7 @@ export class ProfessionalsListComponent implements OnInit {
       return false;
     }
 
+
     // Email valide → le formateur est affichable
     return true;
   }
@@ -232,6 +235,16 @@ export class ProfessionalsListComponent implements OnInit {
     link.click();
   }
 
+
+logDisabledTrainers(trainers: any[]) {
+  console.log('trainers dans logDisabledTrainers', trainers);
+
+  const trainersDisabled = trainers.filter(
+    (trainer: any) => trainer.status === false
+  );
+
+  console.log('formateurs désactivés', trainersDisabled);
+}
 
 
 }

@@ -38,7 +38,7 @@
         <div class="card shadow-sm border-0 p-3">
           <h5 class="card-title">{{ pro.firstName }} {{ pro.lastName }}</h5>
           <p class="card-text">
-            <strong>{{ getTypeLabel(pro.type) }}</strong><br>
+            <strong>{{ getTypeLabel(pro.type) }}</strong>  <span *ngIf="pro.status === false"> (désactivé)</span><br>
             <small class="text-muted">UID: {{ pro.id }}</small><br>
             <small class="text-muted">email: {{ pro.email }}</small>
           </p>
