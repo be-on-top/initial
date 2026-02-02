@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { StudentsExportService } from '../students-export.service';
 
 @Component({
@@ -6,6 +6,8 @@ import { StudentsExportService } from '../students-export.service';
   templateUrl: './export-students.component.html'
 })
 export class ExportStudentsComponent {
+
+  @Input() students?: any[]; // <-- optionnel, clé de tout
 
   exporting = false;
   error: string | null = null;
@@ -16,10 +18,8 @@ export class ExportStudentsComponent {
     this.exporting = true;
     this.error = null;
 
-    this.exportService.exportStudentsToCSV().subscribe({
-      next: () => {
-        this.exporting = false;
-      },
+    this.exportService.exportStudentsToCSV(this.students).subscribe({
+      next: () => this.exporting = false,
       error: () => {
         this.exporting = false;
         this.error = 'Une erreur est survenue lors de l\'export.';

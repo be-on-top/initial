@@ -306,7 +306,21 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
         // console.log('Données brutes (collectionStudents) :', this.collectionStudents);
       }),
       // A condition qu'ils aient au minimum terminé UN questionnaire...
-      map(students => students.filter(student => this.hasFullResults(student)))
+      // map(students => students.filter(student => this.hasFullResults(student)))
+      // A condition qu'ils aient au minimum commencé UN questionnaire...
+      // map(students => students.filter(student =>  Object.keys(student).some(key =>
+      //     key.startsWith('quizz_')
+      //   )))
+
+      map(students =>
+        this.userRole === 'referent' ? students.filter(student => this.hasFullResults(student)) : students.filter(student => Object.keys(student).some(key =>
+          key.startsWith('quizz_')
+        )))
+      // A condition qu'ils aient au minimum commencé UN questionnaire...
+      // map(students => students.filter(student =>  Object.keys(student).some(key =>
+      //     key.startsWith('quizz_')
+      //   )))
+
     ).subscribe(filteredStudents => {
 
       this.initialStudents = filteredStudents; // Stocker la liste initiale

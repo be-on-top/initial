@@ -140,7 +140,7 @@
                     <!-- pour tenter la même chose avec un select (test OK) -->
 
                     <hr>
-                    <label for="qcmStarted">Questionnaire commencé pour :</label>
+                    <label for="qcmStarted">Questionnaire commencé (non terminé) pour :</label>
                     <select id="qcmStarted" class="form-control" [(ngModel)]="selectedTradeForQCMStarted"
                         (ngModelChange)="onTradeQCMStartedSelect($event)">
                         <option [ngValue]="null">-- Tous les métiers --</option>
@@ -401,28 +401,6 @@
             </button>
         </nav>
 
-        <!-- <nav *ngIf="totalPages > 1" class="mt-3">
-  <button (click)="prevPage()" [disabled]="currentPage === 1">Précédent</button>
-  <span>Page {{currentPage}} / {{totalPages}}</span>
-  <button (click)="nextPage()" [disabled]="currentPage === totalPages">Suivant</button>
-</nav> -->
-
-        <!-- <nav *ngIf="totalPages > 1" class="mt-3 d-flex align-items-center gap-2">
-  <button (click)="goToPage(1)" [disabled]="currentPage === 1">Première</button>
-  <button (click)="prevPage()" [disabled]="currentPage === 1">Précédent</button>
-  <span>Page {{currentPage}} / {{totalPages}}</span>
-  <button (click)="nextPage()" [disabled]="currentPage === totalPages">Suivant</button>
-  <button (click)="goToPage(totalPages)" [disabled]="currentPage === totalPages">Dernière</button>
-</nav> -->
-
-
-
-
-
-
-
-
-
         <!-- {{userRouterLinks.user}} -->
         <button type="submit" class="btn btn-primary mt-5"
             *ngIf="userRouterLinks.user!=='external' && userRouterLinks.user!=='editor' && userRouterLinks.user!=='referentsContacts'"><a
@@ -430,7 +408,7 @@
                     class="bi bi-person-fill-add me-2"></i>Ajouter</a></button>
 
 
-        <div class="row gap-3" *ngIf="userRouterLinks.user!=='external'  && userRouterLinks.user!=='referentsContacts'">
+        <div class="row gap-3" *ngIf="userRouterLinks.user!=='external'  && userRouterLinks.user!=='referentsContacts' && userRouterLinks.user!=='referent'">
             <button type="button" class="btn btn-primary mt-5 col-10 col-md-5" (click)="exportStudentsCollection()"><i
                     class="bi bi-box-arrow-down me-3"></i>Export au format JSON
                 de la collection</button>
@@ -445,6 +423,11 @@
     </div>
 
     <hr>
+    <app-export-students
+  *ngIf="userRouterLinks.user === 'referent'"
+  [students]="allStudents">
+</app-export-students>
+
     <app-export-students *ngIf="userRouterLinks.user==='admin'"></app-export-students>
 
 </div>
