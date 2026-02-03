@@ -21,11 +21,11 @@ export class UpdateTradesComponent {
   userRole: string = ""
 
   sigleId: string = ""
-  trade: Trade = { sigle: "", denomination: "", rncp: "", isQualifying: false, isCPF: false, status: true, requirements: "", legalDuration: false, competences: [], totalCP: 0, durations: {}, costs: {}, description: "", parentCategory: '' }
+  trade: Trade = { sigle: "", denomination: "", rncp: "", isQualifying: false, isCPF: false, status: true, requirements: "", legalDuration: false, erpRef: "", competences: [], totalCP: 0, durations: {}, costs: {}, description: "", parentCategory: '' }
 
 
   // sigles: Trade = { sigle: "", denomination: "", competences: [], totalCP: 0, durations: {}, costs: {}, description:"" }
-  sigles: Trade = { sigle: "", denomination: "", rncp: "", isQualifying: false, isCPF: false, status: true, requirements: "", competences: [], totalCP: 0, durations: {}, costs: {}, description: "", legalDuration: false }
+  sigles: Trade = { sigle: "", denomination: "", rncp: "", isQualifying: false, isCPF: false, status: true, requirements: "", competences: [], totalCP: 0, durations: {}, costs: {}, description: "", legalDuration: false, erpRef: "" }
   form: any
   total: any = []
   minValue: number = 0; // Valeur minimale pour toute nouvelle compétence
@@ -126,7 +126,8 @@ export class UpdateTradesComponent {
         parentCategory: form.value.parentCategory,
         description: form.value.description,
         createdAt: this.trade.createdAt,
-        legalDuration: this.trade.legalDuration
+        legalDuration: this.trade.legalDuration,
+        erpRef: this.trade.erpRef
       }
       // si on souhaite un objet, comme ceux écrits initialement en dur exemple : competences:{CP1:"", CP2:""}
       // this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, totalCP: form.value.totalCP, competences: {} }
@@ -194,11 +195,37 @@ export class UpdateTradesComponent {
       // pour éviter erreurs setDoc
       if (form.value.parentCategory === undefined) {
         delete this.sigles.parentCategory;
+      }// 🔒 Sécurisation avant envoi à Firestore :
+      // on évite d'envoyer des champs undefined ou vides qui provoqueraient
+      // des erreurs setDoc ou pollueraient le document
+
+      // Si aucune catégorie parente n’a été renseignée en modification,
+      // on supprime la propriété pour ne pas écraser une valeur existante
+      // ou envoyer `undefined` à Firestore
+      if (form.value.parentCategory === undefined) {
+        delete this.sigles.parentCategory;
+      }
+
+      // Si la durée légale n’existait pas sur l’ancien document,
+      // on force une valeur booléenne explicite (Firestore n'accepte pas undefined)
+      if (this.trade.legalDuration === undefined) {
+        this.trade.legalDuration = false;
+      }
+
+      // Champ optionnel ERP :
+      // si le champ n’existe pas ou contient une chaîne vide,
+      // on le supprime pour éviter d’enregistrer "" inutilement
+      if (!this.sigles.erpRef || this.sigles.erpRef.trim() === '') {
+        delete this.sigles.erpRef;
       }
 
       if (this.trade.legalDuration === undefined) {
         this.trade.legalDuration = false;
       }
+      if (!this.sigles.erpRef || this.sigles.erpRef.trim() === '') {
+        delete this.sigles.erpRef;
+      }
+
 
       // Avant d'envoyer à Firestore
       this.sigles = this.cleanForFirestore(this.sigles);

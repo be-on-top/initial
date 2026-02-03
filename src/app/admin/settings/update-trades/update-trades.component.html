@@ -87,6 +87,22 @@
         <label class="form-check-label" for="legalDurationCheckbox">{{!trade.legalDuration?'Non':'Oui'}}</label>
       </div>
 
+      <hr>
+      <!-- référence produit / formation dans l'ERP cible -->
+      <label for="erpRef" class="form-label mt-3">
+        Référence produit / formation dans ERP cible (facultatif)
+      </label>
+      <div class="d-flex border-start ps-2 text-muted small mb-2">
+        📌 Champ facultatif - sans espace - utilisé pour garantir la cohérence des exports ERP.
+      </div>
+      <input type="text" name="erpRef" [(ngModel)]="trade.erpRef" #erpRef="ngModel" class="form-control" minlength="4"
+        pattern="^\S+$" placeholder="Ex : FORM_ERP_001">
+      <!-- feedback -->
+      <div *ngIf="(erpRef.dirty || erpRef.touched) && erpRef.invalid" class="invalid-feedback">
+        Référence invalide : minimum 4 caractères, aucun espace autorisé.
+      </div>
+
+
       <!-- pour arrêter le nombre de compétences par métier -->
       <label for="totalCP" class="form-label mt-3">Nombre de compétences au référentiel métier</label>
       <input type="number" name="totalCP" [(ngModel)]="trade.totalCP" #totalCP="ngModel" class="form-control mb-1"
