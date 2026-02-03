@@ -15,6 +15,7 @@ export interface Trade {
   costs: { [key: string]: any };
   parentCategory?: string;
   createdAt?: Timestamp;  // Ajouter le champ createdAt de type Timestamp
-  legalDuration?:boolean
+  legalDuration?:boolean;
+  erpRef?:string;
 }
 

@@ -16,7 +16,7 @@ import { AuthService } from '../../auth.service';
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
-  sigles: Trade = { sigle: "", denomination: "", status: true, isQualifying: false, isCPF: false, competences: [], totalCP: 0, durations: {}, costs: {}, legalDuration: false }
+  sigles: Trade = { sigle: "", denomination: "", status: true, isQualifying: false, isCPF: false, erpRef:"", competences: [], totalCP: 0, durations: {}, costs: {}, legalDuration: false }
   form: any
   total: any = []
 
@@ -69,7 +69,7 @@ export class SettingsComponent implements OnInit {
 
   addSigles(form: NgForm) {
     this.durations = []; // Réinitialise le tableau avant d'ajouter les durées
-    this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, parentCategory: form.value.parentCategory, rncp: form.value.rncp, isQualifying: form.value.isQualifying, isCPF: form.value.isCPF, requirements: form.value.requirements, status: form.value.status, legalDuration: form.value.legalDuration, totalCP: form.value.totalCP, competences: [], durations: {}, costs: {}, description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu lectus porttitor, facilisis diam in, tristique eros. Donec vulputate faucibus metus, nec sodales dolor pharetra sit amet. Nullam vel dictum magna. Aliquam gravida eu est convallis tempus. Vivamus elit odio, aliquam ut consectetur non, mollis vitae ante. Mauris bibendum rhoncus odio, sit amet porttitor quam venenatis non. In commodo purus eget lacus venenatis pulvinar.' }
+    this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, parentCategory: form.value.parentCategory, rncp: form.value.rncp, isQualifying: form.value.isQualifying, isCPF: form.value.isCPF, requirements: form.value.requirements, erpRef:form.value.erpRef, status: form.value.status, legalDuration: form.value.legalDuration, totalCP: form.value.totalCP, competences: [], durations: {}, costs: {}, description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu lectus porttitor, facilisis diam in, tristique eros. Donec vulputate faucibus metus, nec sodales dolor pharetra sit amet. Nullam vel dictum magna. Aliquam gravida eu est convallis tempus. Vivamus elit odio, aliquam ut consectetur non, mollis vitae ante. Mauris bibendum rhoncus odio, sit amet porttitor quam venenatis non. In commodo purus eget lacus venenatis pulvinar.' }
     // si on souhaite un objet, comme ceux écrits initialement en dur exemple : competences:{CP1:"", CP2:""}
     // this.sigles = { sigle: form.value.sigle, denomination: form.value.denomination, totalCP: form.value.totalCP, competences: {} }
     for (let i = 1; i <= form.value.totalCP; i++) {
