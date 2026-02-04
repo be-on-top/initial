@@ -618,6 +618,13 @@ export class StudentDetailsComponent implements OnInit, AfterViewInit {
   }
 
 
+hasPartialQuizzes(): boolean {
+  return this.tradesEvaluated?.some(trade => this.getPartialDetails(trade));
+}
+
+hasCompletedQuizzes(): boolean {
+  return this.tradesEvaluated?.some(trade => this.getTradeDetails(trade));
+}
 
 
 }

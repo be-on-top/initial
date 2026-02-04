@@ -109,99 +109,97 @@
                     <!-- nouveauté pour multi quizz VERSION 2 -->
 
                     <div *ngIf="student && tradesEvaluated; else none">
-                                          <!-- comme on ne questionnera plus tradeEvaluated mais tradesEvaluated [], on va devoir, avant d'inspecter la suite des ngIf, avoir une boucle ngFor pour voir métier après métier...  -->
+                        <!-- comme on ne questionnera plus tradeEvaluated mais tradesEvaluated [], on va devoir, avant d'inspecter la suite des ngIf, avoir une boucle ngFor pour voir métier après métier...  -->
                         <!-- attention, compte tenu de la manière dont tradesEvaluated a été généré, trade ici, c'est une chaine de caractère type quizz_sigle -->
-                        <div *ngFor="let trade of tradesEvaluated, let last=last">
 
-                            <!-- {{student[trade].fullResults | json}} -->
+                        <!-- pour afficher les en cours -->
 
-
-
-                            <!-- Partie 1 si QCM en cours -->
-                            <!-- <div *ngIf="student.lastIndexQuestions[trade]<2, else done"> -->
-
-                            <div *ngIf="getPartialDetails(trade) as partialDetails">
-                                <!-- cas 1 -->
-                                <!-- <ng-container *ngIf="!quizDetails.fullResults, else done"> -->
-
-
-
-                                <p class="card-text bg-light fst-italic my-5"><i class="bi bi-info-square-fill me-2"></i>A déjà répondu à
-                                    <span class="fw-bold me-1">{{partialDetails.lastIndexQuestion +1 | number}}
-                                        questions</span>pour {{ getDenomination(trade) | async }} - Ref. {{trade}},
-                                    mais n'a pas terminé
-                                </p>
-
-                                <!-- </ng-container> -->
+                        <ng-container *ngIf="hasPartialQuizzes()">
+                            <div *ngFor="let trade of tradesEvaluated, let last=last">
+                                <div *ngIf="getPartialDetails(trade) as partialDetails">
+                                    <p class="card-text bg-light fst-italic my-2"><i
+                                            class="bi bi-info-square-fill me-2"></i>A déjà répondu à
+                                        <span class="fw-bold me-1">{{partialDetails.lastIndexQuestion +1 | number}}
+                                            questions</span>pour {{ getDenomination(trade) | async }} - Ref. {{trade}},
+                                        mais n'a pas terminé
+                                    </p>
+                                </div>
+                                <hr *ngIf="last">
                             </div>
+                        </ng-container>
 
-                            <!-- Partie 2 si QCM terminé -->
-                            <!-- Il semble que la directive keyvalue provoque des problèmes lorsqu'elle est utilisée dans une boucle *ngFor. 
+                        <!-- pour afficher les questionnaires terminés-->
+                        <ng-container *ngIf="hasCompletedQuizzes()">
+                            <div *ngFor="let trade of tradesEvaluated, let last=last">
+                                <!-- Il semble que la directive keyvalue provoque des problèmes lorsqu'elle est utilisée dans une boucle *ngFor. 
                             Pour contourner ce problème, on peut utiliser la fonction créée Object.entries() pour obtenir les clés et valeurs de result.value. -->
-                            <!-- <ng-template #done class="mb-3"> -->
-                            <div *ngIf="getTradeDetails(trade) as quizDetails">
-                                <h4 class="text-left mb-3 mt-5">
-                                    Questionnaire de positionnement terminé pour {{ getDenomination(trade) | async }} <i
-                                        class="bi bi-check-lg ms-2 text-success fs-4"></i>
-                                    <!-- <i class="bi bi-arrow-down-square-fill ms-auto text-light"></i> -->
-                                </h4>
+                                <!-- <ng-template #done class="mb-3"> -->
+                                <div *ngIf="getTradeDetails(trade) as quizDetails">
+
+                                    <h4 class="text-left mb-3 mt-5">
+                                        Questionnaire de positionnement terminé pour {{ getDenomination(trade) | async
+                                        }} <i class="bi bi-check-lg ms-2 text-success fs-4"></i>
+                                        <!-- <i class="bi bi-arrow-down-square-fill ms-auto text-light"></i> -->
+                                    </h4>
 
 
-                                <div>
-                                    <p class="card-text mb-3" *ngIf="quizDetails.createdAt">
-                                        Date de l'évaluation : <span class="fw-bold">
-                                            {{ quizDetails.createdAt?.toDate() | date:'dd/MM/yyyy HH:mm' }}
+                                    <div>
+                                        <p class="card-text mb-3" *ngIf="quizDetails.createdAt">
+                                            Date de l'évaluation : <span class="fw-bold">
+                                                {{ quizDetails.createdAt?.toDate() | date:'dd/MM/yyyy HH:mm' }}
+                                            </span>
+                                        </p>
+                                    </div>
+
+
+                                    <!-- on peut les mettre en vis à vis pour les grands écrans -->
+
+                                    <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
+                                    <div class="card-text mb-0 align-items-center"
+                                        *ngFor="let result of getSortedResults(trade); let lastResult=last; let i = index">
+                                        <ng-container *ngFor="let item of objectEntries(result)">
+                                            <div><span class="fw-bold">{{item[0] }}:</span> <span
+                                                    *ngIf="trades[trade]">{{trades[trade][i]}}</span></div>
+                                            <div class="mb-2">
+                                                <div class="d-sm-inline">
+                                                    <span class="fw-bold">Note: </span>
+                                                    <span>{{ item[1].notation | json| number:'1.1-1' }}/20 </span>
+                                                </div>
+                                                <div class="d-sm-inline">
+                                                    <!-- on réintègre la deuxième colonne -->
+                                                    <span class="fw-bold">Durée: </span>
+                                                    {{ item[1].duration }} heures <span
+                                                        class="fw-bold cost">Coût</span><span class="cost"> : {{
+                                                        item[1].cost }}€ </span>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+
+                                    <hr>
+
+                                    <p *ngIf="tradesData?.length > 0"><span class="fw-bold">Total</span> :
+                                        {{totalTime}}/{{
+                                        calculateTotalTime(trade) | json }} heures de formation pour <span class="cost">
+                                            {{totalCost}}/{{
+                                            calculateTotalCost(trade) }}€</span>
+
+                                        <!-- pour les arrondis multiples de 7 -->
+                                        <!-- Si l'arrondi dépasse le total, on force l'arrondi inférieur -->
+                                        <span *ngIf="totalTime % 7 !== 0 && isTrainingTimeMultiple7 "
+                                            class="text-danger">
+                                            <br>La formation la plus proche suggérée au candidat est donc de
+                                            {{ getAdjustedTrainingTime(totalTime, totalCost) }}h
+                                            car vos journées de formation sont de 7 heures.
                                         </span>
                                     </p>
                                 </div>
+                                <!-- </ng-template> -->
 
-
-                                <!-- on peut les mettre en vis à vis pour les grands écrans -->
-
-                                <!-- pour afficher les lignes du devis (contenu de fullResults) si et seulement si le QCM est terminé -->
-                                <div class="card-text mb-0 align-items-center"
-                                    *ngFor="let result of getSortedResults(trade); let lastResult=last; let i = index">
-                                    <ng-container *ngFor="let item of objectEntries(result)">
-                                        <div><span class="fw-bold">{{item[0] }}:</span> <span
-                                                *ngIf="trades[trade]">{{trades[trade][i]}}</span></div>
-                                        <div class="mb-2">
-                                            <div class="d-sm-inline">
-                                                <span class="fw-bold">Note: </span>
-                                                <span>{{ item[1].notation | json| number:'1.1-1' }}/20 </span>
-                                            </div>
-                                            <div class="d-sm-inline">
-                                                <!-- on réintègre la deuxième colonne -->
-                                                <span class="fw-bold">Durée: </span>
-                                                {{ item[1].duration }} heures <span
-                                                    class="fw-bold cost">Coût</span><span class="cost"> : {{
-                                                    item[1].cost }}€ </span>
-                                            </div>
-                                        </div>
-                                    </ng-container>
-                                </div>
-
-                                <hr>
-
-                                <p *ngIf="tradesData?.length > 0"><span class="fw-bold">Total</span> : {{totalTime}}/{{
-                                    calculateTotalTime(trade) | json }} heures de formation pour <span class="cost">
-                                        {{totalCost}}/{{
-                                        calculateTotalCost(trade) }}€</span>
-
-                                    <!-- pour les arrondis multiples de 7 -->
-                                    <!-- Si l'arrondi dépasse le total, on force l'arrondi inférieur -->
-                                    <span *ngIf="totalTime % 7 !== 0 && isTrainingTimeMultiple7 " class="text-danger">
-                                        <br>La formation la plus proche suggérée au candidat est donc de
-                                        {{ getAdjustedTrainingTime(totalTime, totalCost) }}h
-                                        car vos journées de formation sont de 7 heures.
-                                    </span>
-                                </p>
-
+                                <!-- Affichez le hr sauf dans la dernière itération -->
+                                <!-- <hr *ngIf="!last"> -->
                             </div>
-                            <!-- </ng-template> -->
-
-                            <!-- Affichez le hr sauf dans la dernière itération -->
-                            <!-- <hr *ngIf="!last"> -->
-                        </div>
+                        </ng-container>
                         <!-- fin boucle supplémentaire pour ngFor avec les options de multi-quizz -->
                     </div>
 
