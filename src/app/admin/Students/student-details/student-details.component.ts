@@ -83,8 +83,6 @@ export class StudentDetailsComponent implements OnInit, AfterViewInit {
 
   centerPriorName?: string = ""
 
-  
-
 
 
   constructor(
@@ -125,10 +123,6 @@ export class StudentDetailsComponent implements OnInit, AfterViewInit {
       this.centerPriorName = name;
       console.log('✅ centerPriorName mis à jour :', this.centerPriorName);
     });
-
-
-
-
 
 
   }
@@ -280,6 +274,14 @@ export class StudentDetailsComponent implements OnInit, AfterViewInit {
     }
     return null;
   }
+  getPartialDetails(trade: string) {
+    if (this.student && !this.student[trade]['fullResults']) {
+      this.tradeWithoutQuizzPrefix = this.removeQuizzPrefix(trade);
+      this.getTradeName(trade)
+      return this.student[trade] as QuizDetails;
+    }
+    return null;
+  }
 
 
   // Fonction pour récupérer les noms des métiers en parallèle
@@ -295,7 +297,6 @@ export class StudentDetailsComponent implements OnInit, AfterViewInit {
       map(data => this.tradeName = data)
     );
   }
-
 
 
   // pour modulariser la méthode de récupération de l'info-bulle avec des termes génériques
@@ -429,7 +430,6 @@ export class StudentDetailsComponent implements OnInit, AfterViewInit {
       const aNumber = parseInt((a.value.competence || '').replace(regex, ''), 10);
       const bNumber = parseInt((b.value.competence || '').replace(regex, ''), 10);
 
-
       return aNumber - bNumber; // Trie par ordre croissant
     });
   }
@@ -525,12 +525,12 @@ export class StudentDetailsComponent implements OnInit, AfterViewInit {
 
   tradesData?: any
   // état de l'onglet principal
-  isEvaluationsOpen: boolean = false; 
+  isEvaluationsOpen: boolean = false;
 
   ngAfterViewInit(): void {
     this.tradesService.getTrades().subscribe(data => this.tradesData = data)
 
-    this.isEvaluationsOpen= this.userRouterLinks.user === 'trainer';
+    this.isEvaluationsOpen = this.userRouterLinks.user === 'trainer';
 
 
     // // si l'utilisateur est trainer, on ouvre automatiquement le collapse "Évaluations"
@@ -541,7 +541,7 @@ export class StudentDetailsComponent implements OnInit, AfterViewInit {
     //     new bootstrap.Collapse(collapseEl, { toggle: true });
     //   }
     // }
-  
+
   }
 
 
@@ -613,9 +613,9 @@ export class StudentDetailsComponent implements OnInit, AfterViewInit {
 
 
 
-toggleEvaluations() {
-  this.isEvaluationsOpen = !this.isEvaluationsOpen;
-}
+  toggleEvaluations() {
+    this.isEvaluationsOpen = !this.isEvaluationsOpen;
+  }
 
 
 
