@@ -1,14 +1,52 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collectionData, collection } from '@angular/fire/firestore';
+import {
+  Firestore,
+  collection,
+  collectionData,
+  getDocs
+} from '@angular/fire/firestore';
 import { take, switchMap } from 'rxjs/operators';
-import { firstValueFrom, Observable, from } from 'rxjs';
+import { Observable, from, firstValueFrom } from 'rxjs';
 
-interface Student {
+/**
+ * ============================
+ * 🔹 MODELES FIRESTORE REELS
+ * ============================
+ */
+
+/**
+ * Représente STRICTEMENT
+ * un document de la collection `students`
+ */
+interface StudentDoc {
   email?: string;
   firstName?: string;
   lastName?: string;
-  created?: number;
-  subscriptions?: string[];
+  created?: number;               // timestamp (ms)
+  subscriptions?: string[];       // codes métiers
+  localTraining?: string;
+}
+
+/**
+ * Document `students` + id Firestore
+ */
+interface Student extends StudentDoc {
+  id: string;
+}
+
+/**
+ * Représente STRICTEMENT
+ * un document de la collection `socialForm`
+ */
+interface SocialFormDoc {
+  address?: string;
+  postalCode?: string;
+  city?: string;
+  phone?: string;
+  dateOfBirth?: string;
+  frenchNationality?: string;
+  priorTrade?: string;
+  idPoleEmploi?: string;
 }
 
 @Injectable({
@@ -19,44 +57,82 @@ export class StudentsExportService {
   constructor(private firestore: Firestore) {}
 
   /**
-   * Point d’entrée UNIQUE de l’export CSV
+   * =====================================
+   * 🔹 POINT D’ENTRÉE UNIQUE DE L’EXPORT
+   * =====================================
+   *
+   * - Soit on reçoit déjà un tableau d’étudiants (rôle référent)
+   * - Soit on charge toute la collection (rôle admin)
    */
   exportStudentsToCSV(students?: Student[]): Observable<void> {
 
-    // 🔹 Cas 1 : on fournit déjà les étudiants
-    if (students) {     
+    // 🔹 Cas 1 : export à partir d’un tableau déjà filtré
+    if (students) {
       return from(this.exportArray(students));
     }
 
     // 🔹 Cas 2 : export global depuis Firestore
     const studentsRef = collection(this.firestore, 'students');
 
-    return collectionData(studentsRef).pipe(
-      take(1),
-      switchMap((students: Student[]) =>
-        from(this.exportArray(students))
+    return collectionData<StudentDoc>(studentsRef, { idField: 'id' }).pipe(
+      take(1), // snapshot unique
+      switchMap(docs =>
+        from(
+          this.exportArray(docs as Student[]) // id garanti par idField
+        )
       )
     );
   }
 
   /**
-   * Génère réellement le CSV (async)
+   * =====================================
+   * 🔹 GÉNÉRATION RÉELLE DU CSV
+   * =====================================
+   *
+   * - Précharge toutes les dépendances
+   * - Agrège les données
+   * - Génère et télécharge le CSV
    */
   private async exportArray(students: Student[]): Promise<void> {
 
-    // Chargement des correspondances métier -> ERP
-    const tradeRefMap = await this.loadTradeRefs();
+    // Préchargement des dépendances
+    const [tradeRefMap, socialFormsMap] = await Promise.all([
+      this.loadTradeRefs(),   // sigles → erpRef
+      this.loadSocialForms()  // socialForm (jointure par id)
+    ]);
 
+    /**
+     * En-têtes du CSV
+     * 👉 contrat d’échange avec l’ERP
+     */
     const headers = [
+      'id',
       'email',
       'firstName',
       'lastName',
       'createdAt',
       'subscriptions',
-      'erpRef'
+      'erpRef',
+      'localTraining',
+      'address',
+      'postalCode',
+      'city',
+      'phone',
+      'dateOfBirth',
+      'frenchNationality',
+      'idPoleEmploi',
+      'priorTrade'
     ];
 
+    /**
+     * Construction des lignes CSV
+     * 👉 agrégation contrôlée de plusieurs collections
+     */
     const rows = students.map(student => {
+
+      // 🔗 Jointure 1–1 : student.id === socialForm.doc.id
+      const socialForm: SocialFormDoc | undefined =
+        student.id ? socialFormsMap[student.id] : undefined;
 
       const subscriptions = Array.isArray(student.subscriptions)
         ? student.subscriptions
@@ -67,6 +143,8 @@ export class StudentsExportService {
         .filter(Boolean);
 
       return {
+        // 🔹 Données issues de `students`
+        id: student.id,
         email: student.email ?? '',
         firstName: student.firstName ?? '',
         lastName: student.lastName ?? '',
@@ -74,7 +152,18 @@ export class StudentsExportService {
           ? new Date(student.created).toISOString()
           : '',
         subscriptions: subscriptions.join(','),
-        erpRef: erpRefs.join(',')
+        localTraining: student.localTraining ?? '',
+        erpRef: erpRefs.join(','),
+
+        // 🔽 Données issues de `socialForm`
+        address: socialForm?.address ?? '',
+        postalCode: socialForm?.postalCode ?? '',
+        city: socialForm?.city ?? '',
+        phone: socialForm?.phone ?? '',
+        dateOfBirth: socialForm?.dateOfBirth ?? '',
+        priorTrade: socialForm?.priorTrade ?? '',
+        frenchNationality: socialForm?.frenchNationality ?? '',
+        idPoleEmploi: socialForm?.idPoleEmploi ?? ''
       };
     });
 
@@ -83,7 +172,9 @@ export class StudentsExportService {
   }
 
   /**
-   * Chargement des références ERP depuis la collection `sigles`
+   * =====================================
+   * 🔹 SIGLES → ERP REF
+   * =====================================
    */
   private async loadTradeRefs(): Promise<Record<string, string>> {
 
@@ -93,23 +184,45 @@ export class StudentsExportService {
       collectionData(siglesRef, { idField: 'id' }).pipe(take(1))
     );
 
-    const mapRef: Record<string, string> = {};
+    const map: Record<string, string> = {};
 
     if (!Array.isArray(trades)) {
-      return mapRef;
+      return map;
     }
 
     trades.forEach((trade: any) => {
       if (trade.id && trade.erpRef) {
-        mapRef[trade.id] = trade.erpRef;
+        map[trade.id] = trade.erpRef;
       }
     });
 
-    return mapRef;
+    return map;
   }
 
   /**
-   * Génération CSV compatible Excel / ERP
+   * =====================================
+   * 🔹 SOCIAL FORM (jointure par id)
+   * =====================================
+   */
+  private async loadSocialForms(): Promise<Record<string, SocialFormDoc>> {
+
+    const snapshot = await getDocs(
+      collection(this.firestore, 'SocialForm')
+    );
+
+    const map: Record<string, SocialFormDoc> = {};
+
+    snapshot.forEach(doc => {
+      map[doc.id] = doc.data() as SocialFormDoc;
+    });
+
+    return map;
+  }
+
+  /**
+   * =====================================
+   * 🔹 CONSTRUCTION CSV
+   * =====================================
    */
   private buildCSV(headers: string[], rows: any[]): string {
 
@@ -122,10 +235,6 @@ export class StudentsExportService {
 
     const separator = allValues.some(containsSpecialChars) ? ';' : ',';
     const sepLine = `sep=${separator}`;
-    // const separator = ';';
-    // const sepLine = 'sep=;';
-
-    
 
     const escape = (v: string) => {
       if (/[\"\n\r;]/.test(v) || v.includes(separator)) {
@@ -139,16 +248,21 @@ export class StudentsExportService {
       headers.map(h => escape((r[h] ?? '').toString())).join(separator)
     );
 
+    // BOM UTF-8 pour Excel
     return '\uFEFF' + [sepLine, headerLine, ...lines].join('\n');
   }
 
-  
-
   /**
-   * Téléchargement navigateur
+   * =====================================
+   * 🔹 TÉLÉCHARGEMENT NAVIGATEUR
+   * =====================================
    */
   private download(content: string, filename: string): void {
-    const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+
+    const blob = new Blob([content], {
+      type: 'text/csv;charset=utf-8;'
+    });
+
     const url = URL.createObjectURL(blob);
 
     const a = document.createElement('a');
@@ -158,8 +272,4 @@ export class StudentsExportService {
 
     URL.revokeObjectURL(url);
   }
-
-  
-
-
 }
