@@ -47,6 +47,18 @@ interface SocialFormDoc {
   frenchNationality?: string;
   priorTrade?: string;
   idPoleEmploi?: string;
+  endingDateEducation?: string;
+  hasTransportationMean?: string;
+  searchCdi?: boolean;
+  mainSector?: string; // mainSector education
+  mobility?: string;
+  trainingFinancingProposal?: string;
+  isMilitary?: string;
+  isStudent?: string;
+  permisB?: string;
+  compteCPF?: string;
+  droitsCPF?: string;
+  isPoleEmploi?: string;
 }
 
 @Injectable({
@@ -54,7 +66,7 @@ interface SocialFormDoc {
 })
 export class StudentsExportService {
 
-  constructor(private firestore: Firestore) {}
+  constructor(private firestore: Firestore) { }
 
   /**
    * =====================================
@@ -121,7 +133,13 @@ export class StudentsExportService {
       'dateOfBirth',
       'frenchNationality',
       'idPoleEmploi',
-      'priorTrade'
+      'priorTrade',
+      'initialIntentErpRef',
+      'isPoleEmploi',
+      'isStudent',
+      'isMilitary',
+      'hasTransportationMean',
+      'mobility'
     ];
 
     /**
@@ -141,6 +159,15 @@ export class StudentsExportService {
       const erpRefs = subscriptions
         .map(sigle => tradeRefMap[sigle])
         .filter(Boolean);
+
+
+      // initialIntentErpRef: ERP ref correspondant à l'intention initiale du candidat
+      // ⚠️ Donnée informative, non contractuelle, désactivée volontairement pour l’instant
+
+      const initialIntentErpRef =
+        socialForm?.priorTrade
+          ? tradeRefMap[socialForm.priorTrade] ?? ''
+          : '';
 
       return {
         // 🔹 Données issues de `students`
@@ -162,8 +189,14 @@ export class StudentsExportService {
         phone: socialForm?.phone ?? '',
         dateOfBirth: socialForm?.dateOfBirth ?? '',
         priorTrade: socialForm?.priorTrade ?? '',
+        initialIntentErpRef: initialIntentErpRef,
         frenchNationality: socialForm?.frenchNationality ?? '',
-        idPoleEmploi: socialForm?.idPoleEmploi ?? ''
+        isPoleEmploi: socialForm?.isPoleEmploi,
+        idPoleEmploi: socialForm?.idPoleEmploi ?? '',
+        isStudent: socialForm?.isStudent,
+        isMilitary: socialForm?.isMilitary,
+        hasTransportationMean: socialForm?.hasTransportationMean,
+        mobility: socialForm?.mobility
       };
     });
 
