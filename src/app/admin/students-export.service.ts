@@ -55,10 +55,17 @@ interface SocialFormDoc {
   trainingFinancingProposal?: string;
   isMilitary?: string;
   isStudent?: string;
-  permisB?: string;
+  isPoleEmploi?: string;
   compteCPF?: string;
   droitsCPF?: string;
-  isPoleEmploi?: string;
+  permisB?: string;
+  cdiRequiredDuration?: string;
+  historyFiveLastYears?: string;
+  cddDuration?: string;
+  cddEndDate?: string;
+  tempWorker?: string;
+  handicap?: string;
+  otherDrivingLicense?: string
 }
 
 @Injectable({
@@ -108,9 +115,10 @@ export class StudentsExportService {
   private async exportArray(students: Student[]): Promise<void> {
 
     // Préchargement des dépendances
-    const [tradeRefMap, socialFormsMap] = await Promise.all([
+    const [tradeRefMap, socialFormsMap, tradeDenominationsMap] = await Promise.all([
       this.loadTradeRefs(),   // sigles → erpRef
-      this.loadSocialForms()  // socialForm (jointure par id)
+      this.loadSocialForms(),  // socialForm (jointure par id)
+      this.loadTradeDenominations(), // sigles > denominations
     ]);
 
     /**
@@ -125,6 +133,7 @@ export class StudentsExportService {
       'createdAt',
       'subscriptions',
       'erpRef',
+      'subscriptionsDenominations',
       'localTraining',
       'address',
       'postalCode',
@@ -138,8 +147,20 @@ export class StudentsExportService {
       'isPoleEmploi',
       'isStudent',
       'isMilitary',
+      'isEmployee',
+      'cddDuration',
+      'cddEndDate',
+      'cdiRequiredDuration',
+      'historyFiveLastYears',
+      'sentCompanyEmployee',
+      'tempWorker',
+      'handicap',
       'hasTransportationMean',
-      'mobility'
+      'mobility',
+      'compteCPF',
+      'droitsCPF',
+      'permisB',
+      'otherDrivingLicense',
     ];
 
     /**
@@ -156,10 +177,13 @@ export class StudentsExportService {
         ? student.subscriptions
         : [];
 
+      const denominations = subscriptions
+        .map(sigle => tradeDenominationsMap[sigle])
+        .filter(Boolean);
+
       const erpRefs = subscriptions
         .map(sigle => tradeRefMap[sigle])
         .filter(Boolean);
-
 
       // initialIntentErpRef: ERP ref correspondant à l'intention initiale du candidat
       // ⚠️ Donnée informative, non contractuelle, désactivée volontairement pour l’instant
@@ -168,6 +192,14 @@ export class StudentsExportService {
         socialForm?.priorTrade
           ? tradeRefMap[socialForm.priorTrade] ?? ''
           : '';
+
+      const hasEmployeeSignal =
+        Boolean(socialForm?.sentCompanyEmployee) ||
+        Boolean(socialForm?.cddDuration) ||
+        Boolean(socialForm?.cdiRequiredDuration);
+
+      const isEmployee = hasEmployeeSignal ? 'true' : 'false';
+
 
       return {
         // 🔹 Données issues de `students`
@@ -180,7 +212,9 @@ export class StudentsExportService {
           : '',
         subscriptions: subscriptions.join(','),
         localTraining: student.localTraining ?? '',
+        // 🔹 Données issues de requêtes croisées vers la collection 'sigles'
         erpRef: erpRefs.join(','),
+        subscriptionsDenominations: denominations.join(','),
 
         // 🔽 Données issues de `socialForm`
         address: socialForm?.address ?? '',
@@ -191,12 +225,24 @@ export class StudentsExportService {
         priorTrade: socialForm?.priorTrade ?? '',
         initialIntentErpRef: initialIntentErpRef,
         frenchNationality: socialForm?.frenchNationality ?? '',
-        isPoleEmploi: socialForm?.isPoleEmploi,
+        isPoleEmploi: socialForm?.isPoleEmploi ?? '',
         idPoleEmploi: socialForm?.idPoleEmploi ?? '',
-        isStudent: socialForm?.isStudent,
-        isMilitary: socialForm?.isMilitary,
-        hasTransportationMean: socialForm?.hasTransportationMean,
-        mobility: socialForm?.mobility
+        isStudent: socialForm?.isStudent ?? '',
+        isMilitary: socialForm?.isMilitary ?? '',
+        hasTransportationMean: socialForm?.hasTransportationMean ?? '',
+        mobility: socialForm?.mobility ?? '',
+        compteCPF: socialForm?.compteCPF ?? '',
+        droitsCPF: socialForm?.droitsCPF ?? '',
+        permisB: socialForm?.permisB ?? '',
+        isEmployee: isEmployee,
+        sentCompanyEmployee: socialForm?.sentCompanyEmployee ?? '',
+        cddDuration: socialForm?.cddDuration ?? '',
+        cddEndDate: socialForm?.cddEndDate ?? '',
+        cdiRequiredDuration: socialForm?.cdiRequiredDuration ?? '',
+        historyFiveLastYears: socialForm?.historyFiveLastYears ?? '',
+        tempWorker: socialForm?.tempWorker ?? '',
+        handicap: socialForm?.handicap ?? '',
+        otherDrivingLicense: socialForm?.otherDrivingLicense ?? '',
       };
     });
 
@@ -226,6 +272,34 @@ export class StudentsExportService {
     trades.forEach((trade: any) => {
       if (trade.id && trade.erpRef) {
         map[trade.id] = trade.erpRef;
+      }
+    });
+
+    return map;
+  }
+
+  /**
+ * =====================================
+ * 🔹 SIGLES → DENOMINATIONS (libellés)
+ * =====================================
+ */
+  private async loadTradeDenominations(): Promise<Record<string, string>> {
+
+    const siglesRef = collection(this.firestore, 'sigles');
+
+    const trades = await firstValueFrom(
+      collectionData(siglesRef, { idField: 'id' }).pipe(take(1))
+    );
+
+    const map: Record<string, string> = {};
+
+    if (!Array.isArray(trades)) {
+      return map;
+    }
+
+    trades.forEach((trade: any) => {
+      if (trade.id && trade.denomination) {
+        map[trade.id] = trade.denomination;
       }
     });
 

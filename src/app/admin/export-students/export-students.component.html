@@ -30,22 +30,27 @@
                 <li>Format CSV standard (UTF-8, séparateur virgule)</li>
                 <li>Données plates, sans structure imbriquée</li>
                 <li>Colonnes explicites pour le mapping ERP</li>
-                <li>Email utilisé comme identifiant fonctionnel (1)</li>
+                <!-- <li>Email utilisé comme identifiant fonctionnel (1)</li>
                 <li>Date de création au format ISO 8601</li>
-                <li>Inscriptions (codes métiers) séparées par des virgules (2)</li>
+                <li>Inscriptions (codes métiers) séparées par des virgules (2)</li> -->
             </ul>
 
             <p class="text-muted mb-2">
-                Ce format est compatible avec Nevea, GesCOF, mais aussi SAP, Sage, Odoo, Dynamics, etc... 
+                Ce format est compatible avec Nevea, GesCOF, mais aussi SAP, Sage, Odoo, Dynamics, etc...
             </p>
 
             <hr>
-            <small class="text-muted mb-2">(1) : L'email sert d'identifiant unique pour le candidat dans le système
+            <!-- <small class="text-muted mb-2">(1) : L'email sert d'identifiant unique pour le candidat dans le système
                 cible.<br>
                 (2) : Les inscriptions (codes métiers de la colonne subscriptions) correspondent à celles validées par
                 le
                 Conseiller Projet via l'interface de gestion des candidats dans l'application.
+            </small> -->
+            <small class="text-muted mb-2">ℹ️ Les caractères spéciaux peuvent s'afficher incorrectement lors d'une
+                ouverture directe sous Excel.
+                Le fichier est encodé en UTF-8 et conforme pour import.
             </small>
+
 
             <a target="_blank" rel="noopener noreferrer"
                 href="https://firebasestorage.googleapis.com/v0/b/be-on-top-beta.appspot.com/o/admin-docs%2Fexport-csv-erp.pdf?alt=media&token=d0bff3c9-c4ca-439a-aed4-b06520f23cc8"
