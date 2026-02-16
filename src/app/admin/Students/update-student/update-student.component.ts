@@ -59,6 +59,9 @@ export class UpdateStudentComponent implements OnInit {
     trainerLastName: string = ""
   trainerFirstName: string = ""
 
+  // pour afficher un feedback
+  showNoSubscriptionReason:boolean=false
+
   constructor(
     private service: StudentsService,
     private ac: ActivatedRoute,

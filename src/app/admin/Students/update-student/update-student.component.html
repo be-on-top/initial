@@ -217,6 +217,34 @@
                         [ngClass]="{'disabled':subscription.invalid}">Valider</button>
                 </form>
 
+                <!-- pour insérer une motivation -->
+                 <hr>
+                <!-- <button type="button" class="btn bg-secondary text-light mt-2" (click)="showNoSubscriptionReason = true">
+                    Clôturer le dossier sans inscription
+                </button> -->
+                <button type="button" class="btn bg-secondary text-light mt-2" (click)="showNoSubscriptionReason = true">
+                    Classer sans inscription
+                </button>
+
+                <div class="mt-3" *ngIf="showNoSubscriptionReason">
+
+                    <label class="form-label">Motif de clôture</label>
+
+                    <select class="form-select" name="nonSubscriptionReason"
+                        [(ngModel)]="student.nonSubscriptionReason">
+
+                        <option value="">Sélectionner un motif</option>
+                        <option value="financement_refuse">Financement refusé</option>
+                        <option value="changement_projet">Changement de projet</option>
+                        <option value="abandon">Abandon</option>
+                        <option value="absence_reponse">Absence de réponse</option>
+                        <option value="autre">Autre</option>
+
+                    </select>
+
+                </div>
+
+
                 <!-- C'est là qu'on peut insérer un champ pour début de formation > génération de classe -->
                 <!-- <ng-container *ngIf="student.subscriptions && student.subscriptions.length > 0">
                     <h3 class="mt-5">Date de début effectif de formation </h3>
@@ -375,7 +403,8 @@
 
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label for="subject" class="form-label mt-3 me-1">Sujet * </label><span class="text-muted fst-italic small lh-sm d-inline-block mb-2">
+                        <label for="subject" class="form-label mt-3 me-1">Sujet * </label><span
+                            class="text-muted fst-italic small lh-sm d-inline-block mb-2">
                             Modifier le sujet uniquement si nécessaire.
                         </span>
                         <!-- <input type="text" [ngModel]="evaluationToUpdate.subject" name="subject" class="form-control"
