@@ -66,6 +66,7 @@ interface SocialFormDoc {
   tempWorker?: string;
   handicap?: string;
   otherDrivingLicense?: string
+  sentCompanyEmployee?: string
 }
 
 @Injectable({
@@ -222,6 +223,7 @@ export class StudentsExportService {
         city: socialForm?.city ?? '',
         phone: socialForm?.phone ?? '',
         dateOfBirth: socialForm?.dateOfBirth ?? '',
+        // dateOfBirth: this.toISODate(socialForm?.dateOfBirth),
         priorTrade: socialForm?.priorTrade ?? '',
         initialIntentErpRef: initialIntentErpRef,
         frenchNationality: socialForm?.frenchNationality ?? '',
@@ -379,4 +381,84 @@ export class StudentsExportService {
 
     URL.revokeObjectURL(url);
   }
+
+
+  /**
+   * =====================================
+   * 🔹 NORMALISATION DATE (FR → ISO 8601)
+   * =====================================
+   *
+   * Contexte d’architecture :
+   * Les dates issues du socialForm sont stockées
+   * au format texte français (DD/MM/YYYY).
+   *
+   * L’export CSV constitue un contrat d’échange
+   * avec des ERP externes. Afin de garantir :
+   * - une interopérabilité maximale,
+   * - un format stable et non ambigu,
+   * - une compatibilité avec les imports standards ERP,
+   *
+   * toutes les dates sont normalisées au format ISO 8601.
+   *
+   * Cette transformation est purement technique
+   * (formatage) et ne constitue pas une interprétation métier.
+   */
+
+  // private toISODate(dateStr?: string): string {
+
+  //   // 🔹 Sécurité : champ non renseigné
+  //   if (!dateStr) return '';
+
+  //   // 🔹 Format attendu : DD/MM/YYYY
+  //   const parts = dateStr.split('/');
+
+  //   // 🔹 Format incorrect → on n’interprète pas
+  //   if (parts.length !== 3) return '';
+
+  //   const [day, month, year] = parts;
+
+  //   // 🔹 Construction d’un objet Date JS
+  //   // ⚠️ Les mois commencent à 0 en JavaScript
+  //   const isoDate = new Date(
+  //     Number(year),
+  //     Number(month) - 1,
+  //     Number(day)
+  //   );
+
+  //   // 🔹 Vérification date valide
+  //   if (isNaN(isoDate.getTime())) return '';
+
+  //   // 🔹 Retour au format ISO 8601 (UTC)
+  //   // return isoDate.toISOString();
+  //   return isoDate.toISOString().split('T')[0];
+
+  // }
+
+  private toISODate(dateStr?: string): string {
+
+    if (!dateStr) return '';
+
+    // 🔹 Si déjà au format ISO YYYY-MM-DD
+    if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+      return dateStr;
+    }
+
+    const parts = dateStr.split('/');
+
+    if (parts.length !== 3) return '';
+
+    const [day, month, year] = parts;
+
+    const isoDate = new Date(
+      Number(year),
+      Number(month) - 1,
+      Number(day)
+    );
+
+    if (isNaN(isoDate.getTime())) return '';
+
+    return isoDate.toISOString().split('T')[0];
+  }
+
+
 }
