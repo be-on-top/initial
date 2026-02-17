@@ -65,8 +65,9 @@ interface SocialFormDoc {
   cddEndDate?: string;
   tempWorker?: string;
   handicap?: string;
-  otherDrivingLicense?: string
-  sentCompanyEmployee?: string
+  otherDrivingLicense?: string;
+  sentCompanyEmployee?: string;
+  franceCompetencesCodes?: string;
 }
 
 @Injectable({
@@ -116,10 +117,11 @@ export class StudentsExportService {
   private async exportArray(students: Student[]): Promise<void> {
 
     // Préchargement des dépendances
-    const [tradeRefMap, socialFormsMap, tradeDenominationsMap] = await Promise.all([
+    const [tradeRefMap, socialFormsMap, tradeDenominationsMap, franceCompetencesMap] = await Promise.all([
       this.loadTradeRefs(),   // sigles → erpRef
       this.loadSocialForms(),  // socialForm (jointure par id)
       this.loadTradeDenominations(), // sigles > denominations
+      this.loadFranceCompetencesCodes() // ← AJOUT
     ]);
 
     /**
@@ -135,6 +137,7 @@ export class StudentsExportService {
       'subscriptions',
       'erpRef',
       'subscriptionsDenominations',
+      'franceCompetencesCodes',
       'localTraining',
       'address',
       'postalCode',
@@ -161,7 +164,7 @@ export class StudentsExportService {
       'compteCPF',
       'droitsCPF',
       'permisB',
-      'otherDrivingLicense',
+      'otherDrivingLicense'
     ];
 
     /**
@@ -185,6 +188,11 @@ export class StudentsExportService {
       const erpRefs = subscriptions
         .map(sigle => tradeRefMap[sigle])
         .filter(Boolean);
+
+      const franceCompetencesCodes = subscriptions
+        .map(sigle => franceCompetencesMap[sigle])
+        .filter(Boolean);
+
 
       // initialIntentErpRef: ERP ref correspondant à l'intention initiale du candidat
       // ⚠️ Donnée informative, non contractuelle, désactivée volontairement pour l’instant
@@ -216,6 +224,7 @@ export class StudentsExportService {
         // 🔹 Données issues de requêtes croisées vers la collection 'sigles'
         erpRef: erpRefs.join(','),
         subscriptionsDenominations: denominations.join(','),
+        franceCompetencesCodes: franceCompetencesCodes.join(','),
 
         // 🔽 Données issues de `socialForm`
         address: socialForm?.address ?? '',
@@ -459,6 +468,120 @@ export class StudentsExportService {
 
     return isoDate.toISOString().split('T')[0];
   }
+
+  /**
+ * =====================================
+ * 🔹 EXTRACTION CODE FRANCE COMPÉTENCES
+ * =====================================
+ *
+ * Contexte :
+ * Chaque métier dans Firestore possède une URL vers sa fiche officielle
+ * sur le site France Compétences, par exemple :
+ *
+ * https://www.francecompetences.fr/recherche/rs/6938/
+ * https://www.francecompetences.fr/recherche/rncp/12345/
+ *
+ * Objectif :
+ * Extraire un identifiant métier standardisé :
+ *
+ * RS6938
+ * RNCP12345
+ *
+ * Cet identifiant constitue une référence nationale officielle,
+ * indépendante de tout ERP spécifique, et garantit l’interopérabilité
+ * avec la majorité des ERP (NEVEA, GesCOF, etc.).
+ *
+ * Cette transformation :
+ * - est purement technique
+ * - ne modifie pas la donnée source
+ * - ne constitue pas une interprétation métier
+ * - permet uniquement une normalisation pour l’export
+ *
+ * Fonctionnement :
+ * - recherche le motif "recherche/rs/XXXX" ou "recherche/rncp/XXXX"
+ * - extrait le type (RS ou RNCP)
+ * - extrait le numéro
+ * - retourne la concaténation normalisée (ex : RS6938)
+ *
+ * Sécurité :
+ * retourne null si :
+ * - url absente
+ * - format inattendu
+ * - extraction impossible
+ */
+  private extractFranceCompetencesCode(url?: string): string | null {
+
+    // 🔹 Sécurité : champ absent ou vide
+    if (!url) {
+      return null;
+    }
+
+    /**
+     * 🔹 Expression régulière
+     *
+     * recherche/
+     *   (rs|rncp)  → capture le type de certification
+     *   /
+     *   (\d+)      → capture le numéro
+     *
+     * options :
+     * i → insensible à la casse
+     */
+    const match = url.match(/recherche\/(rs|rncp)\/(\d+)/i);
+
+    // 🔹 Aucun match → format inconnu ou non compatible
+    if (!match) {
+      return null;
+    }
+
+    /**
+     * match[0] = "recherche/rs/6938"
+     * match[1] = "rs"
+     * match[2] = "6938"
+     */
+
+    // 🔹 Normalisation du type en majuscules
+    const type = match[1].toUpperCase();
+
+    // 🔹 Numéro France Compétences
+    const number = match[2];
+
+    /**
+     * 🔹 Construction du code standardisé
+     *
+     * Exemples :
+     * RS + 6938   → RS6938
+     * RNCP + 12345 → RNCP12345
+     */
+    return `${type}${number}`;
+  }
+
+
+  private async loadFranceCompetencesCodes(): Promise<Record<string, string>> {
+
+    const siglesRef = collection(this.firestore, 'sigles');
+
+    const trades = await firstValueFrom(
+      collectionData(siglesRef, { idField: 'id' }).pipe(take(1))
+    );
+
+    const map: Record<string, string> = {};
+
+    trades.forEach((trade: any) => {
+
+      const code = this.extractFranceCompetencesCode(
+        trade.rncp
+      );
+
+      if (trade.id && code) {
+        map[trade.id] = code;
+      }
+
+    });
+
+    return map;
+  }
+
 
 
 }
