@@ -56,11 +56,14 @@ export class UpdateStudentComponent implements OnInit {
   // Si vrai → on ne demande plus de confirmation
   deleteConfirmed = false;
 
-    trainerLastName: string = ""
+  trainerLastName: string = ""
   trainerFirstName: string = ""
 
   // pour afficher un feedback
-  showNoSubscriptionReason:boolean=false
+  showNoSubscriptionReason: boolean = false
+  feedBackNoSubscription: boolean = false;
+
+
 
   constructor(
     private service: StudentsService,
@@ -157,12 +160,12 @@ export class UpdateStudentComponent implements OnInit {
 
       }
 
-          if (this.userUid) {
-      this.trainerService.getTrainer(this.userUid).subscribe(trainer => {
-        this.trainerLastName = trainer.lastName
-        this.trainerFirstName = trainer.firstName
-      })
-    }
+      if (this.userUid) {
+        this.trainerService.getTrainer(this.userUid).subscribe(trainer => {
+          this.trainerLastName = trainer.lastName
+          this.trainerFirstName = trainer.firstName
+        })
+      }
 
 
 
@@ -394,7 +397,7 @@ export class UpdateStudentComponent implements OnInit {
   // // 🔥 2. Nettoyage des paragraphes vides
   // form.value.details = this.cleanEmptyParagraphs(form.value.details);
 
-    
+
 
   //   // Ajouter la signature du formateur (ça marche mais pas souhaitable si intégré dans details)
   //   form.value.details = this.appendTrainerSignature(form.value.details);   
@@ -414,40 +417,40 @@ export class UpdateStudentComponent implements OnInit {
   //   this.router.navigate(['/admin/myStudentDetails', this.studentId])
   // }
   updateStudentEvaluation(form: NgForm) {
-  if (!form.valid) {
-    return;
-  }
-
-  // 🔥 1. Nettoyage du wrapper data-initial
-  form.value.details = this.cleanInitialWrapper(form.value.details);
-
-  // 🔥 2. Nettoyage des paragraphes vides
-  form.value.details = this.cleanEmptyParagraphs(form.value.details);
-
-  // 🔥 3. Ajout ou gestion de la signature formateur
-  form.value.details = this.appendTrainerSignature(form.value.details);
-
-  // 🔥 4. Mise à jour de la date de l'évaluation
-  const currentDate: string = formatDate(new Date(), 'yyyy-MM-dd', 'en');
-
-  // 🔥 5. On prépare SEULEMENT le champ à mettre à jour dans Firestore
-  const dataToPatch = {
-    [`evaluations.${this.evaluationKey}`]: {
-      sigle: this.evaluationToUpdate.sigle,
-      competence: this.evaluationToUpdate.competence,
-      level: form.value.level,
-      date: currentDate,             // ✔️ la date est bien écrasée désormais
-      details: form.value.details,   // ✔️ détails nettoyés + signature
-      subject: form.value.subject
+    if (!form.valid) {
+      return;
     }
-  };
 
-  // 🔥 6. Patch Firestore (ne modifie QUE la sous-clé ciblée)
-  this.service.updateStudentEvaluation(this.studentId, dataToPatch);
+    // 🔥 1. Nettoyage du wrapper data-initial
+    form.value.details = this.cleanInitialWrapper(form.value.details);
 
-  // 🔥 7. Redirection
-  this.router.navigate(['/admin/myStudentDetails', this.studentId]);
-}
+    // 🔥 2. Nettoyage des paragraphes vides
+    form.value.details = this.cleanEmptyParagraphs(form.value.details);
+
+    // 🔥 3. Ajout ou gestion de la signature formateur
+    form.value.details = this.appendTrainerSignature(form.value.details);
+
+    // 🔥 4. Mise à jour de la date de l'évaluation
+    const currentDate: string = formatDate(new Date(), 'yyyy-MM-dd', 'en');
+
+    // 🔥 5. On prépare SEULEMENT le champ à mettre à jour dans Firestore
+    const dataToPatch = {
+      [`evaluations.${this.evaluationKey}`]: {
+        sigle: this.evaluationToUpdate.sigle,
+        competence: this.evaluationToUpdate.competence,
+        level: form.value.level,
+        date: currentDate,             // ✔️ la date est bien écrasée désormais
+        details: form.value.details,   // ✔️ détails nettoyés + signature
+        subject: form.value.subject
+      }
+    };
+
+    // 🔥 6. Patch Firestore (ne modifie QUE la sous-clé ciblée)
+    this.service.updateStudentEvaluation(this.studentId, dataToPatch);
+
+    // 🔥 7. Redirection
+    this.router.navigate(['/admin/myStudentDetails', this.studentId]);
+  }
 
 
   updateStudentTutorial(form: NgForm) {
@@ -895,262 +898,341 @@ export class UpdateStudentComponent implements OnInit {
   // }
 
   // ok
-//   appendTrainerSignature(details: string): string {
-//   if (!details) return details;
+  //   appendTrainerSignature(details: string): string {
+  //   if (!details) return details;
 
-//   const signature = `<p class="fst-italic">— ${this.trainerFirstName} ${this.trainerLastName}</p>`.trim();
+  //   const signature = `<p class="fst-italic">— ${this.trainerFirstName} ${this.trainerLastName}</p>`.trim();
 
-//   // 1. Normaliser pour éviter les faux négatifs
-//   const cleanDetails = details.trim();
+  //   // 1. Normaliser pour éviter les faux négatifs
+  //   const cleanDetails = details.trim();
 
-//   // 2. Si la signature n’existe pas → l’ajouter
-//   if (!cleanDetails.includes(signature)) {
-//     return cleanDetails + signature;
-//   }
+  //   // 2. Si la signature n’existe pas → l’ajouter
+  //   if (!cleanDetails.includes(signature)) {
+  //     return cleanDetails + signature;
+  //   }
 
-//   // 3. Si elle existe → vérifier doublons consécutifs
-//   const container = document.createElement('div');
-//   container.innerHTML = cleanDetails;
+  //   // 3. Si elle existe → vérifier doublons consécutifs
+  //   const container = document.createElement('div');
+  //   container.innerHTML = cleanDetails;
 
-//   const paragraphs = Array.from(container.querySelectorAll('p'));
+  //   const paragraphs = Array.from(container.querySelectorAll('p'));
 
-//   for (let i = 0; i < paragraphs.length - 1; i++) {
-//     const p1 = paragraphs[i].outerHTML.trim();
-//     const p2 = paragraphs[i + 1].outerHTML.trim();
+  //   for (let i = 0; i < paragraphs.length - 1; i++) {
+  //     const p1 = paragraphs[i].outerHTML.trim();
+  //     const p2 = paragraphs[i + 1].outerHTML.trim();
 
-//     if (p1 === signature && p2 === signature) {
-//       // Supprimer le second doublon
-//       paragraphs[i + 1].remove();
-//       break;
-//     }
-//   }
+  //     if (p1 === signature && p2 === signature) {
+  //       // Supprimer le second doublon
+  //       paragraphs[i + 1].remove();
+  //       break;
+  //     }
+  //   }
 
-//   return container.innerHTML;
-// }
-
-// ok avec cas additionnel où si toutes signatures identiques on ne garde que la dernière
-// appendTrainerSignature(details: string): string {
-//   if (!details) return details;
-
-//   const signatureHtml = `<p class="fst-italic">— ${this.trainerFirstName} ${this.trainerLastName}</p>`.trim();
-
-//   // On normalise
-//   const cleanDetails = details.trim();
-
-//   // Si la signature n’est pas présente du tout → l’ajouter simplement
-//   if (!cleanDetails.includes(signatureHtml)) {
-//     return cleanDetails + signatureHtml;
-//   }
-
-//   // Sinon : analyser
-//   const container = document.createElement('div');
-//   container.innerHTML = cleanDetails;
-
-//   const paragraphs = Array.from(container.querySelectorAll('p'));
-
-//   // On collecte toutes les signatures identiques trouvées
-//   const signaturesOfTrainer = paragraphs.filter(
-//     p => p.outerHTML.trim() === signatureHtml
-//   );
-
-//   // S’il n’y en a qu’une → rien à faire
-//   if (signaturesOfTrainer.length <= 1) {
-//     return container.innerHTML;
-//   }
-
-//   // ➜ Si plusieurs signatures identiques et AUCUNE signature différente rencontrée :
-//   //    → garder uniquement la dernière occurrence
-//   let otherSignatureFound = false;
-
-//   for (let p of paragraphs) {
-//     const content = p.textContent?.trim() || "";
-
-//     // signature d'un autre formateur ?
-//     if (
-//       content.startsWith("— ") &&
-//       content !== `— ${this.trainerFirstName} ${this.trainerLastName}`
-//     ) {
-//       otherSignatureFound = true;
-//       break;
-//     }
-//   }
-
-//   // Seulement si AUCUNE autre signature distincte trouvée
-//   if (!otherSignatureFound) {
-//     // supprimer toutes sauf la dernière
-//     const lastSignature = signaturesOfTrainer[signaturesOfTrainer.length - 1];
-
-//     signaturesOfTrainer.forEach(sig => {
-//       if (sig !== lastSignature) {
-//         sig.remove();
-//       }
-//     });
-//   }
-
-//   return container.innerHTML;
-// }
-
-// cas où on rajoute la date dans chaque signature dans le détail
-// appendTrainerSignature(details: string): string {
-//   if (!details) return details;
-
-//   // Date en format français
-//   const today = formatDate(new Date(), 'dd/MM/yyyy', 'en');
-
-//   // Signature complète (unique modification ici)
-//   const signatureHtml = `<p class="trainer-signature" contenteditable="false">— ${this.trainerFirstName} ${this.trainerLastName} (${today})</p>`.trim();
-
-//   const cleanDetails = details.trim();
-
-//   // Signature absente → ajouter
-//   if (!cleanDetails.includes(signatureHtml)) {
-//     return cleanDetails + signatureHtml;
-//   }
-
-//   // La signature existe → gérer doublons
-//   const container = document.createElement('div');
-//   container.innerHTML = cleanDetails;
-
-//   const paragraphs = Array.from(container.querySelectorAll('p'));
-
-//   const signaturesOfTrainer = paragraphs.filter(
-//     p => p.outerHTML.trim() === signatureHtml
-//   );
-
-//   // Si une seule signature → OK
-//   if (signaturesOfTrainer.length <= 1) {
-//     return container.innerHTML;
-//   }
-
-//   // Vérifier si un autre formateur a aussi signé
-//   let otherSignatureFound = false;
-//   for (let p of paragraphs) {
-//     const content = p.textContent?.trim() || "";
-
-//     // Commence par "— " mais nom différent → signature d’un autre formateur
-//     if (
-//       content.startsWith("— ") &&
-//       !content.startsWith(`— ${this.trainerFirstName} ${this.trainerLastName} `)
-//     ) {
-//       otherSignatureFound = true;
-//       break;
-//     }
-//   }
-
-//   // Si pas d'autre signature → garder uniquement la dernière du formateur
-//   if (!otherSignatureFound) {
-//     const lastSignature = signaturesOfTrainer[signaturesOfTrainer.length - 1];
-
-//     signaturesOfTrainer.forEach(sig => {
-//       if (sig !== lastSignature) sig.remove();
-//     });
-//   }
-
-//   return container.innerHTML;
-// }
-
-appendTrainerSignature(details: string): string {
-  if (!details) return details;
-
-  const today = formatDate(new Date(), 'dd/MM/yyyy', 'en');
-  const newSignatureText = `— ${this.trainerFirstName} ${this.trainerLastName} (${today})`;
-
-  // Crée un container temporaire pour manipuler le HTML
-  const container = document.createElement('div');
-  container.innerHTML = details.trim();
-
-  const paragraphs = Array.from(container.querySelectorAll('p'));
-
-  // Cherche les signatures existantes du formateur
-  const existingSignature = paragraphs.find(p =>
-    p.textContent?.trim().startsWith(`— ${this.trainerFirstName} ${this.trainerLastName}`));
-
-  if (existingSignature) {
-    // Remplace le texte existant par la nouvelle date
-    existingSignature.textContent = newSignatureText;
-  } else {
-    // Ajoute la signature à la fin
-    const p = document.createElement('p');
-    p.className = 'trainer-signature';
-    p.setAttribute('contenteditable', 'false');
-    p.textContent = newSignatureText;
-    container.appendChild(p);
-  }
-
-  return container.innerHTML;
-}
-
-
-cleanInitialWrapper(details: string): string {
-  if (!details) return details;
-
-  const container = document.createElement('div');
-  container.innerHTML = details;
-
-  // Trouver le wrapper data-initial
-  const initialDiv = container.querySelector('[data-initial="true"]');
-
-  if (initialDiv) {
-    // On remplace le wrapper par son contenu
-    const fragment = document.createElement('div');
-    fragment.innerHTML = initialDiv.innerHTML;
-
-    initialDiv.replaceWith(...Array.from(fragment.childNodes));
-  }
-  return container.innerHTML;
-}
-
-feedBackCancel: boolean = false;
-showCancelEnd: boolean = false;
-
-
-cancelEndingDate(form: NgForm) {
-  if (form.invalid) return; // sécurité : rien si le formulaire est invalide
-
-  // 1️⃣ Récupérer le sigle sélectionné
-  const sigleToCancel = form.value.endedSigle;
-  if (!sigleToCancel) return;
-
-  // 2️⃣ Vérifier que cette fin de formation existe réellement
-  const exists = this.student.endedSubscriptions.some(
-    (sub: any) => sub.sigle === sigleToCancel
-  );
-
-  if (!exists) {
-    console.warn(`Fin de formation ${sigleToCancel} introuvable.`);
-    return;
-  }
-
-  // 3️⃣ Filtrer student.endedSubscriptions pour supprimer la fin sélectionnée
-  this.student.endedSubscriptions = this.student.endedSubscriptions.filter(
-    (sub: any) => sub.sigle !== sigleToCancel
-  );
-
-  // 4️⃣ Optionnel : mettre à jour availableTrainings
-  // if (!this.student.endedSubscriptions || this.student.endedSubscriptions.length === 0) {
-  //   this.availableTrainings = this.tradesEvaluated;
-  // } else {
-  //   const endedSet = new Set(
-  //     this.student.endedSubscriptions.map((sub: any) => sub.sigle)
-  //   );
-  //   this.availableTrainings = this.tradesEvaluated.filter(
-  //     trade => !endedSet.has(trade)
-  //   );
+  //   return container.innerHTML;
   // }
 
-  // 5️⃣ Persistency : mettre à jour Firestore 
-this.service.updateEndedSubscriptions(this.student.id, this.student.endedSubscriptions)
-  .then(() => {
-    alert("fin de formation annulée")
-    this.feedBackCancel = true;       // message succès
-    form.resetForm();                 // reset formulaire
-    this.showCancelEnd = false;       // masquer le formulaire si besoin
-  })
-  .catch(err => {
-    console.error("Erreur lors de l'annulation :", err);
-    this.feedBackCancel = false;      // message erreur
-  });
-}
+  // ok avec cas additionnel où si toutes signatures identiques on ne garde que la dernière
+  // appendTrainerSignature(details: string): string {
+  //   if (!details) return details;
+
+  //   const signatureHtml = `<p class="fst-italic">— ${this.trainerFirstName} ${this.trainerLastName}</p>`.trim();
+
+  //   // On normalise
+  //   const cleanDetails = details.trim();
+
+  //   // Si la signature n’est pas présente du tout → l’ajouter simplement
+  //   if (!cleanDetails.includes(signatureHtml)) {
+  //     return cleanDetails + signatureHtml;
+  //   }
+
+  //   // Sinon : analyser
+  //   const container = document.createElement('div');
+  //   container.innerHTML = cleanDetails;
+
+  //   const paragraphs = Array.from(container.querySelectorAll('p'));
+
+  //   // On collecte toutes les signatures identiques trouvées
+  //   const signaturesOfTrainer = paragraphs.filter(
+  //     p => p.outerHTML.trim() === signatureHtml
+  //   );
+
+  //   // S’il n’y en a qu’une → rien à faire
+  //   if (signaturesOfTrainer.length <= 1) {
+  //     return container.innerHTML;
+  //   }
+
+  //   // ➜ Si plusieurs signatures identiques et AUCUNE signature différente rencontrée :
+  //   //    → garder uniquement la dernière occurrence
+  //   let otherSignatureFound = false;
+
+  //   for (let p of paragraphs) {
+  //     const content = p.textContent?.trim() || "";
+
+  //     // signature d'un autre formateur ?
+  //     if (
+  //       content.startsWith("— ") &&
+  //       content !== `— ${this.trainerFirstName} ${this.trainerLastName}`
+  //     ) {
+  //       otherSignatureFound = true;
+  //       break;
+  //     }
+  //   }
+
+  //   // Seulement si AUCUNE autre signature distincte trouvée
+  //   if (!otherSignatureFound) {
+  //     // supprimer toutes sauf la dernière
+  //     const lastSignature = signaturesOfTrainer[signaturesOfTrainer.length - 1];
+
+  //     signaturesOfTrainer.forEach(sig => {
+  //       if (sig !== lastSignature) {
+  //         sig.remove();
+  //       }
+  //     });
+  //   }
+
+  //   return container.innerHTML;
+  // }
+
+  // cas où on rajoute la date dans chaque signature dans le détail
+  // appendTrainerSignature(details: string): string {
+  //   if (!details) return details;
+
+  //   // Date en format français
+  //   const today = formatDate(new Date(), 'dd/MM/yyyy', 'en');
+
+  //   // Signature complète (unique modification ici)
+  //   const signatureHtml = `<p class="trainer-signature" contenteditable="false">— ${this.trainerFirstName} ${this.trainerLastName} (${today})</p>`.trim();
+
+  //   const cleanDetails = details.trim();
+
+  //   // Signature absente → ajouter
+  //   if (!cleanDetails.includes(signatureHtml)) {
+  //     return cleanDetails + signatureHtml;
+  //   }
+
+  //   // La signature existe → gérer doublons
+  //   const container = document.createElement('div');
+  //   container.innerHTML = cleanDetails;
+
+  //   const paragraphs = Array.from(container.querySelectorAll('p'));
+
+  //   const signaturesOfTrainer = paragraphs.filter(
+  //     p => p.outerHTML.trim() === signatureHtml
+  //   );
+
+  //   // Si une seule signature → OK
+  //   if (signaturesOfTrainer.length <= 1) {
+  //     return container.innerHTML;
+  //   }
+
+  //   // Vérifier si un autre formateur a aussi signé
+  //   let otherSignatureFound = false;
+  //   for (let p of paragraphs) {
+  //     const content = p.textContent?.trim() || "";
+
+  //     // Commence par "— " mais nom différent → signature d’un autre formateur
+  //     if (
+  //       content.startsWith("— ") &&
+  //       !content.startsWith(`— ${this.trainerFirstName} ${this.trainerLastName} `)
+  //     ) {
+  //       otherSignatureFound = true;
+  //       break;
+  //     }
+  //   }
+
+  //   // Si pas d'autre signature → garder uniquement la dernière du formateur
+  //   if (!otherSignatureFound) {
+  //     const lastSignature = signaturesOfTrainer[signaturesOfTrainer.length - 1];
+
+  //     signaturesOfTrainer.forEach(sig => {
+  //       if (sig !== lastSignature) sig.remove();
+  //     });
+  //   }
+
+  //   return container.innerHTML;
+  // }
+
+  appendTrainerSignature(details: string): string {
+    if (!details) return details;
+
+    const today = formatDate(new Date(), 'dd/MM/yyyy', 'en');
+    const newSignatureText = `— ${this.trainerFirstName} ${this.trainerLastName} (${today})`;
+
+    // Crée un container temporaire pour manipuler le HTML
+    const container = document.createElement('div');
+    container.innerHTML = details.trim();
+
+    const paragraphs = Array.from(container.querySelectorAll('p'));
+
+    // Cherche les signatures existantes du formateur
+    const existingSignature = paragraphs.find(p =>
+      p.textContent?.trim().startsWith(`— ${this.trainerFirstName} ${this.trainerLastName}`));
+
+    if (existingSignature) {
+      // Remplace le texte existant par la nouvelle date
+      existingSignature.textContent = newSignatureText;
+    } else {
+      // Ajoute la signature à la fin
+      const p = document.createElement('p');
+      p.className = 'trainer-signature';
+      p.setAttribute('contenteditable', 'false');
+      p.textContent = newSignatureText;
+      container.appendChild(p);
+    }
+
+    return container.innerHTML;
+  }
+
+
+  cleanInitialWrapper(details: string): string {
+    if (!details) return details;
+
+    const container = document.createElement('div');
+    container.innerHTML = details;
+
+    // Trouver le wrapper data-initial
+    const initialDiv = container.querySelector('[data-initial="true"]');
+
+    if (initialDiv) {
+      // On remplace le wrapper par son contenu
+      const fragment = document.createElement('div');
+      fragment.innerHTML = initialDiv.innerHTML;
+
+      initialDiv.replaceWith(...Array.from(fragment.childNodes));
+    }
+    return container.innerHTML;
+  }
+
+  feedBackCancel: boolean = false;
+  showCancelEnd: boolean = false;
+
+
+  cancelEndingDate(form: NgForm) {
+    if (form.invalid) return; // sécurité : rien si le formulaire est invalide
+
+    // 1️⃣ Récupérer le sigle sélectionné
+    const sigleToCancel = form.value.endedSigle;
+    if (!sigleToCancel) return;
+
+    // 2️⃣ Vérifier que cette fin de formation existe réellement
+    const exists = this.student.endedSubscriptions.some(
+      (sub: any) => sub.sigle === sigleToCancel
+    );
+
+    if (!exists) {
+      console.warn(`Fin de formation ${sigleToCancel} introuvable.`);
+      return;
+    }
+
+    // 3️⃣ Filtrer student.endedSubscriptions pour supprimer la fin sélectionnée
+    this.student.endedSubscriptions = this.student.endedSubscriptions.filter(
+      (sub: any) => sub.sigle !== sigleToCancel
+    );
+
+    // 4️⃣ Optionnel : mettre à jour availableTrainings
+    // if (!this.student.endedSubscriptions || this.student.endedSubscriptions.length === 0) {
+    //   this.availableTrainings = this.tradesEvaluated;
+    // } else {
+    //   const endedSet = new Set(
+    //     this.student.endedSubscriptions.map((sub: any) => sub.sigle)
+    //   );
+    //   this.availableTrainings = this.tradesEvaluated.filter(
+    //     trade => !endedSet.has(trade)
+    //   );
+    // }
+
+    // 5️⃣ Persistency : mettre à jour Firestore 
+    this.service.updateEndedSubscriptions(this.student.id, this.student.endedSubscriptions)
+      .then(() => {
+        alert("fin de formation annulée")
+        this.feedBackCancel = true;       // message succès
+        form.resetForm();                 // reset formulaire
+        this.showCancelEnd = false;       // masquer le formulaire si besoin
+      })
+      .catch(err => {
+        console.error("Erreur lors de l'annulation :", err);
+        this.feedBackCancel = false;      // message erreur
+      });
+  }
+
+
+
+
+
+  // closeWithoutSubscription(form: NgForm): void {
+
+  //   if (form.invalid) return;
+
+  //   const payload = {
+
+  //     studentId: this.student.id,
+  //     nonSubscriptionReason: this.student.nonSubscriptionReason,
+  //     closedWithoutSubscription: true,
+  //     closedAt: new Date()
+
+  //   };
+
+
+
+  //   this.service.closeWithoutSubscription(payload, this.userUid)
+  //     .subscribe({
+
+  //       next: () => {
+
+  //         this.feedBackNoSubscription = true;
+
+  //         form.resetForm();
+
+  //         this.showNoSubscriptionReason = false;
+
+  //         // optionnel : mise à jour locale
+  //         this.student.closedWithoutSubscription = true;
+
+  //       },
+
+  //       error: (err) => {
+  //         console.error(err);
+  //       }
+
+  //     });
+
+  // }
+
+  async closeWithoutSubscription(form: NgForm): Promise<void> {
+
+    if (form.invalid) return;
+
+    if (!this.userUid) {
+      throw new Error('Utilisateur non authentifié');
+    }
+
+    await this.service.closeWithoutSubscription(
+      this.student.id,
+      this.student.noSubscriptionReason,
+      this.userUid
+    );
+
+    this.feedBackNoSubscription = true;
+    this.showNoSubscriptionReason = false;
+    form.resetForm();
+  }
+
+
+
+  getNoSubscriptionReasonLabel(reason: string | null): string {
+    if (!reason) return '';
+
+    const map: Record<string, string> = {
+      financement_refuse: "Financement refusé",
+      changement_projet: "Changement de projet",
+      abandon: "Abandon du candidat",
+      absence_reponse: "Absence de réponse",
+      autre: "Autre motif"
+    };
+
+    return map[reason] || reason;
+  }
+
 
 
 

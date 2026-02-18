@@ -217,21 +217,23 @@
                         [ngClass]="{'disabled':subscription.invalid}">Valider</button>
                 </form>
 
-                <!-- pour insérer une motivation -->
-                 <hr>
+                <!-- pour insérer une motivation en cas de dossier  classé sans inscription -->
+                <hr>
                 <!-- <button type="button" class="btn bg-secondary text-light mt-2" (click)="showNoSubscriptionReason = true">
                     Clôturer le dossier sans inscription
                 </button> -->
-                <button type="button" class="btn bg-secondary text-light mt-2" (click)="showNoSubscriptionReason = true">
+                <button type="button" class="btn bg-secondary text-light mt-2" (click)="showNoSubscriptionReason = true"
+                    *ngIf="!student.noSubscriptionReason">
                     Classer sans inscription
                 </button>
 
-                <div class="mt-3" *ngIf="showNoSubscriptionReason">
+                <form #noSubscriptionForm="ngForm" (ngSubmit)="closeWithoutSubscription(noSubscriptionForm)"
+                    *ngIf="showNoSubscriptionReason" class="mt-3">
 
-                    <label class="form-label">Motif de clôture</label>
+                    <label class="form-label">Motif de clôture *</label>
 
-                    <select class="form-select" name="nonSubscriptionReason"
-                        [(ngModel)]="student.nonSubscriptionReason">
+                    <select class="form-select" name="noSubscriptionReason" [(ngModel)]="student.noSubscriptionReason"
+                        required #reason="ngModel">
 
                         <option value="">Sélectionner un motif</option>
                         <option value="financement_refuse">Financement refusé</option>
@@ -242,7 +244,30 @@
 
                     </select>
 
+                    <div class="invalid-feedback d-block" *ngIf="reason.invalid && reason.touched">
+                        Merci de sélectionner un motif
+                    </div>
+
+                    <button type="submit" class="btn btn-danger mt-3" [disabled]="noSubscriptionForm.invalid">
+                        Confirmer la clôture du dossier
+                    </button>
+
+                </form>
+
+                <div class="alert alert-success mt-3" *ngIf="feedBackNoSubscription">
+                    Dossier clôturé sans inscription
                 </div>
+                <div class="alert bg-secondary text-white mt-3" *ngIf="student.noSubscriptionReason">
+
+                    Dossier clôturé sans inscription au motif :
+                    <strong>
+                        {{ getNoSubscriptionReasonLabel(student.nonSubscriptionReason) }}
+                    </strong>
+
+                </div>
+
+
+
 
 
                 <!-- C'est là qu'on peut insérer un champ pour début de formation > génération de classe -->

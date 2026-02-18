@@ -824,9 +824,6 @@ export class StudentsService {
 
 
 
-
-
-
   updateStudentEvaluation(id: string, evaluations: {}) {
     // let $studentRef = doc(this.firestore, "students/" + id);
     // setDoc($studentRef, student);
@@ -2027,7 +2024,36 @@ export class StudentsService {
     }
   }
 
-  
+
+
+  async closeWithoutSubscription(studentId: string, reason: string, userUid: string): Promise<void> {
+
+    const studentRef = doc(this.firestore, "students", studentId);
+
+    try {
+
+      await updateDoc(studentRef, {
+
+        noSubscriptionReason: reason,
+        closedWithoutSubscription: true,
+        closedAt: serverTimestamp(),
+
+        // optionnel mais recommandé
+        closeBy: userUid
+
+      });
+
+      console.log("Student closed without subscription successfully");
+
+    } catch (error) {
+
+      console.error("Error closing student without subscription:", error);
+      throw error;
+
+    }
+
+  }
+
 
 
 
