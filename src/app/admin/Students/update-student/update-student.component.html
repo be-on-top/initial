@@ -257,14 +257,24 @@
                 <div class="alert alert-success mt-3" *ngIf="feedBackNoSubscription">
                     Dossier clôturé sans inscription
                 </div>
-                <div class="alert bg-secondary text-white mt-3" *ngIf="student.noSubscriptionReason">
+                <!-- <div class="alert bg-secondary text-white mt-3" *ngIf="student.noSubscriptionReason">
 
                     Dossier clôturé sans inscription au motif :
                     <strong>
                         {{ getNoSubscriptionReasonLabel(student.nonSubscriptionReason) }}
                     </strong>
 
+                </div> -->
+
+                <div class="alert bg-secondary text-white mt-3" *ngIf="student.closure?.nonSubscriptionReason">
+
+                    Dossier clôturé sans inscription au motif :
+                    <strong>
+                        {{ getNoSubscriptionReasonLabel(student.closure.nonSubscriptionReason) }}
+                    </strong>
+
                 </div>
+
 
 
 
