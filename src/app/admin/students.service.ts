@@ -2056,35 +2056,56 @@ export class StudentsService {
 
 
 
-async closeWithoutSubscription(
-  studentId: string,
-  reason: string,
-  adminUid: string
-): Promise<void> {
+  async closeWithoutSubscription(
+    studentId: string,
+    reason: string,
+    adminUid: string
+  ): Promise<void> {
 
-  const studentRef = doc(this.firestore, "students", studentId);
+    const studentRef = doc(this.firestore, "students", studentId);
 
-  // Création de l'objet closure
-  const closure = {
-    nonSubscriptionReason: reason,
-    closedWithoutSubscription: true,
-    closedAt: serverTimestamp(),
-    closedBy: adminUid
-  };
+    // Création de l'objet closure
+    const closure = {
+      noSubscriptionReason: reason,
+      closedWithoutSubscription: true,
+      closedAt: serverTimestamp(),
+      closedBy: adminUid
+    };
+
+    try {
+      // On met à jour le document avec l'objet closure
+      await updateDoc(studentRef, { closure });
+
+      console.log("Student closed without subscription successfully");
+
+    } catch (error) {
+      console.error("Error closing student without subscription:", error);
+      throw error;
+    }
+  }
+
+
+
+
+async clearClosure(studentId: string): Promise < void> {
+
+  const studentRef = doc(this.firestore, 'students', studentId);
 
   try {
-    // On met à jour le document avec l'objet closure
-    await updateDoc(studentRef, { closure });
 
-    console.log("Student closed without subscription successfully");
+    await updateDoc(studentRef, {
+      closure: deleteField()
+});
+
+console.log('Closure cleared successfully');
 
   } catch (error) {
-    console.error("Error closing student without subscription:", error);
-    throw error;
-  }
+
+  console.error('Error clearing closure:', error);
+  throw error;
+
 }
-
-
+}
 
 
 

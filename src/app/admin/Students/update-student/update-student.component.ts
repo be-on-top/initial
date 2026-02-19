@@ -89,6 +89,11 @@ export class UpdateStudentComponent implements OnInit {
     this.service.getStudentById(this.studentId).subscribe((data) => {
       this.student = data
 
+      // pour s'assurer que closure n'est pas undefined
+      if (!this.student.closure) {
+        this.student.closure = {};
+      }
+
 
       if (this.student.evaluations || this.student.tutorials) {
 
@@ -526,6 +531,7 @@ export class UpdateStudentComponent implements OnInit {
 
   // poura voir des feedback explicites
   feedBackSubscribe: boolean = false
+
   async subscribeStudent(subscribeStudent: NgForm) {
     // console.log('this.priorCenterPostalCode', this.priorCenterPostalCode);
     // console.log('localTraining du formulaire', subscribeStudent.value.localTraining);
@@ -543,6 +549,9 @@ export class UpdateStudentComponent implements OnInit {
       await this.service.activateSubscription(this.studentId, array, localTraining);
       this.feedBackSubscribe = true
       // alert('Inscription réussie !'); 
+      // Suppression de l'objet closure après inscription
+      await this.service.clearClosure(this.studentId);
+
     } catch (error) {
       console.error('Erreur lors de l\'inscription:', error);
       alert('Échec de l\'inscription. Veuillez réessayer.');
