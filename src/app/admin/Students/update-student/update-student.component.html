@@ -142,6 +142,50 @@
             </div>
 
 
+            <!-- si on devait traiter de l'état du devis -->
+            <!-- <ng-container>
+
+                <h3>Etat du devis</h3>
+                <p *ngIf="student.quotations">
+                    Devis déjà acceptés pour :
+                    <span *ngFor="let sigle of getAcceptedQuotations()" class="badge bg-success me-1">
+                        {{ sigle }}
+                    </span>
+                </p>
+                <form class="form mb-5">
+                    <p>Seuls les métiers ayant fait l'objet d'une évaluation complète apparaitront dans la liste
+                        ci-dessous</p>
+
+                    <select class="form-select mb-3" name="selectedSigle" [(ngModel)]="selectedQuotationSigle" required
+                        multiple>
+                        <option value="">Sélectionner une formation</option>
+                        <option *ngFor="let element of availableTrainings" value="{{element}}"
+                            [disabled]="student.quotations?.[element]?.isAccepted">
+                            {{ element }}
+                        </option>
+                    </select>
+
+                    <div class="form-check form-switch" *ngIf="selectedQuotationSigle">
+                        <input class="form-check-input" type="checkbox"
+                            [checked]="student.quotations?.[selectedQuotationSigle]?.isAccepted || false"
+                            (change)="onQuotationToggle($event)">
+                        <label class="form-check-label">
+                            {{ selectedQuotationSigle }} —
+                            <span *ngIf="student.quotations?.[selectedQuotationSigle]?.isAccepted; else notAccepted">
+                                devis accepté
+                            </span>
+                            <ng-template #notAccepted>
+                                devis non accepté
+                            </ng-template>
+                        </label>
+                    </div>
+
+                    <hr>
+                </form>
+            </ng-container> -->
+            <!-- fin d'hypothèses -->
+
+
             <div class="mb-5" *ngIf="(student.isSocialFormSent || student.innerStudent) && feedBackResetChoice!==true">
 
                 <!-- test intégration comme composant enfant du formulaire désormais déclaré dans admin.module -->

@@ -2108,6 +2108,26 @@ console.log('Closure cleared successfully');
 }
 
 
+async updateQuotationStatus(
+  studentId: string,
+  sigle: string,
+  isAccepted: boolean,
+): Promise<void> {
+
+  const studentRef = doc(this.firestore, 'students', studentId);
+
+  const path = `quotations.${sigle}`;
+
+  await updateDoc(studentRef, {
+    [path]: {
+      isAccepted,
+      acceptedAt: isAccepted ? serverTimestamp() : null,
+    }
+  });
+
+}
+
+
 
 }
 

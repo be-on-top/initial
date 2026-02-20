@@ -63,6 +63,9 @@ export class UpdateStudentComponent implements OnInit {
   showNoSubscriptionReason: boolean = false
   feedBackNoSubscription: boolean = false;
 
+  // si état du devis devait être traité
+  selectedQuotationSigle!: string;
+
 
 
   constructor(
@@ -1242,7 +1245,36 @@ export class UpdateStudentComponent implements OnInit {
     return map[reason] || reason;
   }
 
+  async onQuotationToggle(event: Event): Promise<void> {
 
+    if (!this.selectedQuotationSigle) return;
 
+    const isAccepted = (event.target as HTMLInputElement).checked;
+
+    await this.service.updateQuotationStatus(
+      this.student.id,
+      this.selectedQuotationSigle,
+      isAccepted
+    );
+
+    // mise à jour locale pour refléter immédiatement le changement
+    if (!this.student.quotations) {
+      this.student.quotations = {};
+    }
+
+    if (!this.student.quotations[this.selectedQuotationSigle]) {
+      this.student.quotations[this.selectedQuotationSigle] = {};
+    }
+
+    this.student.quotations[this.selectedQuotationSigle].isAccepted = isAccepted;
+
+  }
+
+  getAcceptedQuotations(): string[] {
+    if (!this.student.quotations) return [];
+    return Object.keys(this.student.quotations).filter(
+      sigle => this.student.quotations![sigle].isAccepted
+    );
+  }
 
 }
