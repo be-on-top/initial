@@ -68,19 +68,29 @@
                     <p *ngIf="!student.status"><span class="fw-bold">Status</span> : désactivé</p>
                 </div>
 
+                                           <div class="position-relative">
+                                      <div class="info-bubble">
+                        Inscriptions formations et demandes de financement </div>
                 <!-- zone dédiée à l'administrateur en charge de la gestion des comptes - à désactiver si role trainer -->
-                <div class="d-flex mb-5 justify-content-end gap-5 me-3">
+                <div class="d-flex mb-5 justify-content-end gap-5 me-3 ">
+                
+              
+             
                     <button type="button" class="btn btn-warning"
                         *ngIf="userRouterLinks.user!=='trainer' && userRouterLinks.user!=='external'&& userRouterLinks.user!=='tutor'&& userRouterLinks.user!=='editor'&& userRouterLinks.user!=='referentsContacts'">
                         <a *ngIf="userRouterLinks.user=='admin'" class="text-white"
                             routerLink="/admin/updateStudent/{{student.id}}">Modifier</a>
+
+                   
                         <a *ngIf="userRouterLinks.user=='referent'" class="text-white"
-                            routerLink="/admin/referent/updateStudent/{{student.id}}">Modifier (inscriptions)</a>
+                            routerLink="/admin/referent/updateStudent/{{student.id}}">Modifier le dossier</a>
+                            
                     </button>
                     <button type="button" class="btn btn-danger"
                         [ngClass]="{'disabled':userRouterLinks.user=='referent' || userRouterLinks.user=='editor'|| userRouterLinks.user=='external'|| userRouterLinks.user=='referentsContacts'|| userRouterLinks.user=='trainer'}">
                         <a class="text-white" (click)="delete(student)">Supprimer</a>
                     </button>
+                </div>
                 </div>
                 <!-- fin de la zone dédiée spécifiquement à l'administration des comptes -->
             </div>
