@@ -64,6 +64,7 @@ import { TradeFilterPipe } from './trade-filter.pipe';
 import { TradesMinimalComponent } from './trades-minimal/trades-minimal.component';
 import { RseComponent } from './rse/rse.component';
 import { CentersIndexComponent } from './centers-index/centers-index.component';
+import { InnovationToastComponent } from './innovation-toast/innovation-toast.component';
 // import { CollapsesAlertComponent } from './collapses-alert/collapses-alert.component';
 // import { AutoChangeDirective } from './auto-change.directive';
 
@@ -112,6 +113,7 @@ import { CentersIndexComponent } from './centers-index/centers-index.component';
     TradesMinimalComponent,
     RseComponent,
     CentersIndexComponent,
+    InnovationToastComponent,
     // CollapsesAlertComponent,
     // AutoChangeDirective,
     // TooltipComponent

@@ -1,13 +1,16 @@
 .cookie-consent-banner {
 
-  contain: layout style;
-  content-visibility: auto;
+  /* contain: layout style;
+  content-visibility: auto; */
+    z-index: 1050;
 
   opacity: 95%;
   background-color: #f8f9fa;
   /* border: 1px solid #ccc; */
   padding: 20px;
+  padding-bottom: ;
   box-shadow: 0px -5px 5px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
 
 }
+

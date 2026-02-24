@@ -1,0 +1,38 @@
+<!-- Toast -->
+<div class="toast-container position-fixed top-0 end-0 p-3 innovation-toast-container">
+    <div #toastElement class="toast innovation-toast align-items-center bg-dark text-white border-0 shadow" role="alert"
+        aria-live="polite" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body" (click)="openDetails()">
+                <span class="innovation-toast-icon" role="img" aria-label="Trophée">🏆</span>
+                Lauréat Innovation Awards 2026 - Cliquez pour plus d'infos
+            </div>
+
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" aria-label="Fermer"
+                (click)="dismiss()"></button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal (détail de l'award) -->
+<div class="modal fade" id="innovationDetailModal" tabindex="-1" aria-labelledby="innovationDetailModalLabel"
+    aria-hidden="true" role="document">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-white">
+            <div class="modal-header border-0">
+                <h5 class="modal-title" id="innovationDetailModalLabel">Innovation Awards 2026 <span class="innovation-toast-icon" role="img" aria-label="Trophée">🏆</span></h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Fermer"></button>
+            </div>
+            <div class="modal-body">
+                <span role="img" aria-label="Célébration"> </span>Notre application a remporté le prix de la catégorie "Politique RH innovante au service de
+                l'attractivité".<br><br>
+                Plus d'infos sur : <strong> <a data-bs-dismiss="modal" target="_blank" rel="noopener noreferrer"
+                        href="https://awards.sitl.eu/sitlawards2026/fr/page/home">SITL 2026</a></strong>.
+            </div>
+            <div class="modal-footer border-0">
+                <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button> -->
+            </div>
+        </div>
+    </div>
+</div>

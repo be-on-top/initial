@@ -1,0 +1,43 @@
+.innovation-toast-container {
+  z-index: 1080;
+  cursor: pointer;
+}
+
+.innovation-toast {
+  animation: innovationToastSlideIn 0.5s ease;
+  opacity: 0.98;
+}
+
+.innovation-toast-icon {
+  margin-right: 8px;
+  font-size: 1.1rem;
+}
+
+/* Animation subtile de “pop” au moment de l’ouverture */
+.innovation-modal-label {
+  animation: popTitle 0.5s ease forwards;
+}
+
+@keyframes popTitle {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+
+
+@keyframes innovationToastSlideIn {
+  from {
+    transform: translateY(-16px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 0.98;
+  }
+}
