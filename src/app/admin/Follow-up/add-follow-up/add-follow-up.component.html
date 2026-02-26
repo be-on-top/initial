@@ -64,7 +64,7 @@
           <select class="form-select" name="competence" id="competence" ngModel #competence="ngModel"
             [disabled]="!isRealStudent" [required]="f.value.subject === ''">
 
-            <option value>Compétence métier à évaluer</option>
+            <option value="" disabled selected>Compétence métier à évaluer</option>
 
             <option *ngFor="let key of getKeys(relatedCompetences['competences_' + selectedSigle]); let i = index"
               [value]="selectedSigle + '_CP' + (i + 1)"

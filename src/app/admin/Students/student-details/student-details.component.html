@@ -68,29 +68,27 @@
                     <p *ngIf="!student.status"><span class="fw-bold">Status</span> : désactivé</p>
                 </div>
 
-                                           <div class="position-relative">
-                                      <div class="info-bubble">
+                <div class="position-relative">
+                    <div class="info-bubble" *ngIf="userRouterLinks.user=='referent'">
                         Inscriptions formations et demandes de financement </div>
-                <!-- zone dédiée à l'administrateur en charge de la gestion des comptes - à désactiver si role trainer -->
-                <div class="d-flex mb-5 justify-content-end gap-5 me-3 ">
-                
-              
-             
-                    <button type="button" class="btn btn-warning"
-                        *ngIf="userRouterLinks.user!=='trainer' && userRouterLinks.user!=='external'&& userRouterLinks.user!=='tutor'&& userRouterLinks.user!=='editor'&& userRouterLinks.user!=='referentsContacts'">
-                        <a *ngIf="userRouterLinks.user=='admin'" class="text-white"
-                            routerLink="/admin/updateStudent/{{student.id}}">Modifier</a>
+                    <!-- zone dédiée à l'administrateur en charge de la gestion des comptes - à désactiver si role trainer -->
+                    <div class="d-flex mb-5 justify-content-end gap-5 me-3 ">
 
-                   
-                        <a *ngIf="userRouterLinks.user=='referent'" class="text-white"
-                            routerLink="/admin/referent/updateStudent/{{student.id}}">Modifier le dossier</a>
-                            
-                    </button>
-                    <button type="button" class="btn btn-danger"
-                        [ngClass]="{'disabled':userRouterLinks.user=='referent' || userRouterLinks.user=='editor'|| userRouterLinks.user=='external'|| userRouterLinks.user=='referentsContacts'|| userRouterLinks.user=='trainer'}">
-                        <a class="text-white" (click)="delete(student)">Supprimer</a>
-                    </button>
-                </div>
+                        <button type="button" class="btn btn-warning"
+                            *ngIf="userRouterLinks.user!=='trainer' && userRouterLinks.user!=='external'&& userRouterLinks.user!=='tutor'&& userRouterLinks.user!=='editor'&& userRouterLinks.user!=='referentsContacts'">
+                            <a *ngIf="userRouterLinks.user=='admin'" class="text-white"
+                                routerLink="/admin/updateStudent/{{student.id}}">Modifier</a>
+
+                            <a *ngIf="userRouterLinks.user=='referent'" class="text-white"
+                                routerLink="/admin/referent/updateStudent/{{student.id}}">Modifier le dossier</a>
+
+                        </button>
+                        
+                        <button type="button" class="btn btn-danger"
+                            [ngClass]="{'disabled':userRouterLinks.user=='referent' || userRouterLinks.user=='editor'|| userRouterLinks.user=='external'|| userRouterLinks.user=='referentsContacts'|| userRouterLinks.user=='trainer'}">
+                            <a class="text-white" (click)="delete(student)">Supprimer</a>
+                        </button>
+                    </div>
                 </div>
                 <!-- fin de la zone dédiée spécifiquement à l'administration des comptes -->
             </div>
@@ -313,7 +311,8 @@
                                 <ng-container
                                     *ngFor="let evaluation of getFilteredEvaluationsForSubscription(subscription); let e = index">
                                     <!-- <div class="card my-5" *ngIf="evaluation.value.sigle==subscription"> -->
-                                    <div class="card mb-2">
+                                    <!-- <div class="card mb-2"> -->
+                                        <div class="card mb-2"  *ngIf="evaluation.value.competence!==''">
                                         <ng-container *ngIf="evaluation.value.competence && evaluation.value.level">
                                             <div class="card-header fs-5 d-flex align-items-center">
                                                 <div class="form-check form-check-inline ms-0 ms-xs-2">
@@ -361,15 +360,16 @@
                                             <ng-container *ngIf="evaluation.value.competence">
                                                 <!-- puisqu'on a un tableau qui restitue les compétences ici avec quizz_macompétence -->
                                                 <p class="fw-bold d-flex justify-content-between gap-2"
-                                                    *ngIf="trades['quizz_'+evaluation.value.sigle] && evaluation.value.competence">
+                                                    *ngIf="trades['quizz_'+evaluation.value.sigle] && evaluation.value.competence!==''">
                                                     {{trades['quizz_'+evaluation.value.sigle][getCpIndex(evaluation.value.competence)]}}
-                                                    ({{ evaluation.value.competence }}) <span
-                                                        (click)="toggleCollapse(e)"
+                                                    ({{ evaluation.value.competence }})<span (click)="toggleCollapse(e)"
                                                         *ngIf="(evaluation.value.subject || evaluation.value.details ) && userRouterLinks.user!=='external'">
+
                                                         <a aria-label="Ouvrir ou fermer l'évaluation"
                                                             href='#collapseEvaluation{{e}}' data-bs-toggle="collapse"><i
                                                                 [ngClass]="{'bi bi-caret-down-fill': !evaluationsState[e], 'bi bi-caret-up-fill': evaluationsState[e]}"></i></a></span>
                                                 </p>
+
                                             </ng-container>
                                             <!-- pour toute la sous partie qui doit être masquée -->
                                             <div id="collapseEvaluation{{e}}"

@@ -472,7 +472,7 @@
                                 <ng-container
                                     *ngFor="let evaluation of getFilteredEvaluationsForSubscription(subscription), let e=index">
                                     <!-- partie additionnelle pour les niveaux si compétence -->
-                                    <div class="card mb-2 ">
+                                    <div class="card mb-2" *ngIf="evaluation.value.competence && evaluation.value.competence!==''" >
                                         <ng-container *ngIf="evaluation.value.competence">
                                             <div class="card-header">
 
