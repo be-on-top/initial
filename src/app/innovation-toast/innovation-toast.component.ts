@@ -1,80 +1,62 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  ViewChild
-} from '@angular/core';
-import { InnovationAwardService } from '../innovation-award.service'; // Service pour gérer l'affichage unique du toast
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { InnovationAwardService } from '../innovation-award.service';
 
-// Bootstrap JS est chargé globalement, on déclare pour TypeScript
+// Bootstrap JS est chargé globalement
 declare var bootstrap: any;
 
 @Component({
-  selector: 'app-innovation-toast',                    // Sélecteur du composant
-  templateUrl: './innovation-toast.component.html',  // Template HTML
-  styleUrls: ['./innovation-toast.component.css']    // CSS du composant
+  selector: 'app-innovation-toast',
+  templateUrl: './innovation-toast.component.html',
+  styleUrls: ['./innovation-toast.component.css']
 })
 export class InnovationToastComponent implements AfterViewInit {
 
-  // Référence au DOM du toast pour pouvoir l'afficher avec Bootstrap JS
   @ViewChild('toastElement') toastElement!: ElementRef;
+  @ViewChild('innovationModal') innovationModal!: ElementRef;
 
-  // Instance Bootstrap Toast
   private toastInstance: any;
+  private modalInstance: any;
 
   constructor(private innovationService: InnovationAwardService) { }
 
-  /**
-   * Après l'initialisation de la vue
-   * - On vérifie si le toast doit s'afficher (via le service)
-   * - On attend 1,5s puis on affiche le toast avec autohide
-   * - On marque le toast comme "vu" pour ne pas le réafficher
-   */
   ngAfterViewInit(): void {
-    if (!this.innovationService.shouldDisplay()) {
-      return; // Ne pas afficher si déjà vu ou hors période
-    }
+    if (!this.innovationService.shouldDisplay()) return;
 
-    // setTimeout(() => {
-    //   // Création de l'instance Bootstrap Toast
-    //   this.toastInstance = new bootstrap.Toast(
-    //     this.toastElement.nativeElement,
-    //     {
-    //       autohide: true,  // se ferme automatiquement
-    //       delay: 6000      // durée affichage en ms (6 secondes)
-    //     }
-    //   );
-
-    // Affichage immédiat
-    this.toastInstance = new bootstrap.Toast(this.toastElement.nativeElement, { autohide: true, delay: 4000 });
+    this.toastInstance = new bootstrap.Toast(this.toastElement.nativeElement, {
+      autohide: true,
+      delay: 5000
+    });
     this.toastInstance.show();
     this.innovationService.markAsSeen();
-
-
   }
 
-  /**
-   * Fermeture manuelle du toast via le bouton
-   * - Cache le toast immédiatement
-   * - Marque comme vu pour éviter la réapparition
-   */
+  // Fermer manuellement le toast
   dismiss(): void {
-    if (this.toastInstance) {
-      this.toastInstance.hide();
-    }
+    if (this.toastInstance) this.toastInstance.hide();
     this.innovationService.markAsSeen();
   }
 
-  /**
-   * Ouverture de la modal détaillant le prix
-   * - Récupère l'élément DOM de la modal
-   * - Crée une instance Bootstrap Modal et l'affiche
-   * - Tout reste dans le même composant, pas besoin d'un composant supplémentaire
-   */
-  openDetails() {
-    const modalEl = document.getElementById('innovationDetailModal');
-    const modal = new bootstrap.Modal(modalEl);
-    modal.show();
+  // Ouvrir la modal de détails
+  openDetails(): void {
+    if (!this.modalInstance) {
+      this.modalInstance = new bootstrap.Modal(this.innovationModal.nativeElement, {
+        backdrop: 'static',
+        keyboard: true
+      });
+    }
+    this.modalInstance.show();
   }
 
+  // Fermer la modal via le bouton
+  closeModal(): void {
+    if (this.modalInstance) this.modalInstance.hide();
+  }
+
+  // Click sur le lien externe : ferme la modal avant d’ouvrir le lien
+  onExternalLinkClick(event: Event): void {
+    event.preventDefault(); // Empêche le comportement par défaut pour pouvoir fermer la modal avant
+    this.closeModal();
+    const target = (event.currentTarget as HTMLAnchorElement).href;
+    window.open(target, '_blank', 'noopener,noreferrer'); // ouverture accessible
+  }
 }

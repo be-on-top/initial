@@ -7,8 +7,7 @@ import { Auth, browserSessionPersistence, setPersistence } from '@angular/fire/a
 import { persistentLocalCache } from 'firebase/firestore';
 
 // import { Analytics, setAnalyticsCollectionEnabled, setUserProperties } from '@angular/fire/analytics';
-
-
+import { ChangeDetectorRef } from '@angular/core';
 
 
 
@@ -34,7 +33,7 @@ export class CookieConsentBannerComponent implements OnInit {
   private metaPixelLoaded = false;
 
 
-  constructor(public consentService: ConsentService, private auth: Auth) {
+  constructor(public consentService: ConsentService, private auth: Auth, private cd: ChangeDetectorRef) {
 
 
     // Vérifier si l'utilisateur a déjà pris une décision concernant les cookies
@@ -67,63 +66,42 @@ export class CookieConsentBannerComponent implements OnInit {
     }
   }
 
-  // fonctionne mais META PIXEL HELPER ne le détecte qu'en localhost
-  //   acceptCookies() {
-  //     this.consentService.setConsent(true);
-  //     // Autres actions nécessaires après avoir accepté les cookies
-  //     this.showBanner = false;
-  //     // Charger Meta Pixel seulement après consentement
-  //     this.loadMetaPixel();
-  //  }
   
-// acceptCookies() {
-//   this.consentService.setConsent(true);
-//   this.showBanner = false;
+  acceptCookies() {
 
-//   // Initialiser Meta Pixel avec un léger délai
-//   setTimeout(() => {
-//     if (!(window as any).fbq) {
-//       console.warn('Meta Pixel script non chargé ou bloqué');
-//       return;
-//     }
+    this.showBanner = false;
+    this.cd.detectChanges();
 
-//     (window as any).fbq('init', '622453283587163');
-//     (window as any).fbq('track', 'PageView');
-//     console.log('✅ fbq PageView envoyé (manuel avec délai)');
-//   }, 100); // ← délai de 100ms (ajustable si besoin)
-// }
-acceptCookies() {
-  this.consentService.setConsent(true);
-  this.showBanner = false;
+    this.consentService.setConsent(true);
 
-  // Définir fbq manuellement avant le chargement
-  if (!(window as any).fbq) {
-    (window as any).fbq = function () {
-      (window as any).fbq.callMethod
-        ? (window as any).fbq.callMethod.apply((window as any).fbq, arguments)
-        : (window as any).fbq.queue.push(arguments);
+    // Définir fbq manuellement avant le chargement
+    if (!(window as any).fbq) {
+      (window as any).fbq = function () {
+        (window as any).fbq.callMethod
+          ? (window as any).fbq.callMethod.apply((window as any).fbq, arguments)
+          : (window as any).fbq.queue.push(arguments);
+      };
+      (window as any).fbq.queue = [];
+      (window as any).fbq.loaded = true;
+      (window as any).fbq.version = '2.0';
+      (window as any).fbq.push = (window as any).fbq;
+    }
+
+    // Charger dynamiquement le script
+    const script = document.createElement('script');
+    script.src = 'https://connect.facebook.net/en_US/fbevents.js';
+    script.async = true;
+    script.onload = () => {
+      (window as any).fbq('init', '622453283587163');
+      (window as any).fbq('track', 'PageView');
+      console.log('✅ fbq chargé et PageView envoyé');
     };
-    (window as any).fbq.queue = [];
-    (window as any).fbq.loaded = true;
-    (window as any).fbq.version = '2.0';
-    (window as any).fbq.push = (window as any).fbq;
+    script.onerror = () => {
+      console.error('❌ Erreur chargement fbevents.js');
+    };
+
+    document.head.appendChild(script);
   }
-
-  // Charger dynamiquement le script
-  const script = document.createElement('script');
-  script.src = 'https://connect.facebook.net/en_US/fbevents.js';
-  script.async = true;
-  script.onload = () => {
-    (window as any).fbq('init', '622453283587163');
-    (window as any).fbq('track', 'PageView');
-    console.log('✅ fbq chargé et PageView envoyé');
-  };
-  script.onerror = () => {
-    console.error('❌ Erreur chargement fbevents.js');
-  };
-
-  document.head.appendChild(script);
-}
 
 
 
@@ -137,6 +115,7 @@ acceptCookies() {
 
     // Autres actions nécessaires après avoir refusé les cookies
     this.showBanner = false;
+    this.cd.detectChanges();
     this.consentService.deleteCookiesStartingWith("_ga")
     // this.consentService.deleteCookiesStartingWith("_ga_C9M2VS675H")
     this.consentService.deleteCookiesStartingWith("_fbp");
