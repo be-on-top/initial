@@ -23,6 +23,7 @@ p {
     transition: background-color 0.5s ease-in-out;
 
 }
+
 p mark {
 
     background-color: #007bff;
@@ -74,14 +75,16 @@ p mark {
         font-size: 2.8rem !important;
     }
 
-    p{
+    p {
         font-size: 1.15rem;
     }
 
 }
 
 @media only screen and (max-width:772px) {
-    .display-5, p {
+
+    .display-5,
+    p {
         font-size: 1rem !important;
     }
 
@@ -93,6 +96,7 @@ p mark {
         display: none;
 
     }
+
     #image p span {
         background-color: rgba(255, 255, 255, 0.6);
         background-blend-mode: multiply;
@@ -104,6 +108,7 @@ p mark {
         /* background-color: #007bff; */
         font-size: 0.9rem;
     }
+
     /* .accordion {
         --bs-accordion-border-color: transparent;
     } */
@@ -115,6 +120,7 @@ p mark {
         padding-bottom: 0;
         height: auto ! important;
     }
+
     /* .accordion .col-md-6 {
 
         margin-bottom: 0!important;
@@ -122,11 +128,11 @@ p mark {
 
     } */
 
+    #info-tab,
+    #rgpd-tab,
+    #rse-tab {
+        font-size: 0.8rem;
+    }
 
-    
-    
-    
-    
-    
 
 }

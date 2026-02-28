@@ -128,7 +128,7 @@
 
                 <!-- puisqu'il faut compliquer -->
                 <!-- ici, pour restreindre la liste des filtres additionnels au seul admin -->
-                <ng-container *ngIf="userRouterLinks.user==='admin'|| userRouterLinks.user==='editor'">
+                <ng-container *ngIf="userRouterLinks.user==='admin'|| userRouterLinks.user==='editor'|| userRouterLinks.user==='external'">
                     <!-- 
                     <div *ngFor="let trade of trades">
                         <div class="form-check">
@@ -139,6 +139,7 @@
                     </div> -->
                     <!-- pour tenter la même chose avec un select (test OK) -->
 
+                    <ng-container *ngIf="userRouterLinks.user!='external'">
                     <hr>
                     <label for="qcmStarted">Questionnaire commencé (non terminé) pour :</label>
                     <select id="qcmStarted" class="form-control" [(ngModel)]="selectedTradeForQCMStarted"
@@ -146,6 +147,7 @@
                         <option [ngValue]="null">-- Tous les métiers --</option>
                         <option *ngFor="let trade of trades" [ngValue]="trade">{{ trade }}</option>
                     </select>
+                    </ng-container>
 
                     <!-- <div *ngFor="let trade of trades">
                         <div class="form-check">
@@ -180,12 +182,15 @@
 
 
                     <!-- feat : pour tester un filtre régional sur la base de postalCode OK marche bien -->
+                     
+                    <ng-container *ngIf="userRouterLinks.user!='external'">
                     <label for="regionSelect">Séléctionner les candidats par région :</label>
                     <select id="regionSelect" class="form-control" [(ngModel)]="selectedRegion"
                         (ngModelChange)="onSelectRegion($event)">
                         <option [ngValue]="null">-- Toutes les régions --</option>
                         <option *ngFor="let region of regions" [ngValue]="region">{{ region }}</option>
                     </select>
+                    </ng-container>
 
                     <!-- feat : filtre départemental basé sur les CP -->
                     <label for="departmentSelect">Sélectionner les candidats par département :</label>
