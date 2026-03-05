@@ -646,11 +646,25 @@ export class StudentsService {
   //   return collectionData(studentsRef, { idField: "id" }) as Observable<Student[]>;
   // }
   // pour ordonner le retour
+  // getStudents(order: 'asc' | 'desc' = 'desc') {
+  //   const studentsRef = collection(this.firestore, "students");
+  //   const studentsQuery = query(studentsRef, orderBy("created", order)); // Tri par la date "created"
+  //   return collectionData(studentsQuery, { idField: "id" }) as Observable<Student[]>;
+  // }
+
   getStudents(order: 'asc' | 'desc' = 'desc') {
-    const studentsRef = collection(this.firestore, "students");
-    const studentsQuery = query(studentsRef, orderBy("created", order)); // Tri par la date "created"
-    return collectionData(studentsQuery, { idField: "id" }) as Observable<Student[]>;
-  }
+  const studentsRef = collection(this.firestore, "students");
+  const studentsQuery = query(studentsRef, orderBy("created", order));
+
+  return from(getDocs(studentsQuery)).pipe(
+    map(snapshot =>
+      snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      } as Student))
+    )
+  );
+}
 
   getStudentById(studentId: string) {
     const studentRef = doc(this.firestore, 'students/' + studentId);

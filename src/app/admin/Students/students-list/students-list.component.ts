@@ -157,14 +157,13 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     }
 
     // pour le cas très spécifique du contact ajouté par un referent
-    if (this.userUid && this.userRouterLinks.user === 'referentsContacts') {
-      this.userService.getUser(this.userUid).subscribe(data => {
-        // console.log("tableau du doc", data.students)
-        this.contactStudents = data.students
-      }
-      )
-    }
-
+    // if (this.userUid && this.userRouterLinks.user === 'referentsContacts') {
+    //   this.userService.getUser(this.userUid).subscribe(data => {
+    //     // console.log("tableau du doc", data.students)
+    //     this.contactStudents = data.students
+    //   }
+    //   )
+    // }
 
   }
 
@@ -177,7 +176,24 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       this.router.navigate(['/']); // redirige vers la page d’accueil     
     }
 
+        this.storedValue = localStorage.getItem('filter')
+
+
+  if (this.userUid && this.userRouterLinks.user === 'referentsContacts') {
+
+    this.userService.getUser(this.userUid).subscribe(data => {
+
+      this.contactStudents = data.students || [];
+
+      // Maintenant seulement on charge les students
+      this.getStudents();
+
+    });
+
+  } else {
     this.getStudents();
+
+  }
     this.onSearchTextEntered("")
 
     this.regionalService.getAllRegions().subscribe(regions => {
@@ -190,7 +206,6 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       // console.log('départements récupérées', this.departments);
     })
 
-    this.storedValue = localStorage.getItem('filter')
   }
 
   ngAfterViewInit() {
@@ -199,6 +214,8 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
         this.trades.push(element.sigle)
       });
     })
+
+  
 
   }
 
@@ -306,20 +323,22 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
         // console.log('Données brutes (collectionStudents) :', this.collectionStudents);
       }),
       // A condition qu'ils aient au minimum terminé UN questionnaire...
-      // map(students => students.filter(student => this.hasFullResults(student)))
+      map(students => students.filter(student => this.hasFullResults(student)))
       // A condition qu'ils aient au minimum commencé UN questionnaire...
       // map(students => students.filter(student =>  Object.keys(student).some(key =>
       //     key.startsWith('quizz_')
       //   )))
 
-      map(students =>
-        this.userRole === 'referent' ? students.filter(student => this.hasFullResults(student)) : students.filter(student => Object.keys(student).some(key =>
-          key.startsWith('quizz_')
-        )))
+      // map(students =>
+      //   this.userRole === 'referent' ? students.filter(student => this.hasFullResults(student)) : students.filter(student => Object.keys(student).some(key =>
+      //     key.startsWith('quizz_')
+      //   )))
       // A condition qu'ils aient au minimum commencé UN questionnaire...
       // map(students => students.filter(student =>  Object.keys(student).some(key =>
       //     key.startsWith('quizz_')
       //   )))
+
+      
 
     ).subscribe(filteredStudents => {
 
@@ -327,9 +346,15 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       this.allStudents = [...this.initialStudents]; // Initialiser allStudents
 
       // Vérifie le rôle utilisateur
-      if (this.userRouterLinks.user === 'admin') {
+      if (this.userRouterLinks.user === 'admin' || this.userRouterLinks.user==='editor') {
         this.applyFilters();
       }
+
+      // rajouté pour l'external créé par l'admin (j'aime  pas...)
+      else if (this.userRouterLinks.user === 'external') {
+        this.allStudents = this.initialStudents.filter(student => student.evaluations);
+      }
+
       else if (this.userRouterLinks.user === 'referent') {
         // Si référent, applique les filtres (référent et prior)
         this.service.getCentersAndSocialFormByUserId(referentUid)
@@ -358,12 +383,21 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
         this.isLoading = false
       }
       // pour les contacts ajoutés par referent
-      else if (this.contactStudents.length !== 0) {
+      else if (this.userRouterLinks.user === 'referentsContacts') {
+
+        console.log('contactStudents:', this.contactStudents);
+        console.log('type contactStudents[0]:', typeof this.contactStudents?.[0]);
+
+        console.log('sample allStudents id:', this.allStudents[0]?.id);
+        console.log('type allStudents[0].id:', typeof this.allStudents?.[0]?.id);
+
         const filteredStudents = this.allStudents.filter(student =>
-          this.contactStudents.includes(student.id) && student.isSocialFormSent)
-        // Initialisation pour le référent
-        this.initialStudents = [...filteredStudents];
-        this.allStudents = [...this.initialStudents];
+          this.contactStudents.includes(student.id)
+        );
+
+        console.log('filteredStudents result:', filteredStudents);
+
+        this.allStudents = [...filteredStudents];
       }
     });
   }

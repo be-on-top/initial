@@ -4,6 +4,10 @@
 
     <!-- myCp : {{myCp}} - FilteredTrainers : {{filteredTrainers  | json}} -->
 
+    <!-- contactStudents {{contactStudents}}
+   userRouterLinks : {{userRouterLinks.user}}
+   allStudents : {{allStudents}} -->
+
     <h3 *ngIf="userRouterLinks.user=='admin'">Gestion des candidats<span
             class="badge bg-primary ms-2">{{collectionStudents.length}}</span></h3>
 
@@ -12,7 +16,8 @@
     <!-- pour vérifier userUid du référent et le comparer au champ student.referent facilement -->
     <!-- <h3 *ngIf="userRouterLinks.user=='referent'">Suivi administratif des candidats ({{userUid}})</h3> -->
     <h3 *ngIf="userRouterLinks.user=='referent'">Suivi administratif des candidats</h3>
-    <p *ngIf="userRouterLinks.user=='referent'" class="smaller primary text-center mt-0">Pour rappel, vous sont associés :
+    <p *ngIf="userRouterLinks.user=='referent'" class="smaller primary text-center mt-0">Pour rappel, vous sont associés
+        :
         {{cpArray}}
         <!-- déportée vers my-centers -->
         <!-- <br>
@@ -32,6 +37,14 @@
     <div *ngIf="userRouterLinks.user==='referent'" class="alert alert-warning text-light"><i
             class="bi bi-info-square-fill me-1"></i><span class="fw-bold">Rappel :</span> Ne figureront dans cette liste
         que des candidats ayant au minimum terminé UN questionnaire de positionnement
+    </div>
+    <div *ngIf="userRouterLinks.user==='external'" class="alert alert-warning text-light"><i
+            class="bi bi-info-square-fill me-1"></i><span class="fw-bold">Rappel :</span> Ne figurent dans cette liste
+        que des candidats ayant fait l'objet d'une première évaluation pédagogique
+    </div>
+    <div *ngIf="userRouterLinks.user==='referentsContacts'" class="alert alert-warning text-light"><i
+            class="bi bi-info-square-fill me-1"></i><span class="fw-bold">Rappel :</span> Ne figurent dans cette liste
+        que des candidats qui vous ont été attribués par un Conseiller Projet
     </div>
 
     <div *ngIf="allStudents">
@@ -96,7 +109,7 @@
                         [checked]="isInnerStudentFilter===true || storedValue==='isInnerStudentFilter'">
                 </div>
                 <!-- fin innerStudent -->
-                <div class="form-check">
+                <div class="form-check" *ngIf="userRouterLinks.user!='external'">
                     <!-- {{isSubscriptionFilter===true}} -->
                     <label class="form-check-label" for="subscriptionsCheckbox">Inscription formation finalisée</label>
                     <input type="checkbox" (change)="onCheckboxChangeSubscriptions($event)" class="form-check-input"
@@ -128,7 +141,8 @@
 
                 <!-- puisqu'il faut compliquer -->
                 <!-- ici, pour restreindre la liste des filtres additionnels au seul admin -->
-                <ng-container *ngIf="userRouterLinks.user==='admin'|| userRouterLinks.user==='editor'|| userRouterLinks.user==='external'">
+                <ng-container
+                    *ngIf="userRouterLinks.user==='admin'|| userRouterLinks.user==='editor'|| userRouterLinks.user==='external' || userRouterLinks.user==='referentsContacts'">
                     <!-- 
                     <div *ngFor="let trade of trades">
                         <div class="form-check">
@@ -139,30 +153,32 @@
                     </div> -->
                     <!-- pour tenter la même chose avec un select (test OK) -->
 
-                    <ng-container *ngIf="userRouterLinks.user!='external'">
-                    <hr>
-                    <label for="qcmStarted">Questionnaire commencé (non terminé) pour :</label>
-                    <select id="qcmStarted" class="form-control" [(ngModel)]="selectedTradeForQCMStarted"
-                        (ngModelChange)="onTradeQCMStartedSelect($event)">
-                        <option [ngValue]="null">-- Tous les métiers --</option>
-                        <option *ngFor="let trade of trades" [ngValue]="trade">{{ trade }}</option>
-                    </select>
-                    </ng-container>
+                    <ng-container *ngIf="userRouterLinks.user!=='external' && userRouterLinks.user!=='referentsContacts'">
+                        <hr>
+                        <label for="qcmStarted">Questionnaire commencé (non terminé) pour :</label>
+                        <select id="qcmStarted" class="form-control" [(ngModel)]="selectedTradeForQCMStarted"
+                            (ngModelChange)="onTradeQCMStartedSelect($event)">
+                            <option [ngValue]="null">-- Tous les métiers --</option>
+                            <option *ngFor="let trade of trades" [ngValue]="trade">{{ trade }}</option>
+                        </select>
 
-                    <!-- <div *ngFor="let trade of trades">
+
+                        <!-- <div *ngFor="let trade of trades">
                         <div class="form-check">
                             <label class="form-check-label" for="tradeCheckbox">Questionnaire terminé {{trade}}</label>
                             <input type="checkbox" (change)="onCheckboxChangeTradesForFullQCM($event, trade)"
                                 class="form-check-input">
                         </div>
                     </div> -->
-                    <!-- pour tenter de le transformer en select (test OK) -->
-                    <label for="tradeSelect">Questionnaire terminé pour :</label>
-                    <select id="tradeSelect" class="form-control" [(ngModel)]="selectedTradeForFullQCM"
-                        (ngModelChange)="onTradeFullQCMSelect($event)">
-                        <option [ngValue]="null">-- Sélectionner un questionnaire --</option>
-                        <option *ngFor="let trade of trades" [ngValue]="trade">{{ trade }}</option>
-                    </select>
+                        <!-- pour tenter de le transformer en select (test OK) -->
+                        <label for="tradeSelect">Questionnaire terminé pour :</label>
+                        <select id="tradeSelect" class="form-control" [(ngModel)]="selectedTradeForFullQCM"
+                            (ngModelChange)="onTradeFullQCMSelect($event)">
+                            <option [ngValue]="null">-- Sélectionner un questionnaire --</option>
+                            <option *ngFor="let trade of trades" [ngValue]="trade">{{ trade }}</option>
+                        </select>
+
+                    </ng-container>
 
 
                     <!-- <ng-container *ngIf="tradesActivated"> -->
@@ -182,34 +198,32 @@
 
 
                     <!-- feat : pour tester un filtre régional sur la base de postalCode OK marche bien -->
-                     
-                    <ng-container *ngIf="userRouterLinks.user!='external'">
-                    <label for="regionSelect">Séléctionner les candidats par région :</label>
-                    <select id="regionSelect" class="form-control" [(ngModel)]="selectedRegion"
-                        (ngModelChange)="onSelectRegion($event)">
-                        <option [ngValue]="null">-- Toutes les régions --</option>
-                        <option *ngFor="let region of regions" [ngValue]="region">{{ region }}</option>
-                    </select>
+
+                    <ng-container *ngIf="userRouterLinks.user!=='referentsContacts'">
+                        <label for="regionSelect">Séléctionner les candidats par région :</label>
+                        <select id="regionSelect" class="form-control" [(ngModel)]="selectedRegion"
+                            (ngModelChange)="onSelectRegion($event)">
+                            <option [ngValue]="null">-- Toutes les régions --</option>
+                            <option *ngFor="let region of regions" [ngValue]="region">{{ region }}</option>
+                        </select>
+
+                        <!-- feat : filtre départemental basé sur les CP -->
+                        <label for="departmentSelect">Sélectionner les candidats par département :</label>
+                        <select id="departmentSelect" class="form-control" [(ngModel)]="selectedDepartment"
+                            (ngModelChange)="onSelectDepartment($event)">
+                            <option [ngValue]="null">-- Tous les départements --</option>
+                            <option *ngFor="let department of departments" [ngValue]="department">{{ department }}
+                            </option>
+                        </select>
                     </ng-container>
-
-                    <!-- feat : filtre départemental basé sur les CP -->
-                    <label for="departmentSelect">Sélectionner les candidats par département :</label>
-                    <select id="departmentSelect" class="form-control" [(ngModel)]="selectedDepartment"
-                        (ngModelChange)="onSelectDepartment($event)">
-                        <option [ngValue]="null">-- Tous les départements --</option>
-                        <option *ngFor="let department of departments" [ngValue]="department">{{ department }}</option>
-                    </select>
-
-
-
-                    <!-- </ng-container> -->
 
                 </ng-container>
 
 
                 <hr class="border-secondary">
 
-                <div><button type="button" *ngIf="userRouterLinks=='admin' || userRouterLinks.user=='editor'"
+                <div><button type="button"
+                        *ngIf="userRouterLinks=='admin' || userRouterLinks.user=='editor' || userRouterLinks.user=='external'"
                         class="btn btn-primary mb-2" (click)="toggleOrder()">
                         {{ ascending ? 'Afficher les plus récents' : 'Afficher les plus anciens' }}
                     </button></div>
@@ -329,9 +343,9 @@
         <!-- attention  -->
         <div class="row mt-4 justify-content-start"
             *ngIf="userRouterLinks.user==='external' || userRouterLinks.user==='referentsContacts'">
-            <div class="col-sm-3 h5 d-none d-md-inline">Prénom</div>
-            <div class="col-sm-3 h5 d-none d-md-inline">Nom</div>
-            <div class="col-sm-3 h5 d-none d-md-inline">Détails</div>
+            <div class="col-sm-4 h5 d-none d-md-inline">Prénom</div>
+            <div class="col-sm-4 h5 d-none d-md-inline">Nom</div>
+            <div class="col-sm-4 h5 d-none d-md-inline">Détails</div>
         </div>
 
         <div *ngFor="let student of paginatedStudents">
@@ -371,9 +385,9 @@
         || student.lastName.toLowerCase().includes(searchText.toLowerCase()) 
         || student.firstName.toLowerCase().includes(searchText.toLowerCase()) 
         || student.email.toLowerCase().includes(searchText.toLowerCase())">
-                    <div class="col-sm-3 col-6">{{student.lastName}}</div>
-                    <div class="col-sm-3 col-6">{{student.firstName}}</div>
-                    <div class="col-sm-3 col-6 mt-3 m-sm-0">
+                    <div class="col-sm-4 col-6">{{student.lastName}}</div>
+                    <div class="col-sm-4 col-6">{{student.firstName}}</div>
+                    <div class="col-sm-4 col-6 mt-3 m-sm-0">
                         <button type="button" class="btn btn-primary"
                             [routerLink]="[userRouterLinks.user === 'referentsContacts' ? '/admin/contactStudentDetails' : '/admin/externalStudentDetails', student.id]">
                             <i class="bi bi-person-lines-fill"></i> Détails</button>
@@ -428,10 +442,8 @@
     </div>
 
     <hr>
-    <app-export-students
-  *ngIf="userRouterLinks.user === 'referent'"
-  [students]="allStudents">
-</app-export-students>
+    <app-export-students *ngIf="userRouterLinks.user === 'referent'" [students]="allStudents">
+    </app-export-students>
 
     <app-export-students *ngIf="userRouterLinks.user==='admin'"></app-export-students>
 
