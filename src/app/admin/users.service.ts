@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword, sendPasswordResetEmail, deleteUser, signInWithEmailAndPassword, signInWithCustomToken, fetchSignInMethodsForEmail } from '@angular/fire/auth';
-import { Firestore, collectionData, collection, docData, setDoc, query, where, updateDoc, getDoc } from '@angular/fire/firestore';
+import { Firestore, collectionData, collection, docData, setDoc, query, where, updateDoc, getDoc, arrayUnion } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { deleteDoc, doc, getDocs } from 'firebase/firestore';
 import { Observable, pipe } from 'rxjs';
@@ -127,98 +127,98 @@ export class UsersService {
 
   // }
 
-    // suggestion pour plus de robusteste  
-    async createUser(user: any) {
-      if (!this.auth.currentUser || !this.auth.currentUser.email) {
-        console.error('Administrateur non connecté.');
-        return;
-      }
-  
-      const adminEmail = this.auth.currentUser.email;
-      const adminPassword = prompt('Veuillez entrer votre mot de passe administrateur pour continuer.');
-      if (!adminPassword) {
-        console.error('Mot de passe administrateur non fourni.');
-        return;
-      }
-  
-      const adminUid = this.auth.currentUser.uid;
-  
-      // Nettoyer l'email (enlever les espaces avant et après)
-      const cleanedEmail = user.email.trim();
-
-  
-      // Initialiser un nouvel étudiant avec des champs par défaut
-      const newUser: Users = {
-        created: Date.now(),        
-        referentUid: adminUid,
-        ...user,
-        email: cleanedEmail,  // Assurez-vous que l'email nettoyé est utilisé
-      };
-  
-      try {
-        console.log("Vérification des doublons pour l'email :", cleanedEmail);
-        const signInMethods = await fetchSignInMethodsForEmail(this.auth, cleanedEmail);
-        if (signInMethods.length > 0) {
-          console.error('Un utilisateur avec cet email existe déjà.');
-          alert('Un utilisateur avec cet email existe déjà.');
-          return;
-        }
-  
-        console.log("Aucun doublon détecté. Création de l'utilisateur...");
-        // const password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
-        const password="password"
-  
-        const result = await createUserWithEmailAndPassword(this.auth, cleanedEmail, password);
-        if (!result || !result.user) {
-          throw new Error("Échec de la création de l'utilisateur Firebase.");
-        }
-  
-        newUser.id = result.user.uid;
-  
-        // Ajouter les informations de l'étudiant dans Firestore
-        const studentsRef = collection(this.firestore, "users");
-        await setDoc(doc(studentsRef, newUser.id), newUser);
-        console.log("Utilisateur ajouté avec succès dans Firestore :", newUser);
-  
-        // Ajouter le rôle de l'étudiant dans Firestore
-        const rolesRef = collection(this.firestore, "roles");
-        await setDoc(doc(rolesRef, newUser.id), { role: user.role });
-        console.log("Rôle de l'utilisateur ajouté avec succès!!!!!!!.", user.role);
-  
-        // Envoyer un e-mail de réinitialisation du mot de passe
-        await sendPasswordResetEmail(this.auth, cleanedEmail
-  
-          , {
-            // URL de redirection après personnalisation du mot de passe
-            url: 'https://be-on-top.io/login',
-            // Utilisation de l'application pour traiter cette action
-            handleCodeInApp: true
-          }
-  
-  
-        );
-        console.log("E-mail de réinitialisation envoyé à :", cleanedEmail);
-  
-        // Déconnexion du compte étudiant
-        await this.auth.signOut();
-        console.log("Déconnexion de l'utilisateur étudiant.");
-  
-        // Reconnexion de l'administrateur
-        const adminResult = await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
-        if (!adminResult || !adminResult.user) {
-          throw new Error('Échec de la reconnexion de l\'administrateur.');
-        }
-  
-        console.log("Administrateur reconnecté avec succès.");
-  
-        // Redirection vers la liste ou page des détails de l'utilisateur (?)
-        this.router.navigate(['/admin/external', newUser.id]);
-        console.log("Redirection vers la page des détails de l'utilisateur.");
-      } catch (error: any) {
-        console.error("Erreur lors de la création de l'utilisateur :", error.message);
-        alert(`Erreur : ${error.message}`);
-      }
+  // suggestion pour plus de robusteste  
+  async createUser(user: any) {
+    if (!this.auth.currentUser || !this.auth.currentUser.email) {
+      console.error('Administrateur non connecté.');
+      return;
     }
+
+    const adminEmail = this.auth.currentUser.email;
+    const adminPassword = prompt('Veuillez entrer votre mot de passe administrateur pour continuer.');
+    if (!adminPassword) {
+      console.error('Mot de passe administrateur non fourni.');
+      return;
+    }
+
+    const adminUid = this.auth.currentUser.uid;
+
+    // Nettoyer l'email (enlever les espaces avant et après)
+    const cleanedEmail = user.email.trim();
+
+
+    // Initialiser un nouvel étudiant avec des champs par défaut
+    const newUser: Users = {
+      created: Date.now(),
+      referentUid: adminUid,
+      ...user,
+      email: cleanedEmail,  // Assurez-vous que l'email nettoyé est utilisé
+    };
+
+    try {
+      console.log("Vérification des doublons pour l'email :", cleanedEmail);
+      const signInMethods = await fetchSignInMethodsForEmail(this.auth, cleanedEmail);
+      if (signInMethods.length > 0) {
+        console.error('Un utilisateur avec cet email existe déjà.');
+        alert('Un utilisateur avec cet email existe déjà.');
+        return;
+      }
+
+      console.log("Aucun doublon détecté. Création de l'utilisateur...");
+      // const password = Math.random().toString(36).slice(2) + Math.random().toString(36).toUpperCase().slice(2);
+      const password = "password"
+
+      const result = await createUserWithEmailAndPassword(this.auth, cleanedEmail, password);
+      if (!result || !result.user) {
+        throw new Error("Échec de la création de l'utilisateur Firebase.");
+      }
+
+      newUser.id = result.user.uid;
+
+      // Ajouter les informations de l'étudiant dans Firestore
+      const studentsRef = collection(this.firestore, "users");
+      await setDoc(doc(studentsRef, newUser.id), newUser);
+      console.log("Utilisateur ajouté avec succès dans Firestore :", newUser);
+
+      // Ajouter le rôle de l'étudiant dans Firestore
+      const rolesRef = collection(this.firestore, "roles");
+      await setDoc(doc(rolesRef, newUser.id), { role: user.role });
+      console.log("Rôle de l'utilisateur ajouté avec succès!!!!!!!.", user.role);
+
+      // Envoyer un e-mail de réinitialisation du mot de passe
+      await sendPasswordResetEmail(this.auth, cleanedEmail
+
+        , {
+          // URL de redirection après personnalisation du mot de passe
+          url: 'https://be-on-top.io/login',
+          // Utilisation de l'application pour traiter cette action
+          handleCodeInApp: true
+        }
+
+
+      );
+      console.log("E-mail de réinitialisation envoyé à :", cleanedEmail);
+
+      // Déconnexion du compte étudiant
+      await this.auth.signOut();
+      console.log("Déconnexion de l'utilisateur étudiant.");
+
+      // Reconnexion de l'administrateur
+      const adminResult = await signInWithEmailAndPassword(this.auth, adminEmail, adminPassword);
+      if (!adminResult || !adminResult.user) {
+        throw new Error('Échec de la reconnexion de l\'administrateur.');
+      }
+
+      console.log("Administrateur reconnecté avec succès.");
+
+      // Redirection vers la liste ou page des détails de l'utilisateur (?)
+      this.router.navigate(['/admin/external', newUser.id]);
+      console.log("Redirection vers la page des détails de l'utilisateur.");
+    } catch (error: any) {
+      console.error("Erreur lors de la création de l'utilisateur :", error.message);
+      alert(`Erreur : ${error.message}`);
+    }
+  }
 
 
   // version simplifiée de createUsers
@@ -268,11 +268,11 @@ export class UsersService {
         // Envoi d'un email de réinitialisation du mot de passe
         await sendPasswordResetEmail(this.auth, user.email
 
-              ,{
-                 // URL de redirection après personnalisation du mot de passe
-              url: 'https://be-on-top.io/login',
-              // Utilisation de l'application pour traiter cette action
-              handleCodeInApp: true 
+          , {
+            // URL de redirection après personnalisation du mot de passe
+            url: 'https://be-on-top.io/login',
+            // Utilisation de l'application pour traiter cette action
+            handleCodeInApp: true
           }
 
 
@@ -334,68 +334,91 @@ export class UsersService {
   // }
 
   // pour éviter les erreurs dûes à des champs undefined
-  updateUser(id: string, user: any) {
-    console.log('user depuis service', user);
-  
-    // Supprimer les clés dont la valeur est undefined
-    let cleanedUser = Object.fromEntries(
-      Object.entries(user).filter(([_, value]) => value !== undefined)
-    );
-  
-    // console.log("Mise à jour du doc:", id, "avec:", cleanedUser);
-    let $userRef = doc(this.firestore, "users/" + id);
-    setDoc($userRef, cleanedUser, { merge: true }); // merge:true pour conserver les autres champs
+  // marche très bien mais ne suffit pas à éviter que le tableau students soit écrasé
+  // updateUser(id: string, user: any) {
+  //   console.log('user depuis service', user);
+
+  //   // Supprimer les clés dont la valeur est undefined
+  //   let cleanedUser = Object.fromEntries(
+  //     Object.entries(user).filter(([_, value]) => value !== undefined)
+  //   );
+
+  //   // console.log("Mise à jour du doc:", id, "avec:", cleanedUser);
+  //   let $userRef = doc(this.firestore, "users/" + id);
+  //   setDoc($userRef, cleanedUser, { merge: true }); // merge:true pour conserver les autres champs
+  // }
+
+updateUser(id: string, user: any): Promise<void> | undefined {
+  const cleanedUser = Object.fromEntries(
+    Object.entries(user).filter(([_, value]) => value !== undefined)
+  ) as any;
+
+  const userRef = doc(this.firestore, "users/" + id);
+
+  // traiter students à part
+  if (cleanedUser.students) {
+
+    const students = cleanedUser.students;
+    delete cleanedUser.students;
+
+    return updateDoc(userRef, {
+      ...cleanedUser,
+      students: arrayUnion(...students)
+    });
+  }
+   return updateDoc(userRef, cleanedUser);
+}
+
+
+
+  deleteStudentFromUser(UserId: string, studentUid: string) {
+    // Référence au document Trainer dans Firestore
+    const $userRef = doc(this.firestore, "users/" + UserId);
+
+    // Lire le document actuel pour récupérer la liste des étudiants
+    getDoc($userRef)
+      .then((docSnapshot) => {
+        if (docSnapshot.exists()) {
+          const userData = docSnapshot.data(); // Obtenir les données du document
+
+          // Vérifier que 'students' est un tableau valide
+          if (userData['students'] && Array.isArray(userData['usertudents'])) {
+            // Supprimer le studentUid de la liste des étudiants
+            const updatedStudents = userData['students'].filter((id: string) => id !== studentUid);
+
+            // Mettre à jour uniquement le champ 'students' dans Firestore
+            return updateDoc($userRef, { students: updatedStudents });
+          } else {
+            console.error("Le champ 'students' est absent ou invalide.");
+            return Promise.reject("Propriété 'students' invalide.");
+          }
+        } else {
+          console.error("Le document trainer n'existe pas.");
+          return Promise.reject("Document introuvable.");
+        }
+      })
+      .then(() => {
+        console.log("Le champ 'students' a été mis à jour avec succès !");
+
+        // Réinitialiser la propriété 'trainer' dans le document de l'étudiant
+        const $studentRef = doc(this.firestore, "students/" + studentUid);
+        return updateDoc($studentRef, { trainer: "attribué ultérieurement" });
+      })
+      .then(() => {
+        console.log(`La propriété 'trainer' de l'étudiant ${studentUid} a été réinitialisée avec succès !`);
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la mise à jour :", error);
+      });
   }
 
 
-    deleteStudentFromUser(UserId: string, studentUid: string) {
-      // Référence au document Trainer dans Firestore
-      const $userRef = doc(this.firestore, "users/" + UserId);
-    
-      // Lire le document actuel pour récupérer la liste des étudiants
-      getDoc($userRef)
-        .then((docSnapshot) => {
-          if (docSnapshot.exists()) {
-            const userData = docSnapshot.data(); // Obtenir les données du document
-    
-            // Vérifier que 'students' est un tableau valide
-            if (userData['students'] && Array.isArray(userData['usertudents'] )) {
-              // Supprimer le studentUid de la liste des étudiants
-              const updatedStudents = userData['students'] .filter((id: string) => id !== studentUid);
-    
-              // Mettre à jour uniquement le champ 'students' dans Firestore
-              return updateDoc($userRef, { students: updatedStudents });
-            } else {
-              console.error("Le champ 'students' est absent ou invalide.");
-              return Promise.reject("Propriété 'students' invalide.");
-            }
-          } else {
-            console.error("Le document trainer n'existe pas.");
-            return Promise.reject("Document introuvable.");
-          }
-        })
-        .then(() => {
-          console.log("Le champ 'students' a été mis à jour avec succès !");
-    
-          // Réinitialiser la propriété 'trainer' dans le document de l'étudiant
-          const $studentRef = doc(this.firestore, "students/" + studentUid);
-          return updateDoc($studentRef, { trainer: "attribué ultérieurement" });
-        })
-        .then(() => {
-          console.log(`La propriété 'trainer' de l'étudiant ${studentUid} a été réinitialisée avec succès !`);
-        })
-        .catch((error) => {
-          console.error("Erreur lors de la mise à jour :", error);
-        });
-    }
-
-    
   // methode à tester pour récupérer le nom
   getLinkedStudentName(id: string) {
     let $studentRef = doc(this.firestore, "students/" + id);
     return docData($studentRef) as Observable<any>;
 
   }
-  
+
 
 }

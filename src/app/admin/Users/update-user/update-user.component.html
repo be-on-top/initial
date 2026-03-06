@@ -90,20 +90,28 @@
 
         </ng-container>
 
-        <!-- pour lui affecter des étudiants -->
+        <!-- pour lui affecter des étudiants la suppression a été exclue 03 2026 -->
         <label for="students" class="form-label">📌 Affectation étudiants :</label>
         <div class="d-flex border-start ps-3 text-muted small mb-2" >
-            Maintenez Ctrl (ou Cmd sur Mac) pour ajouter ou retirer des étudiants à sa liste de suivi.
+            Maintenez Ctrl (ou Cmd sur Mac) pour ajouter des étudiants à sa liste de suivi.
           </div>
 
         <!-- <input type="text" class="form-control mb-2" name="searchText" [(ngModel)]="searchText"
             placeholder="Rechercher un étudiant"> -->
 
             <!-- pour lister ceux déjà inscrits -->
-             <ng-container *ngFor="let student of studentsList">
-                <span *ngIf="selectedStudent.includes(student.id)" >{{student.lastName}} {{student.firstName}}<button type="button" class="btn" title="remove student" (click)="delete(student.id)"><i class="bi bi-x-square-fill mx-0"></i></button></span>
-             </ng-container>
-
+    
+        <!-- Liste visuelle des étudiants déjà sélectionnés, avec bouton de suppression -->
+         <span *ngIf="mirorList.length!==0">Inclus dans votre liste :</span>
+        <ng-container *ngFor="let student of mirorList, let last = last">
+            
+            <span *ngIf="selectedStudent.includes(student.id)">
+              {{student.lastName}} {{student.firstName}}<span *ngIf="!last"> - </span> 
+                <!-- <button type="button" class="btn" title="remove student" (click)="delete(student.id)">
+                    <i class="bi bi-x-square-fill mx-0"></i>
+                </button> -->
+            </span>
+        </ng-container>
 
         <select #studentSelect class="form-select" name="students" id="students" [(ngModel)]="selectedStudent" multiple>
             <option value>Selectionner l'étudiant</option>
@@ -111,7 +119,6 @@
                 {{student.lastName}} {{student.firstName}}
             </option>
         </select>
-
         <!-- fin partie dédiée à lui affecter des étudiants -->
 
 

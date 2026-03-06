@@ -20,10 +20,14 @@ export class UpdateUserComponent {
 
   // pour affecter des étudiants à son compte
   studentsList: any = []
+  mirorList: any = []
   filteredStudents: Student[] = []; // Liste des étudiants filtrée
   selectedStudent: string[] = []; // Déclarer en tant que tableau de chaînes
   allStudents: any[] = [];
   adminId: any
+
+  // ... Autres propriétés et initialisation ...
+  contactList: any[] = []
 
 
   cpArray: string[] = []
@@ -31,8 +35,8 @@ export class UpdateUserComponent {
   constructor(private service: UsersService,
     private ac: ActivatedRoute,
     private router: Router,
-    private studentService:StudentsService,
-    private authService:AuthService
+    private studentService: StudentsService,
+    private authService: AuthService
   ) {
     this.userId = this.ac.snapshot.params["id"];
     // on fait appel à getuser pour récupérer les entrées de l'existant. méthode qui pour memo renvoie un observable
@@ -50,29 +54,41 @@ export class UpdateUserComponent {
 
     this.service.getUser(this.userId).subscribe((data) => {
       console.log("data depuis update-user component!!!!!!!!!", data)
-      this.user = data    
+      this.user = data
 
-  })
+    })
 
-  this.adminId = this.authService.getCurrentUserUid();
+    this.adminId = this.authService.getCurrentUserUid();
 
-            // On peut maintenant utiliser cet UID pour d'autres opérations
-            if (this.adminId ) {
-            this.service.getUser(this.adminId ).subscribe(data => {
-              this.cpArray= data.cp    
-              // alert(this.cpArray)     
-      
-            } )
-      
-                // // Appel à `getStudents` après avoir obtenu `this.user.sigle`
-                this.studentService.getStudents().subscribe((students) => {
-                  this.studentsList = students.filter(student =>
-                    // qu'il soit inscrit
-                    student.localTraining? this.cpArray.includes(student.localTraining):''
-                  )
-                })      
-          }
+    // On peut maintenant utiliser cet UID pour d'autres opérations
+    if (this.adminId) {
+      this.service.getUser(this.adminId).subscribe(data => {
+        this.cpArray = data.cp
+        // alert(this.cpArray)     
 
+      })
+
+      // c'est l'uid de celui qu'on consulte ici !
+      if (this.userId) {
+        this.service.getUser(this.userId).subscribe((data) => {
+          this.contactList = data.students?.filter((student: any) => student.trim() !== '') || [];
+          // Stocker les étudiants assignés à l'utilisateur
+          this.selectedStudent = this.contactList;
+
+          // // Appel à `getStudents` après avoir obtenu `this.user.sigle`
+          this.studentService.getStudents().subscribe((students) => {
+            this.studentsList = students.filter(student =>
+              // qu'il soit inscrit
+              student.localTraining ? this.cpArray.includes(student.localTraining) : ''
+            )
+            this.mirorList = [...this.studentsList]
+          })
+
+        })
+      }
+
+
+    }
 
   }
 
@@ -82,7 +98,6 @@ export class UpdateUserComponent {
       console.log('form valid');
       return
     }
-
     console.log("form update values!!!!!!!", form.value);
     this.service.updateUser(this.userId, form.value)
     // this.service.updateUser(this.userId, form.value)
@@ -112,7 +127,7 @@ export class UpdateUserComponent {
 
   }
 
-// essai mais pas pertinent dans le context (?)
+  // essai mais pas pertinent dans le context (?)
   // getCentersAndSocialFormByUserId(userId: string) {
   //   // Utiliser une méthode de service qui 
   //   // Récupère le document utilisateur dans la collection 'users' en fonction de l'ID de l'admin  
