@@ -59,10 +59,12 @@
         </div>
 
         <div class="form-group col-md-6">
-            <label for="structure" class="form-label mt-3">Organisme <span class="text-muted">(ex : Mission locale, CIO, association...)</span></label>
-            <input type="text" id="structure" [(ngModel)]="user.structure" name="structure" class="form-control" placeholder="Organisme ou structure d'affiliation">
-          </div>
-          
+            <label for="structure" class="form-label mt-3">Organisme <span class="text-muted">(ex : Mission locale, CIO,
+                    association...)</span></label>
+            <input type="text" id="structure" [(ngModel)]="user.structure" name="structure" class="form-control"
+                placeholder="Organisme ou structure d'affiliation">
+        </div>
+
 
         <!-- pour périmètre + caractère privé/public -->
         <ng-container>
@@ -80,48 +82,55 @@
 
 
             <label for="geographicScopeSelect" class="my-2">🌍 Son périmètre géographique :</label>
-            <select id="geographicScopeSelect" class="form-control mb-2" [(ngModel)]="user.geographicScope" name="geographicScope">
-              <option [ngValue]="undefined" disabled>-- Choisir un périmètre --</option>
-              <option [ngValue]="'regional'">Régional</option>
-              <option [ngValue]="'departmental'">Départemental</option>
-              <option [ngValue]="'local'">Local</option>
+            <select id="geographicScopeSelect" class="form-control mb-2" [(ngModel)]="user.geographicScope"
+                name="geographicScope">
+                <option [ngValue]="undefined" disabled>-- Choisir un périmètre --</option>
+                <option [ngValue]="'regional'">Régional</option>
+                <option [ngValue]="'departmental'">Départemental</option>
+                <option [ngValue]="'local'">Local</option>
             </select>
-            
+
 
         </ng-container>
 
         <!-- pour lui affecter des étudiants la suppression a été exclue 03 2026 -->
         <label for="students" class="form-label">📌 Affectation étudiants :</label>
-        <div class="d-flex border-start ps-3 text-muted small mb-2" >
+        <div class="d-flex border-start ps-3 text-muted small mb-2">
             Maintenez Ctrl (ou Cmd sur Mac) pour ajouter des étudiants à sa liste de suivi.
-          </div>
+        </div>
 
         <!-- <input type="text" class="form-control mb-2" name="searchText" [(ngModel)]="searchText"
             placeholder="Rechercher un étudiant"> -->
 
-            <!-- pour lister ceux déjà inscrits -->
-    
-        <!-- Liste visuelle des étudiants déjà sélectionnés, avec bouton de suppression -->
-         <span *ngIf="mirorList.length!==0">Inclus dans votre liste :</span>
+        <!-- pour lister ceux déjà inscrits -->
+
+        <!-- Liste visuelle des étudiants déjà sélectionnés-->
+        <span *ngIf="mirorList.length!==0">Issus de votre liste :</span>
         <ng-container *ngFor="let student of mirorList, let last = last">
-            
             <span *ngIf="selectedStudent.includes(student.id)">
-              {{student.lastName}} {{student.firstName}}<span *ngIf="!last"> - </span> 
+                {{student.lastName}} {{student.firstName}}<span *ngIf="!last"> - </span>
                 <!-- <button type="button" class="btn" title="remove student" (click)="delete(student.id)">
                     <i class="bi bi-x-square-fill mx-0"></i>
                 </button> -->
             </span>
         </ng-container>
 
+        <div *ngIf="loadingStudents" class="text-center my-2">
+  <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
+  <span class="ms-2 small text-muted">Chargement des étudiants...</span>
+</div>
+
+<ng-container *ngIf="!loadingStudents">
+
+</ng-container>
+
         <select #studentSelect class="form-select" name="students" id="students" [(ngModel)]="selectedStudent" multiple>
             <option value>Selectionner l'étudiant</option>
             <option *ngFor="let student of studentsList" [value]="student.id" [id]="student.id" #[student.id]>
-                {{student.lastName}} {{student.firstName}}
+                {{student.lastName}} {{student.firstName}} +
             </option>
         </select>
         <!-- fin partie dédiée à lui affecter des étudiants -->
-
-
 
 
         <!-- <label for="email" class="form-label mt-3">Commentaires optionnels</label> -->

@@ -5,6 +5,7 @@ import { NgForm } from '@angular/forms';
 import { StudentsService } from '../../students.service';
 import { Student } from '../../Students/student';
 import { AuthService } from '../../auth.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-update-user',
@@ -29,8 +30,9 @@ export class UpdateUserComponent {
   // ... Autres propriétés et initialisation ...
   contactList: any[] = []
 
-
   cpArray: string[] = []
+
+  loadingStudents = true;
 
   constructor(private service: UsersService,
     private ac: ActivatedRoute,
@@ -82,13 +84,15 @@ export class UpdateUserComponent {
               student.localTraining ? this.cpArray.includes(student.localTraining) : ''
             )
             this.mirorList = [...this.studentsList]
-          })
-
-        })
+            this.loadingStudents=false
+          })          
+        })        
       }
-
-
+      
+      
     }
+  
+
 
   }
 
@@ -150,6 +154,11 @@ export class UpdateUserComponent {
   //   filterStudentsByPriorCenter(students: Student[], returnedPriors: string[]): Student[] {
   //     return students.filter(student => returnedPriors.includes(student.id));
   //   }
+
+
+
+
+
 
 
 }
