@@ -605,6 +605,11 @@ abbr:hover::before {
   opacity: 0.7;
 }
 
+.dropdown-item.dropdown-toggle {
+    padding-right: 1rem;   /* réserve l'espace pour la flèche */
+}
+
+
 /* MOBILE FIRST - désactvité pour le moment pour contraindre dénominations métiers courtes */
 /* .dropdown-menu .dropdown-item {
     white-space: normal !important;
@@ -664,6 +669,10 @@ abbr:hover::before {
     .dropdown-menu .dropdown-item {
         white-space: nowrap !important;
     }
+
+    .dropdown-item.dropdown-toggle {
+    padding-right: 2rem;   /* réserve l'espace pour la flèche */
+}
 
 
 

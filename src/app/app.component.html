@@ -1,7 +1,9 @@
 <app-header></app-header>
 <!-- <router-outlet></router-outlet> -->
 
-<router-outlet></router-outlet>
+<main id="main-content">
+  <router-outlet></router-outlet>
+</main>
 
 
 <!-- <button class="btn btn-primary btn-sm info-button pe-2" (click)="goToInfoPage()"><i
@@ -23,6 +25,42 @@
 
 <app-install-button></app-install-button>
 <!-- <app-cookie-consent-banner *ngIf="consentReaded"></app-cookie-consent-banner> -->
-<div #banner *ngIf="consentReaded"></div>
+<div #banner *ngIf="consentReaded" aria-hidden="true"></div>
+
+<!-- <app-innovation-toast></app-innovation-toast> -->
+<div class="seo-links" aria-hidden="true">
+<a href="/home" tabindex="-1">Accueil formations</a>
+<a href="/market-app" tabindex="-1">Application formation</a>
+<a href="/trainingsIndex" tabindex="-1">Catalogue formations</a>
+
+<a href="/formation/prepa_cdes_2025" tabindex="-1">Préparation CDES 2025</a>
+<a href="/formation/poseur_ite" tabindex="-1">Formation Poseur ITE</a>
+<a href="/formation/mac_vrd" tabindex="-1">Formation MAC VRD</a>
+<a href="/formation/cl_vul" tabindex="-1">Formation CL VUL</a>
+
+<a href="/formation/caces_R489" tabindex="-1">Formation CACES R489</a>
+<a href="/formation/caces_R482" tabindex="-1">Formation CACES R482</a>
+<a href="/formation/caces_R482F" tabindex="-1">Formation CACES R482F</a>
+<a href="/formation/caces_R482C1" tabindex="-1">Formation CACES R482 C1</a>
+<a href="/formation/caces_R482Commun" tabindex="-1">Formation CACES R482 Commun</a>
+<a href="/formation/caces_R485Commun" tabindex="-1">Formation CACES R485</a>
+
+<a href="/formation/ctrmp_2025" tabindex="-1">Formation CTRMP 2025</a>
+<a href="/formation/ctrmtv_2025" tabindex="-1">Formation CTRMTV 2025</a>
+
+<a href="/formation/escr" tabindex="-1">Formation ESCR</a>
+
+<a href="/formation/permis_ce" tabindex="-1">Formation Permis CE</a>
+<a href="/formation/permis_c" tabindex="-1">Formation Permis C</a>
+<a href="/formation/permis_d" tabindex="-1">Formation Permis D</a>
+
+<a href="/formation/agent_mag" tabindex="-1">Formation Agent Magasinier</a>
+<a href="/formation/cariste_ent" tabindex="-1">Formation Cariste</a>
+
+<a href="/formation/fimo_marchandise" tabindex="-1">Formation FIMO Marchandises</a>
+<a href="/formation/fimo_voyageur" tabindex="-1">Formation FIMO Voyageurs</a>
+
+<a href="/formation/caces_R486ACommun" tabindex="-1">Formation CACES R486A</a>
+</div>
+
 <app-footer></app-footer>
-<app-innovation-toast></app-innovation-toast>

@@ -359,8 +359,8 @@
                         <div *ngIf="!openCategoryIndex.includes(j) && i <= 1" class="col-md-6 pt-3">
 
                             <div (click)="selectTrade(trade.id)" [ngClass]="{'underProgress':trade.status===false}">
-                                <div
-                                    [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]">
+                                <!-- <div [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]"> -->
+                                <div [routerLink]="['/formation', trade.sigle]">
                                     <!-- {{trade.status}} -->
 
                                     <h3 class="h5 text-start ps-2">
@@ -382,8 +382,8 @@
                                 <!-- fin spinner -->
                                 <ng-container *ngIf="trade.imageUrl">
                                     <div class="image-container rounded mb-1">
-                                        <a [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]"
-                                            class="text-decoration-none">
+                                        <!-- <a [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]"  class="text-decoration-none"> -->
+                                        <a [routerLink]="['/formation', trade.sigle]"  class="text-decoration-none">
 
                                             <img ngOpmizedImage class="img-fluid rounded" [ngSrc]="(i === tradesData.length - 1 && tradesData.length % 2 !== 0 && isLargeScreen)
                                             ? trade.imageUrl.replace('_resized.jpeg', '.jpeg')
