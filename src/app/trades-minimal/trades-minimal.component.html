@@ -5,13 +5,21 @@
   <ul class="list-group">
 
     <!-- Métiers sans catégorie -->
-    <li *ngFor="let trade of ungroupedTrades" class="list-group-item">
+    <li *ngFor="let trade of ungroupedTrades" class="list-group-item d-flex align-items-start">
       <!-- parce que on a affaire à un référent métier obtus -->
       <!-- <a [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]" class="d-block"> -->
       <a [routerLink]="['/formation', trade.sigle]" class="d-block">
         <span>{{ trade.denomination }}</span><br>
         <small class="text-muted fst-italic">{{ trade.sigle }}</small>
       </a>
+<button 
+  class="border-0 bg-transparent ms-2 p-0 text-secondary"
+  (click)="copyUrl(trade.sigle); $event.stopPropagation()"
+  title="Copier l'URL"
+  aria-label="Copier l'URL de la formation">
+  <i class="bi bi-copy"></i>
+</button>
+
     </li>
 
   </ul>
@@ -22,11 +30,19 @@
     <h2 class="h4 mb-2">{{ group.key }}</h2>
 
     <ul class="list-group">
-      <li *ngFor="let trade of group.value" class="list-group-item">
+      <li *ngFor="let trade of group.value" class="list-group-item d-flex align-items-start">
         <a [routerLink]="['/formation', trade.sigle]" class="d-block">
           <span>{{ trade.denomination }}</span><br>
           <small class="text-muted fst-italic">{{ trade.sigle }}</small>
         </a>
+
+        <button 
+  class="border-0 bg-transparent ms-2 p-0 text-secondary"
+  (click)="copyUrl(trade.sigle); $event.stopPropagation()"
+  title="Copier l'URL"
+  aria-label="Copier l'URL de la formation">
+  <i class="bi bi-copy"></i>
+</button>
       </li>
     </ul>
 

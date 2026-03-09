@@ -45,4 +45,19 @@ export class TradesMinimalComponent implements OnInit {
     this.groupedTrades = Array.from(groupedMap.entries()).map(([key, value]) => ({ key, value }));
   }
 
+
+copyUrl(url: string): void {
+
+  const fullUrl = window.location.origin + '/formation/' + url;
+
+  navigator.clipboard.writeText(fullUrl)
+    .then(() => {
+      console.log('URL copiée :', fullUrl);
+    })
+    .catch(err => {
+      console.error('Erreur de copie :', err);
+    });
+
+}
+
 }
