@@ -400,8 +400,13 @@
                                 [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]"
                                 class="text-decoration-none fs-6">
                                 {{(truncateText(trade.description, 200) )| stripHtml }} </a></div> -->
-                                <div class="card-text pt-2"><a
+                                <!-- <div class="card-text pt-2"><a
                                         [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]"
+                                        class="text-decoration-none fs-6"
+                                        [attr.aria-label]="(trade.description | stripHtml | slice:0:220) + '… lire la suite'">
+                                        {{trade.description | stripHtml }} </a></div> -->
+                                <div class="card-text pt-2"><a
+                                        [routerLink]="['/formation', trade.sigle]"
                                         class="text-decoration-none fs-6"
                                         [attr.aria-label]="(trade.description | stripHtml | slice:0:220) + '… lire la suite'">
                                         {{trade.description | stripHtml }} </a></div>
@@ -482,8 +487,8 @@
                             <!-- dsfdsfdsfd{{group[1].length |json}} -->
 
                             <div (click)="selectTrade(trade.id)" [ngClass]="{'underProgress':trade.status===false}">
-                                <div
-                                    [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]">
+                                <!-- <div [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]"> -->
+                                <div [routerLink]="['/formation', trade.sigle]">
                                     <h3 class="h5 text-start ps-2">
                                         <i class="bi bi-{{i+1}}-square-fill text-success me-2"></i>
                                         <span
@@ -501,8 +506,8 @@
                                 <!-- fin spinner -->
                                 <ng-container *ngIf="trade.imageUrl">
                                     <div class="image-container rounded mb-1">
-                                        <a [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]"
-                                            class="text-decoration-none">
+                                        <!-- <a [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]" class="text-decoration-none"> -->
+                                        <a [routerLink]="['/formation', trade.sigle]" class="text-decoration-none">
                                             <img ngOpmizedImage class="img-fluid rounded" [ngSrc]="(i === group[1].length - 1 && tradesData.length % 2 !== 0 && isLargeScreen)
                                             ? trade.imageUrl.replace('_resized.jpeg', '.jpeg')
                                             : trade.imageUrl" (load)="onImageLoad()" [width]="largeurImage"
@@ -517,8 +522,13 @@
                                 [routerLink]="['/trade', trade.sigle, slugService.generateSlug(trade.denomination)]"
                                 class="text-decoration-none fs-6">
                                 {{(truncateText(trade.description, 230) )| stripHtml }} </a></div> -->
-                                <div class="card-text pt-2"><a
+                                <!-- <div class="card-text pt-2"><a
                                         [routerLink]="['/formation', trade.sigle, slugService.generateSlug(trade.denomination)]"
+                                        class="text-decoration-none fs-6"
+                                        [attr.aria-label]="(trade.description | stripHtml | slice:0:220) + '… lire la suite'">
+                                        {{ trade.description| stripHtml }} </a></div> -->
+                                <div class="card-text pt-2"><a
+                                        [routerLink]="['/formation', trade.sigle]"
                                         class="text-decoration-none fs-6"
                                         [attr.aria-label]="(trade.description | stripHtml | slice:0:220) + '… lire la suite'">
                                         {{ trade.description| stripHtml }} </a></div>
