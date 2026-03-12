@@ -25,7 +25,7 @@ export class FooterComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private consentService: ConsentService, // 👈
     private cdRef: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.consentSubscription = this.consentService.consentStatus$.subscribe(consent => {
@@ -39,7 +39,9 @@ export class FooterComponent implements OnInit, OnDestroy {
     });
   }
 
-  @HostListener('window:scroll', ['$event'])
+  // @HostListener('window:scroll', ['$event'])
+
+  @HostListener('window:scroll')
   onScroll(): void {
     if (!this.isScrolling) {
       this.isScrolling = true;
