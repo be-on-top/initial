@@ -312,11 +312,6 @@
 
                 </div>
 
-
-
-
-
-
                 <!-- C'est là qu'on peut insérer un champ pour début de formation > génération de classe -->
                 <!-- <ng-container *ngIf="student.subscriptions && student.subscriptions.length > 0">
                     <h3 class="mt-5">Date de début effectif de formation </h3>
@@ -344,11 +339,10 @@
                 <!--  fin -->
 
                 <hr>
+                <h3>Plateform E-learning</h3>
                 <div class="alert alert-warning text-dark"><i class="bi bi-info-square-fill me-1"></i>
                     Optionnel. Si renseigné, une notification informera l'utilisateur qui pourra retrouver ce lien dans
                     son compte personnel.</div>
-
-                <h3>Plateform E-learning</h3>
 
                 <form class="form mb-5" #info="ngForm" (submit)="sendElearningInfo(info)" class="was-validated">
                     <!-- <label for="url">Lien vers plateforme e-learning :</label> -->
@@ -357,11 +351,48 @@
 
                     <button type="submit" class="btn btn-primary mt-3">Valider</button>
                 </form>
-                <!-- ---------- -->
+                <!-- fin plateform E-learning -->
 
-
+                <!-- C'est là qu'on peut insérer la section pour s'opposer à la diffusion -->
                 <hr>
 
+                <h3>Diffusion du compte candidat aux recruteurs</h3>
+
+                <div class="alert alert-warning text-dark">
+                    <i class="bi bi-info-square-fill me-1"></i>
+                    La responsabilité d'interdire la diffusion du profil vous revient en dernier lieu,
+                    à tout moment du parcours utilisateur (si le candidat s'y refuse ou si vous le jugez
+                    non opportun — exemple : candidat salarié qui n'a pas déclaré être envoyé par son entreprise).
+                </div>
+
+                <div class="alert alert-success mt-3" *ngIf="feedBackPublish">
+                    Statut de diffusion du profil mis à jour
+                </div>
+
+                <form #publishForm="ngForm" (ngSubmit)="updatePublishStatus(publishForm)">
+
+                    <div class="form-check form-switch mt-3">
+
+                        <input class="form-check-input" type="checkbox" id="publishAccount" name="publishAccount"
+                            [(ngModel)]="student.publishAccount">
+
+                        <label class="form-check-label" for="publishAccount">
+                            Autoriser la publication du profil candidat aux recruteurs
+                            <span class="badge ms-2" [ngClass]="student.publishAccount ? 'bg-success' : 'bg-secondary'">
+                                {{ student.publishAccount ? 'Visible' : 'Non visible' }}
+                            </span>
+                        </label>
+
+                    </div>
+
+                    <button type="submit" class="btn btn-primary mt-3" [ngClass]="{'disabled': publishForm.invalid}">
+                        Enregistrer
+                    </button>
+
+                </form>
+
+                <!-- fin de formation -->
+                <hr>
                 <h3>Fin de formation</h3>
                 <div class="alert bg-warning text-dark"><i class="bi bi-info-square-fill me-1"></i>
                     L'étape qui suit est indispensable, pour que le profil du candidat puisse figurer un jour dans la

@@ -33,4 +33,5 @@ export interface Student {
     localTraining?:string;
      // Index signature
      [key: string]: any; // Index signature for dynamic properties
+     publishAccount?: boolean;
 }

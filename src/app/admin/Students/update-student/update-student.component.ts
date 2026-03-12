@@ -62,6 +62,7 @@ export class UpdateStudentComponent implements OnInit {
   // pour afficher un feedback
   showNoSubscriptionReason: boolean = false
   feedBackNoSubscription: boolean = false;
+  feedBackPublish: boolean = false;
 
   // si état du devis devait être traité
   selectedQuotationSigle!: string;
@@ -1275,6 +1276,32 @@ export class UpdateStudentComponent implements OnInit {
     return Object.keys(this.student.quotations).filter(
       sigle => this.student.quotations![sigle].isAccepted
     );
+  }
+
+
+async updatePublishStatus(form: NgForm) {
+
+  if (form.invalid) return;
+
+  await this.service.updatePublishVisibility(
+    this.student.id,
+    this.student.publishAccount
+  );
+
+  this.feedBackPublish = true;
+
+}
+
+  confirmPublishChange() {
+
+    const confirmAction = confirm(
+      "Modifier la visibilité du profil pour les recruteurs ?"
+    );
+
+    if (!confirmAction) {
+      this.student.publishAccount = !this.student.publishAccount;
+    }
+
   }
 
 }

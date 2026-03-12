@@ -2142,6 +2142,32 @@ async updateQuotationStatus(
 }
 
 
+async updatePublishVisibility(
+  studentId: string,
+  publishAccount: boolean
+): Promise<void> {
+
+  const studentRef = doc(this.firestore, "students", studentId);
+
+  try {
+
+await updateDoc(studentRef, {
+  publishAccount,
+  publishUpdatedAt: serverTimestamp()
+});
+
+    console.log("Publish visibility updated");
+
+  } catch (error) {
+
+    console.error("Error updating publish visibility:", error);
+    throw error;
+
+  }
+
+}
+
+
 
 }
 
