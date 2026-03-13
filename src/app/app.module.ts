@@ -65,6 +65,7 @@ import { TradesMinimalComponent } from './trades-minimal/trades-minimal.componen
 import { RseComponent } from './rse/rse.component';
 import { CentersIndexComponent } from './centers-index/centers-index.component';
 import { InnovationToastComponent } from './innovation-toast/innovation-toast.component';
+import { TimelineComponent } from './timeline/timeline.component';
 // import { CollapsesAlertComponent } from './collapses-alert/collapses-alert.component';
 // import { AutoChangeDirective } from './auto-change.directive';
 
@@ -114,6 +115,7 @@ import { InnovationToastComponent } from './innovation-toast/innovation-toast.co
     RseComponent,
     CentersIndexComponent,
     InnovationToastComponent,
+    TimelineComponent,
     // CollapsesAlertComponent,
     // AutoChangeDirective,
     // TooltipComponent

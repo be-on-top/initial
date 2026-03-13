@@ -19,7 +19,6 @@
   <!-- Carousel marche très bien -->
   <div id="demo" class="carousel slide mx-auto" data-bs-ride="carousel">
 
-    <!-- Indicateurs du carrousel -->
     <div class="carousel-indicators">
       <button title="Aller à la diapositive 1" type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"
         aria-current="true" aria-label="Aller à la diapositive 1"></button>
@@ -29,8 +28,6 @@
         aria-label="Aller à la diapositive 3"></button>
       <button title="Aller à la diapositive 4" type="button" data-bs-target="#demo" data-bs-slide-to="3"
         aria-label="Aller à la diapositive 4"></button>
-      <!-- <button title="Aller à la diapositive 5" type="button" data-bs-target="#demo" data-bs-slide-to="4"
-        aria-label="Aller à la diapositive 5"></button> -->
     </div>
 
     <button class="carousel-control-prev sr-only" type="button" data-bs-target="#demo" data-bs-slide="prev">
@@ -43,9 +40,6 @@
       <span class="visually-hidden">Diapositive suivante</span>
     </button>
 
-
-
-    <!-- Contenu du carrousel -->
     <div class="carousel-inner mx-auto">
       <div class="carousel-item active" aria-live="polite">
         <div class="alert bg-primary text-white display-5 fade show text-center w-100 pb-5">
@@ -62,11 +56,6 @@
           Intégrez une formation sur mesure
         </div>
       </div>
-      <!-- <div class="carousel-item" aria-live="polite">
-        <div class="alert bg-primary text-white display-5 fade show text-center w-100 pb-5">
-          Développez vos compétences <span>professionnelles</span>
-        </div>
-      </div> -->
       <div class="carousel-item" aria-live="polite">
         <div class="alert bg-primary text-white display-5 fade show text-center w-100 pb-5">
           Faites-vous connaître des recruteurs
@@ -86,6 +75,7 @@
 
 
   <hr>
+  <app-punchlines></app-punchlines>
 
   <!-- <div id="accordion">
 
@@ -184,8 +174,9 @@
 
   <!-- accordion.component.html -->
 
-
-
+  <hr>
+  <!-- <h2 class="h2 text-center">Pour en savoir plus</h2> -->
+   
   <div class="accordion accordion-flush row" id="accordionFlushExample">
     <div class="col-md-6">
       <div class="accordion-item">
@@ -429,8 +420,6 @@
 
     <hr class="light">
 
-    <app-punchlines></app-punchlines>
-
     <!-- juste pour tester la recherche -->
     <!-- <div>
       <hr class="light">
@@ -482,6 +471,11 @@
       </p>
 
     </div>
+
+
+
+    <hr>
+    <app-timeline></app-timeline>
 
 
 
