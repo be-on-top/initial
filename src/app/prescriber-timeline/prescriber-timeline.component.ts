@@ -6,6 +6,7 @@ import { AfterViewInit, Component } from '@angular/core';
   styleUrls: ['./prescriber-timeline.component.css']
 })
 export class PrescriberTimelineComponent implements AfterViewInit {
+  
   ngAfterViewInit() {
 
   const items = document.querySelectorAll('.timeline li');
