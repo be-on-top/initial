@@ -13,9 +13,11 @@ import { Trade } from 'src/app/admin/trade';
 import { DOCUMENT, Location } from '@angular/common';
 import { CentersService } from 'src/app/admin/centers.service';
 import { Centers } from 'src/app/admin/centers';
+import { HttpClient } from '@angular/common/http';
 
 import * as L from 'leaflet';
 import { ConsentService } from 'src/app/consent.service';
+
 
 
 @Component({
@@ -56,6 +58,8 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
   // ne vise qu'à retarder avec css l'affichage de tout le contenu
   isPageLoaded: boolean = false;
 
+  tradesMeta: any;
+
   constructor(
     private service: SettingsService,
     private ac: ActivatedRoute,
@@ -70,12 +74,27 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
     private centerService: CentersService,
     private router: Router,
     private consentService: ConsentService,
-    @Inject(DOCUMENT) private document: Document
+    @Inject(DOCUMENT) private document: Document,
+    private http: HttpClient
   ) {
     this.offline = !navigator.onLine
   }
 
   ngOnInit(): void {
+
+     this.http.get<any>('assets/trades-meta.json').subscribe(data => {
+    this.tradesMeta = data;
+
+    const tradeId = this.tradeId; // récupéré depuis paramMap
+    const denomination = this.tradesMeta[tradeId] ?? tradeId;
+
+    this.titleService.setTitle(`Formation ${denomination}`);
+    this.metaService.updateTag({
+      name: 'description',
+      content: `Formation ${denomination} : évaluez vos compétences métier et intégrez une formation sur mesure de ${denomination} .`
+    });
+  });
+
 
     this.setCanonicalURL();
 
