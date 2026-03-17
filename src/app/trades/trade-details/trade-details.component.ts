@@ -60,6 +60,8 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
 
   tradesMeta: any;
 
+  backupDenomination: string = ""
+
   constructor(
     private service: SettingsService,
     private ac: ActivatedRoute,
@@ -82,63 +84,63 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
 
-     this.http.get<any>('assets/trades-meta.json').subscribe(data => {
-    this.tradesMeta = data;
-
-    const tradeId = this.tradeId; // récupéré depuis paramMap
-    const denomination = this.tradesMeta[tradeId] ?? tradeId;
-
-    this.titleService.setTitle(`Formation ${denomination}`);
-    this.metaService.updateTag({
-      name: 'description',
-      content: `Formation ${denomination} : évaluez vos compétences métier et intégrez une formation sur mesure de ${denomination} .`
-    });
-  });
-
-
     this.setCanonicalURL();
 
     // this.tradeId = this.ac.snapshot.params["id"]
     this.ac.paramMap.subscribe(params => {
       this.tradeId = params.get('id') ?? ''
-      // Faire quelque chose avec this.tradeId ici si online
+
+      // 1. ON CHARGE LE JSON DE SECOURS (Immédiat)
+      this.http.get<any>('assets/trades-meta.json').subscribe(data => {
+        this.tradesMeta = data;
+        // On récupère la dénomination pour le <h1> fantôme
+        this.backupDenomination = this.tradesMeta[this.tradeId] ?? this.tradeId;
+
+        // Metas par défaut (Secours)
+        this.titleService.setTitle(`Formation ${this.backupDenomination}`);
+        this.metaService.updateTag({
+          name: 'description',
+          content: `Formation ${this.backupDenomination} : évaluez vos compétences métier et intégrez une formation sur mesure de ${this.backupDenomination}.`
+        });
+      });
+
+      // 2. ON CHARGE METAS DYNAMIQUES (Immédiat)
       if (!this.offline) {
         // 1 récupération du doc en ligne
         this.service.getSigle(this.tradeId).pipe(
-        take(1)  // Prendre seulement un résultat
-      ).subscribe(
+          take(1)  // Prendre seulement un résultat
+        ).subscribe(
           data => {
-          // console.log("metier récupéré via le paramètre de route", data)
-          this.tradeData = data
+            // console.log("metier récupéré via le paramètre de route", data)
+            this.tradeData = data
+
+            this.tradeDataDenominationRGAA = this.processDenomination(data.denomination)
+            // pour personnaliser le metatag
+            const textForDescription = this.transform(this.tradeData.description)
+            this.addTag(`Evaluez vos compétences et démarrez une formation personnalisée de ${this.tradeData.denomination}. ${textForDescription}`)
+            // Mettre à jour le titre de la page
+            this.titleService.setTitle(`Formation ${this.tradeData.denomination}: compétences métier et emploi`)
+
+            // Définir l'URL canonique (je veux tenter de la supprimer  pour simplifier le SEO)
+            // this.setCanonicalURL(`https://be-on-top.io/formation/${this.tradeId}/${this.tradeData.denomination}`);
+            // Pour extraire et additionner les premières valeurs des tableaux associés aux clés spécifiques dans l'objet tradeData.durations, vous pouvez utiliser TypeScript avec Angular de la manière suivante :  
+            const keysToExtractFrom = Object.keys(this.tradeData.durations)
+            this.firstValuesSum = keysToExtractFrom.reduce((sum, key) => {
+              const valuesArray = this.tradeData.durations[key]
+              if (valuesArray && valuesArray.length > 0) {
+                sum += valuesArray[0]
+              }
+              return sum;
+            }, 0)
+
+            // données structurées
+            this.structuredData = this.generateStructuredData(this.tradeData);
+            // this.fetchCenters();
 
 
-          this.tradeDataDenominationRGAA = this.processDenomination(data.denomination)
-          // pour personnaliser le metatag
-          const textForDescription = this.transform(this.tradeData.description)
-          this.addTag(`Evaluez vos compétences et démarrez une formation personnalisée de ${this.tradeData.denomination}. ${textForDescription}`)
-          // Mettre à jour le titre de la page
-          this.titleService.setTitle(`Formation ${this.tradeData.denomination}: compétences métier et emploi`)
+            // console.log("Sum of first values:", this.firstValuesSum)
+          })
 
-          // Définir l'URL canonique (je veux tenter de la supprimer  pour simplifier le SEO)
-          // this.setCanonicalURL(`https://be-on-top.io/formation/${this.tradeId}/${this.tradeData.denomination}`);
-          // Pour extraire et additionner les premières valeurs des tableaux associés aux clés spécifiques dans l'objet tradeData.durations, vous pouvez utiliser TypeScript avec Angular de la manière suivante :  
-          const keysToExtractFrom = Object.keys(this.tradeData.durations)
-          this.firstValuesSum = keysToExtractFrom.reduce((sum, key) => {
-            const valuesArray = this.tradeData.durations[key]
-            if (valuesArray && valuesArray.length > 0) {
-              sum += valuesArray[0]
-            }
-            return sum;
-          }, 0)
-
-          // données structurées
-          this.structuredData = this.generateStructuredData(this.tradeData);
-          // this.fetchCenters();
-
-
-          // console.log("Sum of first values:", this.firstValuesSum)
-        })
-      
 
         // 2 récupérer l'image en ligne
 
@@ -244,12 +246,11 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
       // fin ac.paramMap.subscribe
     })
 
-
-    setTimeout(() => {
-      this.isPageLoaded = true;
-    }, 300); // Petit délai pour que l'effet soit perceptible
-
-
+    // Petit délai initialement ajouté pour que l'effet soit perceptible
+    // setTimeout(() => {
+    //   this.isPageLoaded = true;
+    // }, 300);
+    this.isPageLoaded = true;
   }
 
 
@@ -406,49 +407,49 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
 
   // pour changer le type : 
   cleanText(html: string): string {
-  const temp = document.createElement('div');
-  temp.innerHTML = html;
-  return (temp.textContent || temp.innerText || '').trim();
-}
+    const temp = document.createElement('div');
+    temp.innerHTML = html;
+    return (temp.textContent || temp.innerText || '').trim();
+  }
 
-generateStructuredData(trade: Trade): SafeHtml {
-  const description = trade.description ?? ''; // <-- valeur par défaut vide
-  const data = {
-    "@context": "https://schema.org",
-    "@type": "Course",
-    "name": trade.denomination,
-    "description": this.cleanText(description),
-    "identifier": trade.sigle,
-    "provider": {
-      "@type": "Organization",
-      "name": "BE-ON-TOP",
-      "url": "https://be-on-top.io",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://be-on-top.io/assets/BE-ON-TOP_picto_LOGO.svg"
-      }
-    },
-    "hasCourseInstance": {
-      "@type": "CourseInstance",
-      "courseMode": "Présentiel et distanciel",
-      "duration": `PT${this.firstValuesSum}H`,
-      "instructor": {
-        "@type": "Person",
-        "name": "Formateurs BE-ON-TOP"
+  generateStructuredData(trade: Trade): SafeHtml {
+    const description = trade.description ?? ''; // <-- valeur par défaut vide
+    const data = {
+      "@context": "https://schema.org",
+      "@type": "Course",
+      "name": trade.denomination,
+      "description": this.cleanText(description),
+      "identifier": trade.sigle,
+      "provider": {
+        "@type": "Organization",
+        "name": "BE-ON-TOP",
+        "url": "https://be-on-top.io",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://be-on-top.io/assets/BE-ON-TOP_picto_LOGO.svg"
+        }
       },
-      "location": {
-        "@type": "Place",
-        "name": "Centres BE-ON-TOP",
-        "address": "France"
-      }
-    },
-    "about": trade.competences
-  };
+      "hasCourseInstance": {
+        "@type": "CourseInstance",
+        "courseMode": "Présentiel et distanciel",
+        "duration": `PT${this.firstValuesSum}H`,
+        "instructor": {
+          "@type": "Person",
+          "name": "Formateurs BE-ON-TOP"
+        },
+        "location": {
+          "@type": "Place",
+          "name": "Centres BE-ON-TOP",
+          "address": "France"
+        }
+      },
+      "about": trade.competences
+    };
 
-  return this.sanitizer.bypassSecurityTrustHtml(
-    `<script type="application/ld+json">${JSON.stringify(data)}</script>`
-  );
-}
+    return this.sanitizer.bypassSecurityTrustHtml(
+      `<script type="application/ld+json">${JSON.stringify(data)}</script>`
+    );
+  }
 
 
 
@@ -480,7 +481,7 @@ generateStructuredData(trade: Trade): SafeHtml {
 
   // }
 
-setCanonicalURL(): void {
+  setCanonicalURL(): void {
     try {
       const canonicalUrl = window.location.origin + window.location.pathname;
       let link: HTMLLinkElement | null = this.document.querySelector("link[rel='canonical']");
@@ -506,7 +507,7 @@ setCanonicalURL(): void {
     try {
       const centers = await this.centerService.getDocsByParam(this.tradeId);
       // console.log('Centres récupérés:', centers);
-      this.tradeCenters = centers.filter(center=>center.status===true)
+      this.tradeCenters = centers.filter(center => center.status === true)
       // on désactive tant qu'on n'a pas pu tester à grande échelle...
       // this.addMarkers(centers); // Ajoute les marqueurs après que la carte soit initialisée
     } catch (error) {

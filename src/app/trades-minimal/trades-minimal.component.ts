@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SettingsService } from '../admin/settings.service';
 import { SlugService } from '../slug.service';
+import { Title, Meta } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-trades-minimal',
@@ -16,9 +17,22 @@ export class TradesMinimalComponent implements OnInit {
 
   tradesData: any[] = [];
 
-  constructor(public slugService: SlugService, private settingsService: SettingsService) { }
+  constructor(
+    public slugService: SlugService, 
+    private settingsService: SettingsService,
+    private titleService: Title, // <-- Injection
+    private metaService: Meta    // <-- Injection
+  ) { }
 
   ngOnInit(): void {
+    // --- PARTIE SEO ---
+    this.titleService.setTitle("Catalogue de nos formations métiers | BE-ON-TOP");
+    this.metaService.updateTag({
+      name: 'description',
+      content: "Explorez notre catalogue de formations métiers pour évaluer vos compétences et démarrer au plus vite une formation sur-mesure qui vous ressemble."
+    });
+
+    
     this.settingsService.getTrades().subscribe(data => {
       this.tradesData = data || [];
 

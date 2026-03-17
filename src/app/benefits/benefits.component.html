@@ -26,8 +26,8 @@
         aria-label="Aller à la diapositive 2"></button>
       <button title="Aller à la diapositive 3" type="button" data-bs-target="#demo" data-bs-slide-to="2"
         aria-label="Aller à la diapositive 3"></button>
-      <button title="Aller à la diapositive 4" type="button" data-bs-target="#demo" data-bs-slide-to="3"
-        aria-label="Aller à la diapositive 4"></button>
+      <!-- <button title="Aller à la diapositive 4" type="button" data-bs-target="#demo" data-bs-slide-to="3"
+        aria-label="Aller à la diapositive 4"></button> -->
     </div>
 
     <button class="carousel-control-prev sr-only" type="button" data-bs-target="#demo" data-bs-slide="prev">
@@ -46,11 +46,11 @@
           Evaluez vos connaissances facilement
         </div>
       </div>
-      <div class="carousel-item" aria-live="polite">
+      <!-- <div class="carousel-item" aria-live="polite">
         <div class="alert bg-primary text-white display-5 fade show text-center w-100 pb-5">
           Découvrir immédiatement vos résultats
         </div>
-      </div>
+      </div> -->
       <div class="carousel-item" aria-live="polite">
         <div class="alert bg-primary text-white display-5 fade show text-center w-100 pb-5">
           Intégrez une formation sur mesure
@@ -457,7 +457,7 @@
 
       <!-- Champ input + bouton -->
       <div class="input-group mb-3">
-        <input #userQ type="text" class="form-control" placeholder="Votre question ?"
+        <input #userQ type="text" class="form-control" placeholder="Une question sur la FAQ (ex : durée, coût, inscription...) ?"
           (keydown.enter)="sendMessage(userQ.value); userQ.value=''" />
         <button type="button" class="btn btn-outline-primary" (click)="sendMessage(userQ.value); userQ.value=''">
           Envoyer

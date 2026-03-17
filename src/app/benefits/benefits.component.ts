@@ -17,23 +17,61 @@ export class BenefitsComponent implements OnInit, AfterViewInit {
     this.addTag();
   }
 
+  // ngAfterViewInit() {
+  //   const myCarousel = document.querySelector('#demo');
+  //   if (myCarousel) {
+  //     const carousel = new bootstrap.Carousel(myCarousel, {
+  //       interval: 3000,
+  //       ride: 'carousel',
+  //       touch: true
+  //     });
+  //     setTimeout(() => carousel.cycle(), 0);
+  //   }
+
+
+  //   if (this.faqArray.length === 0) {
+  //     this.prepareFaq(); // prépare FAQ si ce n'est pas déjà fait
+  //   }
+  //   // this.showSearch = true;
+  // }
+
+
   ngAfterViewInit() {
+    // On vérifie si bootstrap est défini globalement sur window
+    const bstrap = (window as any).bootstrap;
+
+    if (bstrap) {
+      this.initCarousel(bstrap);
+    } else {
+      // Si bootstrap n'est pas encore là, on attend un petit peu
+      setTimeout(() => {
+        const retryBstrap = (window as any).bootstrap;
+        if (retryBstrap) this.initCarousel(retryBstrap);
+      }, 500);
+    }
+
+    if (this.faqArray.length === 0) {
+      this.prepareFaq();
+    }
+  }
+
+  private initCarousel(bstrap: any) {
     const myCarousel = document.querySelector('#demo');
     if (myCarousel) {
-      const carousel = new bootstrap.Carousel(myCarousel, {
+      new bstrap.Carousel(myCarousel, {
         interval: 3000,
         ride: 'carousel',
         touch: true
       });
-      setTimeout(() => carousel.cycle(), 0);
     }
-
-
-    if (this.faqArray.length === 0) {
-      this.prepareFaq(); // prépare FAQ si ce n'est pas déjà fait
-    }
-    // this.showSearch = true;
   }
+
+
+
+
+
+
+
 
 
   addTag() {
@@ -72,19 +110,44 @@ export class BenefitsComponent implements OnInit, AfterViewInit {
 
   result: string = '';
 
+  // synonyms: Record<string, string[]> = {
+  //   "demandeur": ["chercheur", "candidat", "inscrit", "personne"],
+  //   "emploi": ["travail", "job", "poste", "fonction", "opportunité", "métier", "profession", "activité"],
+  //   "formation": ["cours", "apprentissage", "programme", "stage", "session", "enseignement", "parcours", "e-learning"],
+  //   "finançable": ["subventionné", "pris en charge", "payé", "aide", "financement", "cpf", "subvention"],
+  //   "certifiante": ["certificat", "diplômante", "attestation", "titre", "qualification"],
+  //   "inscription": ["comment", "enregistrement", "adhésion", "inscrire", "s'inscrire", "candidature", "dossier"],
+  //   "prérequis": ["conditions", "exigences", "niveau", "précondition", "obligation"],
+  //   "durée": ["combien", "temps", "longueur", "période", "heures", "jours", "semaines"],
+  //   "coût": ["prix", "tarif", "frais", "budget", "paiement"],
+  //   "objectif": ["but", "finalité", "cible", "résultat", "but recherché"],
+  //   "compétence": ["aptitude", "capacité", "savoir-faire", "qualification", "expérience"],
+  //   "questionnaire": ["positionnement", "évaluation", "qcm", "test", "quiz", "diagnostic"],
+  //   "financement": ["cpf", "prise en charge", "payer", "coût", "aide"],
+  //   "espace": ["profil", "compte"],
+  //   "résultat": ["score", "évaluation", "bilan"],
+  //   "centre": ["où", "endroit", "lieu"],
+  //   "date": ["quand", "session"]
+  // };
+
   synonyms: Record<string, string[]> = {
-    "demandeur": ["chercheur", "candidat"],
-    "emploi": ["travail", "job", "poste", "fonction", "opportunité"],
-    "formation": ["cours", "apprentissage", "programme", "stage"],
-    "finançable": ["subventionné", "pris en charge", "payé", "aide", "coût"],
-    "certifiante": ["certificat", "diplômante", "attestation"],
-    "inscription": ["enregistrement", "adhésion", "enrollement"],
-    "prérequis": ["conditions", "exigences", "niveau"],
-    "durée": ["temps", "longueur", "période"],
-    "coût": ["prix", "tarif", "frais"],
-    "objectif": ["but", "finalité", "cible"],
-    "compétence": ["aptitude", "capacité", "savoir-faire"],
-    "questionnaire": ["positionnement", "évaluation", "qcm", "test"]
+    "demandeur": ["chercheur", "candidat", "inscrit", "personne", "participant", "bénéficiaire"],
+    "emploi": ["travail", "job", "poste", "fonction", "opportunité", "métier", "profession", "activité", "recrutement"],
+    "formation": ["cours", "apprentissage", "programme", "stage", "session", "enseignement", "parcours", "e-learning", "module"],
+    "finançable": ["subventionné", "pris en charge", "payé", "aide", "financement", "cpf", "subvention", "éligible"],
+    "certifiante": ["certificat", "diplômante", "attestation", "titre", "qualification", "certification"],
+    "inscription": ["comment", "enregistrement", "adhésion", "inscrire", "s'inscrire", "candidature", "dossier", "inscrit"],
+    "prérequis": ["conditions", "exigences", "niveau", "précondition", "obligation", "requis"],
+    "durée": ["combien", "temps", "longueur", "période", "heures", "jours", "semaines", "planning"],
+    "coût": ["prix", "tarif", "frais", "budget", "paiement", "montant"],
+    "objectif": ["but", "finalité", "cible", "résultat", "but recherché", "objectif pédagogique"],
+    "compétence": ["aptitude", "capacité", "savoir-faire", "qualification", "expérience", "connaissance"],
+    "questionnaire": ["positionnement", "évaluation", "qcm", "test", "quiz", "diagnostic", "autoévaluation"],
+    "financement": ["cpf", "prise en charge", "payer", "coût", "aide", "financer"],
+    "espace": ["profil", "compte", "espace personnel"],
+    "résultat": ["score", "évaluation", "bilan", "résultats"],
+    "centre": ["où", "endroit", "lieu", "localisation"],
+    "date": ["quand", "session", "calendrier"]
   };
 
   // Fuzzy léger via distance de Levenshtein
