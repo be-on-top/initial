@@ -176,24 +176,24 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       this.router.navigate(['/']); // redirige vers la page d’accueil     
     }
 
-        this.storedValue = localStorage.getItem('filter')
+    this.storedValue = localStorage.getItem('filter')
 
 
-  if (this.userUid && this.userRouterLinks.user === 'referentsContacts') {
+    if (this.userUid && this.userRouterLinks.user === 'referentsContacts') {
 
-    this.userService.getUser(this.userUid).subscribe(data => {
+      this.userService.getUser(this.userUid).subscribe(data => {
 
-      this.contactStudents = data.students || [];
+        this.contactStudents = data.students || [];
 
-      // Maintenant seulement on charge les students
+        // Maintenant seulement on charge les students
+        this.getStudents();
+
+      });
+
+    } else {
       this.getStudents();
 
-    });
-
-  } else {
-    this.getStudents();
-
-  }
+    }
     this.onSearchTextEntered("")
 
     this.regionalService.getAllRegions().subscribe(regions => {
@@ -215,7 +215,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       });
     })
 
-  
+
 
   }
 
@@ -318,27 +318,19 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     // Étape 1 : Charger tous les étudiants
     this.service.getStudents(order).pipe(
       tap(students => {
-        // Stocker les données brutes avant toute transformation
         this.collectionStudents = students;
-        // console.log('Données brutes (collectionStudents) :', this.collectionStudents);
       }),
-      // A condition qu'ils aient au minimum terminé UN questionnaire...
-      map(students => students.filter(student => this.hasFullResults(student)))
-      // A condition qu'ils aient au minimum commencé UN questionnaire...
-      // map(students => students.filter(student =>  Object.keys(student).some(key =>
-      //     key.startsWith('quizz_')
-      //   )))
+      // On filtre : 1. Doit avoir les résultats 
+      // ET 2. Si c'est un externe, NE DOIT PAS être isPublish: false
+      map(students => students.filter(student => {
+        const hasResults = this.hasFullResults(student);
+        const isVisible = (this.userRouterLinks.user === 'external' || this.userRouterLinks.user === 'referentsContacts')
+          ? student['isPublish'] !== false
+          : true;
 
-      // map(students =>
-      //   this.userRole === 'referent' ? students.filter(student => this.hasFullResults(student)) : students.filter(student => Object.keys(student).some(key =>
-      //     key.startsWith('quizz_')
-      //   )))
-      // A condition qu'ils aient au minimum commencé UN questionnaire...
-      // map(students => students.filter(student =>  Object.keys(student).some(key =>
-      //     key.startsWith('quizz_')
-      //   )))
+        return hasResults && isVisible;
+      }))
 
-      
 
     ).subscribe(filteredStudents => {
 
@@ -346,7 +338,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       this.allStudents = [...this.initialStudents]; // Initialiser allStudents
 
       // Vérifie le rôle utilisateur
-      if (this.userRouterLinks.user === 'admin' || this.userRouterLinks.user==='editor') {
+      if (this.userRouterLinks.user === 'admin' || this.userRouterLinks.user === 'editor') {
         this.applyFilters();
       }
 
@@ -392,8 +384,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
         console.log('type allStudents[0].id:', typeof this.allStudents?.[0]?.id);
 
         const filteredStudents = this.allStudents.filter(student =>
-          this.contactStudents.includes(student.id)
-        );
+          this.contactStudents.includes(student.id));
 
         console.log('filteredStudents result:', filteredStudents);
 

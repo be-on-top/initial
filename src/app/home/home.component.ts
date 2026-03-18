@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild, ChangeDetectorRef, Inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 // je ne vois pas l'utilité de cette méthode pour le moment, donc on désactive !!!!
@@ -15,7 +15,7 @@ import { StudentsService } from '../admin/students.service';
 import { UpdateService } from '../update.service';
 import { BehaviorSubject, Subject, combineLatest, distinctUntilChanged, map, takeUntil } from 'rxjs';
 // import { NetworkService } from '../network.service';
-import { PRECONNECT_CHECK_BLOCKLIST } from '@angular/common';
+import { DOCUMENT, PRECONNECT_CHECK_BLOCKLIST } from '@angular/common';
 import { Analytics, logEvent } from '@angular/fire/analytics';
 import { SlugService } from '../slug.service';
 import { Trade } from '../admin/trade';
@@ -124,7 +124,8 @@ export class HomeComponent implements OnInit {
     // private networkService: NetworkService
     public slugService: SlugService,
     private cdr: ChangeDetectorRef,
-    private consentService: ConsentService
+    private consentService: ConsentService,
+    @Inject(DOCUMENT) private document: Document,
   ) {
 
     this.offline = !navigator.onLine
@@ -139,11 +140,23 @@ export class HomeComponent implements OnInit {
 
   }
 
+  // 2. Créez une petite méthode
+private setCanonical() {
+  let link: HTMLLinkElement | null = this.document.querySelector("link[rel='canonical']");
+  if (!link) {
+    link = this.document.createElement('link');
+    link.setAttribute('rel', 'canonical');
+    this.document.head.appendChild(link);
+  }
+  link.setAttribute('href', 'https://be-on-top.io/home');
+}
+
 
   ngOnInit(): void {
     // alert("coucou!")
 
     this.titleService.setTitle('Accueil - BE-ON-TOP formation application'); // Mettre à jour le titre de la page
+    this.setCanonical()
 
 
 
