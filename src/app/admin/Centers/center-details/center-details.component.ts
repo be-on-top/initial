@@ -6,6 +6,8 @@ import { Location } from '@angular/common';
 import * as L from 'leaflet';
 import { SettingsService } from '../../settings.service';
 import { Trade } from '../../trade';
+import { DOCUMENT } from '@angular/common';
+import { Inject } from '@angular/core';
 
 @Component({
   selector: 'app-center-details',
@@ -16,18 +18,16 @@ export class CenterDetailsComponent implements OnInit, AfterViewInit, OnDestroy 
 
   centerId: any;
   center?: Centers;
-
   localisation: { latitude: string, longitude: string } | null = null;
   map: L.Map | undefined;
-
   userRouterLinks: any
-
   activeTrades:string[]=[]
 
   // flag  pour s'assurer que centerDetails est bien le composant actif
   private isActive: boolean = false;
 
   constructor(
+    @Inject(DOCUMENT) private document: Document, // <--- On l'ajoute ici
     private service: CentersService, 
     private ac: ActivatedRoute, 
     private router: Router, 
@@ -98,6 +98,7 @@ export class CenterDetailsComponent implements OnInit, AfterViewInit, OnDestroy 
       this.localisation = data;
       if (this.localisation && this.isActive) {
         this.loadMap(); // Charge la carte uniquement si le composant est actif
+        // this.setJsonLd(this.center, this.localisation); 
       }
     }, error => {
       console.error('Erreur lors de la récupération des coordonnées:', error);
@@ -214,6 +215,60 @@ export class CenterDetailsComponent implements OnInit, AfterViewInit, OnDestroy 
       this.map = undefined;
     }
   }
+
+  // Dans center-details.component.ts
+// setJsonLd(center: any, loc: any) {
+//   const script = this.document.createElement('script');
+//   script.type = 'application/ld+json';
+//   script.text = JSON.stringify({
+//     "@context": "https://schema.org",
+//     "@type": "EducationalOrganization",
+//     "name": center.name,
+//     "address": {
+//       "@type": "PostalAddress",
+//       "streetAddress": center.address,
+//       "postalCode": center.cp,
+//       "addressLocality": center.city
+//     },
+//     "geo": {
+//       "@type": "GeoCoordinates",
+//       "latitude": loc.latitude,
+//       "longitude": loc.longitude
+//     }
+//   });
+//   this.document.head.appendChild(script);
+// }
+
+// Ajoutez cet ID pour pouvoir le retrouver facilement
+setJsonLd(center: any, loc: any) {
+  // 1. On cherche si un script existe déjà et on le supprime
+  const existingScript = this.document.getElementById('json-ld-center');
+  if (existingScript) {
+    existingScript.remove();
+  }
+
+  // 2. On crée le nouveau
+  const script = this.document.createElement('script');
+  script.id = 'json-ld-center'; // On lui donne un ID
+  script.type = 'application/ld+json';
+  script.text = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "name": center.name,
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": center.address,
+      "postalCode": center.cp,
+      "addressLocality": center.city
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": loc.latitude,
+      "longitude": loc.longitude
+    }
+  });
+  this.document.head.appendChild(script);
+}
 
 
 }

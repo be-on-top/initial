@@ -1,89 +1,88 @@
 <div class="container py-5">
 
-    <h3 class="mb-3">{{center?.name}}</h3>
+    <article *ngIf="center">
 
-
-    <div *ngIf="center">
+        <header>
+            <h1 class="h3 mb-3">{{center.name}}</h1>
+        </header>
 
         <div class="card mt-4">
             <div class="card-header text-muted">id : {{center.id}}</div>
+
             <div class="card-body">
-                <!-- <h4 class="card-title">id : {{evaluator.id}}</h4> -->
-                <p class="card-text"><span class="fw-bold">Nom</span> : {{center.name}}<br>
+                <address class="card-text mb-3">
+                    <span class="fw-bold">Nom</span> : {{center.name}}<br>
                     <span class="fw-bold">Adresse</span> : {{center.address}}<br>
                     <span class="fw-bold">CP</span> : {{center.cp}}<br>
                     <span class="fw-bold">Ville</span> : {{center.city}}
                     <span
                         *ngIf="center.mainCity && center.city.trim().toLowerCase() !== center.mainCity?.trim()?.toLowerCase()">
-                        (Proche de
-                        {{ center.mainCity }})
+                        (Proche de {{ center.mainCity }})
                     </span><br>
-                    <span class="fw-bold" *ngIf="center.tel && center.tel.length>0">Tel : {{center.tel}}</span>
-                    <hr>
-                    <!-- puisque cette vue est partagée entre admin et utilisateur final -->
-                <p *ngIf="userRouterLinks.user && userRouterLinks.user==='admin'"> <span
-                        *ngIf="center.status; else checkbox">Status : actif</span>
-                    <ng-template #checkbox> Status : inactif</ng-template>
-                </p>
+                    <span class="fw-bold" *ngIf="center.tel && center.tel.length > 0">Tel : {{center.tel}}</span>
+                </address>
 
-                <!-- <hr> -->
-                <!-- puisque cette vue est partagée entre admin et utilisateur final -->
-                <!-- <p *ngIf="userRouterLinks.user && userRouterLinks.user==='admin'"> -->
+                <hr>
 
-                <!-- si on doit boucler sur tous les "types" possibles -->
-                <!-- <p>
-                    <span
-                        *ngIf="center.partner; else checkbox">Partenaire : oui</span>
-                    <ng-template #checkbox> Membre du réseaux principal</ng-template>
-                </p> -->
-                <p *ngIf="userRouterLinks.user==='admin'">
-                    <span *ngIf="center.partner">Partenaire : oui</span>
-                    <span *ngIf="center.member">Adhérant : oui</span>
-                    <span *ngIf="center.subsidiary">Affilié : oui</span>
-                    <span *ngIf="center.independent">Indépendant : oui</span>      
-                </p>
-                       <p *ngIf="userRouterLinks.user!=='admin'">
-                    <span
-                        *ngIf="center.partner; else checkbox">Partenaire : oui</span>
-                    <ng-template #checkbox> Membre du réseaux principal</ng-template>
-                </p>
+                <section aria-label="Informations administratives">
+                    <p *ngIf="userRouterLinks.user === 'admin'">
+                        Status : {{ center.status ? 'actif' : 'inactif' }}
+                    </p>
 
+                    <p>
+                        <ng-container *ngIf="userRouterLinks.user==='admin'">
+                            <span *ngIf="center.partner">Partenaire : oui </span>
+                            <span *ngIf="center.member">Adhérant : oui </span>
+                            <span *ngIf="center.subsidiary">Affilié : oui </span>
+                            <span *ngIf="center.independent">Indépendant : oui</span>
+                        </ng-container>
 
-                <!-- affectation métiers -->
-                <!-- <p *ngIf="center.sigles">Formations métiers ({{center.sigles.length}}) : 
-                    <span *ngFor="let s of center.sigles" class="badge bg-secondary me-2"><a class="text-white text-decoration-none" [routerLink]="[('/formation'),s]" >{{s}}</a></span>
-                </p> -->
-                <!-- pour masquer ceux des métiers dont le statut est false (dépubliés) -->
-                <!-- <p *ngIf="center.sigles">Formations métiers <span *ngIf="userRouterLinks.user=='admin'">({{center.sigles.length}})</span> :  -->
-                <p *ngIf="center.sigles">Formations métiers <span *ngIf="userRouterLinks.user=='admin'"></span> :
-                    <span *ngFor="let s of center.sigles" class="badge bg-secondary me-2">
-                        <a class="text-white text-decoration-none" [routerLink]="[('/formation'),s]"
-                            *ngIf="activeTrades.includes(s)">{{s}}</a></span>
-                </p>
+                        <ng-container *ngIf="userRouterLinks.user!=='admin'">
+                            <span *ngIf="center.partner; else checkbox">Partenaire : oui</span>
+                            <ng-template #checkbox>Membre du réseau principal</ng-template>
+                        </ng-container>
+                    </p>
+                </section>
+
+                <section *ngIf="center.sigles" aria-label="Formations proposées">
+                    <p>Formations métiers :
+                        <span *ngFor="let s of center.sigles" class="badge bg-secondary me-2">
+                            <a class="text-white text-decoration-none" [routerLink]="[('/formation'),s]"
+                                *ngIf="activeTrades.includes(s)">{{s}}</a>
+                        </span>
+                    </p>
+                </section>
             </div>
         </div>
-        <div class="card mt-4">
-            <div class="card-header text-muted">Coordonnées de localisation</div>
+
+        <section class="card mt-4" aria-labelledby="map-title">
+            <div class="card-header text-muted" id="map-title">Coordonnées de localisation</div>
             <div class="card-body">
-                <div id="map"></div> <!-- Conteneur de la carte -->
+                <div id="map"></div>
             </div>
-        </div>
+        </section>
 
-        <div class="d-flex my-4 justify-content-end gap-5">
+        <footer class="d-flex my-4 justify-content-end gap-5">
+            <a *ngIf="userRouterLinks.user==='admin'" [routerLink]="['/admin/updateCenter', center.id]"
+                class="btn btn-warning text-white text-decoration-none" role="button"
+                aria-label="Modifier les informations du centre">
+                Modifier
+            </a>
 
-            <button *ngIf="userRouterLinks.user==='admin'" class="btn btn-warning">
-                <a class="text-white" [routerLink]="['/admin/updateCenter', center.id]">Modifier</a>
+            <a *ngIf="userRouterLinks.user==='admin'" [routerLink]="['/admin/centers']"
+                class="btn btn-primary text-white text-decoration-none" role="button"
+                aria-label="Retourner à la liste des centres">
+                Retour à la liste
+            </a>
+
+            <button *ngIf="userRouterLinks.user !== 'admin'" type="button" class="btn btn-primary"
+                (click)="backToPrevious()" aria-label="Retourner à la page précédente">
+                Retour
             </button>
 
-            <button *ngIf="userRouterLinks.user==='admin'" class="btn btn-primary">
-                <a class="text-white" [routerLink]="['/admin/centers']">Retour à la liste</a>
-            </button>
+        </footer>
 
-            <button *ngIf="userRouterLinks.user!=='admin'" class="btn btn-primary">
-                <a class="text-white" (click)="backToPrevious()">Retour</a>
-            </button>
+    </article>
 
-        </div>
-    </div>
 
 </div>
