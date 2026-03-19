@@ -1,17 +1,18 @@
 <div *ngIf="!tradeData" class="visually-hidden">
     <h1>Formation {{ tradeId }} : {{backupDenomination}}</h1>
     <p>
-      Evaluez rapidement vos compétences pour la formation métier de
-      {{ backupDenomination || tradeId }}, démarrez rapidement une formation personnalisée de
-      {{ backupDenomination || tradeId }} et augmentez vos chances de vous faire connaître des recruteurs.
+        Evaluez rapidement vos compétences pour la formation métier de
+        {{ backupDenomination || tradeId }}, démarrez rapidement une formation personnalisée de
+        {{ backupDenomination || tradeId }} et augmentez vos chances de vous faire connaître des recruteurs.
     </p>
 </div>
 
-<div class="container py-5 fade-page " *ngIf="tradeData" [class.loaded]="isPageLoaded"
+<article class="container py-5 fade-page " *ngIf="tradeData" [class.loaded]="isPageLoaded"
     [ngClass]="{'underProgress':tradeData.status===false}">
 
     <!-- <h3>{{tradeData.denomination}}</h3> -->
-    <div class="p-2 bg-primary text-white rounded row fade show mx-1 justify-content-between align-items-start g-5 pe-3"
+    <header
+        class="p-2 bg-primary text-white rounded row fade show mx-1 justify-content-between align-items-start g-5 pe-3"
         [ngClass]="{'underProgress':tradeData.status===false}">
         <!-- {{imageUrl}} -->
         <!-- <h1 class="d-flex justify-content-between mt-3">{{tradeData.denomination}}<app-share-button></app-share-button> -->
@@ -133,7 +134,7 @@
             </div>
         </ng-template>
 
-    </div>
+    </header>
     <!-- 
     {{tradeData | json}} -->
     <div class="mt-4 p-2 position-relative">
@@ -159,80 +160,88 @@
     <div id="accordion">
         <div class="card p-2 border-0">
 
-            <div class="card-header bg-primary pt-3">
-                <a (click)="toggleDescriptionCollapse()"
-                    class="btn text-light text-capitalize d-flex justify-content-between border-0"
-                    data-bs-toggle="collapse" href="#collapseDescription">
-                    Description <i
-                        [ngClass]="{'bi-caret-down-fill': !isDescriptionCollapsed, 'bi-caret-up-fill': isDescriptionCollapsed}"
-                        class="bi fs-4 text-light"></i></a>
-            </div>
+            <section aria-label="description métier">
 
-            <div id="collapseDescription" class="collapse" data-bs-parent="#accordion">
-                <div class="card-body fs-5">
+                <div class="card-header bg-primary pt-3">
+                    <a (click)="toggleDescriptionCollapse()"
+                        class="btn text-light text-capitalize d-flex justify-content-between border-0"
+                        data-bs-toggle="collapse" href="#collapseDescription">
+                        Description <i
+                            [ngClass]="{'bi-caret-down-fill': !isDescriptionCollapsed, 'bi-caret-up-fill': isDescriptionCollapsed}"
+                            class="bi fs-4 text-light"></i></a>
+                </div>
 
-                    <ng-container *ngIf="tradeData.description">
-                        <div class="p-2 trade" [innerHTML]="sanitizer.bypassSecurityTrustHtml(tradeData.description)">
-                        </div>
-                        <!-- et pour avoir accès au lien d'édition -->
-                        <div *ngIf="userRole=='editor'" class="d-flex justify-content-end text mt-3">
-                            <button class="btn btn-primary">
-                                <a class="text-white" [routerLink]="['/admin/updateDescription', tradeData.sigle]">
-                                    <i class="bi bi-pencil-square"></i>
-                                    Editer</a>
-                            </button>
-                            <button class="btn btn-primary ms-2 text-light" data-bs-toggle="modal"
-                                data-bs-target="#myModal">
-                                <i class="bi  bi-image"></i>Image
-                            </button>
-                            <div class="modal" id="myModal">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h4 class="modal-title ms-auto">Image de couverture pour
-                                                {{tradeData.sigle}}</h4>
-                                            <button aria-label="Close window" type="button" class="btn-close"
-                                                data-bs-dismiss="modal"></button>
+                <div id="collapseDescription" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body fs-5">
+
+                        <ng-container *ngIf="tradeData.description">
+                            <div class="p-2 trade"
+                                [innerHTML]="sanitizer.bypassSecurityTrustHtml(tradeData.description)">
+                            </div>
+                            <!-- et pour avoir accès au lien d'édition -->
+                            <div *ngIf="userRole=='editor'" class="d-flex justify-content-end text mt-3">
+                                <button class="btn btn-primary">
+                                    <a class="text-white" [routerLink]="['/admin/updateDescription', tradeData.sigle]">
+                                        <i class="bi bi-pencil-square"></i>
+                                        Editer</a>
+                                </button>
+                                <button class="btn btn-primary ms-2 text-light" data-bs-toggle="modal"
+                                    data-bs-target="#myModal">
+                                    <i class="bi  bi-image"></i>Image
+                                </button>
+                                <div class="modal" id="myModal">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title ms-auto">Image de couverture pour
+                                                    {{tradeData.sigle}}</h4>
+                                                <button aria-label="Close window" type="button" class="btn-close"
+                                                    data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <app-cover-image class="modal-body"
+                                                [tradeId]="tradeData.sigle"></app-cover-image>
                                         </div>
-                                        <app-cover-image class="modal-body"
-                                            [tradeId]="tradeData.sigle"></app-cover-image>
                                     </div>
                                 </div>
+                                <!-- fin de l'option édition avec modale -->
+
                             </div>
-                            <!-- fin de l'option édition avec modale -->
+                        </ng-container>
+                        <!-- </div> -->
 
-                        </div>
-                    </ng-container>
-                    <!-- </div> -->
-
+                    </div>
                 </div>
-            </div>
+
+            </section>
 
 
             <!-- 2 -->
 
-            <div class="card-header secund bg-primary pb-0">
-                <a (click)="toggleCPCollapse()"
-                    class="btn text-light text-capitalize d-flex justify-content-between border-0"
-                    data-bs-toggle="collapse" href="#collapseCP">
-                    Compétences <i [ngClass]="{'bi-caret-down-fill': !isCPCollapsed, 'bi-caret-up-fill': isCPCollapsed}"
-                        class="bi fs-4 text-light"></i></a>
-            </div>
-
-            <div id="collapseCP" class="collapse show" data-bs-parent="#accordion">
-                <div class="card-body fixing px-4 bg-primary text-white border-0">
-
-                    <!-- deuxième onglet -->
-                    <!-- <div class="mt-4 p-5 bg-primary text-white rounded"> -->
-                    <ng-container *ngIf="tradeData.competences">
-                        <p *ngFor="let cp of tradeData.competences, let index=index">
-                            <span class="fw-bold">CP{{index+1}} : </span> {{cp}}
-                        </p>
-                    </ng-container>
-                    <!-- </div> -->
-
+            <section aria-label="compétences métier">
+                <div class="card-header secund bg-primary pb-0">
+                    <a (click)="toggleCPCollapse()"
+                        class="btn text-light text-capitalize d-flex justify-content-between border-0"
+                        data-bs-toggle="collapse" href="#collapseCP">
+                        Compétences <i
+                            [ngClass]="{'bi-caret-down-fill': !isCPCollapsed, 'bi-caret-up-fill': isCPCollapsed}"
+                            class="bi fs-4 text-light"></i></a>
                 </div>
-            </div>
+
+                <div id="collapseCP" class="collapse show" data-bs-parent="#accordion">
+                    <div class="card-body fixing px-4 bg-primary text-white border-0">
+
+                        <!-- deuxième onglet -->
+                        <!-- <div class="mt-4 p-5 bg-primary text-white rounded"> -->
+                        <ng-container *ngIf="tradeData.competences">
+                            <p *ngFor="let cp of tradeData.competences, let index=index">
+                                <span class="fw-bold">CP{{index+1}} : </span> {{cp}}
+                            </p>
+                        </ng-container>
+                        <!-- </div> -->
+
+                    </div>
+                </div>
+            </section>
 
             <!-- 3 -->
 
@@ -243,35 +252,37 @@
 
 
             <ng-container *ngIf="tradeCenters && tradeCenters.length>0">
+                <section aria-label="lieux de formation possible pour le métier">
 
-                <div class="card-header third bg-primary pb-0">
-                    <a (click)="toggleCentersCollapse()" class="btn text-light d-flex justify-content-between border-0"
-                        data-bs-toggle="collapse" href="#collapseCenters">
-                        Lieux de formation <i
-                            [ngClass]="{'bi-caret-down-fill': !isCentersCollapsed, 'bi-caret-up-fill': isCentersCollapsed}"
-                            class="bi fs-4 text-light"></i></a>
-                </div>
-                <!-- {{isCentersCollapsed}} -->
-                <div id="collapseCenters" class="collapse" data-bs-parent="#accordion">
-                    <!-- <div *ngIf="isMapVisible" id="mapId"></div> -->
-                    <div class="card-body fixing px-4 bg-primary text-white border-0">
-
-                        <!-- le nom du centre n'est pas nécessaire -->
-                        <!-- <p *ngFor="let center of tradeCenters, let index=index">
+                    <div class="card-header third bg-primary pb-0">
+                        <a (click)="toggleCentersCollapse()"
+                            class="btn text-light d-flex justify-content-between border-0" data-bs-toggle="collapse"
+                            href="#collapseCenters">
+                            Lieux de formation <i
+                                [ngClass]="{'bi-caret-down-fill': !isCentersCollapsed, 'bi-caret-up-fill': isCentersCollapsed}"
+                                class="bi fs-4 text-light"></i></a>
+                    </div>
+                    <!-- {{isCentersCollapsed}} -->
+                    <div id="collapseCenters" class="collapse" data-bs-parent="#accordion">
+                        <!-- <div *ngIf="isMapVisible" id="mapId"></div> -->
+                        <div class="card-body fixing px-4 bg-primary text-white border-0">
+                            <!-- le nom du centre n'est pas nécessaire -->
+                            <!-- <p *ngFor="let center of tradeCenters, let index=index">
                             <span class="fw-bold">Centre de {{center.city}} : </span> {{center.name}} - CP :
                             {{center.cp}} <a [routerLink]="['/center', center.id]"><i
                                     class="bi bi-geo-alt-fill ms-2 text-light"></i></a>
                         </p> -->
+                            <p *ngFor="let center of tradeCenters, let index=index"><a
+                                    [routerLink]="['/center', center.id]" class="text-decoration-none text-light">
+                                    <span class="fw-bold">Centre de {{center.city}} </span><span class="responsive">:
+                                        {{center.name}} - CP</span> {{center.cp}} <i
+                                        class="bi bi-geo-alt-fill ms-2 text-light"></i></a>
+                            </p>
 
-                        <p *ngFor="let center of tradeCenters, let index=index"><a [routerLink]="['/center', center.id]"
-                                class="text-decoration-none text-light">
-                                <span class="fw-bold">Centre de {{center.city}} </span><span class="responsive">:
-                                    {{center.name}} - CP</span> {{center.cp}} <i
-                                    class="bi bi-geo-alt-fill ms-2 text-light"></i></a>
-                        </p>
-
+                        </div>
                     </div>
-                </div>
+
+                </section>
             </ng-container>
 
             <!-- div juste pour l'arrondi -->
@@ -289,7 +300,4 @@
     </div>
 
 
-
-
-
-</div>
+</article>
