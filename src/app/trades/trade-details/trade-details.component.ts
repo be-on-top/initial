@@ -84,13 +84,18 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
 
-    this.setCanonicalURL();
-
+    // this.setCanonicalURL();
     // this.tradeId = this.ac.snapshot.params["id"]
+    
     this.ac.paramMap.subscribe(params => {
       this.tradeId = params.get('id') ?? ''
 
-      // 1. ON CHARGE LE JSON DE SECOURS (Immédiat)
+      // C'EST ICI QU'ON VERROUILLE l'url canonique
+      if (this.tradeId) {
+        this.setCanonicalURL(this.tradeId);
+      }
+
+      // 1 ON CHARGE LE JSON DE SECOURS (Immédiat)
       this.http.get<any>('assets/trades-meta.json').subscribe(data => {
         this.tradesMeta = data;
         // On récupère la dénomination pour le <h1> fantôme
@@ -107,12 +112,12 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
           denomination: this.backupDenomination,
           sigle: this.tradeId
         });
-        
+
       });
 
       // 2. ON CHARGE METAS DYNAMIQUES (Immédiat)
       if (!this.offline) {
-        // 1 récupération du doc en ligne
+        // récupération du doc en ligne
         this.service.getSigle(this.tradeId).pipe(
           take(1)  // Prendre seulement un résultat
         ).subscribe(
@@ -443,22 +448,41 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
 
   // }
 
-  setCanonicalURL(): void {
+  // setCanonicalURL(): void {
+  //   try {
+  //     const canonicalUrl = window.location.origin + window.location.pathname;
+  //     let link: HTMLLinkElement | null = this.document.querySelector("link[rel='canonical']");
+
+  //     if (!link) {
+  //       link = this.document.createElement('link');
+  //       link.setAttribute('rel', 'canonical');
+  //       this.document.head.appendChild(link);
+  //       console.log('[SEO] Balise canonique créée');
+  //     }
+
+  //     link.setAttribute('href', canonicalUrl);
+  //     console.log(`[SEO] Canonical défini → ${canonicalUrl}`);
+  //   } catch (err) {
+  //     console.error('[SEO] Erreur lors de la mise à jour du canonical :', err);
+  //   }
+  // }
+
+  // pour verrouiller et éviter la pollution du jus des liens externes
+  setCanonicalURL(id: string): void {
     try {
-      const canonicalUrl = window.location.origin + window.location.pathname;
+      const cleanUrl = `https://be-on-top.io/formation/${id}`;
       let link: HTMLLinkElement | null = this.document.querySelector("link[rel='canonical']");
 
       if (!link) {
         link = this.document.createElement('link');
         link.setAttribute('rel', 'canonical');
         this.document.head.appendChild(link);
-        console.log('[SEO] Balise canonique créée');
       }
 
-      link.setAttribute('href', canonicalUrl);
-      console.log(`[SEO] Canonical défini → ${canonicalUrl}`);
+      link.setAttribute('href', cleanUrl);
+      console.log(`[SEO-SHIELD] Jus SEO redirigé vers : ${cleanUrl}`);
     } catch (err) {
-      console.error('[SEO] Erreur lors de la mise à jour du canonical :', err);
+      console.error('[SEO] Erreur Canonical :', err);
     }
   }
 
@@ -698,7 +722,7 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
     const name = trade?.denomination || this.backupDenomination || 'Formation';
     const sigle = trade?.sigle || this.tradeId;
     const description = trade?.description ? this.cleanText(trade.description) : `Formation ${name}`;
-    
+
 
     const data = {
       "@context": "https://schema.org",
