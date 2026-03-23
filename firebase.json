@@ -42,6 +42,11 @@
     ],
     "redirects": [
       {
+        "source": "/formation/ctrmp",
+        "destination": "/formation/ctrmp_2025",
+        "type": 301
+      },
+      {
         "source": "https://be-on-top-reseau-cs.web.app/**",
         "destination": "https://be-on-top.io/:path",
         "type": 301

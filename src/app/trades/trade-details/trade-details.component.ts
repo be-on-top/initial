@@ -102,6 +102,12 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
           name: 'description',
           content: `Formation ${this.backupDenomination} : évaluez vos compétences métier et intégrez une formation sur mesure de ${this.backupDenomination}.`
         });
+        // --- AJOUT DES DONNÉES STRUCTURÉES ICI ---
+        this.structuredData = this.generateStructuredData({
+          denomination: this.backupDenomination,
+          sigle: this.tradeId
+        });
+        
       });
 
       // 2. ON CHARGE METAS DYNAMIQUES (Immédiat)
@@ -133,10 +139,10 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
               return sum;
             }, 0)
 
-            // données structurées
+            // On peut rafraîchir structuredData ici, mais comme c'est du JS injecté, 
+            // le premier appel du secours a déjà fait le job pour Google.
             this.structuredData = this.generateStructuredData(this.tradeData);
             // this.fetchCenters();
-
 
             // console.log("Sum of first values:", this.firstValuesSum)
           })
@@ -412,50 +418,6 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
     return (temp.textContent || temp.innerText || '').trim();
   }
 
-  generateStructuredData(trade: Trade): SafeHtml {
-    const description = trade.description ?? ''; // <-- valeur par défaut vide
-    const data = {
-      "@context": "https://schema.org",
-      "@type": "Course",
-      "name": trade.denomination,
-      "description": this.cleanText(description),
-      "identifier": trade.sigle,
-      "provider": {
-        "@type": "Organization",
-        "name": "BE-ON-TOP",
-        "url": "https://be-on-top.io",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://be-on-top.io/assets/BE-ON-TOP_picto_LOGO.svg"
-        }
-      },
-      "hasCourseInstance": {
-        "@type": "CourseInstance",
-        "courseMode": "Présentiel et distanciel",
-        "duration": `PT${this.firstValuesSum}H`,
-        "instructor": {
-          "@type": "Person",
-          "name": "Formateurs BE-ON-TOP"
-        },
-        "location": {
-          "@type": "Place",
-          "name": "Centres BE-ON-TOP",
-          "address": "France"
-        }
-      },
-      "about": trade.competences
-    };
-
-    return this.sanitizer.bypassSecurityTrustHtml(
-      `<script type="application/ld+json">${JSON.stringify(data)}</script>`
-    );
-  }
-
-
-
-
-
-
 
   // setCanonicalURL(url: string) {
   //   // Cherche un élément <link> avec l'attribut rel="canonical"
@@ -730,6 +692,33 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
     } else {
       console.warn('⛔ Tracking désactivé ou Meta Pixel non chargé');
     }
+  }
+
+  generateStructuredData(trade: any): SafeHtml {
+    const name = trade?.denomination || this.backupDenomination || 'Formation';
+    const sigle = trade?.sigle || this.tradeId;
+    const description = trade?.description ? this.cleanText(trade.description) : `Formation ${name}`;
+    
+
+    const data = {
+      "@context": "https://schema.org",
+      "@type": "Course",
+      "name": name,
+      "description": description,
+      "identifier": sigle,
+      "provider": {
+        "@type": "Organization",
+        "name": "BE-ON-TOP",
+        "url": "https://be-on-top.io",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://be-on-top.io/assets/BE-ON-TOP_picto_LOGO.svg"
+        }
+      }
+    };
+
+    const scriptString = `<script type="application/ld+json">${JSON.stringify(data)}</script>`;
+    return this.sanitizer.bypassSecurityTrustHtml(scriptString);
   }
 
 

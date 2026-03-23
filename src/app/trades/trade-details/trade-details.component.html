@@ -1,3 +1,4 @@
+<div [innerHTML]="structuredData"></div>
 <div *ngIf="!tradeData" class="visually-hidden">
     <h1>Formation {{ tradeId }} : {{backupDenomination}}</h1>
     <p>
@@ -290,7 +291,7 @@
 
         </div>
     </div>
-    <div [innerHTML]="structuredData"></div>
+
     <hr>
     <div class="mt-4">
         <a href="/trainingsIndex" class="btn btn-primary"
