@@ -25,7 +25,7 @@ import { ConsentService } from 'src/app/consent.service';
   templateUrl: './trade-details.component.html',
   styleUrls: ['./trade-details.component.css']
 })
-export class TradeDetailsComponent implements OnInit, AfterViewInit {
+export class TradeDetailsComponent implements OnInit {
 
   // si on passe effectivement des paramètres au router au lieu de faire un input 
   tradeId: string = ""
@@ -86,7 +86,7 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
 
     // this.setCanonicalURL();
     // this.tradeId = this.ac.snapshot.params["id"]
-    
+
     this.ac.paramMap.subscribe(params => {
       this.tradeId = params.get('id') ?? ''
 
@@ -112,6 +112,9 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
           denomination: this.backupDenomination,
           sigle: this.tradeId
         });
+
+        // Maintenant que le SEO est "servi", on s'occupe de l'affichage des centres
+        this.fetchCenters();
 
       });
 
@@ -277,14 +280,14 @@ export class TradeDetailsComponent implements OnInit, AfterViewInit {
 
   private mapInitialized = false;
 
-  async ngAfterViewInit(): Promise<void> {
-    // Récupère les centres, puis charge la carte
-    await this.fetchCenters();
+  // async ngAfterViewInit(): Promise<void> {
+  //   // Récupère les centres, puis charge la carte
+  //   await this.fetchCenters();
 
-    // Après chargement des centres, initialiser la carte une fois le conteneur DOM prêt
-    // Cette partie est désactivée tant qu'on n'a pas procédé à des tests à grande échelle...
-    // this.initializeMapWhenReady();
-  }
+  //   // Après chargement des centres, initialiser la carte une fois le conteneur DOM prêt
+  //   // Cette partie est désactivée tant qu'on n'a pas procédé à des tests à grande échelle...
+  //   // this.initializeMapWhenReady();
+  // }
 
 
 

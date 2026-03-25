@@ -1,12 +1,12 @@
 <div [innerHTML]="structuredData"></div>
-<div *ngIf="!tradeData" class="visually-hidden">
+<!-- <div *ngIf="!tradeData" class="visually-hidden">
     <h1>Formation {{ tradeId }} : {{backupDenomination}}</h1>
     <p>
         Evaluez rapidement vos compétences pour la formation métier de
         {{ backupDenomination || tradeId }}, démarrez rapidement une formation personnalisée de
         {{ backupDenomination || tradeId }} et augmentez vos chances de vous faire connaître des recruteurs.
     </p>
-</div>
+</div> -->
 
 <article class="container py-5 fade-page " *ngIf="tradeData" [class.loaded]="isPageLoaded"
     [ngClass]="{'underProgress':tradeData.status===false}">
