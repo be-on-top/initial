@@ -8,6 +8,9 @@ import { SettingsService } from '../../settings.service';
 import { Trade } from '../../trade';
 import { DOCUMENT } from '@angular/common';
 import { Inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { DomSanitizer, Meta, SafeHtml, Title } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-center-details',
@@ -21,18 +24,24 @@ export class CenterDetailsComponent implements OnInit, AfterViewInit, OnDestroy 
   localisation: { latitude: string, longitude: string } | null = null;
   map: L.Map | undefined;
   userRouterLinks: any
-  activeTrades:string[]=[]
+  activeTrades: string[] = []
 
   // flag  pour s'assurer que centerDetails est bien le composant actif
   private isActive: boolean = false;
 
+  structuredData?: SafeHtml; // A AJOUTER
+
   constructor(
     @Inject(DOCUMENT) private document: Document, // <--- On l'ajoute ici
-    private service: CentersService, 
-    private ac: ActivatedRoute, 
-    private router: Router, 
+    private service: CentersService,
+    private ac: ActivatedRoute,
+    private http: HttpClient, // <--- Crucial pour le matching rapide
+    private sanitizer: DomSanitizer, // A AJOUTER
+    private titleService: Title,
+    private metaService: Meta,
+    private router: Router,
     private location: Location,
-    private tradeService:SettingsService
+    private tradeService: SettingsService
   ) {
     this.centerId = this.ac.snapshot.params["id"];
     this.userRouterLinks = this.ac.snapshot.data;
@@ -46,15 +55,33 @@ export class CenterDetailsComponent implements OnInit, AfterViewInit, OnDestroy 
   ngOnInit(): void {
     this.isActive = true;
 
+    // MATCHING RAPIDE
+    this.http.get<any[]>('assets/centers.json').subscribe(allCenters => {
+      const matchedCenter = allCenters.find(c => String(c.id) === String(this.centerId));
+
+      if (matchedCenter) {
+        this.center = matchedCenter;
+
+        // Metas
+        this.titleService.setTitle(`Centre ${matchedCenter.name}`);
+        this.metaService.updateTag({ name: 'description', content: `Formation chez ${matchedCenter.name} à ${matchedCenter.city}.` });
+
+        // --- AJOUT DU CANONICAL ---
+        this.updateCanonicalUrl(`https://be-on-top.io/center/${this.centerId}`);
+
+        // ON GENERE LES DONNEES STRUCTUREES ICI
+        this.setJsonLd(matchedCenter);
+      }
+    });
+
     // pour récupérer la liste des métiers publiés
     this.tradeService.getTradesWithStatusTrue().subscribe(data => {
-      data
       data.forEach(element => {
         this.activeTrades.push(element.sigle)
-        
+
       });
-      console.log('activeTrades', this.activeTrades );
-      
+      console.log('activeTrades', this.activeTrades);
+
     })
   }
 
@@ -210,65 +237,98 @@ export class CenterDetailsComponent implements OnInit, AfterViewInit, OnDestroy 
 
 
   ngOnDestroy() {
+    // On peut choisir de laisser le canonical ou de le supprimer 
+    // pour laisser la page suivante définir le sien.
     if (this.map) {
       this.map.remove();
       this.map = undefined;
     }
+    this.isActive = false;
   }
 
   // Dans center-details.component.ts
-// setJsonLd(center: any, loc: any) {
-//   const script = this.document.createElement('script');
-//   script.type = 'application/ld+json';
-//   script.text = JSON.stringify({
-//     "@context": "https://schema.org",
-//     "@type": "EducationalOrganization",
-//     "name": center.name,
-//     "address": {
-//       "@type": "PostalAddress",
-//       "streetAddress": center.address,
-//       "postalCode": center.cp,
-//       "addressLocality": center.city
-//     },
-//     "geo": {
-//       "@type": "GeoCoordinates",
-//       "latitude": loc.latitude,
-//       "longitude": loc.longitude
-//     }
-//   });
-//   this.document.head.appendChild(script);
-// }
+  // setJsonLd(center: any, loc: any) {
+  //   const script = this.document.createElement('script');
+  //   script.type = 'application/ld+json';
+  //   script.text = JSON.stringify({
+  //     "@context": "https://schema.org",
+  //     "@type": "EducationalOrganization",
+  //     "name": center.name,
+  //     "address": {
+  //       "@type": "PostalAddress",
+  //       "streetAddress": center.address,
+  //       "postalCode": center.cp,
+  //       "addressLocality": center.city
+  //     },
+  //     "geo": {
+  //       "@type": "GeoCoordinates",
+  //       "latitude": loc.latitude,
+  //       "longitude": loc.longitude
+  //     }
+  //   });
+  //   this.document.head.appendChild(script);
+  // }
 
-// Ajoutez cet ID pour pouvoir le retrouver facilement
-setJsonLd(center: any, loc: any) {
-  // 1. On cherche si un script existe déjà et on le supprime
-  const existingScript = this.document.getElementById('json-ld-center');
-  if (existingScript) {
-    existingScript.remove();
+  // Ajoutez cet ID pour pouvoir le retrouver facilement
+  // setJsonLd(center: any, loc: any) {
+  //   // 1. On cherche si un script existe déjà et on le supprime
+  //   const existingScript = this.document.getElementById('json-ld-center');
+  //   if (existingScript) {
+  //     existingScript.remove();
+  //   }
+
+  //   // 2. On crée le nouveau
+  //   const script = this.document.createElement('script');
+  //   script.id = 'json-ld-center'; // On lui donne un ID
+  //   script.type = 'application/ld+json';
+  //   script.text = JSON.stringify({
+  //     "@context": "https://schema.org",
+  //     "@type": "EducationalOrganization",
+  //     "name": center.name,
+  //     "address": {
+  //       "@type": "PostalAddress",
+  //       "streetAddress": center.address,
+  //       "postalCode": center.cp,
+  //       "addressLocality": center.city
+  //     },
+  //     "geo": {
+  //       "@type": "GeoCoordinates",
+  //       "latitude": loc.latitude,
+  //       "longitude": loc.longitude
+  //     }
+  //   });
+  //   this.document.head.appendChild(script);
+  // }
+
+  // LA FONCTION SIMPLE (SANS GPS, SANS APPENDCHILD)
+  setJsonLd(center: any) {
+    const schema = {
+      "@context": "https://schema.org",
+      "@type": "EducationalOrganization",
+      "name": center.name,
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": center.address,
+        "postalCode": center.cp,
+        "addressLocality": center.city,
+        "addressCountry": "FR"
+      }
+    };
+
+    const scriptHtml = `<script type="application/ld+json">${JSON.stringify(schema)}</script>`;
+    this.structuredData = this.sanitizer.bypassSecurityTrustHtml(scriptHtml);
   }
 
-  // 2. On crée le nouveau
-  const script = this.document.createElement('script');
-  script.id = 'json-ld-center'; // On lui donne un ID
-  script.type = 'application/ld+json';
-  script.text = JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "EducationalOrganization",
-    "name": center.name,
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": center.address,
-      "postalCode": center.cp,
-      "addressLocality": center.city
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": loc.latitude,
-      "longitude": loc.longitude
+  private updateCanonicalUrl(url: string) {
+    let link: HTMLLinkElement | null = this.document.querySelector("link[rel='canonical']");
+    if (!link) {
+      link = this.document.createElement('link');
+      link.setAttribute('rel', 'canonical');
+      this.document.head.appendChild(link);
     }
-  });
-  this.document.head.appendChild(script);
-}
+
+    link.setAttribute('href', url);
+  }
 
 
 }
