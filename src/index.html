@@ -70,6 +70,59 @@
 
   <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script> -->
 
+  <style>
+    /* On cible spécifiquement les enfants directs de app-root 
+     pour que le style "meure" dès que le skeleton est remplacé */
+
+    app-root>.sk-header {
+      height: 3.8rem;
+      background-color: #f8f9fa;
+      width: 100%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    app-root>.sk-main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      flex: 1;
+    }
+
+    /* Pour le pulse et le texte, le préfixe "sk-" garantit l'absence de conflit */
+    .sk-pulse {
+      width: 60px;
+      height: 60px;
+      background-color: #0062fe;
+      border-radius: 50%;
+      opacity: 0.4;
+      animation: sk-pulse-anim 1.5s infinite ease-in-out;
+      margin-bottom: 2rem;
+    }
+
+    .sk-text {
+      color: #444;
+      text-align: center;
+      max-width: 80%;
+      line-height: 1.5;
+      font-size: 1rem;
+    }
+
+    @keyframes sk-pulse-anim {
+
+      0%,
+      100% {
+        transform: scale(0.8);
+        opacity: 0.5;
+      }
+
+      50% {
+        transform: scale(1.1);
+        opacity: 0.2;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -77,83 +130,13 @@
     document.body.setAttribute('translate', 'no');
   </script>
   <app-root>
-    <style>
-      /* Structure Globale */
-      app-root {
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-        background-color: #fafafa;
-        font-family: 'Plus Jakarta Sans', sans-serif;
-        align-items: center;
-      }
-
-      /* Header vide (structurelle) */
-      .sk-header {
-        height: 3.8rem;
-        background-color: #f8f9fa;
-        width: 100%;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-      }
-
-      /* Conteneur principal */
-      .sk-main {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 2rem;
-      }
-
-      /* Le Zinzin (Pulse) */
-      .sk-pulse {
-        width: 60px;
-        height: 60px;
-        background-color: #0062fe;
-        border-radius: 50%;
-        opacity: 0.4;
-        animation: sk-pulse-anim 1.5s infinite ease-in-out;
-        margin-bottom: 2rem;
-      }
-
-      /* Texte pour le score LCP (Neutre pour le SEO) */
-      .sk-text {
-        color: #888;
-        text-align: center;
-        max-width: 80%;
-        line-height: 1.4;
-        font-size: 1rem;
-        min-height: 60px; /* Réserve l'espace pour éviter le saut de mise en page */
-      }
-
-
-      @keyframes sk-pulse-anim {
-
-        0%,
-        100% {
-          transform: scale(0.8);
-          opacity: 0.5;
-        }
-
-        50% {
-          transform: scale(1.1);
-          opacity: 0.2;
-        }
-      }
-    </style>
-
     <header class="sk-header" aria-hidden="true"></header>
-
     <main class="sk-main" aria-hidden="true">
       <div class="sk-pulse"></div>
-      <!-- <p class="sk-text">
-        Solutions d'évaluation et formations personnalisées BE-ON-TOP pour les métiers de demain : ...
-      </p> -->
       <p class="sk-text">
-        <strong>BE-ON-TOP :</strong> Plateforme d'<strong>évaluation des compétences</strong> et
-        <strong>formations professionnelles</strong> sur-mesure. Testez vos aptitudes et boostez votre
-        <strong>employabilité</strong> avec des parcours pédagogiques personnalisés.
+        BE-ON-TOP : Plateforme d'évaluation des compétences et
+        formations professionnelles sur-mesure. Testez vos aptitudes et boostez votre
+        employabilité avec des parcours pédagogiques personnalisés.
       </p>
     </main>
   </app-root>
