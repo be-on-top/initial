@@ -1,12 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, Inject } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-market-app',
   templateUrl: './market-app.component.html',
   styleUrls: ['./market-app.component.css']
 })
-export class MarketAppComponent {
+export class MarketAppComponent implements OnInit, AfterViewInit, OnDestroy {
+  // On stocke la balise pour pouvoir la supprimer proprement
+  private canonicalTag: HTMLLinkElement | null = null;
 
   paragraphs: string[] = [
     "...en réunissant organismes de formation, entreprises, spécialistes de l'intérim et partenaires de l'accompagnement",
@@ -15,59 +18,80 @@ export class MarketAppComponent {
     "...en restituant, par métier et compétences, les durées préconisées selon le niveau chacun"
   ];
 
-  constructor(private metaService: Meta, private titleService: Title) { }
+  currentIndex: number = 0;
 
-
-  currentIndex: number = 0; // Index actuel du paragraphe marqué
-  // interval: any; // Stockage de l'intervalle
+  constructor(
+    private metaService: Meta, 
+    private titleService: Title,
+    @Inject(DOCUMENT) private document: Document // Indispensable pour toucher au <head>
+  ) { }
 
   ngOnInit(): void {
-    // Initialise le carrousel
-    // this.startCarousel();
     this.addTag();
+    this.setPureCanonical(); // Verrouillage de l'URL
   }
 
-  // startCarousel() {
-  //   // Démarrer l'intervalle de changement de paragraphe
-  //   this.interval = setInterval(() => {
-  //     this.currentIndex = (this.currentIndex + 1) % this.paragraphs.length;
-  //   }, 5500); // Change tous les 2 secondes
-  // }
-  ngAfterViewInit(): void {
-    const myCarousel = document.querySelector('#demo');
+  // FORCE L'URL PROPRE (Supprime les UTM et paramètres de tracking pour Google)
+  setPureCanonical() {
+    const pureUrl = 'https://be-on-top.io/market-app'; // Remplace par ton URL exacte
+    
+    // On cherche si une balise existe déjà
+    let link: HTMLLinkElement | null = this.document.querySelector("link[rel='canonical']");
+    
+    if (!link) {
+      link = this.document.createElement('link');
+      link.setAttribute('rel', 'canonical');
+      this.document.head.appendChild(link);
+    }
+    
+    link.setAttribute('href', pureUrl);
+    this.canonicalTag = link;
+    console.log(`[SEO-SHIELD] Canonical verrouillée sur : ${pureUrl}`);
+  }
 
+  ngAfterViewInit(): void {
+    // @ts-ignore (si bootstrap n'est pas typé)
+    const myCarousel = document.querySelector('#demo');
     if (myCarousel) {
+      // @ts-ignore
       const carousel = new bootstrap.Carousel(myCarousel, {
         interval: 7000,
         ride: 'carousel'
       });
-
-      setTimeout(() => {
-        carousel.cycle();
-      }, 1000); // 🔹 Redémarre après 1s pour assurer le lancement sur mobile
-
+      setTimeout(() => { carousel.cycle(); }, 1000);
       myCarousel.addEventListener('slide.bs.carousel', (event: any) => {
         this.currentIndex = event.to;
       });
     }
   }
 
-
-  // ngOnDestroy(): void {
-  //   // Nettoie l'intervalle pour éviter les fuites de mémoire
-  //   if (this.interval) {
-  //     clearInterval(this.interval);
-  //   }
-  // }
-
-
   addTag() {
-    this.titleService.setTitle(`Mieux qu'un bilan de compétences, évaluez les compétences professionnelles de vos candidats apprenants avec BE-ON-TOP.io`);
-    this.metaService.updateTag({ name: 'description', content: 'Mieux qu\'un bilan de compétences, nos questionnaires permettent d\'évaluer un niveau d\'entrée en formation pour une formation personnalisée qui fera le focus sur les compétences et connaissances permettant à chacun d\'être pleinement opérationnel et trouver rapidement du travail...' });
-    this.metaService.addTag({ name: 'robots', content: 'index, follow' });
-    this.metaService.updateTag({ property: 'og:title', content: 'Informations Prescripteurs : Formations et compétences professionnelles évaluées sur BE-ON-top.io' });
-    this.metaService.updateTag({ property: 'og:description', content: 'Mieux qu\'un bilan de compétence, des questionnaires conçus par des experts métiers...' });
-
+    this.titleService.setTitle(`Mieux qu'un bilan de compétences, évaluez les compétences professionnelles avec BE-ON-TOP.io`);
+    this.metaService.updateTag({ name: 'description', content: 'Mieux qu\'un bilan de compétences, nos questionnaires permettent d\'évaluer un niveau d\'entrée en formation...' });
+    
+    // On utilise updateTag plutôt que addTag pour éviter les doublons
+    this.metaService.updateTag({ name: 'robots', content: 'index, follow' });
+    this.metaService.updateTag({ property: 'og:title', content: 'Informations Prescripteurs | BE-ON-TOP.io' });
+    this.metaService.updateTag({ property: 'og:description', content: 'Des questionnaires conçus par des experts métiers...' });
   }
 
+  // NETTOYAGE CHIRURGICAL
+  ngOnDestroy(): void {
+    try {
+      // 1. On retire la balise canonique pour que la page suivante n'en hérite pas
+      if (this.canonicalTag) {
+        this.document.head.removeChild(this.canonicalTag);
+      }
+
+      // 2. On vide les metas pour éviter la pollution
+      this.metaService.removeTag("name='description'");
+      this.metaService.removeTag("name='robots'");
+      this.metaService.removeTag("property='og:title'");
+      this.metaService.removeTag("property='og:description'");
+
+      console.log('[SEO-CLEAN] Page Prescripteurs nettoyée.');
+    } catch (e) {
+      console.warn('Erreur lors du nettoyage SEO');
+    }
+  }
 }

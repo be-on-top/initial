@@ -1038,21 +1038,40 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     }
   }
 
+  // generateCSVContentFromData(data: any[], headers: string[]): string {
+  //   const csvRows = [];
+
+  //   // En-tête
+  //   csvRows.push(headers.join(','));
+  //   //  csvRows.push(headers.join(';'));
+
+  //   // Données
+  //   for (const item of data) {
+  //     const row = headers.map(header => `"${(item[header] ?? '').toString().replace(/"/g, '""')}"`);
+  //     csvRows.push(row.join(','));
+  //     // csvRows.push(row.join(';'));
+  //   }
+
+  //   return csvRows.join('\n');
+  // }
+
   generateCSVContentFromData(data: any[], headers: string[]): string {
+    const separator = navigator.language.startsWith('fr') ? ';' : ',';
+
     const csvRows = [];
 
     // En-tête
-    csvRows.push(headers.join(','));
-    //  csvRows.push(headers.join(';'));
+    csvRows.push(headers.join(separator));
 
     // Données
     for (const item of data) {
-      const row = headers.map(header => `"${(item[header] ?? '').toString().replace(/"/g, '""')}"`);
-      csvRows.push(row.join(','));
-      // csvRows.push(row.join(';'));
+      const row = headers.map(header =>
+        `"${(item[header] ?? '').toString().replace(/"/g, '""')}"`
+      );
+      csvRows.push(row.join(separator));
     }
 
-    return csvRows.join('\n');
+    return '\uFEFF' + csvRows.join('\n');
   }
 
 

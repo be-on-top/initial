@@ -102,11 +102,23 @@
     }
 
     .sk-text {
-      color: #444;
-      text-align: center;
-      max-width: 80%;
+      /* La combinaison pour simuler la Jakarta sans la charger */
+      /* On repasse sur Arial, plus fine que Verdana */
+      font-family: system-ui, -apple-system, sans-serif;
+      font-weight: 300;
+
+      /* RÉDUCTION ICI */
+      font-size: 0.8rem;
       line-height: 1.5;
-      font-size: 1rem;
+
+      /* Ton gris très clair */
+      color: #e2e2e2;
+
+      text-align: center;
+      max-width: 400px;
+      /* On resserre pour éviter les lignes trop longues */
+      margin: 0 auto;
+      -webkit-font-smoothing: antialiased;
     }
 
     @keyframes sk-pulse-anim {

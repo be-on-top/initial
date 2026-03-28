@@ -19,6 +19,9 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   @ViewChild('banner', { read: ViewContainerRef }) vc1!: ViewContainerRef;
 
+  isStandalone = false;
+
+
   constructor(
     private analytics: Analytics,
     // private router: Router,
@@ -47,31 +50,36 @@ export class AppComponent implements OnInit, AfterViewInit {
   // }
 
   ngOnInit(): void {
-  this.checkUserConsent();
+    this.checkUserConsent();
 
-  // Récupérer la permission actuelle de la Notification API
-  const currentPermission = Notification.permission;
+    // Récupérer la permission actuelle de la Notification API
+    const currentPermission = Notification.permission;
 
-  // Récupérer la valeur de permission dans le localStorage
-  const permission = localStorage.getItem('notification-permission');
+    // Récupérer la valeur de permission dans le localStorage
+    const permission = localStorage.getItem('notification-permission');
 
-  // Le bouton ne doit s'afficher que si :
-  // - Il n'y a pas de permission explicite dans localStorage ("granted" ou "denied")
-  // Si la permission a été refusée ou accordée, on ne montre pas le bouton
-  // this.notificationPermissionGranted = permission === 'granted' || currentPermission === 'denied';
-  this.notificationPermissionGranted =
-  permission === 'granted' ||
-  permission === 'denied' ||
-  currentPermission === 'granted' ||
-  currentPermission === 'denied';
+    // Le bouton ne doit s'afficher que si :
+    // - Il n'y a pas de permission explicite dans localStorage ("granted" ou "denied")
+    // Si la permission a été refusée ou accordée, on ne montre pas le bouton
+    // this.notificationPermissionGranted = permission === 'granted' || currentPermission === 'denied';
+    this.notificationPermissionGranted =
+      permission === 'granted' ||
+      permission === 'denied' ||
+      currentPermission === 'granted' ||
+      currentPermission === 'denied';
 
-  // Vérifier si le service worker est prêt
-  this.notificationsService.isServiceWorkerReady$()
-    .pipe(take(1))
-    .subscribe(ready => {
-      this.isServiceWorkerReady = ready;
-    });
-}
+    // Vérifier si le service worker est prêt
+    this.notificationsService.isServiceWorkerReady$()
+      .pipe(take(1))
+      .subscribe(ready => {
+        this.isServiceWorkerReady = ready;
+      });
+
+
+    this.isStandalone =
+      window.matchMedia('(display-mode: standalone)').matches ||
+      (window.navigator as any).standalone === true; // iOS fallback
+  }
 
   ngAfterViewInit(): void {
     if (this.consentReaded) {
@@ -138,5 +146,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   isAuthenticated(): boolean {
     return !!this.authService.getCurrentUserUid();
   }
+
+
+
 
 }

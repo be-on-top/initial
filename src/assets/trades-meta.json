@@ -1,28 +1,106 @@
 {
-  "poseur_ite": "Poseur ITE (Isolation Thermique Extérieure)",
-  "mac_vrd": "Maçon VRD (Voirie et Réseaux Divers)",
-  "escr": "Enseignant ECSR (Enseignant Conduite et Sécurité Routière)",
-  "cl_vul": "Chauffeur Livreur VUL (Véhicule Utilitaire Léger)",
-  "ctrmp": "Conducteur Routier CTRMP (Conducteur Routier en Transport de Marchandises sur Porteur)",
-  "prepa_cdes": "Préparateur de Commandes en entrepôt",
-  "prepa_cdes_2025": "Titre Professionnel Préparateur de Commandes en entrepôt",
-  "agent_mag": "Agent magasinier",
-  "cariste_ent": "Cariste d'entrepôt",
-  "ctrmp_2025PermisC": "Parcours simplifié CTRMP (Conducteur Transport Routier Marchandises sur Porteur)",
-  "permis_c": "Permis C",
-  "permis_ce": "Permis CE",
-  "fimo_marchandise": "Transport Marchandises FIMO (Formation Initiale Minimale Obligatoire)",
-  "ctrmtv_2025": "Parcours CTRMTV (Conducteur Transport Routier Marchandises Tous Véhicules)",
-  "ctrmp_2025": "Parcours complet CTRMP (Conducteur Transport Routier Marchandises sur Porteur)",
-  "caces_R486ACommun": "Conducteur Nacelle R486A PEMP (Plateformes Elévatrices Mobiles de Personnel)",
-  "caces_R482B1": "Conducteur engins de chantier R482 Cat.B1",
-  "caces_R482F": "Conducteur engins de chantier R482 Cat.F",
-  "caces_R485Commun": "Conducteur de Gerbeur Accompagnant R485",
-  "caces_R482Commun": "Conducteur engins de chantier R482 Commun",
-  "caces_R489": "Conducteur chariot élévateur R489 Cat.1A-3-5",
-  "caces_R482": "Conducteur engins de chantier R482 Cat.A",
-  "caces_R482C1": "Conducteur engins de chantier R482 Cat.C1",
-  "permis_d": "Conducteur routier Voyageurs - Permis D",
-  "ctcr": "Transport en commun CTCR (Conducteur Transport Commun sur Route)",
-  "fimo_voyageur": "Transport de voyageurs FIMO (Formation Initiale Minimale Obligatoire)"
+  "poseur_ite": {
+    "label": "Poseur ITE (Isolation Thermique Extérieure)",
+    "seoDescription": "Formez-vous au métier de poseur en isolation thermique extérieure : maîtrisez les techniques de pose, l'amélioration énergétique des bâtiments et les finitions de façade."
+  },
+  "mac_vrd": {
+    "label": "Maçon VRD (Voirie et Réseaux Divers)",
+    "seoDescription": "Apprenez le métier de maçon VRD : réalisez des travaux de voirie, posez des réseaux et participez à l'aménagement urbain et aux infrastructures publiques."
+  },
+  "escr": {
+    "label": "Enseignant ECSR (Enseignant Conduite et Sécurité Routière)",
+    "seoDescription": "Devenez enseignant de la conduite et de la sécurité routière : formez les conducteurs, transmettez les règles de circulation et contribuez à la sécurité sur la route."
+  },
+  "cl_vul": {
+    "label": "Chauffeur Livreur VUL (Véhicule Utilitaire Léger)",
+    "seoDescription": "Formez-vous au métier de chauffeur livreur en véhicule utilitaire léger : organisez vos tournées, assurez la livraison des marchandises et gérez la relation client."
+  },
+  "ctrmp": {
+    "label": "Conducteur Routier CTRMP (Conducteur Routier en Transport de Marchandises sur Porteur)",
+    "seoDescription": "Préparez-vous au métier de conducteur routier sur porteur : transportez des marchandises, respectez la réglementation et optimisez vos trajets en toute sécurité."
+  },
+  "prepa_cdes": {
+    "label": "Préparateur de Commandes en entrepôt",
+    "seoDescription": "Apprenez à préparer les commandes en entrepôt : gérez les stocks, utilisez les outils logistiques et assurez la qualité des expéditions."
+  },
+  "prepa_cdes_2025": {
+    "label": "Titre Professionnel Préparateur de Commandes en entrepôt",
+    "seoDescription": "Obtenez le titre professionnel de préparateur de commandes : développez vos compétences en logistique, picking et gestion des flux en entrepôt."
+  },
+  "agent_mag": {
+    "label": "Agent magasinier",
+    "seoDescription": "Formez-vous au métier d'agent magasinier : réceptionnez les marchandises, organisez le stockage et participez à la gestion des flux logistiques."
+  },
+  "cariste_ent": {
+    "label": "Cariste d'entrepôt",
+    "seoDescription": "Devenez cariste d'entrepôt : maîtrisez la conduite de chariots élévateurs et assurez la manutention et le stockage des marchandises en sécurité."
+  },
+  "ctrmp_2025PermisC": {
+    "label": "Parcours simplifié CTRMP (Conducteur Transport Routier Marchandises sur Porteur)",
+    "seoDescription": "Accédez au métier de conducteur routier avec un parcours simplifié : développez vos compétences en transport de marchandises et conduite de porteur."
+  },
+  "permis_c": {
+    "label": "Permis C",
+    "seoDescription": "Préparez le permis C et apprenez à conduire des véhicules de transport de marchandises lourds en respectant les règles de sécurité routière."
+  },
+  "permis_ce": {
+    "label": "Permis CE",
+    "seoDescription": "Obtenez le permis CE et maîtrisez la conduite d'ensembles articulés pour le transport de marchandises sur longue distance."
+  },
+  "fimo_marchandise": {
+    "label": "Transport Marchandises FIMO (Formation Initiale Minimale Obligatoire)",
+    "seoDescription": "Suivez la formation FIMO marchandises : maîtrisez la réglementation, la sécurité et les pratiques professionnelles du transport routier."
+  },
+  "ctrmtv_2025": {
+    "label": "Parcours CTRMTV (Conducteur Transport Routier Marchandises Tous Véhicules)",
+    "seoDescription": "Formez-vous au transport routier tous véhicules : développez vos compétences en conduite, logistique et réglementation du transport de marchandises."
+  },
+  "ctrmp_2025": {
+    "label": "Parcours complet CTRMP (Conducteur Transport Routier Marchandises sur Porteur)",
+    "seoDescription": "Suivez un parcours complet pour devenir conducteur routier sur porteur : apprenez la conduite, la réglementation et la gestion des livraisons."
+  },
+  "caces_R486ACommun": {
+    "label": "Conducteur Nacelle R486A PEMP (Plateformes Elévatrices Mobiles de Personnel)",
+    "seoDescription": "Formez-vous à la conduite de nacelles R486A : utilisez les plateformes élévatrices en sécurité pour les travaux en hauteur."
+  },
+  "caces_R482B1": {
+    "label": "Conducteur engins de chantier R482 Cat.B1",
+    "seoDescription": "Apprenez à conduire des engins de chantier catégorie B1 : manipulez les équipements en toute sécurité sur les chantiers."
+  },
+  "caces_R482F": {
+    "label": "Conducteur engins de chantier R482 Cat.F",
+    "seoDescription": "Maîtrisez la conduite d'engins de chantier catégorie F : développez vos compétences en manutention et en sécurité sur chantier."
+  },
+  "caces_R485Commun": {
+    "label": "Conducteur de Gerbeur Accompagnant R485",
+    "seoDescription": "Formez-vous à la conduite de gerbeur accompagnant R485 : assurez la manutention et le déplacement des charges en sécurité."
+  },
+  "caces_R482Commun": {
+    "label": "Conducteur engins de chantier R482 Commun",
+    "seoDescription": "Développez vos compétences en conduite d'engins de chantier R482 : travaillez en sécurité sur différents types de chantiers."
+  },
+  "caces_R489": {
+    "label": "Conducteur chariot élévateur R489 Cat.1A-3-5",
+    "seoDescription": "Apprenez à conduire des chariots élévateurs R489 : assurez la manutention, le stockage et la logistique en entrepôt."
+  },
+  "caces_R482": {
+    "label": "Conducteur engins de chantier R482 Cat.A",
+    "seoDescription": "Formez-vous à la conduite d'engins de chantier catégorie A : intervenez sur les chantiers en respectant les règles de sécurité."
+  },
+  "caces_R482C1": {
+    "label": "Conducteur engins de chantier R482 Cat.C1",
+    "seoDescription": "Maîtrisez les engins de chantier catégorie C1 : développez vos compétences en conduite et en sécurité sur chantier."
+  },
+  "permis_d": {
+    "label": "Conducteur routier Voyageurs - Permis D",
+    "seoDescription": "Préparez le permis D et devenez conducteur de transport de voyageurs : assurez le transport en toute sécurité et le confort des passagers."
+  },
+  "ctcr": {
+    "label": "Transport en commun CTCR (Conducteur Transport Commun sur Route)",
+    "seoDescription": "Formez-vous au transport en commun sur route : développez vos compétences en conduite, sécurité et relation avec les passagers."
+  },
+  "fimo_voyageur": {
+    "label": "Transport de voyageurs FIMO (Formation Initiale Minimale Obligatoire)",
+    "seoDescription": "Suivez la formation FIMO voyageurs : maîtrisez la réglementation et les bonnes pratiques du transport de personnes."
+  }
 }

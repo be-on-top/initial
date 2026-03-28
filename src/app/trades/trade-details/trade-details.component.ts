@@ -1,4 +1,4 @@
-import { AfterViewChecked, AfterViewInit, Component, Inject, OnInit } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Meta, SafeHtml } from '@angular/platform-browser';
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { Firestore, docData, doc } from '@angular/fire/firestore';
@@ -25,7 +25,7 @@ import { ConsentService } from 'src/app/consent.service';
   templateUrl: './trade-details.component.html',
   styleUrls: ['./trade-details.component.css']
 })
-export class TradeDetailsComponent implements OnInit {
+export class TradeDetailsComponent implements OnInit,OnDestroy {
 
   // si on passe effectivement des paramètres au router au lieu de faire un input 
   tradeId: string = ""
@@ -60,7 +60,12 @@ export class TradeDetailsComponent implements OnInit {
 
   tradesMeta: any;
 
+  // données de secours extraites du json
   backupDenomination: string = ""
+  seoDescription: string = ""
+
+  // Variable pour garder une référence à la balise canonique pour pouvoir la supprimer
+  private canonicalTag: HTMLLinkElement | null = null;
 
   constructor(
     private service: SettingsService,
@@ -98,19 +103,27 @@ export class TradeDetailsComponent implements OnInit {
       // 1 ON CHARGE LE JSON DE SECOURS (Immédiat)
       this.http.get<any>('assets/trades-meta.json').subscribe(data => {
         this.tradesMeta = data;
-        // On récupère la dénomination pour le <h1> fantôme
-        this.backupDenomination = this.tradesMeta[this.tradeId] ?? this.tradeId;
+        // const meta = this.tradesMeta[this.tradeId] ?? { denomination: this.tradeId, seoDescription: '' };
+        // this.backupDenomination = meta.denomination;
+        // this.seoDescription = meta.seoDescription;
+        // Récupération sécurisée
+        this.backupDenomination = this.tradesMeta[this.tradeId]?.label || this.tradeId;
+        this.seoDescription = this.tradesMeta[this.tradeId]?.seoDescription
+          || `Formation ${this.backupDenomination} : évaluez vos compétences et démarrez une formation personnalisée.`;
 
-        // Metas par défaut (Secours)
+
+        // --- AJOUT DES METAS DE SECOURS ICI ---
+
         this.titleService.setTitle(`Formation ${this.backupDenomination}`);
         this.metaService.updateTag({
           name: 'description',
-          content: `Formation ${this.backupDenomination} : évaluez vos compétences métier et intégrez une formation sur mesure de ${this.backupDenomination}.`
+          content: this.seoDescription
         });
         // --- AJOUT DES DONNÉES STRUCTURÉES ICI ---
         this.structuredData = this.generateStructuredData({
           denomination: this.backupDenomination,
-          sigle: this.tradeId
+          sigle: this.tradeId,
+          description: this.seoDescription
         });
 
         // Maintenant que le SEO est "servi", on s'occupe de l'affichage des centres
@@ -133,7 +146,8 @@ export class TradeDetailsComponent implements OnInit {
             const textForDescription = this.transform(this.tradeData.description)
             this.addTag(`Evaluez vos compétences et démarrez une formation personnalisée de ${this.tradeData.denomination}. ${textForDescription}`)
             // Mettre à jour le titre de la page
-            this.titleService.setTitle(`Formation ${this.tradeData.denomination}: compétences métier et emploi`)
+            // this.titleService.setTitle(`Formation ${this.tradeData.denomination}: compétences métier et emploi`)
+            this.titleService.setTitle(`Formation ${this.tradeData.denomination}`)
 
             // Définir l'URL canonique (je veux tenter de la supprimer  pour simplifier le SEO)
             // this.setCanonicalURL(`https://be-on-top.io/formation/${this.tradeId}/${this.tradeData.denomination}`);
@@ -471,6 +485,24 @@ export class TradeDetailsComponent implements OnInit {
   // }
 
   // pour verrouiller et éviter la pollution du jus des liens externes
+  // setCanonicalURL(id: string): void {
+  //   try {
+  //     const cleanUrl = `https://be-on-top.io/formation/${id}`;
+  //     let link: HTMLLinkElement | null = this.document.querySelector("link[rel='canonical']");
+
+  //     if (!link) {
+  //       link = this.document.createElement('link');
+  //       link.setAttribute('rel', 'canonical');
+  //       this.document.head.appendChild(link);
+  //     }
+
+  //     link.setAttribute('href', cleanUrl);
+  //     console.log(`[SEO-SHIELD] Jus SEO redirigé vers : ${cleanUrl}`);
+  //   } catch (err) {
+  //     console.error('[SEO] Erreur Canonical :', err);
+  //   }
+  // }
+
   setCanonicalURL(id: string): void {
     try {
       const cleanUrl = `https://be-on-top.io/formation/${id}`;
@@ -483,6 +515,7 @@ export class TradeDetailsComponent implements OnInit {
       }
 
       link.setAttribute('href', cleanUrl);
+      this.canonicalTag = link; // <--- LIGNE À AJOUTER ICI pour le OnDestroy
       console.log(`[SEO-SHIELD] Jus SEO redirigé vers : ${cleanUrl}`);
     } catch (err) {
       console.error('[SEO] Erreur Canonical :', err);
@@ -726,7 +759,6 @@ export class TradeDetailsComponent implements OnInit {
     const sigle = trade?.sigle || this.tradeId;
     const description = trade?.description ? this.cleanText(trade.description) : `Formation ${name}`;
 
-
     const data = {
       "@context": "https://schema.org",
       "@type": "Course",
@@ -746,6 +778,41 @@ export class TradeDetailsComponent implements OnInit {
 
     const scriptString = `<script type="application/ld+json">${JSON.stringify(data)}</script>`;
     return this.sanitizer.bypassSecurityTrustHtml(scriptString);
+  }
+
+  // AJOUT 3 : Le "nettoyage" automatique quand on quitte la page
+  // ngOnDestroy(): void {
+  //   try {
+  //     if (this.canonicalTag) {
+  //       this.document.head.removeChild(this.canonicalTag);
+  //       console.log('[SEO-CLEAN] Balise canonique supprimée pour éviter la pollution');
+  //     }
+  //   } catch (err) {
+  //     // Sécurité si la balise a déjà été supprimée par le navigateur
+  //     console.warn('[SEO-CLEAN] Erreur lors du nettoyage du canonical');
+  //   }
+  // }
+
+ngOnDestroy(): void {
+    try {
+      // 1. LE CANONICAL (Ce que tu as déjà fait)
+      if (this.canonicalTag) {
+        this.document.head.removeChild(this.canonicalTag);
+        console.log('[SEO-CLEAN] Balise canonique supprimée');
+      }
+
+      // 2. LES METAS (Pour vider la mémoire du bot avant la page suivante)
+      // On retire les tags que tu as créés/mis à jour dans ngOnInit
+      this.metaService.removeTag("name='description'");
+      this.metaService.removeTag("property='og:title'");
+      this.metaService.removeTag("property='og:description'");
+      this.metaService.removeTag("property='og:url'");
+      this.metaService.removeTag("property='og:image'");
+
+      console.log('[SEO-CLEAN] Metas nettoyées : Page suivante prête');
+    } catch (err) {
+      console.warn('[SEO-CLEAN] Erreur lors du nettoyage');
+    }
   }
 
 
