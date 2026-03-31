@@ -4,11 +4,15 @@
   border-top: 1px solid #eee;
   text-align: center;
 
-  /* position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0); */
+  /* AJOUT : Indique au navigateur que ce bloc est indépendant du reste du layout. 
+     Cela empêche les liens de provoquer un recalcul global (Layout Shift) à 4s. */
+  contain: content; 
+  
+  /* AJOUT : La propriété magique. Elle dit au navigateur : "Ne calcule pas le rendu 
+     de ce bloc tant qu'il n'est pas visible à l'écran". 
+     C'est ce qui va faire chuter ton LCP et ton TBT immédiatement. */
+  content-visibility: auto; 
+  contain-intrinsic-size: 0 500px; /* Réserve l'espace pour éviter un saut au scroll */
 }
 
 .index-links {
@@ -22,15 +26,11 @@
   font-size: 0.75rem;
   color: #666;
   text-decoration: none;
+  
+  /* AJOUT : Optimise le rendu du texte pour le moteur Chrome */
+  content-visibility: auto;
 }
 
 .index-links a:hover {
   text-decoration: underline;
 }
-
-/* Masque le bloc sur mobile */
-/* @media (max-width: 768px) {
-  .site-index {
-    display: none;
-  }
-} */

@@ -795,7 +795,7 @@ export class TradeDetailsComponent implements OnInit,OnDestroy {
 
 ngOnDestroy(): void {
     try {
-      // 1. LE CANONICAL (Ce que tu as déjà fait)
+      // 1. LE CANONICAL (Ce que j'ai déjà fait)
       if (this.canonicalTag) {
         this.document.head.removeChild(this.canonicalTag);
         console.log('[SEO-CLEAN] Balise canonique supprimée');

@@ -1,4 +1,5 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { AfterViewInit, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
@@ -6,15 +7,25 @@ import { Meta, Title } from '@angular/platform-browser';
   templateUrl: './benefits.component.html',
   styleUrls: ['./benefits.component.css']
 })
-export class BenefitsComponent implements OnInit, AfterViewInit {
+export class BenefitsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   bootstrap: any;
   faqArray: { question: string, answer: string }[] = [];
+  chatHistory: { from: 'user' | 'bot', text: string }[] = [];
+  result: string = '';
 
-  constructor(private metaService: Meta, private titleService: Title, private cdr: ChangeDetectorRef) { }
+  private canonicalTag: HTMLLinkElement | null = null;
+
+  constructor(
+    private metaService: Meta,
+    private titleService: Title,
+    private cdr: ChangeDetectorRef,
+    @Inject(DOCUMENT) private document: Document // Injection pour la canonique
+  ) { }
 
   ngOnInit(): void {
     this.addTag();
+    this.setPureCanonical();// Verrouillage de l'URL
   }
 
   // ngAfterViewInit() {
@@ -68,15 +79,9 @@ export class BenefitsComponent implements OnInit, AfterViewInit {
 
 
 
-
-
-
-
-
-
   addTag() {
-    this.titleService.setTitle(`Mieux qu'un bilan de compétences, évaluez vos compétences professionnelles avec BE-ON-TOP.io`);
-    this.metaService.updateTag({ name: 'description', content: 'Les questionnaires d\'évaluation en ligne, dits d\'évaluation initiale sont conçus par des experts métiers...' });
+    this.titleService.setTitle(`Évaluez vos compétences et boostez votre carrière | BE-ON-TOP`);
+    this.metaService.updateTag({ name: 'description', content: 'Evaluez vos connaissances facilement grâce à nos questionnaires métiers. Intégrez une formation calculée sur-mesure. Faites vous connaître des recruteurs et agences partenaires.' });
     this.metaService.addTag({ name: 'robots', content: 'index, follow' });
     this.metaService.updateTag({ property: 'og:title', content: 'Informations Utilisateurs : Formations et compétences professionnelles évaluées sur BE-ON-top.io' });
     this.metaService.updateTag({ property: 'og:description', content: 'Les questionnaires d\'évaluation en ligne, dits d\'évaluation initiale sont conçus par des experts métiers...' });
@@ -108,7 +113,7 @@ export class BenefitsComponent implements OnInit, AfterViewInit {
     console.log("Tableau FAQ prêt pour GPT :", this.faqArray);
   }
 
-  result: string = '';
+
 
   // synonyms: Record<string, string[]> = {
   //   "demandeur": ["chercheur", "candidat", "inscrit", "personne"],
@@ -247,7 +252,6 @@ export class BenefitsComponent implements OnInit, AfterViewInit {
   }
 
 
-
   // Fonction déclenchée par le bouton
   searchFaq(userQuestion: string) {
     if (!userQuestion) {
@@ -296,8 +300,6 @@ export class BenefitsComponent implements OnInit, AfterViewInit {
       .join("<br><br>");
   }
 
-  chatHistory: { from: 'user' | 'bot', text: string }[] = [];
-
   sendMessage(question: string) {
     if (!question.trim()) return;
 
@@ -315,6 +317,60 @@ export class BenefitsComponent implements OnInit, AfterViewInit {
       const chatContainer = document.querySelector('.chat-messages');
       chatContainer?.scrollTo({ top: chatContainer.scrollHeight, behavior: 'smooth' });
     }, 0);
+  }
+
+
+  /**
+     * FORCE L'URL CANONIQUE PURE
+     * Cette méthode sert de "bouclier" contre le Duplicate Content.
+     * Elle garantit que Google n'indexe QUE l'URL officielle, même si l'utilisateur
+     * arrive avec des paramètres de tracking (UTM, Facebook ID, Gclid, etc.).
+     */
+  setPureCanonical() {
+    // 1. On définit l'URL "parfaite" (sans aucun paramètre après le ?)
+    const pureUrl = 'https://be-on-top.io/candidats';
+
+    // 2. On vérifie si une balise <link rel="canonical"> existe déjà dans le <head>
+    // pour éviter d'en créer des dizaines à chaque navigation.
+    let link: HTMLLinkElement | null = this.document.querySelector("link[rel='canonical']");
+
+    // 3. Si elle n'existe pas (première visite ou après un nettoyage OnDestroy)
+    if (!link) {
+      // On crée dynamiquement l'élément <link>
+      link = this.document.createElement('link');
+      // On lui donne son identité : c'est une balise "canonical"
+      link.setAttribute('rel', 'canonical');
+      // On l'injecte physiquement dans la partie <head> de la page
+      this.document.head.appendChild(link);
+    }
+
+    // 4. On force l'attribut "href" avec notre URL propre.
+    // Si une vieille URL traînait, elle est écrasée par celle-ci.
+    link.setAttribute('href', pureUrl);
+
+    // 5. On stocke cette balise dans une variable de classe (this.canonicalTag)
+    // C'est CRUCIAL pour que le ngOnDestroy puisse la supprimer en quittant la page.
+    this.canonicalTag = link;
+
+    // 6. Petit log de contrôle pour vérifier que le bouclier est actif en console
+    console.log(`[SEO-SHIELD] Canonical verrouillée sur : ${pureUrl}`);
+  }
+
+
+
+  ngOnDestroy(): void {
+    try {
+      if (this.canonicalTag) {
+        this.document.head.removeChild(this.canonicalTag);
+      }
+      this.metaService.removeTag("name='description'");
+      this.metaService.removeTag("name='robots'");
+      this.metaService.removeTag("property='og:title'");
+      this.metaService.removeTag("property='og:description'");
+      console.log('[SEO-CLEAN] Page Benefits nettoyée.');
+    } catch (e) {
+      console.warn('Erreur nettoyage Benefits');
+    }
   }
 
 

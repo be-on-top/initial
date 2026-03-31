@@ -1,6 +1,6 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild, ChangeDetectorRef, Inject } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild, ChangeDetectorRef, Inject, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Title } from '@angular/platform-browser';
+import { Meta, Title } from '@angular/platform-browser';
 // je ne vois pas l'utilité de cette méthode pour le moment, donc on désactive !!!!
 // import { loggedIn } from '@angular/fire/auth-guard';
 import { Auth } from '@angular/fire/auth';
@@ -48,7 +48,7 @@ import { ConsentService } from '../consent.service';
   ],
 
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
   user?: any;
   // sub: Subscription;
@@ -87,6 +87,7 @@ export class HomeComponent implements OnInit {
   hauteurImage: number = 145
 
   dataLoading: boolean = true
+  isLoading: boolean = true
 
   private destroy$ = new Subject<void>();
 
@@ -95,7 +96,6 @@ export class HomeComponent implements OnInit {
 
   isLargeScreen?: boolean
 
-
   groupedTrades: any[] = [];  // Pour les métiers avec parentCategory
   ungroupedTrades: any[] = [];  // Pour les métiers sans parentCategory
 
@@ -103,10 +103,10 @@ export class HomeComponent implements OnInit {
   // openCategoryIndex: number | null = null;
   openCategoryIndex: number[] = [];
 
-  
-
-  // dans ton component
   private userRole$ = new BehaviorSubject<string>(this.userRole || ''); // valeur initiale
+
+  // Pour ngOnDestroy
+  private canonicalTag: HTMLLinkElement | null = null;
 
 
   constructor(
@@ -119,6 +119,7 @@ export class HomeComponent implements OnInit {
     private settingsService: SettingsService,
     private updateService: UpdateService,
     private titleService: Title,
+    private metaService: Meta,
     // private networkService: NetworkService,
     private analytics: Analytics,
     // private networkService: NetworkService
@@ -140,32 +141,31 @@ export class HomeComponent implements OnInit {
 
   }
 
-  // 2. Créez une petite méthode
-private setCanonical() {
-  let link: HTMLLinkElement | null = this.document.querySelector("link[rel='canonical']");
-  if (!link) {
-    link = this.document.createElement('link');
-    link.setAttribute('rel', 'canonical');
-    this.document.head.appendChild(link);
+  // Petite méthode pour la canonical
+  private setCanonical() {
+    let link: HTMLLinkElement | null = this.document.querySelector("link[rel='canonical']");
+    if (!link) {
+      link = this.document.createElement('link');
+      link.setAttribute('rel', 'canonical');
+      this.document.head.appendChild(link);
+    }
+    // link.setAttribute('href', 'https://be-on-top.io/home');
+    link.setAttribute('href', 'https://be-on-top.io/');
+    this.canonicalTag = link; // <--- INDISPENSABLE pour le OnDestroy
   }
-  link.setAttribute('href', 'https://be-on-top.io/home');
-}
 
 
   ngOnInit(): void {
-    // alert("coucou!")
-
-    this.titleService.setTitle('Accueil - BE-ON-TOP formation application'); // Mettre à jour le titre de la page
+  
     this.setCanonical()
-
-
+    this.titleService.setTitle('Accueil BE-ON-TOP : Evaluation et formations sur-mesure'); // Mettre à jour le titre de la page
 
     // window.addEventListener('online', () => {   
     if (!this.offline) {
       // alert("on est en ligne")   
       // pour tenter de détecter des updates côté template
       this.updateService.checkForUpdates();
-      
+
       // pour récupérer le role si il est passé
       // this.ac.queryParams.subscribe(params => {
       //   this.userRole = params['userRole'] || '';
@@ -173,8 +173,8 @@ private setCanonical() {
       //   // console.log('UserRole:', this.userRole);
       // })
       this.authService.getCurrentUserInfo().subscribe(userInfo => {
-  this.userRole = userInfo?.role;
-});
+        this.userRole = userInfo?.role;
+      });
 
 
       // Vérification de l'authentification
@@ -449,8 +449,6 @@ private setCanonical() {
   // }
 
 
-  isLoading: boolean = true
-
   onImageLoad
     () {
     // alert("bingo")
@@ -470,6 +468,12 @@ private setCanonical() {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+    if (this.canonicalTag) {
+      this.document.head.removeChild(this.canonicalTag);
+    }
+    // Nettoie aussi les metas de base si tu en as mis des spécifiques sur la Home
+    this.metaService.removeTag("name='description'");
+    console.log('[SEO-CLEAN] Home nettoyée');
   }
 
   logStartEvaluationEvent(tradeName: string) {
@@ -528,14 +532,14 @@ private setCanonical() {
 
   // }
   openFullCatItems(index: number): void {
-  if (this.openCategoryIndex.includes(index)) {
-    // Si la catégorie est déjà ouverte → la fermer
-    this.openCategoryIndex = this.openCategoryIndex.filter(i => i !== index);
-  } else {
-    // Sinon → l'ouvrir (ajouter l'index)
-    this.openCategoryIndex = [...this.openCategoryIndex, index];
+    if (this.openCategoryIndex.includes(index)) {
+      // Si la catégorie est déjà ouverte → la fermer
+      this.openCategoryIndex = this.openCategoryIndex.filter(i => i !== index);
+    } else {
+      // Sinon → l'ouvrir (ajouter l'index)
+      this.openCategoryIndex = [...this.openCategoryIndex, index];
+    }
   }
-}
 
 
   onSearchCat() {
@@ -610,7 +614,7 @@ private setCanonical() {
   //       return normalizedDenomination.includes(normalizedSearchValue) ||
   //         normalizedDescription.includes(normalizedSearchValue);
   //     })
-      
+
   //   );
 
   //   // Si une correspondance est trouvée et que ce groupe n'est pas déjà ouvert, on l'ouvre
@@ -618,71 +622,71 @@ private setCanonical() {
   //     this.openFullCatItems(matchingGroupIndex);
   //   }
 
-    
 
-    
+
+
 
   //   // console.log("Search Value:", searchValue);
   //   // console.log("Normalized Search Value:", normalizedSearchValue);
   // }
 
-// onSearchTextEntered(searchValue: string) {
-//   const normalizedSearchValue = this.removeAccents(searchValue).toLowerCase().trim();
-//   this.searchText = searchValue; // mise à jour pour l'affichage
+  // onSearchTextEntered(searchValue: string) {
+  //   const normalizedSearchValue = this.removeAccents(searchValue).toLowerCase().trim();
+  //   this.searchText = searchValue; // mise à jour pour l'affichage
 
-//   // Si la recherche est vide, on ferme toutes les catégories
-//   // if (!normalizedSearchValue) {
-//   //   this.openCategoryIndex = null;
-//   //   return;
-//   // }
+  //   // Si la recherche est vide, on ferme toutes les catégories
+  //   // if (!normalizedSearchValue) {
+  //   //   this.openCategoryIndex = null;
+  //   //   return;
+  //   // }
 
-//   // Trouver tous les groupes contenant une correspondance
-//   const matchingGroupIndexes = this.groupedTrades
-//     .map((group: any, index: number) => {
-//       const hasMatch = group[1].some((trade: any) => {
-//         const normalizedDenomination = this.removeAccents(trade.denomination).toLowerCase();
-//         const normalizedDescription = this.removeAccents(trade.description).toLowerCase();
-//         return normalizedDenomination.includes(normalizedSearchValue) ||
-//                normalizedDescription.includes(normalizedSearchValue);
-//       });
-//       return hasMatch ? index : null;
-//     })
-//     .filter((index: number | null) => index !== null) as number[];
+  //   // Trouver tous les groupes contenant une correspondance
+  //   const matchingGroupIndexes = this.groupedTrades
+  //     .map((group: any, index: number) => {
+  //       const hasMatch = group[1].some((trade: any) => {
+  //         const normalizedDenomination = this.removeAccents(trade.denomination).toLowerCase();
+  //         const normalizedDescription = this.removeAccents(trade.description).toLowerCase();
+  //         return normalizedDenomination.includes(normalizedSearchValue) ||
+  //                normalizedDescription.includes(normalizedSearchValue);
+  //       });
+  //       return hasMatch ? index : null;
+  //     })
+  //     .filter((index: number | null) => index !== null) as number[];
 
-//   // Ouvrir tous les groupes trouvés
-//   matchingGroupIndexes.forEach(index => {
-//     this.openFullCatItems(index);
-//   });
-// }
+  //   // Ouvrir tous les groupes trouvés
+  //   matchingGroupIndexes.forEach(index => {
+  //     this.openFullCatItems(index);
+  //   });
+  // }
 
-// version optimisée ++
-onSearchTextEntered(searchValue: string) {
-  const normalizedSearchValue = this.removeAccents(searchValue).toLowerCase().trim();
-  this.searchText = searchValue;
+  // version optimisée ++
+  onSearchTextEntered(searchValue: string) {
+    const normalizedSearchValue = this.removeAccents(searchValue).toLowerCase().trim();
+    this.searchText = searchValue;
 
-  // Si la recherche est vide → fermer toutes les catégories
-  if (!normalizedSearchValue) {
-    this.openCategoryIndex = [];
-    return;
-  }
-
-  // Réinitialiser les catégories ouvertes
-  this.openCategoryIndex = [];
-
-  // Scanner chaque groupe de trades
-  this.groupedTrades.forEach((group: any, index: number) => {
-    const hasMatch = group[1].some((trade: any) => {
-      const nom = this.removeAccents(trade.denomination).toLowerCase();
-      const desc = this.removeAccents(trade.description).toLowerCase();
-      return nom.includes(normalizedSearchValue) || desc.includes(normalizedSearchValue);
-    });
-
-    // Si le groupe contient au moins 1 résultat → l'ouvrir
-    if (hasMatch) {
-      this.openCategoryIndex.push(index);
+    // Si la recherche est vide → fermer toutes les catégories
+    if (!normalizedSearchValue) {
+      this.openCategoryIndex = [];
+      return;
     }
-  });
-}
+
+    // Réinitialiser les catégories ouvertes
+    this.openCategoryIndex = [];
+
+    // Scanner chaque groupe de trades
+    this.groupedTrades.forEach((group: any, index: number) => {
+      const hasMatch = group[1].some((trade: any) => {
+        const nom = this.removeAccents(trade.denomination).toLowerCase();
+        const desc = this.removeAccents(trade.description).toLowerCase();
+        return nom.includes(normalizedSearchValue) || desc.includes(normalizedSearchValue);
+      });
+
+      // Si le groupe contient au moins 1 résultat → l'ouvrir
+      if (hasMatch) {
+        this.openCategoryIndex.push(index);
+      }
+    });
+  }
 
 
 
@@ -781,12 +785,14 @@ onSearchTextEntered(searchValue: string) {
 
 
   shouldDisplayCategory(index: number) {
-  // Si aucune recherche : tout afficher
-  if (!this.searchText || this.searchText.trim() === '') return true;
+    // Si aucune recherche : tout afficher
+    if (!this.searchText || this.searchText.trim() === '') return true;
 
-  // Sinon : n'afficher QUE les catégories ouvertes
-  return this.openCategoryIndex.includes(index);
-}
+    // Sinon : n'afficher QUE les catégories ouvertes
+    return this.openCategoryIndex.includes(index);
+  }
+
+
 
 
 }

@@ -30,6 +30,8 @@ export class CenterDetailsComponent implements OnInit, AfterViewInit, OnDestroy 
   private isActive: boolean = false;
 
   structuredData?: SafeHtml; // A AJOUTER
+  private canonicalTag: HTMLLinkElement | null = null;
+  
 
   constructor(
     @Inject(DOCUMENT) private document: Document, // <--- On l'ajoute ici
@@ -236,15 +238,34 @@ export class CenterDetailsComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
 
+  // ngOnDestroy() {
+  //   // On peut choisir de laisser le canonical ou de le supprimer 
+  //   // pour laisser la page suivante définir le sien.
+  //   if (this.map) {
+  //     this.map.remove();
+  //     this.map = undefined;
+  //   }
+  //   this.isActive = false;
+  // }
+
+  // ngOnDestroy complet et plus robuste
   ngOnDestroy() {
-    // On peut choisir de laisser le canonical ou de le supprimer 
-    // pour laisser la page suivante définir le sien.
+    // Nettoyage de la carte (Leaflet)
     if (this.map) {
       this.map.remove();
       this.map = undefined;
     }
+    // Nettoyage de la Canonique (Évite que l'URL du centre reste sur la page suivante)
+    if (this.canonicalTag) {
+      this.document.head.removeChild(this.canonicalTag);
+    }
+    // Nettoyage de la Meta Description
+    this.metaService.removeTag("name='description'");
+    // Flag d'activité
     this.isActive = false;
+    console.log(`[SEO-CLEAN] Centre ${this.centerId} totalement nettoyé.`);
   }
+
 
   // Dans center-details.component.ts
   // setJsonLd(center: any, loc: any) {
@@ -328,6 +349,7 @@ export class CenterDetailsComponent implements OnInit, AfterViewInit, OnDestroy 
     }
 
     link.setAttribute('href', url);
+    this.canonicalTag = link; // <--- AJOUTE CETTE LIGNE
   }
 
 
