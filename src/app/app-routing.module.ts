@@ -20,6 +20,7 @@ import { AccessibilityComplianceReportComponent } from './accessibility-complian
 import { TrainingStatsComponent } from './training-stats/training-stats.component';
 import { TradesMinimalComponent } from './trades-minimal/trades-minimal.component';
 import { CentersIndexComponent } from './centers-index/centers-index.component';
+import { MarketingDocsPublicComponent } from './marketing-docs-public/marketing-docs-public.component';
 
 // const routes: Routes = [
 //   { path: 'home', component: HomeComponent, pathMatch: 'full', canActivate: [AuthGuardService] },
@@ -66,6 +67,7 @@ const routes: Routes = [
   { path: 'trainingStats', component: TrainingStatsComponent},
   { path: 'trainingsIndex', component: TradesMinimalComponent},
   { path: 'centersIndex', component: CentersIndexComponent},
+  { path: 'marketing-pack', component: MarketingDocsPublicComponent}
 
 ];
 

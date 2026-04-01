@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MarketingDocService } from '../marketing-doc.service';
+import { AuthGuardService } from 'src/app/auth-guard.service';
 
 /**
  * Interface pour typer un document marketing
@@ -35,13 +37,30 @@ export class MarketDocFormComponent implements OnInit {
   /** URL du fichier existant (en édition) */
   existingFileUrl: string = '';
 
-  constructor(private fb: FormBuilder) {}
+  /** Qui est authentifié */
+  isUserAdmin: boolean = false;
+
+  constructor(
+    private fb: FormBuilder,
+    private service: MarketingDocService,
+    private authService: AuthGuardService  // 🔹 mon auth existant
+  ) { }
 
   ngOnInit(): void {
     this.initMode();
     this.initForm();
     this.setExistingFile();
+    this.checkAdminRights();
   }
+
+  private checkAdminRights(): void {
+    this.isUserAdmin = !!this.authService.user;
+
+    if (!this.isUserAdmin) {
+      alert('Vous devez être connecté pour effectuer cette action.');
+    }
+  }
+
 
   /**
    * Détermine si on est en mode édition
@@ -89,6 +108,7 @@ export class MarketDocFormComponent implements OnInit {
    * Soumission du formulaire
    */
   onSubmit(): void {
+    if (!this.isUserAdmin) return;  // bloque les non-admins
     if (this.marketForm.invalid) return;
 
     const formData = {
@@ -107,8 +127,12 @@ export class MarketDocFormComponent implements OnInit {
    * Création d’un document
    */
   private createDoc(formData: any): void {
-    console.log('Création document marketing', formData);
-    // TODO: appeler service.createDoc(formData)
+    console.log('🔥 createDoc appelé', formData);
+
+    this.service.saveMarketingDoc(formData)
+      .then(() => console.log('✅ SAVE OK'))
+      .catch(err => console.error('❌ SAVE ERROR', err));
+
   }
 
   /**

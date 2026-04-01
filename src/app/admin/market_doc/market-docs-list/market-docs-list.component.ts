@@ -31,7 +31,7 @@ export class MarketDocsListComponent implements OnInit {
    * Navigation vers le formulaire en mode création
    */
   goToCreate(): void {
-    this.router.navigate(['/admin/marketing/create']);
+    this.router.navigate(['admin/marketing-doc-form']);
   }
 
   /**

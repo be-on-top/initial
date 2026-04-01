@@ -67,6 +67,7 @@ import { CentersIndexComponent } from './centers-index/centers-index.component';
 import { InnovationToastComponent } from './innovation-toast/innovation-toast.component';
 import { TimelineComponent } from './timeline/timeline.component';
 import { PrescriberTimelineComponent } from './prescriber-timeline/prescriber-timeline.component';
+import { MarketingDocsPublicComponent } from './marketing-docs-public/marketing-docs-public.component';
 // import { CollapsesAlertComponent } from './collapses-alert/collapses-alert.component';
 // import { AutoChangeDirective } from './auto-change.directive';
 
@@ -118,6 +119,7 @@ import { PrescriberTimelineComponent } from './prescriber-timeline/prescriber-ti
     InnovationToastComponent,
     TimelineComponent,
     PrescriberTimelineComponent,
+    MarketingDocsPublicComponent,
     // CollapsesAlertComponent,
     // AutoChangeDirective,
     // TooltipComponent
