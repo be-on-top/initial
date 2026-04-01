@@ -74,8 +74,8 @@ import { DeleteAllQuestionsComponent } from './Questions/delete-all-questions/de
 import { UpdatePersonalDataComponent } from './Trainers/update-personal-data/update-personal-data.component';
 import { MyCentersComponent } from './my-centers/my-centers.component';
 import { ExportStudentsComponent } from './export-students/export-students.component';
-
-
+import { MarketDocFormComponent } from './market_doc/market-doc-form/market-doc-form.component';
+import { MarketDocsListComponent } from './market_doc/market-docs-list/market-docs-list.component';
 
 
 
@@ -201,8 +201,9 @@ const routesAdmin: Routes = [
       // pour l'external ajouté par referent
       { path: 'contactStudentsList', component: StudentsListComponent, data: { user: 'referentsContacts' } },
       { path: 'contactStudentDetails/:id', component: StudentDetailsComponent, data: { user: 'referentsContacts' } },
-      { path: 'my-centers', component: MyCentersComponent
-      }
+      { path: 'my-centers', component: MyCentersComponent},
+      { path: 'marketing-doc-form', component: MarketDocFormComponent},
+      { path: 'marketing-docs-list', component: MarketDocsListComponent}
 
 
     ],
@@ -275,7 +276,9 @@ const routesAdmin: Routes = [
     DeleteAllQuestionsComponent,
     UpdatePersonalDataComponent,
     MyCentersComponent,
-    ExportStudentsComponent
+    ExportStudentsComponent,
+    MarketDocFormComponent,
+    MarketDocsListComponent
   ],
   imports: [
     BrowserModule,

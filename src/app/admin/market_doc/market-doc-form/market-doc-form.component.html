@@ -1,0 +1,120 @@
+<div class="container py-5">
+
+    <h1 class="h3 mb-3">Gestion des Assets Marketing</h1>
+  <div class="card shadow-sm">
+    <div class="card-body">
+
+      <!-- Titre -->
+      <h4 class="card-title mb-4">
+        {{ isEditMode ? 'Modifier un document' : 'Ajouter un document' }}
+      </h4>
+
+      <form *ngIf="marketForm" [formGroup]="marketForm" (ngSubmit)="onSubmit()">
+
+        <!-- ========================= -->
+        <!-- Titre -->
+        <!-- ========================= -->
+        <div class="mb-3">
+          <label for="title" class="form-label">
+            Titre <span class="text-danger">*</span>
+          </label>
+
+          <input
+            id="title"
+            type="text"
+            class="form-control"
+            formControlName="title"
+            placeholder="Nom du document"
+            [class.is-invalid]="marketForm.get('title')?.touched && marketForm.get('title')?.invalid"
+          />
+
+          <!-- Message erreur -->
+          <div
+            class="invalid-feedback"
+            *ngIf="marketForm.get('title')?.touched && marketForm.get('title')?.invalid"
+          >
+            Le titre est obligatoire
+          </div>
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- Commentaire -->
+        <!-- ========================= -->
+        <div class="mb-3">
+          <label for="comment" class="form-label">
+            Commentaire
+          </label>
+
+          <textarea
+            id="comment"
+            class="form-control"
+            formControlName="comment"
+            rows="3"
+            placeholder="Description ou usage du visuel"
+          ></textarea>
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- Fichier -->
+        <!-- ========================= -->
+        <div class="mb-4">
+          <label for="file" class="form-label">
+            Fichier
+          </label>
+
+          <input
+            id="file"
+            type="file"
+            class="form-control"
+            (change)="onFileSelected($event)"
+            accept=".png,.jpg,.jpeg,.pdf,.svg"
+          />
+
+          <!-- Fichier existant -->
+          <div *ngIf="existingFileUrl" class="mt-2">
+            <a
+              [href]="existingFileUrl"
+              target="_blank"
+              class="btn btn-sm btn-outline-secondary"
+            >
+              Voir le fichier actuel
+            </a>
+          </div>
+
+          <!-- Fichier sélectionné -->
+          <div *ngIf="selectedFile" class="mt-2">
+            <span class="badge bg-light text-dark">
+              {{ selectedFile.name }}
+            </span>
+          </div>
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- Actions -->
+        <!-- ========================= -->
+        <div class="d-flex justify-content-end gap-2">
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            (click)="onCancel()"
+          >
+            Annuler
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="marketForm.invalid"
+          >
+            {{ isEditMode ? 'Mettre à jour' : 'Créer' }}
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>

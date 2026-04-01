@@ -1,0 +1,64 @@
+<div class="container mt-4">
+
+  <!-- ========================= -->
+  <!-- Header avec titre + bouton création -->
+  <!-- ========================= -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Gestion des Documents Marketing</h2>
+    <button class="btn btn-primary" (click)="goToCreate()">
+      + Ajouter un document
+    </button>
+  </div>
+
+  <!-- ========================= -->
+  <!-- Tableau des documents -->
+  <!-- ========================= -->
+  <div class="card shadow-sm">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>Date</th>
+            <th>Titre</th>
+            <th>Commentaire</th>
+            <th>Fichier</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <!-- Boucle sur les docs -->
+          <tr *ngFor="let doc of marketingDocs">
+            <td>{{ doc.createdAt?.toDate() | date:'dd/MM/yyyy' }}</td>
+            <td><strong>{{ doc.title }}</strong></td>
+            <td><small class="text-muted">{{ doc.comment || '-' }}</small></td>
+            <td>
+              <a [href]="doc.fileUrl" target="_blank" class="btn btn-sm btn-outline-info">
+                Voir le fichier
+              </a>
+            </td>
+            <td class="text-end">
+              <button class="btn btn-sm btn-warning me-2" (click)="onEdit(doc)">
+                Modifier
+              </button>
+              <!-- <button class="btn btn-sm btn-danger" (click)="onDelete(doc.id!, doc.fileUrl)">
+                Supprimer
+              </button> -->
+              <button class="btn btn-sm btn-danger" *ngIf="doc.id" (click)="onDelete(doc.id, doc.fileUrl)">
+                Supprimer
+              </button>
+            </td>
+          </tr>
+
+          <!-- Ligne vide si aucun document -->
+          <tr *ngIf="marketingDocs.length === 0">
+            <td colspan="5" class="text-center py-4 text-muted">
+              Aucun document pour le moment.
+            </td>
+          </tr>
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+</div>

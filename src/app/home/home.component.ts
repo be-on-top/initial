@@ -149,8 +149,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       link.setAttribute('rel', 'canonical');
       this.document.head.appendChild(link);
     }
-    // link.setAttribute('href', 'https://be-on-top.io/home');
-    link.setAttribute('href', 'https://be-on-top.io/');
+    link.setAttribute('href', 'https://be-on-top.io/home');
+    // link.setAttribute('href', 'https://be-on-top.io/');
     this.canonicalTag = link; // <--- INDISPENSABLE pour le OnDestroy
   }
 
