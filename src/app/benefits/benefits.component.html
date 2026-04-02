@@ -176,7 +176,7 @@
 
   <hr>
   <!-- <h2 class="h2 text-center">Pour en savoir plus</h2> -->
-   
+
   <div class="accordion accordion-flush row" id="accordionFlushExample">
     <div class="col-md-6">
       <div class="accordion-item">
@@ -457,7 +457,8 @@
 
       <!-- Champ input + bouton -->
       <div class="input-group mb-3">
-        <input #userQ type="text" class="form-control" placeholder="Une question sur la FAQ (ex : durée, coût, inscription...) ?"
+        <input #userQ type="text" class="form-control"
+          placeholder="Une question sur la FAQ (ex : durée, coût, inscription...) ?"
           (keydown.enter)="sendMessage(userQ.value); userQ.value=''" />
         <button type="button" class="btn btn-outline-primary" (click)="sendMessage(userQ.value); userQ.value=''">
           Envoyer
@@ -534,6 +535,79 @@
     <!-- <hr>
 
     <app-punchlines></app-punchlines> -->
+
+    <!-- essai annonce -->
+    <section class="container my-4" aria-labelledby="sitl-title">
+      <div class="row align-items-stretch rounded shadow overflow-hidden">
+
+        <!-- Bloc principal avec image décorative -->
+        <div class="col-md-8 p-4 p-md-5 text-white d-flex align-items-center bg-dark">
+
+          <!-- Overlay pour contraste WCAG -->
+          <div class="p-3 rounded w-100" class="bg-dark">
+
+            <header>
+              <h2 id="sitl-title" class="fw-bold h3 text-white">
+                Application Laureate prix de l'Innovation Awards
+              </h2>
+            </header>
+
+            <p>
+              Salon international du Transport et de la Logistique<br>
+              <strong>Du 31 mars au 2 avril 2026</strong>
+            </p>
+
+            <p>
+              Le prix de l'Innovation Awards est un concours qui récompense les exposants à travers les innovations les
+              plus prometteuses dans le domaine du transport et de la logistique.</p>
+
+            <p>
+              <span class="badge bg-light text-dark">
+                Avis du jury
+              </span>
+            </p>
+
+            <p>Solution pertinente répondant à un
+              besoin majeur et transversal, avec un parcours de formation intuitif et facile d'utilisation, notamment
+              sur
+              smartphone. Expérience utilisateur appréciée et potentiel d'adoption intéressant. L'approche est cohérente
+              et bien positionnée sur le marché, avec un fort potentiel de développement.
+            </p>
+
+
+
+            <p class="mb-0">
+              <a href="https://awards.sitl.eu/sitlawards2026/fr/page/home" class="btn btn-primary" target="_blank"
+                rel="noopener noreferrer" aria-describedby="sitl-external">
+
+                Accéder à la page dédiée sur le site du SITL
+                <span class="visually-hidden">(ouvre un site externe dans un nouvel onglet)</span>
+              </a>
+
+              <span id="sitl-external" class="visually-hidden">
+                Ce lien ouvre le site sitl.eu dans une nouvelle fenêtre ou un nouvel onglet
+              </span>
+
+          </div>
+        </div>
+
+        <!-- Logos avec alt appropriés -->
+        <aside class="col-md-4 bg-dark text-center d-flex flex-column justify-content-center">
+
+          <img
+            src="https://firebasestorage.googleapis.com/v0/b/be-on-top-beta.appspot.com/o/partners_logos%2FLogoFR-26-wht.png?alt=media&token=dbb33259-0d7a-4af3-b21f-f56f57a86085g%22"
+            class="img-fluid mb-3" alt="Logo du salon SITL, Salon international du transport et de la logistique">
+
+          <!-- <img src="logo-cgi.png"
+           class="img-fluid"
+ 
+           alt="Logo CGI Formation et CityPro, partenaires exposants"> -->
+
+        </aside>
+
+      </div>
+    </section>
+    <!-- fin annonce -->
 
 
 

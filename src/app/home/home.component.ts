@@ -156,71 +156,44 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-  
-    this.setCanonical()
-    this.titleService.setTitle('Accueil BE-ON-TOP : Evaluation et formations sur-mesure'); // Mettre à jour le titre de la page
 
-    // window.addEventListener('online', () => {   
+    this.setCanonical();
+    this.titleService.setTitle('Accueil BE-ON-TOP : Evaluation et formations sur-mesure');
+
     if (!this.offline) {
-      // alert("on est en ligne")   
-      // pour tenter de détecter des updates côté template
+
       this.updateService.checkForUpdates();
 
-      // pour récupérer le role si il est passé
-      // this.ac.queryParams.subscribe(params => {
-      //   this.userRole = params['userRole'] || '';
-      //   // this.userRole$.next(this.userRole); // pousse la valeur
-      //   // console.log('UserRole:', this.userRole);
-      // })
+      // 🔹 rôle utilisateur
       this.authService.getCurrentUserInfo().subscribe(userInfo => {
         this.userRole = userInfo?.role;
       });
 
-
-      // Vérification de l'authentification
+      // 🔹 auth
       onAuthStateChanged(this.auth, (user: any) => {
         if (user && (this.userRole == 'student' || this.userRole == '')) {
           this.user = user.uid;
           this.dataLoading = false;
-          // this.userRole$.next(this.userRole); // pousse la valeur
 
-          // Utilisation de setTimeout pour retarder l'appel à Firestore après le LCP
           setTimeout(() => {
             this.studentService.getStudentById(user.uid)
               .subscribe((data) => {
                 this.studentData = data;
                 this.checkIfQuizzAchieved();
-                // this.dataLoading = false;
-
-                // Forcer la détection de changements si nécessaire
                 this.cdr.detectChanges();
               });
-          }, 100); // Retarde d'un petit délai (100 ms ici)
+          }, 100);
 
-          // Appels aux autres services (en même temps ou après le délai)
           this.authService.getUserId();
-          // this.authService.getToken()?.then(res => console.log("token authentification depuis authService", res.token));
-          // this.authService.authStatusListener();
 
         } else if (user && this.userRole !== '') {
-          // this.isEditor = true;
           this.user = user.uid;
-          // this.userRole$.next(this.userRole); // pousse la valeur
         } else {
           console.log("Utilisateur non authentifié");
-          // this.userRole$.next(this.userRole); // pousse la valeur
         }
       });
 
-
-
-
-      //--------------------
-      // pour récupérer les métiers (sigles) enregistrés en base qui détermineront les différentes zones éditioriales
-
-      // this.settingsService.getTrades()
-      //   .pipe(map(data => data.filter(item => item.status && item.status === true)))
-      // pour ne pas bouger l'appel getTrades()
+      // 🔹 récupération des trades
       combineLatest([
         this.settingsService.getTrades(),
         this.authService.getCurrentUserInfo()
@@ -233,76 +206,63 @@ export class HomeComponent implements OnInit, OnDestroy {
           )
         )
         .subscribe(data => {
-          // pour inverser temporairement (retarder l'appariton des CACES si parentCategory inexploitée)
-          // this.tradesData = data.reverse();
-          this.tradesData = data;
-          // console.log("this.tradesData", this.tradesData);
 
-          // si on méthode à l'identique de header pour le cas où plusieurs catégories
-          this.groupTrades()
-          // pour tester regroupement basic
-          // this.onSearchCatEntered("caces")
+          this.tradesData = data || [];
 
-          // pour regroupement par parentCategory
-          this.onSearchCat()
+          // 🔹 1. catégories
+          this.onSearchCat();
 
-          // pour surveiller la taille de l'écran
-          this.checkScreenSize();
+          // 🔹 2. regroupement
+          this.groupTrades();
 
-
-          // Charge les images pour chaque métier
-          this.tradesData.forEach((trade: any) => {
+          // 🔹 3. chargement images OPTIMISÉ (PARALLÈLE + 1 seul detectChanges)
+          const imagePromises = this.tradesData.map((trade: any) =>
             this.settingsService.loadImageReduced(trade.id)
               .then((url: string) => {
-                trade.imageUrl = url; // Met à jour l'URL de l'image si elle est trouvée
+                trade.imageUrl = url || './assets/images-presentation-metiers-vide.jpg';
               })
-              .catch((error) => {
-                if (error.code === 'storage/object-not-found') {
-                  trade.imageUrl = './assets/images-presentation-metiers-vide.jpg'; // Définir l'URL par défaut en cas d'erreur 404
-                } else {
-                  console.error('Erreur lors du chargement de l\'image pour le métier ' + trade.id, error);
-                }
+              .catch(() => {
+                trade.imageUrl = './assets/images-presentation-metiers-vide.jpg';
               })
-          })
+          );
 
-          // on supprime de tradesData ceux qui ont une catégorie commune
-          this.tradesData = this.tradesData.filter((item: Trade) => !this.catGroup.includes(item));
+          Promise.allSettled(imagePromises).then(() => {
+            this.cdr.detectChanges(); // 🔥 UNE SEULE FOIS
+          });
 
-        })
+          // 🔹 4. filtrage final (inchangé)
+          if (this.catGroup?.length) {
+            this.tradesData = this.tradesData.filter(
+              (item: Trade) => !this.catGroup.includes(item)
+            );
+          }
 
+          // 🔹 écran
+          this.checkScreenSize();
 
+        });
 
-    }
-    else if (this.offline) {
+    } else {
 
-      // alert("version offline")
-      // pour ouvrir la base indexedDB
+      // 🔹 OFFLINE
       const openRequest = window.indexedDB.open('my-database');
-      // Pour gérer les évènements à l'ouverture de la base
-      openRequest.onsuccess = (event) => {
+
+      openRequest.onsuccess = () => {
         const db = openRequest.result;
         const transaction = db.transaction('sigles', 'readonly');
         const objectStore = transaction.objectStore('sigles');
         const getAllRequest = objectStore.getAll();
 
-        // alert(this.tradesData)
-
-        // Traitez les données récupérées ici depuis base de données indexée my-database
-        getAllRequest.onsuccess = (event) => {
+        getAllRequest.onsuccess = () => {
           this.tradesData = getAllRequest.result;
-          console.log("this.tradesData offline", this.tradesData);
+
           this.tradesData.forEach((trade: any) => {
-            trade.imageUrl = `../../assets/${trade.id}.jpeg`
-            console.log(trade.imageUrl);
-
+            trade.imageUrl = `../../assets/${trade.id}.jpeg`;
           });
-        }
-
-      } // fin de la requête indexedDB
+        };
+      };
 
     }
-
-
   }
 
 
