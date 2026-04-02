@@ -165,32 +165,67 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.updateService.checkForUpdates();
 
       // 🔹 rôle utilisateur
-      this.authService.getCurrentUserInfo().subscribe(userInfo => {
-        this.userRole = userInfo?.role;
-      });
+      // this.authService.getCurrentUserInfo().subscribe(userInfo => {
+      //   this.userRole = userInfo?.role;
+      // });
 
       // 🔹 auth
+      // onAuthStateChanged(this.auth, (user: any) => {
+      //   if (user && (this.userRole == 'student' || this.userRole == '')) {
+      //     this.user = user.uid;
+      //     this.dataLoading = false;
+
+      //     setTimeout(() => {
+      //       this.studentService.getStudentById(user.uid)
+      //         .subscribe((data) => {
+      //           this.studentData = data;
+      //           this.checkIfQuizzAchieved();
+      //           this.cdr.detectChanges();
+      //         });
+      //     }, 100);
+
+      //     this.authService.getUserId();
+
+      //   } else if (user && this.userRole !== '') {
+      //     this.user = user.uid;
+      //   } else {
+      //     console.log("Utilisateur non authentifié");
+      //   }
+      // });
       onAuthStateChanged(this.auth, (user: any) => {
-        if (user && (this.userRole == 'student' || this.userRole == '')) {
-          this.user = user.uid;
-          this.dataLoading = false;
 
-          setTimeout(() => {
-            this.studentService.getStudentById(user.uid)
-              .subscribe((data) => {
-                this.studentData = data;
-                this.checkIfQuizzAchieved();
-                this.cdr.detectChanges();
-              });
-          }, 100);
+        this.authService.getCurrentUserInfo().subscribe(userInfo => {
 
-          this.authService.getUserId();
+          this.userRole = userInfo?.role;
 
-        } else if (user && this.userRole !== '') {
-          this.user = user.uid;
-        } else {
-          console.log("Utilisateur non authentifié");
-        }
+          if (user && (this.userRole == 'student' || this.userRole == '')) {
+
+            this.user = user.uid;
+            this.dataLoading = false;
+
+            setTimeout(() => {
+              this.studentService.getStudentById(user.uid)
+                .subscribe((data) => {
+                  this.studentData = data;
+                  this.checkIfQuizzAchieved();
+                  this.cdr.detectChanges();
+                });
+            }, 100);
+
+            this.authService.getUserId();
+
+          } else if (user && this.userRole !== '') {
+
+            this.user = user.uid;
+
+          } else {
+
+            console.log("Utilisateur non authentifié");
+
+          }
+
+        });
+
       });
 
       // 🔹 récupération des trades
