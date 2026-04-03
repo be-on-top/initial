@@ -1,0 +1,17 @@
+.index{
+    position: relative;
+    width: fit-content;
+    margin: 0 auto 40px auto;
+    font-size: 1.8rem !important;
+}
+
+.index::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    height: 2px;
+    width: 100%;
+    /* Soulignement sur toute la largeur du titre */
+    background-color: #82BC00 !important;
+    opacity: 1 !important;
+}

@@ -1,6 +1,6 @@
 <div class="container py-3">
 
-  <!-- <h1 class="h4 mb-3">Inventaire des formations métiers</h1> -->
+  <h1 class="mb-5 index">Inventaire des formations métiers</h1>
 
   <ul class="list-group">
 
@@ -12,13 +12,12 @@
         <span>{{ trade.denomination }}</span><br>
         <small class="text-muted fst-italic">{{ trade.sigle }}</small>
       </a>
-<button 
-  class="border-0 bg-transparent ms-2 p-0 text-secondary"
-  (click)="copyUrl(trade.sigle); $event.stopPropagation()"
-  title="Copier l'URL"
-  aria-label="Copier l'URL de la formation">
-  <i class="bi bi-copy"></i>
-</button>
+
+      <button class="border-0 bg-transparent ms-2 p-0 text-secondary"
+        (click)="copyUrl(trade.sigle); $event.stopPropagation()" title="Copier l'URL"
+        aria-label="Copier l'URL de la formation">
+        <i class="bi bi-copy"></i>
+      </button>
 
     </li>
 
@@ -36,13 +35,11 @@
           <small class="text-muted fst-italic">{{ trade.sigle }}</small>
         </a>
 
-        <button 
-  class="border-0 bg-transparent ms-2 p-0 text-secondary"
-  (click)="copyUrl(trade.sigle); $event.stopPropagation()"
-  title="Copier l'URL"
-  aria-label="Copier l'URL de la formation">
-  <i class="bi bi-copy"></i>
-</button>
+        <button class="border-0 bg-transparent ms-2 p-0 text-secondary"
+          (click)="copyUrl(trade.sigle); $event.stopPropagation()" title="Copier l'URL"
+          aria-label="Copier l'URL de la formation">
+          <i class="bi bi-copy"></i>
+        </button>
       </li>
     </ul>
 
