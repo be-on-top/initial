@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'addNbspBeforeQuestionMark'
+  name: 'addNbspBeforeQuestionMark',
+  standalone: true // <--- INDISPENSABLE ICI AUSSI
 })
 export class AddNbspBeforeQuestionMarkPipe implements PipeTransform {
 

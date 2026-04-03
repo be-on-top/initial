@@ -4,6 +4,10 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ChatService } from '../chat.service';
 import { Timestamp } from '@angular/fire/firestore';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+
 
 interface Message {
   content: string;
@@ -16,7 +20,12 @@ interface Message {
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.css']
+  styleUrls: ['./chat.component.css'],
+  standalone: true, // <--- AJOUTE ÇA
+    imports: [
+      CommonModule, // Indispensable pour le *ngFor et *ngIf que j'ai vus dans notre HTML    
+      FormsModule             // Indispensable pour les input elements de notre HTML    
+    ]
 })
 export class ChatComponent implements OnInit {
   messages: Observable<Message[]> = new Observable<Message[]>();

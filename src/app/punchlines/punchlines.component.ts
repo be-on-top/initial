@@ -1,9 +1,14 @@
+// import { CommonModule } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
+
 
 @Component({
   selector: 'app-punchlines',
   templateUrl: './punchlines.component.html',
-  styleUrls: ['./punchlines.component.css']
+  styleUrls: ['./punchlines.component.css'],
+  standalone: true, // <--- AJOUTE ÇA
+  imports: [NgFor]
 })
 export class PunchlinesComponent {
 
@@ -26,7 +31,7 @@ export class PunchlinesComponent {
   prenoms = ['Louis', 'Élise', 'Julien', 'Camille', 'Maxime', 'Sophie', 'Antoine', 'Claire', 'Théo', 'Manon'];
   noms = ['Lefebvre', 'Moreau', 'Dubois', 'Laurent', 'Simon', 'Michel', 'Garcia', 'Martinez', 'Roux', 'Fournier'];
 
-  name:string=""
+  name: string = ""
 
 
   ngOnInit(): void {

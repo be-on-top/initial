@@ -463,12 +463,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
-    if (this.canonicalTag) {
-      this.document.head.removeChild(this.canonicalTag);
-    }
+    // if (this.canonicalTag) {
+    //   this.document.head.removeChild(this.canonicalTag);
+    // }
     // Nettoie aussi les metas de base si tu en as mis des spécifiques sur la Home
-    this.metaService.removeTag("name='description'");
-    console.log('[SEO-CLEAN] Home nettoyée');
+    // this.metaService.removeTag("name='description'");
+    // console.log('[SEO-CLEAN] Home nettoyée');
   }
 
   logStartEvaluationEvent(tradeName: string) {

@@ -1,9 +1,12 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-accessibility-compliance-report',
   templateUrl: './accessibility-compliance-report.component.html',
-  styleUrls: ['./accessibility-compliance-report.component.css']
+  styleUrls: ['./accessibility-compliance-report.component.css'],
+  standalone: true, // <--- AJOUTE ÇA
+  imports: []
 })
 export class AccessibilityComplianceReportComponent {
 

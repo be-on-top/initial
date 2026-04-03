@@ -1,11 +1,34 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, Inject } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/common';
+// import { CommonModule } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
+import { PrescriberTimelineComponent } from '../prescriber-timeline/prescriber-timeline.component';
+import { LegalInfoComponent } from '../legal-info/legal-info.component';
+import { RgpdComponent } from '../rgpd/rgpd.component';
+import { RseComponent } from '../rse/rse.component';
+import { SocialDataComponent } from '../social-data/social-data.component';
+import { AddNbspBeforeQuestionMarkPipe } from '../add-nbsp-before-question-mark.pipe';
+// import { AccessibilityComplianceReportComponent } from '../accessibility-compliance-report/accessibility-compliance-report.component';
+
+
 
 @Component({
   selector: 'app-market-app',
   templateUrl: './market-app.component.html',
-  styleUrls: ['./market-app.component.css']
+  styleUrls: ['./market-app.component.css'],
+  standalone: true, // <--- AJOUTE ÇA
+  imports: [
+    // CommonModule,              // Indispensable pour le *ngFor et *ngIf que j'ai vus dans votre HTML
+    NgFor,
+    NgIf,
+    PrescriberTimelineComponent, // Importez chaque classe de composant enfant
+    LegalInfoComponent,
+    RgpdComponent,
+    RseComponent,
+    SocialDataComponent,
+    AddNbspBeforeQuestionMarkPipe                // N'oubliez pas d'importer votre Pipe aussi s'il est standalone !
+  ]
 })
 export class MarketAppComponent implements OnInit, AfterViewInit, OnDestroy {
   // On stocke la balise pour pouvoir la supprimer proprement
@@ -21,9 +44,10 @@ export class MarketAppComponent implements OnInit, AfterViewInit, OnDestroy {
   currentIndex: number = 0;
 
   constructor(
-    private metaService: Meta, 
+    private metaService: Meta,
     private titleService: Title,
-    @Inject(DOCUMENT) private document: Document // Indispensable pour toucher au <head>
+    @Inject(DOCUMENT) private document: Document // Indispensable pour toucher au <head>,
+
   ) { }
 
   ngOnInit(): void {
@@ -34,16 +58,16 @@ export class MarketAppComponent implements OnInit, AfterViewInit, OnDestroy {
   // FORCE L'URL PROPRE (Supprime les UTM et paramètres de tracking pour Google)
   setPureCanonical() {
     const pureUrl = 'https://be-on-top.io/market-app'; // Remplace par ton URL exacte
-    
+
     // On cherche si une balise existe déjà
     let link: HTMLLinkElement | null = this.document.querySelector("link[rel='canonical']");
-    
+
     if (!link) {
       link = this.document.createElement('link');
       link.setAttribute('rel', 'canonical');
       this.document.head.appendChild(link);
     }
-    
+
     link.setAttribute('href', pureUrl);
     this.canonicalTag = link;
     console.log(`[SEO-SHIELD] Canonical verrouillée sur : ${pureUrl}`);
@@ -68,7 +92,7 @@ export class MarketAppComponent implements OnInit, AfterViewInit, OnDestroy {
   addTag() {
     this.titleService.setTitle(`Mieux qu'un bilan de compétences, évaluez les compétences professionnelles avec BE-ON-TOP.io`);
     this.metaService.updateTag({ name: 'description', content: 'Mieux qu\'un bilan de compétences, nos questionnaires permettent d\'évaluer un niveau d\'entrée en formation...' });
-    
+
     // On utilise updateTag plutôt que addTag pour éviter les doublons
     this.metaService.updateTag({ name: 'robots', content: 'index, follow' });
     this.metaService.updateTag({ property: 'og:title', content: 'Informations Prescripteurs | BE-ON-TOP.io' });

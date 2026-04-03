@@ -1,11 +1,38 @@
-import { DOCUMENT } from '@angular/common';
+// import { CommonModule, DOCUMENT } from '@angular/common';
+import { DOCUMENT, NgClass, NgFor, NgIf } from '@angular/common';
 import { AfterViewInit, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
+import { LegalInfoComponent } from '../legal-info/legal-info.component';
+import { TimelineComponent } from '../timeline/timeline.component';
+import { PunchlinesComponent } from '../punchlines/punchlines.component';
+import { RseComponent } from '../rse/rse.component';
+import { RgpdComponent } from '../rgpd/rgpd.component';
+import { SocialDataComponent } from '../social-data/social-data.component';
+import { AddNbspBeforeQuestionMarkPipe } from '../add-nbsp-before-question-mark.pipe';
+import { ContactInformationComponent } from '../contact-information/contact-information.component';
+
+
+
 
 @Component({
   selector: 'app-benefits',
   templateUrl: './benefits.component.html',
-  styleUrls: ['./benefits.component.css']
+  styleUrls: ['./benefits.component.css'],
+  standalone: true, // <--- AJOUTE ÇA
+  imports: [
+    LegalInfoComponent,
+    TimelineComponent,
+    PunchlinesComponent,
+    RseComponent,
+    // CommonModule,
+    NgClass,
+    NgIf,
+    NgFor,
+    RgpdComponent,
+    SocialDataComponent,
+    AddNbspBeforeQuestionMarkPipe, // <--- AJOUTEZ-LE ICI AUSSI
+    ContactInformationComponent   // <--- ET LUI AUSSI (voir étape 2)
+  ] // Vide, c'est parfait.// <--- AJOUTE les outils dont il a besoin
 })
 export class BenefitsComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -24,8 +51,8 @@ export class BenefitsComponent implements OnInit, AfterViewInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.addTag();
     this.setPureCanonical();// Verrouillage de l'URL
+    this.addTag();
   }
 
   // ngAfterViewInit() {
@@ -328,7 +355,7 @@ export class BenefitsComponent implements OnInit, AfterViewInit, OnDestroy {
      */
   setPureCanonical() {
     // 1. On définit l'URL "parfaite" (sans aucun paramètre après le ?)
-    const pureUrl = 'https://be-on-top.io/candidats';
+    const pureUrl = 'https://be-on-top.io/benefits';
 
     // 2. On vérifie si une balise <link rel="canonical"> existe déjà dans le <head>
     // pour éviter d'en créer des dizaines à chaque navigation.

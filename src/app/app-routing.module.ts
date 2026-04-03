@@ -46,15 +46,16 @@ import { MarketingDocsPublicComponent } from './marketing-docs-public/marketing-
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
+
   { path: 'rgpd', component: RgpdComponent },
   { path: 'home/:userRole', component: HomeComponent, pathMatch: 'full' },
-  { path: 'partners', component: PartnersComponent },
+  // { path: 'partners', component: PartnersComponent },
   // { path: 'admin', redirectTo: 'dashboard', pathMatch: 'full' },
   // Ajout de cette propriété },
   { path: 'account', component: AccountComponent, canActivate: [AuthGuardService], data: { requiresStudentDocument: true }},
   { path: 'socialregistration', component: AdminForm},
-  { path: 'benefits', component: BenefitsComponent},
-  { path: 'market-app', component: MarketAppComponent},  
+  // { path: 'benefits', component: BenefitsComponent},
+  // { path: 'market-app', component: MarketAppComponent},  
   { path: 'centers', component: CentersListComponent},  
   { path: 'quizz/:id/:indexQuestion/:scoreCounter/:hasStartedEvaluation/:studentId', component: QuizzComponent, canActivate: [AuthGuardService, historyGuard]},
   // { path: 'trade/:id/:slug', component: TradeDetailsComponent},
@@ -62,12 +63,26 @@ const routes: Routes = [
   { path: 'formation/:id/:slug', component: TradeDetailsComponent},
   { path: 'formation/:id', component: TradeDetailsComponent},
   { path: 'center/:id', component: CenterDetailsComponent},
-  { path: 'chat/:id/:name', component: ChatComponent},
+  // { path: 'chat/:id/:name', component: ChatComponent},
   { path: 'accessibility', component: AccessibilityComplianceReportComponent},
   { path: 'trainingStats', component: TrainingStatsComponent},
   { path: 'trainingsIndex', component: TradesMinimalComponent},
   { path: 'centersIndex', component: CentersIndexComponent},
-  { path: 'marketing-pack', component: MarketingDocsPublicComponent}
+  { path: 'marketing-pack', component: MarketingDocsPublicComponent},
+  
+  { 
+    path: 'partners', 
+    loadComponent: () => import('./partners/partners.component').then(m => m.PartnersComponent) 
+  },
+
+  { 
+    path: 'benefits', 
+    loadComponent: () => import('./benefits/benefits.component').then(m => m.BenefitsComponent)
+  },
+  { 
+    path: 'market-app', 
+    loadComponent: () => import('./market-app/market-app.component').then(m => m.MarketAppComponent)
+  },
 
 ];
 
