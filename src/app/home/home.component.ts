@@ -251,15 +251,32 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.groupTrades();
 
           // 🔹 3. chargement images OPTIMISÉ (PARALLÈLE + 1 seul detectChanges)
+          // const imagePromises = this.tradesData.map((trade: any) =>
+          //   this.settingsService.loadImageReduced(trade.id)
+          //     .then((url: string) => {
+          //       trade.imageUrl = url || './assets/images-presentation-metiers-vide.jpg';
+          //     })
+          //     .catch(() => {
+          //       trade.imageUrl = './assets/images-presentation-metiers-vide.jpg';
+          //     })
+          // );
+
           const imagePromises = this.tradesData.map((trade: any) =>
-            this.settingsService.loadImageReduced(trade.id)
-              .then((url: string) => {
-                trade.imageUrl = url || './assets/images-presentation-metiers-vide.jpg';
-              })
-              .catch(() => {
-                trade.imageUrl = './assets/images-presentation-metiers-vide.jpg';
-              })
-          );
+  this.settingsService.loadImageReduced(trade.id)
+    .then((url: string) => {
+      trade.imageUrl = url || './assets/images-presentation-metiers-vide.jpg';
+
+      // ✅ si c'est potentiellement LCP → on déclenche
+      if (trade.id === this.tradesData[0]?.id) {
+        this.cdr.detectChanges();
+      }
+
+    })
+    .catch(() => {
+      trade.imageUrl = './assets/images-presentation-metiers-vide.jpg';
+    })
+);
+
 
           Promise.allSettled(imagePromises).then(() => {
             this.cdr.detectChanges(); // 🔥 UNE SEULE FOIS

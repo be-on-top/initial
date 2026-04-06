@@ -503,24 +503,43 @@ export class TradeDetailsComponent implements OnInit {
   //   }
   // }
 
-  setCanonicalURL(id: string): void {
-    try {
-      const cleanUrl = `https://be-on-top.io/formation/${id}`;
-      let link: HTMLLinkElement | null = this.document.querySelector("link[rel='canonical']");
+setCanonicalURL(id: string): void {
+  try {
+    // 👉 Construction de l'URL canonique propre (sans paramètres parasites)
+    const cleanUrl = `https://be-on-top.io/formation/${id}`;
 
-      if (!link) {
-        link = this.document.createElement('link');
-        link.setAttribute('rel', 'canonical');
-        this.document.head.appendChild(link);
-      }
+    // 👉 On cherche si une balise <link rel="canonical"> existe déjà dans le <head>
+    let link: HTMLLinkElement | null =
+      this.document.querySelector("link[rel='canonical']");
 
-      link.setAttribute('href', cleanUrl);
-      this.canonicalTag = link; // <--- LIGNE À AJOUTER ICI pour le OnDestroy
-      console.log(`[SEO-SHIELD] Jus SEO redirigé vers : ${cleanUrl}`);
-    } catch (err) {
-      console.error('[SEO] Erreur Canonical :', err);
+    // 👉 Si elle n'existe pas, on la crée (cas du premier chargement)
+    if (!link) {
+      link = this.document.createElement('link');
+      link.setAttribute('rel', 'canonical');
+      this.document.head.appendChild(link);
     }
+
+    // ❌ Version brute (toujours réécrit le DOM)
+    // link.setAttribute('href', cleanUrl);
+
+    // ✅ Version optimisée :
+    // On évite une mutation DOM inutile si l'URL est déjà correcte
+    // → micro gain perf + évite reflows inutiles
+    if (link.getAttribute('href') !== cleanUrl) {
+      link.setAttribute('href', cleanUrl);
+    }
+
+    // 👉 On garde une référence pour éventuellement manipuler/supprimer plus tard
+    // (ex: ancien test dans ngOnDestroy — actuellement non utilisé volontairement)
+    this.canonicalTag = link;
+
+    // 👉 Log debug SEO (facultatif en prod)
+    console.log(`[SEO-SHIELD] Canonical défini : ${cleanUrl}`);
+
+  } catch (err) {
+    console.error('[SEO] Erreur Canonical :', err);
   }
+}
 
 
 
@@ -793,27 +812,27 @@ export class TradeDetailsComponent implements OnInit {
   //   }
   // }
 
-// ngOnDestroy(): void {
-//     try {
-//       // 1. LE CANONICAL (Ce que j'ai déjà fait)
-//       if (this.canonicalTag) {
-//         this.document.head.removeChild(this.canonicalTag);
-//         console.log('[SEO-CLEAN] Balise canonique supprimée');
-//       }
+  // ngOnDestroy(): void {
+  //     try {
+  //       // 1. LE CANONICAL (Ce que j'ai déjà fait)
+  //       if (this.canonicalTag) {
+  //         this.document.head.removeChild(this.canonicalTag);
+  //         console.log('[SEO-CLEAN] Balise canonique supprimée');
+  //       }
 
-//       // 2. LES METAS (Pour vider la mémoire du bot avant la page suivante)
-//       // On retire les tags que tu as créés/mis à jour dans ngOnInit
-//       this.metaService.removeTag("name='description'");
-//       this.metaService.removeTag("property='og:title'");
-//       this.metaService.removeTag("property='og:description'");
-//       this.metaService.removeTag("property='og:url'");
-//       this.metaService.removeTag("property='og:image'");
+  //       // 2. LES METAS (Pour vider la mémoire du bot avant la page suivante)
+  //       // On retire les tags que tu as créés/mis à jour dans ngOnInit
+  //       this.metaService.removeTag("name='description'");
+  //       this.metaService.removeTag("property='og:title'");
+  //       this.metaService.removeTag("property='og:description'");
+  //       this.metaService.removeTag("property='og:url'");
+  //       this.metaService.removeTag("property='og:image'");
 
-//       console.log('[SEO-CLEAN] Metas nettoyées : Page suivante prête');
-//     } catch (err) {
-//       console.warn('[SEO-CLEAN] Erreur lors du nettoyage');
-//     }
-//   }
+  //       console.log('[SEO-CLEAN] Metas nettoyées : Page suivante prête');
+  //     } catch (err) {
+  //       console.warn('[SEO-CLEAN] Erreur lors du nettoyage');
+  //     }
+  //   }
 
 
 }

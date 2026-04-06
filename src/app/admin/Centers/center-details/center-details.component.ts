@@ -256,14 +256,14 @@ export class CenterDetailsComponent implements OnInit, AfterViewInit, OnDestroy 
       this.map = undefined;
     }
     // Nettoyage de la Canonique (Évite que l'URL du centre reste sur la page suivante)
-    if (this.canonicalTag) {
-      this.document.head.removeChild(this.canonicalTag);
-    }
-    // Nettoyage de la Meta Description
-    this.metaService.removeTag("name='description'");
-    // Flag d'activité
-    this.isActive = false;
-    console.log(`[SEO-CLEAN] Centre ${this.centerId} totalement nettoyé.`);
+    // if (this.canonicalTag) {
+    //   this.document.head.removeChild(this.canonicalTag);
+    // }
+    // // Nettoyage de la Meta Description
+    // this.metaService.removeTag("name='description'");
+    // // Flag d'activité
+    // this.isActive = false;
+    // console.log(`[SEO-CLEAN] Centre ${this.centerId} totalement nettoyé.`);
   }
 
 

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+// import { NgFor, NgIf } from '@angular/common';
 import { AfterViewInit, Component } from '@angular/core';
 
 @Component({
@@ -7,7 +7,7 @@ import { AfterViewInit, Component } from '@angular/core';
   styleUrls: ['./rgpd.component.css'],
   standalone: true, // <--- AJOUTE ÇA
   imports: [
-    CommonModule,              // Indispensable pour le *ngFor et *ngIf que j'ai vus dans votre HTML    
+        // Indispensable pour le *ngFor et *ngIf que j'ai vus dans votre HTML    
   ]
 })
 export class RgpdComponent implements AfterViewInit {

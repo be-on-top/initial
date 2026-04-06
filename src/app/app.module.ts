@@ -48,7 +48,7 @@ import { ShareButtonComponent } from './share-button/share-button.component';
 import { NgOptimizedImage } from '@angular/common';
 import { DurationPipe } from './duration.pipe';
 import { RoundPipe } from './round.pipe';
-import { FaqComponent } from './faq/faq.component';
+// import { FaqComponent } from './faq/faq.component';
 import { TruncateTitlePipe } from './truncate-title.pipe';
 // import { BenefitsComponent } from './benefits/benefits.component';
 // import { LegalInfoComponent } from './legal-info/legal-info.component';
@@ -58,7 +58,7 @@ import { TruncateTitlePipe } from './truncate-title.pipe';
 // import { ContactInformationComponent } from './contact-information/contact-information.component';
 // import { AccessibilityComplianceReportComponent } from './accessibility-compliance-report/accessibility-compliance-report.component';
 // import { SocialDataComponent } from './social-data/social-data.component';
-import { PunchlinesComponent } from './punchlines/punchlines.component';
+// import { PunchlinesComponent } from './punchlines/punchlines.component';
 import { TrainingStatsComponent } from './training-stats/training-stats.component';
 import { TradeFilterPipe } from './trade-filter.pipe';
 import { TradesMinimalComponent } from './trades-minimal/trades-minimal.component';
@@ -102,7 +102,7 @@ import { RgpdComponent } from './rgpd/rgpd.component';
     ShareButtonComponent,
     DurationPipe,
     RoundPipe,
-    FaqComponent,
+    // FaqComponent,
     TruncateTitlePipe,
     // BenefitsComponent,
     // LegalInfoComponent,
