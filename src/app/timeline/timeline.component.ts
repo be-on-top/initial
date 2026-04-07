@@ -3,9 +3,7 @@ import { AfterViewInit, Component } from '@angular/core';
 @Component({
   selector: 'app-timeline',
   templateUrl: './timeline.component.html',
-  styleUrls: ['./timeline.component.css'],
-   standalone: true, // <--- AJOUTE ÇA
-  imports: []
+  styleUrls: ['./timeline.component.css']
 })
 export class TimelineComponent implements AfterViewInit {
 

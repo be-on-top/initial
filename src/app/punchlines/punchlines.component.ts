@@ -1,14 +1,9 @@
-// import { CommonModule } from '@angular/common';
-import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
-
 
 @Component({
   selector: 'app-punchlines',
   templateUrl: './punchlines.component.html',
-  styleUrls: ['./punchlines.component.css'],
-  standalone: true, // <--- AJOUTE ÇA
-  imports: [NgFor]
+  styleUrls: ['./punchlines.component.css']
 })
 export class PunchlinesComponent {
 

@@ -4,8 +4,6 @@ import { AfterViewInit, Component } from '@angular/core';
   selector: 'app-prescriber-timeline',
   templateUrl: './prescriber-timeline.component.html',
   styleUrls: ['./prescriber-timeline.component.css'],
-   standalone: true, // <--- AJOUTE ÇA
-  imports: []
 })
 export class PrescriberTimelineComponent implements AfterViewInit {
   

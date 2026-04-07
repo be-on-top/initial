@@ -50,23 +50,23 @@ import { DurationPipe } from './duration.pipe';
 import { RoundPipe } from './round.pipe';
 // import { FaqComponent } from './faq/faq.component';
 import { TruncateTitlePipe } from './truncate-title.pipe';
-// import { BenefitsComponent } from './benefits/benefits.component';
-// import { LegalInfoComponent } from './legal-info/legal-info.component';
-// import { AddNbspBeforeQuestionMarkPipe } from './add-nbsp-before-question-mark.pipe';
-// import { MarketAppComponent } from './market-app/market-app.component';
+import { BenefitsComponent } from './benefits/benefits.component';
+import { LegalInfoComponent } from './legal-info/legal-info.component';
+import { AddNbspBeforeQuestionMarkPipe } from './add-nbsp-before-question-mark.pipe';
+import { MarketAppComponent } from './market-app/market-app.component';
 // import { ChatComponent } from './chat/chat.component';
-// import { ContactInformationComponent } from './contact-information/contact-information.component';
-// import { AccessibilityComplianceReportComponent } from './accessibility-compliance-report/accessibility-compliance-report.component';
-// import { SocialDataComponent } from './social-data/social-data.component';
-// import { PunchlinesComponent } from './punchlines/punchlines.component';
+import { ContactInformationComponent } from './contact-information/contact-information.component';
+import { AccessibilityComplianceReportComponent } from './accessibility-compliance-report/accessibility-compliance-report.component';
+import { SocialDataComponent } from './social-data/social-data.component';
+import { PunchlinesComponent } from './punchlines/punchlines.component';
 import { TrainingStatsComponent } from './training-stats/training-stats.component';
 import { TradeFilterPipe } from './trade-filter.pipe';
 import { TradesMinimalComponent } from './trades-minimal/trades-minimal.component';
-// import { RseComponent } from './rse/rse.component';
+import { RseComponent } from './rse/rse.component';
 import { CentersIndexComponent } from './centers-index/centers-index.component';
 // import { InnovationToastComponent } from './innovation-toast/innovation-toast.component';
-// import { TimelineComponent } from './timeline/timeline.component';
-// import { PrescriberTimelineComponent } from './prescriber-timeline/prescriber-timeline.component';
+import { TimelineComponent } from './timeline/timeline.component';
+import { PrescriberTimelineComponent } from './prescriber-timeline/prescriber-timeline.component';
 import { MarketingDocsPublicComponent } from './marketing-docs-public/marketing-docs-public.component';
 import { RgpdComponent } from './rgpd/rgpd.component';
 // import { CollapsesAlertComponent } from './collapses-alert/collapses-alert.component';
@@ -97,30 +97,30 @@ import { RgpdComponent } from './rgpd/rgpd.component';
     FirstWordPipe,
     InstallButtonComponent,
     CookieConsentBannerComponent,
-    // RgpdComponent,
+    RgpdComponent,
     // PartnersComponent,
     ShareButtonComponent,
     DurationPipe,
     RoundPipe,
     // FaqComponent,
     TruncateTitlePipe,
-    // BenefitsComponent,
-    // LegalInfoComponent,
-    // AddNbspBeforeQuestionMarkPipe,
-    // MarketAppComponent,
+    BenefitsComponent,
+    LegalInfoComponent,
+    AddNbspBeforeQuestionMarkPipe,
+    MarketAppComponent,
     // ChatComponent,
-    // ContactInformationComponent,
-    // AccessibilityComplianceReportComponent,
-    // SocialDataComponent,
-    // PunchlinesComponent,
+    ContactInformationComponent,
+    AccessibilityComplianceReportComponent,
+    SocialDataComponent,
+    PunchlinesComponent,
     TrainingStatsComponent,
     TradeFilterPipe,
     TradesMinimalComponent,
-    // RseComponent,
+    RseComponent,
     CentersIndexComponent,
     // InnovationToastComponent,
-    // TimelineComponent,
-    // PrescriberTimelineComponent,
+    TimelineComponent,
+    PrescriberTimelineComponent,
     MarketingDocsPublicComponent,
     // CollapsesAlertComponent,
     // AutoChangeDirective,
@@ -133,7 +133,7 @@ import { RgpdComponent } from './rgpd/rgpd.component';
     AppRoutingModule,
     AdminModule,
     NgOptimizedImage,
-    RgpdComponent, // STANDALONE: Importé ici pour être visible par RegisterComponent (non-standalone)
+    // RgpdComponent, // STANDALONE: Importé ici pour être visible par RegisterComponent (non-standalone)
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),

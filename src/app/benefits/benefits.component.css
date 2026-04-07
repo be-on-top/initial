@@ -1,20 +1,13 @@
+/* 1. SECTION IMAGE (LCP) */
 #image {
     position: relative;
-    /* The background image */
     background-image: url("/assets/employes-entrepot-frappant-mains-ensemble_342744-1462.webp");
     width: 100%;
-    /* Largeur relative à l'écran */
     aspect-ratio: 4 / 2;
-    /* Maintient un ratio de 4:2 */
-
     background-size: cover;
-    /* Couvre entièrement le conteneur sans changer le ratio */
     background-position: center;
-    /* Centre l'image de fond */
     background-repeat: no-repeat;
-    /* Évite la répétition de l'image */
     max-height: 500px;
-
 }
 
 #image>img {
@@ -22,162 +15,53 @@
     width: 50px;
     bottom: 10px;
     right: 10px;
-
-    /* opacity: 80%; */
-
 }
 
 #image>div {
-
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-65%, -50%);
-    /* Centre l'élément */
-
     color: white;
     padding: 10px 20px;
-    /* mix-blend-mode:luminosity; */
     letter-spacing: 0.5rem;
 }
 
-#image>div>img {
-    /* background-color: blueviolet; */
-    width: 35%;
+#image>div>img { width: 35%; }
+#image>div>h1 { font-size: inherit; }
 
-    /* background-image: url('./logo.svg');
-background-repeat: no-repeat; */
-    /* background-size: cover; */
+/* 2. COMPOSANTS (TABS, ACCORDEON, CHAT) */
+.nav-item .btn { background-color: #6c757d; color: white; border: none; }
+.nav-item .btn.active, .nav-item .btn:focus, .nav-item .btn:hover { background-color: #007bff; color: white; }
+.accordion-item h3 { font-size: inherit; display: inline; margin: 0; }
+.accordion-item h3::before { width: 0; height: 0; }
+.accordion-item button { margin-inline-end: 2rem; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+button.btn.active { background-image: linear-gradient(to top, #0c5eea, #0062fe); }
+hr.light { color: var(--bs-border-color); }
 
+.chat-user, .chat-bot { position: relative; margin-bottom: 1rem; }
+.chat-user::after, .chat-bot::after { content: ""; position: absolute; bottom: 0; width: 0; height: 0; border: 10px solid transparent; border-bottom: 0; margin-bottom: -10px; }
+.chat-user::after { left: 10px; border-top-color: #0d6efd; margin-left: 5px; }
+.chat-bot::after { right: 10px; border-top-color: #f8f9fa; margin-right: 5px; }
+
+/* 3. PERFORMANCE (REMPLACE L'OBSERVER) */
+.accordion-flush, app-timeline, .chat-messages {
+    content-visibility: auto;
+    contain-intrinsic-size: 500px;
 }
 
-#image>div>h1 {
-    font-size: inherit;
-
-}
-
-/* pour les tabs */
-/* styles.css */
-.nav-item .btn {
-    background-color: #6c757d;
-    /* Couleur par défaut */
-    color: white;
-    border: none;
-}
-
-.nav-item .btn.active,
-.nav-item .btn:focus,
-.nav-item .btn:hover {
-    background-color: #007bff;
-    /* Couleur de l'onglet actif */
-    color: white;
-}
-
-/* .accordion-item h2, */
-.accordion-item h3 {
-    font-size: inherit;
-    display: inline;
-    margin: 0;
-}
-
-.accordion-item h3::before {
-    width: 0;
-    height: 0;
-}
-
-.accordion-item button {
-    margin-inline-end: 2rem;
-}
-
-.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-}
-
-button.btn.active {
-    background-image: linear-gradient(to top, #0c5eea, #0062fe);
-}
-
-hr.light {
-    color: var(--bs-border-color)
-}
-
-
-/* pour chatBox */
-.chat-user {
-  position: relative;
-  margin-bottom: 1rem;
-}
-
-.chat-user::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 10px; /* décalage horizontal de la flèche */
-  width: 0;
-  height: 0;
-  border: 10px solid transparent;
-  border-top-color: #0d6efd; /* même couleur que la bulle */
-  border-bottom: 0;
-  margin-left: 5px;
-  margin-bottom: -10px;
-}
-
-/* Réponse FAQ */
-.chat-bot {
-  position: relative;
-  margin-bottom: 1rem;  
-  border-radius: 5;
-}
-
-
-.chat-bot::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  right: 10px;
-  width: 0;
-  height: 0;
-  border: 10px solid transparent;
-  border-top-color: #f8f9fa;
-  border-bottom: 0;
-  margin-right: 5px;
-  margin-bottom: -10px;
-}
-
-
-@media only screen and (max-width:720px) {
-    /* 
-    #image>img {
-        display: none;
-
-    } */
-
-    .accordion-button {
-        /* background-color: #007bff; */
-        font-size: 0.9rem;
+/* 4. MEDIA QUERIES (FUSIONNÉES) */
+@media only screen and (max-width: 720px) {
+    /* Performance Mobile */
+    .accordion-flush, app-timeline, .chat-messages{
+        contain-intrinsic-size: 1000px;
     }
-
-
-    #info-tab,
-    #rgpd-tab,
-    #contact-tab {
-        font-size: 0.9rem;
-    }
-
+    /* Styles UI Mobile */
+    .accordion-button { font-size: 0.9rem; }
+    #info-tab, #rgpd-tab, #contact-tab { font-size: 0.9rem; }
 }
 
-@media only screen and (max-width:460px) {
-
-    .carousel-item span {
-        display: none;
-    }
-
+@media only screen and (max-width: 460px) {
+    .carousel-item span { display: none; }
 }

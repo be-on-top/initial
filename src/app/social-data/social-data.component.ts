@@ -1,16 +1,9 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-
-
 
 @Component({
   selector: 'app-social-data',
   templateUrl: './social-data.component.html',
-  styleUrls: ['./social-data.component.css'],
-    standalone: true, // <--- AJOUTE ÇA
-  imports: [
-    CommonModule
-  ]
+  styleUrls: ['./social-data.component.css']
 })
 
 

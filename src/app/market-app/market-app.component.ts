@@ -1,34 +1,11 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, Inject } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/common';
-// import { CommonModule } from '@angular/common';
-import { NgClass, NgFor, NgIf } from '@angular/common';
-import { PrescriberTimelineComponent } from '../prescriber-timeline/prescriber-timeline.component';
-import { LegalInfoComponent } from '../legal-info/legal-info.component';
-import { RgpdComponent } from '../rgpd/rgpd.component';
-import { RseComponent } from '../rse/rse.component';
-import { SocialDataComponent } from '../social-data/social-data.component';
-import { AddNbspBeforeQuestionMarkPipe } from '../add-nbsp-before-question-mark.pipe';
-// import { AccessibilityComplianceReportComponent } from '../accessibility-compliance-report/accessibility-compliance-report.component';
-
-
 
 @Component({
   selector: 'app-market-app',
   templateUrl: './market-app.component.html',
-  styleUrls: ['./market-app.component.css'],
-  standalone: true, // <--- AJOUTE ÇA
-  imports: [
-    // CommonModule,              // Indispensable pour le *ngFor et *ngIf que j'ai vus dans votre HTML
-    NgFor,
-    NgIf,
-    PrescriberTimelineComponent, // Importez chaque classe de composant enfant
-    LegalInfoComponent,
-    RgpdComponent,
-    RseComponent,
-    SocialDataComponent,
-    AddNbspBeforeQuestionMarkPipe                // N'oubliez pas d'importer votre Pipe aussi s'il est standalone !
-  ]
+  styleUrls: ['./market-app.component.css']
 })
 export class MarketAppComponent implements OnInit, AfterViewInit, OnDestroy {
   // On stocke la balise pour pouvoir la supprimer proprement

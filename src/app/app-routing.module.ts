@@ -54,8 +54,8 @@ const routes: Routes = [
   // Ajout de cette propriété },
   { path: 'account', component: AccountComponent, canActivate: [AuthGuardService], data: { requiresStudentDocument: true }},
   { path: 'socialregistration', component: AdminForm},
-  // { path: 'benefits', component: BenefitsComponent},
-  // { path: 'market-app', component: MarketAppComponent},  
+  { path: 'benefits', component: BenefitsComponent},
+  { path: 'market-app', component: MarketAppComponent},  
   { path: 'centers', component: CentersListComponent},  
   { path: 'quizz/:id/:indexQuestion/:scoreCounter/:hasStartedEvaluation/:studentId', component: QuizzComponent, canActivate: [AuthGuardService, historyGuard]},
   // { path: 'trade/:id/:slug', component: TradeDetailsComponent},
@@ -73,16 +73,7 @@ const routes: Routes = [
   { 
     path: 'partners', 
     loadComponent: () => import('./partners/partners.component').then(m => m.PartnersComponent) 
-  },
-
-  { 
-    path: 'benefits', 
-    loadComponent: () => import('./benefits/benefits.component').then(m => m.BenefitsComponent)
-  },
-  { 
-    path: 'market-app', 
-    loadComponent: () => import('./market-app/market-app.component').then(m => m.MarketAppComponent)
-  },
+  }
 
 ];
 

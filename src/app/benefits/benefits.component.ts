@@ -1,38 +1,13 @@
 // import { CommonModule, DOCUMENT } from '@angular/common';
-import { DOCUMENT, NgClass, NgFor, NgIf } from '@angular/common';
+import { DOCUMENT} from '@angular/common';
 import { AfterViewInit, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
-import { LegalInfoComponent } from '../legal-info/legal-info.component';
-import { TimelineComponent } from '../timeline/timeline.component';
-import { PunchlinesComponent } from '../punchlines/punchlines.component';
-import { RseComponent } from '../rse/rse.component';
-import { RgpdComponent } from '../rgpd/rgpd.component';
-import { SocialDataComponent } from '../social-data/social-data.component';
-import { AddNbspBeforeQuestionMarkPipe } from '../add-nbsp-before-question-mark.pipe';
-import { ContactInformationComponent } from '../contact-information/contact-information.component';
-
-
 
 
 @Component({
   selector: 'app-benefits',
   templateUrl: './benefits.component.html',
-  styleUrls: ['./benefits.component.css'],
-  standalone: true, // <--- AJOUTE ÇA
-  imports: [
-    LegalInfoComponent,
-    TimelineComponent,
-    PunchlinesComponent,
-    RseComponent,
-    // CommonModule,
-    NgClass,
-    NgIf,
-    NgFor,
-    RgpdComponent,
-    SocialDataComponent,
-    AddNbspBeforeQuestionMarkPipe, // <--- AJOUTEZ-LE ICI AUSSI
-    ContactInformationComponent   // <--- ET LUI AUSSI (voir étape 2)
-  ] // Vide, c'est parfait.// <--- AJOUTE les outils dont il a besoin
+  styleUrls: ['./benefits.component.css']
 })
 export class BenefitsComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -55,25 +30,7 @@ export class BenefitsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.addTag();
   }
 
-  // ngAfterViewInit() {
-  //   const myCarousel = document.querySelector('#demo');
-  //   if (myCarousel) {
-  //     const carousel = new bootstrap.Carousel(myCarousel, {
-  //       interval: 3000,
-  //       ride: 'carousel',
-  //       touch: true
-  //     });
-  //     setTimeout(() => carousel.cycle(), 0);
-  //   }
-
-
-  //   if (this.faqArray.length === 0) {
-  //     this.prepareFaq(); // prépare FAQ si ce n'est pas déjà fait
-  //   }
-  //   // this.showSearch = true;
-  // }
-
-
+ 
   ngAfterViewInit() {
     // On vérifie si bootstrap est défini globalement sur window
     const bstrap = (window as any).bootstrap;
@@ -88,9 +45,9 @@ export class BenefitsComponent implements OnInit, AfterViewInit, OnDestroy {
       }, 500);
     }
 
-    if (this.faqArray.length === 0) {
-      this.prepareFaq();
-    }
+    // if (this.faqArray.length === 0) {
+    //   this.prepareFaq();
+    // }
   }
 
   private initCarousel(bstrap: any) {
@@ -125,20 +82,20 @@ export class BenefitsComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   // Remplit le tableau FAQ à partir des collapses existantes
-  prepareFaq() {
-    const items = document.querySelectorAll('.accordion-item');
-    this.faqArray = [];
+  // prepareFaq() {
+  //   const items = document.querySelectorAll('.accordion-item');
+  //   this.faqArray = [];
 
-    items.forEach(item => {
-      const question = item.querySelector('.accordion-button')?.textContent?.trim();
-      const answer = item.querySelector('.accordion-body')?.textContent?.trim();
-      if (question && answer) {
-        this.faqArray.push({ question, answer });
-      }
-    });
+  //   items.forEach(item => {
+  //     const question = item.querySelector('.accordion-button')?.textContent?.trim();
+  //     const answer = item.querySelector('.accordion-body')?.textContent?.trim();
+  //     if (question && answer) {
+  //       this.faqArray.push({ question, answer });
+  //     }
+  //   });
 
-    console.log("Tableau FAQ prêt pour GPT :", this.faqArray);
-  }
+  //   console.log("Tableau FAQ prêt pour GPT :", this.faqArray);
+  // }
 
 
 
