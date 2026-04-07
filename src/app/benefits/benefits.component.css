@@ -1,5 +1,5 @@
 /* 1. SECTION IMAGE (LCP) */
-#image {
+/* #image {
     position: relative;
     background-image: url("/assets/employes-entrepot-frappant-mains-ensemble_342744-1462.webp");
     width: 100%;
@@ -8,6 +8,29 @@
     background-position: center;
     background-repeat: no-repeat;
     max-height: 500px;
+} */
+
+#image {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 2;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    max-height: 500px;
+    
+    /* Image par défaut (Desktop / Haute résolution) */
+    background-image: url("/assets/employes-entrepot-1200.webp");
+}
+
+/* Image optimisée pour mobiles (max 720px) */
+@media only screen and (max-width: 720px) {
+    #image {
+        /* Ta nouvelle image de 400px ou 600px de large */
+        background-image: url("/assets/employes-entrepot-500.webp");
+        /* Optionnel : ajuster l'aspect-ratio sur mobile si besoin */
+        aspect-ratio: 16 / 9; 
+    }
 }
 
 #image>img {
