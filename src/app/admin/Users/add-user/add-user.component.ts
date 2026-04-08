@@ -78,7 +78,10 @@ export class AddUserComponent {
     } else if (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "externals") {
       this.title = "Observateurs Externes"
       this.linkBackToList = '/admin/externals'
-    }
+    }else if (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "data-analysts") {
+      this.title = "Data Analyste (commercial)"
+      this.linkBackToList = '/admin/data-analysts'
+    } 
 
   }
 

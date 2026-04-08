@@ -111,6 +111,15 @@ export class UsersListComponent {
         this.allUsers = data.filter(user => user.role == "editor")
         return this.allUsers
       })
+    } else if (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "data-analysts") {
+      this.title = "Data Analysts (Commerciaux)"
+      this.linkToDetails = "/admin/data-analyst"
+      this.linkBackToList = "/admin/data-analysts"
+      this.sUsers.getUsers().subscribe(data => {
+        console.log("data de getUsers for editor()", data)
+        this.allUsers = data.filter(user => user.role == "data-analyst")
+        return this.allUsers
+      })
     } else if (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "externals") {
       this.title = "Contacts (Observateurs Externes)"
       this.linkToDetails = "/admin/external"
@@ -191,7 +200,7 @@ export class UsersListComponent {
     if (this.isInnerContactFilter) {
       console.log('this.allUsers', this.allUsers);
 
-      this.allUsers = this.initialContacts.filter((user: Users) => user.referentUid && user.referentUid===this.userUid)
+      this.allUsers = this.initialContacts.filter((user: Users) => user.referentUid && user.referentUid === this.userUid)
       console.log('this.referentContacts', this.allUsers);
     }
 

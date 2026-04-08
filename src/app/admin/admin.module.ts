@@ -112,11 +112,13 @@ const routesAdmin: Routes = [
       { path: 'referents', component: UsersListComponent, data: { user: 'admin', data: 'referents' } },
       { path: 'editors', component: UsersListComponent, data: { user: 'admin', data: 'editors' } },
       { path: 'externals', component: UsersListComponent, data: { user: 'admin', data: 'externals' } },
+      { path: 'data-analysts', component: UsersListComponent, data: { user: 'admin', data: 'data-analysts' } },
       // { path: 'user/:id', component: UserDetailsComponent },
       { path: 'manager/:id', component: UserDetailsComponent, data: { user: 'admin', data: 'managers' } },
       { path: 'referent/:id', component: UserDetailsComponent, data: { user: 'admin', data: 'referents' } },
       { path: 'editor/:id', component: UserDetailsComponent, data: { user: 'admin', data: 'editors' } },
       { path: 'external/:id', component: UserDetailsComponent, data: { user: 'admin', data: 'externals' } },
+      { path: 'data-analyst/:id', component: UserDetailsComponent, data: { user: 'admin', data: 'data-analysts' } },
       // { path: 'external/:id', component: ExternalDetailsComponent, data: { user: 'external' } },
 
       { path: 'addManager', component: AddUserComponent, data: { user: 'admin', data: 'managers' } },
@@ -198,18 +200,22 @@ const routesAdmin: Routes = [
       // pour le marketing
       { path: 'leads', component: StudentsListComponent, data: { user: 'editor' } },
       { path: 'leads/studentDetails/:id', component: StudentDetailsComponent, data: { user: 'editor' } },
+      // Nouvelles routes identiques pour l'analyst (avec un path différent pour éviter le conflit)
+      { path: 'analyst-leads', component: StudentsListComponent, data: { user: 'data-analyst' } },
+      { path: 'analyst-leads/studentDetails/:id', component: StudentDetailsComponent, data: { user: 'data-analyst' } },
+
       // pour l'external ajouté par referent
       { path: 'contactStudentsList', component: StudentsListComponent, data: { user: 'referentsContacts' } },
       { path: 'contactStudentDetails/:id', component: StudentDetailsComponent, data: { user: 'referentsContacts' } },
-      { path: 'my-centers', component: MyCentersComponent},
-      { path: 'marketing-doc-form', component: MarketDocFormComponent},
-      { path: 'marketing-docs-list', component: MarketDocsListComponent}
+      { path: 'my-centers', component: MyCentersComponent },
+      { path: 'marketing-doc-form', component: MarketDocFormComponent },
+      { path: 'marketing-docs-list', component: MarketDocsListComponent }
 
 
     ],
     // canActivate: [AuthGuardService]
     canActivate: [AuthGuardService, RoleGuardGuard], data: {
-      expectedRoles: ['evaluator', 'admin', 'trainer', 'tutor', 'editor', 'external', 'referent', 'manager']
+      expectedRoles: ['evaluator', 'admin', 'trainer', 'tutor', 'editor', 'external', 'referent', 'manager', 'data-analyst']
     }
   },
   { path: 'login', component: LoginComponent },

@@ -75,17 +75,16 @@
                     <div class="d-flex mb-5 justify-content-end gap-5 me-3 ">
 
                         <button type="button" class="btn btn-warning"
-                            *ngIf="userRouterLinks.user!=='trainer' && userRouterLinks.user!=='external'&& userRouterLinks.user!=='tutor'&& userRouterLinks.user!=='editor'&& userRouterLinks.user!=='referentsContacts'">
+                            *ngIf="userRouterLinks.user!=='trainer' && userRouterLinks.user!=='external'&& userRouterLinks.user!=='tutor'&& userRouterLinks.user!=='editor'&& userRouterLinks.user!=='data-analyst'&& userRouterLinks.user!=='referentsContacts'">
                             <a *ngIf="userRouterLinks.user=='admin'" class="text-white"
                                 routerLink="/admin/updateStudent/{{student.id}}">Modifier</a>
 
                             <a *ngIf="userRouterLinks.user=='referent'" class="text-white"
                                 routerLink="/admin/referent/updateStudent/{{student.id}}">Modifier le dossier</a>
-
                         </button>
-                        
+
                         <button type="button" class="btn btn-danger"
-                            [ngClass]="{'disabled':userRouterLinks.user=='referent' || userRouterLinks.user=='editor'|| userRouterLinks.user=='external'|| userRouterLinks.user=='referentsContacts'|| userRouterLinks.user=='trainer'}">
+                            [ngClass]="{'disabled':userRouterLinks.user=='referent' || userRouterLinks.user=='editor'|| userRouterLinks.user=='data-analyst'|| userRouterLinks.user=='external'|| userRouterLinks.user=='referentsContacts'|| userRouterLinks.user=='trainer'}">
                             <a class="text-white" (click)="delete(student)">Supprimer</a>
                         </button>
                     </div>
@@ -312,7 +311,7 @@
                                     *ngFor="let evaluation of getFilteredEvaluationsForSubscription(subscription); let e = index">
                                     <!-- <div class="card my-5" *ngIf="evaluation.value.sigle==subscription"> -->
                                     <!-- <div class="card mb-2"> -->
-                                        <div class="card mb-2"  *ngIf="evaluation.value.competence!==''">
+                                    <div class="card mb-2" *ngIf="evaluation.value.competence!==''">
                                         <ng-container *ngIf="evaluation.value.competence && evaluation.value.level">
                                             <div class="card-header fs-5 d-flex align-items-center">
                                                 <div class="form-check form-check-inline ms-0 ms-xs-2">
@@ -638,5 +637,7 @@
         *ngIf="userRouterLinks.user=='external'">Retour à la liste</a>
     <a class="btn btn-primary text-white retourList" [routerLink]="['/admin/leads']"
         *ngIf="userRouterLinks.user=='editor'">Retour à la liste</a>
+    <a class="btn btn-primary text-white retourList" [routerLink]="['/admin/analyst-leads']"
+        *ngIf="userRouterLinks.user=='data-analyst'">Retour à la liste</a>
     <a class="btn btn-primary text-white retourList" [routerLink]="['/admin/contactStudentsList']"
         *ngIf="userRouterLinks.user=='referentsContacts'">Retour à la liste</a>

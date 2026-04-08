@@ -11,7 +11,7 @@
     <h3 *ngIf="userRouterLinks.user=='admin'">Gestion des candidats<span
             class="badge bg-primary ms-2">{{collectionStudents.length}}</span></h3>
 
-    <h3 *ngIf="userRouterLinks.user=='editor'">Vue quantitative des candidats<span
+    <h3 *ngIf="userRouterLinks.user=='editor' || userRouterLinks.user=='data-analyst'">Vue quantitative des candidats<span
             class="badge bg-primary ms-2">{{collectionStudents.length}}</span></h3>
     <!-- pour vérifier userUid du référent et le comparer au champ student.referent facilement -->
     <!-- <h3 *ngIf="userRouterLinks.user=='referent'">Suivi administratif des candidats ({{userUid}})</h3> -->
@@ -58,7 +58,7 @@
         <app-search (searchTextChanged)="onSearchTextEntered($event)"></app-search>
         <!-- ajoute un bouton d'ajout en haut du composant j'aime  pas sur petits écrans !!!! -->
         <button type="submit" class="btn btn-primary mt-5 w-auto"
-            *ngIf="userRouterLinks.user!=='external' && userRouterLinks.user!=='editor' && userRouterLinks.user!=='referentsContacts'">
+            *ngIf="userRouterLinks.user!=='external' && userRouterLinks.user!=='editor' && userRouterLinks.user!=='referentsContacts' && userRouterLinks.user!=='data-analyst'">
             <a [routerLink]="['/admin/addStudent']" class="text-white"><i
                     class="bi bi-person-fill-add me-2"></i>Ajouter</a></button>
 
@@ -89,21 +89,21 @@
                         id="myCenterStudents"
                         [checked]="storedValue=='myCenterStudentsFilter' || myCenterStudents===true">
                 </div>
-                <div class="form-check" *ngIf="userRouterLinks.user==='admin'|| userRouterLinks.user==='editor'">
+                <div class="form-check" *ngIf="userRouterLinks.user==='admin'|| userRouterLinks.user==='editor' || userRouterLinks.user=='data-analyst'">
                     <label class="form-check-label" for="socialCheckbox">Formulaire administratif envoyé</label>
                     <input type="checkbox" (change)="onCheckboxChangeSocial($event)" class="form-check-input"
                         id="socialCheckbox"
                         [checked]="storedValue=='socialFormSentFilter' || isSocialFormSentFilter===true">
                 </div>
-                <div class="form-check" *ngIf="userRouterLinks.user==='admin'|| userRouterLinks.user==='editor'">
+                <div class="form-check" *ngIf="userRouterLinks.user==='admin'|| userRouterLinks.user==='editor' || userRouterLinks.user=='data-analyst'">
                     <label class="form-check-label" for="socialCheckbox">Formulaire administratif non renseigné</label>
                     <input type="checkbox" (change)="onCheckboxChangeNoSocial($event)" class="form-check-input"
                         id="noSocialCheckbox"
                         [checked]="storedValue=='noSocialFormSentFilter' || noSocialFormSentFilter===true">
                 </div>
                 <!-- étudiant interne : innerStudent -->
-                <div class="form-check" *ngIf="userRouterLinks.user==='admin'|| userRouterLinks.user==='editor'">
-                    <label class="form-check-label" for="innerStudentCheckbox">Etudiants internes</label>
+                <div class="form-check" *ngIf="userRouterLinks.user==='admin'|| userRouterLinks.user==='editor' || userRouterLinks.user=='data-analyst'">
+                    <label class="form-check-label" for="innerStudentCheckbox">Candidats internes (dispensés de formulaires)</label>
                     <input type="checkbox" (change)="onCheckboxChangeInner($event)" class="form-check-input"
                         id="innerStudentCheckbox"
                         [checked]="isInnerStudentFilter===true || storedValue==='isInnerStudentFilter'">
@@ -125,7 +125,7 @@
 
                 <!-- pour fliquer ce que font les formateurs quand ils sont formés par quelqu'un qui les induit en erreur -->
                 <div class="form-check"
-                    *ngIf="userRouterLinks.user==='admin' || userRouterLinks.user==='editor' || userRouterLinks.user==='referent' ">
+                    *ngIf="userRouterLinks.user==='admin' || userRouterLinks.user==='editor' || userRouterLinks.user=='data-analyst' || userRouterLinks.user==='referent' ">
                     <label class="form-check-label" for="hasEvaluationCheckbox">A déjà reçu une évaluation
                         pédagogique</label>
                     <input type="checkbox" (change)="onCheckboxChangeHasEvaluation($event)" class="form-check-input"
@@ -142,7 +142,7 @@
                 <!-- puisqu'il faut compliquer -->
                 <!-- ici, pour restreindre la liste des filtres additionnels au seul admin -->
                 <ng-container
-                    *ngIf="userRouterLinks.user==='admin'|| userRouterLinks.user==='editor'|| userRouterLinks.user==='external' || userRouterLinks.user==='referentsContacts'">
+                    *ngIf="userRouterLinks.user==='admin'|| userRouterLinks.user==='editor'|| userRouterLinks.user=='data-analyst' || userRouterLinks.user==='external' || userRouterLinks.user==='referentsContacts'">
                     <!-- 
                     <div *ngFor="let trade of trades">
                         <div class="form-check">
@@ -223,7 +223,7 @@
                 <hr class="border-secondary">
 
                 <div><button type="button"
-                        *ngIf="userRouterLinks=='admin' || userRouterLinks.user=='editor' || userRouterLinks.user=='external'"
+                        *ngIf="userRouterLinks=='admin' || userRouterLinks.user=='editor'|| userRouterLinks.user=='data-analyst' || userRouterLinks.user=='external'"
                         class="btn btn-primary mb-2" (click)="toggleOrder()">
                         {{ ascending ? 'Afficher les plus récents' : 'Afficher les plus anciens' }}
                     </button></div>
@@ -231,9 +231,9 @@
                 <!-- <hr class="border-secondary" *ngIf="userRouterLinks.user==='admin'"> -->
                 <!-- si il faut relancer (l'admin décidera à qui l'honneur) -->
                 <button button class="btn btn-primary position-relative me-sm-2"
-                    *ngIf="userRouterLinks.user==='admin' || userRouterLinks.user=='editor'"
-                    (click)="getStudentsWithNoInterest()">{{showNoInterestStudents ? 'Masquer les comptes inactifs à
-                    relancer'
+                    *ngIf="userRouterLinks.user==='admin' || userRouterLinks.user=='editor' || userRouterLinks.user=='data-analyst'"
+                    (click)="getStudentsWithNoInterest()">
+                    {{showNoInterestStudents ? 'Masquer les comptes inactifs à relancer'
                     : 'Afficher les comptes inactifs à relancer' }}
                     <span *ngIf="showNoInterestStudents"
                         class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
@@ -272,9 +272,9 @@
             <!-- Liste conditionnelle qui doit être désactivée dès l'application d'un filtre pour plus de lisibilité -->
             <div *ngIf="showNoInterestStudents">
                 <div class="alert alert-warning mx-0 fw-regular fs-auto">Comptes inactifs<span
-                        class="badge bg-danger ms-2">{{studentsWithNoInterest.length}}</span> </div>
+                        class="badge bg-danger ms-2">{{studentsWithNoInterest.length}}</span></div>
                 <div *ngFor="let student of studentsWithNoInterest">
-                    <div *ngIf="userRouterLinks.user==='admin' || userRouterLinks.user==='editor'">
+                    <div *ngIf="userRouterLinks.user==='admin' || userRouterLinks.user==='editor' || userRouterLinks.user==='data-analyst'">
                         <div class="row mt-4 ps-sm-0"
                             *ngIf="searchText===''|| student.lastName.includes(searchText) || student.lastName.toLowerCase().includes(searchText) 
                                                   || student.firstName.includes(searchText) || student.firstName.toLowerCase().includes(searchText)
@@ -301,6 +301,9 @@
                                         class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
                                     <a *ngIf="userRouterLinks.user=='editor'"
                                         [routerLink]="['/admin/leads/studentDetails', student.id]" class="text-white"><i
+                                            class="bi bi-person-lines-fill"></i>Détails</a>
+                                    <a *ngIf="userRouterLinks.user=='data-analyst'"
+                                        [routerLink]="['/admin/analyst-leads/studentDetails', student.id]" class="text-white"><i
                                             class="bi bi-person-lines-fill"></i>Détails</a>
                                 </button>
                             </div>
@@ -351,7 +354,7 @@
         <div *ngFor="let student of paginatedStudents">
 
             <div
-                *ngIf="userRouterLinks.user=='admin' || (userRouterLinks.user=='referent'&& !isLoading) || userRouterLinks.user=='editor', else external">
+                *ngIf="userRouterLinks.user=='admin' || (userRouterLinks.user=='referent'&& !isLoading) || userRouterLinks.user=='editor'|| userRouterLinks.user=='data-analyst', else external">
 
                 <div class="row mt-4 ps-5 ps-sm-0" *ngIf="searchText === '' 
         || student.lastName.toLowerCase().includes(searchText.toLowerCase()) 
@@ -376,6 +379,9 @@
                                     class="bi bi-person-lines-fill"></i>Détails</a>
                             <a *ngIf="userRouterLinks.user=='editor'"
                                 [routerLink]="['/admin/leads/studentDetails', student.id]" class="text-white"><i
+                                    class="bi bi-person-lines-fill"></i>Détails</a>
+                            <a *ngIf="userRouterLinks.user=='data-analyst'"
+                                [routerLink]="['/admin/analyst-leads/studentDetails', student.id]" class="text-white"><i
                                     class="bi bi-person-lines-fill"></i>Détails</a>
                         </button></div>
                 </div>

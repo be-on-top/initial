@@ -43,7 +43,7 @@
                     <li class="nav-item dropdown" [routerLinkActive]="['active']"
                         *ngIf="userUid!==undefined && userUid!=='' && userRole!=='student'">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            *ngIf="userRole?.includes('admin') || userRole?.includes('evaluator') || userRole?.includes('trainer') || userRole?.includes('tutor') || userRole?.includes('external') || userRole?.includes('referent') || userRole?.includes('manager') || userRole?.includes('editor')">Admin</a>
+                            *ngIf="userRole?.includes('admin') || userRole?.includes('evaluator') || userRole?.includes('trainer') || userRole?.includes('tutor') || userRole?.includes('external') || userRole?.includes('referent') || userRole?.includes('manager') || userRole?.includes('editor') || userRole?.includes('data-analyst')">Admin</a>
                         <!-- <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Admin</a> -->
                         <ul class="dropdown-menu"
                             aria-label="Menu de navigation pour la création d'utilisateurs ayant des droits spécifiques">
@@ -62,8 +62,18 @@
                                 <hr>
                             </li>
                             <!-- pour vue des filtres quantitatifs -->
+                            <li *ngIf="userRole?.includes('editor')"><a
+                                    class="dropdown-item" (click)="navigateTo('/admin/leads')">Vue quantitative
+                                    candidats</a>
+                            </li>
+                            <li *ngIf="userRole?.includes('data-analyst')"><a
+                                    class="dropdown-item" (click)="navigateTo('/admin/analyst-leads')">Vue quantitative
+                                    candidats</a>
+                            </li>
+                            
+                            <!-- pour gestion Kit Médias -->
                             <li *ngIf="userRole?.includes('editor')"><a class="dropdown-item"
-                                    (click)="navigateTo('/admin/leads')">Vue quantitative candidats</a>
+                                    (click)="navigateTo('/admin/marketing-docs-list')">Gestion Kit Medias</a>
                             </li>
 
                             <li *ngIf="userRole?.includes('admin')|| userRole?.includes('manager')"><a
@@ -380,7 +390,7 @@
                             (click)="closeNavbar()">Partenaires</a>
                     </li>
 
-                    <li *ngIf="!userRole?.includes('evaluator') && !userRole?.includes('referent') && !userRole?.includes('trainer') && !userRole?.includes('tutor') && !userRole?.includes('editor')"
+                    <li *ngIf="!userRole?.includes('evaluator') && !userRole?.includes('referent') && !userRole?.includes('trainer') && !userRole?.includes('tutor') && !userRole?.includes('editor') && !userRole?.includes('data-analyst')"
                         class="nav-item" [routerLinkActive]="['active']">
                         <a class="nav-link" [routerLink]="['/benefits']" role="button" (click)="closeNavbar()"
                             title="Informations, questions réponses et mission de BE-ON-TOP"
@@ -505,7 +515,8 @@
                     <!-- fin tuteurs -->
 
                     <!-- pour marketing momentanné -->
-                    <li *ngIf="userRole?.includes('editor')" class="nav-item dropdown" [routerLinkActive]="['active']">
+                    <li *ngIf="userRole?.includes('editor') || userRole?.includes('data-analyst')"
+                        class="nav-item dropdown" [routerLinkActive]="['active']">
                         <a class="nav-link dropdown-toggle" href="#" role="button"
                             data-bs-toggle="dropdown">Informations
                             <!-- <i class="bi bi-info-square-fill ms-2"></i> -->
@@ -514,7 +525,8 @@
                         <ul class="dropdown-menu mb-2">
                             <li>
                                 <a class="dropdown-item" (click)="closeNavbar()" target="_blank"
-                                    rel="noopener noreferrer" role="button" aria-label="Information prescripteurs et recruteurs partenaires"
+                                    rel="noopener noreferrer" role="button"
+                                    aria-label="Information prescripteurs et recruteurs partenaires"
                                     [routerLink]="['market-app']">Infos Prescripteurs</a>
                             </li>
                             <li><a class="dropdown-item" (click)="closeNavbar()" target="_blank"
@@ -537,6 +549,13 @@
                                     aria-label="Types de candidats par inscription formation"
                                     (click)="navigateTo('trainingStats')">Typologie des candidats</a>
                             </li>
+                            <!-- pour le kit média version publique -->
+                            <li *ngIf="userRole?.includes('editor')"><a class="dropdown-item" (click)="closeNavbar()"
+                                    target="_blank" rel="noopener noreferrer" role="button"
+                                    aria-label="Types de candidats par inscription formation"
+                                    (click)="navigateTo('marketing-pack')">Kit médias public</a>
+                            </li>
+
 
                         </ul>
                     </li>

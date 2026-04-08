@@ -99,6 +99,9 @@
                     <a *ngIf="userRouterLinks.user==='admin' && userRouterLinks.data=='referents'"
                         [routerLink]="['/admin/addReferent']" class="text-white"><i
                             class="bi bi-person-plus-fill"></i>Ajouter</a>
+                    <a *ngIf="userRouterLinks.user==='admin' && userRouterLinks.data=='data-analysts'"
+                        [routerLink]="['/admin/addUser']" class="text-white"><i
+                            class="bi bi-person-plus-fill"></i>Ajouter</a>
                 </button>
                 <!-- {{allUsers.length}}{{userRouterLinks.data}} -->
                 <button type="button" class="btn btn-primary"

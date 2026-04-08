@@ -27,7 +27,7 @@ export class UserDetailsComponent implements OnInit {
   userRole: string | string[] | null = null;
   userUid: string = "";
 
-  studentsList:any=[]
+  studentsList: any = []
 
 
   constructor(
@@ -35,7 +35,7 @@ export class UserDetailsComponent implements OnInit {
     private ac: ActivatedRoute,
     private router: Router,
     private externalS: ExternalsService,
-    private authService:AuthService
+    private authService: AuthService
   ) {
     this.userId = this.ac.snapshot.params["id"];
     this.userRouterLinks = this.ac.snapshot.data;
@@ -58,19 +58,20 @@ export class UserDetailsComponent implements OnInit {
         } else {
           this.permimeter = "Local"
         }
-    // Vérification si des étudiants sont associés au contact
-      if (this.userRole == 'referent' && this.user.students) {
-        let list: string[] = [];
+        // Vérification si des étudiants sont associés au contact
+        if (this.userRole == 'referent' && this.user.students) {
+          let list: string[] = [];
 
-        // On attend que tous les abonnements des étudiants soient terminés
-        this.user.students.forEach((student: any) => {
-          this.service.getLinkedStudentName(student).subscribe(dataStudent => {
-            // list.push(dataStudent.lastName);
-            list.push(dataStudent.lastName + " " + dataStudent.firstName);
-            this.studentsList=[...new Set(list)];
-            // console.log('Liste des étudiants sans doublons:', this.studentsList)
+          // On attend que tous les abonnements des étudiants soient terminés
+          this.user.students.forEach((student: any) => {
+            this.service.getLinkedStudentName(student).subscribe(dataStudent => {
+              // list.push(dataStudent.lastName);
+              list.push(dataStudent.lastName + " " + dataStudent.firstName);
+              this.studentsList = [...new Set(list)];
+              // console.log('Liste des étudiants sans doublons:', this.studentsList)
+            })
           })
-        })}
+        }
         // fin de la boucle pour les candidats potentiellement attribués
       }
       return this.user
@@ -87,7 +88,10 @@ export class UserDetailsComponent implements OnInit {
     else if (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "editors") {
       this.title = "Contributeur"
       this.linkBackToList = "/admin/editors"
-    } else if ((this.userRouterLinks.user == "admin" || this.userRouterLinks.user=="referent") && this.userRouterLinks.data == "externals") {
+    } else if (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "data-analysts") {
+      this.title = "Data Analyst (Commercial)"
+      this.linkBackToList = "/admin/data-analysts"
+    } else if ((this.userRouterLinks.user == "admin" || this.userRouterLinks.user == "referent") && this.userRouterLinks.data == "externals") {
       this.title = "Observateur Externe"
       this.linkBackToList = "/admin/externals"
     }
@@ -100,7 +104,7 @@ export class UserDetailsComponent implements OnInit {
     this.authSubscription = this.authService.getCurrentUserInfo().subscribe(userInfo => {
       this.userRole = userInfo?.role ?? null;
       this.userUid = userInfo?.uid ?? "";
-    });   
+    });
 
 
   }

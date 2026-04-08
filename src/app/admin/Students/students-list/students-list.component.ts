@@ -338,7 +338,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       this.allStudents = [...this.initialStudents]; // Initialiser allStudents
 
       // Vérifie le rôle utilisateur
-      if (this.userRouterLinks.user === 'admin' || this.userRouterLinks.user === 'editor') {
+      if (this.userRouterLinks.user === 'admin' || this.userRouterLinks.user === 'editor' || this.userRouterLinks.user === 'data-analyst') {
         this.applyFilters();
       }
 
