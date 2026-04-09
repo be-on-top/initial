@@ -209,8 +209,8 @@ const routesAdmin: Routes = [
       { path: 'contactStudentDetails/:id', component: StudentDetailsComponent, data: { user: 'referentsContacts' } },
       { path: 'my-centers', component: MyCentersComponent },
       { path: 'marketing-doc-form', component: MarketDocFormComponent },
+      { path: 'marketing-doc-form/:id', component: MarketDocFormComponent },
       { path: 'marketing-docs-list', component: MarketDocsListComponent }
-
 
     ],
     // canActivate: [AuthGuardService]

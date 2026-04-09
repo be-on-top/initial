@@ -39,7 +39,9 @@ export class MarketDocsListComponent implements OnInit {
    * @param doc Le document sélectionné
    */
   onEdit(doc: MarketDoc): void {
-    this.router.navigate(['/admin/marketing/edit', doc.id]);
+    // this.router.navigate(['/admin/marketing/edit', doc.id]);
+    this.router.navigate(['/admin/marketing-doc-form', doc.id]);
+    
   }
 
   /**
@@ -59,6 +61,12 @@ export class MarketDocsListComponent implements OnInit {
         });
     }
   }
+
+  isImage(url?: string): boolean {
+  if (!url) return false;
+  const lower = url.toLowerCase();
+  return lower.includes('.png') || lower.includes('.jpg') || lower.includes('.jpeg');
+}
 
 }
 
