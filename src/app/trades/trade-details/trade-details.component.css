@@ -1,3 +1,15 @@
+/* --- NETTOYAGE RADICAL --- */
+
+/* On met le VRAI ratio de tes images (900/375 = 2.4) */
+.mt-4.p-2.position-relative img {
+    aspect-ratio: 900 / 375; 
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+/* en dessous l'ancien  */
+
 /* pour les cas où le bouton se retrouve en d-flex et puisque cette zone a un background de couleur */
 .d-flex button {
   color: white;

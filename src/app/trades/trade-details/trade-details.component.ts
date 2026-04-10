@@ -127,7 +127,7 @@ export class TradeDetailsComponent implements OnInit {
         });
 
         // Maintenant que le SEO est "servi", on s'occupe de l'affichage des centres
-        this.fetchCenters();
+        // this.fetchCenters();
 
       });
 
@@ -167,10 +167,12 @@ export class TradeDetailsComponent implements OnInit {
             // this.fetchCenters();
 
             // console.log("Sum of first values:", this.firstValuesSum)
+
+
           })
 
 
-        // 2 récupérer l'image en ligne
+        // on récupérer l'image en ligne
 
         // Charge les URLs des deux versions de l'image
         this.service.loadImage(this.tradeId).then(({ originalUrl, resizedUrl }) => {
@@ -184,6 +186,9 @@ export class TradeDetailsComponent implements OnInit {
             console.error('Erreur lors du chargement de l\'image', error);
           }
         });
+
+            // Maintenant que le SEO est "servi" et les métiers aussi, on s'occupe de l'affichage des centres
+            this.fetchCenters();
 
 
       } else if (this.offline) {
@@ -216,7 +221,6 @@ export class TradeDetailsComponent implements OnInit {
 
             // données structurées
             // this.structuredData = this.generateStructuredData(this.tradeData);
-
             // console.log("Sum of first values:", this.firstValuesSum);
 
           }
@@ -503,43 +507,43 @@ export class TradeDetailsComponent implements OnInit {
   //   }
   // }
 
-setCanonicalURL(id: string): void {
-  try {
-    // 👉 Construction de l'URL canonique propre (sans paramètres parasites)
-    const cleanUrl = `https://be-on-top.io/formation/${id}`;
+  setCanonicalURL(id: string): void {
+    try {
+      // 👉 Construction de l'URL canonique propre (sans paramètres parasites)
+      const cleanUrl = `https://be-on-top.io/formation/${id}`;
 
-    // 👉 On cherche si une balise <link rel="canonical"> existe déjà dans le <head>
-    let link: HTMLLinkElement | null =
-      this.document.querySelector("link[rel='canonical']");
+      // 👉 On cherche si une balise <link rel="canonical"> existe déjà dans le <head>
+      let link: HTMLLinkElement | null =
+        this.document.querySelector("link[rel='canonical']");
 
-    // 👉 Si elle n'existe pas, on la crée (cas du premier chargement)
-    if (!link) {
-      link = this.document.createElement('link');
-      link.setAttribute('rel', 'canonical');
-      this.document.head.appendChild(link);
+      // 👉 Si elle n'existe pas, on la crée (cas du premier chargement)
+      if (!link) {
+        link = this.document.createElement('link');
+        link.setAttribute('rel', 'canonical');
+        this.document.head.appendChild(link);
+      }
+
+      // ❌ Version brute (toujours réécrit le DOM)
+      // link.setAttribute('href', cleanUrl);
+
+      // ✅ Version optimisée :
+      // On évite une mutation DOM inutile si l'URL est déjà correcte
+      // → micro gain perf + évite reflows inutiles
+      if (link.getAttribute('href') !== cleanUrl) {
+        link.setAttribute('href', cleanUrl);
+      }
+
+      // 👉 On garde une référence pour éventuellement manipuler/supprimer plus tard
+      // (ex: ancien test dans ngOnDestroy — actuellement non utilisé volontairement)
+      this.canonicalTag = link;
+
+      // 👉 Log debug SEO (facultatif en prod)
+      console.log(`[SEO-SHIELD] Canonical défini : ${cleanUrl}`);
+
+    } catch (err) {
+      console.error('[SEO] Erreur Canonical :', err);
     }
-
-    // ❌ Version brute (toujours réécrit le DOM)
-    // link.setAttribute('href', cleanUrl);
-
-    // ✅ Version optimisée :
-    // On évite une mutation DOM inutile si l'URL est déjà correcte
-    // → micro gain perf + évite reflows inutiles
-    if (link.getAttribute('href') !== cleanUrl) {
-      link.setAttribute('href', cleanUrl);
-    }
-
-    // 👉 On garde une référence pour éventuellement manipuler/supprimer plus tard
-    // (ex: ancien test dans ngOnDestroy — actuellement non utilisé volontairement)
-    this.canonicalTag = link;
-
-    // 👉 Log debug SEO (facultatif en prod)
-    console.log(`[SEO-SHIELD] Canonical défini : ${cleanUrl}`);
-
-  } catch (err) {
-    console.error('[SEO] Erreur Canonical :', err);
   }
-}
 
 
 
