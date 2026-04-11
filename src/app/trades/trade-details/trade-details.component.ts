@@ -52,6 +52,7 @@ export class TradeDetailsComponent implements OnInit {
   private map: L.Map | undefined;
 
   isMapVisible = false;
+  private mapInitialized = false;
 
   tradeDataDenominationRGAA?: any
 
@@ -59,6 +60,12 @@ export class TradeDetailsComponent implements OnInit {
   isPageLoaded: boolean = false;
 
   tradesMeta: any;
+
+  isLoading: boolean = true
+  isDescriptionCollapsed: boolean = false;
+  isCPCollapsed: boolean = true;
+  isCentersCollapsed: boolean = false;
+
 
   // données de secours extraites du json
   backupDenomination: string = ""
@@ -187,14 +194,16 @@ export class TradeDetailsComponent implements OnInit {
           }
         });
 
-            // Maintenant que le SEO est "servi" et les métiers aussi, on s'occupe de l'affichage des centres
-            this.fetchCenters();
+        // Maintenant que le SEO est "servi" et les métiers aussi, on s'occupe de l'affichage des centres
+        this.fetchCenters();
+
+        this.isPageLoaded = true;
 
 
       } else if (this.offline) {
 
         alert("offline")
-        // 1 pour ouvrir la base indexedDB et récupérer le doc sauverdé :
+        // 1 pour ouvrir la base indexedDB et récupérer le doc sauvegardé :
         const openRequest = window.indexedDB.open('my-database');
         // Pour gérer les évènements à l'ouverture de la base
         openRequest.onsuccess = (event) => {
@@ -241,7 +250,7 @@ export class TradeDetailsComponent implements OnInit {
             // alert(JSON.stringify(this.studentData!['quizz_' + this.tradeId].scoreCounter))
             this.studentData && this.studentData!['quizz_' + this.tradeId] ? this.hasStartedEvaluation = true : this.hasStartedEvaluation = false;
             console.log('this.hasStartedEvaluation', this.hasStartedEvaluation);
-            this.studentData && this.studentData['quizz_' + this.tradeData.sigle] && this.studentData['quizz_' + this.tradeData.sigle].fullResults ? this.isEvaluationCompleted = true : this.isEvaluationCompleted = false;
+            this.studentData && this.studentData['quizz_' + this.tradeId] && this.studentData['quizz_' + this.tradeId].fullResults ? this.isEvaluationCompleted = true : this.isEvaluationCompleted = false;
 
           })
 
@@ -282,7 +291,7 @@ export class TradeDetailsComponent implements OnInit {
     // setTimeout(() => {
     //   this.isPageLoaded = true;
     // }, 300);
-    this.isPageLoaded = true;
+    // this.isPageLoaded = true;
   }
 
 
@@ -296,7 +305,7 @@ export class TradeDetailsComponent implements OnInit {
   //   }
   // }
 
-  private mapInitialized = false;
+
 
   // async ngAfterViewInit(): Promise<void> {
   //   // Récupère les centres, puis charge la carte
@@ -322,9 +331,7 @@ export class TradeDetailsComponent implements OnInit {
     this.router.navigate(['/home']);  // Remplacez '/home' par le chemin correspondant à votre page d'accueil
   }
 
-  isDescriptionCollapsed: boolean = false;
-  isCPCollapsed: boolean = true;
-  isCentersCollapsed: boolean = false;
+
 
   toggleDescriptionCollapse() {
     this.isDescriptionCollapsed = !this.isDescriptionCollapsed;
@@ -749,7 +756,7 @@ export class TradeDetailsComponent implements OnInit {
   }
 
 
-  isLoading: boolean = true
+
 
   // onImageLoad
   //   () {

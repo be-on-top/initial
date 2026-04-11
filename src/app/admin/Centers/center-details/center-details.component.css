@@ -1,20 +1,41 @@
 #map {
-    height: 400px; /* Définir une hauteur fixe pour le conteneur */
-    width: 100%;   /* Utiliser toute la largeur disponible */
-    border: 1px solid #ccc; /* Ajout d'une bordure pour la visibilité (optionnel) */
-    border-radius: 5px;     /* Arrondir les coins pour l'apparence (optionnel) */
+  height: 400px;
+  /* Définir une hauteur fixe pour le conteneur */
+  width: 100%;
+  /* Utiliser toute la largeur disponible */
+  border: 1px solid #ccc;
+  /* Ajout d'une bordure pour la visibilité (optionnel) */
+  border-radius: 5px;
+  /* Arrondir les coins pour l'apparence (optionnel) */
+  background-color: #f8f9fa;
+  /* Fond neutre en attendant la carte */
 }
+
+.center-details-container {
+  display: block;
+  /* On réserve l'espace pour que le footer ne saute pas */
+  min-height: 85vh;
+}
+
+
 
 /* Personnalise la bulle du popup (taille, couleur, etc.) */
 .leaflet-popup-content-wrapper {
-    background-color: #3498db; /* Couleur de fond */
-    color: white; /* Couleur du texte */
-    border-radius: 10px; /* Coins arrondis */
-    padding: 10px;
-  }
-  
-  .leaflet-popup-tip {
-    background: #3498db; /* Couleur de la pointe de la bulle */
-  }
-  
+  background-color: #3498db;
+  /* Couleur de fond */
+  color: white;
+  /* Couleur du texte */
+  border-radius: 10px;
+  /* Coins arrondis */
+  padding: 10px;
+}
 
+.leaflet-popup-tip {
+  background: #3498db;
+  /* Couleur de la pointe de la bulle */
+}
+
+.container {
+  min-height: 80vh !important;
+  /* Ajuste selon la taille moyenne de cette page */
+}

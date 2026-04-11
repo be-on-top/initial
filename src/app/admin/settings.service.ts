@@ -209,7 +209,7 @@ export class SettingsService {
 
     return docData(sigleRef).pipe(
       tap(data => console.log('data de sigles', data)),  // Ajoutez cette ligne pour afficher les données dans la console
-      map((data: any) => (data && data['legalDuration'] && data['legalDuration']===true) ? data['legalDuration'] : null)
+      map((data: any) => (data && data['legalDuration'] && data['legalDuration'] === true) ? data['legalDuration'] : null)
     );
   }
 
@@ -267,15 +267,15 @@ export class SettingsService {
   }
 
 
-  
+
   uploadPartnerWithLogo(partner: any, file: File): Observable<any> {
     const rawName = partner.name || 'partenaire';
     const cleanName = rawName.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
     const fileExt = file.name.split('.').pop();
     const filePath = `partners_logos/${cleanName}_${Date.now()}.${fileExt}`;
-  
+
     const storageRef = ref(this.storage, filePath); // ✅ version modulaire
-  
+
     return from(uploadBytes(storageRef, file)).pipe(
       switchMap(() => getDownloadURL(storageRef)),
       map((downloadUrl: string) => ({
@@ -284,7 +284,7 @@ export class SettingsService {
       }))
     );
   }
-  
+
 
   // Méthode pour récupérer les partenaires
   fetchPartners(): Observable<Partner[]> {
@@ -322,31 +322,69 @@ export class SettingsService {
     return docData(maximumsDocRef) as Observable<DocumentData>
   }
 
-  getSigle(id: string) {
+  // getSigle(id: string) {
 
 
 
-    let sigleRef = doc(this.firestore, "sigles/" + id)
-    return docData(sigleRef, { idField: 'id' }) as Observable<Trade>
-
-
-
-
-    // const sigleData$ = docData(sigleRef, { idField: 'id' }) as Observable<Trade>;
-    // Sauvegarder les données localement une fois qu'elles sont récupérées
-    // sigleData$.subscribe((data) => {     
-    //   this.saveToIndexedDB(id, data);
-    // });
-    // return sigleData$.pipe(
-    //   tap(data => {
-    //     this.saveToIndexedDB(id, data); // Sauvegarder le sigle dans IndexedDB
-    //   })
-    // );
-    // return sigleData$;
+  //   let sigleRef = doc(this.firestore, "sigles/" + id)
+  //   return docData(sigleRef, { idField: 'id' }) as Observable<Trade>
 
 
 
 
+  //   // const sigleData$ = docData(sigleRef, { idField: 'id' }) as Observable<Trade>;
+  //   // Sauvegarder les données localement une fois qu'elles sont récupérées
+  //   // sigleData$.subscribe((data) => {     
+  //   //   this.saveToIndexedDB(id, data);
+  //   // });
+  //   // return sigleData$.pipe(
+  //   //   tap(data => {
+  //   //     this.saveToIndexedDB(id, data); // Sauvegarder le sigle dans IndexedDB
+  //   //   })
+  //   // );
+  //   // return sigleData$;
+
+
+
+
+  // }
+
+  /**
+   * Récupère un document "Trade" par son ID.
+   * * POURQUOI CETTE MÉTHODE (getDoc + from) EST RETENUE :
+   * 1. SEO / Googlebot : Contrairement à docData(), getDoc() effectue une requête HTTP 
+   * unique (one-shot). Cela permet à Angular de se "stabiliser" immédiatement. 
+   * Googlebot peut ainsi capturer le contenu du router-outlet avant son timeout.
+   * 2. Performance : Évite de maintenir une connexion WebSocket ouverte (Listen channel) 
+   * pour une donnée qui n'a pas besoin d'être mise à jour en temps réel sur cette page.
+   * 3. Compatibilité : Le retour reste un Observable, ce qui ne brise pas les composants
+   * qui consomment déjà ce service.
+   */
+  getSigle(id: string): Observable<Trade> {
+    // 1. Création de la référence au document dans Firestore
+    const sigleRef = doc(this.firestore, "sigles/" + id);
+
+    // 2. from(...) convertit la Promise de getDoc en Observable pour rester cohérent avec Angular
+    return from(getDoc(sigleRef)).pipe(
+      map((snap) => {
+        // 3. Vérification de l'existence des données
+        const data = snap.data();
+        if (!data) {
+          throw new Error(`Le document avec l'ID ${id} est introuvable ou vide.`);
+        }
+
+        /**
+         * 4. Reconstruction de l'objet métier :
+         * On fusionne les données du document avec son ID technique.
+         * 'as unknown as Trade' est utilisé pour satisfaire la vérification stricte
+         * de TypeScript tout en garantissant le type de retour attendu par les composants.
+         */
+        return {
+          ...data,
+          id: snap.id
+        } as unknown as Trade;
+      })
+    );
   }
 
   getTradeName(tradeId: string): Observable<string> {

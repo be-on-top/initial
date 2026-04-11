@@ -451,6 +451,6 @@
     <app-export-students *ngIf="userRouterLinks.user === 'referent'" [students]="allStudents">
     </app-export-students>
 
-    <app-export-students *ngIf="userRouterLinks.user==='admin'"></app-export-students>
+    <app-export-students *ngIf="userRouterLinks.user==='admin' || userRouterLinks.user==='data-analyst'"></app-export-students>
 
 </div>
