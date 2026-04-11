@@ -17,8 +17,11 @@ export class TradesMinimalComponent implements OnInit {
 
   tradesData: any[] = [];
 
+  // 1. On ajoute le flag de chargement
+  isLoading: boolean = true
+
   constructor(
-    public slugService: SlugService, 
+    public slugService: SlugService,
     private settingsService: SettingsService,
     private titleService: Title, // <-- Injection
     private metaService: Meta    // <-- Injection
@@ -32,11 +35,22 @@ export class TradesMinimalComponent implements OnInit {
       content: "Explorez notre catalogue de formations métiers pour évaluer vos compétences et démarrer au plus vite une formation sur-mesure qui vous ressemble."
     });
 
-    
-    this.settingsService.getTrades().subscribe(data => {
-      this.tradesData = data || [];
 
-      this.groupTrades();
+    // 2. Appel au service avec gestion complète
+    this.settingsService.getTrades().subscribe({
+      next: (data) => {
+        this.tradesData = data || [];
+        this.groupTrades();
+
+        // ON PASSE À FALSE ICI
+        // C'est le seul moyen garanti si l'observable reste "ouvert" (Stream)
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error("Erreur lors de la récupération :", err);
+        this.isLoading = false;
+      }
+      // On supprime 'complete' qui est suspect ici
     });
   }
 
@@ -60,18 +74,18 @@ export class TradesMinimalComponent implements OnInit {
   }
 
 
-copyUrl(url: string): void {
+  copyUrl(url: string): void {
 
-  const fullUrl = window.location.origin + '/formation/' + url;
+    const fullUrl = window.location.origin + '/formation/' + url;
 
-  navigator.clipboard.writeText(fullUrl)
-    .then(() => {
-      console.log('URL copiée :', fullUrl);
-    })
-    .catch(err => {
-      console.error('Erreur de copie :', err);
-    });
+    navigator.clipboard.writeText(fullUrl)
+      .then(() => {
+        console.log('URL copiée :', fullUrl);
+      })
+      .catch(err => {
+        console.error('Erreur de copie :', err);
+      });
 
-}
+  }
 
 }
