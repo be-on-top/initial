@@ -1,64 +1,67 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { CentersService } from '../admin/centers.service';
-// import { CentersService } from '../centers/centers.service';
-import { HttpClient } from '@angular/common/http'; // <-- Import nécessaire
 import { Title, Meta } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/common';
-Title
-
-
 
 @Component({
   selector: 'app-centers-index',
   templateUrl: './centers-index.component.html',
   styleUrls: ['./centers-index.component.css']
 })
-export class CentersIndexComponent implements OnInit {
+export class CentersIndexComponent implements OnInit, OnDestroy {
 
+  // Tableaux typés pour la répartition par catégories (Optimise le rendu HTML)
   partnerCenters: any[] = [];
   memberCenters: any[] = [];
   independentCenters: any[] = [];
   subsidiaryCenters: any[] = [];
 
+  // Chaîne liée au champ de recherche (ngModel)
   query: string = '';
 
+  // Référence vers la balise canonical pour gestion dynamique
   private canonicalTag: HTMLLinkElement | null = null;
+
+  // Contrôle l'affichage du spinner et stabilise le CLS (Cumulative Layout Shift)
+  isLoading: boolean = true; 
 
   constructor(
     private centersService: CentersService,
     private titleService: Title,
     private metaService: Meta,
-    @Inject(DOCUMENT) private document: Document // Injection pour la canonique
+    @Inject(DOCUMENT) private document: Document // Accès au DOM pour le SEO technique
   ) { }
 
   ngOnInit(): void {
-
-    // 1. Metas Manuelles Immédiates
-    this.titleService.setTitle('BE-ON-TOP : Nos Centres de Formations Profesionnelles Experts');
+    // 1. SEO - Injection immédiate des métadonnées (évite l'indexation sans description)
+    this.titleService.setTitle('BE-ON-TOP : Nos Centres de Formations Professionnelles Experts');
     this.metaService.updateTag({
       name: 'description',
       content: "Avec BE-ON-TOP vous bénéficiez d'un réseau de centres de formation experts pour le suivi de vos formations personnalisées et des évaluations pédagogiques."
     });
 
-        this.setPureCanonical();// Verrouillage de l'URL
+    // 2. SEO - Verrouillage de l'URL pour éviter le Duplicate Content
+    this.setPureCanonical();
 
-
-    this.centersService.getCenters().subscribe(data => {
-      // ÉTAPE TEMPORAIRE : On génère le dump dans la console
-      // if (data && data.length > 0) {
-      //   console.log("--- COPIEZ LE CONTENU CI-DESSOUS ---");
-      //   console.log(JSON.stringify(data)); 
-      //   console.log("--- FIN DU DUMP ---");
-      // }
-      const centers = data || [];
-      this.groupCenters(centers);
+    // 3. Récupération des données via le service
+    this.centersService.getCenters().subscribe({
+      next: (data) => {
+        const centers = data || [];
+        this.groupCenters(centers); // Répartition logique des données
+        this.isLoading = false;      // Arrêt du spinner : déclenche l'affichage du contenu
+      },
+      error: (err) => {
+        console.error("Erreur lors de la récupération des centres :", err);
+        this.isLoading = false;      // Évite de bloquer l'utilisateur sur le spinner en cas d'erreur
+      }
     });
   }
 
+  /**
+   * Ventile les centres dans leurs catégories respectives.
+   * Cette séparation permet un maillage interne (Bot) clair et structuré dans le template.
+   */
   private groupCenters(centers: any[]): void {
-
-
-
     this.partnerCenters = [];
     this.memberCenters = [];
     this.independentCenters = [];
@@ -75,14 +78,15 @@ export class CentersIndexComponent implements OnInit {
         this.memberCenters.push(center);
       }
     });
-
   }
 
-
+  /**
+   * Filtrage dynamique pour la barre de recherche.
+   * @param centers - Le tableau de centres à filtrer
+   * @returns Le tableau filtré selon la 'query' (nom, ville ou CP)
+   */
   filteredCenters(centers: any[]): any[] {
-    if (!this.query) {
-      return centers;
-    }
+    if (!this.query) return centers;
     const q = this.query.toLowerCase();
     return centers.filter(center =>
       center.name.toLowerCase().includes(q) ||
@@ -91,57 +95,37 @@ export class CentersIndexComponent implements OnInit {
     );
   }
 
-   /**
-     * FORCE L'URL CANONIQUE PURE
-     * Cette méthode sert de "bouclier" contre le Duplicate Content.
-     * Elle garantit que Google n'indexe QUE l'URL officielle, même si l'utilisateur
-     * arrive avec des paramètres de tracking (UTM, Facebook ID, Gclid, etc.).
-     */
+  /**
+   * Gestion de la balise Canonical.
+   * Empêche l'indexation d'URLs avec paramètres (ex: tracking ads) pour protéger le jus SEO.
+   */
   setPureCanonical() {
-    // 1. On définit l'URL "parfaite" (sans aucun paramètre après le ?)
     const pureUrl = 'https://be-on-top.io/centersIndex';
-
-    // 2. On vérifie si une balise <link rel="canonical"> existe déjà dans le <head>
-    // pour éviter d'en créer des dizaines à chaque navigation.
     let link: HTMLLinkElement | null = this.document.querySelector("link[rel='canonical']");
 
-    // 3. Si elle n'existe pas (première visite ou après un nettoyage OnDestroy)
     if (!link) {
-      // On crée dynamiquement l'élément <link>
       link = this.document.createElement('link');
-      // On lui donne son identité : c'est une balise "canonical"
       link.setAttribute('rel', 'canonical');
-      // On l'injecte physiquement dans la partie <head> de la page
       this.document.head.appendChild(link);
     }
-
-    // 4. On force l'attribut "href" avec notre URL propre.
-    // Si une vieille URL traînait, elle est écrasée par celle-ci.
     link.setAttribute('href', pureUrl);
-
-    // 5. On stocke cette balise dans une variable de classe (this.canonicalTag)
-    // C'est CRUCIAL pour que le ngOnDestroy puisse la supprimer en quittant la page.
     this.canonicalTag = link;
-
-    // 6. Petit log de contrôle pour vérifier que le bouclier est actif en console
     console.log(`[SEO-SHIELD] Canonical verrouillée sur : ${pureUrl}`);
   }
 
-  
+  /**
+   * Cycle de vie de destruction : Nettoie le DOM pour les pages suivantes.
+   * Évite les conflits de balises Meta et Canonical lors de la navigation SPA.
+   */
   ngOnDestroy(): void {
     try {
       if (this.canonicalTag) {
         this.document.head.removeChild(this.canonicalTag);
       }
       this.metaService.removeTag("name='description'");
-      // this.metaService.removeTag("name='robots'");
-      // this.metaService.removeTag("property='og:title'");
-      // this.metaService.removeTag("property='og:description'");
-      console.log('[SEO-CLEAN] Page Benefits nettoyée.');
+      console.log('[SEO-CLEAN] Index centres nettoyé.');
     } catch (e) {
-      console.warn('Erreur nettoyage Benefits');
+      console.warn('Erreur lors du nettoyage SEO');
     }
   }
-
-
 }
