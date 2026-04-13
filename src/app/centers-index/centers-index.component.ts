@@ -117,15 +117,17 @@ export class CentersIndexComponent implements OnInit, OnDestroy {
    * Cycle de vie de destruction : Nettoie le DOM pour les pages suivantes.
    * Évite les conflits de balises Meta et Canonical lors de la navigation SPA.
    */
-  ngOnDestroy(): void {
-    try {
-      if (this.canonicalTag) {
-        this.document.head.removeChild(this.canonicalTag);
-      }
-      this.metaService.removeTag("name='description'");
-      console.log('[SEO-CLEAN] Index centres nettoyé.');
-    } catch (e) {
-      console.warn('Erreur lors du nettoyage SEO');
-    }
+ngOnDestroy(): void {
+  try {
+    // 1. On NE supprime PAS la canonique pour éviter le "trou noir" SEO.
+    // Elle sera écrasée proprement par le prochain composant via setPureCanonical().
+
+    // 2. On nettoie la description pour éviter les textes incohérents dans Google.
+    this.metaService.removeTag("name='description'");
+
+    console.log('[SEO-CLEAN] Meta Description nettoyée, Canonical maintenue pour continuité.');
+  } catch (e) {
+    console.warn('Erreur lors du nettoyage SEO');
   }
+}
 }
