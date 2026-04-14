@@ -22,7 +22,8 @@ export class ProfessionalsListComponent implements OnInit {
     editor: 'Éditeur (Marketing)',
     external: 'Observateur Externe',
     evaluator: 'Évaluateur',
-    manager: 'Responsable Métier'
+    manager: 'Responsable Métier',
+    'data-analyst': 'Data Analyst'
   };
 
   constructor(
@@ -184,51 +185,95 @@ export class ProfessionalsListComponent implements OnInit {
    *   pour garantir une ouverture correcte du fichier dans Excel / Outlook
    *   (gestion des accents dans les prénoms / noms).
    */
+
+
+  // -----------------------------
+  // En-têtes du fichier CSV
+  // -----------------------------
+  // On ajoute CP et Competences pour l'export, même si elles ne sont pas affichées
+  // dans la vue. Cela permet d'avoir un CSV complet pour mailing / reporting.
   downloadCsv(list: any[]) {
 
-    // -----------------------------
-    // En-têtes du fichier CSV
-    // -----------------------------
-    // On ajoute CP et Competences pour l'export, même si elles ne sont pas affichées
-    // dans la vue. Cela permet d'avoir un CSV complet pour mailing / reporting.
-    const headers = ['UID', 'firstName', 'lastName', 'Email', 'Type', 'CP', 'Competences'];
+    // --------------------------------------------------
+    // Vérifie s'il existe AU MOINS une compétence dans la liste
+    // 👉 Permet d'afficher ou non la colonne "Competences" dans le CSV
+    // --------------------------------------------------
+    const hasCompetences = list.some(item =>
+      Array.isArray(item.sigle) && item.sigle.length > 0
+    );
 
-    // -----------------------------
+    // --------------------------------------------------
+    // Construction dynamique des en-têtes CSV
+    // 👉 La colonne "Competences" est ajoutée UNIQUEMENT si nécessaire
+    // --------------------------------------------------
+    const headers = [
+      'UID',
+      'firstName',
+      'lastName',
+      'Email',
+      'Type',
+      'CP',
+      ...(hasCompetences ? ['Competences'] : []),
+      'statut'
+    ];
+
+    // --------------------------------------------------
     // Transformation des données en lignes CSV
-    // -----------------------------
-    const rows = list.map(item => [
-      item.id ?? '',                  // UID
-      item.firstName ?? '',           // Prénom
-      item.lastName ?? '',            // Nom
-      item.email ?? '',               // Email
-      this.getTypeLabel(item.type),   // Type lisible
+    // --------------------------------------------------
+    const rows = list.map(item => {
 
-      // Conversion des tableaux en texte CSV lisible
-      // Chaque élément de 'cp' est séparé par une virgule pour lisibilité
-      Array.isArray(item.cp) ? item.cp.join(',') : '',
+      // Colonnes de base (toujours présentes)
+      const baseRow = [
+        item.id ?? '',
+        item.firstName ?? '',
+        item.lastName ?? '',
+        item.email ?? '',
 
-      // Chaque élément de 'sigle' (compétences) est séparé par une virgule
-      Array.isArray(item.sigle) ? item.sigle.join(',') : ''
-    ]);
+        // 👉 Transformation du type technique en label lisible
+        this.getTypeLabel(item.type),
 
-    // -----------------------------
+        // 👉 Transformation tableau CP → string (séparée par des virgules)
+        Array.isArray(item.cp) ? item.cp.join(',') : ''
+      ];
+
+      // --------------------------------------------------
+      // Ajout conditionnel des compétences
+      // 👉 Garantit la cohérence avec les headers
+      // --------------------------------------------------
+      if (hasCompetences) {
+        baseRow.push(
+          Array.isArray(item.sigle) ? item.sigle.join(',') : ''
+        );
+      }
+
+      // --------------------------------------------------
+      // Transformation du statut boolean → label lisible
+      // 👉 true  → "actif"
+      // 👉 false → "désactivé"
+      // --------------------------------------------------
+      baseRow.push(item.status === true ? 'actif' : 'désactivé');
+
+      return baseRow;
+    });
+
+    // --------------------------------------------------
     // Construction du contenu CSV
-    // -----------------------------
-    // '\uFEFF' = BOM UTF-8 → indispensable pour Excel (gestion des accents)
+    // --------------------------------------------------
+    // '\uFEFF' = BOM UTF-8 → indispensable pour Excel (accents OK)
     const csvContent = '\uFEFF' + [
-      headers.join(';'),           // séparateur de colonnes
+      headers.join(';'),           // séparateur de colonnes (; pour Excel FR)
       ...rows.map(r => r.join(';'))
     ].join('\n');
 
-    // -----------------------------
-    // Création du fichier Blob et déclenchement du téléchargement
-    // -----------------------------
+    // --------------------------------------------------
+    // Création du fichier et téléchargement
+    // --------------------------------------------------
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
 
-    // Nom du fichier basé sur le filtre actif (trainer, evaluator, etc.)
+    // 👉 Nom du fichier basé sur le filtre actif
     link.setAttribute('download', `professionnels_${this.activeFilter}.csv`);
 
     // Déclenchement du téléchargement
@@ -236,15 +281,15 @@ export class ProfessionalsListComponent implements OnInit {
   }
 
 
-logDisabledTrainers(trainers: any[]) {
-  console.log('trainers dans logDisabledTrainers', trainers);
+  logDisabledTrainers(trainers: any[]) {
+    console.log('trainers dans logDisabledTrainers', trainers);
 
-  const trainersDisabled = trainers.filter(
-    (trainer: any) => trainer.status === false
-  );
+    const trainersDisabled = trainers.filter(
+      (trainer: any) => trainer.status === false
+    );
 
-  console.log('formateurs désactivés', trainersDisabled);
-}
+    console.log('formateurs désactivés', trainersDisabled);
+  }
 
 
 }
