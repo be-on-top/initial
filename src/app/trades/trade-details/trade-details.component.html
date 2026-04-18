@@ -1,48 +1,53 @@
 <div [innerHTML]="structuredData"></div>
 
 
-<div *ngIf="!tradeData" class="visually-hidden" aria-label="Fallback SEO pour la formation">
-    <h1>Formation {{ backupDenomination }} : {{ tradeId }}</h1>
-    <p>{{ seoDescription }}</p>
-</div>
 
-<article class="container py-5 fade-page " *ngIf="tradeData" [class.loaded]="isPageLoaded"
-    [ngClass]="{'underProgress':tradeData.status===false}">
+<!-- <div *ngIf="!tradeData" aria-label="Fallback SEO pour la formation" class="loading-wrapper"> -->
+<!-- <h1>Formation {{ backupDenomination }} : {{ tradeId }}</h1>
+    <p>{{ seoDescription }}</p> -->
 
-    <!-- <h3>{{tradeData.denomination}}</h3> -->
-    <header
-        class="p-2 bg-primary text-white rounded row fade show mx-1 justify-content-between align-items-start g-5 pe-3"
-        [ngClass]="{'underProgress':tradeData.status===false}">
-        <!-- {{imageUrl}} -->
-        <!-- <h1 class="d-flex justify-content-between mt-3">{{tradeData.denomination}}<app-share-button></app-share-button> -->
 
-        <!-- <h1 class="d-flex justify-content-between mt-3"><span [innerHTML]="processDenomination(tradeData.denomination)"></span>
+<!-- </div> -->
+
+<article class="container py-5 fade-page trade-details-container">
+
+    <div *ngIf="tradeData" [class.loaded]="isPageLoaded" [ngClass]="{'underProgress':tradeData.status===false}">
+
+        <!-- <h3>{{tradeData.denomination}}</h3> -->
+        <header
+            class="p-2 bg-primary text-white rounded row fade show mx-1 justify-content-between align-items-start g-5 pe-3"
+            [ngClass]="{'underProgress':tradeData.status===false}">
+            <!-- {{imageUrl}} -->
+            <!-- <h1 class="d-flex justify-content-between mt-3">{{tradeData.denomination}}<app-share-button></app-share-button> -->
+
+            <!-- <h1 class="d-flex justify-content-between mt-3"><span [innerHTML]="processDenomination(tradeData.denomination)"></span>
                 <app-share-button></app-share-button>
         </h1> -->
-        <h1 class="d-flex justify-content-between mt-3">
-            <span [innerHTML]="processDenomination(tradeData.denomination || backupDenomination)"></span>
-            <app-share-button></app-share-button>
-        </h1>
+            <h1 class="d-flex justify-content-between mt-3">
+                <span [innerHTML]="processDenomination(tradeData.denomination || backupDenomination)"></span>
+                <app-share-button></app-share-button>
+            </h1>
 
-        <div class="col-md-7 mt-0" *ngIf="tradeId">
-            <p class="fs-5 mt-3">
-                Réf.: {{tradeData.sigle}}.
-                <br *ngIf="tradeData.parentCategory">
-                <span *ngIf="tradeData.parentCategory && tradeData.parentCategory!==''" class="text-light">Catégorie :
-                    {{tradeData.parentCategory}}</span>
-                <!-- <br>Nombre de compétences: {{tradeData.competences.length}}. -->
-                <br>Nombre de compétences: {{tradeData.competences ? tradeData.competences.length : 0}}.
-                <br>Durée maximale: {{firstValuesSum}} heures.
-                <!-- <br><span *ngIf="tradeData.rncp">Code RNCP : {{tradeData.rncp}}.</span> -->
-                <span class="d-block" *ngIf="tradeData.rncp"><a class="text-light" href="{{tradeData.rncp}}"
-                        target="_blank">Code RNCP (ou
-                        RS)</a></span>
-                <span class="d-block" *ngIf="tradeData.isQualifying && tradeData.isQualifying==true">Formation
-                    Qualifiante !</span>
-                <span class="d-block" *ngIf="tradeData.isCPF && tradeData.isCPF===true">Finançable CPF</span>
-                <!-- <span class="d-block" *ngIf="!tradeData.isCPF" >Non Finançable CPF</span> -->
+            <div class="col-md-7 mt-0" *ngIf="tradeId">
+                <p class="fs-5 mt-3">
+                    Réf.: {{tradeData.sigle}}.
+                    <br *ngIf="tradeData.parentCategory">
+                    <span *ngIf="tradeData.parentCategory && tradeData.parentCategory!==''" class="text-light">Catégorie
+                        :
+                        {{tradeData.parentCategory}}</span>
+                    <!-- <br>Nombre de compétences: {{tradeData.competences.length}}. -->
+                    <br>Nombre de compétences: {{tradeData.competences ? tradeData.competences.length : 0}}.
+                    <br>Durée maximale: {{firstValuesSum}} heures.
+                    <!-- <br><span *ngIf="tradeData.rncp">Code RNCP : {{tradeData.rncp}}.</span> -->
+                    <span class="d-block" *ngIf="tradeData.rncp"><a class="text-light" href="{{tradeData.rncp}}"
+                            target="_blank">Code RNCP (ou
+                            RS)</a></span>
+                    <span class="d-block" *ngIf="tradeData.isQualifying && tradeData.isQualifying==true">Formation
+                        Qualifiante !</span>
+                    <span class="d-block" *ngIf="tradeData.isCPF && tradeData.isCPF===true">Finançable CPF</span>
+                    <!-- <span class="d-block" *ngIf="!tradeData.isCPF" >Non Finançable CPF</span> -->
 
-                <!-- <br>
+                    <!-- <br>
                 <span *ngIf="tradeData.requirements && tradeData.requirements!==''" class="text-light mt-5">
                     Prérequis :
                     <ul>
@@ -52,43 +57,43 @@
                     </ul>
                 </span> -->
 
-                <span *ngIf="tradeData.requirements && tradeData.requirements!==''" class="text-light">Prérequis :
-                    {{tradeData.requirements}}</span>
+                    <span *ngIf="tradeData.requirements && tradeData.requirements!==''" class="text-light">Prérequis :
+                        {{tradeData.requirements}}</span>
 
 
-                <!-- <p class="rounded bg-dark p-2 mt-2 small">Pour vérification du rôle récupéré : {{userRole}}</p> -->
-                <br>
-                <span class="d-block mt-2" (click)="backToPrevious()">
-                    <i class="bi bi-arrow-left"></i>
-                </span>
-            </p>
-        </div>
+                    <!-- <p class="rounded bg-dark p-2 mt-2 small">Pour vérification du rôle récupéré : {{userRole}}</p> -->
+                    <br>
+                    <span class="d-block mt-2" (click)="backToPrevious()">
+                        <i class="bi bi-arrow-left"></i>
+                    </span>
+                </p>
+            </div>
 
-        <div *ngIf="userRole === 'none' else switch"
-            class="col-md-5 mt-0 mt-md-3 text-white p-3 rounded border-start border-4 border-warning bg-dark">
-            <p class="text-md-left fs-5 accessibility">
-                <i class="bi bi-info-circle me-2"></i>Pour démarrer un questionnaire, merci de
-                <a role="button" tabindex="0" (click)="onLogin()" (keydown.space)="onLogin()"
-                    class="btn-as-link text-white fw-semibold px-1 link-underline-warning">
-                    vous identifier
-                </a>
-                ou
-                <a role="button" tabindex="0" (click)="onRegister()" (keydown.space)="onRegister()"
-                    class="btn-as-link text-white fw-semibold px-1 link-underline-warning"
-                    title="Vous créer un compte pour passer des évaluations en ligne sur BE-ON-TOP"
-                    aria-label="Vous créer un compte pour passer des évaluations en ligne sur BE-ON-TOP">
-                    vous créer un compte
-                </a>
-            </p>
-        </div>
-
-
+            <div *ngIf="userRole === 'none' else switch"
+                class="col-md-5 mt-0 mt-md-3 text-white p-3 rounded border-start border-4 border-warning bg-dark">
+                <p class="text-md-left fs-5 accessibility">
+                    <i class="bi bi-info-circle me-2"></i>Pour démarrer un questionnaire, merci de
+                    <a role="button" tabindex="0" (click)="onLogin()" (keydown.space)="onLogin()"
+                        class="btn-as-link text-white fw-semibold px-1 link-underline-warning">
+                        vous identifier
+                    </a>
+                    ou
+                    <a role="button" tabindex="0" (click)="onRegister()" (keydown.space)="onRegister()"
+                        class="btn-as-link text-white fw-semibold px-1 link-underline-warning"
+                        title="Vous créer un compte pour passer des évaluations en ligne sur BE-ON-TOP"
+                        aria-label="Vous créer un compte pour passer des évaluations en ligne sur BE-ON-TOP">
+                        vous créer un compte
+                    </a>
+                </p>
+            </div>
 
 
-        <!-- ...des autres cas -->
-        <ng-template #switch>
-            <div class="col-md-5 text-white mt-md-5">
-                <a [routerLink]="[
+
+
+            <!-- ...des autres cas -->
+            <ng-template #switch>
+                <div class="col-md-5 text-white mt-md-5">
+                    <a [routerLink]="[
                 '/quizz/',
                 this.tradeId,
                 studentData?.['quizz_'+this.tradeId]?((studentData?.['quizz_'+this.tradeId]?.lastIndexQuestion) + 1 | number):0,
@@ -96,226 +101,250 @@
                 studentData?.['quizz_'+this.tradeId] ? true : false,
                 studentData?.id ? studentId : ''
               ]" class="text-decoration-none text-dark">
-                    <!-- ---------------- -->
-                    <ng-container *ngIf="studentData && userRole!=='editor'">
-                        <!-- ScoreCounter : {{ studentData['quizz_'+this.tradeData.sigle].scoreCounter | json }} -->
-                        <!-- pour switcher d'un intitulé à un autre selon que studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle -->
-                        <!-- <div class="d-flex justify-content-md-end" *ngIf="hasStartedEvaluation==false, else none">
+                        <!-- ---------------- -->
+                        <ng-container *ngIf="studentData && userRole!=='editor'">
+                            <!-- ScoreCounter : {{ studentData['quizz_'+this.tradeData.sigle].scoreCounter | json }} -->
+                            <!-- pour switcher d'un intitulé à un autre selon que studentData.tradeEvaluated && studentData.tradeEvaluated==trade.sigle -->
+                            <!-- <div class="d-flex justify-content-md-end" *ngIf="hasStartedEvaluation==false, else none">
                             <p class="btn btn-transparent ps-0 fs-5 text-white"><i class="bi bi-clock"></i>
                                 Démarrer votre évaluation</p>
                         </div> -->
-                        <div class="d-flex justify-content-md-end" *ngIf="hasStartedEvaluation == false; else none">
-                            <button type="button" class="btn btn-transparent ps-0 fs-5 text-white"
-                                (click)="trackStartEvaluation(this.tradeId)" aria-label="Démarrer évaluation">
-                                <i class="bi bi-clock" aria-hidden="true"></i>
-                                <span>Démarrer votre évaluation</span>
-                            </button>
-                        </div>
-                        <ng-template #none>
-                            <div class="d-flex justify-content-md-end"
-                                *ngIf="studentData && studentData['quizz_'+tradeId] && !studentData['quizz_'+this.tradeId].fullResults">
-                                <p class="btn btn-transparent ps-0 text-white fs-5"><i class="bi bi-clock-history"></i>
-                                    <!-- Reprendre à la question {{studentData.lastIndexQuestion+1}}</button></div> -->
-                                    Poursuivre l'évaluation</p>
+                            <div class="d-flex justify-content-md-end" *ngIf="hasStartedEvaluation == false; else none">
+                                <button type="button" class="btn btn-transparent ps-0 fs-5 text-white"
+                                    (click)="trackStartEvaluation(this.tradeId)" aria-label="Démarrer évaluation">
+                                    <i class="bi bi-clock" aria-hidden="true"></i>
+                                    <span>Démarrer votre évaluation</span>
+                                </button>
                             </div>
+                            <ng-template #none>
+                                <div class="d-flex justify-content-md-end"
+                                    *ngIf="studentData && studentData['quizz_'+tradeId] && !studentData['quizz_'+this.tradeId].fullResults">
+                                    <p class="btn btn-transparent ps-0 text-white fs-5"><i
+                                            class="bi bi-clock-history"></i>
+                                        <!-- Reprendre à la question {{studentData.lastIndexQuestion+1}}</button></div> -->
+                                        Poursuivre l'évaluation</p>
+                                </div>
 
-                            <!-- <div class="d-flex justify-content-md-end"
+                                <!-- <div class="d-flex justify-content-md-end"
                                 *ngIf="studentData['quizz_'+this.tradeData.sigle].fullResults"><button
                                     class="btn btn-transparent ps-0"><i class="bi bi-check-square-fill"></i>
                                     Votre évaluation est terminée</button>
                             </div> -->
-                        </ng-template>
+                            </ng-template>
 
-                    </ng-container>
+                        </ng-container>
 
-                    <!-- ---------------- -->
-                </a>
-                <div class="d-flex justify-content-md-end" *ngIf="isEvaluationCompleted">
-                    <a [routerLink]="['/account']" title="be-on-top compte personnel">
-                        <p class="btn btn-transparent ps-0 text-white fs-5"><i class="bi bi-check-square-fill me-3"></i>
-                            Votre évaluation est terminée</p>
+                        <!-- ---------------- -->
                     </a>
+                    <div class="d-flex justify-content-md-end" *ngIf="isEvaluationCompleted">
+                        <a [routerLink]="['/account']" title="be-on-top compte personnel">
+                            <p class="btn btn-transparent ps-0 text-white fs-5"><i
+                                    class="bi bi-check-square-fill me-3"></i>
+                                Votre évaluation est terminée</p>
+                        </a>
+                    </div>
+                </div>
+            </ng-template>
+
+        </header>
+        <!-- 
+    {{tradeData | json}} -->
+        <div class="mt-4 p-2 position-relative">
+
+            <div *ngIf="isLoading && imageUrl!==''" class="spinner-container">
+                <div class="spinner-border text-success" role="status">
+                    <span class="visually-hidden">Loading...</span>
                 </div>
             </div>
-        </ng-template>
 
-    </header>
-    <!-- 
-    {{tradeData | json}} -->
-    <div class="mt-4 p-2 position-relative">
+            <img [attr.fetchpriority]="'high'" *ngIf="!offline && imageUrl!==''" [ngClass]="{'loaded': !isLoading}"
+                class="rounded img-fluid mb-2 border border-1 m-auto w-100 fade-in" [src]="imageUrl"
+                [attr.srcset]="imageUrlReduced ? imageUrlReduced + ' 575w, ' + imageUrl + ' 1024w' : imageUrl"
+                sizes="(max-width: 575px) 575px, 1024px" alt="formation be-on-top au métier {{tradeId}}"
+                (load)="onImageLoad()">
 
-        <div *ngIf="isLoading && imageUrl!==''" class="spinner-container">
-            <div class="spinner-border text-success" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
+            <img *ngIf="offline" class="rounded img-fluid mb-2 border border-1 m-auto w-100" [src]="imageUrl"
+                alt="formation au métier {{tradeId}}">
         </div>
 
-        <img *ngIf="!offline && imageUrl!==''" [ngClass]="{'loaded': !isLoading}"
-            class="rounded img-fluid mb-2 border border-1 m-auto w-100 fade-in" [src]="imageUrl"
-            [attr.srcset]="imageUrlReduced ? imageUrlReduced + ' 575w, ' + imageUrl + ' 1024w' : imageUrl"
-            sizes="(max-width: 575px) 575px, 1024px" alt="formation be-on-top au métier {{tradeId}}"
-            (load)="onImageLoad()">
 
-        <img *ngIf="offline" class="rounded img-fluid mb-2 border border-1 m-auto w-100" [src]="imageUrl"
-            alt="formation au métier {{tradeId}}">
-    </div>
+        <!-- à faire -->
+        <div id="accordion">
+            <div class="card p-2 border-0">
 
+                <section aria-label="description métier">
 
-    <!-- à faire -->
-    <div id="accordion">
-        <div class="card p-2 border-0">
-
-            <section aria-label="description métier">
-
-                <div class="card-header bg-primary pt-3">
-                    <a (click)="toggleDescriptionCollapse()"
-                        class="btn text-light text-capitalize d-flex justify-content-between border-0"
-                        data-bs-toggle="collapse" href="#collapseDescription">
-                        Description <i
-                            [ngClass]="{'bi-caret-down-fill': !isDescriptionCollapsed, 'bi-caret-up-fill': isDescriptionCollapsed}"
-                            class="bi fs-4 text-light"></i></a>
-                </div>
-
-                <div id="collapseDescription" class="collapse" data-bs-parent="#accordion">
-                    <div class="card-body fs-5">
-
-                        <ng-container *ngIf="tradeData.description">
-                            <div class="p-2 trade"
-                                [innerHTML]="sanitizer.bypassSecurityTrustHtml(tradeData.description)">
-                            </div>
-                            <!-- et pour avoir accès au lien d'édition -->
-                            <div *ngIf="userRole=='editor'" class="d-flex justify-content-end text mt-3">
-                                <button class="btn btn-primary">
-                                    <a class="text-white" [routerLink]="['/admin/updateDescription', tradeData.sigle]">
-                                        <i class="bi bi-pencil-square"></i>
-                                        Editer</a>
-                                </button>
-                                <button class="btn btn-primary ms-2 text-light" data-bs-toggle="modal"
-                                    data-bs-target="#myModal">
-                                    <i class="bi  bi-image"></i>Image
-                                </button>
-                                <div class="modal" id="myModal">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title ms-auto">Image de couverture pour
-                                                    {{tradeData.sigle}}</h4>
-                                                <button aria-label="Close window" type="button" class="btn-close"
-                                                    data-bs-dismiss="modal"></button>
-                                            </div>
-                                            <app-cover-image class="modal-body"
-                                                [tradeId]="tradeData.sigle"></app-cover-image>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- fin de l'option édition avec modale -->
-
-                            </div>
-                        </ng-container>
-                        <!-- </div> -->
-
-                    </div>
-                </div>
-
-            </section>
-
-
-            <!-- 2 -->
-
-            <section aria-label="compétences métier">
-                <div class="card-header secund bg-primary pb-0">
-                    <a (click)="toggleCPCollapse()"
-                        class="btn text-light text-capitalize d-flex justify-content-between border-0"
-                        data-bs-toggle="collapse" href="#collapseCP">
-                        Compétences <i
-                            [ngClass]="{'bi-caret-down-fill': !isCPCollapsed, 'bi-caret-up-fill': isCPCollapsed}"
-                            class="bi fs-4 text-light"></i></a>
-                </div>
-
-                <div id="collapseCP" class="collapse show" data-bs-parent="#accordion">
-                    <div class="card-body fixing px-4 bg-primary text-white border-0">
-
-                        <!-- deuxième onglet -->
-                        <!-- <div class="mt-4 p-5 bg-primary text-white rounded"> -->
-                        <!-- <ng-container *ngIf="tradeData.competences"> -->
-                        <ng-container *ngIf="tradeData.competences && tradeData.competences.length > 0">
-                            <p *ngFor="let cp of tradeData.competences, let index=index">
-                                <span class="fw-bold">CP{{index+1}} : </span> {{cp}}
-                            </p>
-                        </ng-container>
-                        <!-- </div> -->
-
-                    </div>
-                </div>
-            </section>
-
-            <!-- 3 -->
-
-            <!-- <div id="mapId"></div> -->
-
-            <!-- Div carte en dehors du collapse, initialement caché -->
-
-
-
-            <ng-container *ngIf="tradeCenters && tradeCenters.length>0">
-                <section aria-label="lieux de formation possible pour le métier">
-
-                    <div class="card-header third bg-primary pb-0">
-                        <a (click)="toggleCentersCollapse()"
-                            class="btn text-light d-flex justify-content-between border-0" data-bs-toggle="collapse"
-                            href="#collapseCenters">
-                            Lieux de formation <i
-                                [ngClass]="{'bi-caret-down-fill': !isCentersCollapsed, 'bi-caret-up-fill': isCentersCollapsed}"
+                    <div class="card-header bg-primary pt-3">
+                        <a (click)="toggleDescriptionCollapse()"
+                            class="btn text-light text-capitalize d-flex justify-content-between border-0"
+                            data-bs-toggle="collapse" href="#collapseDescription">
+                            Description <i
+                                [ngClass]="{'bi-caret-down-fill': !isDescriptionCollapsed, 'bi-caret-up-fill': isDescriptionCollapsed}"
                                 class="bi fs-4 text-light"></i></a>
                     </div>
-                    <!-- {{isCentersCollapsed}} -->
-                    <div id="collapseCenters" class="collapse" data-bs-parent="#accordion">
-                        <!-- <div *ngIf="isMapVisible" id="mapId"></div> -->
-                        <div class="card-body fixing px-4 bg-primary text-white border-0">
-                            <!-- le nom du centre n'est pas nécessaire -->
-                            <!-- <p *ngFor="let center of tradeCenters, let index=index">
-                            <span class="fw-bold">Centre de {{center.city}} : </span> {{center.name}} - CP :
-                            {{center.cp}} <a [routerLink]="['/center', center.id]"><i
-                                    class="bi bi-geo-alt-fill ms-2 text-light"></i></a>
-                        </p> -->
-                            <p *ngFor="let center of tradeCenters, let index=index"><a
-                                    [routerLink]="['/center', center.id]" class="text-decoration-none text-light">
-                                    <span class="fw-bold">Centre de {{center.city}} </span><span class="responsive">:
-                                        {{center.name}} - CP</span> {{center.cp}} <i
-                                        class="bi bi-geo-alt-fill ms-2 text-light"></i></a>
-                            </p>
+
+                    <div id="collapseDescription" class="collapse" data-bs-parent="#accordion">
+                        <div class="card-body fs-5">
+
+                            <ng-container *ngIf="tradeData.description">
+                                <div class="p-2 trade"
+                                    [innerHTML]="sanitizer.bypassSecurityTrustHtml(tradeData.description)">
+                                </div>
+                                <!-- et pour avoir accès au lien d'édition -->
+                                <div *ngIf="userRole=='editor'" class="d-flex justify-content-end text mt-3">
+                                    <button class="btn btn-primary">
+                                        <a class="text-white"
+                                            [routerLink]="['/admin/updateDescription', tradeData.sigle]">
+                                            <i class="bi bi-pencil-square"></i>
+                                            Editer</a>
+                                    </button>
+                                    <button class="btn btn-primary ms-2 text-light" data-bs-toggle="modal"
+                                        data-bs-target="#myModal">
+                                        <i class="bi  bi-image"></i>Image
+                                    </button>
+                                    <div class="modal" id="myModal">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title ms-auto">Image de couverture pour
+                                                        {{tradeData.sigle}}</h4>
+                                                    <button aria-label="Close window" type="button" class="btn-close"
+                                                        data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <app-cover-image class="modal-body"
+                                                    [tradeId]="tradeData.sigle"></app-cover-image>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- fin de l'option édition avec modale -->
+
+                                </div>
+                            </ng-container>
+                            <!-- </div> -->
 
                         </div>
                     </div>
 
                 </section>
-            </ng-container>
 
-            <!-- div juste pour l'arrondi -->
-            <div class="rounded-bottom p-1 bg-primary fixing"></div>
 
+                <!-- 2 -->
+
+                <section aria-label="compétences métier">
+                    <div class="card-header secund bg-primary pb-0">
+                        <a (click)="toggleCPCollapse()"
+                            class="btn text-light text-capitalize d-flex justify-content-between border-0"
+                            data-bs-toggle="collapse" href="#collapseCP">
+                            Compétences <i
+                                [ngClass]="{'bi-caret-down-fill': !isCPCollapsed, 'bi-caret-up-fill': isCPCollapsed}"
+                                class="bi fs-4 text-light"></i></a>
+                    </div>
+
+                    <div id="collapseCP" class="collapse show" data-bs-parent="#accordion">
+                        <div class="card-body fixing px-4 bg-primary text-white border-0">
+
+                            <!-- deuxième onglet -->
+                            <!-- <div class="mt-4 p-5 bg-primary text-white rounded"> -->
+                            <!-- <ng-container *ngIf="tradeData.competences"> -->
+                            <ng-container *ngIf="tradeData.competences && tradeData.competences.length > 0">
+                                <p *ngFor="let cp of tradeData.competences, let index=index">
+                                    <span class="fw-bold">CP{{index+1}} : </span> {{cp}}
+                                </p>
+                            </ng-container>
+                            <!-- </div> -->
+
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3 -->
+
+                <!-- <div id="mapId"></div> -->
+
+                <!-- Div carte en dehors du collapse, initialement caché -->
+
+
+
+                <ng-container *ngIf="tradeCenters && tradeCenters.length>0">
+                    <section aria-label="lieux de formation possible pour le métier">
+
+                        <div class="card-header third bg-primary pb-0">
+                            <a (click)="toggleCentersCollapse()"
+                                class="btn text-light d-flex justify-content-between border-0" data-bs-toggle="collapse"
+                                href="#collapseCenters">
+                                Lieux de formation <i
+                                    [ngClass]="{'bi-caret-down-fill': !isCentersCollapsed, 'bi-caret-up-fill': isCentersCollapsed}"
+                                    class="bi fs-4 text-light"></i></a>
+                        </div>
+                        <!-- {{isCentersCollapsed}} -->
+                        <div id="collapseCenters" class="collapse" data-bs-parent="#accordion">
+                            <!-- <div *ngIf="isMapVisible" id="mapId"></div> -->
+                            <div class="card-body fixing px-4 bg-primary text-white border-0">
+                                <!-- le nom du centre n'est pas nécessaire -->
+                                <!-- <p *ngFor="let center of tradeCenters, let index=index">
+                            <span class="fw-bold">Centre de {{center.city}} : </span> {{center.name}} - CP :
+                            {{center.cp}} <a [routerLink]="['/center', center.id]"><i
+                                    class="bi bi-geo-alt-fill ms-2 text-light"></i></a>
+                        </p> -->
+                                <p *ngFor="let center of tradeCenters, let index=index"><a
+                                        [routerLink]="['/center', center.id]" class="text-decoration-none text-light">
+                                        <span class="fw-bold">Centre de {{center.city}} </span><span
+                                            class="responsive">:
+                                            {{center.name}} - CP</span> {{center.cp}} <i
+                                            class="bi bi-geo-alt-fill ms-2 text-light"></i></a>
+                                </p>
+
+                            </div>
+                        </div>
+
+                    </section>
+                </ng-container>
+
+                <!-- div juste pour l'arrondi -->
+                <div class="rounded-bottom p-1 bg-primary fixing"></div>
+
+            </div>
         </div>
+
+        <hr>
+
+        <section aria-label="index des lieux de formation et formations métier" class="row">
+            <div class="mt-4 col-md-6 d-flex justify-content-start">
+                <a href="/trainingsIndex" class="btn btn-small btn-light"
+                    aria-label="Accéder à la liste complète de toutes les formations proposées">
+                    <i class="bi bi-collection"></i>
+                    Inventaire des formations métiers
+                </a>
+            </div>
+
+            <div class="mt-4 col-md-6 d-flex justify-content-md-end justify-content-start">
+                <a href="/centersIndex" class="btn btn-light"
+                    aria-label="Accéder à la liste complète des centres de formation du réseau">
+                    <i class="bi bi-collection"></i>
+                    Inventaire des centres de formation
+                </a>
+            </div>
+        </section>
+
     </div>
 
-    <hr>
+    <div *ngIf="!tradeData" class="container py-5 fade-page loading-placeholder"
+        aria-label="Fallback SEO pour la formation">
+        <div
+            class="p-2 bg-primary text-white rounded row fade show mx-1 justify-content-between align-items-start g-5 pe-3">
 
-    <section aria-label="index des lieux de formation et formations métier" class="row">
-        <div class="mt-4 col-md-6 d-flex justify-content-start">
-            <a href="/trainingsIndex" class="btn btn-small btn-light"
-                aria-label="Accéder à la liste complète de toutes les formations proposées">
-                <i class="bi bi-collection"></i>
-                Inventaire des formations métiers
-            </a>
+            <h1 class="mt-3">Formation {{ backupDenomination }}</h1>
+
+            <div class="mt-4">
+                <div class="spinner-border" role="status"></div>
+                <p class="mt-2">Chargement de votre fiche formation...</p>
+            </div>
+
+            <p>{{ seoDescription }}</p>
+
         </div>
 
-        <div class="mt-4 col-md-6 d-flex justify-content-md-end justify-content-start">
-            <a href="/centersIndex" class="btn btn-light"
-                aria-label="Accéder à la liste complète des centres de formation du réseau">
-                <i class="bi bi-collection"></i>
-                Inventaire des centres de formation
-            </a>
-        </div>
-    </section>
+    </div>
 
 
 </article>

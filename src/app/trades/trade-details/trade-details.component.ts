@@ -25,7 +25,7 @@ import { ConsentService } from 'src/app/consent.service';
   templateUrl: './trade-details.component.html',
   styleUrls: ['./trade-details.component.css']
 })
-export class TradeDetailsComponent implements OnInit {
+export class TradeDetailsComponent implements OnInit, OnDestroy {
 
   // si on passe effectivement des paramètres au router au lieu de faire un input 
   tradeId: string = ""
@@ -98,6 +98,7 @@ export class TradeDetailsComponent implements OnInit {
 
     // this.setCanonicalURL();
     // this.tradeId = this.ac.snapshot.params["id"]
+    
 
     this.ac.paramMap.subscribe(params => {
       this.tradeId = params.get('id') ?? ''
@@ -823,27 +824,27 @@ export class TradeDetailsComponent implements OnInit {
   //   }
   // }
 
-  // ngOnDestroy(): void {
-  //     try {
-  //       // 1. LE CANONICAL (Ce que j'ai déjà fait)
-  //       if (this.canonicalTag) {
-  //         this.document.head.removeChild(this.canonicalTag);
-  //         console.log('[SEO-CLEAN] Balise canonique supprimée');
-  //       }
+  ngOnDestroy(): void {
+      try {
+        // 1. LE CANONICAL (Ce que j'ai déjà fait)
+        // if (this.canonicalTag) {
+        //   this.document.head.removeChild(this.canonicalTag);
+        //   console.log('[SEO-CLEAN] Balise canonique supprimée');
+        // }
 
-  //       // 2. LES METAS (Pour vider la mémoire du bot avant la page suivante)
-  //       // On retire les tags que tu as créés/mis à jour dans ngOnInit
-  //       this.metaService.removeTag("name='description'");
-  //       this.metaService.removeTag("property='og:title'");
-  //       this.metaService.removeTag("property='og:description'");
-  //       this.metaService.removeTag("property='og:url'");
-  //       this.metaService.removeTag("property='og:image'");
+        // 2. LES METAS (Pour vider la mémoire du bot avant la page suivante)
+        // On retire les tags que tu as créés/mis à jour dans ngOnInit
+        // this.metaService.removeTag("name='description'");
+        // this.metaService.removeTag("property='og:title'");
+        // this.metaService.removeTag("property='og:description'");
+        // this.metaService.removeTag("property='og:url'");
+        // this.metaService.removeTag("property='og:image'");
 
-  //       console.log('[SEO-CLEAN] Metas nettoyées : Page suivante prête');
-  //     } catch (err) {
-  //       console.warn('[SEO-CLEAN] Erreur lors du nettoyage');
-  //     }
-  //   }
+        console.log('[SEO-CLEAN] Metas nettoyées : Page suivante prête');
+      } catch (err) {
+        console.warn('[SEO-CLEAN] Erreur lors du nettoyage');
+      }
+    }
 
 
 }

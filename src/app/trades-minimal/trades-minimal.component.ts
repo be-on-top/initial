@@ -3,6 +3,7 @@ import { SettingsService } from '../admin/settings.service';
 import { SlugService } from '../slug.service';
 import { Title, Meta } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/common'; // + Import
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-trades-minimal',
@@ -16,7 +17,7 @@ export class TradesMinimalComponent implements OnInit, OnDestroy { // + Implemen
   groupedTrades: { key: string, value: any[] }[] = [];
   tradesData: any[] = [];
   isLoading: boolean = true;
-  
+
   private canonicalTag: HTMLLinkElement | null = null; // Référence pour le bouclier
 
   constructor(
@@ -39,9 +40,23 @@ export class TradesMinimalComponent implements OnInit, OnDestroy { // + Implemen
     this.setPureCanonical();
 
     // --- DATA ---
-    this.settingsService.getTrades().subscribe({
-      next: (data) => {
-        this.tradesData = data || [];
+    //   this.settingsService.getTrades().subscribe({
+    //     next: (data) => {
+    //       this.tradesData = data || [];
+    //       this.groupTrades();
+    //       this.isLoading = false;
+    //     },
+    //     error: (err) => {
+    //       console.error("Erreur lors de la récupération :", err);
+    //       this.isLoading = false;
+    //     }
+    //   });
+    // }
+    this.settingsService.getTrades().pipe(
+      map(data => (data || []).filter(trade => trade.status === true))
+    ).subscribe({
+      next: (filteredData) => {
+        this.tradesData = filteredData;
         this.groupTrades();
         this.isLoading = false;
       },
