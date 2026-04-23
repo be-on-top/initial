@@ -1,0 +1,76 @@
+<div class="container mt-4">
+
+  <h2 *ngIf="!id">Créer une news</h2>
+  <h2 *ngIf="id">Modifier la news</h2>
+
+  <form #f="ngForm" (ngSubmit)="save(f)">
+
+    <div class="mb-3">
+      <label class="form-label">Titre</label>
+      <input
+        class="form-control"
+        name="title"
+        [(ngModel)]="news.title"
+        required
+        placeholder="Titre">
+    </div>
+
+    <!-- <div class="mb-3">
+      <label class="form-label">Image (URL optionnelle)</label>
+      <input
+        class="form-control"
+        name="heroImage"
+        [(ngModel)]="news.heroImage"
+        placeholder="https://...">
+    </div> -->
+    <div class="mb-3">
+  <label class="form-label">Image (upload)</label>
+
+  <input
+    type="file"
+    class="form-control"
+    (change)="onFileSelected($event)">
+</div>
+
+<!-- preview -->
+<img *ngIf="news.heroImage" [src]="news.heroImage" class="img-fluid mt-2">
+
+    <div class="mb-3">
+      <label class="form-label">Contenu</label>
+
+      <editor
+        name="content"
+        [(ngModel)]="news.content">
+      </editor>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Statut</label>
+
+      <select
+        class="form-select"
+        name="status"
+        [(ngModel)]="news.status">
+
+        <option value="draft">Brouillon</option>
+        <option value="published">Publié</option>
+
+      </select>
+    </div>
+
+    <button
+      class="btn btn-success"
+      type="submit"
+      [disabled]="loading || f.invalid">
+      Enregistrer
+    </button>
+
+    <button
+      class="btn btn-secondary ms-2"
+      routerLink="/admin/news">
+      Annuler
+    </button>
+
+  </form>
+
+</div>

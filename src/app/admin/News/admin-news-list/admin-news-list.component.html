@@ -1,0 +1,37 @@
+<div class="container mt-4">
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Actualités</h2>
+
+    <button class="btn btn-primary" routerLink="/admin/news/create">
+      Créer une news
+    </button>
+  </div>
+
+  <div *ngFor="let n of news$ | async" class="card mb-3">
+    <div class="card-body">
+
+      <h5 class="card-title">{{ n.title }}</h5>
+
+      <p class="text-muted mb-2">
+        {{ n.createdAt?.toDate ? (n.createdAt.toDate() | date:'short') : '' }}
+      </p>
+
+      <div class="d-flex gap-2">
+        <button
+          class="btn btn-sm btn-warning"
+          [routerLink]="['/admin/news/edit', n.id]">
+          Modifier
+        </button>
+
+        <button
+          class="btn btn-sm btn-danger"
+          (click)="delete(n.id!)">
+          Supprimer
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
