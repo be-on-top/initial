@@ -76,6 +76,8 @@ import { MyCentersComponent } from './my-centers/my-centers.component';
 import { ExportStudentsComponent } from './export-students/export-students.component';
 import { MarketDocFormComponent } from './market_doc/market-doc-form/market-doc-form.component';
 import { MarketDocsListComponent } from './market_doc/market-docs-list/market-docs-list.component';
+import { AdminNewsListComponent } from './News/admin-news-list/admin-news-list.component';
+import { AdminNewsEditComponent } from './News/admin-news-edit/admin-news-edit.component';
 
 
 
@@ -210,7 +212,10 @@ const routesAdmin: Routes = [
       { path: 'my-centers', component: MyCentersComponent },
       { path: 'marketing-doc-form', component: MarketDocFormComponent },
       { path: 'marketing-doc-form/:id', component: MarketDocFormComponent },
-      { path: 'marketing-docs-list', component: MarketDocsListComponent }
+      { path: 'marketing-docs-list', component: MarketDocsListComponent },
+
+      { path: 'news', component: AdminNewsListComponent },
+      { path: 'news/create', component: AdminNewsEditComponent}
 
     ],
     // canActivate: [AuthGuardService]
@@ -284,7 +289,9 @@ const routesAdmin: Routes = [
     MyCentersComponent,
     ExportStudentsComponent,
     MarketDocFormComponent,
-    MarketDocsListComponent
+    MarketDocsListComponent,
+    AdminNewsListComponent,
+    AdminNewsEditComponent
   ],
   imports: [
     BrowserModule,
