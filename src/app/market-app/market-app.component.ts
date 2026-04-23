@@ -56,7 +56,7 @@ export class MarketAppComponent implements OnInit, AfterViewInit, OnDestroy {
     if (myCarousel) {
       // @ts-ignore
       const carousel = new bootstrap.Carousel(myCarousel, {
-        interval: 7000,
+        interval: 8000,
         ride: 'carousel'
       });
       setTimeout(() => { carousel.cycle(); }, 1000);
@@ -80,15 +80,15 @@ export class MarketAppComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     try {
       // 1. On retire la balise canonique pour que la page suivante n'en hérite pas
-      if (this.canonicalTag) {
-        this.document.head.removeChild(this.canonicalTag);
-      }
+      // if (this.canonicalTag) {
+      //   this.document.head.removeChild(this.canonicalTag);
+      // }
 
       // 2. On vide les metas pour éviter la pollution
-      this.metaService.removeTag("name='description'");
-      this.metaService.removeTag("name='robots'");
-      this.metaService.removeTag("property='og:title'");
-      this.metaService.removeTag("property='og:description'");
+      // this.metaService.removeTag("name='description'");
+      // this.metaService.removeTag("name='robots'");
+      // this.metaService.removeTag("property='og:title'");
+      // this.metaService.removeTag("property='og:description'");
 
       console.log('[SEO-CLEAN] Page Prescripteurs nettoyée.');
     } catch (e) {
