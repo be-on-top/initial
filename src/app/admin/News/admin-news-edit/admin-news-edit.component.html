@@ -1,7 +1,7 @@
-<div class="container mt-4">
+<div class="container my-4">
 
-  <h2 *ngIf="!id">Créer une news</h2>
-  <h2 *ngIf="id">Modifier la news</h2>
+  <h2 class="my-4" *ngIf="!id">Création d'un article</h2>
+  <h2 class="my-4" *ngIf="id">Modification de l'article</h2>
 
   <form #f="ngForm" (ngSubmit)="save(f)">
 
