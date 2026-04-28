@@ -1,3 +1,10 @@
+
+.trade-details-container {
+  display: block;
+  /* On réserve l'espace pour que le footer ne saute pas */
+  min-height: 85vh;
+}
+
 /* --- NETTOYAGE RADICAL --- */
 
 /* On met le VRAI ratio de tes images (900/375 = 2.4) */
