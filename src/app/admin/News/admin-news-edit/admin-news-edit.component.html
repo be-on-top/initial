@@ -7,12 +7,7 @@
 
     <div class="mb-3">
       <label class="form-label">Titre</label>
-      <input
-        class="form-control"
-        name="title"
-        [(ngModel)]="news.title"
-        required
-        placeholder="Titre">
+      <input class="form-control" name="title" [(ngModel)]="news.title" required placeholder="Titre">
     </div>
 
     <!-- <div class="mb-3">
@@ -24,33 +19,35 @@
         placeholder="https://...">
     </div> -->
     <div class="mb-3">
-  <label class="form-label">Image (upload)</label>
+      <label class="form-label">Image (upload)</label>
 
-  <input
-    type="file"
-    class="form-control"
-    (change)="onFileSelected($event)">
-</div>
+      <input type="file" class="form-control" (change)="onFileSelected($event)">
+    </div>
 
-<!-- preview -->
-<img *ngIf="news.heroImage" [src]="news.heroImage" class="img-fluid mt-2">
+    <!-- preview -->
+    <img *ngIf="news.heroImage" [src]="news.heroImage" class="img-fluid mt-2">
 
     <div class="mb-3">
       <label class="form-label">Contenu</label>
 
-      <editor
+      <!-- <editor
         name="content"
         [(ngModel)]="news.content">
+      </editor> -->
+      <!-- <editor apiKey="ahl0yg86w69zh9viflcvku8m2k333o942kc9fpttussom153"
+        [init]="{  plugins: ['lists'], toolbar: 'undo redo | formatselect | bold italic | bullist numlist outdent indent | heading' }"
+        [id]="'description'" [(ngModel)]="news.content" name="description"></editor> -->
+      <editor apiKey="ahl0yg86w69zh9viflcvku8m2k333o942kc9fpttussom153" [init]="editorConfig" id="description"
+        [(ngModel)]="news.content" name="description">
       </editor>
     </div>
+
+
 
     <div class="mb-3">
       <label class="form-label">Statut</label>
 
-      <select
-        class="form-select"
-        name="status"
-        [(ngModel)]="news.status">
+      <select class="form-select" name="status" [(ngModel)]="news.status">
 
         <option value="draft">Brouillon</option>
         <option value="published">Publié</option>
@@ -58,16 +55,11 @@
       </select>
     </div>
 
-    <button
-      class="btn btn-success"
-      type="submit"
-      [disabled]="loading || f.invalid">
+    <button class="btn btn-success" type="submit" [disabled]="loading || f.invalid">
       Enregistrer
     </button>
 
-    <button
-      class="btn btn-secondary ms-2"
-      routerLink="/admin/news">
+    <button class="btn btn-secondary ms-2" routerLink="/admin/news">
       Annuler
     </button>
 

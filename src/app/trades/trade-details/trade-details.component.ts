@@ -103,6 +103,16 @@ export class TradeDetailsComponent implements OnInit, OnDestroy {
     this.ac.paramMap.subscribe(params => {
       this.tradeId = params.get('id') ?? ''
 
+      // --- 1. NETTOYAGE IMMÉDIAT (Dès que l'ID change) ---
+
+    this.imageUrl = '';         // On tue l'image précédente pour éviter l'effet "fantôme"
+    this.imageUrlReduced = '';  // Idem pour la version réduite
+    this.isLoading = true;      // On force le retour du spinner
+    this.isPageLoaded = false;  // On retire la classe 'loaded' pour l'animation
+    // Reset des états user
+    // this.isEvaluationCompleted = false; 
+    // this.hasStartedEvaluation = false;
+
       // C'EST ICI QU'ON VERROUILLE l'url canonique
       if (this.tradeId) {
         this.setCanonicalURL(this.tradeId);
@@ -117,7 +127,7 @@ export class TradeDetailsComponent implements OnInit, OnDestroy {
         // Récupération sécurisée
         this.backupDenomination = this.tradesMeta[this.tradeId]?.label || this.tradeId;
         this.seoDescription = this.tradesMeta[this.tradeId]?.seoDescription
-          || `Formation ${this.backupDenomination} : évaluez vos compétences et démarrez une formation personnalisée.`;
+          || `${this.backupDenomination} : évaluez vos compétences et démarrez une formation personnalisée.`;
 
 
         // --- AJOUT DES METAS DE SECOURS ICI ---

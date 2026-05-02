@@ -215,7 +215,8 @@ const routesAdmin: Routes = [
       { path: 'marketing-docs-list', component: MarketDocsListComponent },
 
       { path: 'news', component: AdminNewsListComponent },
-      { path: 'news/create', component: AdminNewsEditComponent}
+      { path: 'news/create', component: AdminNewsEditComponent},
+      { path: 'news/edit/:id', component: AdminNewsEditComponent}
 
     ],
     // canActivate: [AuthGuardService]

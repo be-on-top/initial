@@ -1,18 +1,35 @@
-
-.trade-details-container {
-  display: block;
-  /* On réserve l'espace pour que le footer ne saute pas */
-  min-height: 85vh;
+/* 1. Le cadre (Stabilité CLS + Zone Spinner) */
+.image-wrapper {
+    width: 100%;
+    aspect-ratio: 900 / 375; 
+    position: relative;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
 }
 
-/* --- NETTOYAGE RADICAL --- */
-
-/* On met le VRAI ratio de tes images (900/375 = 2.4) */
-.mt-4.p-2.position-relative img {
-    aspect-ratio: 900 / 375; 
+/* 2. L'image (Ajustement parfait) */
+.image-wrapper img {
     width: 100%;
-    height: auto;
+    height: 100%;
     object-fit: cover;
+    display: block;
+}
+
+/* 3. Le Spinner (Centrage absolu) */
+.spinner-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+}
+
+/* 4. Le correctif Angular */
+.d-none {
+    display: none !important;
 }
 
 /* en dessous l'ancien  */

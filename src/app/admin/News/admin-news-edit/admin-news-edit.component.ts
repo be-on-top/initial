@@ -82,4 +82,89 @@ export class AdminNewsEditComponent implements OnInit {
       this.loading = false;
     });
   }
+
+
+  onFilePicker = (callback: any, value: any, meta: any) => {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/webp'; // 🔥 filtre OS
+
+  input.onchange = () => {
+    const file = input.files?.[0];
+    if (!file) return;
+
+    // 🔥 sécurité réelle (pas juste extension)
+    if (file.type !== 'image/webp') {
+      alert('Seules les images WEBP sont autorisées');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      callback(reader.result, { title: file.name });
+    };
+    reader.readAsDataURL(file);
+  };
+
+  input.click();
+}
+
+editorConfig = {
+  plugins: 'lists image',
+  toolbar: 'undo redo | formatselect | bold italic | image | bullist numlist outdent indent',
+
+  images_file_types: 'webp',
+  file_picker_types: 'image',
+
+  file_picker_callback: (callback: any, value: any, meta: any) => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/webp';
+
+    input.onchange = () => {
+      const file = input.files?.[0];
+      if (!file) return;
+
+      if (file.type !== 'image/webp') {
+        alert('Seules les images WEBP sont autorisées');
+        return;
+      }
+
+      const reader = new FileReader();
+
+      reader.onload = (e: any) => {
+        const img = new Image();
+
+        img.onload = () => {
+          const maxWidth = 600;
+
+          if (img.width > maxWidth) {
+            const canvas = document.createElement('canvas');
+            const scale = maxWidth / img.width;
+
+            canvas.width = maxWidth;
+            canvas.height = img.height * scale;
+
+            const ctx = canvas.getContext('2d');
+            ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+            const resized = canvas.toDataURL('image/webp', 0.9);
+            callback(resized, { title: file.name });
+
+          } else {
+            callback(e.target.result, { title: file.name });
+          }
+        };
+
+        img.src = e.target.result;
+      };
+
+      reader.readAsDataURL(file);
+    };
+
+    input.click();
+  }
+};
+
+
 }
