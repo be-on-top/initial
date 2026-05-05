@@ -64,7 +64,7 @@ export class BenefitsComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   addTag() {
-    this.titleService.setTitle(`Évaluez vos compétences et boostez votre carrière | BE-ON-TOP`);
+    this.titleService.setTitle(`Informations Utilisateurs : Formations et compétences professionnelles évaluées sur-mesure`);
     this.metaService.updateTag({ name: 'description', content: 'Evaluez vos connaissances facilement grâce à nos questionnaires métiers. Intégrez une formation calculée sur-mesure. Faites vous connaître des recruteurs et agences partenaires.' });
     this.metaService.addTag({ name: 'robots', content: 'index, follow' });
     this.metaService.updateTag({ property: 'og:title', content: 'Informations Utilisateurs : Formations et compétences professionnelles évaluées sur BE-ON-top.io' });
@@ -344,13 +344,13 @@ export class BenefitsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     try {
-      if (this.canonicalTag) {
-        this.document.head.removeChild(this.canonicalTag);
-      }
-      this.metaService.removeTag("name='description'");
-      this.metaService.removeTag("name='robots'");
-      this.metaService.removeTag("property='og:title'");
-      this.metaService.removeTag("property='og:description'");
+      // if (this.canonicalTag) {
+      //   this.document.head.removeChild(this.canonicalTag);
+      // }
+      // this.metaService.removeTag("name='description'");
+      // this.metaService.removeTag("name='robots'");
+      // this.metaService.removeTag("property='og:title'");
+      // this.metaService.removeTag("property='og:description'");
       console.log('[SEO-CLEAN] Page Benefits nettoyée.');
     } catch (e) {
       console.warn('Erreur nettoyage Benefits');
