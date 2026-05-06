@@ -118,7 +118,8 @@ main, router-outlet + * {
     --text-primary-plus: #004ECD;
     --text-color: white;
     --text-dark: #0a1a2f;
-    --bg-dark: #0a1a2f;
+    /* --bg-dark: #0a1a2f; */
+    --bg-dark:#0a1a2f;
     --bg-light: #f8f9fa;
     --bs-light: #f8f9fa;
     --bs-light-rgb: #f8f9fa;
@@ -480,9 +481,10 @@ nav.navbar.navbar-light a {
 }
 
 .bg-dark,
-.navbar-dark {
-    /* background-color: #002550 !important; */
-    background-color: var(--bg-dark);
+.navbar-dark,
+.badge.text-bg-dark {
+    background-color: #002550 !important;
+    /* background-color: var(--bg-dark); */
 }
 
 .bg-info {

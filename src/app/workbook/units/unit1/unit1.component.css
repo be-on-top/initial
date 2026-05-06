@@ -1,0 +1,75 @@
+img {
+  width: 100%;
+  aspect-ratio: 5 / 3;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+/* .category{
+  font-size: inherit;
+  text-decoration: dashed;
+  text-decoration-line: underline;
+  text-decoration-color: rgb(250, 192, 3);
+} */
+
+/* h2{
+  position: relative;
+} */
+
+.category {
+  position: relative;
+  display: inline-block;
+  font-size: inherit;
+}
+
+.category::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 100%;
+  height: 3px;
+  background-color: rgb(250, 192, 3);
+}
+
+h2>i {
+  color: rgb(250, 192, 3);
+  font-size: 1.5rem;
+}
+
+.badge {
+  font-weight: normal;
+}
+
+/* .ex1 {
+  background-image: url('/assets/presenter.webp');
+  background-size: content;
+} */
+
+button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.title,
+.instructions {
+  font-weight: 400;
+  font-size: 1.2rem;
+}
+
+div span{font-size: inherit;}
+
+.alert.bg-info{
+    color: white;
+}
+
+:focus {
+  outline: 3px solid #0d6efd;
+  outline-offset: 2px;
+}
+
+@media (max-width: 765px) {
+  span.badge.text-bg-dark.text-white {
+    display: none !important;
+  }
+}

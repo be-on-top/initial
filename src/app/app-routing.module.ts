@@ -73,7 +73,13 @@ const routes: Routes = [
   { 
     path: 'partners', 
     loadComponent: () => import('./partners/partners.component').then(m => m.PartnersComponent) 
-  }
+  },
+
+  {
+  path: 'workbook',
+  loadChildren: () =>
+    import('./workbook/workbook.module').then(m => m.WorkbookModule)
+}
 
 ];
 
