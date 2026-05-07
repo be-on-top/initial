@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { WorkbookService } from '../../workbook.service';
 interface Step {
   id: string;
   category: string;
@@ -165,7 +166,7 @@ export class Unit1Component {
 
 
 
-  constructor(private fb: FormBuilder, private auth: Auth) {
+  constructor(private fb: FormBuilder, private auth: Auth,  private service:WorkbookService) {
     this.initForms();
 
     const saved = localStorage.getItem('unit1_aggregation');
@@ -407,10 +408,21 @@ submitEx1() {
       score = 1;
     }
 
-
     const category = this.getCurrentCategory();
 
     console.log('Score Ex3:', score, 'Category:', category);
+
+    // FAUT appeler  le service avant d'agréger les points finalement...
+//     this.service.saveUnit(
+//   this.uid,
+//   "unit1",
+//   "ex3",
+//   this.formEx3,
+//   score,
+//   category
+// );
+
+
     this.aggregate(category, score);
 
     this.next();
