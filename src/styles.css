@@ -95,21 +95,25 @@
 }
 
 :host {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 9999;
-  width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    width: 100%;
 }
 
-body, html {
-  overflow-x: hidden; /* Evite que certains container overflow cachent le fixed */
+body,
+html {
+    overflow-x: hidden;
+    /* Evite que certains container overflow cachent le fixed */
 }
+
 /* 1. On neutralise l'espace sur les éléments qui précèdent */
-main, router-outlet + * {
-  margin-bottom: 0 !important;
-  padding-bottom: 0 !important;
+main,
+router-outlet+* {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
 }
 
 :root {
@@ -119,7 +123,7 @@ main, router-outlet + * {
     --text-color: white;
     --text-dark: #0a1a2f;
     /* --bg-dark: #0a1a2f; */
-    --bg-dark:#0a1a2f;
+    --bg-dark: #0a1a2f;
     --bg-light: #f8f9fa;
     --bs-light: #f8f9fa;
     --bs-light-rgb: #f8f9fa;
@@ -606,26 +610,33 @@ abbr:hover::before {
 }
 
 .underProgress {
-  background-color: #f0f0f0; /* couleur de base */
-  background-image: repeating-linear-gradient(
-    45deg,           /* angle des lignes */
-    #cccccc,         /* couleur des lignes */
-    #cccccc 2px,     /* largeur de la ligne */
-    transparent 2px, /* espace transparent */
-    transparent 6px  /* espacement total entre lignes */
-  )
+    background-color: #f0f0f0;
+    /* couleur de base */
+    background-image: repeating-linear-gradient(45deg,
+            /* angle des lignes */
+            #cccccc,
+            /* couleur des lignes */
+            #cccccc 2px,
+            /* largeur de la ligne */
+            transparent 2px,
+            /* espace transparent */
+            transparent 6px
+            /* espacement total entre lignes */
+        )
 }
 
 .trainer-signature {
-  font-style: italic;
-  font-size: 0.8rem;
-  color: var(--text-dark);
-  pointer-events: none; /* empêche toute sélection */
-  opacity: 0.7;
+    font-style: italic;
+    font-size: 0.8rem;
+    color: var(--text-dark);
+    pointer-events: none;
+    /* empêche toute sélection */
+    opacity: 0.7;
 }
 
 .dropdown-item.dropdown-toggle {
-    padding-right: 1rem;   /* réserve l'espace pour la flèche */
+    padding-right: 1rem;
+    /* réserve l'espace pour la flèche */
 }
 
 
@@ -635,7 +646,11 @@ abbr:hover::before {
     line-height: 1.3;
 } */
 
-
+.news-content img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
 
 /* === Media queries === */
 /* TABLETTE & + */
@@ -673,8 +688,18 @@ abbr:hover::before {
     }
 }
 
+/* TABLETTE & + */
+
+
+
 /* DESKTOP & + */
 @media (min-width: 992px) {
+    .news-content img {
+        margin: 0 15px 10px 0;
+        float: left;
+        width: 50%;
+    }
+
     .d-xs-none {
         display: none !important;
     }
@@ -684,14 +709,15 @@ abbr:hover::before {
     }
 
 
-/* désactivé pour le moment pour contraindre à saisir des dénominations métiers courtes */
+    /* désactivé pour le moment pour contraindre à saisir des dénominations métiers courtes */
     .dropdown-menu .dropdown-item {
         white-space: nowrap !important;
     }
 
     .dropdown-item.dropdown-toggle {
-    padding-right: 2rem;   /* réserve l'espace pour la flèche */
-}
+        padding-right: 2rem;
+        /* réserve l'espace pour la flèche */
+    }
 
 
 

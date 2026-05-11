@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Firestore, collection, collectionData, doc, docData, addDoc, updateDoc, deleteDoc, query, orderBy, where } from '@angular/fire/firestore';
 import { Storage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
-import { News } from '../news';
+import { News } from './news';
 
 @Injectable({ providedIn: 'root' })
 export class NewsService {
@@ -20,15 +20,20 @@ export class NewsService {
   }
 
   // 🔹 GET PUBLISHED (front)
+  // getPublished(): Observable<News[]> {
+  //   const refCollection = collection(this.firestore, 'news');
+  //   const q = query(
+  //     refCollection,
+  //     where('status', '==', 'published'),
+  //     orderBy('createdAt', 'desc')
+  //   );
+  //   return collectionData(q, { idField: 'id' }) as Observable<News[]>;
+  // }
+
   getPublished(): Observable<News[]> {
-    const refCollection = collection(this.firestore, 'news');
-    const q = query(
-      refCollection,
-      where('status', '==', 'published'),
-      orderBy('createdAt', 'desc')
-    );
-    return collectionData(q, { idField: 'id' }) as Observable<News[]>;
-  }
+  const refCollection = collection(this.firestore, 'news');
+  return collectionData(refCollection, { idField: 'id' }) as Observable<News[]>;
+}
 
   // 🔹 GET ONE
   getOne(id: string): Observable<News> {

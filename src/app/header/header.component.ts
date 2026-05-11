@@ -207,7 +207,7 @@ if (this.userRole?.includes('external') && this.userUid) {
 
     // Vérifie si la liste de trades est définie, sinon retourne une Map vide pour éviter une erreur
     if (!trades) {
-      console.warn('groupTradesByCategory: trades is undefined or null');
+      // console.warn('groupTradesByCategory: trades is undefined or null');
       return grouped;
     }
 

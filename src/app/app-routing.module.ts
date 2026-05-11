@@ -21,6 +21,8 @@ import { TrainingStatsComponent } from './training-stats/training-stats.componen
 import { TradesMinimalComponent } from './trades-minimal/trades-minimal.component';
 import { CentersIndexComponent } from './centers-index/centers-index.component';
 import { MarketingDocsPublicComponent } from './marketing-docs-public/marketing-docs-public.component';
+import { NewsListComponent } from './news/news-list/news-list.component';
+import { NewsDetailsComponent } from './news/news-details/news-details.component';
 
 // const routes: Routes = [
 //   { path: 'home', component: HomeComponent, pathMatch: 'full', canActivate: [AuthGuardService] },
@@ -79,7 +81,13 @@ const routes: Routes = [
   path: 'workbook',
   loadChildren: () =>
     import('./workbook/workbook.module').then(m => m.WorkbookModule)
-}
+},
+
+{ path: 'admin/news', loadChildren: () => import('./news/news.module').then(m => m.NewsModule) },
+{ path: 'news', component: NewsListComponent },
+{ path: 'news/:id', component: NewsDetailsComponent }
+
+
 
 ];
 

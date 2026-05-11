@@ -1,0 +1,53 @@
+<div class="container mt-4" *ngIf="news; else loading">
+
+    <!-- <div class="card shadow-sm">
+
+         <img *ngIf="news.heroImage" [src]="news.heroImage" class="card-img-top" alt="image news">
+
+        <div class="card-body">
+
+            <h1 class="card-title mb-3">
+                {{ news.title }}
+            </h1>
+
+            <p class="text-muted small mb-3">
+                {{ news.createdAt?.toDate?.() | date:'medium' }}
+            </p>
+
+            <div class="news-content" [innerHTML]="news.content"></div>
+
+        </div>
+
+    </div> -->
+
+
+    <div class="row align-items-start">
+
+        <!-- IMAGE -->
+        <div class="col-md-4 mb-3" *ngIf="news.heroImage">
+            <img [src]="news.heroImage" class="img-fluid rounded" />
+        </div>
+
+        <!-- TEXTE -->
+        <div [class.col-md-8]="news.heroImage".>
+            <div class="news-content" [innerHTML]="news.content"></div>
+        </div>
+
+    </div>
+
+
+
+<a routerLink="/news" class="btn btn-outline-secondary my-4">
+    ← Retour à la liste des articles
+</a>
+
+</div>
+
+<!-- LOADING -->
+<ng-template #loading>
+    <div class="text-center mt-5">
+        <div class="spinner-border"></div>
+    </div>
+</ng-template>
+
+<hr>

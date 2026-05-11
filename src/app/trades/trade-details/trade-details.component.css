@@ -1,3 +1,10 @@
+
+.trade-details-container {
+  display: block;
+  /* On réserve l'espace pour que le footer ne saute pas */
+  min-height: 85vh;
+}
+
 /* 1. Le cadre (Stabilité CLS + Zone Spinner) */
 .image-wrapper {
     width: 100%;
@@ -89,11 +96,11 @@ button.btn-primary:hover {
   color: lighten(#fff, 10%);
 } */
 
-.cover {
+/* .cover {
   height: 40vw;
   width: 100%;
   object-fit: cover;
-}
+} */
 
 .btn.btn-transparent {
   border: 1px solid white;
@@ -121,22 +128,15 @@ p.btn:hover {
   box-sizing: border-box;
 } */
 
-.fixing{
-
+/* .fixing{
   margin-top: -2px !important; ;
-}
+} */
 
 
-
-#mapId {
-  height: 500px; /* Assurez-vous que cette valeur est suffisante */
-  width: 100%;   /* Assurez-vous que cela s'applique bien au parent */
-  
-}
-
-
-
-
+/* #mapId {
+  height: 500px; 
+  width: 100%;     
+} */
 
 .btn-as-link {
   background: none;

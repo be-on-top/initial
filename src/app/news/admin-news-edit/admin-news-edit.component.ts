@@ -2,7 +2,7 @@ import { NgForm } from '@angular/forms';
 import { NewsService } from '../news.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { News } from '../../news';
+import { News } from '../news';
 
 @Component({
   selector: 'app-admin-news-edit',
