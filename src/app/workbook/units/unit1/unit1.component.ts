@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { Auth, onAuthStateChanged } from '@angular/fire/auth';
+// import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { WorkbookService } from '../../workbook.service';
+import { AuthService } from 'src/app/admin/auth.service';
 interface Step {
   id: string;
   category: string;
@@ -19,6 +20,9 @@ export class Unit1Component {
 
   // pour authentification à venir
   uid: string = "";
+  userRole: string | null = null
+
+  unitData: any = {};
 
 
 
@@ -46,14 +50,14 @@ export class Unit1Component {
 
 
   steps: Step[] = [
-    { id: 'ex1', category: this.categories[0], duration: 100 },
-    { id: 'ex2', category: this.categories[1], duration: 25 },
-    { id: 'ex3', category: this.categories[1], duration: 35 },
-    { id: 'ex4', category: this.categories[1], duration: 30 },
-    { id: 'ex5', category: this.categories[1], duration: 15 },
-    { id: 'ex6', category: this.categories[1], duration: 60 },
+    { id: 'ex1', category: this.categories[0], duration: 140 },
+    { id: 'ex2', category: this.categories[1], duration: 50 },
+    { id: 'ex3', category: this.categories[1], duration: 65 },
+    { id: 'ex4', category: this.categories[1], duration: 60 },
+    { id: 'ex5', category: this.categories[1], duration: 25 },
+    { id: 'ex6', category: this.categories[1], duration: 120 },
     { id: 'ex7', category: this.categories[2] }, // libre
-    { id: 'ex8', category: this.categories[3], duration: 100 },
+    { id: 'ex8', category: this.categories[3], duration: 180 },
     { id: 'ex9', category: this.categories[2] }  // libre
   ];
 
@@ -166,7 +170,7 @@ export class Unit1Component {
 
 
 
-  constructor(private fb: FormBuilder, private auth: Auth,  private service:WorkbookService) {
+  constructor(private fb: FormBuilder, private auth: AuthService, private service: WorkbookService) {
     this.initForms();
 
     const saved = localStorage.getItem('unit1_aggregation');
@@ -177,24 +181,61 @@ export class Unit1Component {
   }
 
   ngOnInit() {
-    this.startTimer();
 
-    // RESET scoring à chaque chargement
+    // 🧹 Reset de l'état local des scores à chaque chargement de l'unité
     localStorage.removeItem('unit1_aggregation');
     this.aggregateState = {};
 
+    // 🔐 Récupération de l'utilisateur connecté
+    this.auth.getCurrentUserInfo().subscribe(userInfo => {
 
-    onAuthStateChanged(this.auth, (user: any) => {
-      if (user) {
-        this.uid = user.uid
+      // ❌ Si aucun utilisateur → on stoppe ici
+      if (!userInfo) {
+        this.userRole = null;
+        this.uid = "";
+        return;
+      }
 
-        console.log("Utilisateur authentifié !", this.uid);
+      // 👤 Normalisation du rôle utilisateur (array ou string)
+      this.userRole = Array.isArray(userInfo.role)
+        ? userInfo.role[0]
+        : userInfo.role;
+
+      // 🆔 Stockage de l'identifiant utilisateur
+      this.uid = userInfo.uid;
+
+      // 🎯 Logique uniquement pour les étudiants
+      if (this.userRole === "student") {
+
+        // 📦 Chargement des données de l'unité depuis Firestore
+        this.service.getUnit(this.uid).subscribe(data => {
+
+          // 🔥 Sécurité : si aucune donnée → on ne casse rien
+          if (!data) return;
+
+          console.log("DATA FIRESTORE:", data);
+
+          // 📥 Stockage de l'unité complète dans le composant
+          this.unitData = data;
+
+          console.log("UNIT DATA:", this.unitData);
+
+          // 🔄 Synchronisation de l'état :
+          // → détermine le step actuel selon les exercices déjà soumis
+          this.syncStep();
+        });
+
+        // ⚠️ ANCIENNE LOGIQUE (désactivée)
+        // this.startTimer();
 
       }
-      else {
-        console.log("Personne n'est authentifié actuellement !");
-      }
-    })
+    });
+
+    // 🧠 À ce stade :
+    // - utilisateur identifié
+    // - rôle déterminé
+    // - données Firestore chargées (si student)
+    // - step synchronisé via syncStep()
   }
 
   initForms() {
@@ -308,61 +349,71 @@ export class Unit1Component {
   //   this.next();
   // }
 
-submitEx1() {
-  const values = this.formEx1.value;
-  this.alreadySubmitted = true;
+  submitEx1() {
+    const values = this.formEx1.value;
+    this.alreadySubmitted = true;
 
-  let score = 0;
+    let score = 0;
 
-  const AGE_MARGIN = 1;
+    const AGE_MARGIN = 1;
 
-  const normalFields = [
-    'nom',
-    'prenom',
-    'lieuNaissance',
-    'nationalite',
-    'adresse',
-    'loisir'
-  ];
+    const normalFields = [
+      'nom',
+      'prenom',
+      'lieuNaissance',
+      'nationalite',
+      'adresse',
+      'loisir'
+    ];
 
-  // 1️⃣ champs classiques : 1 point chacun si rempli
-  normalFields.forEach(key => {
-    const v = values[key];
+    // 1️⃣ champs classiques : 1 point chacun si rempli
+    normalFields.forEach(key => {
+      const v = values[key];
 
-    if (typeof v === 'string' && v.trim() !== '') {
+      if (typeof v === 'string' && v.trim() !== '') {
+        score++;
+      }
+    });
+
+    // 2️⃣ contrôle dateNaissance (1 point si format OK)
+    let birthYear: number | null = null;
+
+    const datePattern = /^(.+[\s\/\-]){2,}\d{2,4}$/;
+
+    if (values.dateNaissance && datePattern.test(values.dateNaissance)) {
       score++;
+
+      const match = values.dateNaissance.match(/(\d{4})$/);
+      if (match) birthYear = +match[1];
     }
-  });
 
-  // 2️⃣ contrôle dateNaissance (1 point si format OK)
-  let birthYear: number | null = null;
+    // 3️⃣ contrôle âge (1 point si cohérent avec la date)
+    if (birthYear && values.age != null) {
+      const currentYear = new Date().getFullYear();
+      const expectedAge = currentYear - birthYear;
 
-  const datePattern = /^(.+[\s\/\-]){2,}\d{2,4}$/;
-
-  if (values.dateNaissance && datePattern.test(values.dateNaissance)) {
-    score++;
-
-    const match = values.dateNaissance.match(/(\d{4})$/);
-    if (match) birthYear = +match[1];
-  }
-
-  // 3️⃣ contrôle âge (1 point si cohérent avec la date)
-  if (birthYear && values.age != null) {
-    const currentYear = new Date().getFullYear();
-    const expectedAge = currentYear - birthYear;
-
-    if (Math.abs(expectedAge - values.age) <= AGE_MARGIN) {
-      score++;
+      if (Math.abs(expectedAge - values.age) <= AGE_MARGIN) {
+        score++;
+      }
     }
+
+    const category = this.getCurrentCategory();
+
+    console.log('Score Ex1:', score, 'Category:', category);
+
+    this.service.saveUnitFlat(
+      this.uid,
+      "unit1",
+      "ex1",
+      this.formEx1,
+      score,
+      category
+    );
+
+    this.aggregate(category, score);
+
+    this.next();
   }
-
-  const category = this.getCurrentCategory();
-
-  console.log('Score Ex1:', score, 'Category:', category);
-  this.aggregate(category, score);
-
-  this.next();
-}
 
 
   // EX2
@@ -391,6 +442,17 @@ submitEx1() {
     const category = this.getCurrentCategory();
 
     console.log('Score Ex2:', score, 'Category:', category);
+
+    // FAUT appeler  le service avant d'agréger les points...
+    this.service.saveUnitFlat(
+      this.uid,
+      "unit1",
+      "ex2",
+      this.formEx2,
+      score,
+      category
+    );
+
     this.aggregate(category, score);
 
     this.next();
@@ -413,14 +475,14 @@ submitEx1() {
     console.log('Score Ex3:', score, 'Category:', category);
 
     // FAUT appeler  le service avant d'agréger les points finalement...
-//     this.service.saveUnit(
-//   this.uid,
-//   "unit1",
-//   "ex3",
-//   this.formEx3,
-//   score,
-//   category
-// );
+    this.service.saveUnitFlat(
+      this.uid,
+      "unit1",
+      "ex3",
+      this.formEx3,
+      score,
+      category
+    );
 
 
     this.aggregate(category, score);
@@ -455,6 +517,16 @@ submitEx1() {
     const category = this.getCurrentCategory();
 
     console.log('Score Ex4:', score, 'Category:', category);
+
+    this.service.saveUnitFlat(
+      this.uid,
+      "unit1",
+      "ex4",
+      this.formEx4,
+      score,
+      category
+    );
+
     this.aggregate(category, score);
 
     this.next();
@@ -475,6 +547,16 @@ submitEx1() {
     const category = this.getCurrentCategory();
 
     console.log('Score Ex5:', score, 'Category:', category);
+
+    this.service.saveUnitFlat(
+      this.uid,
+      "unit1",
+      "ex5",
+      this.formEx5,
+      score,
+      category
+    );
+
     this.aggregate(category, score);
 
     this.next();
@@ -496,6 +578,16 @@ submitEx1() {
     const category = this.getCurrentCategory();
 
     console.log('Score Ex6:', score, 'Category:', category);
+
+    this.service.saveUnitFlat(
+      this.uid,
+      "unit1",
+      "ex6",
+      this.formEx6,
+      score,
+      category
+    );
+
     this.aggregate(category, score);
 
     this.next();
@@ -512,6 +604,15 @@ submitEx1() {
     const category = this.getCurrentCategory();
 
     console.log('Category:', category);
+    // FAUT appeler  le service avant d'agréger les points...
+    this.service.saveUnitFlat(
+      this.uid,
+      "unit1",
+      "ex7",
+      this.formEx7,
+      null, // ✅ explicite
+      category
+    );
 
 
     this.next();
@@ -535,6 +636,16 @@ submitEx1() {
     const category = this.getCurrentCategory();
 
     console.log('Score Ex8:', score, 'Category:', category);
+
+    this.service.saveUnitFlat(
+      this.uid,
+      "unit1",
+      "ex8",
+      this.formEx8,
+      score,
+      category
+    );
+
     this.aggregate(category, score);
 
     this.next();
@@ -558,6 +669,15 @@ submitEx1() {
     const category = this.getCurrentCategory();
     console.log('Category:', category);
 
+    this.service.saveUnitFlat(
+      this.uid,
+      "unit1",
+      "ex9",
+      this.formEx9,
+      null, // ✅ explicite
+      category
+    );
+
     // ⛔ PAS de next → dernier exercice
   }
 
@@ -566,8 +686,6 @@ submitEx1() {
     if (!text) return 0;
     return text.trim().split(/\s+/).length;
   }
-
-
 
 
   getCurrentCategory(): string {
@@ -673,24 +791,70 @@ submitEx1() {
     }
   }
 
-onEnter(event: Event, currentField: string) {
-  const keyboardEvent = event as KeyboardEvent;
+  onEnter(event: Event, currentField: string) {
+    const keyboardEvent = event as KeyboardEvent;
 
-  keyboardEvent.preventDefault();
+    keyboardEvent.preventDefault();
 
-  const fields = this.ex1Fields.map(f => f.name);
-  const index = fields.indexOf(currentField);
+    const fields = this.ex1Fields.map(f => f.name);
+    const index = fields.indexOf(currentField);
 
-  const nextField = fields[index + 1];
+    const nextField = fields[index + 1];
 
-  if (nextField) {
-    const el = document.getElementById(nextField);
-    if (el) {
-      (el as HTMLElement).focus();
+    if (nextField) {
+      const el = document.getElementById(nextField);
+      if (el) {
+        (el as HTMLElement).focus();
+      }
+    } else {
+      this.submitEx1();
     }
-  } else {
-    this.submitEx1();
   }
-}
+
+  get isStudent(): boolean {
+    return this.userRole === 'student';
+  }
+
+  get isNotAuthenticated(): boolean {
+    return !this.uid;
+  }
+
+  get isEditable(): boolean {
+    return this.userRole === 'student';
+  }
+
+  isSubmitted(exId: string): boolean {
+    return this.unitData?.[`units.unit1.${exId}`]?.submitted ?? false;
+  }
+
+  syncStep() {
+
+    // 🔁 On parcourt les steps depuis le step courant
+    while (this.currentStep < this.steps.length) {
+
+      // 📌 On récupère le step actuel
+      const step = this.steps[this.currentStep];
+
+      // 🆔 Identifiant de l'exercice (ex1, ex2, etc.)
+      const exId = step.id;
+
+      // ❗ Si l'exercice n'est PAS encore soumis, on s'arrête ici
+      // → c’est le step actif de l’utilisateur
+      if (!this.isSubmitted(exId)) {
+        break;
+      }
+
+      // ⏭️ Sinon l’exercice est déjà soumis → on passe au suivant
+      this.currentStep++;
+    }
+
+    // ▶️ Une fois le step correct déterminé, on lance le timer associé
+    this.startTimer();
+  }
+
+
+
+
+
 
 }

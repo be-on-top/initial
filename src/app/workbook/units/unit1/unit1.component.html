@@ -1,111 +1,111 @@
 <div class="container mt-4">
 
+    <div class="alert alert-info" *ngIf="isStudent">
+        Bienvenue, vous allez commencer votre unité d'exercices.
+    </div>
+
+    <div class="alert alert-danger" *ngIf="isNotAuthenticated">
+        Authentification requise pour accéder aux exercices.
+    </div>
+
+    <div class="alert alert-danger" *ngIf="!isNotAuthenticated && !isStudent">
+        Seul un candidat authentifié peut passer une évaluation.
+    </div>
+
+    <!-- le mode lecture ou éditeur qui reste à implémenter -->
+    {{isEditable}}
+
     <div [ngSwitch]="currentStep">
 
         <!-- ===================== -->
         <!-- EXERCICE 1 -->
         <!-- ===================== -->
-<form 
-  *ngSwitchCase="0" 
-  [formGroup]="formEx1" 
-  (ngSubmit)="submitEx1()"
-  aria-labelledby="ex1-title"
->
+        <form *ngSwitchCase="0" [formGroup]="formEx1" (ngSubmit)="submitEx1()" aria-labelledby="ex1-title">
 
-    <!-- HEADER -->
-    <div id="ex1-title" class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+            <!-- HEADER -->
+            <div id="ex1-title"
+                class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
 
-        <!-- Catégorie -->
-        <span class="badge text-bg-dark text-white">
-            <i class="bi bi-tag-fill me-2"></i>
-            Catégorie : {{ getCurrentCategory() }}
-        </span>
+                <!-- Catégorie -->
+                <span class="badge text-bg-dark text-white">
+                    <i class="bi bi-tag-fill me-2"></i>
+                    Catégorie : {{ getCurrentCategory() }}
+                </span>
 
-        <!-- Groupe droite -->
-        <div class="d-flex gap-2 ms-md-auto">
-            <span class="badge text-bg-warning text-white">
-                Exercice {{ currentStep + 1 }}
-            </span>
+                <!-- Groupe droite -->
+                <div class="d-flex gap-2 ms-md-auto">
+                    <span class="badge text-bg-warning text-white">
+                        Exercice {{ currentStep + 1 }}
+                    </span>
 
-            <span class="badge text-bg-dark text-white" aria-live="polite">
-                {{ getCurrentScore() }} PNTS
-            </span>
-        </div>
+                    <span class="badge text-bg-dark text-white" aria-live="polite">
+                        {{ getCurrentScore() }} PNTS
+                    </span>
+                </div>
 
-    </div>
-    <!-- FIN HEADER -->
+            </div>
+            <!-- FIN HEADER -->
 
 
-    <!-- ENONCE -->
-    <div 
-      class="alert bg-info instructions"
-      role="region"
-      aria-labelledby="ex1-instructions">
+            <!-- ENONCE -->
+            <div class="alert bg-info instructions" role="region" aria-labelledby="ex1-instructions">
 
-        <span id="ex1-instructions">
-            <i class="bi bi-info-square-fill me-3"></i>
-            A l'aide de ce formulaire, présentez-vous !
-        </span>
-    </div>
+                <span id="ex1-instructions">
+                    <i class="bi bi-info-square-fill me-3"></i>
+                    A l'aide de ce formulaire, présentez-vous !
+                </span>
+            </div>
 
 
-    <!-- CHAMPS -->
-    <div *ngFor="let field of ex1Fields" class="row mb-3">
+            <!-- CHAMPS -->
+            <div *ngFor="let field of ex1Fields" class="row mb-3">
 
-        <label [for]="field.name" class="form-label col-md-3">
-            {{ field.label }}
-        </label>
+                <label [for]="field.name" class="form-label col-md-3">
+                    {{ field.label }}
+                </label>
 
-        <div class="col-md-8">
+                <div class="col-md-8">
 
-            <input 
-                *ngIf="field.type !== 'textarea'" 
-                [id]="field.name" 
-                [type]="field.type" 
-                class="form-control"
-                [formControlName]="field.name"
-                [attr.aria-label]="field.label"
-                 (keydown.enter)="onEnter($event, field.name)">
+                    <input *ngIf="field.type !== 'textarea'" [id]="field.name" [type]="field.type" class="form-control"
+                        [formControlName]="field.name" [attr.aria-label]="field.label"
+                        (keydown.enter)="onEnter($event, field.name)">
 
-            <textarea 
-                *ngIf="field.type === 'textarea'" 
-                [id]="field.name" 
-                class="form-control"
-                [formControlName]="field.name"
-                 (keydown.enter)="onEnter($event, field.name)"
-                [attr.aria-label]="field.label">
+                    <textarea *ngIf="field.type === 'textarea'" [id]="field.name" class="form-control"
+                        [formControlName]="field.name" (keydown.enter)="onEnter($event, field.name)"
+                        [attr.aria-label]="field.label">
             </textarea>
 
-        </div>
+                </div>
 
-    </div>
+            </div>
 
-    <!-- temps estimé -->
-    <div *ngIf="steps[currentStep].duration" class="text-muted small mt-4">
-        Temps estimé : {{ steps[currentStep].duration }} secondes
-    </div>
+            <!-- temps estimé -->
+            <div *ngIf="steps[currentStep].duration" class="text-muted small mt-4">
+                Temps estimé : {{ steps[currentStep].duration }} secondes
+            </div>
 
-    <!-- progress -->
-    <div 
-        class="progress mb-4"
-        role="progressbar"
-        aria-label="Progression de l'exercice"
-        [attr.aria-valuenow]="progress"
-        aria-valuemin="0"
-        aria-valuemax="100">
+            <!-- progress -->
+            <div class="progress mb-4" role="progressbar" aria-label="Progression de l'exercice"
+                [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
 
-        <div class="progress-bar" [style.width.%]="progress"></div>
-    </div>
+                <div class="progress-bar" [style.width.%]="progress"></div>
+            </div>
 
-    <!-- bouton -->
-    <button 
-        type="submit" 
-        class="btn btn-primary"
-        aria-label="Valider le formulaire et passer à l'exercice suivant">
-        Suivant
-    </button>
+            <!-- bouton -->
+            <button type="submit" class="btn btn-primary"
+                aria-label="Valider le formulaire et passer à l'exercice suivant" [disabled]="isSubmitted('ex1')">
+                Suivant
+            </button>
 
-</form>
+            <!-- <button type="submit" class="btn btn-primary" [disabled]="alreadySubmitted">
+                Suivant
+            </button> -->
+
+            <div *ngIf="isSubmitted('ex1') && isEditable" class="alert alert-warning mt-2">
+                ✔ Exercice déjà validé — vous ne pouvez plus le modifier
+            </div>
+
+        </form>
 
 
         <!-- ===================== -->
@@ -145,7 +145,7 @@
                 </div>
 
                 <!-- TEXTE -->
-                <div class="col-md-8 bg-info alert mt-3 mt-md-0 mt-1 mt-md-0 order-1 order-md-2 mb-0">
+                <div class="col-md-8 bg-info alert mt-3 mt-md-0 order-1 order-md-2 mb-0">
                     <h5 class="mb-3"><i class="bi bi-calendar3 me-2"></i>Les heures d'ouverture de la Bibliothèque</h5>
                     <div>
                         <strong>lundi, mardi, jeudi, vendredi</strong> : 8h30 - 17h30<br>
@@ -155,7 +155,8 @@
             </div>
             <!-- fin -->
 
-            <div class="alert bg-info instructions"><i class="bi bi-question-square-fill me-2"></i>
+            <div class="alert bg-info instructions">
+                <!-- <i class="bi bi-question-square-fill me-2"></i> -->
                 Que trouve-t-on dans une bibliothèque ?
             </div>
 
@@ -236,7 +237,8 @@
             </div>
             <!-- fin -->
 
-            <div class="alert bg-info instructions"><i class="bi bi-question-square-fill me-2"></i>
+            <div class="alert bg-info instructions">
+                <!-- <i class="bi bi-question-square-fill me-2"></i> -->
                 Quels sont les jours où la bibliothèque est ouverte ?
             </div>
 
@@ -314,7 +316,8 @@
             </div>
             <!-- fin -->
 
-            <div class="alert bg-info instructions"><i class="bi bi-question-square-fill me-2"></i>
+            <div class="alert bg-info instructions">
+                <!-- <i class="bi bi-question-square-fill me-2"></i> -->
                 Quand Sasha peut-elle aller à la bibliothèque ?
             </div>
 
@@ -391,7 +394,8 @@
             </div>
             <!-- fin -->
 
-            <div class="alert bg-info instructions"><i class="bi bi-question-square-fill me-2"></i>
+            <div class="alert bg-info instructions">
+                <!-- <i class="bi bi-question-square-fill me-2"></i> -->
                 Est-ce que la bibliothèque est ouverte le samedi ?
             </div>
 
@@ -467,7 +471,8 @@
 
             <!-- ENONCE -->
             <div class="mb-4 bg-info alert instructions">
-                <i class="bi bi-question-square-fill me-2"></i>Associer le jour et l'horaire au sport qui convient :
+                <!-- <i class="bi bi-question-square-fill me-2"></i> -->
+                Associer le jour et l'horaire au sport qui convient :
             </div>
 
             <!-- GRILLE -->
@@ -608,21 +613,22 @@
             <!-- FIN HEADER -->
 
             <!-- ENONCE -->
-            <div class="alert bg-info instructions"><i class="bi bi-info-square-fill me-3"></i>Trouver l'image qui
-                correspond à chaque
-                verbe</div>
+            <div class="alert bg-info instructions"><i class="bi bi-info-square-fill me-3"></i>Trouver le verbe qui
+                correspond à l'image</div>
 
 
             <!-- ROW -->
             <div class="row">
-
                 <!-- COL -->
                 <!-- <div *ngFor="let item of ex3Items" class="mb-4 col-sm-6 col-md-4 col-lg-3"> -->
                 <div *ngFor="let item of ex3Items" class="mb-4 col-sm-6 col-md-4 col-lg-2">
+                    <img [src]="item.image" class="img-fluid mb-3 ms-md-auto" alt="Illustration" />
 
-                    <img [src]="item.image" class="img-fluid mb-3 ms-md-auto" />
+                    <label [for]="item.id" class="visually-hidden">
+                        Choisir le verbe
+                    </label>
 
-                    <select class="form-select" [formControlName]="item.id">
+                    <select class="form-select" [formControlName]="item.id" [id]="item.id">
 
                         <option value="">-- Choisir --</option>
 

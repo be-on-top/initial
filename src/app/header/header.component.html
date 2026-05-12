@@ -346,8 +346,9 @@
                             <li *ngIf="userRole && userRole != ''">
                                 <a href="#" class="dropdown-item" (click)="logOut()">Déconnexion</a>
                             </li>
+                            <!-- Optimisation : suppression de l'optional chaining redondant avec la vérification de présence initiale -->
                             <li
-                                *ngIf="userRole && !userRole?.includes('evaluator') && !userRole?.includes('editor') && !userRole?.includes('referent') && !userRole?.includes('tutor') && !userRole?.includes('trainer') && !userRole?.includes('external')">
+                                *ngIf="userRole && !userRole.includes('evaluator') && !userRole.includes('editor') && !userRole.includes('referent') && !userRole.includes('tutor') && !userRole.includes('trainer') && !userRole.includes('external')">
                                 <a class="dropdown-item" [routerLink]="['account']" (click)="closeNavbar()">Mon
                                     compte</a>
                             </li>
