@@ -76,5 +76,29 @@ export class WorkbookService {
     return docData(ref);
   }
 
+  saveUnitResult(
+    uid: string,
+    unitId: string,
+    aggregateState: Record<string, number> = {}
+  ) {
+
+    // 📍 Référence du document utilisateur (racine du workbook)
+    const ref = doc(this.firestore, `workbook/${uid}`);
+
+    return setDoc(
+      ref,
+      {
+        // 🧠 Écriture ciblée dans :
+        // units → unitId → result
+        // 👉 n’écrase PAS les exercices existants grâce au chemin précis
+        [`units.${unitId}.result`]: aggregateState
+      },
+      {
+        // 🔀 Merge = fusion avec les données existantes
+        // 👉 évite de remplacer tout le document
+        merge: true
+      }
+    );
+  }
 
 }

@@ -24,8 +24,7 @@ export class Unit1Component {
 
   unitData: any = {};
 
-
-
+  showFinalMessage: boolean = false;
 
 
   categories: string[] = ["Se présenter", "Compréhension écrite", "Production écrite", "Structure grammaticale"]
@@ -50,9 +49,9 @@ export class Unit1Component {
 
 
   steps: Step[] = [
-    { id: 'ex1', category: this.categories[0], duration: 140 },
+    { id: 'ex1', category: this.categories[0], duration: 160 },
     { id: 'ex2', category: this.categories[1], duration: 50 },
-    { id: 'ex3', category: this.categories[1], duration: 65 },
+    { id: 'ex3', category: this.categories[1], duration: 70 },
     { id: 'ex4', category: this.categories[1], duration: 60 },
     { id: 'ex5', category: this.categories[1], duration: 25 },
     { id: 'ex6', category: this.categories[1], duration: 120 },
@@ -113,8 +112,8 @@ export class Unit1Component {
   // EX4
   q4Options = [
     { value: 'lundi17', label: 'Lundi 17h', correct: false },
-    { value: 'mardi13', label: 'Mardi 13h', correct: false },
-    { value: 'mercredi16', label: 'Mercredi 16h', correct: true },
+    { value: 'mardi13', label: 'Mardi 13h', correct: true },
+    { value: 'mercredi16', label: 'Mercredi 16h', correct: false },
     { value: 'samedi1230', label: 'Samedi 12h30', correct: false }
   ];
 
@@ -183,7 +182,7 @@ export class Unit1Component {
   ngOnInit() {
 
     // 🧹 Reset de l'état local des scores à chaque chargement de l'unité
-    localStorage.removeItem('unit1_aggregation');
+    // localStorage.removeItem('unit1_aggregation');
     this.aggregateState = {};
 
     // 🔐 Récupération de l'utilisateur connecté
@@ -211,18 +210,24 @@ export class Unit1Component {
         this.service.getUnit(this.uid).subscribe(data => {
 
           // 🔥 Sécurité : si aucune donnée → on ne casse rien
-          if (!data) return;
+          // if (!data) return;
 
           console.log("DATA FIRESTORE:", data);
 
-          // 📥 Stockage de l'unité complète dans le composant
-          this.unitData = data;
+          // ✅ même si vide → on initialise
+          this.unitData = data ?? {};
 
           console.log("UNIT DATA:", this.unitData);
 
           // 🔄 Synchronisation de l'état :
           // → détermine le step actuel selon les exercices déjà soumis
           this.syncStep();
+
+          // détecte si l'entièreté de l'unité a été finalisée
+          if (this.unitData?.['units.unit1.result']) {
+            this.showFinalMessage = true;
+          }
+
         });
 
         // ⚠️ ANCIENNE LOGIQUE (désactivée)
@@ -679,6 +684,23 @@ export class Unit1Component {
     );
 
     // ⛔ PAS de next → dernier exercice
+
+    // this.service.saveUnitResult(
+    //   this.uid,
+    //   "unit1",
+    //   this.aggregateState
+    // );
+
+    this.service.saveUnitResult(
+      this.uid,
+      "unit1",
+      this.aggregateState
+    ).then(() => {
+
+      // ✅ affichage du message UNIQUEMENT après enregistrement OK
+      this.showFinalMessage = true;
+
+    });
   }
 
   // 1. Compter les mots (minimum 30)

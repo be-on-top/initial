@@ -1,11 +1,16 @@
 <div class="container mt-4">
 
-    <div class="alert alert-info" *ngIf="isStudent">
-        Bienvenue, vous allez commencer votre unité d'exercices.
+    <div class="alert w-100 p-4 pe-5 bg-dark alert-dismissible text-white mb-4 fade show display-5"
+        *ngIf="isStudent &&  currentStep===0">
+        <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
+            aria-label="Fermer le message be-on-top"></button>
+
+        Bienvenue, vous allez commencer vos exercices de Français Langue Etrangère débutant.
     </div>
 
-    <div class="alert alert-danger" *ngIf="isNotAuthenticated">
-        Authentification requise pour accéder aux exercices.
+    <div class="alert alert-warning instructions" *ngIf="isNotAuthenticated">
+        Authentification requise pour accéder aux exercices.  <a role="link" aria-label="Avertissement : se connecter pour démarrer un questionnaire"
+                    [routerLink]="['/login']" class="text-light">Vous identifier</a>
     </div>
 
     <div class="alert alert-danger" *ngIf="!isNotAuthenticated && !isStudent">
@@ -13,7 +18,7 @@
     </div>
 
     <!-- le mode lecture ou éditeur qui reste à implémenter -->
-    {{isEditable}}
+    <!-- {{isEditable}} -->
 
     <div [ngSwitch]="currentStep">
 
@@ -710,9 +715,17 @@
                 [class.disabled]="countWords(formEx9.value.texte) < 30">
                 Valider et terminer
             </button>
-
         </form>
-
     </div>
+
+    <!-- {{unitData | async}} -->
+
+    
+    <div *ngIf="showFinalMessage" class="alert alert-success mt-3">
+        ✅ Bravo et merci d'avoir répondu aux questions.<br>
+        Vos résultats ont été enregistrés.<br>
+        Un conseiller projet va prendre contact avec vous pour en discuter.
+    </div>
+    
 
 </div>
