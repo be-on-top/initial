@@ -13,7 +13,7 @@
                     [routerLink]="['/login']" class="text-light">Vous identifier</a>
     </div>
 
-    <div class="alert alert-danger" *ngIf="!isNotAuthenticated && !isStudent">
+    <div class="alert alert-danger" *ngIf="!isNotAuthenticated && !isStudent && !isReferentView">
         Seul un candidat authentifié peut passer une évaluation.
     </div>
 

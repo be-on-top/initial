@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { WorkbookService } from '../../workbook.service';
 import { AuthService } from 'src/app/admin/auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
 interface Step {
   id: string;
   category: string;
@@ -25,6 +26,8 @@ export class Unit1Component {
   unitData: any = {};
 
   showFinalMessage: boolean = false;
+
+  isReferentView: boolean = false;
 
 
   categories: string[] = ["Se présenter", "Compréhension écrite", "Production écrite", "Structure grammaticale"]
@@ -169,7 +172,7 @@ export class Unit1Component {
 
 
 
-  constructor(private fb: FormBuilder, private auth: AuthService, private service: WorkbookService) {
+  constructor(private fb: FormBuilder, private auth: AuthService, private service: WorkbookService, private route: ActivatedRoute) {
     this.initForms();
 
     const saved = localStorage.getItem('unit1_aggregation');
@@ -180,6 +183,16 @@ export class Unit1Component {
   }
 
   ngOnInit() {
+    // 🔎 Vérification si un UID est passé en paramètre
+    const routeUid = this.route.snapshot.paramMap.get('uid');
+
+    if (routeUid) {
+      this.uid = routeUid;
+      // 👉 MODE REFERENT
+      this.loadData()
+      this.isReferentView=true
+      return; // ⛔ on ne passe PAS par auth
+    }
 
     // 🧹 Reset de l'état local des scores à chaque chargement de l'unité
     // localStorage.removeItem('unit1_aggregation');
@@ -234,6 +247,8 @@ export class Unit1Component {
         // this.startTimer();
 
       }
+
+
     });
 
     // 🧠 À ce stade :
@@ -874,6 +889,142 @@ export class Unit1Component {
     this.startTimer();
   }
 
+  // Nécessaires pour référent
+
+  // loadData() {
+  //   this.service.getUnit(this.uid).subscribe(data => {
+  //     this.unitData = data ?? {};
+  //     this.patchForms();
+  //   });
+  // }
+
+loadData() {
+
+  // Appel au service Firestore pour récupérer le document du candidat via son UID
+  this.service.getUnit(this.uid).subscribe(data => {
+
+    // Debug : structure brute telle que renvoyée par Firestore
+    // ⚠️ Ici les clés sont FLAT (ex: 'units.unit1.ex1')
+    console.log("RAW DATA:", data);
+
+    // On sécurise : si null/undefined → objet vide
+    this.unitData = data ?? {};
+
+    // Debug : vérification après assignation
+    console.log("UNIT DATA:", this.unitData);
+
+    // ⚠️ volontairement commenté :
+    // car avec le modèle FLAT, ces accès n'existent PAS
+    // console.log("UNITS:", this.unitData?.units);
+    // console.log("UNIT1:", this.unitData?.units?.unit1);
+
+    // Injection des données dans les formulaires Angular
+    this.patchForms();
+  });
+}
+
+  // patchForms() {
+
+  //   const unit = this.unitData?.units?.unit1;
+  //   if (!unit) return;
+
+  //   if (unit.ex1?.answers) {
+  //     this.formEx1.patchValue(unit.ex1.answers);
+  //     console.log(unit.ex1.answers);
+
+  //   }
+
+  //   if (unit.ex2?.answers) {
+  //     this.formEx2.patchValue(unit.ex2.answers);
+  //   }
+
+
+  //   if (unit.ex3?.answers) {
+  //     this.formEx3.patchValue(unit.ex3.answers);
+  //   }
+
+  //   if (unit.ex4?.answers) {
+  //     this.formEx4.patchValue(unit.ex4.answers);
+  //   }
+
+  //   if (unit.ex5?.answers) {
+  //     this.formEx5.patchValue(unit.ex5.answers);
+  //   }
+
+  //   if (unit.ex6?.answers) {
+  //     this.formEx6.patchValue(unit.ex6.answers);
+  //   }
+
+  //   if (unit.ex7?.answers) {
+  //     this.formEx7.patchValue(unit.ex7.answers);
+  //   }
+
+  //   if (unit.ex8?.answers) {
+  //     this.formEx8.patchValue(unit.ex8.answers);
+  //   }
+
+  //   if (unit.ex9?.answers) {
+  //     this.formEx9.patchValue(unit.ex9.answers);
+  //   }
+  // }
+
+patchForms() {
+
+  // Raccourci local pour lisibilité
+  const data = this.unitData;
+
+  // Sécurité : si aucune donnée → on sort
+  if (!data) return;
+
+  // ⚠️ IMPORTANT :
+  // On accède aux données via des clés "flat"
+  // ex: 'units.unit1.ex1' → objet contenant { answers, score, ... }
+
+  // EXERCICE 1
+  if (data['units.unit1.ex1']?.answers) {
+    this.formEx1.patchValue(data['units.unit1.ex1'].answers);
+  }
+
+  // EXERCICE 2
+  if (data['units.unit1.ex2']?.answers) {
+    this.formEx2.patchValue(data['units.unit1.ex2'].answers);
+  }
+
+  // EXERCICE 3
+  if (data['units.unit1.ex3']?.answers) {
+    this.formEx3.patchValue(data['units.unit1.ex3'].answers);
+  }
+
+  // EXERCICE 4
+  if (data['units.unit1.ex4']?.answers) {
+    this.formEx4.patchValue(data['units.unit1.ex4'].answers);
+  }
+
+  // EXERCICE 5
+  if (data['units.unit1.ex5']?.answers) {
+    this.formEx5.patchValue(data['units.unit1.ex5'].answers);
+  }
+
+  // EXERCICE 6
+  if (data['units.unit1.ex6']?.answers) {
+    this.formEx6.patchValue(data['units.unit1.ex6'].answers);
+  }
+
+  // EXERCICE 7
+  if (data['units.unit1.ex7']?.answers) {
+    this.formEx7.patchValue(data['units.unit1.ex7'].answers);
+  }
+
+  // EXERCICE 8
+  if (data['units.unit1.ex8']?.answers) {
+    this.formEx8.patchValue(data['units.unit1.ex8'].answers);
+  }
+
+  // EXERCICE 9
+  if (data['units.unit1.ex9']?.answers) {
+    this.formEx9.patchValue(data['units.unit1.ex9'].answers);
+  }
+}
 
 
 

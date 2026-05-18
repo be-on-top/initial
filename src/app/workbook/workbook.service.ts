@@ -20,7 +20,7 @@ export class WorkbookService {
   ) {
 
     const data = {
-      answer: form.value,
+      answers: form.value,
       score,
       category,
       createdAt: new Date()
@@ -53,7 +53,7 @@ export class WorkbookService {
   ) {
 
     const data = {
-      answer: form.value,
+      answers: form.value,
       score,
       category,
       createdAt: new Date(),
@@ -100,5 +100,8 @@ export class WorkbookService {
       }
     );
   }
+
+
+  
 
 }
