@@ -586,15 +586,27 @@
   </div>
 
 <!-- 📊 SYNTHÈSE DES SCORES POUR LE RÉFÉRENT -->
-<div *ngIf="isReferentView && aggregateState" class="mt-4 p-3 bg-light border rounded">
+<!-- 📊 SYNTHÈSE DES SCORES POUR LE RÉFÉRENT -->
+<div *ngIf="isReferentView && aggregateState" class="mt-4 p-3 bg-light border rounded-0">
   <h5 class="mb-3 text-primary">📊 Synthèse des compétences (Vue Référent)</h5>
   
   <ul class="list-group list-group-flush">
     <li *ngFor="let score of aggregateState | keyvalue" 
         class="list-group-item bg-transparent d-flex justify-content-between align-items-center ps-0">
+      
+      <!-- Nom de la compétence (ex: Production écrite, Se présenter...) -->
       <span>{{ score.key }}</span>
-      <!-- Remplacement de rounded-pill par rounded (petit arrondi d'angle) -->
-      <span class="badge bg-primary rounded fs-6">{{ score.value }} pts</span>
+      
+      <!-- 🟢 CAS 1 : La compétence a un score chiffré classique (ex: 5, 7, 10) -->
+      <span *ngIf="score.value !== null" class="badge bg-primary rounded-0 fs-6">
+        {{ score.value }} pts
+      </span>
+      
+      <!-- ⚪ CAS 2 : La compétence vaut null en base (ex: Production écrite) -->
+      <span *ngIf="score.value === null" class="badge bg-secondary rounded-0 fs-6 text-uppercase fw-normal">
+        Non scoré / À évaluer
+      </span>
+
     </li>
   </ul>
 </div>

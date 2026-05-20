@@ -672,6 +672,51 @@ export class Unit1Component {
 
 
   // EX9
+  // submitEx9() {
+  //   this.alreadySubmitted = true;
+
+  //   const texte = this.formEx9.value.texte;
+  //   const wordCount = this.countWords(texte);
+
+  //   if (wordCount < 30) {
+  //     console.log('Pas assez de mots');
+  //     return;
+  //   }
+
+  //   console.log('Texte saisi:', texte);
+
+  //   const category = this.getCurrentCategory();
+  //   console.log('Category:', category);
+
+  //   this.service.saveUnitFlat(
+  //     this.uid,
+  //     "unit1",
+  //     "ex9",
+  //     this.formEx9,
+  //     null, // ✅ explicite
+  //     category
+  //   );
+
+  //   // ⛔ PAS de next → dernier exercice
+
+  //   // this.service.saveUnitResult(
+  //   //   this.uid,
+  //   //   "unit1",
+  //   //   this.aggregateState
+  //   // );
+
+  //   this.service.saveUnitResult(
+  //     this.uid,
+  //     "unit1",
+  //     this.aggregateState
+  //   ).then(() => {
+
+  //     // ✅ affichage du message UNIQUEMENT après enregistrement OK
+  //     this.showFinalMessage = true;
+
+  //   });
+  // }
+  // EX9
   submitEx9() {
     this.alreadySubmitted = true;
 
@@ -683,10 +728,7 @@ export class Unit1Component {
       return;
     }
 
-    console.log('Texte saisi:', texte);
-
     const category = this.getCurrentCategory();
-    console.log('Category:', category);
 
     this.service.saveUnitFlat(
       this.uid,
@@ -697,23 +739,22 @@ export class Unit1Component {
       category
     );
 
-    // ⛔ PAS de next → dernier exercice
+    // 🧠 AVANT D'ENVOYER LES RÉSULTATS : 
+    // On s'assure que la catégorie de l'EX9 (et des autres si besoin) 
+    // existe dans l'agrégation. Si elle n'a aucun score, on lui attribue explicitement 'null'.
+    if (!this.aggregateState[category]) {
+      this.aggregateState[category] = null as any; // Maintient la clé en base avec une valeur nulle
+    }
 
-    // this.service.saveUnitResult(
-    //   this.uid,
-    //   "unit1",
-    //   this.aggregateState
-    // );
+    // Si tu as d'autres exercices non scorés (comme l'EX7), et que tu veux être sûr 
+    // qu'ils y soient, on peut faire la même vérification pour leur catégorie.
 
     this.service.saveUnitResult(
       this.uid,
       "unit1",
-      this.aggregateState
+      this.aggregateState // 👉 Contient maintenant la catégorie avec sa valeur null
     ).then(() => {
-
-      // ✅ affichage du message UNIQUEMENT après enregistrement OK
       this.showFinalMessage = true;
-
     });
   }
 
@@ -1122,7 +1163,7 @@ export class Unit1Component {
     }
 
     // On récupère ce que le candidat a enregistré en base à la fin de son EX9
-      this.aggregateState = this.unitData['units.unit1.result'] || {};
+    this.aggregateState = this.unitData['units.unit1.result'] || {};
   }
 
 
