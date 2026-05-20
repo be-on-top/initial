@@ -29,7 +29,6 @@ export class Unit1Component {
 
   isReferentView: boolean = false;
 
-
   categories: string[] = ["Se présenter", "Compréhension écrite", "Production écrite", "Structure grammaticale"]
 
   // préconisé si on fait une timeline
@@ -1121,6 +1120,9 @@ export class Unit1Component {
       this.formEx8.disable();
       this.formEx9.disable();
     }
+
+    // On récupère ce que le candidat a enregistré en base à la fin de son EX9
+      this.aggregateState = this.unitData['units.unit1.result'] || {};
   }
 
 

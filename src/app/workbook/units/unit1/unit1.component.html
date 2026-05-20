@@ -585,4 +585,18 @@
     Un conseiller projet va prendre contact avec vous pour en discuter.
   </div>
 
+<!-- 📊 SYNTHÈSE DES SCORES POUR LE RÉFÉRENT -->
+<div *ngIf="isReferentView && aggregateState" class="mt-4 p-3 bg-light border rounded">
+  <h5 class="mb-3 text-primary">📊 Synthèse des compétences (Vue Référent)</h5>
+  
+  <ul class="list-group list-group-flush">
+    <li *ngFor="let score of aggregateState | keyvalue" 
+        class="list-group-item bg-transparent d-flex justify-content-between align-items-center ps-0">
+      <span>{{ score.key }}</span>
+      <!-- Remplacement de rounded-pill par rounded (petit arrondi d'angle) -->
+      <span class="badge bg-primary rounded fs-6">{{ score.value }} pts</span>
+    </li>
+  </ul>
+</div>
+
 </div>
