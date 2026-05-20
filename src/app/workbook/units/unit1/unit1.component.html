@@ -1,731 +1,545 @@
+<!-- Conteneur principal -->
 <div class="container mt-4">
 
-    <div class="alert w-100 p-4 pe-5 bg-dark alert-dismissible text-white mb-4 fade show display-5"
-        *ngIf="isStudent &&  currentStep===0">
-        <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
-            aria-label="Fermer le message be-on-top"></button>
+  <!-- Message de bienvenue pour les étudiants (Étape 0) -->
+  <div class="alert w-100 p-4 pe-5 bg-dark alert-dismissible text-white mb-4 fade show display-5" *ngIf="isStudent && currentStep === 0">
+    <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert" aria-label="Fermer le message"></button>
+    Bienvenue, vous allez commencer vos exercices de Français Langue Étrangère débutant.
+  </div>
 
-        Bienvenue, vous allez commencer vos exercices de Français Langue Etrangère débutant.
-    </div>
+  <!-- Alerte d'authentification requise -->
+  <div class="alert alert-warning instructions" *ngIf="isNotAuthenticated">
+    Authentification requise pour accéder aux exercices. 
+    <a role="link" aria-label="Avertissement : se connecter pour démarrer un questionnaire" [routerLink]="['/login']" class="text-light">Vous identifier</a>
+  </div>
 
-    <div class="alert alert-warning instructions" *ngIf="isNotAuthenticated">
-        Authentification requise pour accéder aux exercices.  <a role="link" aria-label="Avertissement : se connecter pour démarrer un questionnaire"
-                    [routerLink]="['/login']" class="text-light">Vous identifier</a>
-    </div>
+  <!-- Alerte restriction d'accès aux candidats -->
+  <div class="alert alert-danger" *ngIf="!isNotAuthenticated && !isStudent && !isReferentView">
+    Seul un candidat authentifié peut passer une évaluation.
+  </div>
 
-    <div class="alert alert-danger" *ngIf="!isNotAuthenticated && !isStudent && !isReferentView">
-        Seul un candidat authentifié peut passer une évaluation.
-    </div>
+  <div>
+    <!-- ===================== -->
+    <!-- EXERCICE 1            -->
+    <!-- ===================== -->
+    <form *ngIf="isReferentView || currentStep === 0" [formGroup]="formEx1" (ngSubmit)="submitEx1()" aria-labelledby="ex1-title">
 
-    <!-- le mode lecture ou éditeur qui reste à implémenter -->
-    <!-- {{isEditable}} -->
+      <!-- HEADER -->
+      <div id="ex1-title" class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+        <span class="badge text-bg-dark text-white" *ngIf="steps && steps[0]">
+          <i class="bi bi-tag-fill me-2"></i>
+          Catégorie : {{ steps[0].category }}
+        </span>
 
-    <div [ngSwitch]="currentStep">
+        <div class="d-flex gap-2 ms-md-auto">
+          <span class="badge text-bg-warning text-white">
+            Exercice 1
+          </span>
+          <span class="badge text-bg-dark text-white" aria-live="polite">
+            {{ getCurrentScore(0) }} PNTS
+          </span>
+        </div>
+      </div>
 
-        <!-- ===================== -->
-        <!-- EXERCICE 1 -->
-        <!-- ===================== -->
-        <form *ngSwitchCase="0" [formGroup]="formEx1" (ngSubmit)="submitEx1()" aria-labelledby="ex1-title">
+      <!-- ÉNONCÉ -->
+      <div class="alert bg-info instructions" role="region" aria-labelledby="ex1-instructions">
+        <span id="ex1-instructions">
+          <i class="bi bi-info-square-fill me-3"></i>
+          À l'aide de ce formulaire, présentez-vous !
+        </span>
+      </div>
 
-            <!-- HEADER -->
-            <div id="ex1-title"
-                class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+      <!-- CHAMPS -->
+      <div *ngFor="let field of ex1Fields" class="row mb-3">
+        <label [for]="field.name" class="form-label col-md-3">
+          {{ field.label }}
+        </label>
+        <div class="col-md-8">
+          <input *ngIf="field.type !== 'textarea'" [id]="field.name" [type]="field.type" class="form-control" [formControlName]="field.name" [attr.aria-label]="field.label" (keydown.enter)="onEnter($event, field.name)">
+          <textarea *ngIf="field.type === 'textarea'" [id]="field.name" class="form-control" [formControlName]="field.name" (keydown.enter)="onEnter($event, field.name)" [attr.aria-label]="field.label"></textarea>
+        </div>
+      </div>
 
-                <!-- Catégorie -->
-                <span class="badge text-bg-dark text-white">
-                    <i class="bi bi-tag-fill me-2"></i>
-                    Catégorie : {{ getCurrentCategory() }}
-                </span>
+      <!-- Temps estimé -->
+      <div *ngIf="steps && steps[0]?.duration" class="text-muted small mt-4">
+        Temps estimé : {{ steps[0].duration }} secondes
+      </div>
 
-                <!-- Groupe droite -->
-                <div class="d-flex gap-2 ms-md-auto">
-                    <span class="badge text-bg-warning text-white">
-                        Exercice {{ currentStep + 1 }}
-                    </span>
+      <!-- Progress -->
+      <div class="progress mb-4" role="progressbar" aria-label="Progression de l'exercice 1" [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
 
-                    <span class="badge text-bg-dark text-white" aria-live="polite">
-                        {{ getCurrentScore() }} PNTS
-                    </span>
-                </div>
+      <button type="submit" class="btn btn-primary" aria-label="Valider le formulaire et passer à l'exercice suivant" [disabled]="isSubmitted('ex1')">
+        Suivant
+      </button>
 
+      <div *ngIf="isSubmitted('ex1') && isEditable" class="alert alert-warning mt-2">
+        ✔ Exercice déjà validé — vous ne pouvez plus le modifier
+      </div>
+    </form>
+
+    <!-- ===================== -->
+    <!-- EXERCICE 2            -->
+    <!-- ===================== -->
+    <form *ngIf="isReferentView || currentStep === 1" [formGroup]="formEx2" (ngSubmit)="submitEx2()">
+      
+      <!-- HEADER -->
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+        <span class="badge text-bg-dark text-white" *ngIf="steps && steps[1]">
+          <i class="bi bi-tag-fill me-2"></i>
+          Catégorie : {{ steps[1].category }}
+        </span>
+
+        <div class="d-flex gap-2 ms-md-auto">
+          <span class="badge text-bg-warning text-white">
+            Exercice 2
+          </span>
+          <span class="badge text-bg-dark text-white">
+            {{ getCurrentScore(1) }} PNTS
+          </span>
+        </div>
+      </div>
+
+      <!-- Visu -->
+      <div class="alert row">
+        <div class="col-md-4 order-2 order-md-1 mt-1 mt-md-0 p-0 pe-md-2">
+          <img src="assets/img/unit1/bibliotheque.webp" alt="Bibliothèque">
+        </div>
+        <div class="col-md-8 bg-info alert mt-3 mt-md-0 order-1 order-md-2 mb-0">
+          <h5 class="mb-3"><i class="bi bi-calendar3 me-2"></i>Les heures d'ouverture de la Bibliothèque</h5>
+          <div>
+            <strong>lundi, mardi, jeudi, vendredi</strong> : 8h30 - 17h30<br>
+            <strong>mercredi</strong> : 8h30-12h30<br>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert bg-info instructions">
+        Que trouve-t-on dans une bibliothèque ?
+      </div>
+
+      <div class="mb-3">
+        <div *ngFor="let opt of q2Options; let i = index" class="form-check">
+          <input class="form-check-input" type="radio" formControlName="q2" [value]="opt.value" [id]="'q2_' + i" name="q2" />
+          <label class="form-check-label" [for]="'q2_' + i">
+            {{ opt.label }}
+          </label>
+        </div>
+      </div>
+
+      <div *ngIf="steps && steps[1]?.duration" class="text-muted small mt-4">
+        Temps estimé : {{ steps[1].duration }} secondes
+      </div>
+
+      <div *ngIf="steps && steps[1]?.duration" class="progress mb-4" role="progressbar" aria-label="Progression de l'exercice 2" [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Suivant</button>
+    </form>
+
+    <!-- ===================== -->
+    <!-- EXERCICE 3            -->
+    <!-- ===================== -->
+    <form *ngIf="isReferentView || currentStep === 2" [formGroup]="formEx3" (ngSubmit)="submitEx3()">
+
+      <!-- HEADER -->
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+        <span class="badge text-bg-dark text-white" *ngIf="steps && steps[2]">
+          <i class="bi bi-tag-fill me-2"></i>
+          Catégorie : {{ steps[2].category }}
+        </span>
+
+        <div class="d-flex gap-2 ms-md-auto">
+          <span class="badge text-bg-warning text-white">
+            Exercice 3
+          </span>
+          <span class="badge text-bg-dark text-white">
+            {{ getCurrentScore(2) }} PNTS
+          </span>
+        </div>
+      </div>
+
+      <!-- Visu -->
+      <div class="alert row">
+        <div class="col-md-4 order-2 order-md-1 mt-1 mt-md-0 p-0 pe-md-2">
+          <img src="assets/img/unit1/bibliotheque.webp" alt="Bibliothèque">
+        </div>
+        <div class="col-md-8 bg-info alert mt-3 mt-md-0 order-1 order-md-2 mb-0">
+          <h5 class="mb-3"><i class="bi bi-calendar3 me-2"></i>Les heures d'ouverture de la Bibliothèque</h5>
+          <div>
+            <strong>lundi, mardi, jeudi, vendredi</strong> : 8h30 - 17h30<br>
+            <strong>mercredi</strong> : 8h30-12h30<br>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert bg-info instructions">
+        Quels sont les jours où la bibliothèque est ouverte ?
+      </div>
+
+      <div class="row">
+        <div *ngFor="let day of days" class="col-md-3 mb-2">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" [formControlName]="day.key" [id]="day.key">
+            <label class="form-check-label" [for]="day.key">
+              {{ day.label }}
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="steps && steps[2]?.duration" class="text-muted small mt-4">
+        Temps estimé : {{ steps[2].duration }} secondes
+      </div>
+
+      <div *ngIf="steps && steps[2]?.duration" class="progress mb-4" role="progressbar" aria-label="Progression de l'exercice 3" [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
+
+      <button type="submit" class="btn btn-primary mt-3">Suivant</button>
+    </form>
+
+    <!-- ===================== -->
+    <!-- EXERCICE 4            -->
+    <!-- ===================== -->
+    <form *ngIf="isReferentView || currentStep === 3" [formGroup]="formEx4" (ngSubmit)="submitEx4()">
+
+      <!-- HEADER -->
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+        <span class="badge text-bg-dark text-white" *ngIf="steps && steps[3]">
+          <i class="bi bi-tag-fill me-2"></i>
+          Catégorie : {{ steps[3].category }}
+        </span>
+
+        <div class="d-flex gap-2 ms-md-auto">
+          <span class="badge text-bg-warning text-white">
+            Exercice 4
+          </span>
+          <span class="badge text-bg-dark text-white">
+            {{ getCurrentScore(3) }} PNTS
+          </span>
+        </div>
+      </div>
+
+      <!-- Visu -->
+      <div class="alert row">
+        <div class="col-md-4 order-2 order-md-1 mt-1 mt-md-0 p-0 pe-md-2">
+          <img src="assets/img/unit1/bibliotheque.webp" alt="Bibliothèque">
+        </div>
+        <div class="col-md-8 bg-info alert mt-3 mt-md-0 order-1 order-md-2 mb-0">
+          <h5 class="mb-3"><i class="bi bi-calendar3 me-2"></i>Les heures d'ouverture de la Bibliothèque</h5>
+          <div>
+            <strong>lundi, mardi, jeudi, vendredi</strong> : 8h30 - 17h30<br>
+            <strong>mercredi</strong> : 8h30-12h30<br>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert bg-info instructions">
+        Quand Sasha peut-elle aller à la bibliothèque ?
+      </div>
+
+      <div class="mb-3">
+        <div *ngFor="let opt of q4Options" class="form-check">
+          <input class="form-check-input" type="radio" formControlName="q4" [value]="opt.value" [id]="opt.value">
+          <label class="form-check-label" [for]="opt.value">
+            {{ opt.label }}
+          </label>
+        </div>
+      </div>
+
+      <div *ngIf="steps && steps[3]?.duration" class="text-muted small mt-4">
+        Temps estimé : {{ steps[3].duration }} secondes
+      </div>
+
+      <div *ngIf="steps && steps[3]?.duration" class="progress mb-4" role="progressbar" aria-label="Progression de l'exercice 4" [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Suivant</button>
+    </form>
+
+    <!-- ===================== -->
+    <!-- EXERCICE 5            -->
+    <!-- ===================== -->
+    <form *ngIf="isReferentView || currentStep === 4" [formGroup]="formEx5" (ngSubmit)="submitEx5()">
+
+      <!-- HEADER -->
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+        <span class="badge text-bg-dark text-white" *ngIf="steps && steps[4]">
+          <i class="bi bi-tag-fill me-2"></i>
+          Catégorie : {{ steps[4].category }}
+        </span>
+
+        <div class="d-flex gap-2 ms-md-auto">
+          <span class="badge text-bg-warning text-white">
+            Exercice 5
+          </span>
+          <span class="badge text-bg-dark text-white">
+            {{ getCurrentScore(4) }} PNTS
+          </span>
+        </div>
+      </div>
+
+      <!-- Visu -->
+      <div class="alert row">
+        <div class="col-md-4 order-2 order-md-1 mt-1 mt-md-0 p-0 pe-md-2">
+          <img src="assets/img/unit1/bibliotheque.webp" alt="Bibliothèque">
+        </div>
+        <div class="col-md-8 bg-info alert mt-3 mt-md-0 order-1 order-md-2 mb-0">
+          <h5 class="mb-3"><i class="bi bi-calendar3 me-2"></i>Les heures d'ouverture de la Bibliothèque</h5>
+          <div>
+            <strong>lundi, mardi, jeudi, vendredi</strong> : 8h30 - 17h30<br>
+            <strong>mercredi</strong> : 8h30-12h30<br>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert bg-info instructions">
+        Est-ce que la bibliothèque est ouverte le samedi ?
+      </div>
+
+      <div class="mb-3">
+        <div class="form-check">
+          <input class="form-check-input" type="radio" formControlName="q5" value="oui" id="oui">
+          <label class="form-check-label" for="oui">Oui</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" formControlName="q5" value="non" id="non">
+          <label class="form-check-label" for="non">Non</label>
+        </div>
+      </div>
+
+      <div *ngIf="steps && steps[4]?.duration" class="text-muted small mt-4">
+        Temps estimé : {{ steps[4].duration }} secondes
+      </div>
+
+      <div *ngIf="steps && steps[4]?.duration" class="progress mb-4" role="progressbar" aria-label="Progression de l'exercice 5" [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Suivant</button>
+    </form>
+
+    <!-- ===================== -->
+    <!-- EXERCICE 6            -->
+    <!-- ===================== -->
+    <form *ngIf="isReferentView || currentStep === 5" [formGroup]="formEx6" (ngSubmit)="submitEx6()">
+
+      <!-- HEADER -->
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+        <span class="badge text-bg-dark text-white" *ngIf="steps && steps[5]">
+          <i class="bi bi-tag-fill me-2"></i>
+          Catégorie : {{ steps[5].category }}
+        </span>
+
+        <div class="d-flex gap-2 ms-md-auto">
+          <span class="badge text-bg-warning text-white">
+            Exercice 6
+          </span>
+          <span class="badge text-bg-dark text-white">
+            {{ getCurrentScore(5) }} PNTS
+          </span>
+        </div>
+      </div>
+
+      <div class="alert row">
+        <div class="col-md-4 order-2 order-md-1 mt-1 mt-md-0 p-0 pe-md-2">
+          <img src="assets/img/unit1/gymnast.webp" alt="Gymnase">
+        </div>
+        <div class="col-md-8 bg-info alert mt-3 mt-md-0 order-1 order-md-2 mb-0">
+          <h5 class="mb-3"><i class="bi bi-calendar3 me-2"></i>Les jours et les horaires du Gymnase</h5>
+          <div>
+            <strong>Basket</strong>: mardi 18h-20h <br>
+            <strong>Multisports</strong> : vendredi 17h-19h <br>
+            <strong>Danse</strong> : samedi 10h-12h
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-4 bg-info alert instructions">
+        Associer le jour et l'horaire au sport qui convient :
+      </div>
+
+      <!-- GRILLE -->
+      <div *ngFor="let slot of slots" class="mb-3">
+        <div class="row">
+          <div class="fw-bold mb-1 col-md-3">{{ slot.label }}</div>
+          <div class="d-flex gap-3 flex-wrap col-md-9">
+            <div *ngFor="let opt of options" class="form-check">
+              <input type="radio" class="form-check-input" [formControlName]="slot.key" [attr.name]="slot.key" [value]="opt" />
+              <label class="form-check-label">
+                {{ opt }}
+              </label>
             </div>
-            <!-- FIN HEADER -->
-
-
-            <!-- ENONCE -->
-            <div class="alert bg-info instructions" role="region" aria-labelledby="ex1-instructions">
-
-                <span id="ex1-instructions">
-                    <i class="bi bi-info-square-fill me-3"></i>
-                    A l'aide de ce formulaire, présentez-vous !
-                </span>
-            </div>
-
-
-            <!-- CHAMPS -->
-            <div *ngFor="let field of ex1Fields" class="row mb-3">
-
-                <label [for]="field.name" class="form-label col-md-3">
-                    {{ field.label }}
-                </label>
-
-                <div class="col-md-8">
-
-                    <input *ngIf="field.type !== 'textarea'" [id]="field.name" [type]="field.type" class="form-control"
-                        [formControlName]="field.name" [attr.aria-label]="field.label"
-                        (keydown.enter)="onEnter($event, field.name)">
-
-                    <textarea *ngIf="field.type === 'textarea'" [id]="field.name" class="form-control"
-                        [formControlName]="field.name" (keydown.enter)="onEnter($event, field.name)"
-                        [attr.aria-label]="field.label">
-            </textarea>
-
-                </div>
-
-            </div>
-
-            <!-- temps estimé -->
-            <div *ngIf="steps[currentStep].duration" class="text-muted small mt-4">
-                Temps estimé : {{ steps[currentStep].duration }} secondes
-            </div>
-
-            <!-- progress -->
-            <div class="progress mb-4" role="progressbar" aria-label="Progression de l'exercice"
-                [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
-
-                <div class="progress-bar" [style.width.%]="progress"></div>
-            </div>
-
-            <!-- bouton -->
-            <button type="submit" class="btn btn-primary"
-                aria-label="Valider le formulaire et passer à l'exercice suivant" [disabled]="isSubmitted('ex1')">
-                Suivant
-            </button>
-
-            <!-- <button type="submit" class="btn btn-primary" [disabled]="alreadySubmitted">
-                Suivant
-            </button> -->
-
-            <div *ngIf="isSubmitted('ex1') && isEditable" class="alert alert-warning mt-2">
-                ✔ Exercice déjà validé — vous ne pouvez plus le modifier
-            </div>
-
-        </form>
-
-
-        <!-- ===================== -->
-        <!-- EXERCICE 2 -->
-        <!-- ===================== -->
-        <form *ngSwitchCase="1" [formGroup]="formEx2" (ngSubmit)="submitEx2()">
-            <!-- <h2 class="h4 mb-4"><i class="bi bi-tag-fill me-3"></i>Catégorie : <span class="category"> {{ getCurrentCategory()
-          }}</span> <span class="badge text-bg-warning text-white ms-3">Exercice{{currentStep+1}}</span> </h2> -->
-            <!-- HEADER -->
-            <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
-
-                <!-- Catégorie -->
-                <span class="badge text-bg-dark text-white">
-                    <i class="bi bi-tag-fill me-2"></i>
-                    Catégorie : {{ getCurrentCategory() }}
-                </span>
-
-                <!-- Groupe droite -->
-                <div class="d-flex gap-2 ms-md-auto">
-                    <span class="badge text-bg-warning text-white">
-                        Exercice {{ currentStep + 1 }}
-                    </span>
-
-                    <span class="badge text-bg-dark text-white">
-                        {{ getCurrentScore() }} PNTS
-                    </span>
-                </div>
-
-            </div>
-            <!-- FIN HEADER -->
-
-            <!-- visu -->
-            <div class="alert row">
-                <!-- IMAGE -->
-                <div class="col-md-4 order-2 order-md-1 mt-1 mt-md-0 p-0 pe-md-2">
-                    <img src="assets/img/unit1/bibliotheque.webp" alt="">
-                </div>
-
-                <!-- TEXTE -->
-                <div class="col-md-8 bg-info alert mt-3 mt-md-0 order-1 order-md-2 mb-0">
-                    <h5 class="mb-3"><i class="bi bi-calendar3 me-2"></i>Les heures d'ouverture de la Bibliothèque</h5>
-                    <div>
-                        <strong>lundi, mardi, jeudi, vendredi</strong> : 8h30 - 17h30<br>
-                        <strong>mercredi</strong> : 8h30-12h30<br>
-                    </div>
-                </div>
-            </div>
-            <!-- fin -->
-
-            <div class="alert bg-info instructions">
-                <!-- <i class="bi bi-question-square-fill me-2"></i> -->
-                Que trouve-t-on dans une bibliothèque ?
-            </div>
-
-            <div class="mb-3">
-
-                <div *ngFor="let opt of q2Options; let i = index" class="form-check">
-
-                    <input class="form-check-input" type="radio" formControlName="q2" [value]="opt.value"
-                        [id]="'q2_' + i" name="q2" />
-
-                    <label class="form-check-label" [for]="'q2_' + i">
-                        {{ opt.label }}
-                    </label>
-
-                </div>
-
-            </div>
-
-            <!-- temps  estimé -->
-            <div *ngIf="steps[currentStep].duration " class="text-muted small mt-4">
-                Temps estimé : {{ steps[currentStep].duration }} secondes
-            </div>
-            <div *ngIf="steps[this.currentStep].duration" class="progress mb-4" role="progressbar"
-                aria-label="Basic example" [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
-                <div class="progress-bar" [style.width.%]="progress"></div>
-            </div>
-            <button type="submit" class="btn btn-primary">Suivant</button>
-
-        </form>
-
-
-        <!-- ===================== -->
-        <!-- EXERCICE 3 -->
-        <!-- ===================== -->
-
-        <form *ngSwitchCase="2" [formGroup]="formEx3" (ngSubmit)="submitEx3()">
-
-            <!-- HEADER -->
-            <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
-
-                <!-- Catégorie -->
-                <span class="badge text-bg-dark text-white">
-                    <i class="bi bi-tag-fill me-2"></i>
-                    Catégorie : {{ getCurrentCategory() }}
-                </span>
-
-                <!-- Groupe droite -->
-                <div class="d-flex gap-2 ms-md-auto">
-                    <span class="badge text-bg-warning text-white">
-                        Exercice {{ currentStep + 1 }}
-                    </span>
-
-                    <span class="badge text-bg-dark text-white">
-                        {{ getCurrentScore() }} PNTS
-                    </span>
-                </div>
-
-            </div>
-            <!-- FIN HEADER -->
-
-            <!-- <p>{{ getCurrentScore() }}</p> -->
-
-            <!-- visu -->
-            <div class="alert row">
-                <!-- IMAGE -->
-                <div class="col-md-4 order-2 order-md- mt-1 mt-md-0 p-0 pe-md-2">
-                    <img src="assets/img/unit1/bibliotheque.webp" alt="">
-                </div>
-
-                <!-- TEXTE -->
-                <div class="col-md-8 bg-info alert mt-3 mt-md-0 order-1 order-md-2 mb-0">
-                    <h5 class="mb-3"><i class="bi bi-calendar3 me-2"></i>Les heures d'ouverture de la Bibliothèque</h5>
-                    <div>
-                        <strong>lundi, mardi, jeudi, vendredi</strong> : 8h30 - 17h30<br>
-                        <strong>mercredi</strong> : 8h30-12h30<br>
-                    </div>
-                </div>
-            </div>
-            <!-- fin -->
-
-            <div class="alert bg-info instructions">
-                <!-- <i class="bi bi-question-square-fill me-2"></i> -->
-                Quels sont les jours où la bibliothèque est ouverte ?
-            </div>
-
-            <div class="row">
-                <div *ngFor="let day of days" class="col-md-3 mb-2">
-
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" [formControlName]="day.key" [id]="day.key">
-
-                        <label class="form-check-label" [for]="day.key">
-                            {{ day.label }}
-                        </label>
-                    </div>
-
-                </div>
-            </div>
-
-
-            <!-- temps  estimé -->
-            <div *ngIf="steps[currentStep].duration " class="text-muted small mt-4">
-                Temps estimé : {{ steps[currentStep].duration }} secondes
-            </div>
-            <div *ngIf="steps[this.currentStep].duration" class="progress mb-4" role="progressbar"
-                aria-label="Basic example" [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
-                <div class="progress-bar" [style.width.%]="progress"></div>
-            </div>
-            <button type="submit" class="btn btn-primary mt-3">Suivant</button>
-
-        </form>
-
-
-        <!-- ===================== -->
-        <!-- EXERCICE 4 -->
-        <!-- ===================== -->
-        <form *ngSwitchCase="3" [formGroup]="formEx4" (ngSubmit)="submitEx4()">
-
-            <!-- HEADER -->
-            <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
-
-                <!-- Catégorie -->
-                <span class="badge text-bg-dark text-white">
-                    <i class="bi bi-tag-fill me-2"></i>
-                    Catégorie : {{ getCurrentCategory() }}
-                </span>
-
-                <!-- Groupe droite -->
-                <div class="d-flex gap-2 ms-md-auto">
-                    <span class="badge text-bg-warning text-white">
-                        Exercice {{ currentStep + 1 }}
-                    </span>
-
-                    <span class="badge text-bg-dark text-white">
-                        {{ getCurrentScore() }} PNTS
-                    </span>
-                </div>
-
-            </div>
-            <!-- FIN HEADER -->
-
-            <!-- visu -->
-            <div class="alert row">
-                <!-- IMAGE -->
-                <div class="col-md-4 order-2 order-md-1 mt-1 mt-md-0 p-0 pe-md-2">
-                    <img src="assets/img/unit1/bibliotheque.webp" alt="">
-                </div>
-
-                <!-- TEXTE -->
-                <div class="col-md-8 bg-info alert mt-3 mt-md-0 order-1 order-md-2 mb-0">
-                    <h5 class="mb-3"><i class="bi bi-calendar3 me-2"></i>Les heures d'ouverture de la Bibliothèque</h5>
-                    <div>
-                        <strong>lundi, mardi, jeudi, vendredi</strong> : 8h30 - 17h30<br>
-                        <strong>mercredi</strong> : 8h30-12h30<br>
-                    </div>
-                </div>
-            </div>
-            <!-- fin -->
-
-            <div class="alert bg-info instructions">
-                <!-- <i class="bi bi-question-square-fill me-2"></i> -->
-                Quand Sasha peut-elle aller à la bibliothèque ?
-            </div>
-
-            <div class="mb-3">
-
-                <div *ngFor="let opt of q4Options" class="form-check">
-                    <input class="form-check-input" type="radio" formControlName="q4" [value]="opt.value"
-                        [id]="opt.value">
-                    <label class="form-check-label" [for]="opt.value">
-                        {{ opt.label }}
-                    </label>
-                </div>
-
-            </div>
-
-
-            <!-- temps  estimé -->
-            <div *ngIf="steps[currentStep].duration " class="text-muted small mt-4">
-                Temps estimé : {{ steps[currentStep].duration }} secondes
-            </div>
-            <div *ngIf="steps[this.currentStep].duration" class="progress mb-4" role="progressbar"
-                aria-label="Basic example" [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
-                <div class="progress-bar" [style.width.%]="progress"></div>
-            </div>
-            <button type="submit" class="btn btn-primary">Suivant</button>
-
-        </form>
-
-
-        <!-- ===================== -->
-        <!-- EXERCICE 5 -->
-        <!-- ===================== -->
-
-        <form *ngSwitchCase="4" [formGroup]="formEx5" (ngSubmit)="submitEx5()">
-
-            <!-- HEADER -->
-            <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
-
-                <!-- Catégorie -->
-                <span class="badge text-bg-dark text-white">
-                    <i class="bi bi-tag-fill me-2"></i>
-                    Catégorie : {{ getCurrentCategory() }}
-                </span>
-
-                <!-- Groupe droite -->
-                <div class="d-flex gap-2 ms-md-auto">
-                    <span class="badge text-bg-warning text-white">
-                        Exercice {{ currentStep + 1 }}
-                    </span>
-
-                    <span class="badge text-bg-dark text-white">
-                        {{ getCurrentScore() }} PNTS
-                    </span>
-                </div>
-
-            </div>
-            <!-- FIN HEADER -->
-
-            <!-- visu -->
-            <div class="alert row">
-                <!-- IMAGE -->
-                <div class="col-md-4 order-2 order-md-1 mt-1 mt-md-0 p-0 pe-md-2">
-                    <img src="assets/img/unit1/bibliotheque.webp" alt="">
-                </div>
-
-                <!-- TEXTE -->
-                <div class="col-md-8 bg-info alert mt-3 mt-md-0 order-1 order-md-2 mb-0">
-                    <h5 class="mb-3"><i class="bi bi-calendar3 me-2"></i>Les heures d'ouverture de la Bibliothèque</h5>
-                    <div>
-                        <strong>lundi, mardi, jeudi, vendredi</strong> : 8h30 - 17h30<br>
-                        <strong>mercredi</strong> : 8h30-12h30<br>
-                    </div>
-                </div>
-            </div>
-            <!-- fin -->
-
-            <div class="alert bg-info instructions">
-                <!-- <i class="bi bi-question-square-fill me-2"></i> -->
-                Est-ce que la bibliothèque est ouverte le samedi ?
-            </div>
-
-            <div class="mb-3">
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" formControlName="q5" value="oui" id="oui">
-                    <label class="form-check-label" for="oui">Oui</label>
-                </div>
-
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" formControlName="q5" value="non" id="non">
-                    <label class="form-check-label" for="non">Non</label>
-                </div>
-            </div>
-
-            <!-- temps  estimé -->
-            <div *ngIf="steps[currentStep].duration " class="text-muted small mt-4">
-                Temps estimé : {{ steps[currentStep].duration }} secondes
-            </div>
-            <div *ngIf="steps[this.currentStep].duration" class="progress mb-4" role="progressbar"
-                aria-label="Basic example" [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
-                <div class="progress-bar" [style.width.%]="progress"></div>
-            </div>
-            <button type="submit" class="btn btn-primary">Suivant</button>
-
-        </form>
-
-        <!-- ===================== -->
-        <!-- EXERCICE 6 -->
-        <!-- ===================== -->
-        <form *ngSwitchCase="5" [formGroup]="formEx6" (ngSubmit)="submitEx6()">
-
-            <!-- HEADER -->
-            <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
-
-                <!-- Catégorie -->
-                <span class="badge text-bg-dark text-white">
-                    <i class="bi bi-tag-fill me-2"></i>
-                    Catégorie : {{ getCurrentCategory() }}
-                </span>
-
-                <!-- Groupe droite -->
-                <div class="d-flex gap-2 ms-md-auto">
-                    <span class="badge text-bg-warning text-white">
-                        Exercice {{ currentStep + 1 }}
-                    </span>
-
-                    <span class="badge text-bg-dark text-white">
-                        {{ getCurrentScore() }} PNTS
-                    </span>
-                </div>
-
-            </div>
-            <!-- FIN HEADER -->
-
-
-            <div class="alert row">
-                <!-- IMAGE -->
-                <div class="col-md-4 order-2 order-md-1 mt-1 mt-md-0 p-0 pe-md-2">
-                    <img src="assets/img/unit1/gymnast.webp" alt="">
-                </div>
-
-                <!-- TEXTE -->
-                <div class="col-md-8 bg-info alert mt-3 mt-md-0 order-1 order-md-2 mb-0">
-                    <h5 class="mb-3"><i class="bi bi-calendar3 me-2"></i>Les jours et les horaires du Gymnase</h5>
-                    <div>
-                        <strong>Basket</strong>: mardi 18h-20h <br>
-                        <strong>Multisports</strong> : vendredi 17h-19h <br>
-                        <strong>Danse</strong> : samedi 10h-12h
-                    </div>
-                </div>
-            </div>
-
-            <!-- ENONCE -->
-            <div class="mb-4 bg-info alert instructions">
-                <!-- <i class="bi bi-question-square-fill me-2"></i> -->
-                Associer le jour et l'horaire au sport qui convient :
-            </div>
-
-            <!-- GRILLE -->
-            <div *ngFor="let slot of slots" class="mb-3">
-
-                <!-- LIGNE -->
-                <div class="row">
-
-                    <div class="fw-bold mb-1 col-md-3">{{ slot.label }}</div>
-
-                    <div class="d-flex gap-3 flex-wrap col-md-9">
-                        <div *ngFor="let opt of options" class="form-check">
-                            <input type="radio" class="form-check-input" [formControlName]="slot.key"
-                                [attr.name]="slot.key" [value]="opt" />
-
-                            <label class="form-check-label">
-                                {{ opt }}
-                            </label>
-                        </div>
-                    </div>
-
-                </div>
-                <!-- FIN LIGNE -->
-
-            </div>
-
-
-            <!-- temps  estimé -->
-            <div *ngIf="steps[currentStep].duration " class="text-muted small mt-4">
-                Temps estimé : {{ steps[currentStep].duration }} secondes
-            </div>
-            <div *ngIf="steps[this.currentStep].duration" class="progress mb-4" role="progressbar"
-                aria-label="Basic example" [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
-                <div class="progress-bar" [style.width.%]="progress"></div>
-            </div>
-
-            <button class="btn btn-primary mt-3" type="submit">
-                Suivant
-            </button>
-
-        </form>
-
-
-        <!-- ===================== -->
-        <!-- EXERCICE 7 -->
-        <!-- ===================== -->
-        <form *ngSwitchCase="6" [formGroup]="formEx7" (ngSubmit)="submitEx7()">
-
-
-            <!-- HEADER -->
-            <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
-
-                <!-- Catégorie -->
-                <span class="badge text-bg-dark text-white">
-                    <i class="bi bi-tag-fill me-2"></i>
-                    Catégorie : {{ getCurrentCategory() }}
-                </span>
-
-                <!-- Groupe droite -->
-                <div class="d-flex gap-2 ms-md-auto">
-                    <span class="badge text-bg-warning text-white">
-                        Exercice {{ currentStep + 1 }}
-                    </span>
-
-                    <span class="badge text-bg-dark text-white">
-                        {{ getCurrentScore() }} PNTS
-                    </span>
-                </div>
-
-            </div>
-            <!-- FIN HEADER -->
-
-            <!-- ENONCE -->
-            <div class="alert bg-info instructions"><i class="bi bi-info-square-fill me-3"></i>Vous avez reçu le message
-                ci-contre.
-                Lisez-le et répondez à ce message</div>
-            <div class="alert mb-4 bg-dark text-white">
-                <p>Bonjour, <br>
-                    C'est M. Cado, le chef de chantier. <br>
-                    Je vous confirme que vous commencez lundi 28' mai. Rendez-vous à 7h30 sur le chantier. Vous entrerez
-                    par la
-                    rue Louis Montesquieu, à Rezé. Pouvez-vous me confirmer que vous avez un casque et des chaussures de
-                    sécurité
-                    ? Nous vous fournirons des outils là-bas.
-                    <br>N'hésitez pas à me contacter si besoin. <br>À lundi. <br>
-                    Roger Cado
-                </p>
-                <p><span class="fw-bold"> Répondez à ce message.</span></p>
-            </div>
-
-            <!-- temps  estimé -->
-            <div *ngIf="steps[currentStep].duration " class="text-muted small mt-4">
-                Temps estimé : {{ steps[currentStep].duration }} secondes
-            </div>
-            <div *ngIf="steps[this.currentStep].duration" class="progress mb-4" role="progressbar"
-                aria-label="Basic example" [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
-                <div class="progress-bar" [style.width.%]="progress"></div>
-            </div>
-
-            <!-- TEXTAREA -->
-            <div class="mb-3">
-                <textarea class="form-control" formControlName="texte" rows="6" placeholder="Votre réponse ici...">
-        </textarea>
-            </div>
-
-            <button class="btn btn-success" type="submit">
-                Suivant
-            </button>
-
-        </form>
-
-        <!-- ===================== -->
-        <!-- EXERCICE 8 -->
-        <!-- ===================== -->
-        <form *ngSwitchCase="7" [formGroup]="formEx8" (ngSubmit)="submitEx8()">
-
-            <!-- HEADER -->
-            <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
-
-                <!-- Catégorie -->
-                <span class="badge text-bg-dark text-white">
-                    <i class="bi bi-tag-fill me-2"></i>
-                    Catégorie : {{ getCurrentCategory() }}
-                </span>
-
-                <!-- Groupe droite -->
-                <div class="d-flex gap-2 ms-md-auto">
-                    <span class="badge text-bg-warning text-white">
-                        Exercice {{ currentStep + 1 }}
-                    </span>
-
-                    <span class="badge text-bg-dark text-white">
-                        {{ getCurrentScore() }} PNTS
-                    </span>
-                </div>
-
-            </div>
-            <!-- FIN HEADER -->
-
-            <!-- ENONCE -->
-            <div class="alert bg-info instructions"><i class="bi bi-info-square-fill me-3"></i>Trouver le verbe qui
-                correspond à l'image</div>
-
-
-            <!-- ROW -->
-            <div class="row">
-                <!-- COL -->
-                <!-- <div *ngFor="let item of ex3Items" class="mb-4 col-sm-6 col-md-4 col-lg-3"> -->
-                <div *ngFor="let item of ex3Items" class="mb-4 col-sm-6 col-md-4 col-lg-2">
-                    <img [src]="item.image" class="img-fluid mb-3 ms-md-auto" alt="Illustration" />
-
-                    <label [for]="item.id" class="visually-hidden">
-                        Choisir le verbe
-                    </label>
-
-                    <select class="form-select" [formControlName]="item.id" [id]="item.id">
-
-                        <option value="">-- Choisir --</option>
-
-                        <option *ngFor="let v of verbs" [value]="v">
-                            {{ v }}
-                        </option>
-
-                    </select>
-
-                </div>
-            </div>
-
-            <!-- temps  estimé -->
-            <div *ngIf="steps[currentStep].duration " class="text-muted small mt-4">
-                Temps estimé : {{ steps[currentStep].duration }} secondes
-            </div>
-            <div class="progress mb-4" role="progressbar" aria-label="Basic example" [attr.aria-valuenow]="progress"
-                aria-valuemin="0" aria-valuemax="100">
-                <div class="progress-bar" [style.width.%]="progress"></div>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Suivant</button>
-
-        </form>
-
-        <!-- ===================== -->
-        <!-- EXERCICE 9 -->
-        <!-- ===================== -->
-        <form *ngSwitchCase="8" [formGroup]="formEx9" (ngSubmit)="submitEx9()">
-            <!-- HEADER -->
-            <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
-
-                <!-- Catégorie -->
-                <span class="badge text-bg-dark text-white">
-                    <i class="bi bi-tag-fill me-2"></i>
-                    Catégorie : {{ getCurrentCategory() }}
-                </span>
-
-                <!-- Groupe droite -->
-                <div class="d-flex gap-2 ms-md-auto">
-                    <span class="badge text-bg-warning text-white">
-                        Exercice {{ currentStep + 1 }}
-                    </span>
-
-                    <span class="badge text-bg-dark text-white">
-                        {{ getCurrentScore() }} PNTS
-                    </span>
-                </div>
-
-            </div>
-            <!-- FIN HEADER -->
-
-            <!-- ENONCE -->
-            <div class="alert bg-info instructions"><i class="bi bi-info-square-fill me-3"></i>Vous écrivez une lettre à
-                un(e) ami(e) et
-                lui racontez ce que vous faites pendant la journée (travail, sport, amis, famille, ...)</div>
-            <div class="mb-4">
-                <p>Merci d'utiliser un minimum de 30 mots</p>
-            </div>
-
-
-            <!-- TEXTAREA -->
-            <div class="mb-3">
-                <textarea class="form-control" formControlName="texte" rows="7" placeholder="Votre réponse ici...">
-        </textarea>
-            </div>
-
-            <!-- décompte des mots visible -->
-            <div class="text-muted mt-2">
-                {{ countWords(formEx9.value.texte) }} / 30 mots
-            </div>
-
-            <div *ngIf="countWords(formEx9.value.texte) < 30 && alreadySubmitted" class="text-danger">
-                Minimum 30 mots requis
-            </div>
-
-
-            <button class="btn btn-success mt-5" type="submit" [disabled]="countWords(formEx9.value.texte) < 30"
-                [class.disabled]="countWords(formEx9.value.texte) < 30">
-                Valider et terminer
-            </button>
-        </form>
-    </div>
-
-    <!-- {{unitData | async}} -->
-
-    
-    <div *ngIf="showFinalMessage" class="alert alert-success mt-3">
-        ✅ Bravo et merci d'avoir répondu aux questions.<br>
-        Vos résultats ont été enregistrés.<br>
-        Un conseiller projet va prendre contact avec vous pour en discuter.
-    </div>
-    
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="steps && steps[5]?.duration" class="text-muted small mt-4">
+        Temps estimé : {{ steps[5].duration }} secondes
+      </div>
+
+      <div *ngIf="steps && steps[5]?.duration" class="progress mb-4" role="progressbar" aria-label="Progression de l'exercice 6" [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
+
+      <button class="btn btn-primary mt-3" type="submit">Suivant</button>
+    </form>
+
+    <!-- ===================== -->
+    <!-- EXERCICE 7            -->
+    <!-- ===================== -->
+    <form *ngIf="isReferentView || currentStep === 6" [formGroup]="formEx7" (ngSubmit)="submitEx7()">
+
+      <!-- HEADER -->
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+        <span class="badge text-bg-dark text-white" *ngIf="steps && steps[6]">
+          <i class="bi bi-tag-fill me-2"></i>
+          Catégorie : {{ steps[6].category }}
+        </span>
+
+        <div class="d-flex gap-2 ms-md-auto">
+          <span class="badge text-bg-warning text-white">
+            Exercice 7
+          </span>
+          <span class="badge text-bg-dark text-white">
+            {{ getCurrentScore(6) }} PNTS
+          </span>
+        </div>
+      </div>
+
+      <div class="alert bg-info instructions">
+        <i class="bi bi-info-square-fill me-3"></i>Vous avez reçu le message ci-contre. Lisez-le et répondez à ce message
+      </div>
+      
+      <div class="alert mb-4 bg-dark text-white">
+        <p>Bonjour, <br>
+          C'est M. Cado, le chef de chantier. <br>
+          Je vous confirme que vous commencez lundi 28 mai. Rendez-vous à 7h30 sur le chantier. Vous entrerez par la rue Louis Montesquieu, à Rezé. Pouvez-vous me confirmer que vous avez un casque et des chaussures de sécurité ? Nous vous fournirons des outils là-bas.
+          <br>N'hésitez pas à me contacter si besoin. <br>À lundi. <br>
+          Roger Cado
+        </p>
+        <p><span class="fw-bold"> Répondez à ce message.</span></p>
+      </div>
+
+      <div *ngIf="steps && steps[6]?.duration" class="text-muted small mt-4">
+        Temps estimé : {{ steps[6].duration }} secondes
+      </div>
+
+      <div *ngIf="steps && steps[6]?.duration" class="progress mb-4" role="progressbar" aria-label="Progression de l'exercice 7" [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
+
+      <div class="mb-3">
+        <textarea class="form-control" formControlName="texte" rows="6" placeholder="Votre réponse ici..."></textarea>
+      </div>
+
+      <button class="btn btn-success" type="submit">Suivant</button>
+    </form>
+
+    <!-- ===================== -->
+    <!-- EXERCICE 8            -->
+    <!-- ===================== -->
+    <form *ngIf="isReferentView || currentStep === 7" [formGroup]="formEx8" (ngSubmit)="submitEx8()">
+
+      <!-- HEADER -->
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+        <span class="badge text-bg-dark text-white" *ngIf="steps && steps[7]">
+          <i class="bi bi-tag-fill me-2"></i>
+          Catégorie : {{ steps[7].category }}
+        </span>
+
+        <div class="d-flex gap-2 ms-md-auto">
+          <span class="badge text-bg-warning text-white">
+            Exercice 8
+          </span>
+          <span class="badge text-bg-dark text-white">
+            {{ getCurrentScore(7) }} PNTS
+          </span>
+        </div>
+      </div>
+
+      <div class="alert bg-info instructions">
+        <i class="bi bi-info-square-fill me-3"></i>Trouver le verbe qui correspond à l'image
+      </div>
+
+      <div class="row">
+        <div *ngFor="let item of ex3Items" class="mb-4 col-sm-6 col-md-4 col-lg-2">
+          <img [src]="item.image" class="img-fluid mb-3 ms-md-auto" alt="Illustration" />
+          <label [for]="item.id" class="visually-hidden">Choisir le verbe</label>
+          <select class="form-select" [formControlName]="item.id" [id]="item.id">
+            <option value="">-- Choisir --</option>
+            <option *ngFor="let v of verbs" [value]="v">{{ v }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div *ngIf="steps && steps[7]?.duration" class="text-muted small mt-4">
+        Temps estimé : {{ steps[7].duration }} secondes
+      </div>
+
+      <div *ngIf="steps && steps[7]?.duration" class="progress mb-4" role="progressbar" aria-label="Progression de l'exercice 8" [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Suivant</button>
+    </form>
+
+    <!-- ===================== -->
+    <!-- EXERCICE 9            -->
+    <!-- ===================== -->
+    <form *ngIf="isReferentView || currentStep === 8" [formGroup]="formEx9" (ngSubmit)="submitEx9()">
+      
+      <!-- HEADER -->
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+        <span class="badge text-bg-dark text-white" *ngIf="steps && steps[8]">
+          <i class="bi bi-tag-fill me-2"></i>
+          Catégorie : {{ steps[8].category }}
+        </span>
+
+        <div class="d-flex gap-2 ms-md-auto">
+          <span class="badge text-bg-warning text-white">
+            Exercice 9
+          </span>
+          <span class="badge text-bg-dark text-white">
+            {{ getCurrentScore(8) }} PNTS
+          </span>
+        </div>
+      </div>
+
+      <div class="alert bg-info instructions">
+        <i class="bi bi-info-square-fill me-3"></i>Vous écrivez une lettre à un(e) ami(e) et lui racontez ce que vous faites pendant la journée (travail, sport, amis, famille, ...)
+      </div>
+      <div class="mb-4">
+        <p>Merci d'utiliser un minimum de 30 mots</p>
+      </div>
+
+      <div class="mb-3">
+        <textarea class="form-control" formControlName="texte" rows="7" placeholder="Votre réponse ici..."></textarea>
+      </div>
+
+      <div class="text-muted mt-2">
+        {{ countWords(formEx9.value.texte) }} / 30 mots
+      </div>
+
+      <div *ngIf="countWords(formEx9.value.texte) < 30 && alreadySubmitted" class="text-danger">
+        Minimum 30 mots requis
+      </div>
+
+      <button class="btn btn-success mt-5" type="submit" [disabled]="countWords(formEx9.value.texte) < 30" [class.disabled]="countWords(formEx9.value.texte) < 30">
+        Valider et terminer
+      </button>
+    </form>
+  </div>
+
+  <!-- Message de succès final -->
+  <div *ngIf="showFinalMessage" class="alert alert-success mt-3">
+    ✅ Bravo et merci d'avoir répondu aux questions.<br>
+    Vos résultats ont été enregistrés.<br>
+    Un conseiller projet va prendre contact avec vous pour en discuter.
+  </div>
 
 </div>

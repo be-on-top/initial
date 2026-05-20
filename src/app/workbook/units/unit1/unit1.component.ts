@@ -190,7 +190,7 @@ export class Unit1Component {
       this.uid = routeUid;
       // 👉 MODE REFERENT
       this.loadData()
-      this.isReferentView=true
+      this.isReferentView = true
       return; // ⛔ on ne passe PAS par auth
     }
 
@@ -725,9 +725,20 @@ export class Unit1Component {
   }
 
 
+  // getCurrentCategory(): string {
+  //   return this.steps[this.currentStep]?.category;
+  // }
+
+
+  // getCurrentCategory(stepIndex: number): string {
+  //   return this.steps[stepIndex]?.category;
+  // }
+
   getCurrentCategory(): string {
-    return this.steps[this.currentStep]?.category;
+    // Elle utilise l'index actuel de l'exercice en cours, tout simplement !
+    return this.steps[this.currentStep]?.category || '';
   }
+
 
   aggregate(category: string, score: number) {
     // 1️⃣ Si la catégorie n'existe pas encore dans l'état local
@@ -750,8 +761,23 @@ export class Unit1Component {
     console.log('AGGREGATE =>', this.aggregateState);
   }
 
-  getCurrentScore(): number {
+  // getCurrentScore(stepIndex: number): number {
+  //   const category = this.getCurrentCategory(stepIndex);
+  //   return this.aggregateState[category] || 0;
+  // }
+  getCurrentScore(stepIndex: number): number {
+
+    // MODE REFERENT
+    if (this.isReferentView) {
+
+      const exId = this.steps[stepIndex].id;
+
+      return this.unitData?.[`units.unit1.${exId}`]?.score || 0;
+    }
+
+    // MODE STUDENT
     const category = this.getCurrentCategory();
+
     return this.aggregateState[category] || 0;
   }
 
@@ -898,30 +924,30 @@ export class Unit1Component {
   //   });
   // }
 
-loadData() {
+  loadData() {
 
-  // Appel au service Firestore pour récupérer le document du candidat via son UID
-  this.service.getUnit(this.uid).subscribe(data => {
+    // Appel au service Firestore pour récupérer le document du candidat via son UID
+    this.service.getUnit(this.uid).subscribe(data => {
 
-    // Debug : structure brute telle que renvoyée par Firestore
-    // ⚠️ Ici les clés sont FLAT (ex: 'units.unit1.ex1')
-    console.log("RAW DATA:", data);
+      // Debug : structure brute telle que renvoyée par Firestore
+      // ⚠️ Ici les clés sont FLAT (ex: 'units.unit1.ex1')
+      console.log("RAW DATA:", data);
 
-    // On sécurise : si null/undefined → objet vide
-    this.unitData = data ?? {};
+      // On sécurise : si null/undefined → objet vide
+      this.unitData = data ?? {};
 
-    // Debug : vérification après assignation
-    console.log("UNIT DATA:", this.unitData);
+      // Debug : vérification après assignation
+      console.log("UNIT DATA:", this.unitData);
 
-    // ⚠️ volontairement commenté :
-    // car avec le modèle FLAT, ces accès n'existent PAS
-    // console.log("UNITS:", this.unitData?.units);
-    // console.log("UNIT1:", this.unitData?.units?.unit1);
+      // ⚠️ volontairement commenté :
+      // car avec le modèle FLAT, ces accès n'existent PAS
+      // console.log("UNITS:", this.unitData?.units);
+      // console.log("UNIT1:", this.unitData?.units?.unit1);
 
-    // Injection des données dans les formulaires Angular
-    this.patchForms();
-  });
-}
+      // Injection des données dans les formulaires Angular
+      this.patchForms();
+    });
+  }
 
   // patchForms() {
 
@@ -968,63 +994,64 @@ loadData() {
   //   }
   // }
 
-patchForms() {
+  patchForms() {
 
-  // Raccourci local pour lisibilité
-  const data = this.unitData;
+    // Raccourci local pour lisibilité
+    const data = this.unitData;
 
-  // Sécurité : si aucune donnée → on sort
-  if (!data) return;
+    // Sécurité : si aucune donnée → on sort
+    if (!data) return;
 
-  // ⚠️ IMPORTANT :
-  // On accède aux données via des clés "flat"
-  // ex: 'units.unit1.ex1' → objet contenant { answers, score, ... }
+    // ⚠️ IMPORTANT :
+    // On accède aux données via des clés "flat"
+    // ex: 'units.unit1.ex1' → objet contenant { answers, score, ... }
 
-  // EXERCICE 1
-  if (data['units.unit1.ex1']?.answers) {
-    this.formEx1.patchValue(data['units.unit1.ex1'].answers);
+    // EXERCICE 1
+    if (data['units.unit1.ex1']?.answers) {
+      this.formEx1.patchValue(data['units.unit1.ex1'].answers);
+    }
+
+    // EXERCICE 2
+    if (data['units.unit1.ex2']?.answers) {
+      this.formEx2.patchValue(data['units.unit1.ex2'].answers);
+    }
+
+    // EXERCICE 3
+    if (data['units.unit1.ex3']?.answers) {
+      this.formEx3.patchValue(data['units.unit1.ex3'].answers);
+    }
+
+    // EXERCICE 4
+    if (data['units.unit1.ex4']?.answers) {
+      this.formEx4.patchValue(data['units.unit1.ex4'].answers);
+    }
+
+    // EXERCICE 5
+    if (data['units.unit1.ex5']?.answers) {
+      this.formEx5.patchValue(data['units.unit1.ex5'].answers);
+    }
+
+    // EXERCICE 6
+    if (data['units.unit1.ex6']?.answers) {
+      this.formEx6.patchValue(data['units.unit1.ex6'].answers);
+    }
+
+    // EXERCICE 7
+    if (data['units.unit1.ex7']?.answers) {
+      this.formEx7.patchValue(data['units.unit1.ex7'].answers);
+    }
+
+    // EXERCICE 8
+    if (data['units.unit1.ex8']?.answers) {
+      this.formEx8.patchValue(data['units.unit1.ex8'].answers);
+    }
+
+    // EXERCICE 9
+    if (data['units.unit1.ex9']?.answers) {
+      this.formEx9.patchValue(data['units.unit1.ex9'].answers);
+    }
   }
 
-  // EXERCICE 2
-  if (data['units.unit1.ex2']?.answers) {
-    this.formEx2.patchValue(data['units.unit1.ex2'].answers);
-  }
-
-  // EXERCICE 3
-  if (data['units.unit1.ex3']?.answers) {
-    this.formEx3.patchValue(data['units.unit1.ex3'].answers);
-  }
-
-  // EXERCICE 4
-  if (data['units.unit1.ex4']?.answers) {
-    this.formEx4.patchValue(data['units.unit1.ex4'].answers);
-  }
-
-  // EXERCICE 5
-  if (data['units.unit1.ex5']?.answers) {
-    this.formEx5.patchValue(data['units.unit1.ex5'].answers);
-  }
-
-  // EXERCICE 6
-  if (data['units.unit1.ex6']?.answers) {
-    this.formEx6.patchValue(data['units.unit1.ex6'].answers);
-  }
-
-  // EXERCICE 7
-  if (data['units.unit1.ex7']?.answers) {
-    this.formEx7.patchValue(data['units.unit1.ex7'].answers);
-  }
-
-  // EXERCICE 8
-  if (data['units.unit1.ex8']?.answers) {
-    this.formEx8.patchValue(data['units.unit1.ex8'].answers);
-  }
-
-  // EXERCICE 9
-  if (data['units.unit1.ex9']?.answers) {
-    this.formEx9.patchValue(data['units.unit1.ex9'].answers);
-  }
-}
 
 
 
