@@ -994,6 +994,64 @@ export class Unit1Component {
   //   }
   // }
 
+  // patchForms() {
+
+  //   // Raccourci local pour lisibilité
+  //   const data = this.unitData;
+
+  //   // Sécurité : si aucune donnée → on sort
+  //   if (!data) return;
+
+  //   // ⚠️ IMPORTANT :
+  //   // On accède aux données via des clés "flat"
+  //   // ex: 'units.unit1.ex1' → objet contenant { answers, score, ... }
+
+  //   // EXERCICE 1
+  //   if (data['units.unit1.ex1']?.answers) {
+  //     this.formEx1.patchValue(data['units.unit1.ex1'].answers);
+  //   }
+
+  //   // EXERCICE 2
+  //   if (data['units.unit1.ex2']?.answers) {
+  //     this.formEx2.patchValue(data['units.unit1.ex2'].answers);
+  //   }
+
+  //   // EXERCICE 3
+  //   if (data['units.unit1.ex3']?.answers) {
+  //     this.formEx3.patchValue(data['units.unit1.ex3'].answers);
+  //   }
+
+  //   // EXERCICE 4
+  //   if (data['units.unit1.ex4']?.answers) {
+  //     this.formEx4.patchValue(data['units.unit1.ex4'].answers);
+  //   }
+
+  //   // EXERCICE 5
+  //   if (data['units.unit1.ex5']?.answers) {
+  //     this.formEx5.patchValue(data['units.unit1.ex5'].answers);
+  //   }
+
+  //   // EXERCICE 6
+  //   if (data['units.unit1.ex6']?.answers) {
+  //     this.formEx6.patchValue(data['units.unit1.ex6'].answers);
+  //   }
+
+  //   // EXERCICE 7
+  //   if (data['units.unit1.ex7']?.answers) {
+  //     this.formEx7.patchValue(data['units.unit1.ex7'].answers);
+  //   }
+
+  //   // EXERCICE 8
+  //   if (data['units.unit1.ex8']?.answers) {
+  //     this.formEx8.patchValue(data['units.unit1.ex8'].answers);
+  //   }
+
+  //   // EXERCICE 9
+  //   if (data['units.unit1.ex9']?.answers) {
+  //     this.formEx9.patchValue(data['units.unit1.ex9'].answers);
+  //   }
+  // }
+
   patchForms() {
 
     // Raccourci local pour lisibilité
@@ -1049,6 +1107,19 @@ export class Unit1Component {
     // EXERCICE 9
     if (data['units.unit1.ex9']?.answers) {
       this.formEx9.patchValue(data['units.unit1.ex9'].answers);
+    }
+
+    // 👇 ON COUPE LES ACCÈS ICI SI C'EST UN RÉFÉRENT
+    if (this.isReferentView) {
+      this.formEx1.disable();
+      this.formEx2.disable();
+      this.formEx3.disable();
+      this.formEx4.disable();
+      this.formEx5.disable();
+      this.formEx6.disable();
+      this.formEx7.disable();
+      this.formEx8.disable();
+      this.formEx9.disable();
     }
   }
 

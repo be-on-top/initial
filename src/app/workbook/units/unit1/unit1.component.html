@@ -2,15 +2,18 @@
 <div class="container mt-4">
 
   <!-- Message de bienvenue pour les étudiants (Étape 0) -->
-  <div class="alert w-100 p-4 pe-5 bg-dark alert-dismissible text-white mb-4 fade show display-5" *ngIf="isStudent && currentStep === 0">
-    <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert" aria-label="Fermer le message"></button>
+  <div class="alert w-100 p-4 pe-5 bg-dark alert-dismissible text-white mb-4 fade show display-5"
+    *ngIf="isStudent && currentStep === 0">
+    <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
+      aria-label="Fermer le message"></button>
     Bienvenue, vous allez commencer vos exercices de Français Langue Étrangère débutant.
   </div>
 
   <!-- Alerte d'authentification requise -->
   <div class="alert alert-warning instructions" *ngIf="isNotAuthenticated">
-    Authentification requise pour accéder aux exercices. 
-    <a role="link" aria-label="Avertissement : se connecter pour démarrer un questionnaire" [routerLink]="['/login']" class="text-light">Vous identifier</a>
+    Authentification requise pour accéder aux exercices.
+    <a role="link" aria-label="Avertissement : se connecter pour démarrer un questionnaire" [routerLink]="['/login']"
+      class="text-light">Vous identifier</a>
   </div>
 
   <!-- Alerte restriction d'accès aux candidats -->
@@ -22,10 +25,12 @@
     <!-- ===================== -->
     <!-- EXERCICE 1            -->
     <!-- ===================== -->
-    <form *ngIf="isReferentView || currentStep === 0" [formGroup]="formEx1" (ngSubmit)="submitEx1()" aria-labelledby="ex1-title">
+    <form *ngIf="isReferentView || currentStep === 0" [formGroup]="formEx1" (ngSubmit)="submitEx1()"
+      aria-labelledby="ex1-title">
 
       <!-- HEADER -->
-      <div id="ex1-title" class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+      <div id="ex1-title"
+        class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
         <span class="badge text-bg-dark text-white" *ngIf="steps && steps[0]">
           <i class="bi bi-tag-fill me-2"></i>
           Catégorie : {{ steps[0].category }}
@@ -55,8 +60,12 @@
           {{ field.label }}
         </label>
         <div class="col-md-8">
-          <input *ngIf="field.type !== 'textarea'" [id]="field.name" [type]="field.type" class="form-control" [formControlName]="field.name" [attr.aria-label]="field.label" (keydown.enter)="onEnter($event, field.name)">
-          <textarea *ngIf="field.type === 'textarea'" [id]="field.name" class="form-control" [formControlName]="field.name" (keydown.enter)="onEnter($event, field.name)" [attr.aria-label]="field.label"></textarea>
+          <input *ngIf="field.type !== 'textarea'" [id]="field.name" [type]="field.type" class="form-control"
+            [formControlName]="field.name" [attr.aria-label]="field.label"
+            (keydown.enter)="onEnter($event, field.name)">
+          <textarea *ngIf="field.type === 'textarea'" [id]="field.name" class="form-control"
+            [formControlName]="field.name" (keydown.enter)="onEnter($event, field.name)"
+            [attr.aria-label]="field.label"></textarea>
         </div>
       </div>
 
@@ -66,11 +75,13 @@
       </div>
 
       <!-- Progress -->
-      <div class="progress mb-4" role="progressbar" aria-label="Progression de l'exercice 1" [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
+      <div *ngIf="!isReferentView" class="progress mb-4" role="progressbar" aria-label="Progression de l'exercice 1"
+        [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
         <div class="progress-bar" [style.width.%]="progress"></div>
       </div>
 
-      <button type="submit" class="btn btn-primary" aria-label="Valider le formulaire et passer à l'exercice suivant" [disabled]="isSubmitted('ex1')">
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-primary"
+        aria-label="Valider le formulaire et passer à l'exercice suivant" [disabled]="isSubmitted('ex1')">
         Suivant
       </button>
 
@@ -79,11 +90,13 @@
       </div>
     </form>
 
+    <hr *ngIf="isReferentView">
+
     <!-- ===================== -->
     <!-- EXERCICE 2            -->
     <!-- ===================== -->
     <form *ngIf="isReferentView || currentStep === 1" [formGroup]="formEx2" (ngSubmit)="submitEx2()">
-      
+
       <!-- HEADER -->
       <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
         <span class="badge text-bg-dark text-white" *ngIf="steps && steps[1]">
@@ -121,7 +134,8 @@
 
       <div class="mb-3">
         <div *ngFor="let opt of q2Options; let i = index" class="form-check">
-          <input class="form-check-input" type="radio" formControlName="q2" [value]="opt.value" [id]="'q2_' + i" name="q2" />
+          <input class="form-check-input" type="radio" formControlName="q2" [value]="opt.value" [id]="'q2_' + i"
+            name="q2" />
           <label class="form-check-label" [for]="'q2_' + i">
             {{ opt.label }}
           </label>
@@ -132,12 +146,15 @@
         Temps estimé : {{ steps[1].duration }} secondes
       </div>
 
-      <div *ngIf="steps && steps[1]?.duration" class="progress mb-4" role="progressbar" aria-label="Progression de l'exercice 2" [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
+      <div *ngIf="steps && steps[1]?.duration && !isReferentView" class="progress mb-4" role="progressbar"
+        aria-label="Progression de l'exercice 2" [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
         <div class="progress-bar" [style.width.%]="progress"></div>
       </div>
 
-      <button type="submit" class="btn btn-primary">Suivant</button>
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-primary">Suivant</button>
     </form>
+
+    <hr *ngIf="isReferentView">
 
     <!-- ===================== -->
     <!-- EXERCICE 3            -->
@@ -194,12 +211,15 @@
         Temps estimé : {{ steps[2].duration }} secondes
       </div>
 
-      <div *ngIf="steps && steps[2]?.duration" class="progress mb-4" role="progressbar" aria-label="Progression de l'exercice 3" [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
+      <div *ngIf="steps && steps[2]?.duration && !isReferentView" class="progress mb-4" role="progressbar"
+        aria-label="Progression de l'exercice 3" [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
         <div class="progress-bar" [style.width.%]="progress"></div>
       </div>
 
-      <button type="submit" class="btn btn-primary mt-3">Suivant</button>
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-3">Suivant</button>
     </form>
+
+    <hr *ngIf="isReferentView">
 
     <!-- ===================== -->
     <!-- EXERCICE 4            -->
@@ -254,12 +274,15 @@
         Temps estimé : {{ steps[3].duration }} secondes
       </div>
 
-      <div *ngIf="steps && steps[3]?.duration" class="progress mb-4" role="progressbar" aria-label="Progression de l'exercice 4" [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
+      <div *ngIf="steps && steps[3]?.duration && !isReferentView" class="progress mb-4" role="progressbar"
+        aria-label="Progression de l'exercice 4" [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
         <div class="progress-bar" [style.width.%]="progress"></div>
       </div>
 
-      <button type="submit" class="btn btn-primary">Suivant</button>
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-primary">Suivant</button>
     </form>
+
+    <hr *ngIf="isReferentView">
 
     <!-- ===================== -->
     <!-- EXERCICE 5            -->
@@ -316,12 +339,15 @@
         Temps estimé : {{ steps[4].duration }} secondes
       </div>
 
-      <div *ngIf="steps && steps[4]?.duration" class="progress mb-4" role="progressbar" aria-label="Progression de l'exercice 5" [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
+      <div *ngIf="steps && steps[4]?.duration && !isReferentView" class="progress mb-4" role="progressbar"
+        aria-label="Progression de l'exercice 5" [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
         <div class="progress-bar" [style.width.%]="progress"></div>
       </div>
 
-      <button type="submit" class="btn btn-primary">Suivant</button>
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-primary">Suivant</button>
     </form>
+
+    <hr *ngIf="isReferentView">
 
     <!-- ===================== -->
     <!-- EXERCICE 6            -->
@@ -369,7 +395,8 @@
           <div class="fw-bold mb-1 col-md-3">{{ slot.label }}</div>
           <div class="d-flex gap-3 flex-wrap col-md-9">
             <div *ngFor="let opt of options" class="form-check">
-              <input type="radio" class="form-check-input" [formControlName]="slot.key" [attr.name]="slot.key" [value]="opt" />
+              <input type="radio" class="form-check-input" [formControlName]="slot.key" [attr.name]="slot.key"
+                [value]="opt" />
               <label class="form-check-label">
                 {{ opt }}
               </label>
@@ -382,12 +409,15 @@
         Temps estimé : {{ steps[5].duration }} secondes
       </div>
 
-      <div *ngIf="steps && steps[5]?.duration" class="progress mb-4" role="progressbar" aria-label="Progression de l'exercice 6" [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
+      <div *ngIf="steps && steps[5]?.duration && !isReferentView" class="progress mb-4" role="progressbar"
+        aria-label="Progression de l'exercice 6" [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
         <div class="progress-bar" [style.width.%]="progress"></div>
       </div>
 
-      <button class="btn btn-primary mt-3" type="submit">Suivant</button>
+      <button *ngIf="!isReferentView" class="btn btn-primary mt-3" type="submit">Suivant</button>
     </form>
+
+    <hr *ngIf="isReferentView">
 
     <!-- ===================== -->
     <!-- EXERCICE 7            -->
@@ -412,13 +442,16 @@
       </div>
 
       <div class="alert bg-info instructions">
-        <i class="bi bi-info-square-fill me-3"></i>Vous avez reçu le message ci-contre. Lisez-le et répondez à ce message
+        <i class="bi bi-info-square-fill me-3"></i>Vous avez reçu le message ci-contre. Lisez-le et répondez à ce
+        message
       </div>
-      
+
       <div class="alert mb-4 bg-dark text-white">
         <p>Bonjour, <br>
           C'est M. Cado, le chef de chantier. <br>
-          Je vous confirme que vous commencez lundi 28 mai. Rendez-vous à 7h30 sur le chantier. Vous entrerez par la rue Louis Montesquieu, à Rezé. Pouvez-vous me confirmer que vous avez un casque et des chaussures de sécurité ? Nous vous fournirons des outils là-bas.
+          Je vous confirme que vous commencez lundi 28 mai. Rendez-vous à 7h30 sur le chantier. Vous entrerez par la rue
+          Louis Montesquieu, à Rezé. Pouvez-vous me confirmer que vous avez un casque et des chaussures de sécurité ?
+          Nous vous fournirons des outils là-bas.
           <br>N'hésitez pas à me contacter si besoin. <br>À lundi. <br>
           Roger Cado
         </p>
@@ -429,7 +462,8 @@
         Temps estimé : {{ steps[6].duration }} secondes
       </div>
 
-      <div *ngIf="steps && steps[6]?.duration" class="progress mb-4" role="progressbar" aria-label="Progression de l'exercice 7" [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
+      <div *ngIf="steps && steps[6]?.duration && !isReferentView" class="progress mb-4" role="progressbar"
+        aria-label="Progression de l'exercice 7" [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
         <div class="progress-bar" [style.width.%]="progress"></div>
       </div>
 
@@ -437,8 +471,10 @@
         <textarea class="form-control" formControlName="texte" rows="6" placeholder="Votre réponse ici..."></textarea>
       </div>
 
-      <button class="btn btn-success" type="submit">Suivant</button>
+      <button *ngIf="!isReferentView" class="btn btn-success" type="submit">Suivant</button>
     </form>
+
+    <hr *ngIf="isReferentView">
 
     <!-- ===================== -->
     <!-- EXERCICE 8            -->
@@ -481,18 +517,21 @@
         Temps estimé : {{ steps[7].duration }} secondes
       </div>
 
-      <div *ngIf="steps && steps[7]?.duration" class="progress mb-4" role="progressbar" aria-label="Progression de l'exercice 8" [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
+      <div *ngIf="steps && steps[7]?.duration && !isReferentView" class="progress mb-4" role="progressbar"
+        aria-label="Progression de l'exercice 8" [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
         <div class="progress-bar" [style.width.%]="progress"></div>
       </div>
 
-      <button type="submit" class="btn btn-primary">Suivant</button>
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-primary">Suivant</button>
     </form>
+
+    <hr *ngIf="isReferentView">
 
     <!-- ===================== -->
     <!-- EXERCICE 9            -->
     <!-- ===================== -->
     <form *ngIf="isReferentView || currentStep === 8" [formGroup]="formEx9" (ngSubmit)="submitEx9()">
-      
+
       <!-- HEADER -->
       <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
         <span class="badge text-bg-dark text-white" *ngIf="steps && steps[8]">
@@ -511,7 +550,8 @@
       </div>
 
       <div class="alert bg-info instructions">
-        <i class="bi bi-info-square-fill me-3"></i>Vous écrivez une lettre à un(e) ami(e) et lui racontez ce que vous faites pendant la journée (travail, sport, amis, famille, ...)
+        <i class="bi bi-info-square-fill me-3"></i>Vous écrivez une lettre à un(e) ami(e) et lui racontez ce que vous
+        faites pendant la journée (travail, sport, amis, famille, ...)
       </div>
       <div class="mb-4">
         <p>Merci d'utiliser un minimum de 30 mots</p>
@@ -529,10 +569,13 @@
         Minimum 30 mots requis
       </div>
 
-      <button class="btn btn-success mt-5" type="submit" [disabled]="countWords(formEx9.value.texte) < 30" [class.disabled]="countWords(formEx9.value.texte) < 30">
+      <button *ngIf="!isReferentView" class="btn btn-success mt-5" type="submit"
+        [disabled]="countWords(formEx9.value.texte) < 30" [class.disabled]="countWords(formEx9.value.texte) < 30">
         Valider et terminer
       </button>
     </form>
+
+    <hr *ngIf="isReferentView">
   </div>
 
   <!-- Message de succès final -->
