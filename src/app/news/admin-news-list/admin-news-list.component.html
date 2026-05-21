@@ -1,4 +1,6 @@
-<div class="container mt-4">
+<div class="container mt-4" *ngIf="isEditor$ | async; else nonAutorise">
+
+  {{isEditor$}}
 
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h2>Actualités</h2>
@@ -35,3 +37,11 @@
   </div>
 
 </div>
+
+<ng-template #nonAutorise>
+    <div class="container mt-5 text-center">
+        <div class="alert alert-danger">
+            Accès refusé. Vous devez être authentifié comme Éditeur pour voir cette page.
+        </div>
+    </div>
+</ng-template>

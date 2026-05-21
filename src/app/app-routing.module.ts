@@ -23,6 +23,7 @@ import { CentersIndexComponent } from './centers-index/centers-index.component';
 import { MarketingDocsPublicComponent } from './marketing-docs-public/marketing-docs-public.component';
 import { NewsListComponent } from './news/news-list/news-list.component';
 import { NewsDetailsComponent } from './news/news-details/news-details.component';
+import { RoleGuardGuard } from './role-guard.guard';
 
 // const routes: Routes = [
 //   { path: 'home', component: HomeComponent, pathMatch: 'full', canActivate: [AuthGuardService] },
@@ -77,13 +78,15 @@ const routes: Routes = [
     loadComponent: () => import('./partners/partners.component').then(m => m.PartnersComponent) 
   },
 
-  {
-  path: 'workbook',
-  loadChildren: () =>
-    import('./workbook/workbook.module').then(m => m.WorkbookModule)
+{ 
+  path: 'admin/news', 
+  loadChildren: () => import('./news/news.module').then(m => m.NewsModule),
+  // 🔽 On réutilise les Guards et les rôles ici pour protéger le chargement du module
+  canActivate: [AuthGuardService, RoleGuardGuard], 
+  data: {
+    expectedRoles: ['editor', 'admin'] // On met ici uniquement les rôles qui ont le droit de gérer les news (ex: editor et admin)
+  }
 },
-
-{ path: 'admin/news', loadChildren: () => import('./news/news.module').then(m => m.NewsModule) },
 { path: 'news', component: NewsListComponent },
 { path: 'news/:id', component: NewsDetailsComponent }
 
