@@ -4,10 +4,12 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { WorkbookService } from '../../workbook.service';
 import { AuthService } from 'src/app/admin/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
+
 interface Step {
   id: string;
   category: string;
   duration?: number;
+  maxScore?: number | null;
 }
 
 @Component({
@@ -50,16 +52,28 @@ export class Unit1Component {
 
 
 
+  // steps: Step[] = [
+  //   { id: 'ex1', category: this.categories[0], duration: 160 },
+  //   { id: 'ex2', category: this.categories[1], duration: 50 },
+  //   { id: 'ex3', category: this.categories[1], duration: 70 },
+  //   { id: 'ex4', category: this.categories[1], duration: 60 },
+  //   { id: 'ex5', category: this.categories[1], duration: 25 },
+  //   { id: 'ex6', category: this.categories[1], duration: 120 },
+  //   { id: 'ex7', category: this.categories[2] }, // libre
+  //   { id: 'ex8', category: this.categories[3], duration: 180 },
+  //   { id: 'ex9', category: this.categories[2] }  // libre
+  // ];
+
   steps: Step[] = [
-    { id: 'ex1', category: this.categories[0], duration: 160 },
-    { id: 'ex2', category: this.categories[1], duration: 50 },
-    { id: 'ex3', category: this.categories[1], duration: 70 },
-    { id: 'ex4', category: this.categories[1], duration: 60 },
-    { id: 'ex5', category: this.categories[1], duration: 25 },
-    { id: 'ex6', category: this.categories[1], duration: 120 },
-    { id: 'ex7', category: this.categories[2] }, // libre
-    { id: 'ex8', category: this.categories[3], duration: 180 },
-    { id: 'ex9', category: this.categories[2] }  // libre
+    { id: 'ex1', category: this.categories[0], duration: 160, maxScore: 10 },  // 6 champs + date + âge
+    { id: 'ex2', category: this.categories[1], duration: 50, maxScore: 1 },  // QCM
+    { id: 'ex3', category: this.categories[1], duration: 70, maxScore: 1 },  // Tout bon = 1
+    { id: 'ex4', category: this.categories[1], duration: 60, maxScore: 2 },  // Q4
+    { id: 'ex5', category: this.categories[1], duration: 25, maxScore: 1 },  // Q5
+    { id: 'ex6', category: this.categories[1], duration: 120, maxScore: 3 },  // Slots (ex: 4)
+    { id: 'ex7', category: this.categories[2], maxScore: null },              // Libre / À évaluer sur 5
+    { id: 'ex8', category: this.categories[3], duration: 180, maxScore: 10 },  // Items (ex: 5)
+    { id: 'ex9', category: this.categories[2], maxScore: null }               // Libre / À évaluer sur 10
   ];
 
 
@@ -1166,7 +1180,57 @@ export class Unit1Component {
     this.aggregateState = this.unitData['units.unit1.result'] || {};
   }
 
+  getCategoryMaxScore(categoryName: string): number | null {
+    // 1️⃣ On filtre les étapes qui appartiennent à cette catégorie
+    const categorySteps = this.steps.filter(s => s.category === categoryName);
 
+    // 2️⃣ On vérifie s'il y a au moins un exercice qui possède un barème numérique
+    const hasScoredExercise = categorySteps.some(s => s.maxScore !== undefined && s.maxScore !== null);
+
+    if (!hasScoredExercise) return null;
+
+    // 3️⃣ On additionne les maxScores (en ignorant les null/undefined)
+    return categorySteps.reduce((sum, s) => sum + (s.maxScore || 0), 0);
+  }
+
+  // 📐 Arrondit une note sur 20 au demi-point le plus proche (ex: 11.1 -> 11 ou 11.3 -> 11.5)
+  roundToHalf(score: number, maxScore: number): number {
+    const rawNote = (score / maxScore) * 20;
+    return Math.round(rawNote * 2) / 2;
+  }
+
+  // 🏆 Calcule le score total obtenu sur le total max possible (ex: retourne { obtenu: 14, max: 18 })
+  getGlobalScore(): { obtenu: number; max: number } | null {
+    if (!this.aggregateState) return null;
+
+    let totalObtenu = 0;
+    let totalMax = 0;
+    let hasScoredData = false;
+
+    // On parcourt les résultats actuels de l'agrégation
+    Object.keys(this.aggregateState).forEach(category => {
+      const scoreValue = this.aggregateState[category];
+      const maxScore = this.getCategoryMaxScore(category);
+
+      // On ne prend en compte que les catégories qui ont un score numérique
+      if (scoreValue !== null && maxScore !== null) {
+        totalObtenu += scoreValue;
+        totalMax += maxScore;
+        hasScoredData = true;
+      }
+    });
+
+    return hasScoredData ? { obtenu: totalObtenu, max: totalMax } : null;
+  }
+
+  // 📐 Convertit le score global en note sur 20 arrondie au demi-point près
+  getGlobalNoteOn20(): number | null {
+    const globalScore = this.getGlobalScore();
+    if (!globalScore || globalScore.max === 0) return null;
+
+    const rawNote = (globalScore.obtenu / globalScore.max) * 20;
+    return Math.round(rawNote * 2) / 2; // Arrondi au demi-point (ex: 14.25 -> 14.5)
+  }
 
 
 
