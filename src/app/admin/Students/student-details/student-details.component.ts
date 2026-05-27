@@ -9,7 +9,7 @@ import { Student } from '../student';
 import { Evaluation } from '../../evaluation';
 import { QuizDetails } from '../../quizzDetails';
 import { SettingsService } from '../../settings.service';
-import { Observable, forkJoin, map, of, switchMap } from 'rxjs';
+import { Observable, Subscription, forkJoin, map, of, switchMap } from 'rxjs';
 // pour anticiper des essais de chart.js
 import { ChartService } from '../../chart.service';
 import { UsersService } from '../../users.service';
@@ -83,6 +83,10 @@ export class StudentDetailsComponent implements OnInit, AfterViewInit {
 
   centerPriorName?: string = ""
 
+  hasCompletedUnit1 = false; // Flag simplifié pour unité 1 du workbook
+  
+  private workbookSub!: Subscription;
+
 
 
   constructor(
@@ -123,6 +127,13 @@ export class StudentDetailsComponent implements OnInit, AfterViewInit {
       this.centerPriorName = name;
       console.log('✅ centerPriorName mis à jour :', this.centerPriorName);
     });
+
+    // Pour accéder de manière autonome sans couplage avec le module workbook à l'état de workbook :
+    this.workbookSub = this.service.checkUserUnit1Status(this.studentId)
+      .subscribe(exists => {
+        this.hasCompletedUnit1 = exists;
+        console.log('📊 État Workbook Unité 1 (via StudentsService) :', this.hasCompletedUnit1);
+      });
 
 
   }
@@ -618,13 +629,13 @@ export class StudentDetailsComponent implements OnInit, AfterViewInit {
   }
 
 
-hasPartialQuizzes(): boolean {
-  return this.tradesEvaluated?.some(trade => this.getPartialDetails(trade));
-}
+  hasPartialQuizzes(): boolean {
+    return this.tradesEvaluated?.some(trade => this.getPartialDetails(trade));
+  }
 
-hasCompletedQuizzes(): boolean {
-  return this.tradesEvaluated?.some(trade => this.getTradeDetails(trade));
-}
+  hasCompletedQuizzes(): boolean {
+    return this.tradesEvaluated?.some(trade => this.getTradeDetails(trade));
+  }
 
 
 }

@@ -653,18 +653,18 @@ export class StudentsService {
   // }
 
   getStudents(order: 'asc' | 'desc' = 'desc') {
-  const studentsRef = collection(this.firestore, "students");
-  const studentsQuery = query(studentsRef, orderBy("created", order));
+    const studentsRef = collection(this.firestore, "students");
+    const studentsQuery = query(studentsRef, orderBy("created", order));
 
-  return from(getDocs(studentsQuery)).pipe(
-    map(snapshot =>
-      snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      } as Student))
-    )
-  );
-}
+    return from(getDocs(studentsQuery)).pipe(
+      map(snapshot =>
+        snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        } as Student))
+      )
+    );
+  }
 
   getStudentById(studentId: string) {
     const studentRef = doc(this.firestore, 'students/' + studentId);
@@ -2101,71 +2101,97 @@ export class StudentsService {
 
 
 
-async clearClosure(studentId: string): Promise < void> {
+  async clearClosure(studentId: string): Promise<void> {
 
-  const studentRef = doc(this.firestore, 'students', studentId);
+    const studentRef = doc(this.firestore, 'students', studentId);
 
-  try {
+    try {
+
+      await updateDoc(studentRef, {
+        closure: deleteField()
+      });
+
+      console.log('Closure cleared successfully');
+
+    } catch (error) {
+
+      console.error('Error clearing closure:', error);
+      throw error;
+
+    }
+  }
+
+
+  async updateQuotationStatus(
+    studentId: string,
+    sigle: string,
+    isAccepted: boolean,
+  ): Promise<void> {
+
+    const studentRef = doc(this.firestore, 'students', studentId);
+
+    const path = `quotations.${sigle}`;
 
     await updateDoc(studentRef, {
-      closure: deleteField()
-});
-
-console.log('Closure cleared successfully');
-
-  } catch (error) {
-
-  console.error('Error clearing closure:', error);
-  throw error;
-
-}
-}
-
-
-async updateQuotationStatus(
-  studentId: string,
-  sigle: string,
-  isAccepted: boolean,
-): Promise<void> {
-
-  const studentRef = doc(this.firestore, 'students', studentId);
-
-  const path = `quotations.${sigle}`;
-
-  await updateDoc(studentRef, {
-    [path]: {
-      isAccepted,
-      acceptedAt: isAccepted ? serverTimestamp() : null,
-    }
-  });
-
-}
-
-
-async updatePublishVisibility(
-  studentId: string,
-  publishAccount: boolean
-): Promise<void> {
-
-  const studentRef = doc(this.firestore, "students", studentId);
-
-  try {
-
-await updateDoc(studentRef, {
-  publishAccount,
-  publishUpdatedAt: serverTimestamp()
-});
-
-    console.log("Publish visibility updated");
-
-  } catch (error) {
-
-    console.error("Error updating publish visibility:", error);
-    throw error;
+      [path]: {
+        isAccepted,
+        acceptedAt: isAccepted ? serverTimestamp() : null,
+      }
+    });
 
   }
 
-}
+
+  async updatePublishVisibility(
+    studentId: string,
+    publishAccount: boolean
+  ): Promise<void> {
+
+    const studentRef = doc(this.firestore, "students", studentId);
+
+    try {
+
+      await updateDoc(studentRef, {
+        publishAccount,
+        publishUpdatedAt: serverTimestamp()
+      });
+
+      console.log("Publish visibility updated");
+
+    } catch (error) {
+
+      console.error("Error updating publish visibility:", error);
+      throw error;
+
+    }
+
+  }
+
+  // Pour tester l'état des unités de workbook
+  // checkUserUnit1Status(studentId: string): Observable<boolean> {
+  //   // 1️⃣ Création de la référence du document avec la bonne syntaxe
+  //   const workbookRef = doc(this.firestore, 'workbook', studentId);
+
+  //   // 2️⃣ Récupération du flux de données du document
+  //   return docData(workbookRef).pipe(
+  //     map((docData: any) => {
+  //       // 3️⃣ Sécurisation du retour (true si unit1 existe, sinon false)
+  //       return !!(docData && docData.units && docData.units.unit1.result);
+  //     })
+  //   );
+  // }
+
+  checkUserUnit1Status(studentId: string): Observable<boolean> {
+    const workbookRef = doc(this.firestore, 'workbook', studentId);
+
+    return docData(workbookRef).pipe(
+      map((docData: any) => {
+        // 🕵️‍♂️ On va chercher directement la clé textuelle "units.unit1.result"
+        // Si elle existe dans le document, cela signifie que les scores ont été calculés !
+        return !!(docData && docData['units.unit1.result']);
+      })
+    );
+  }
 
 
 

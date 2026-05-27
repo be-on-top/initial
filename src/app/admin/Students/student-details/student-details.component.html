@@ -210,8 +210,37 @@
                         <!-- fin boucle supplémentaire pour ngFor avec les options de multi-quizz -->
                     </div>
 
-                    <ng-template #none> <span>Aucun questionnaire en cours</span>
+                    <ng-template #none> <span>Aucun questionnaire métier en cours</span>
                     </ng-template>
+
+                    
+
+                    <!-- Pour EVALUATIONS TRANSVERSES WORKBOOK -->
+                    <div class="mt-5 border-top pt-5">
+                        <h4 class="fw-bold mb-2">🎯 Évaluations transverses (Workbook)</h4>
+
+                        <div *ngIf="hasCompletedUnit1"
+                            class="d-flex align-items-center justify-content-between py-2">
+                            <p class="text-muted mb-0">
+                                <span class="badge bg-success rounded-0 me-2">Unité 1 FLE</span>
+                                Résultats disponibles !
+                            </p>
+                            <a [routerLink]="['/workbook/unit1', student.id]"
+                                class="btn primary rounded-0">
+                                📊 Consulter
+                            </a>
+                        </div>
+
+                        <div *ngIf="!hasCompletedUnit1" class="py-2">
+                            <p class="text-muted small mb-0">
+                                <span class="badge bg-secondary rounded-0 me-2">Unité 1</span>
+                                Aucune unité 1 soumise pour le moment.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- FIN TEST EVALUATIONS TRANSVERSES WORKBOOK -->
+
+
                 </div>
             </div>
         </div>
