@@ -55,6 +55,12 @@ h2 {
   margin:1rem,0;
 }
 
+.titleCollapse {
+  font-size: 1.4rem;
+  font-weight: 400;
+  margin:0;
+}
+
 
 .d-flex button:hover {
   transform: scale(1.05);

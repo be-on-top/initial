@@ -32,17 +32,17 @@
 
                     <!-- ajout accessoire pour accueil -->
                     <li class="nav-item home" [routerLinkActive]="['active']"
-                        *ngIf="!userRole|| userRole==='' || userRole==='student'">
-                        <!-- <li class="nav-item dropdown" *ngIf="filteredTrades" [routerLinkActive]="['active']"> -->
+                        *ngIf="!userRole || userRole==='' || userRole==='student'">
                         <a class="nav-link d-md-none d-lg-block" role="button" data-bs-toggle="dropdown"
                             [routerLink]="['/home']" (click)="closeNavbar()">Accueil</a>
                     </li>
+
                     <!-- <li class="nav-item">
                     <a class="nav-link" [routerLink]="['socialregistration']">Pré-inscription Formation</a>
                 </li> -->
                     <li class="nav-item dropdown" [routerLinkActive]="['active']"
                         *ngIf="userUid!==undefined && userUid!=='' && userRole!=='student'">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"
                             *ngIf="userRole?.includes('admin') || userRole?.includes('evaluator') || userRole?.includes('trainer') || userRole?.includes('tutor') || userRole?.includes('external') || userRole?.includes('referent') || userRole?.includes('manager') || userRole?.includes('editor') || userRole?.includes('data-analyst')">Admin</a>
                         <!-- <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Admin</a> -->
                         <ul class="dropdown-menu"
@@ -62,15 +62,15 @@
                                 <hr>
                             </li>
                             <!-- pour vue des filtres quantitatifs -->
-                            <li *ngIf="userRole?.includes('editor')"><a
-                                    class="dropdown-item" (click)="navigateTo('/admin/leads')">Vue quantitative
+                            <li *ngIf="userRole?.includes('editor')"><a class="dropdown-item"
+                                    (click)="navigateTo('/admin/leads')">Vue quantitative
                                     candidats</a>
                             </li>
-                            <li *ngIf="userRole?.includes('data-analyst')"><a
-                                    class="dropdown-item" (click)="navigateTo('/admin/analyst-leads')">Vue quantitative
+                            <li *ngIf="userRole?.includes('data-analyst')"><a class="dropdown-item"
+                                    (click)="navigateTo('/admin/analyst-leads')">Vue quantitative
                                     candidats</a>
                             </li>
-                            
+
                             <!-- pour gestion Kit Médias -->
                             <li *ngIf="userRole?.includes('editor')"><a class="dropdown-item"
                                     (click)="navigateTo('/admin/marketing-docs-list')">Gestion Kit Medias</a>
@@ -221,8 +221,8 @@
                         </li> -->
 
                     <li class="nav-item dropdown" [routerLinkActive]="['active']">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false" id="metiersDropdown">
+                        <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false" id="metiersDropdown">
                             Nos métiers
                         </a>
                         <ul class="dropdown-menu mb-2" aria-labelledby="metiersDropdown">
@@ -391,7 +391,7 @@
                             (click)="closeNavbar()">Partenaires</a>
                     </li>
 
-                    <li *ngIf="!userRole?.includes('evaluator') && !userRole?.includes('referent') && !userRole?.includes('trainer') && !userRole?.includes('tutor') && !userRole?.includes('editor') && !userRole?.includes('data-analyst')"
+                    <!-- <li *ngIf="!userRole?.includes('evaluator') && !userRole?.includes('referent') && !userRole?.includes('trainer') && !userRole?.includes('tutor') && !userRole?.includes('editor') && !userRole?.includes('data-analyst')"
                         class="nav-item" [routerLinkActive]="['active']">
                         <a class="nav-link" [routerLink]="['/benefits']" role="button" (click)="closeNavbar()"
                             title="Informations, questions réponses et mission de BE-ON-TOP"
@@ -401,14 +401,14 @@
                             <i class="bi bi-info-square-fill ms-2"></i>
                         </a>
 
+                    </li> -->
+
+                    <li *ngIf="!userRole || userRole === 'student'" class="nav-item" [routerLinkActive]="['active']">
+                        <a class="nav-link" [routerLink]="['/benefits']" role="button" (click)="closeNavbar()" ...>
+                            Information
+                        </a>
                     </li>
-                    <!-- pour traitement différencié si referent -->
-                    <!-- fonctionne bien mais manque market-app -->
-                    <!-- <li *ngIf="userRole?.includes('referent')" class="nav-item" [routerLinkActive]="['active']">
-                    <a class="nav-link" href="https://xd.adobe.com/view/75e0818e-ab1b-4464-8b05-ff2988454cba-20b3"
-                        role="button" (click)="closeNavbar()">Documentation<i
-                            class="bi bi-info-square-fill ms-2"></i></a>
-                </li> -->
+
                     <li *ngIf="userRole?.includes('referent')" class="nav-item dropdown"
                         [routerLinkActive]="['active']">
                         <a class="nav-link dropdown-toggle" href="#" role="button"

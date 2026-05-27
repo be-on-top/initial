@@ -179,7 +179,7 @@
 
                 <div class="card-header bg-primary pt-3">
                     <a (click)="toggleDescriptionCollapse()"
-                        class="btn text-light text-capitalize d-flex justify-content-between border-0"
+                        class="btn text-light text-capitalize d-flex justify-content-between border-0 titleCollapse"
                         data-bs-toggle="collapse" href="#collapseDescription">
                         Description <i
                             [ngClass]="{'bi-caret-down-fill': !isDescriptionCollapsed, 'bi-caret-up-fill': isDescriptionCollapsed}"
@@ -235,7 +235,7 @@
             <section aria-label="compétences métier">
                 <div class="card-header secund bg-primary pb-0">
                     <a (click)="toggleCPCollapse()"
-                        class="btn text-light text-capitalize d-flex justify-content-between border-0"
+                        class="btn text-light text-capitalize d-flex justify-content-between border-0 titleCollapse"
                         data-bs-toggle="collapse" href="#collapseCP">
                         Compétences <i
                             [ngClass]="{'bi-caret-down-fill': !isCPCollapsed, 'bi-caret-up-fill': isCPCollapsed}"
@@ -272,7 +272,7 @@
 
                     <div class="card-header third bg-primary pb-0">
                         <a (click)="toggleCentersCollapse()"
-                            class="btn text-light d-flex justify-content-between border-0" data-bs-toggle="collapse"
+                            class="btn text-light d-flex justify-content-between border-0 titleCollapse" data-bs-toggle="collapse"
                             href="#collapseCenters">
                             Lieux de formation <i
                                 [ngClass]="{'bi-caret-down-fill': !isCentersCollapsed, 'bi-caret-up-fill': isCentersCollapsed}"
