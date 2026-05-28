@@ -217,7 +217,7 @@
 
                     <!-- Pour EVALUATIONS TRANSVERSES WORKBOOK -->
                     <div class="mt-5 border-top pt-5">
-                        <h4 class="fw-bold mb-2">🎯 Évaluations transverses (Workbook)</h4>
+                        <h4 class="fw-bold mb-2">🎯 Évaluations transverses (Exercices en ligne)</h4>
 
                         <div *ngIf="hasCompletedUnit1"
                             class="d-flex align-items-center justify-content-between py-2">
@@ -225,7 +225,7 @@
                                 <span class="badge bg-success rounded-0 me-2">Unité 1 FLE</span>
                                 Résultats disponibles !
                             </p>
-                            <a [routerLink]="['/workbook/unit1', student.id]"
+                            <a [routerLink]="['/workbook/unit1', student.id]" target="_blank"
                                 class="btn primary rounded-0">
                                 📊 Consulter
                             </a>

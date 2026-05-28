@@ -50,6 +50,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   isInnerStudentFilter: boolean = false
   isSubscriptionFilter: boolean = false
   isSubscriptionMissingFilter: boolean = false
+  isWorkbookFilter: boolean = false
   initialStudents: any[] = []; // Copie initiale des étudiants
   contactStudents: any[] = []; // pour les étudiants affectés par referent à contact
 
@@ -83,6 +84,8 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
   isLoading: boolean = true
 
   storedValue: any
+
+  hasWorkbookUnit1: boolean = false
 
   constructor(
     private service: StudentsService,
@@ -324,11 +327,18 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       // ET 2. Si c'est un externe, NE DOIT PAS être isPublish: false
       map(students => students.filter(student => {
         const hasResults = this.hasFullResults(student);
+
+        // 🎯 Ajout de test synchrone :
+        // Property 'hasWorkbookUnit1' comes from an index signature, so it must be accessed with ['hasWorkbookUnit1'].
+        const hasWorkbook = student['hasWorkbookUnit1'] === true;
+
         const isVisible = (this.userRouterLinks.user === 'external' || this.userRouterLinks.user === 'referentsContacts')
           ? student['isPublish'] !== false
           : true;
 
-        return hasResults && isVisible;
+        // return hasResults && isVisible;
+        // L'étudiant remonte s'il a l'un OU l'autre
+        return (hasResults || hasWorkbook) && isVisible;
       }))
 
 
@@ -596,6 +606,12 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       // this.tradesActivated = true
     }
 
+    // si on active le filtre : a-t-il terminé une unité de workbook quelle qu'elle soit
+    else if (this.isWorkbookFilter || this.storedValue === 'isWorkbookUnit') {
+      // Filtre direct, instantané et propre pour TypeScript
+      this.allStudents = this.initialStudents.filter(student => student['hasWorkbookUnit1'] === true);
+    }
+
     else if (this.isTradeFilter) {
       this.allStudents = this.initialStudents.filter(student =>
         Array.isArray(student.subscriptions) &&
@@ -709,6 +725,23 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       this.applyFilters();
     }
   }
+
+
+  onCheckboxChangeWorkBookUnit(event: any) {
+  this.resetAllFilters();
+  this.isWorkbookFilter = event.target.checked;
+  
+  if (event.target.checked) {
+    // 🎯 Correction : On utilise la clé 'isWorkbookFilter' partout
+    localStorage.setItem('filter', 'isWorkbookFilter');
+    this.storedValue = 'isWorkbookFilter';
+    this.applyFilters();
+  } else {
+    localStorage.removeItem('filter');
+    this.storedValue = '';
+    this.applyFilters();
+  }
+}
 
 
   onTradeTrainingSelect(trade: string | null) {
