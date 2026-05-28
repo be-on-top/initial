@@ -328,17 +328,17 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       map(students => students.filter(student => {
         const hasResults = this.hasFullResults(student);
 
-        // 🎯 Ajout de test synchrone :
+        // 🎯 Ajout de test synchrone OK :
         // Property 'hasWorkbookUnit1' comes from an index signature, so it must be accessed with ['hasWorkbookUnit1'].
-        const hasWorkbook = student['hasWorkbookUnit1'] === true;
+        // const hasWorkbook = student['hasWorkbookUnit1'] === true;
 
         const isVisible = (this.userRouterLinks.user === 'external' || this.userRouterLinks.user === 'referentsContacts')
           ? student['isPublish'] !== false
           : true;
 
-        // return hasResults && isVisible;
-        // L'étudiant remonte s'il a l'un OU l'autre
-        return (hasResults || hasWorkbook) && isVisible;
+        return hasResults && isVisible;
+        // L'étudiant remonte s'il a l'un OU l'autre test OK
+        // return (hasResults || hasWorkbook) && isVisible;
       }))
 
 

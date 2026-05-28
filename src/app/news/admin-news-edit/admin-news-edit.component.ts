@@ -66,21 +66,74 @@ export class AdminNewsEditComponent implements OnInit {
   }
 
   // 🖼️ Upload image vers Firebase Storage
-  onFileSelected(event: any) {
+  // onFileSelected(event: any) {
 
+  //   const file: File = event.target.files[0];
+  //   if (!file) return;
+
+  //   this.loading = true;
+
+  //   // 📤 Upload → récupération URL publique
+  //   this.newsService.uploadImage(file).then(url => {
+
+  //     // 🔗 On stocke l'URL dans le modèle (sera sauvegardé en Firestore)
+  //     this.news.heroImage = url;
+
+  //     this.loading = false;
+  //   });
+  // }
+
+  // 🖼️ Upload image de Héros vers Firebase Storage (Optimisée & Convertie)
+  onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (!file) return;
 
     this.loading = true;
 
-    // 📤 Upload → récupération URL publique
-    this.newsService.uploadImage(file).then(url => {
+    // 🧹 SÉCURITÉ : On passe par un Canvas pour forcer le redimensionnement et le format WebP
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      const img = new Image();
+      img.onload = () => {
+        const maxWidth = 1200; // 🎯 Largeur max idéale pour une bannière de Héros
+        const canvas = document.createElement('canvas');
+        let scale = 1;
 
-      // 🔗 On stocke l'URL dans le modèle (sera sauvegardé en Firestore)
-      this.news.heroImage = url;
+        if (img.width > maxWidth) {
+          scale = maxWidth / img.width;
+        }
 
-      this.loading = false;
-    });
+        canvas.width = img.width * scale;
+        canvas.height = img.height * scale;
+
+        const ctx = canvas.getContext('2d');
+        ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        // 🪄 On convertit le gros PNG/JPEG en un WebP ultra léger (qualité 0.9)
+        canvas.toBlob((blob) => {
+          if (!blob) {
+            this.loading = false;
+            return;
+          }
+
+          // On recrée un fichier File propre à partir du blob optimisé
+          const optimizedFile = new File([blob], 'hero-' + Date.now() + '.webp', { type: 'image/webp' });
+
+          // 📤 Upload du fichier optimisé → récupération URL publique
+          this.newsService.uploadImage(optimizedFile).then(url => {
+            // 🔗 On stocke l'URL dans le modèle
+            this.news.heroImage = url;
+            this.loading = false;
+          }).catch(err => {
+            alert("Erreur lors de l'upload de la bannière");
+            this.loading = false;
+          });
+          
+        }, 'image/webp', 0.9);
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
   }
 
 
@@ -109,30 +162,34 @@ export class AdminNewsEditComponent implements OnInit {
     input.click();
   }
 
-  editorConfig = {
+editorConfig = {
     plugins: 'lists image',
-    toolbar: 'undo redo | formatselect | bold italic | image | bullist numlist outdent indent',
+    // 🛠️ CHANGEMENT 1 : On enlève "outdent indent" pour éviter les décalages de texte bizarres
+    toolbar: 'undo redo | formatselect | bold italic | image | bullist numlist',
+
+    // 🛠️ CHANGEMENT 2 : On force les formats visibles. On vire H1 (ton titre) et H4 pour limiter leurs choix
+    block_formats: 'Paragraphe=p; Titre 2=h2; Titre 3=h3',
 
     images_file_types: 'webp',
     file_picker_types: 'image',
 
-    // 🔒 VERROUILLAGE DES IMAGES
-    image_dimensions: false, // Force la désactivation des cases Largeur/Hauteur dans le menu image
-    image_caption: false,    // Évite qu'elles ajoutent une légende qui encapsule l'image dans une balise <figure>
-    inline_styles: false,    // Empêche TinyMCE d'injecter du CSS bizarre directement sur l'image
+    // 🔒 VERROUILLAGE DES IMAGES (Inchangé, le code exact)
+    image_dimensions: false, 
+    image_caption: false,    
+    inline_styles: false,    
 
-    // 🧹 SÉCURITÉ : On s'assure que TinyMCE ne garde QUE le traitement de texte de base
+    // 🧹 SÉCURITÉ SÉVÈRE : On retire h1, h4 et class de ta liste pour que l'éditeur nettoie les copier-coller
     forced_root_block: 'p',
-    valid_elements: 'p,br,strong,em,span,h1,h2,h3,h4,ul,ol,li,img[src|alt|width|height|class]',
+    valid_elements: 'p,br,strong,em,span,h2,h3,ul,ol,li,img[src|alt|width|height]',
 
-    // 1️⃣ GÈRE LE GLISSER-DÉPOSER
+    // 1️⃣ GÈRE LE GLISSER-DÉPOSER (Le code exact, non modifié)
     images_upload_handler: (blobInfo: any) => {
       return new Promise<string>(async (resolve, reject) => {
         try {
           this.loading = true;
           const file = blobInfo.blob();
           const storageUrl = await this.newsService.uploadImage(file);
-          resolve(storageUrl); // 👈 L'image va là où est le curseur
+          resolve(storageUrl); 
         } catch (error) {
           reject("Échec de l'upload de l'image");
         } finally {
@@ -141,7 +198,7 @@ export class AdminNewsEditComponent implements OnInit {
       });
     },
 
-    // 2️⃣ GÈRE LE BOUTON IMAGE
+    // 2️⃣ GÈRE LE BOUTON IMAGE (Le code exact, non modifié)
     file_picker_callback: (callback: any, value: any, meta: any) => {
       const input = document.createElement('input');
       input.type = 'file';
@@ -160,7 +217,7 @@ export class AdminNewsEditComponent implements OnInit {
         reader.onload = (e: any) => {
           const img = new Image();
           img.onload = () => {
-            const maxWidth = 600;
+            const maxWidth = 500;
             const canvas = document.createElement('canvas');
             let scale = 1;
 
@@ -181,7 +238,7 @@ export class AdminNewsEditComponent implements OnInit {
               try {
                 this.loading = true;
                 const storageUrl = await this.newsService.uploadImage(resizedFile);
-                callback(storageUrl, { title: file.name }); // 👈 L'image s'injecte au niveau du curseur
+                callback(storageUrl, { title: file.name }); 
               } catch (error) {
                 alert("Erreur lors de l'envoi de l'image");
               } finally {

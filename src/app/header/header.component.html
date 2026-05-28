@@ -61,20 +61,31 @@
                                     (click)="navigateTo('/admin/centers')">Centres</a>
                                 <hr>
                             </li>
-                            <!-- pour vue des filtres quantitatifs -->
-                            <li *ngIf="userRole?.includes('editor')"><a class="dropdown-item"
-                                    (click)="navigateTo('/admin/leads')">Vue quantitative
-                                    candidats</a>
-                            </li>
+
                             <li *ngIf="userRole?.includes('data-analyst')"><a class="dropdown-item"
                                     (click)="navigateTo('/admin/analyst-leads')">Vue quantitative
                                     candidats</a>
                             </li>
 
+                            <!-- POUR EDITOR -->
                             <!-- pour gestion Kit Médias -->
-                            <li *ngIf="userRole?.includes('editor')"><a class="dropdown-item"
-                                    (click)="navigateTo('/admin/marketing-docs-list')">Gestion Kit Medias</a>
+                            <li *ngIf="userRole?.includes('editor')">
+                                <a class="dropdown-item" (click)="navigateTo('/admin/marketing-docs-list')">Gestion Kit
+                                    Medias</a>
                             </li>
+                            <li *ngIf="userRole?.includes('editor')">
+                                <a class="dropdown-item" (click)="navigateTo('/admin/news')">Gestion News/Editorial</a>
+                            </li>
+
+                            <li *ngIf="userRole?.includes('editor')">
+                                <hr class="dropdown-divider">
+                            </li>
+
+                            <li *ngIf="userRole?.includes('editor')">
+                                <a class="dropdown-item" (click)="navigateTo('/admin/leads')">Vue quantitative
+                                    candidats</a>
+                            </li>
+                            <!-- FIN EDITOR -->
 
                             <li *ngIf="userRole?.includes('admin')|| userRole?.includes('manager')"><a
                                     class="dropdown-item" [routerLink]="['/admin/evaluators']">Gestion des
@@ -528,7 +539,7 @@
                                 <a class="dropdown-item" (click)="closeNavbar()" target="_blank"
                                     rel="noopener noreferrer" role="button"
                                     aria-label="Information prescripteurs et recruteurs partenaires"
-                                    [routerLink]="['market-app']">Infos Prescripteurs</a>
+                                    [routerLink]="['market-app']">Mission de l'application</a>
                             </li>
                             <li><a class="dropdown-item" (click)="closeNavbar()" target="_blank"
                                     rel="noopener noreferrer" role="button" aria-label="Tous les centres en ligne"

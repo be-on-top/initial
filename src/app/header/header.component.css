@@ -74,6 +74,10 @@ li.nav-item.social a::before {
     /* Opacité complète pour le soulignement */
 }
 
+.dropdown-item {
+  cursor: pointer;
+}
+
 /* 
 li.submenu{border: none;}
 
