@@ -13,9 +13,10 @@ export class MarketAppComponent implements OnInit, AfterViewInit, OnDestroy {
 
   paragraphs: string[] = [
     "...en réunissant organismes de formation, entreprises, spécialistes de l'intérim et partenaires de l'accompagnement",
+    "...en restituant, par métier et compétences, les durées préconisées selon le niveau chacun",
     "...en privilégiant smartphones, tablettes et interactivité entre apprenants, formateurs et conseillers",
     "...en confiant à des experts, la conception d'outils d'évaluation, en phase avec les entreprises",
-    "...en restituant, par métier et compétences, les durées préconisées selon le niveau chacun"
+
   ];
 
   currentIndex: number = 0;
@@ -56,7 +57,7 @@ export class MarketAppComponent implements OnInit, AfterViewInit, OnDestroy {
     if (myCarousel) {
       // @ts-ignore
       const carousel = new bootstrap.Carousel(myCarousel, {
-        interval: 8000,
+        interval: 9000,
         ride: 'carousel'
       });
       setTimeout(() => { carousel.cycle(); }, 1000);

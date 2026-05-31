@@ -565,7 +565,12 @@
                             <li *ngIf="userRole?.includes('editor')"><a class="dropdown-item" (click)="closeNavbar()"
                                     target="_blank" rel="noopener noreferrer" role="button"
                                     aria-label="Types de candidats par inscription formation"
-                                    (click)="navigateTo('marketing-pack')">Kit médias public</a>
+                                    (click)="navigateTo('marketing-pack')">Kit médias VS public</a>
+                            </li>
+                            <li *ngIf="userRole?.includes('editor')"><a class="dropdown-item" (click)="closeNavbar()"
+                                    target="_blank" rel="noopener noreferrer" role="button"
+                                    aria-label="Types de candidats par inscription formation"
+                                    (click)="navigateTo('news')">News/Articles VS public</a>
                             </li>
 
 

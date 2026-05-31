@@ -4,7 +4,7 @@
 #image {
     position: relative;
     /* The background image */
-    background-image: url("/assets/be-on-top-market-app.jpg");
+    background-image: url("/assets/be-on-top-market-app.webp");
 
     /* Largeur relative à l'écran */
     aspect-ratio: 5 / 2;
@@ -21,14 +21,21 @@
 
 p {
     transition: background-color 0.5s ease-in-out;
-
+    /* background-color: #007bff; */  
+    border-radius: 4px;
+}
+p.currentIndex{
+    font-size: 1.3rem;
 }
 
-p mark {
+/* p mark {
 
     background-color: #007bff;
     color: white;
-}
+    font-size:1.3rem;
+    border-radius: 3rem;
+    
+} */
 
 .display-4 {
     font-size: 1.8rem;
@@ -76,7 +83,8 @@ p mark {
     }
 
     p {
-        font-size: 1.15rem;
+        font-size: 1.1rem!important;
+        padding: 4px;
     }
 
 }

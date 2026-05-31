@@ -62,7 +62,7 @@
             <a [routerLink]="['/admin/addStudent']" class="text-white"><i
                     class="bi bi-person-fill-add me-2"></i>Ajouter</a></button>
 
-        <div class="row mt-3 text-secondary justify-content-between">
+        <div class="row mt-3 text-secondary justify-content-between" *ngIf="userRouterLinks.user!=='referentsContacts'">
 
             <div class="col-md-6 d-flex flex-column justify-content-between">
                 <p class="text-dark">Activer un filtre <strong>OU</strong> un autre</p>
@@ -150,7 +150,7 @@
                 <!-- puisqu'il faut compliquer -->
                 <!-- ici, pour restreindre la liste des filtres additionnels au seul admin -->
                 <ng-container
-                    *ngIf="userRouterLinks.user==='admin'|| userRouterLinks.user==='editor'|| userRouterLinks.user=='data-analyst' || userRouterLinks.user==='external' || userRouterLinks.user==='referentsContacts'">
+                    *ngIf="userRouterLinks.user==='admin'|| userRouterLinks.user==='editor'|| userRouterLinks.user=='data-analyst' || userRouterLinks.user==='external'">
                     <!-- 
                     <div *ngFor="let trade of trades">
                         <div class="form-check">
@@ -186,7 +186,7 @@
                             <option *ngFor="let trade of trades" [ngValue]="trade">{{ trade }}</option>
                         </select>
 
-                    </ng-container>
+                   </ng-container> 
 
 
                     <!-- <ng-container *ngIf="tradesActivated"> -->

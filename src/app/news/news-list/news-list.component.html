@@ -1,9 +1,19 @@
 <div class="container mt-4">
 
-    <h1 class="newsTitle mb-4">Actualités (ou n'importe quel titre qui justifie le truc)</h1>
+    <h1 class="newsTitle mb-4">News/Articles</h1>
     <!-- <pre>{{ news$ | async | json }}</pre> -->
+    <div class="alert bg-dark text-white w-100 text-center" role="region" aria-label="Informations sur la rubrique">
+        <!-- <p class="mb-2">
+            <span aria-hidden="true">ℹ️</span>
+            <strong>Pratiques &amp; Usages</strong>
+        </p> -->
 
-    <div class="alert bg-primary text-light w-100 text-center">Non une application métier n'est pas un site éditorial. A utiliser avec parcimonie pour vos éléments de langage. </div>
+        Cet espace éditorial rassemble les articles de fond, thématiques transverses, actualités, témoignages et
+        regards croisés autour de la formation et de l'application.
+
+
+    </div>
+
 
     <div class="list-group">
 
@@ -18,6 +28,15 @@
             </p>
 
         </a>
+
+    </div>
+
+    <div class="alert bg-dark text-white w-100 text-center mt-3" role="region" aria-label="Informations générale et mission de l'application">
+
+        Pour toute question sur la mission globale de l'outil, ses utilisateurs, son édition et son écosystème, merci de vous
+        reporter directement à la
+        <a [routerLink]="['/market-app']" class="text-white text-underline"
+            aria-label="Consulter la FAQ / Mission de l'application">FAQ / Mission de l'application</a>.
 
     </div>
 
