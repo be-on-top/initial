@@ -527,7 +527,7 @@
                     <!-- fin tuteurs -->
 
                     <!-- pour marketing momentanné -->
-                    <li *ngIf="userRole?.includes('editor') || userRole?.includes('data-analyst')"
+                    <li *ngIf="userRole?.includes('editor') || userRole?.includes('data-analyst') || userRole?.includes('external') || userRole?.includes('referentsContacts') "
                         class="nav-item dropdown" [routerLinkActive]="['active']">
                         <a class="nav-link dropdown-toggle" href="#" role="button"
                             data-bs-toggle="dropdown">Informations
@@ -538,41 +538,44 @@
                             <li>
                                 <a class="dropdown-item" (click)="closeNavbar()" target="_blank"
                                     rel="noopener noreferrer" role="button"
-                                    aria-label="Information prescripteurs et recruteurs partenaires"
+                                    aria-label="Informations prescripteurs et recruteurs partenaires"
                                     [routerLink]="['market-app']">Mission de l'application</a>
                             </li>
+                            <li><hr></li>
                             <li><a class="dropdown-item" (click)="closeNavbar()" target="_blank"
                                     rel="noopener noreferrer" role="button" aria-label="Tous les centres en ligne"
-                                    [routerLink]="['centersIndex']">Nos
-                                    Centres</a>
+                                    [routerLink]="['centersIndex']">Index des Centres</a>
                             </li>
                             <li><a class="dropdown-item" (click)="closeNavbar()" target="_blank"
                                     rel="noopener noreferrer" role="button" aria-label="Toutes les formations"
-                                    [routerLink]="['trainingsIndex']">Nos
-                                    formations</a>
+                                    [routerLink]="['trainingsIndex']">Index des Formations</a>
                             </li>
                             <li><a class="dropdown-item" (click)="closeNavbar()" target="_blank"
                                     rel="noopener noreferrer" role="button" aria-label="Tous les comptes professionnels"
-                                    [routerLink]="['/admin/professionalsList']">Nos comptes
-                                    professionnels</a>
+                                    [routerLink]="['/admin/professionalsList']">Comptes
+                                    Professionnels</a>
                             </li>
                             <li><a class="dropdown-item" (click)="closeNavbar()" target="_blank"
                                     rel="noopener noreferrer" role="button"
                                     aria-label="Types de candidats par inscription formation"
                                     (click)="navigateTo('trainingStats')">Typologie des candidats</a>
                             </li>
+                            <li><hr>
+
+                            </li>
+                            
+
                             <!-- pour le kit média version publique -->
-                            <li *ngIf="userRole?.includes('editor')"><a class="dropdown-item" (click)="closeNavbar()"
+                            <li><a class="dropdown-item" (click)="closeNavbar()"
                                     target="_blank" rel="noopener noreferrer" role="button"
                                     aria-label="Types de candidats par inscription formation"
                                     (click)="navigateTo('marketing-pack')">Kit médias VS public</a>
                             </li>
-                            <li *ngIf="userRole?.includes('editor')"><a class="dropdown-item" (click)="closeNavbar()"
+                            <li><a class="dropdown-item" (click)="closeNavbar()"
                                     target="_blank" rel="noopener noreferrer" role="button"
                                     aria-label="Types de candidats par inscription formation"
                                     (click)="navigateTo('news')">News/Articles VS public</a>
                             </li>
-
 
                         </ul>
                     </li>

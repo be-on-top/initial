@@ -377,7 +377,11 @@ if (this.userRole?.includes('external') && this.userUid) {
     } else if (this.userRole?.includes('editor')) {
       // Rediriger vers support Tuteurs
       this.router.navigate(['/market-app']);
-    } else {
+    }    else if (this.userRole?.includes('external') || this.userRole?.includes('referentsContacts') ) {
+      // Rediriger vers support Tuteurs
+      this.router.navigate(['/market-app']);
+    } 
+    else {
       // Rediriger vers une route interne de l'application
       this.router.navigate(['/benefits']);
     }
