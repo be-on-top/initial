@@ -124,12 +124,12 @@
                 </div>
 
                 <!-- pour tester l'existence d'une unité d'exercices finalisée -->
-                <!-- <div class="form-check" *ngIf="userRouterLinks.user==='admin'">
+                <div class="form-check" *ngIf="userRouterLinks.user==='admin' || userRouterLinks.user==='referent'">
                     <label class="form-check-label" for="workbookCheckbox">A finalisé une unité d'exercice </label>
                     <input type="checkbox" (change)="onCheckboxChangeWorkBookUnit($event)"
                         class="form-check-input" id="workbookCheckbox"
                         [checked]="isWorkbookFilter===true || storedValue==='isWorkbookFilter'">
-                </div> -->
+                </div>
 
                 <!-- pour fliquer ce que font les formateurs quand ils sont formés par quelqu'un qui les induit en erreur -->
                 <div class="form-check"

@@ -331,6 +331,10 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
         // 🎯 Ajout de test synchrone OK :
         // Property 'hasWorkbookUnit1' comes from an index signature, so it must be accessed with ['hasWorkbookUnit1'].
         // const hasWorkbook = student['hasWorkbookUnit1'] === true;
+        // 🎯 Filtre générique : l'étudiant a fait AU MOINS une unité
+        const hasWorkbook = Object.keys(student).some(key =>
+          key.startsWith('hasWorkbook') && student[key as keyof typeof student] === true
+        );
 
         const isVisible = (this.userRouterLinks.user === 'external' || this.userRouterLinks.user === 'referentsContacts')
           ? student['isPublish'] !== false
@@ -583,17 +587,6 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       );
 
 
-      // Extrait les UIDs des étudiants
-      // const uids = this.allStudents.map(student => student.id)
-      // console.log("all students with no socialFormSent", uids)
-      // Passe les UIDs au service pour interroger Firestore (desactivé juste pour test OK)
-      //   this.service.checkTokensForStudents(uids).then(tokens => {
-      //   // Les tokens trouvés seront stockés ici
-      //   this.studentsWithToken = tokens;
-      //   console.log(this.studentsWithToken); // Ou fais ce que tu veux avec les tokens
-      // });
-
-
     } else if (this.isSubscriptionFilter || this.storedValue === 'isSubscriptionFilter') {
       this.allStudents = this.initialStudents.filter(student => student.subscriptions);
       // this.tradesActivated = true
@@ -607,9 +600,19 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     }
 
     // si on active le filtre : a-t-il terminé une unité de workbook quelle qu'elle soit
-    else if (this.isWorkbookFilter || this.storedValue === 'isWorkbookUnit') {
-      // Filtre direct, instantané et propre pour TypeScript
-      this.allStudents = this.initialStudents.filter(student => student['hasWorkbookUnit1'] === true);
+    // else if (this.isWorkbookFilter || this.storedValue === 'isWorkbookUnit') {
+    //   // Filtre direct, instantané et propre pour TypeScript
+    //   this.allStudents = this.initialStudents.filter(student => student['hasWorkbookUnit1'] === true);
+    // }
+    // si on active le filtre : a-t-il terminé une unité de workbook quelle qu'elle soit
+    else if (this.isWorkbookFilter || this.storedValue === 'isWorkbookFilter') { // 👈 Attention j'ai harmonisé 'isWorkbookFilter' avec ton HTML !
+      
+      // Filtre générique, dynamique et sans impact sur les performances
+      this.allStudents = this.initialStudents.filter(student => 
+        Object.keys(student).some(key => 
+          key.toLowerCase().startsWith('hasworkbook') && student[key] === true
+        )
+      );
     }
 
     else if (this.isTradeFilter) {
@@ -728,20 +731,20 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
 
 
   onCheckboxChangeWorkBookUnit(event: any) {
-  this.resetAllFilters();
-  this.isWorkbookFilter = event.target.checked;
-  
-  if (event.target.checked) {
-    // 🎯 Correction : On utilise la clé 'isWorkbookFilter' partout
-    localStorage.setItem('filter', 'isWorkbookFilter');
-    this.storedValue = 'isWorkbookFilter';
-    this.applyFilters();
-  } else {
-    localStorage.removeItem('filter');
-    this.storedValue = '';
-    this.applyFilters();
+    this.resetAllFilters();
+    this.isWorkbookFilter = event.target.checked;
+
+    if (event.target.checked) {
+      // 🎯 Correction : On utilise la clé 'isWorkbookFilter' partout
+      localStorage.setItem('filter', 'isWorkbookFilter');
+      this.storedValue = 'isWorkbookFilter';
+      this.applyFilters();
+    } else {
+      localStorage.removeItem('filter');
+      this.storedValue = '';
+      this.applyFilters();
+    }
   }
-}
 
 
   onTradeTrainingSelect(trade: string | null) {
