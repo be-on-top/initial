@@ -594,42 +594,34 @@
         class="list-group-item bg-transparent d-flex justify-content-between align-items-center ps-0 border-bottom py-3">
 
         <div>
-          <!-- Nom de la catégorie (ex: Compréhension écrite) -->
           <h6 class="mb-0 fw-bold">{{ score.key }}</h6>
 
-          <!-- Note ramenée sur 20 -->
           <small *ngIf="score.value !== null && getCategoryMaxScore(score.key) as maxScore" class="text-muted">
-            Note calculée : {{ ((score.value / maxScore) * 20) | number:'1.1-1' }} /
-              20
+            Note calculée : {{ ((score.value / maxScore) * 20) | number:'1.1-1' }} / 20
           </small>
         </div>
 
-        <!-- Badge de score classique -->
-        <span *ngIf="score.value !== null && getCategoryMaxScore(score.key) as maxScore"
-          class="badge bg-primary rounded-0 fs-6">
-          {{ score.value }} / {{ maxScore }} pts
-        </span>
+        <button *ngIf="score.value !== null && getCategoryMaxScore(score.key) as maxScore"
+          (click)="editCategoryScore(score.key)" type="button" class="btn btn-primary btn-sm rounded-0 fs-6">
+          ⭐ {{ score.value }} / {{ maxScore }} pts
+        </button>
 
-        <!-- Badge exercice libre -->
-        <span *ngIf="score.value === null" class="badge bg-secondary rounded-0 fs-6 text-uppercase fw-normal">
-          Non scoré / À évaluer
-        </span>
+        <button *ngIf="score.value === null" (click)="editCategoryScore(score.key)" type="button"
+          class="btn btn-secondary btn-sm rounded-0 fs-6 text-uppercase text-white">
+          ✍️ Non scoré / À évaluer
+        </button>
 
       </li>
-      <!-- 📄 Fin de la liste des compétences -->
     </ul>
 
-    <!-- 🏆 RÉSULTAT GLOBAL COMPLEMENTAIRE -->
-    <div *ngIf="getGlobalScore() as global"
-      class="mt-4 pt-3 d-flex justify-content-between align-items-center">
+    <div *ngIf="getGlobalScore() as global" class="mt-4 pt-3 d-flex justify-content-between align-items-center">
       <div>
         <h4 class="mb-0 text-dark fw-bold">Note Globale Finale</h4>
         <small class="text-muted">
-          Basée sur un cumul de {{ global.obtenu }} / {{ global.max }} points (hors production écrite)
+          Basée sur un cumul de {{ global.obtenu }} / {{ global.max }} points
         </small>
       </div>
 
-      <!-- Grosse note globale bien visible -->
       <div class="text-end">
         <span class="fs-2 fw-black text-primary border border-primary p-2 px-3 bg-white">
           {{ getGlobalNoteOn20() }} / 20
@@ -637,7 +629,14 @@
       </div>
     </div>
 
-  </div> <!-- Fin du div principal Vue Référent -->
+  </div> ```
+
+  <!-- ### Ce qui change visuellement :
+1. Les exercices libres (`null`) affichent un bouton jaune/orange **"✍️ À ÉVALUER"** bien visible.
+2. Les catégories déjà calculées automatiquement s'affichent sous forme de bouton bleu standard.
+3. Dès que le référent clique sur l'un ou l'autre, la fonction se déclenche, le prompt s'ouvre, enregistre dans Firestore, et le calcul global en bas se met à jour immédiatement sur l'écran. -->
+
+  <!-- Fin du div principal Vue Référent -->
 
 
 </div>

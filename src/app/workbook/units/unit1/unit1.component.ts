@@ -71,9 +71,9 @@ export class Unit1Component {
     { id: 'ex4', category: this.categories[1], duration: 60, maxScore: 2 },  // Q4
     { id: 'ex5', category: this.categories[1], duration: 25, maxScore: 1 },  // Q5
     { id: 'ex6', category: this.categories[1], duration: 120, maxScore: 3 },  // Slots (ex: 4)
-    { id: 'ex7', category: this.categories[2], maxScore: null },              // Libre / À évaluer sur 5
+    { id: 'ex7', category: this.categories[2], maxScore: 5 },              // Libre / À évaluer sur 5
     { id: 'ex8', category: this.categories[3], duration: 180, maxScore: 10 },  // Items (ex: 5)
-    { id: 'ex9', category: this.categories[2], maxScore: null }               // Libre / À évaluer sur 10
+    { id: 'ex9', category: this.categories[2], maxScore: 10 }               // Libre / À évaluer sur 10
   ];
 
 
@@ -185,7 +185,7 @@ export class Unit1Component {
 
 
 
-  constructor(private fb: FormBuilder, private auth: AuthService, private service: WorkbookService, private route: ActivatedRoute, private router:Router) {
+  constructor(private fb: FormBuilder, private auth: AuthService, private service: WorkbookService, private route: ActivatedRoute, private router: Router) {
     this.initForms();
 
     const saved = localStorage.getItem('unit1_aggregation');
@@ -212,16 +212,31 @@ export class Unit1Component {
       this.isReferentView = true; // On active la vue référent
 
       // 🔒 LE VERROU SÉCURITÉ DIRECTEMENT ICI
+      // 🔒 LE VERROU SÉCURITÉ DIRECTEMENT ICI
+      // 🔒 LE VERROU SÉCURITÉ DIRECTEMENT ICI
       this.auth.getCurrentUserRole().subscribe(userInfo => {
-        // Si la personne connectée n'est NI admin NI référent -> Bazardé !
-        if (userInfo !== 'admin' && userInfo !== 'referent') {
-          console.warn("🚫 Accès refusé : Rôle insuffisant.");
-          alert("🚫 Accès refusé : Vous n'avez pas les droits pour voir cette page.");
+        // 1️⃣ Sécurité : Si le rôle n'est pas encore chargé, on attend l'émission suivante
+        if (!userInfo) {
+          console.log("⏳ En attente du chargement du rôle...");
+          return;
+        }
+
+        // 2️⃣ Extraction et Normalisation : On gère le fait que ce soit une string ou un tableau
+        const rawRole = Array.isArray(userInfo) ? userInfo[0] : userInfo;
+        const cleanedRole = rawRole.trim().toLowerCase();
+
+        console.log("Rôle détecté et nettoyé par le verrou :", cleanedRole);
+
+        // 3️⃣ Le contrôle strict (avec notre fameux &&)
+        if (cleanedRole !== 'admin' && cleanedRole !== 'referent') {
+          console.warn("🚫 Accès refusé : Rôle insuffisant.", cleanedRole);
+          alert(`🚫 Accès refusé : Le rôle "${cleanedRole}" n'a pas les droits.`);
           this.router.navigate(['/home']);
           return;
         }
 
-        // Si le rôle est OK (admin ou référent), ALORS on charge les données
+        // Si on arrive ici, c'est que cleanedRole vaut 'admin' ou 'referent'
+        console.log("✅ Accès accordé pour le rôle :", cleanedRole);
         this.loadData();
       });
 
@@ -1253,7 +1268,44 @@ export class Unit1Component {
     return Math.round(rawNote * 2) / 2; // Arrondi au demi-point (ex: 14.25 -> 14.5)
   }
 
+  // ✍️ Permet au référent d'attribuer une note à une catégorie non scorée (ou de la modifier)
+  editCategoryScore(categoryName: string) {
+    if (!this.isReferentView) return;
 
+    // 1️⃣ Le max score est calculé 100% AUTOMATIQUEMENT ici par ta méthode
+    const maxPoints = this.getCategoryMaxScore(categoryName);
+    if (maxPoints === null || maxPoints === 0) {
+      alert(`Impossible de récupérer le score maximum automatique pour la catégorie "${categoryName}".`);
+      return;
+    }
 
+    // 2️⃣ Récupération du score brut actuel
+    const currentPoints = this.aggregateState[categoryName] !== null ? this.aggregateState[categoryName] : '';
+
+    // 3️⃣ L'invite affiche automatiquement la valeur calculée (ex: 15 points)
+    const response = prompt(`Entrez le score brut pour "${categoryName}" (Maximum automatique : ${maxPoints} points) :`, currentPoints.toString());
+    if (response === null) return; // Annulation
+
+    const parsedScore = parseFloat(response);
+
+    // 4️⃣ Contrôle de la saisie par rapport au max calculé automatiquement
+    if (isNaN(parsedScore) || parsedScore < 0 || parsedScore > maxPoints) {
+      alert(`Veuillez entrer un score valide entre 0 et ${maxPoints}.`);
+      return;
+    }
+
+    // 5️⃣ Mise à jour de ton objet local avec les points saisis
+    this.aggregateState[categoryName] = parsedScore;
+
+    // 6️⃣ Sauvegarde exclusive dans le Workbook via la méthode dédiée
+    this.service.saveUnitResultUpdate(this.uid, "unit1", this.aggregateState)
+      .then(() => {
+        console.log(`✅ Score mis à jour avec succès pour : ${categoryName}`);
+      })
+      .catch(err => {
+        console.error("Erreur Firestore :", err);
+        alert("Erreur lors de l'enregistrement.");
+      });
+  }
 
 }

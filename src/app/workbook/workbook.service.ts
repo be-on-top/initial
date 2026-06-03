@@ -140,6 +140,22 @@ async saveUnitResult(
   return Promise.all([saveWorkbookPromise, saveStudentPromise]);
 }
 
+// pour enregistrer uniquement dans workbook les ajustements demandés par le référent/correcteur
+saveUnitResultUpdate(
+    uid: string,
+    unitId: string,
+    aggregateState: Record<string, number | null> = {}
+  ) {
+    const ref = doc(this.firestore, `workbook/${uid}`);
+
+    // Écriture chirurgicale dans le tiroir .result avec fusion
+    return setDoc(
+      ref,
+      { [`units.${unitId}.result`]: aggregateState },
+      { merge: true }
+    );
+  }
+
 
   
 
