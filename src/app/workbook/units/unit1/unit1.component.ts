@@ -185,7 +185,7 @@ export class Unit1Component {
 
 
 
-  constructor(private fb: FormBuilder, private auth: AuthService, private service: WorkbookService, private route: ActivatedRoute) {
+  constructor(private fb: FormBuilder, private auth: AuthService, private service: WorkbookService, private route: ActivatedRoute, private router:Router) {
     this.initForms();
 
     const saved = localStorage.getItem('unit1_aggregation');
@@ -199,12 +199,33 @@ export class Unit1Component {
     // 🔎 Vérification si un UID est passé en paramètre
     const routeUid = this.route.snapshot.paramMap.get('uid');
 
+    // if (routeUid) {
+    //   this.uid = routeUid;
+    //   // 👉 MODE REFERENT      
+    //   this.loadData()
+    //   this.isReferentView = true
+    //   return; // ⛔ on ne passe PAS par auth
+    // }
+
     if (routeUid) {
       this.uid = routeUid;
-      // 👉 MODE REFERENT
-      this.loadData()
-      this.isReferentView = true
-      return; // ⛔ on ne passe PAS par auth
+      this.isReferentView = true; // On active la vue référent
+
+      // 🔒 LE VERROU SÉCURITÉ DIRECTEMENT ICI
+      this.auth.getCurrentUserRole().subscribe(userInfo => {
+        // Si la personne connectée n'est NI admin NI référent -> Bazardé !
+        if (userInfo !== 'admin' && userInfo !== 'referent') {
+          console.warn("🚫 Accès refusé : Rôle insuffisant.");
+          alert("🚫 Accès refusé : Vous n'avez pas les droits pour voir cette page.");
+          this.router.navigate(['/home']);
+          return;
+        }
+
+        // Si le rôle est OK (admin ou référent), ALORS on charge les données
+        this.loadData();
+      });
+
+      return; // ⛔ on ne passe PAS par auth pour la logique student en dessous
     }
 
     // 🧹 Reset de l'état local des scores à chaque chargement de l'unité
