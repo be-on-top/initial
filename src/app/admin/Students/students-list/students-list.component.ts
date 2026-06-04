@@ -340,9 +340,9 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
           ? student['isPublish'] !== false
           : true;
 
-        return hasResults && isVisible;
+        // return hasResults && isVisible;
         // L'étudiant remonte s'il a l'un OU l'autre test OK
-        // return (hasResults || hasWorkbook) && isVisible;
+        return (hasResults || hasWorkbook) && isVisible;
       }))
 
 

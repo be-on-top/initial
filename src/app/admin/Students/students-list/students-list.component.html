@@ -125,7 +125,7 @@
 
                 <!-- pour tester l'existence d'une unité d'exercices finalisée -->
                 <div class="form-check" *ngIf="userRouterLinks.user==='admin' || userRouterLinks.user==='referent'">
-                    <label class="form-check-label" for="workbookCheckbox">A finalisé une unité d'exercice </label>
+                    <label class="form-check-label" for="workbookCheckbox">A finalisé une unité d'exercice (compétences transversales)</label>
                     <input type="checkbox" (change)="onCheckboxChangeWorkBookUnit($event)"
                         class="form-check-input" id="workbookCheckbox"
                         [checked]="isWorkbookFilter===true || storedValue==='isWorkbookFilter'">

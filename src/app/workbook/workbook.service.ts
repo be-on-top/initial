@@ -123,7 +123,7 @@ async saveUnitResult(
   
   // 💡 OPTION A : Flags dynamiques par unité (hasWorkbookUnit1, hasWorkbookUnit2...)
   const studentData = {
-    [`hasWorkbookUnit${unitId}`]: true
+    [`hasWorkbook${unitId}`]: true
   };
 
   /* 💡 OPTION B : Flag global unique (hasWorkbookUnit)
