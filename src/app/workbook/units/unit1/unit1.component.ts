@@ -212,8 +212,6 @@ export class Unit1Component {
       this.isReferentView = true; // On active la vue référent
 
       // 🔒 LE VERROU SÉCURITÉ DIRECTEMENT ICI
-      // 🔒 LE VERROU SÉCURITÉ DIRECTEMENT ICI
-      // 🔒 LE VERROU SÉCURITÉ DIRECTEMENT ICI
       this.auth.getCurrentUserRole().subscribe(userInfo => {
         // 1️⃣ Sécurité : Si le rôle n'est pas encore chargé, on attend l'émission suivante
         if (!userInfo) {
@@ -320,6 +318,11 @@ export class Unit1Component {
       adresse: [''],
       loisir: ['']
     });
+
+    // Si l'utilisateur n'est pas connecté OU qu'il n'est ni étudiant ni référent en mode vue
+    if (this.isNotAuthenticated || (!this.isStudent && !this.isReferentView)) {
+      this.formEx1.disable(); // Désactive d'un coup tous les inputs du formulaire
+    }
 
     // EX2
     this.formEx2 = this.fb.group({

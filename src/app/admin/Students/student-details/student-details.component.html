@@ -98,7 +98,7 @@
 
         <!-- zone dédiée au suivi des QCM et estimations chiffrées si elles existent -->
         <!-- Hypothèse à revoir selon le statut de external !!!! -->
-        <div class="card" *ngIf="nonVide(tradesEvaluated) && userRouterLinks.user!=='external'">
+        <div class="card" *ngIf="(nonVide(tradesEvaluated) || hasCompletedUnit1) && userRouterLinks.user!=='external'">
             <div class="card-header bg-primary">
                 <a class="btn text-light d-flex justify-content-between px-0" data-bs-toggle="collapse"
                     href="#collapseTwo">
@@ -115,7 +115,7 @@
                     <!-- {{tradesEvaluated}} -->
                     <!-- nouveauté pour multi quizz VERSION 2 -->
 
-                    <div *ngIf="student && tradesEvaluated; else none">
+                   <div *ngIf="student && tradesEvaluated && tradesEvaluated.length > 0; else none">
                         <!-- comme on ne questionnera plus tradeEvaluated mais tradesEvaluated [], on va devoir, avant d'inspecter la suite des ngIf, avoir une boucle ngFor pour voir métier après métier...  -->
                         <!-- attention, compte tenu de la manière dont tradesEvaluated a été généré, trade ici, c'est une chaine de caractère type quizz_sigle -->
 
@@ -213,14 +213,13 @@
                     <ng-template #none> <span>Aucun questionnaire métier en cours</span>
                     </ng-template>
 
-                    
+
 
                     <!-- Pour EVALUATIONS TRANSVERSES WORKBOOK -->
                     <div class="mt-5 border-top pt-5">
                         <h4 class="fw-bold mb-2">🎯 Évaluations transverses (Exercices en ligne)</h4>
 
-                        <div *ngIf="hasCompletedUnit1"
-                            class="d-flex align-items-center justify-content-between py-2">
+                        <div *ngIf="hasCompletedUnit1" class="d-flex align-items-center justify-content-between py-2">
                             <p class="text-muted mb-0">
                                 <span class="badge bg-success rounded-0 me-2">Unité 1 FLE</span>
                                 Résultats disponibles !

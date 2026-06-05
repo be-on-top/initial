@@ -81,7 +81,7 @@
       </div>
 
       <button *ngIf="!isReferentView" type="submit" class="btn btn-primary"
-        aria-label="Valider le formulaire et passer à l'exercice suivant" [disabled]="isSubmitted('ex1')">
+        aria-label="Valider le formulaire et passer à l'exercice suivant" [disabled]="isSubmitted('ex1') || isNotAuthenticated || !isStudent">
         Suivant
       </button>
 
