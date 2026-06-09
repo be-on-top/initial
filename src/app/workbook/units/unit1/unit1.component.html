@@ -641,7 +641,7 @@
       </div>
     </div>
 
-  </div> ```
+  </div>
 
   <!-- ### Ce qui change visuellement :
 1. Les exercices libres (`null`) affichent un bouton jaune/orange **"✍️ À ÉVALUER"** bien visible.
@@ -649,6 +649,18 @@
 3. Dès que le référent clique sur l'un ou l'autre, la fonction se déclenche, le prompt s'ouvre, enregistre dans Firestore, et le calcul global en bas se met à jour immédiatement sur l'écran. -->
 
   <!-- Fin du div principal Vue Référent -->
+
+<!-- pour afficher le bouton ou le badge de confirmation proprement selon l'état de la base : -->
+<button *ngIf="isReferentView && !aggregateState['isFinal']" 
+        type="button" 
+        class="btn btn-danger my-3" 
+        (click)="cloturerEvaluation()">
+  <i class="bi bi-lock-fill me-2"></i>Clôturer l'évaluation
+</button>
+
+<div *ngIf="aggregateState['isFinal']" class="alert alert-success my-3 p-2 text-center">
+  <i class="bi bi-check-circle-fill me-2"></i> Évaluation clôturée définitivement. Les notes sont figées.
+</div>
 
 
 </div>

@@ -102,46 +102,46 @@ export class WorkbookService {
   // }
 
 
-async saveUnitResult(
-  uid: string,
-  unitId: string,
-  aggregateState: Record<string, number> = {}
-) {
+  async saveUnitResult(
+    uid: string,
+    unitId: string,
+    aggregateState: Record<string, number> = {}
+  ) {
 
-  // 1️⃣ Enregistrement classique dans la collection workbook
-  const workbookRef = doc(this.firestore, `workbook/${uid}`);
-  const saveWorkbookPromise = setDoc(
-    workbookRef,
-    { [`units.${unitId}.result`]: aggregateState },
-    { merge: true }
-  );
+    // 1️⃣ Enregistrement classique dans la collection workbook
+    const workbookRef = doc(this.firestore, `workbook/${uid}`);
+    const saveWorkbookPromise = setDoc(
+      workbookRef,
+      { [`units.${unitId}.result`]: aggregateState },
+      { merge: true }
+    );
 
-  // 2️⃣ Dénormalisation : Enregistrement du flag dans le document de l'étudiant
-  const studentRef = doc(this.firestore, `students/${uid}`);
-  
-  // 👉 CHOIX DE LA STRATÉGIE (Décommenter selon ce que je préfère pour la semaine prochaine) :
-  
-  // 💡 OPTION A : Flags dynamiques par unité (hasWorkbookUnit1, hasWorkbookUnit2...)
-  const studentData = {
-    [`hasWorkbook${unitId}`]: true
-  };
+    // 2️⃣ Dénormalisation : Enregistrement du flag dans le document de l'étudiant
+    const studentRef = doc(this.firestore, `students/${uid}`);
 
-  /* 💡 OPTION B : Flag global unique (hasWorkbookUnit)
-  const studentData = {
-    hasWorkbookUnit: true
-  };
-  */
+    // 👉 CHOIX DE LA STRATÉGIE (Décommenter selon ce que je préfère pour la semaine prochaine) :
 
-  // On utilise updateDoc pour ne SURTOUT PAS écraser la fiche de l'étudiant, 
-  // juste y ajouter/mettre à jour notre variable.
-  const saveStudentPromise = updateDoc(studentRef, studentData);
+    // 💡 OPTION A : Flags dynamiques par unité (hasWorkbookUnit1, hasWorkbookUnit2...)
+    const studentData = {
+      [`hasWorkbook${unitId}`]: true
+    };
 
-  // On attend que les deux écritures en base soient terminées
-  return Promise.all([saveWorkbookPromise, saveStudentPromise]);
-}
+    /* 💡 OPTION B : Flag global unique (hasWorkbookUnit)
+    const studentData = {
+      hasWorkbookUnit: true
+    };
+    */
 
-// pour enregistrer uniquement dans workbook les ajustements demandés par le référent/correcteur
-saveUnitResultUpdate(
+    // On utilise updateDoc pour ne SURTOUT PAS écraser la fiche de l'étudiant, 
+    // juste y ajouter/mettre à jour notre variable.
+    const saveStudentPromise = updateDoc(studentRef, studentData);
+
+    // On attend que les deux écritures en base soient terminées
+    return Promise.all([saveWorkbookPromise, saveStudentPromise]);
+  }
+
+  // pour enregistrer uniquement dans workbook les ajustements demandés par le référent/correcteur
+  saveUnitResultUpdate(
     uid: string,
     unitId: string,
     aggregateState: Record<string, number | null> = {}
@@ -157,6 +157,53 @@ saveUnitResultUpdate(
   }
 
 
-  
+
+  // async finalizeUnit(
+  //   uid: string,
+  //   unitId: string,
+  //   aggregateState: Record<string, number | null>,
+  //   finalScore: number
+  // ) {
+  //   // 1. Écriture dans le workbook avec le flag de clôture
+  //   const workbookRef = doc(this.firestore, `workbook/${uid}`);
+  //   const saveWorkbook = setDoc(
+  //     workbookRef,
+  //     { [`units.${unitId}.result`]: { ...aggregateState, isFinal: true } },
+  //     { merge: true }
+  //   );
+
+  //   // 2. Dénormalisation dans le dossier étudiant (note finale)
+  //   const studentRef = doc(this.firestore, `students/${uid}`);
+  //   const saveStudent = updateDoc(studentRef, {
+  //     [`units.${unitId}.finalScore`]: finalScore
+  //   });
+
+  //   return Promise.all([saveWorkbook, saveStudent]);
+  // }
+
+  async finalizeUnit(
+  uid: string,
+  unitId: string,
+  aggregateState: Record<string, number | null>,
+  noteSur20: number // On reçoit directement la valeur prête à l'emploi
+) {
+  // 1. Écriture dans le workbook avec le flag
+  const workbookRef = doc(this.firestore, `workbook/${uid}`);
+  const saveWorkbook = setDoc(
+    workbookRef,
+    { [`units.${unitId}.result`]: { ...aggregateState, isFinal: true } },
+    { merge: true }
+  );
+
+  // 2. Dénormalisation de la valeur finale (la note sur 20) dans le dossier étudiant
+  // C'est cette valeur qui sera affichée partout, sans calcul supplémentaire
+  const studentRef = doc(this.firestore, `students/${uid}`);
+  const saveStudent = updateDoc(studentRef, {
+    [`units.${unitId}.finalGrade`]: noteSur20 // On utilise un nom explicite
+  });
+
+  return Promise.all([saveWorkbook, saveStudent]);
+}
+
 
 }

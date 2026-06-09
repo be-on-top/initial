@@ -1367,4 +1367,61 @@ export class Unit1Component {
       });
   }
 
+
+
+//   cloturerEvaluation() {
+//   // 1️⃣ Calcul de la note globale basé STRICTEMENT sur ton aggregateState réel
+//   const totalScore = Object.values(this.aggregateState)
+//     .reduce((sum, val) => sum + (Number(val) || 0), 0);
+
+//   // 2️⃣ Injection chirurgicale du flag de verrouillage dans l'état du workbook
+//   const updatedState = {
+//     ...this.aggregateState,
+//     isFinal: true
+//   };
+
+//   // 3️⃣ Enregistrement dans le Workbook (fige le résultat pour le référent)
+//   const saveWorkbook = this.service.saveUnitResultUpdate(this.uid, 'unit1', updatedState);
+
+//   // 4️⃣ Enregistrement dans la fiche de l'étudiant (pour son tableau de bord global)
+//   // On utilise ta méthode saveUnitResult qui prend l'UID, l'unité et une Map
+//   const saveStudent = this.service.saveUnitResult(this.uid, 'unit1', {
+//     scoreTotal: totalScore,
+//     isFinal: true as any // Permet de passer le flag au besoin
+//   });
+
+//   // 5️⃣ Exécution synchrone des deux écritures
+//   Promise.all([saveWorkbook, saveStudent]).then(() => {
+//     alert("🎉 L'évaluation de l'Unité 1 est officiellement clôturée !");
+    
+//     // On met à jour localement pour réactivité immédiate de l'interface
+//     this.aggregateState['isFinal'] = true as any;
+//   });
+// }
+
+
+
+// async cloturerEvaluation() {
+//   const totalScore = Object.values(this.aggregateState)
+//     .reduce((sum, val) => sum + (Number(val) || 0), 0);
+
+//   // Tout se passe ici, dans ton service, comme il se doit
+//   await this.service.finalizeUnit(this.uid, 'unit1', this.aggregateState, totalScore);
+
+//   this.aggregateState['isFinal'] = true as any; 
+//   alert("✅ Évaluation clôturée.");
+// }
+
+async cloturerEvaluation() {
+  // On transforme le null en 0 si jamais il n'y a pas encore de note
+  const noteFinale = Number(this.getGlobalNoteOn20()) || 0; 
+
+  await this.service.finalizeUnit(this.uid, 'unit1', this.aggregateState, noteFinale);
+
+  this.aggregateState['isFinal'] = true as any; 
+  alert("✅ Évaluation clôturée.");
+}
+
+
+
 }
