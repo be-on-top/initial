@@ -26,7 +26,7 @@
     <!-- EXERCICE 1            -->
     <!-- ===================== -->
     <form *ngIf="isReferentView || currentStep === 0" [formGroup]="formEx1" (ngSubmit)="submitEx1()"
-      aria-labelledby="ex1-title">
+      aria-labelledby="ex1-title" [class.form-locked]="userRole !== 'student' && !isReferentView">
 
       <!-- HEADER -->
       <div id="ex1-title"
@@ -81,7 +81,8 @@
       </div>
 
       <button *ngIf="!isReferentView" type="submit" class="btn btn-primary"
-        aria-label="Valider le formulaire et passer à l'exercice suivant" [disabled]="isSubmitted('ex1') || isNotAuthenticated || !isStudent">
+        aria-label="Valider le formulaire et passer à l'exercice suivant"
+        [disabled]="isSubmitted('ex1') || isNotAuthenticated || !isStudent">
         Suivant
       </button>
 
@@ -261,14 +262,23 @@
         Quand Sasha peut-elle aller à la bibliothèque ?
       </div>
 
-      <div class="mb-3">
+      <!-- <div class="mb-3">
         <div *ngFor="let opt of q4Options" class="form-check">
           <input class="form-check-input" type="radio" formControlName="q4" [value]="opt.value" [id]="opt.value">
           <label class="form-check-label" [for]="opt.value">
             {{ opt.label }}
           </label>
         </div>
+      </div> -->
+      <div class="mb-3">
+        <div *ngFor="let opt of q4Options" class="form-check">
+          <input class="form-check-input" type="checkbox" [formControlName]="opt.key" [id]="opt.key">
+          <label class="form-check-label" [for]="opt.key">
+            {{ opt.label }}
+          </label>
+        </div>
       </div>
+
 
       <div *ngIf="steps && steps[3]?.duration" class="text-muted small mt-4">
         Temps estimé : {{ steps[3].duration }} secondes
@@ -281,6 +291,8 @@
 
       <button *ngIf="!isReferentView" type="submit" class="btn btn-primary">Suivant</button>
     </form>
+
+
 
     <hr *ngIf="isReferentView">
 

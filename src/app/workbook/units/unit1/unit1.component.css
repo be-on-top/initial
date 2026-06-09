@@ -68,6 +68,11 @@ div span{font-size: inherit;}
   outline-offset: 2px;
 }
 
+.form-locked {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
 @media (max-width: 765px) {
   span.badge.text-bg-dark.text-white {
     display: none !important;

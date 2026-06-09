@@ -1,6 +1,7 @@
 User-agent: *
 Disallow: /admin/
+Disallow: /formation$
+Disallow: /center$
 
 # On remplace l'ancien sitemap par l'index qui englobe TOUT (formations + centres)
 Sitemap: https://be-on-top.io/assets/sitemap-index.xml
-

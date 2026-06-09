@@ -127,10 +127,10 @@ export class Unit1Component {
 
   // EX4
   q4Options = [
-    { value: 'lundi17', label: 'Lundi 17h', correct: false },
-    { value: 'mardi13', label: 'Mardi 13h', correct: true },
-    { value: 'mercredi16', label: 'Mercredi 16h', correct: false },
-    { value: 'samedi1230', label: 'Samedi 12h30', correct: false }
+    { key: 'lundi17', label: 'Lundi 17h', correct: true },
+    { key: 'mardi13', label: 'Mardi 13h', correct: true },
+    { key: 'mercredi16', label: 'Mercredi 16h', correct: false },
+    { key: 'samedi1230', label: 'Samedi 12h30', correct: false }
   ];
 
   // EX6
@@ -320,9 +320,13 @@ export class Unit1Component {
     });
 
     // Si l'utilisateur n'est pas connecté OU qu'il n'est ni étudiant ni référent en mode vue
-    if (this.isNotAuthenticated || (!this.isStudent && !this.isReferentView)) {
-      this.formEx1.disable(); // Désactive d'un coup tous les inputs du formulaire
-    }
+    // if (this.isNotAuthenticated || (!this.isStudent && !this.isReferentView)) {
+    //   this.formEx1.disable(); // Désactive d'un coup tous les inputs du formulaire
+    // }
+    // Sécurité : Si ce n'est PAS un étudiant, on verrouille immédiatement
+    // if (!this.isStudent) {
+    //   this.formEx1.disable();
+    // }
 
     // EX2
     this.formEx2 = this.fb.group({
@@ -335,9 +339,15 @@ export class Unit1Component {
     this.formEx3 = this.fb.group(group3);
 
     // EX4
-    this.formEx4 = this.fb.group({
-      q4: ['']
-    });
+    // this.formEx4 = this.fb.group({
+    //   q4: ['']
+    // });
+
+
+    // EX4
+    const group4: any = {};
+    this.q4Options.forEach(d => group4[d.key] = [false]);
+    this.formEx4 = this.fb.group(group4); // 🎯 Bien passer group4 ici !
 
     // EX5
     // const group5:any = {}// ❌ inutile ici
@@ -577,17 +587,63 @@ export class Unit1Component {
   //   this.next();
   // }
 
-  submitEx4() {
-    const answer = this.formEx4.value.q4;
+  // submitEx4() {
+  //   const answer = this.formEx4.value.q4;
 
-    const correct = this.q4Options.find(o => o.correct);
+  //   const correct = this.q4Options.find(o => o.correct);
 
-    this.alreadySubmitted = true;
-    let score = answer === correct?.value ? 2 : 0;
+  //   this.alreadySubmitted = true;
+  //   let score = answer === correct?.value ? 2 : 0;
 
+
+  //   const category = this.getCurrentCategory();
+
+  //   console.log('Score Ex4:', score, 'Category:', category);
+
+  //   this.service.saveUnitFlat(
+  //     this.uid,
+  //     "unit1",
+  //     "ex4",
+  //     this.formEx4,
+  //     score,
+  //     category
+  //   );
+
+  //   this.aggregate(category, score);
+
+  //   this.next();
+  // }
+
+ submitEx4() {
+    let score = 0;
+    let hasError = false;
+    let goodAnswersCount = 0;
+
+    const values = this.formEx4.value;
+
+    // On passe en revue chaque option du tableau
+    for (const option of this.q4Options) {
+      const isChecked = values[option.key] === true;
+
+      if (isChecked) {
+        if (option.correct) {
+          // Case correcte cochée -> on incrémente le compteur
+          goodAnswersCount++;
+        } else {
+          // Mauvaise case cochée -> signal d'alarme déclenché
+          hasError = true;
+        }
+      }
+    }
+
+    // Attribution finale du score
+    if (hasError) {
+      score = 0; // Une seule erreur annule les points
+    } else {
+      score = goodAnswersCount; // 1 point par bonne réponse (Max 2)
+    }
 
     const category = this.getCurrentCategory();
-
     console.log('Score Ex4:', score, 'Category:', category);
 
     this.service.saveUnitFlat(
@@ -600,9 +656,9 @@ export class Unit1Component {
     );
 
     this.aggregate(category, score);
-
     this.next();
   }
+
 
   // EX5
   submitEx5() {
