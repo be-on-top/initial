@@ -118,6 +118,9 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
 
   centerUrl: string = ""
 
+  // Tu exposes la méthode pour qu'Angular puisse l'appeler
+  objectKeys = Object.keys;
+
   constructor(
     private auth: Auth,
     // private firestore: Firestore, 

@@ -21,6 +21,8 @@ interface Step {
 
 export class Unit1Component {
 
+  label:string="FLE(Français Langue Etrangère) débutant"
+
   // pour authentification à venir
   uid: string = "";
   userRole: string | null = null
@@ -1416,7 +1418,7 @@ async cloturerEvaluation() {
   // On transforme le null en 0 si jamais il n'y a pas encore de note
   const noteFinale = Number(this.getGlobalNoteOn20()) || 0; 
 
-  await this.service.finalizeUnit(this.uid, 'unit1', this.aggregateState, noteFinale);
+  await this.service.finalizeUnit(this.uid, 'unit1', this.aggregateState, noteFinale, this.label);
 
   this.aggregateState['isFinal'] = true as any; 
   alert("✅ Évaluation clôturée.");

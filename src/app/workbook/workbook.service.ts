@@ -181,13 +181,38 @@ export class WorkbookService {
   //   return Promise.all([saveWorkbook, saveStudent]);
   // }
 
-  async finalizeUnit(
+//   async finalizeUnit(
+//   uid: string,
+//   unitId: string,
+//   aggregateState: Record<string, number | null>,
+//   noteSur20: number // On reçoit directement la valeur prête à l'emploi
+// ) {
+//   // 1. Écriture dans le workbook avec le flag
+//   const workbookRef = doc(this.firestore, `workbook/${uid}`);
+//   const saveWorkbook = setDoc(
+//     workbookRef,
+//     { [`units.${unitId}.result`]: { ...aggregateState, isFinal: true } },
+//     { merge: true }
+//   );
+
+//   // 2. Dénormalisation de la valeur finale (la note sur 20) dans le dossier étudiant
+//   // C'est cette valeur qui sera affichée partout, sans calcul supplémentaire
+//   const studentRef = doc(this.firestore, `students/${uid}`);
+//   const saveStudent = updateDoc(studentRef, {
+//     [`units.${unitId}.finalGrade`]: noteSur20 // On utilise un nom explicite
+//   });
+
+//   return Promise.all([saveWorkbook, saveStudent]);
+// }
+
+async finalizeUnit(
   uid: string,
   unitId: string,
   aggregateState: Record<string, number | null>,
-  noteSur20: number // On reçoit directement la valeur prête à l'emploi
+  noteSur20: number,
+  label: string // <-- On ajoute le label ici
 ) {
-  // 1. Écriture dans le workbook avec le flag
+  // 1. Écriture dans le workbook
   const workbookRef = doc(this.firestore, `workbook/${uid}`);
   const saveWorkbook = setDoc(
     workbookRef,
@@ -195,11 +220,11 @@ export class WorkbookService {
     { merge: true }
   );
 
-  // 2. Dénormalisation de la valeur finale (la note sur 20) dans le dossier étudiant
-  // C'est cette valeur qui sera affichée partout, sans calcul supplémentaire
+  // 2. Dénormalisation avec le label inclus
   const studentRef = doc(this.firestore, `students/${uid}`);
   const saveStudent = updateDoc(studentRef, {
-    [`units.${unitId}.finalGrade`]: noteSur20 // On utilise un nom explicite
+    [`units.${unitId}.finalGrade`]: noteSur20,
+    [`units.${unitId}.label`]: label // <-- On stocke le label pour l'affichage futur
   });
 
   return Promise.all([saveWorkbook, saveStudent]);
