@@ -62,15 +62,17 @@
         <div class="col-md-8">
           <input *ngIf="field.type !== 'textarea'" [id]="field.name" [type]="field.type" class="form-control"
             [formControlName]="field.name" [attr.aria-label]="field.label"
+            [attr.disabled]="isReferentView ? true : null"
             (keydown.enter)="onEnter($event, field.name)">
           <textarea *ngIf="field.type === 'textarea'" [id]="field.name" class="form-control"
             [formControlName]="field.name" (keydown.enter)="onEnter($event, field.name)"
+            [attr.disabled]="isReferentView ? true : null"
             [attr.aria-label]="field.label"></textarea>
         </div>
       </div>
 
       <!-- Temps estimé -->
-      <div *ngIf="steps && steps[0]?.duration" class="text-muted small mt-4">
+      <div *ngIf="steps && steps[0]?.duration" class="text-muted small mt-4 d-print-none">
         Temps estimé : {{ steps[0].duration }} secondes
       </div>
 
@@ -89,6 +91,7 @@
       <div *ngIf="isSubmitted('ex1') && isEditable" class="alert alert-warning mt-2">
         ✔ Exercice déjà validé — vous ne pouvez plus le modifier
       </div>
+      
     </form>
 
     <hr *ngIf="isReferentView">
@@ -143,7 +146,7 @@
         </div>
       </div>
 
-      <div *ngIf="steps && steps[1]?.duration" class="text-muted small mt-4">
+      <div *ngIf="steps && steps[1]?.duration" class="text-muted small mt-4 d-print-none">
         Temps estimé : {{ steps[1].duration }} secondes
       </div>
 
@@ -179,8 +182,8 @@
         </div>
       </div>
 
-      <!-- Visu -->
-      <div class="alert row">
+      <!-- Visu with d-print-none -->
+      <div class="alert row d-print-none">
         <div class="col-md-4 order-2 order-md-1 mt-1 mt-md-0 p-0 pe-md-2">
           <img src="assets/img/unit1/bibliotheque.webp" alt="Bibliothèque">
         </div>
@@ -208,7 +211,7 @@
         </div>
       </div>
 
-      <div *ngIf="steps && steps[2]?.duration" class="text-muted small mt-4">
+      <div *ngIf="steps && steps[2]?.duration" class="text-muted small mt-4 d-print-none">
         Temps estimé : {{ steps[2].duration }} secondes
       </div>
 
@@ -244,8 +247,8 @@
         </div>
       </div>
 
-      <!-- Visu -->
-      <div class="alert row">
+      <!-- Visu with d-print-none -->
+      <div class="alert row d-print-none">
         <div class="col-md-4 order-2 order-md-1 mt-1 mt-md-0 p-0 pe-md-2">
           <img src="assets/img/unit1/bibliotheque.webp" alt="Bibliothèque">
         </div>
@@ -280,7 +283,7 @@
       </div>
 
 
-      <div *ngIf="steps && steps[3]?.duration" class="text-muted small mt-4">
+      <div *ngIf="steps && steps[3]?.duration" class="text-muted small mt-4 d-print-none">
         Temps estimé : {{ steps[3].duration }} secondes
       </div>
 
@@ -318,8 +321,8 @@
         </div>
       </div>
 
-      <!-- Visu -->
-      <div class="alert row">
+      <!-- Visu with d-print-none -->
+      <div class="alert row d-print-none">
         <div class="col-md-4 order-2 order-md-1 mt-1 mt-md-0 p-0 pe-md-2">
           <img src="assets/img/unit1/bibliotheque.webp" alt="Bibliothèque">
         </div>
@@ -347,7 +350,7 @@
         </div>
       </div>
 
-      <div *ngIf="steps && steps[4]?.duration" class="text-muted small mt-4">
+      <div *ngIf="steps && steps[4]?.duration" class="text-muted small mt-4 d-print-none">
         Temps estimé : {{ steps[4].duration }} secondes
       </div>
 
@@ -417,7 +420,7 @@
         </div>
       </div>
 
-      <div *ngIf="steps && steps[5]?.duration" class="text-muted small mt-4">
+      <div *ngIf="steps && steps[5]?.duration" class="text-muted small mt-4 d-print-none">
         Temps estimé : {{ steps[5].duration }} secondes
       </div>
 
@@ -470,7 +473,7 @@
         <p><span class="fw-bold"> Répondez à ce message.</span></p>
       </div>
 
-      <div *ngIf="steps && steps[6]?.duration" class="text-muted small mt-4">
+      <div *ngIf="steps && steps[6]?.duration" class="text-muted small mt-4 d-print-none">
         Temps estimé : {{ steps[6].duration }} secondes
       </div>
 
@@ -525,7 +528,7 @@
         </div>
       </div>
 
-      <div *ngIf="steps && steps[7]?.duration" class="text-muted small mt-4">
+      <div *ngIf="steps && steps[7]?.duration" class="text-muted small mt-4 d-print-none">
         Temps estimé : {{ steps[7].duration }} secondes
       </div>
 
@@ -601,11 +604,11 @@
   <div *ngIf="isReferentView && aggregateState" class="mt-4 p-3 bg-light border rounded-0">
     <h5 class="mb-3 text-primary">📊 Synthèse des compétences (Vue Référent)</h5>
 
-    <ul class="list-group list-group-flush">
+    <!-- <ul class="list-group list-group-flush">
       <li *ngFor="let score of aggregateState | keyvalue"
         class="list-group-item bg-transparent d-flex justify-content-between align-items-center ps-0 border-bottom py-3">
 
-        <div>
+        <div [class.bg-primary]="score.key==='isFinal'">
           <h6 class="mb-0 fw-bold">{{ score.key }}</h6>
 
           <small *ngIf="score.value !== null && getCategoryMaxScore(score.key) as maxScore" class="text-muted">
@@ -624,7 +627,34 @@
         </button>
 
       </li>
-    </ul>
+    </ul> -->
+
+    <ul class="list-group list-group-flush">
+  <ng-container *ngFor="let score of aggregateState | keyvalue">
+    
+    <li *ngIf="score.key !== 'isFinal'"
+        class="list-group-item bg-transparent d-flex justify-content-between align-items-center ps-0 border-bottom py-3">
+
+      <div>
+        <h6 class="mb-0 fw-bold">{{ score.key }}</h6>
+        <small *ngIf="score.value !== null && getCategoryMaxScore(score.key) as maxScore" class="text-muted">
+          Note calculée : {{ ((score.value / maxScore) * 20) | number:'1.1-1' }} / 20
+        </small>
+      </div>
+
+      <button *ngIf="score.value !== null && getCategoryMaxScore(score.key) as maxScore"
+              (click)="editCategoryScore(score.key)" type="button" class="btn btn-primary btn-sm rounded-0 fs-6">
+        ⭐ {{ score.value }} / {{ maxScore }} pts
+      </button>
+
+      <button *ngIf="score.value === null" (click)="editCategoryScore(score.key)" type="button"
+              class="btn btn-secondary btn-sm rounded-0 fs-6 text-uppercase text-white">
+        ✍️ Non scoré / À évaluer
+      </button>
+
+    </li>
+  </ng-container>
+</ul>
 
     <div *ngIf="getGlobalScore() as global" class="mt-4 pt-3 d-flex justify-content-between align-items-center">
       <div>
@@ -650,17 +680,28 @@
 
   <!-- Fin du div principal Vue Référent -->
 
-<!-- pour afficher le bouton ou le badge de confirmation proprement selon l'état de la base : -->
-<button *ngIf="isReferentView && !aggregateState['isFinal']" 
-        type="button" 
-        class="btn btn-danger my-3" 
-        (click)="cloturerEvaluation()">
-  <i class="bi bi-lock-fill me-2"></i>Clôturer l'évaluation
-</button>
+  <!-- pour afficher le bouton ou le badge de confirmation proprement selon l'état de la base : -->
+  <button *ngIf="isReferentView && !aggregateState['isFinal']" type="button" class="btn btn-danger my-3"
+    (click)="cloturerEvaluation()">
+    <i class="bi bi-lock-fill me-2"></i>Clôturer l'évaluation
+  </button>
 
-<div *ngIf="aggregateState['isFinal']" class="alert alert-success my-3 p-2 text-center">
-  <i class="bi bi-check-circle-fill me-2"></i> Évaluation clôturée définitivement. Les notes sont figées.
-</div>
+
+  <ng-container *ngIf="aggregateState['isFinal']">
+    <div class="alert alert-success my-3 p-2 text-center">
+      <i class="bi bi-check-circle-fill me-2"></i> Évaluation clôturée définitivement. Les notes sont figées.
+    </div>
+    <!-- pour afficher le bouton impression PDF : -->
+    <div *ngIf="isReferentView" class="text-center my-4 d-print-none">
+      <button type="button" class="btn btn-primary" (click)="printPage()">
+        <i class="bi bi-printer-fill me-2"></i>
+        Imprimer / Enregistrer en PDF
+      </button>
+      <p class="text-muted small mt-2">
+        💡 Dans la fenêtre qui s'ouvre, choisissez <b>"Enregistrer au format PDF"</b> pour l'envoyer par mail.
+      </p>
+    </div>
+  </ng-container>
 
 
 </div>

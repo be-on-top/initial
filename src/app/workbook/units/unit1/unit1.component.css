@@ -78,3 +78,21 @@ div span{font-size: inherit;}
     display: none !important;
   }
 }
+
+@media print {
+  * {
+    /* Propriété préfixée en premier */
+    -webkit-print-color-adjust: exact !important;
+    
+    /* Propriété standard en dernier pour qu'elle prévale */
+    print-color-adjust: exact !important;
+  }
+
+  .card, .page-break-avoid {
+  break-inside: avoid;
+}
+
+.nouvelle-page {
+  page-break-before: always; /* Force un saut de page avant cet élément */
+}
+}

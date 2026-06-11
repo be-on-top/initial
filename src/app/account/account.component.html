@@ -9,7 +9,7 @@
     <!-- <div class="alert alert-dark display-5">Etat de displayPrices pour voir si je parviens à récupérer l'état de ce paramètre additinnel depuis un compte utilisateur : {{displayPrices}}</div> -->
 
     <!-- ici, c'est en tout début, seul l'onglet informations est actif -->
-    <div *ngIf="!isOneQuizzAchieved && !hasStartedEvaluation"
+    <div *ngIf="!isOneQuizzAchieved && !hasStartedEvaluation && !userData['units']"
         class="alert alert-light p-4 alert-dismissible mb-4 fade show pe-5">
         <button type="button" class="btn-close mt-2" data-bs-dismiss="alert"
             aria-label="Fermer le message be-on-top"></button>
@@ -166,7 +166,7 @@
             </div>
         </div>
         <!-- anciennement positionnement > vos QCM(s) -->
-        <div class="card" *ngIf="hasStartedEvaluation">
+        <div class="card" *ngIf="hasStartedEvaluation || userData['units']">
             <div class="card-header bg-primary">
                 <a #collapseLink class="collapsed btn text-light text-capitalize d-flex justify-content-between px-0"
                     data-bs-toggle="collapse" href="#collapseQuizz">
@@ -298,11 +298,11 @@
             <!-- estimation seule -->
             <div class="card" *ngIf="isOneQuizzAchieved">
                 <div class="card-header bg-primary">
-                    <a class="collapsed btn text-light text-capitalize d-flex justify-content-between px-0"
+                    <a class="collapsed btn text-light d-flex justify-content-between px-0"
                         data-bs-toggle="collapse" href="#collapseFullResults">
                         <div class="d-flex align-items-center gap-2 justify-content-between">
                             <span class="text-nowrap" *ngIf="displayPrices==true">Parcours de formation estimé</span>
-                            <span class="text-nowrap" *ngIf="displayPrices==false">Durées de formation estimées</span>
+                            <span class="text-nowrap" *ngIf="displayPrices==false">Durées estimées de Formation</span>
                             <i class="bi bi-caret-down-fill toggle-arrow fs-7"></i>
                         </div>
                         <i class="bi bi-card-list fs-4 text-light d-none d-sm-inline"></i>

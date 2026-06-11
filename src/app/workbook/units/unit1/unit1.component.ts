@@ -21,7 +21,7 @@ interface Step {
 
 export class Unit1Component {
 
-  label:string="FLE(Français Langue Etrangère) débutant"
+  label: string = "FLE niveau A1"
 
   // pour authentification à venir
   uid: string = "";
@@ -67,7 +67,7 @@ export class Unit1Component {
   // ];
 
   steps: Step[] = [
-    { id: 'ex1', category: this.categories[0], duration: 160, maxScore: 10 },  // 6 champs + date + âge
+    { id: 'ex1', category: this.categories[0], duration: 195, maxScore: 10 },  // 6 champs + date + âge
     { id: 'ex2', category: this.categories[1], duration: 50, maxScore: 1 },  // QCM
     { id: 'ex3', category: this.categories[1], duration: 70, maxScore: 1 },  // Tout bon = 1
     { id: 'ex4', category: this.categories[1], duration: 60, maxScore: 2 },  // Q4
@@ -104,7 +104,9 @@ export class Unit1Component {
     { name: 'age', label: 'Âge', type: 'number' },
     { name: 'nationalite', label: 'Nationalité', type: 'text' },
     { name: 'adresse', label: 'Adresse', type: 'textarea' },
-    { name: 'loisir', label: 'J\'aime (loisirs)', type: 'textarea' }
+    { name: 'profession', label: 'Profession', type: 'text' },
+    { name: 'loisir', label: 'Mes loisirs', type: 'textarea' },
+    { name: 'aime', label: 'J\'aime', type: 'textarea' }
   ];
 
   // EX2
@@ -433,71 +435,152 @@ export class Unit1Component {
   //   this.next();
   // }
 
+  // submitEx1() {
+  //   const values = this.formEx1.value;
+  //   this.alreadySubmitted = true;
+
+  //   let score = 0;
+
+  //   const AGE_MARGIN = 1;
+
+  //   const normalFields = [
+  //     'nom',
+  //     'prenom',
+  //     'lieuNaissance',
+  //     'nationalite',
+  //     'adresse',
+  //     'loisir',
+  //     'aime'
+  //   ];
+
+  //   // 1️⃣ champs classiques : 1 point chacun si rempli
+  //   normalFields.forEach(key => {
+  //     const v = values[key];
+
+  //     if (typeof v === 'string' && v.trim() !== '') {
+  //       score++;
+  //     }
+  //   });
+
+  //   // 2️⃣ contrôle dateNaissance (1 point si format OK)
+  //   let birthYear: number | null = null;
+
+  //   const datePattern = /^(.+[\s\/\-]){2,}\d{2,4}$/;
+
+  //   if (values.dateNaissance && datePattern.test(values.dateNaissance)) {
+  //     score++;
+
+  //     const match = values.dateNaissance.match(/(\d{4})$/);
+  //     if (match) birthYear = +match[1];
+  //   }
+
+  //   // 3️⃣ contrôle âge (1 point si cohérent avec la date)
+  //   if (birthYear && values.age != null) {
+  //     const currentYear = new Date().getFullYear();
+  //     const expectedAge = currentYear - birthYear;
+
+  //     if (Math.abs(expectedAge - values.age) <= AGE_MARGIN) {
+  //       score++;
+  //     }
+  //   }
+
+  //   const category = this.getCurrentCategory();
+
+  //   console.log('Score Ex1:', score, 'Category:', category);
+
+  //   this.service.saveUnitFlat(
+  //     this.uid,
+  //     "unit1",
+  //     "ex1",
+  //     this.formEx1,
+  //     score,
+  //     category
+  //   );
+
+  //   this.aggregate(category, score);
+
+  //   this.next();
+  // }
+
+  // un peu plus contraignant 
   submitEx1() {
-    const values = this.formEx1.value;
-    this.alreadySubmitted = true;
+  const values = this.formEx1.value;
+  this.alreadySubmitted = true;
 
-    let score = 0;
+  let score = 0;
+  const AGE_MARGIN = 1;
 
-    const AGE_MARGIN = 1;
+  // 1️⃣ LES CHAMPS CLASSIQUES (1 point chacun si remplis)
+  // 'adresse' est retiré d'ici car il a sa propre règle plus bas.
+  // 'profession' est ajouté ici.
+  const normalFields = [
+    'nom',
+    'prenom',
+    'lieuNaissance',
+    'nationalite',
+    'profession', // 👈 Ajouté ici
+    'loisir'      // 👈 Nettoyé (conservation d'un seul champ de texte libre)
+  ];
 
-    const normalFields = [
-      'nom',
-      'prenom',
-      'lieuNaissance',
-      'nationalite',
-      'adresse',
-      'loisir'
-    ];
-
-    // 1️⃣ champs classiques : 1 point chacun si rempli
-    normalFields.forEach(key => {
-      const v = values[key];
-
-      if (typeof v === 'string' && v.trim() !== '') {
-        score++;
-      }
-    });
-
-    // 2️⃣ contrôle dateNaissance (1 point si format OK)
-    let birthYear: number | null = null;
-
-    const datePattern = /^(.+[\s\/\-]){2,}\d{2,4}$/;
-
-    if (values.dateNaissance && datePattern.test(values.dateNaissance)) {
+  normalFields.forEach(key => {
+    const v = values[key];
+    if (typeof v === 'string' && v.trim() !== '') {
       score++;
-
-      const match = values.dateNaissance.match(/(\d{4})$/);
-      if (match) birthYear = +match[1];
     }
+  });
 
-    // 3️⃣ contrôle âge (1 point si cohérent avec la date)
-    if (birthYear && values.age != null) {
-      const currentYear = new Date().getFullYear();
-      const expectedAge = currentYear - birthYear;
-
-      if (Math.abs(expectedAge - values.age) <= AGE_MARGIN) {
-        score++;
-      }
-    }
-
-    const category = this.getCurrentCategory();
-
-    console.log('Score Ex1:', score, 'Category:', category);
-
-    this.service.saveUnitFlat(
-      this.uid,
-      "unit1",
-      "ex1",
-      this.formEx1,
-      score,
-      category
-    );
-
-    this.aggregate(category, score);
-
-    this.next();
+  // 2️⃣ CONTRÔLE DE L'ADRESSE (Minimum 10 caractères + au moins 2 chiffres consécutifs)
+  const adresseVal = (values.adresse || '').trim();
+  if (adresseVal.length >= 10 && /\d{2,}/.test(adresseVal)) {
+    score++;
   }
+
+  // 3️⃣ CONTRÔLE DE LA DATE DE NAISSANCE (Minimum 6 caractères + se termine par 4 chiffres)
+  let birthYear: number | null = null;
+  const dateVal = (values.dateNaissance || '').trim();
+
+  // Ta nouvelle règle : au moins 6 caractères et se termine obligatoirement par 4 chiffres
+  if (dateVal.length >= 6 && /\d{4}$/.test(dateVal)) {
+    score++; // Point pour le format de la date validé
+
+    // Extraction des 4 derniers chiffres pour le calcul de l'âge juste après
+    const match = dateVal.match(/(\d{4})$/);
+    if (match) {
+      birthYear = parseInt(match[1], 10);
+    }
+  }
+
+  // 4️⃣ CONTRÔLE DE L'ÂGE (1 point bonus si cohérent avec l'année de naissance)
+  // L'âge de l'étudiant doit aussi être présent (champ de type number)
+  const ageVal = values.age != null ? parseInt(values.age, 10) : null;
+
+  if (birthYear && ageVal !== null && !isNaN(ageVal)) {
+    const currentYear = new Date().getFullYear(); // Dynamique (2026)
+    const expectedAge = currentYear - birthYear;
+
+    // Marge d'erreur de 1 an gérée par ton AGE_MARGIN
+    if (Math.abs(expectedAge - ageVal) <= AGE_MARGIN) {
+      score++; // Point bonus de cohérence accordé !
+    }
+  }
+
+  // 5️⃣ SAUVEGARDE ET NAVIGATION (Ton code d'origine inchangé)
+  const category = this.getCurrentCategory();
+
+  console.log('Score Ex1:', score, 'Category:', category);
+
+  this.service.saveUnitFlat(
+    this.uid,
+    "unit1",
+    "ex1",
+    this.formEx1,
+    score,
+    category
+  );
+
+  this.aggregate(category, score);
+  this.next();
+}
 
 
   // EX2
@@ -616,7 +699,7 @@ export class Unit1Component {
   //   this.next();
   // }
 
- submitEx4() {
+  submitEx4() {
     let score = 0;
     let hasError = false;
     let goodAnswersCount = 0;
@@ -1371,57 +1454,62 @@ export class Unit1Component {
 
 
 
-//   cloturerEvaluation() {
-//   // 1️⃣ Calcul de la note globale basé STRICTEMENT sur ton aggregateState réel
-//   const totalScore = Object.values(this.aggregateState)
-//     .reduce((sum, val) => sum + (Number(val) || 0), 0);
+  //   cloturerEvaluation() {
+  //   // 1️⃣ Calcul de la note globale basé STRICTEMENT sur ton aggregateState réel
+  //   const totalScore = Object.values(this.aggregateState)
+  //     .reduce((sum, val) => sum + (Number(val) || 0), 0);
 
-//   // 2️⃣ Injection chirurgicale du flag de verrouillage dans l'état du workbook
-//   const updatedState = {
-//     ...this.aggregateState,
-//     isFinal: true
-//   };
+  //   // 2️⃣ Injection chirurgicale du flag de verrouillage dans l'état du workbook
+  //   const updatedState = {
+  //     ...this.aggregateState,
+  //     isFinal: true
+  //   };
 
-//   // 3️⃣ Enregistrement dans le Workbook (fige le résultat pour le référent)
-//   const saveWorkbook = this.service.saveUnitResultUpdate(this.uid, 'unit1', updatedState);
+  //   // 3️⃣ Enregistrement dans le Workbook (fige le résultat pour le référent)
+  //   const saveWorkbook = this.service.saveUnitResultUpdate(this.uid, 'unit1', updatedState);
 
-//   // 4️⃣ Enregistrement dans la fiche de l'étudiant (pour son tableau de bord global)
-//   // On utilise ta méthode saveUnitResult qui prend l'UID, l'unité et une Map
-//   const saveStudent = this.service.saveUnitResult(this.uid, 'unit1', {
-//     scoreTotal: totalScore,
-//     isFinal: true as any // Permet de passer le flag au besoin
-//   });
+  //   // 4️⃣ Enregistrement dans la fiche de l'étudiant (pour son tableau de bord global)
+  //   // On utilise ta méthode saveUnitResult qui prend l'UID, l'unité et une Map
+  //   const saveStudent = this.service.saveUnitResult(this.uid, 'unit1', {
+  //     scoreTotal: totalScore,
+  //     isFinal: true as any // Permet de passer le flag au besoin
+  //   });
 
-//   // 5️⃣ Exécution synchrone des deux écritures
-//   Promise.all([saveWorkbook, saveStudent]).then(() => {
-//     alert("🎉 L'évaluation de l'Unité 1 est officiellement clôturée !");
-    
-//     // On met à jour localement pour réactivité immédiate de l'interface
-//     this.aggregateState['isFinal'] = true as any;
-//   });
-// }
+  //   // 5️⃣ Exécution synchrone des deux écritures
+  //   Promise.all([saveWorkbook, saveStudent]).then(() => {
+  //     alert("🎉 L'évaluation de l'Unité 1 est officiellement clôturée !");
+
+  //     // On met à jour localement pour réactivité immédiate de l'interface
+  //     this.aggregateState['isFinal'] = true as any;
+  //   });
+  // }
 
 
 
-// async cloturerEvaluation() {
-//   const totalScore = Object.values(this.aggregateState)
-//     .reduce((sum, val) => sum + (Number(val) || 0), 0);
+  // async cloturerEvaluation() {
+  //   const totalScore = Object.values(this.aggregateState)
+  //     .reduce((sum, val) => sum + (Number(val) || 0), 0);
 
-//   // Tout se passe ici, dans ton service, comme il se doit
-//   await this.service.finalizeUnit(this.uid, 'unit1', this.aggregateState, totalScore);
+  //   // Tout se passe ici, dans ton service, comme il se doit
+  //   await this.service.finalizeUnit(this.uid, 'unit1', this.aggregateState, totalScore);
 
-//   this.aggregateState['isFinal'] = true as any; 
-//   alert("✅ Évaluation clôturée.");
-// }
+  //   this.aggregateState['isFinal'] = true as any; 
+  //   alert("✅ Évaluation clôturée.");
+  // }
 
-async cloturerEvaluation() {
-  // On transforme le null en 0 si jamais il n'y a pas encore de note
-  const noteFinale = Number(this.getGlobalNoteOn20()) || 0; 
+  async cloturerEvaluation() {
+    // On transforme le null en 0 si jamais il n'y a pas encore de note
+    const noteFinale = Number(this.getGlobalNoteOn20()) || 0;
 
-  await this.service.finalizeUnit(this.uid, 'unit1', this.aggregateState, noteFinale, this.label);
+    await this.service.finalizeUnit(this.uid, 'unit1', this.aggregateState, noteFinale, this.label);
 
-  this.aggregateState['isFinal'] = true as any; 
-  alert("✅ Évaluation clôturée.");
+    this.aggregateState['isFinal'] = true as any;
+    alert("✅ Évaluation clôturée.");
+  }
+
+
+printPage() {
+  window.print();
 }
 
 
