@@ -197,6 +197,23 @@ strong {
     font-size: 1.05rem
 }
 
+/* Dans styles.css global, pas besoin de ::ng-deep, mais on cible précisément le conteneur */
+
+.news-content ul {
+  border-left: 2px #82BC00 solid;
+}
+.news-content strong {
+  font-weight: 700 !important; /* Ou 800 / bold */
+
+}
+/* 📝 Style personnalisé pour le bloc de mise en valeur (Blockquote) */
+/* 💡 Le détournement magique de l'italique (balise em) */
+.news-content em {
+  font-style: italic !important;
+  background-color: #f1f3f5 !important;       /* Un surlignage gris très très léger */
+  margin: 0.2rem 0 !important;
+  /* font-size: 1.08rem !important; */
+}
 
 /* Titre h3 avec soulignement sur 100% de la largeur */
 h3 {

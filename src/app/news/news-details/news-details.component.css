@@ -18,11 +18,20 @@ h1{font-size: 1.8rem;}
   display: contents;
 }
 
+
+
+
 img {
   width: 100%;
   height: auto;
   /* max-height: 300px; */
   /* object-fit: contain; */
+}
+
+/* 🎯 On force l'image du Héros à garder ses proportions sans s'écraser */
+.ratio-21x9 img {
+  object-fit: cover !important;
+  object-position: center !important; /* Centre l'image dans le cadre pour le rognage */
 }
 @media (max-width: 450px) {
   .news-content img {
