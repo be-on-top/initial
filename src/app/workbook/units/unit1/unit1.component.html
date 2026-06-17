@@ -673,12 +673,32 @@
 
   </div>
 
+
+
   <!-- ### Ce qui change visuellement :
 1. Les exercices libres (`null`) affichent un bouton jaune/orange **"✍️ À ÉVALUER"** bien visible.
 2. Les catégories déjà calculées automatiquement s'affichent sous forme de bouton bleu standard.
 3. Dès que le référent clique sur l'un ou l'autre, la fonction se déclenche, le prompt s'ouvre, enregistre dans Firestore, et le calcul global en bas se met à jour immédiatement sur l'écran. -->
 
   <!-- Fin du div principal Vue Référent -->
+
+  <div *ngIf="isReferentView" class="mb-4 mt-3">
+  <label for="commentaireReferent" class="form-label text-secondary">
+    <i class="bi bi-chat-left-text-fill me-2"></i>Commentaire et observations :
+  </label>
+  
+  <textarea 
+    id="commentaireReferent" 
+    class="form-control rounded-0" 
+    rows="3" 
+    placeholder="Saisissez vos observations sur le candidat ici..."
+    [formControl]="commentCtrl"
+    [attr.disabled]="aggregateState['isFinal'] ? true : null"
+    (blur)="saveCommentReferent()">
+  </textarea>
+</div>
+
+
 
   <!-- pour afficher le bouton ou le badge de confirmation proprement selon l'état de la base : -->
   <button *ngIf="isReferentView && !aggregateState['isFinal']" type="button" class="btn btn-danger my-3"
@@ -702,6 +722,9 @@
       </p>
     </div>
   </ng-container>
+
+
+  
 
 
 </div>

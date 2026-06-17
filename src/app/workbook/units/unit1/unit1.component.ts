@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 // import { Auth, onAuthStateChanged } from '@angular/fire/auth';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { WorkbookService } from '../../workbook.service';
 import { AuthService } from 'src/app/admin/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,6 +22,9 @@ interface Step {
 export class Unit1Component {
 
   label: string = "FLE niveau A1"
+
+  // On déclare en haut du composant
+  commentCtrl = new FormControl('');
 
   // pour authentification à venir
   uid: string = "";
@@ -504,83 +507,83 @@ export class Unit1Component {
 
   // un peu plus contraignant 
   submitEx1() {
-  const values = this.formEx1.value;
-  this.alreadySubmitted = true;
+    const values = this.formEx1.value;
+    this.alreadySubmitted = true;
 
-  let score = 0;
-  const AGE_MARGIN = 1;
+    let score = 0;
+    const AGE_MARGIN = 1;
 
-  // 1️⃣ LES CHAMPS CLASSIQUES (1 point chacun si remplis)
-  // 'adresse' est retiré d'ici car il a sa propre règle plus bas.
-  // 'profession' est ajouté ici.
-  const normalFields = [
-    'nom',
-    'prenom',
-    'lieuNaissance',
-    'nationalite',
-    'profession', // 👈 Ajouté ici
-    'loisir'      // 👈 Nettoyé (conservation d'un seul champ de texte libre)
-  ];
+    // 1️⃣ LES CHAMPS CLASSIQUES (1 point chacun si remplis)
+    // 'adresse' est retiré d'ici car il a sa propre règle plus bas.
+    // 'profession' est ajouté ici.
+    const normalFields = [
+      'nom',
+      'prenom',
+      'lieuNaissance',
+      'nationalite',
+      'profession', // 👈 Ajouté ici
+      'loisir'      // 👈 Nettoyé (conservation d'un seul champ de texte libre)
+    ];
 
-  normalFields.forEach(key => {
-    const v = values[key];
-    if (typeof v === 'string' && v.trim() !== '') {
+    normalFields.forEach(key => {
+      const v = values[key];
+      if (typeof v === 'string' && v.trim() !== '') {
+        score++;
+      }
+    });
+
+    // 2️⃣ CONTRÔLE DE L'ADRESSE (Minimum 10 caractères + au moins 2 chiffres consécutifs)
+    const adresseVal = (values.adresse || '').trim();
+    if (adresseVal.length >= 10 && /\d{2,}/.test(adresseVal)) {
       score++;
     }
-  });
 
-  // 2️⃣ CONTRÔLE DE L'ADRESSE (Minimum 10 caractères + au moins 2 chiffres consécutifs)
-  const adresseVal = (values.adresse || '').trim();
-  if (adresseVal.length >= 10 && /\d{2,}/.test(adresseVal)) {
-    score++;
-  }
+    // 3️⃣ CONTRÔLE DE LA DATE DE NAISSANCE (Minimum 6 caractères + se termine par 4 chiffres)
+    let birthYear: number | null = null;
+    const dateVal = (values.dateNaissance || '').trim();
 
-  // 3️⃣ CONTRÔLE DE LA DATE DE NAISSANCE (Minimum 6 caractères + se termine par 4 chiffres)
-  let birthYear: number | null = null;
-  const dateVal = (values.dateNaissance || '').trim();
+    // Ta nouvelle règle : au moins 6 caractères et se termine obligatoirement par 4 chiffres
+    if (dateVal.length >= 6 && /\d{4}$/.test(dateVal)) {
+      score++; // Point pour le format de la date validé
 
-  // Ta nouvelle règle : au moins 6 caractères et se termine obligatoirement par 4 chiffres
-  if (dateVal.length >= 6 && /\d{4}$/.test(dateVal)) {
-    score++; // Point pour le format de la date validé
-
-    // Extraction des 4 derniers chiffres pour le calcul de l'âge juste après
-    const match = dateVal.match(/(\d{4})$/);
-    if (match) {
-      birthYear = parseInt(match[1], 10);
+      // Extraction des 4 derniers chiffres pour le calcul de l'âge juste après
+      const match = dateVal.match(/(\d{4})$/);
+      if (match) {
+        birthYear = parseInt(match[1], 10);
+      }
     }
-  }
 
-  // 4️⃣ CONTRÔLE DE L'ÂGE (1 point bonus si cohérent avec l'année de naissance)
-  // L'âge de l'étudiant doit aussi être présent (champ de type number)
-  const ageVal = values.age != null ? parseInt(values.age, 10) : null;
+    // 4️⃣ CONTRÔLE DE L'ÂGE (1 point bonus si cohérent avec l'année de naissance)
+    // L'âge de l'étudiant doit aussi être présent (champ de type number)
+    const ageVal = values.age != null ? parseInt(values.age, 10) : null;
 
-  if (birthYear && ageVal !== null && !isNaN(ageVal)) {
-    const currentYear = new Date().getFullYear(); // Dynamique (2026)
-    const expectedAge = currentYear - birthYear;
+    if (birthYear && ageVal !== null && !isNaN(ageVal)) {
+      const currentYear = new Date().getFullYear(); // Dynamique (2026)
+      const expectedAge = currentYear - birthYear;
 
-    // Marge d'erreur de 1 an gérée par ton AGE_MARGIN
-    if (Math.abs(expectedAge - ageVal) <= AGE_MARGIN) {
-      score++; // Point bonus de cohérence accordé !
+      // Marge d'erreur de 1 an gérée par ton AGE_MARGIN
+      if (Math.abs(expectedAge - ageVal) <= AGE_MARGIN) {
+        score++; // Point bonus de cohérence accordé !
+      }
     }
+
+    // 5️⃣ SAUVEGARDE ET NAVIGATION (Ton code d'origine inchangé)
+    const category = this.getCurrentCategory();
+
+    console.log('Score Ex1:', score, 'Category:', category);
+
+    this.service.saveUnitFlat(
+      this.uid,
+      "unit1",
+      "ex1",
+      this.formEx1,
+      score,
+      category
+    );
+
+    this.aggregate(category, score);
+    this.next();
   }
-
-  // 5️⃣ SAUVEGARDE ET NAVIGATION (Ton code d'origine inchangé)
-  const category = this.getCurrentCategory();
-
-  console.log('Score Ex1:', score, 'Category:', category);
-
-  this.service.saveUnitFlat(
-    this.uid,
-    "unit1",
-    "ex1",
-    this.formEx1,
-    score,
-    category
-  );
-
-  this.aggregate(category, score);
-  this.next();
-}
 
 
   // EX2
@@ -1358,6 +1361,15 @@ export class Unit1Component {
 
     // On récupère ce que le candidat a enregistré en base à la fin de son EX9
     this.aggregateState = this.unitData['units.unit1.result'] || {};
+
+
+
+    // 💬 ZONE COMMENTAIRE RÉFÉRENT (Ajout ici)
+  // On récupère le commentaire global de l'unité s'il existe déjà dans Firestore
+  if (data['units.unit1.commentReferent']) {
+    this.commentCtrl.setValue(data['units.unit1.commentReferent']);
+  }
+
   }
 
   getCategoryMaxScore(categoryName: string): number | null {
@@ -1497,20 +1509,63 @@ export class Unit1Component {
   //   alert("✅ Évaluation clôturée.");
   // }
 
+  // fonctionnalité impeccable ok AVANT qu'on ajoute le commentaire
+  // async cloturerEvaluation() {
+  //   // On transforme le null en 0 si jamais il n'y a pas encore de note
+  //   const noteFinale = Number(this.getGlobalNoteOn20()) || 0;
+
+  //   await this.service.finalizeUnit(this.uid, 'unit1', this.aggregateState, noteFinale, this.label);
+
+
+  //   // 1. On force une dernière sauvegarde du commentaire pour être 100% safe
+  //   // this.service.updateUnitComment(this.uid, "unit1", texteFinal);
+
+
+
+  //   this.aggregateState['isFinal'] = true as any;
+  //   alert("✅ Évaluation clôturée.");
+  // }
+
   async cloturerEvaluation() {
+    // 1️⃣ On récupère la valeur actuelle du champ texte (et on nettoie les espaces)
+    const texteFinal = this.commentCtrl.value?.trim() || '';
+
     // On transforme le null en 0 si jamais il n'y a pas encore de note
     const noteFinale = Number(this.getGlobalNoteOn20()) || 0;
 
-    await this.service.finalizeUnit(this.uid, 'unit1', this.aggregateState, noteFinale, this.label);
+    // 2️⃣ On passe 'texteFinal' comme 6ème argument à ton service
+    await this.service.finalizeUnit(
+      this.uid, 
+      'unit1', 
+      this.aggregateState, 
+      noteFinale, 
+      this.label, 
+      texteFinal // 👈 Il est là !
+    );
 
+    // 3️⃣ Mise à jour de l'état local et verrouillage de l'interface
     this.aggregateState['isFinal'] = true as any;
+    
+    // On désactive le champ texte à l'écran pour que le référent ne puisse plus écrire
+    this.commentCtrl.disable(); 
+
     alert("✅ Évaluation clôturée.");
   }
 
 
-printPage() {
-  window.print();
-}
+  printPage() {
+    window.print();
+  }
+
+
+  // 3. La nouvelle méthode de sauvegarde automatique pour le référent :
+  saveCommentReferent() {
+    const texte = this.commentCtrl.value?.trim() || '';
+
+    // On met à jour directement le document dans Firestore
+    // Via une méthode de service qui fait un .update() ou .set(..., {merge: true})
+     this.service.updateUnitComment(this.uid, "unit1", texte);
+  }
 
 
 

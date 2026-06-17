@@ -76,6 +76,20 @@ export class WorkbookService {
     return docData(ref);
   }
 
+  updateUnitComment(uid: string, unitId: string, texte: string) {
+    const ref = doc(this.firestore, `workbook/${uid}`);
+
+    // Écriture chirurgicale dans le document flat du workbook
+    return setDoc(
+      ref,
+      {
+        [`units.${unitId}.commentReferent`]: texte
+      },
+      { merge: true }
+    );
+  }
+
+
   // saveUnitResult(
   //   uid: string,
   //   unitId: string,
@@ -102,6 +116,7 @@ export class WorkbookService {
   // }
 
 
+  // fonctionnement impeccable OK
   async saveUnitResult(
     uid: string,
     unitId: string,
@@ -205,30 +220,61 @@ export class WorkbookService {
 //   return Promise.all([saveWorkbook, saveStudent]);
 // }
 
+// fontionnement impeccable ok !!!!
+// async finalizeUnit(
+//   uid: string,
+//   unitId: string,
+//   aggregateState: Record<string, number | null>,
+//   noteSur20: number,
+//   label: string // <-- On ajoute le label ici
+// ) {
+//   // 1. Écriture dans le workbook
+//   const workbookRef = doc(this.firestore, `workbook/${uid}`);
+//   const saveWorkbook = setDoc(
+//     workbookRef,
+//     { [`units.${unitId}.result`]: { ...aggregateState, isFinal: true } },
+//     { merge: true }
+//   );
+
+//   // 2. Dénormalisation avec le label inclus
+//   const studentRef = doc(this.firestore, `students/${uid}`);
+//   const saveStudent = updateDoc(studentRef, {
+//     [`units.${unitId}.finalGrade`]: noteSur20,
+//     [`units.${unitId}.label`]: label // <-- On stocke le label pour l'affichage futur
+//   });
+
+//   return Promise.all([saveWorkbook, saveStudent]);
+// }
+
 async finalizeUnit(
-  uid: string,
-  unitId: string,
-  aggregateState: Record<string, number | null>,
-  noteSur20: number,
-  label: string // <-- On ajoute le label ici
-) {
-  // 1. Écriture dans le workbook
-  const workbookRef = doc(this.firestore, `workbook/${uid}`);
-  const saveWorkbook = setDoc(
-    workbookRef,
-    { [`units.${unitId}.result`]: { ...aggregateState, isFinal: true } },
-    { merge: true }
-  );
+    uid: string,
+    unitId: string,
+    aggregateState: Record<string, number | null>,
+    noteSur20: number,
+    label: string,
+    texteFinal: string // <-- On ajoute le texte du commentaire ici
+  ) {
+    // 1. Écriture dans le workbook avec le flag final ET le commentaire
+    const workbookRef = doc(this.firestore, `workbook/${uid}`);
+    const saveWorkbook = setDoc(
+      workbookRef,
+      { 
+        [`units.${unitId}.result`]: { ...aggregateState, isFinal: true },
+        [`units.${unitId}.commentReferent`]: texteFinal // Sauvegarde finale dans workbook
+      },
+      { merge: true }
+    );
 
-  // 2. Dénormalisation avec le label inclus
-  const studentRef = doc(this.firestore, `students/${uid}`);
-  const saveStudent = updateDoc(studentRef, {
-    [`units.${unitId}.finalGrade`]: noteSur20,
-    [`units.${unitId}.label`]: label // <-- On stocke le label pour l'affichage futur
-  });
+    // 2. Dénormalisation complète dans la fiche de l'étudiant (pour tes futurs tableaux de bord)
+    const studentRef = doc(this.firestore, `students/${uid}`);
+    const saveStudent = updateDoc(studentRef, {
+      [`units.${unitId}.finalGrade`]: noteSur20,
+      [`units.${unitId}.label`]: label,
+      [`units.${unitId}.commentReferent`]: texteFinal // Dé-normalisation pour lecture rapide
+    });
 
-  return Promise.all([saveWorkbook, saveStudent]);
-}
+    return Promise.all([saveWorkbook, saveStudent]);
+  }
 
 
 }
