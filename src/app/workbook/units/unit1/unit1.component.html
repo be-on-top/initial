@@ -642,12 +642,12 @@
         </small>
       </div>
 
-      <button *ngIf="score.value !== null && getCategoryMaxScore(score.key) as maxScore"
+      <button [disabled]="aggregateState['isFinal']" *ngIf="score.value !== null && getCategoryMaxScore(score.key) as maxScore"
               (click)="editCategoryScore(score.key)" type="button" class="btn btn-primary btn-sm rounded-0 fs-6">
         ⭐ {{ score.value }} / {{ maxScore }} pts
       </button>
 
-      <button *ngIf="score.value === null" (click)="editCategoryScore(score.key)" type="button"
+      <button [disabled]="aggregateState['isFinal']" *ngIf="score.value === null" (click)="editCategoryScore(score.key)" type="button"
               class="btn btn-secondary btn-sm rounded-0 fs-6 text-uppercase text-white">
         ✍️ Non scoré / À évaluer
       </button>
