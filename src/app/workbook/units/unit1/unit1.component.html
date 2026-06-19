@@ -40,6 +40,10 @@
           <span class="badge text-bg-warning text-white">
             Exercice 1
           </span>
+          <!-- Le petit badge transparent/gris pour le barème -->
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+            Max {{ steps[0].maxScore }}PNTS
+          </span>
           <span class="badge text-bg-dark text-white d-print-none" aria-live="polite">
             {{ getCurrentScore(0) }} PNTS
           </span>
@@ -62,12 +66,10 @@
         <div class="col-md-8">
           <input *ngIf="field.type !== 'textarea'" [id]="field.name" [type]="field.type" class="form-control"
             [formControlName]="field.name" [attr.aria-label]="field.label"
-            [attr.disabled]="isReferentView ? true : null"
-            (keydown.enter)="onEnter($event, field.name)">
+            [attr.disabled]="isReferentView ? true : null" (keydown.enter)="onEnter($event, field.name)">
           <textarea *ngIf="field.type === 'textarea'" [id]="field.name" class="form-control"
             [formControlName]="field.name" (keydown.enter)="onEnter($event, field.name)"
-            [attr.disabled]="isReferentView ? true : null"
-            [attr.aria-label]="field.label"></textarea>
+            [attr.disabled]="isReferentView ? true : null" [attr.aria-label]="field.label"></textarea>
         </div>
       </div>
 
@@ -91,7 +93,7 @@
       <div *ngIf="isSubmitted('ex1') && isEditable" class="alert alert-warning mt-2">
         ✔ Exercice déjà validé — vous ne pouvez plus le modifier
       </div>
-      
+
     </form>
 
     <hr *ngIf="isReferentView">
@@ -111,6 +113,10 @@
         <div class="d-flex gap-2 ms-md-auto">
           <span class="badge text-bg-warning text-white">
             Exercice 2
+          </span>
+          <!-- Le petit badge transparent/gris pour le barème -->
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+            Max {{ steps[1].maxScore }}PNTS
           </span>
           <span class="badge text-bg-dark text-white d-print-none">
             {{ getCurrentScore(1) }} PNTS
@@ -176,6 +182,10 @@
           <span class="badge text-bg-warning text-white">
             Exercice 3
           </span>
+          <!-- Le petit badge transparent/gris pour le barème -->
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+            Max {{ steps[2].maxScore }}PNTS
+          </span>
           <span class="badge text-bg-dark text-white d-print-none">
             {{ getCurrentScore(2) }} PNTS
           </span>
@@ -240,6 +250,10 @@
         <div class="d-flex gap-2 ms-md-auto">
           <span class="badge text-bg-warning text-white">
             Exercice 4
+          </span>
+          <!-- Le petit badge transparent/gris pour le barème -->
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+            Max {{ steps[3].maxScore }}PNTS
           </span>
           <span class="badge text-bg-dark text-white d-print-none">
             {{ getCurrentScore(3) }} PNTS
@@ -315,9 +329,13 @@
           <span class="badge text-bg-warning text-white">
             Exercice 5
           </span>
-          <span class="badge text-bg-dark text-white d-print-none">
-            {{ getCurrentScore(4) }} PNTS
+          <!-- Le petit badge transparent/gris pour le barème -->
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+            Max {{ steps[4].maxScore }}PNTS
           </span>
+          <span class="badge text-bg-dark text-white d-print-none">
+          </span>
+            {{ getCurrentScore(4) }} PNTS
         </div>
       </div>
 
@@ -379,6 +397,10 @@
         <div class="d-flex gap-2 ms-md-auto">
           <span class="badge text-bg-warning text-white">
             Exercice 6
+          </span>
+          <!-- Le petit badge transparent/gris pour le barème -->
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+            Max {{ steps[5].maxScore }}PNTS
           </span>
           <span class="badge text-bg-dark text-white d-print-none">
             {{ getCurrentScore(5) }} PNTS
@@ -450,6 +472,10 @@
           <span class="badge text-bg-warning text-white">
             Exercice 7
           </span>
+          <!-- Le petit badge transparent/gris pour le barème -->
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+            Max {{ steps[6].maxScore }}PNTS
+          </span>
           <span class="badge text-bg-dark text-white d-print-none">
             {{ getCurrentScore(6) }} PNTS
           </span>
@@ -507,6 +533,10 @@
           <span class="badge text-bg-warning text-white">
             Exercice 8
           </span>
+          <!-- Le petit badge transparent/gris pour le barème -->
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+            Max {{ steps[7].maxScore }}PNTS
+          </span>
           <span class="badge text-bg-dark text-white d-print-none">
             {{ getCurrentScore(7) }} PNTS
           </span>
@@ -557,6 +587,10 @@
         <div class="d-flex gap-2 ms-md-auto">
           <span class="badge text-bg-warning text-white">
             Exercice 9
+          </span>
+          <!-- Le petit badge transparent/gris pour le barème -->
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+            Max {{ steps[8].maxScore }}PNTS
           </span>
           <span class="badge text-bg-dark text-white d-print-none">
             {{ getCurrentScore(8) }} PNTS
@@ -630,31 +664,33 @@
     </ul> -->
 
     <ul class="list-group list-group-flush">
-  <ng-container *ngFor="let score of aggregateState | keyvalue">
-    
-    <li *ngIf="score.key !== 'isFinal'"
-        class="list-group-item bg-transparent d-flex justify-content-between align-items-center ps-0 border-bottom py-3">
+      <ng-container *ngFor="let score of aggregateState | keyvalue">
 
-      <div>
-        <h6 class="mb-0 fw-bold">{{ score.key }}</h6>
-        <small *ngIf="score.value !== null && getCategoryMaxScore(score.key) as maxScore" class="text-muted">
-          Note calculée : {{ ((score.value / maxScore) * 20) | number:'1.1-1' }} / 20
-        </small>
-      </div>
+        <li *ngIf="score.key !== 'isFinal'"
+          class="list-group-item bg-transparent d-flex justify-content-between align-items-center ps-0 border-bottom py-3">
 
-      <button [disabled]="aggregateState['isFinal']" *ngIf="score.value !== null && getCategoryMaxScore(score.key) as maxScore"
-              (click)="editCategoryScore(score.key)" type="button" class="btn btn-primary btn-sm rounded-0 fs-6">
-        ⭐ {{ score.value }} / {{ maxScore }} pts
-      </button>
+          <div>
+            <h6 class="mb-0 fw-bold">{{ score.key }}</h6>
+            <small *ngIf="score.value !== null && getCategoryMaxScore(score.key) as maxScore" class="text-muted">
+              Note calculée : {{ ((score.value / maxScore) * 20) | number:'1.1-1' }} / 20
+            </small>
+          </div>
 
-      <button [disabled]="aggregateState['isFinal']" *ngIf="score.value === null" (click)="editCategoryScore(score.key)" type="button"
-              class="btn btn-secondary btn-sm rounded-0 fs-6 text-uppercase text-white">
-        ✍️ Non scoré / À évaluer
-      </button>
+          <button [disabled]="aggregateState['isFinal']"
+            *ngIf="score.value !== null && getCategoryMaxScore(score.key) as maxScore"
+            (click)="editCategoryScore(score.key)" type="button" class="btn btn-primary btn-sm rounded-0 fs-6">
+            ⭐ {{ score.value }} / {{ maxScore }} pts
+          </button>
 
-    </li>
-  </ng-container>
-</ul>
+          <button [disabled]="aggregateState['isFinal']" *ngIf="score.value === null"
+            (click)="editCategoryScore(score.key)" type="button"
+            class="btn btn-secondary btn-sm rounded-0 fs-6 text-uppercase text-white">
+            ✍️ Non scoré / À évaluer
+          </button>
+
+        </li>
+      </ng-container>
+    </ul>
 
     <div *ngIf="getGlobalScore() as global" class="mt-4 pt-3 d-flex justify-content-between align-items-center">
       <div>
@@ -683,20 +719,15 @@
   <!-- Fin du div principal Vue Référent -->
 
   <div *ngIf="isReferentView" class="mb-4 mt-3">
-  <label for="commentaireReferent" class="form-label text-secondary">
-    <i class="bi bi-chat-left-text-fill me-2"></i>Commentaire et observations :
-  </label>
-  
-  <textarea 
-    id="commentaireReferent" 
-    class="form-control rounded-0" 
-    rows="3" 
-    placeholder="Saisissez vos observations sur le candidat ici..."
-    [formControl]="commentCtrl"
-    [attr.disabled]="aggregateState['isFinal'] ? true : null"
-    (blur)="saveCommentReferent()">
+    <label for="commentaireReferent" class="form-label text-secondary">
+      <i class="bi bi-chat-left-text-fill me-2"></i>Commentaire et observations :
+    </label>
+
+    <textarea id="commentaireReferent" class="form-control rounded-0" rows="3"
+      placeholder="Saisissez vos observations sur le candidat ici..." [formControl]="commentCtrl"
+      [attr.disabled]="aggregateState['isFinal'] ? true : null" (blur)="saveCommentReferent()">
   </textarea>
-</div>
+  </div>
 
 
 
@@ -724,7 +755,7 @@
   </ng-container>
 
 
-  
+
 
 
 </div>
