@@ -534,22 +534,31 @@ export class Unit1Component {
 
     // 2️⃣ CONTRÔLE DE L'ADRESSE (Minimum 10 caractères + au moins 2 chiffres consécutifs)
     const adresseVal = (values.adresse || '').trim();
-    if (adresseVal.length >= 10 && /\d{2,}/.test(adresseVal)) {
+    if (adresseVal.length >= 10 && /\d+/.test(adresseVal)) {
       score++;
     }
 
-    // 3️⃣ CONTRÔLE DE LA DATE DE NAISSANCE (Minimum 6 caractères + se termine par 4 chiffres)
+    // 3️⃣ CONTRÔLE DE LA DATE DE NAISSANCE (Minimum 6 caractères + se termine par 2 ou 4 chiffres)
     let birthYear: number | null = null;
     const dateVal = (values.dateNaissance || '').trim();
 
-    // Ta nouvelle règle : au moins 6 caractères et se termine obligatoirement par 4 chiffres
-    if (dateVal.length >= 6 && /\d{4}$/.test(dateVal)) {
+    // Modifié : \d{2,4}$ permet d'accepter 2, 3 ou 4 chiffres à la fin
+    if (dateVal.length >= 6 && /\d{2,4}$/.test(dateVal)) {
       score++; // Point pour le format de la date validé
 
-      // Extraction des 4 derniers chiffres pour le calcul de l'âge juste après
-      const match = dateVal.match(/(\d{4})$/);
+      // Extraction des derniers chiffres
+      const match = dateVal.match(/(\d{2,4})$/);
       if (match) {
-        birthYear = parseInt(match[1], 10);
+        let extractedYear = parseInt(match[1], 10);
+
+        // Si le candidat a mis seulement 2 chiffres (ex: 73 ou 02)
+        if (match[1].length === 2) {
+          // Si les deux chiffres sont supérieurs à 26 (ex: 73), c'est 1973. 
+          // Si c'est inférieur ou égal à 26 (ex: 05), c'est 2005 (puisqu'on est en 2026).
+          extractedYear += (extractedYear > 26) ? 1900 : 2000;
+        }
+
+        birthYear = extractedYear;
       }
     }
 
@@ -1365,10 +1374,10 @@ export class Unit1Component {
 
 
     // 💬 ZONE COMMENTAIRE RÉFÉRENT (Ajout ici)
-  // On récupère le commentaire global de l'unité s'il existe déjà dans Firestore
-  if (data['units.unit1.commentReferent']) {
-    this.commentCtrl.setValue(data['units.unit1.commentReferent']);
-  }
+    // On récupère le commentaire global de l'unité s'il existe déjà dans Firestore
+    if (data['units.unit1.commentReferent']) {
+      this.commentCtrl.setValue(data['units.unit1.commentReferent']);
+    }
 
   }
 
@@ -1535,19 +1544,19 @@ export class Unit1Component {
 
     // 2️⃣ On passe 'texteFinal' comme 6ème argument à ton service
     await this.service.finalizeUnit(
-      this.uid, 
-      'unit1', 
-      this.aggregateState, 
-      noteFinale, 
-      this.label, 
+      this.uid,
+      'unit1',
+      this.aggregateState,
+      noteFinale,
+      this.label,
       texteFinal // 👈 Il est là !
     );
 
     // 3️⃣ Mise à jour de l'état local et verrouillage de l'interface
     this.aggregateState['isFinal'] = true as any;
-    
+
     // On désactive le champ texte à l'écran pour que le référent ne puisse plus écrire
-    this.commentCtrl.disable(); 
+    this.commentCtrl.disable();
 
     alert("✅ Évaluation clôturée.");
   }
@@ -1564,7 +1573,7 @@ export class Unit1Component {
 
     // On met à jour directement le document dans Firestore
     // Via une méthode de service qui fait un .update() ou .set(..., {merge: true})
-     this.service.updateUnitComment(this.uid, "unit1", texte);
+    this.service.updateUnitComment(this.uid, "unit1", texte);
   }
 
 
