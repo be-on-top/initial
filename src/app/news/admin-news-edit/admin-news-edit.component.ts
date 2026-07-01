@@ -49,6 +49,16 @@ export class AdminNewsEditComponent implements OnInit {
     // 🚫 Stop si formulaire invalide
     if (form.invalid) return;
 
+    // 🛑 VERROU DE SÉCURITÉ : On limite à une seule image maximum dans le corps de l'article
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(this.news.content, 'text/html');
+    const imagesInContent = doc.querySelectorAll('img');
+
+    if (imagesInContent.length > 1) {
+      alert("⚠️ Sécurité : Vous ne pouvez pas ajouter plus d'une seule image à l'intérieur du texte de l'article.");
+      return; // On coupe court, rien n'est envoyé à Firebase !
+    }
+
     this.loading = true;
 
     if (this.id) {
@@ -162,25 +172,30 @@ export class AdminNewsEditComponent implements OnInit {
     input.click();
   }
 
-editorConfig = {
+  editorConfig = {
     plugins: 'lists image',
-    // 🛠️ CHANGEMENT 1 : On enlève "outdent indent" pour éviter les décalages de texte bizarres
-    toolbar: 'undo redo | formatselect | bold italic | image | bullist numlist',
+    
+    // 🛠️ ÉTAPE 1 : On désactive complètement le menu du haut (Fichier, Insérer, etc.)
+    menubar: false, 
 
-    // 🛠️ CHANGEMENT 2 : On force les formats visibles. On vire H1 (ton titre) et H4 pour limiter leurs choix
+    // 🛠️ ÉTAPE 2 : On configure la barre d'icônes. On ajoute 'styleselect' (ou 'formatselect') pour les titres !
+    toolbar: 'undo redo | blocks | bold italic | image | bullist numlist',
+
+    // 🛠️ ÉTAPE 3 : On restreint les titres autorisés dans le menu déroulant (uniquement p, h2, h3)
     block_formats: 'Paragraphe=p; Titre 2=h2; Titre 3=h3',
 
     images_file_types: 'webp',
     file_picker_types: 'image',
 
-    // 🔒 VERROUILLAGE DES IMAGES (Inchangé, le code exact)
+    // 🔒 VERROUILLAGE DES IMAGES
     image_dimensions: false, 
     image_caption: false,    
     inline_styles: false,    
 
-    // 🧹 SÉCURITÉ SÉVÈRE : On retire h1, h4 et class de ta liste pour que l'éditeur nettoie les copier-coller
+    // 🧹 SÉCURITÉ SÉVÈRE : On garde ton filtre de nettoyage pour les copier-coller
     forced_root_block: 'p',
     valid_elements: 'p,br,strong,em,span,h2,h3,ul,ol,li,img[src|alt|width|height]',
+
 
     // 1️⃣ GÈRE LE GLISSER-DÉPOSER (Le code exact, non modifié)
     images_upload_handler: (blobInfo: any) => {
