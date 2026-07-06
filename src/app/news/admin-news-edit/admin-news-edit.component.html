@@ -3,6 +3,10 @@
   <h2 class="my-4" *ngIf="!id">Création d'un article</h2>
   <h2 class="my-4" *ngIf="id">Modification de l'article</h2>
 
+  <div class="alert alert-danger">Pour l'image du haut (Héros) : privilégier un format "très allongé" (ratio 21/9).
+
+<br>Si vous ajoutez une image dans le texte : choisir un format "Portrait" ou "Carré" pour que le texte s'enroule proprement autour.</div>
+
   <form #f="ngForm" (ngSubmit)="save(f)">
 
     <div class="mb-3">
@@ -19,7 +23,7 @@
         placeholder="https://...">
     </div> -->
     <div class="mb-3">
-      <label class="form-label">Image (upload)</label>
+      <label class="form-label">Image du haut (upload)</label>
 
       <input type="file" class="form-control" (change)="onFileSelected($event)">
     </div>

@@ -1,3 +1,31 @@
+/* .competences{
+  font-size: inherit;
+  text-align: inherit;
+  margin: inherit;
+  position: inherit;
+}
+
+
+.competences::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    height: 0px;
+    width: 0;
+} */
+
+/* 1. On nettoie le H3 lui-même */
+.competences {
+  all: unset;
+  display: block;
+  /* Sécurité : 'unset' enlève le comportement de bloc, on le remet */
+}
+
+/* 2. On dit explicitement au ::before de disparaître */
+.competences::before {
+  content: none;
+  /* C'est le mot magique pour dire "efface le contenu créé en global" */
+}
 
 .trade-details-container {
   display: block;
@@ -7,36 +35,36 @@
 
 /* 1. Le cadre (Stabilité CLS + Zone Spinner) */
 .image-wrapper {
-    width: 100%;
-    aspect-ratio: 900 / 375; 
-    position: relative;
-    background-color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
+  width: 100%;
+  aspect-ratio: 900 / 375;
+  position: relative;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
 /* 2. L'image (Ajustement parfait) */
 .image-wrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 /* 3. Le Spinner (Centrage absolu) */
 .spinner-overlay {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 5;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
 }
 
 /* 4. Le correctif Angular */
 .d-none {
-    display: none !important;
+  display: none !important;
 }
 
 /* en dessous l'ancien  */
@@ -52,13 +80,13 @@ h1 {
 }
 
 h2 {
-  margin:1rem,0;
+  margin: 1rem, 0;
 }
 
 .titleCollapse {
   font-size: 1.4rem;
   font-weight: 400;
-  margin:0;
+  margin: 0;
 }
 
 
@@ -77,11 +105,12 @@ button.btn.btn-primary:hover {
   transform: scale(1.05);
 }
 
-.third, .secund{
+.third,
+.secund {
   border-bottom: 0;
 }
 
-.third{
+.third {
   border-top: 1px solid rgba(0, 0, 0, 0.2);
 }
 
@@ -128,7 +157,7 @@ p.btn {
 p.btn:hover {
   transform: scale(1.07);
   /* box-shadow: 0 10px 20px rgba(0, 0, 0, .12), 0 4px 8px rgba(0, 0, 0, .06); */
-} 
+}
 
 /* div {
   box-sizing: border-box;
@@ -161,20 +190,23 @@ p.btn:hover {
   outline: none;
 }
 
-.accessibility{
+.accessibility {
   line-height: 1.6rem;
 }
+
 .link-underline-warning {
   color: inherit;
   text-decoration-line: underline;
-  text-decoration-color: #ffc107 !important; /* warning Bootstrap */
+  text-decoration-color: #ffc107 !important;
+  /* warning Bootstrap */
   text-decoration-thickness: 1px;
   text-underline-offset: 2px;
 }
 
 .link-underline-warning:hover,
 .link-underline-warning:focus-visible {
-  text-decoration-color: #ffca2c; /* warning un poil plus clair */
+  text-decoration-color: #ffca2c;
+  /* warning un poil plus clair */
 }
 
 
@@ -188,7 +220,7 @@ p.btn:hover {
   .btn.btn-transparent i {
     margin-left: 8px;
     margin-right: 8px;
-  
+
   }
 }
 
@@ -204,7 +236,7 @@ p.btn:hover {
 
   }
 
-  .responsive{
+  .responsive {
     display: none;
   }
 

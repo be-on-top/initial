@@ -33,6 +33,61 @@ img {
   object-fit: cover !important;
   object-position: center !important; /* Centre l'image dans le cadre pour le rognage */
 }
+
+/* 💡 On utilise ::ng-deep pour casser l'isolation Angular sur le contenu dynamique */
+:host ::ng-deep .news-content blockquote {
+  position: relative !important;
+  background-color: #f8f9fa !important;       /* Un fond gris très doux */
+  border-left: 5px solid #82BC00 !important;  /* Ta touche verte */
+  margin: 1.5rem 0 !important;
+  padding: 1.5rem 2rem 1.5rem 3.5rem !important; 
+  border-radius: 0 8px 8px 0 !important;
+  display: block !important; /* Force le comportement de bloc */
+}
+
+:host ::ng-deep .news-content blockquote::before {
+  content: "“" !important;                    
+  position: absolute !important;
+  top: -0.5rem !important;
+  left: 1rem !important;
+  font-size: 5rem !important;                 
+  /* font-family: Georgia, serif !important;      */
+  color: #82BC00 !important;                  
+  opacity: 0.3 !important;                               
+  line-height: 1 !important;
+}
+
+:host ::ng-deep .news-content blockquote p {
+  font-style: italic !important;
+  color: #495057 !important;
+  font-size: 1.1rem !important;
+  margin: 0 !important;                       
+}
+
+/* Optionnel : adoucir le texte à l'intérieur */
+.news-content blockquote p {
+  font-style: italic !important;
+  color: #495057 !important;
+  font-size: 1.1rem !important;
+  margin: 0 !important;                       /* Enlever les marges par défaut des paragraphes internes */
+}
+/* 1. On met un fond gris transparent pour occuper l'espace avant que l'image n'arrive */
+.news-content-img-container, .ratio-21x9 {
+  background-color: #f0f0f0 !important;
+}
+
+/* 2. On fait apparaître l'image en douceur au lieu d'un pop agressif */
+.ratio-21x9 img {
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+
+
 @media (max-width: 450px) {
   .news-content img {
     float: none;

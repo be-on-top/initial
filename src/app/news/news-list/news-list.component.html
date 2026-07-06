@@ -2,7 +2,7 @@
 
     <h1 class="newsTitle mb-4">News/Articles</h1>
     <!-- <pre>{{ news$ | async | json }}</pre> -->
-    <div class="alert bg-dark text-white w-100 text-center" role="region" aria-label="Informations sur la rubrique">
+    <div class="alert bg-primary text-white w-100 text-center" role="region" aria-label="Informations sur la rubrique">
         <!-- <p class="mb-2">
             <span aria-hidden="true">ℹ️</span>
             <strong>Pratiques &amp; Usages</strong>
@@ -15,7 +15,7 @@
     </div>
 
 
-    <div class="list-group">
+    <div class="list-group mt-3">
 
         <a *ngFor="let n of news$ | async" [routerLink]="['/news', n.id]"
             class="list-group-item list-group-item-action">
@@ -39,5 +39,7 @@
             aria-label="Consulter la FAQ / Mission de l'application">FAQ / Mission de l'application</a>.
 
     </div>
+
+
 
 </div>

@@ -249,9 +249,9 @@
                         <!-- <div class="mt-4 p-5 bg-primary text-white rounded"> -->
                         <!-- <ng-container *ngIf="tradeData.competences"> -->
                         <ng-container *ngIf="tradeData.competences && tradeData.competences.length > 0">
-                            <p *ngFor="let cp of tradeData.competences, let index=index">
+                            <h3 class="competences mb-4" *ngFor="let cp of tradeData.competences, let index=index">
                                 <span class="fw-bold">CP{{index+1}} : </span> {{cp}}
-                            </p>
+                            </h3>
                         </ng-container>
                         <!-- </div> -->
 

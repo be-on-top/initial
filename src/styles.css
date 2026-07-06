@@ -201,11 +201,22 @@ strong {
 
 .news-content ul {
   border-left: 2px #82BC00 solid;
+  /* display: block; */
+  /* 🎯 La solution magique */
+  overflow: hidden !important;
+  padding-left: 1rem;
 }
+
+.news-content ul li {
+list-style: none;
+}
+
+
 .news-content strong {
   font-weight: 700 !important; /* Ou 800 / bold */
 
 }
+
 /* 📝 Style personnalisé pour le bloc de mise en valeur (Blockquote) */
 /* 💡 Le détournement magique de l'italique (balise em) */
 .news-content em {

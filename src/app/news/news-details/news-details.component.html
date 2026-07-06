@@ -1,53 +1,45 @@
 <div class="container mt-4" *ngIf="news; else loading">
 
-    <ng-container *ngIf="news.heroImage; else noImageLayout">
-        <h1 class="mb-4">{{ news.title }}</h1>
+    <!-- 1. Le Titre est commun à tout le monde, on le met au tout début -->
+    <h1 class="mb-4">{{ news.title }}</h1>
 
-        <div class="card shadow-sm mb-4">
+    <!-- 2. Une seule Card propre pour tout l'article -->
+    <div class="card mb-4 border-0">
 
-            <div class="card-header p-0 border-0 ratio ratio-21x9">
-                <img [src]="news.heroImage" alt="Illustration de l'article : {{ news.title }}"
-                    class="img-fluid object-fit-cover w-100 h-100" />
-            </div>
-
-            <div class="card-body">
-
-                <!-- <h1 class="card-title h2 mb-3">{{ news.title }}</h1> -->
-
-                <p class="card-text text-muted small mb-3">
-                    {{ news.createdAt?.toDate?.() | date:'medium' }}
-                </p>
-
-                <div class="card-text news-content" [innerHTML]="news.content"></div>
-            </div>
-
+        <!-- 📸 L'image s'affiche UNIQUEMENT si elle existe. Pas besoin de dupliquer tout le reste ! -->
+        <div class="card-header p-0 border-0 ratio ratio-21x9" *ngIf="news.heroImage">
+            <img [src]="news.heroImage" alt="Illustration de l'article : {{ news.title }}"
+                class="img-fluid object-fit-cover w-100 h-100" />
         </div>
 
-    </ng-container>
+        <div class="card-body px-0"> <!-- px-0 permet de s'aligner sur le titre si la card n'a pas de bordure -->
+            <p class="card-text text-muted small mb-3">
+                {{ news.createdAt?.toDate?.() | date:'medium' }}
+            </p>
 
-
-
-    <ng-template #noImageLayout>
-        <h1 class="mb-4">{{ news.title }}</h1>
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="news-content" [innerHTML]="news.content"></div>
-            </div>
+            <!-- 📄 Le contenu de l'article (géré par TinyMCE) -->
+            <div class="card-text news-content" [innerHTML]="news.content"></div>
         </div>
-    </ng-template>
 
+    </div>
+
+    <!-- 💡 Ton bloc d'information général (FAQ) -->
+    <div class="alert bg-dark text-white w-100 text-center" role="region" aria-label="Informations générale et mission de l'application">
+        Pour toute question sur la mission globale de l'outil, ses utilisateurs, son édition et son écosystème, merci de vous reporter directement à la
+        <a [routerLink]="['/market-app']" class="text-white text-underline" aria-label="Consulter la FAQ / Mission de l'application">FAQ / Mission de l'application</a>.
+    </div>
+
+    <!-- ↩️ Bouton retour -->
     <a routerLink="/news" class="btn btn-outline-secondary my-4" aria-label="Retourner à la liste des articles">
         <span aria-hidden="true">←</span> Retour à la liste des articles
     </a>
 
 </div>
 
+<!-- ⏳ Template de chargement global -->
 <ng-template #loading>
     <div class="text-center mt-5" role="status" aria-live="polite">
         <div class="spinner-border" aria-hidden="true"></div>
         <span class="visually-hidden">Chargement de l'article en cours...</span>
     </div>
 </ng-template>
-
-<hr>

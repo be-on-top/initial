@@ -57,6 +57,7 @@ export class AdminNewsEditComponent implements OnInit {
     if (imagesInContent.length > 1) {
       alert("⚠️ Sécurité : Vous ne pouvez pas ajouter plus d'une seule image à l'intérieur du texte de l'article.");
       return; // On coupe court, rien n'est envoyé à Firebase !
+
     }
 
     this.loading = true;
@@ -178,23 +179,22 @@ export class AdminNewsEditComponent implements OnInit {
     // 🛠️ ÉTAPE 1 : On désactive complètement le menu du haut (Fichier, Insérer, etc.)
     menubar: false, 
 
-    // 🛠️ ÉTAPE 2 : On configure la barre d'icônes. On ajoute 'styleselect' (ou 'formatselect') pour les titres !
-    toolbar: 'undo redo | blocks | bold italic | image | bullist numlist',
+    // 🛠️ On ajoute 'blockquote' dans la barre d'outils (il prendra la forme d'une icône de guillemets " )
+    toolbar: 'undo redo | blocks | bold italic | blockquote | image | hr | bullist numlist',
 
-    // 🛠️ ÉTAPE 3 : On restreint les titres autorisés dans le menu déroulant (uniquement p, h2, h3)
     block_formats: 'Paragraphe=p; Titre 2=h2; Titre 3=h3',
-
     images_file_types: 'webp',
     file_picker_types: 'image',
+
+    // 🔒 SÉCURITÉ : On ajoute 'blockquote' dans les éléments autorisés pour pas qu'il soit nettoyé
+    forced_root_block: 'p',
+    valid_elements: 'p,br,strong,em,span,h2,h3,ul,ol,li,hr,blockquote,img[src|alt|width|height]',
 
     // 🔒 VERROUILLAGE DES IMAGES
     image_dimensions: false, 
     image_caption: false,    
     inline_styles: false,    
 
-    // 🧹 SÉCURITÉ SÉVÈRE : On garde ton filtre de nettoyage pour les copier-coller
-    forced_root_block: 'p',
-    valid_elements: 'p,br,strong,em,span,h2,h3,ul,ol,li,img[src|alt|width|height]',
 
 
     // 1️⃣ GÈRE LE GLISSER-DÉPOSER (Le code exact, non modifié)
