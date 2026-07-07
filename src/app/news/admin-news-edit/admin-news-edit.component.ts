@@ -182,13 +182,14 @@ export class AdminNewsEditComponent implements OnInit {
     // 🛠️ On ajoute 'blockquote' dans la barre d'outils (il prendra la forme d'une icône de guillemets " )
     toolbar: 'undo redo | blocks | bold italic | blockquote | image | hr | bullist numlist',
 
-    block_formats: 'Paragraphe=p; Titre 2=h2; Titre 3=h3',
+    block_formats: 'Paragraphe=p; Titre 2=h2',
     images_file_types: 'webp',
     file_picker_types: 'image',
 
     // 🔒 SÉCURITÉ : On ajoute 'blockquote' dans les éléments autorisés pour pas qu'il soit nettoyé
     forced_root_block: 'p',
-    valid_elements: 'p,br,strong,em,span,h2,h3,ul,ol,li,hr,blockquote,img[src|alt|width|height]',
+    valid_elements: 'p,br,strong,em,span,h2,h3,ul,ol,li,hr,blockquote,img[src|alt|width|height|loading]',
+
 
     // 🔒 VERROUILLAGE DES IMAGES
     image_dimensions: false, 

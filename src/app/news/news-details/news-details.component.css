@@ -1,83 +1,19 @@
-div.news-content img {
-  float: left;
-  margin: 0 15px 10px 0;
-  max-width: 40%;
-  height: auto;
-  border-radius: 5px;
-  border-color: blue;
-  border-style: solid;
-  border-width: 3px;
+/* ==========================================
+   1. TITRES ET IMAGES PRINCIPALES (HERO)
+   ========================================== */
+h1 {
+  font-size: 1.8rem;
 }
 
-h1{font-size: 1.8rem;}
-
-.news-content p {
-  overflow: hidden;
-}
-.news-content p:has(img) {
-  display: contents;
-}
-
-
-
-
-img {
-  width: 100%;
-  height: auto;
-  /* max-height: 300px; */
-  /* object-fit: contain; */
-}
-
-/* 🎯 On force l'image du Héros à garder ses proportions sans s'écraser */
-.ratio-21x9 img {
-  object-fit: cover !important;
-  object-position: center !important; /* Centre l'image dans le cadre pour le rognage */
-}
-
-/* 💡 On utilise ::ng-deep pour casser l'isolation Angular sur le contenu dynamique */
-:host ::ng-deep .news-content blockquote {
-  position: relative !important;
-  background-color: #f8f9fa !important;       /* Un fond gris très doux */
-  border-left: 5px solid #82BC00 !important;  /* Ta touche verte */
-  margin: 1.5rem 0 !important;
-  padding: 1.5rem 2rem 1.5rem 3.5rem !important; 
-  border-radius: 0 8px 8px 0 !important;
-  display: block !important; /* Force le comportement de bloc */
-}
-
-:host ::ng-deep .news-content blockquote::before {
-  content: "“" !important;                    
-  position: absolute !important;
-  top: -0.5rem !important;
-  left: 1rem !important;
-  font-size: 5rem !important;                 
-  /* font-family: Georgia, serif !important;      */
-  color: #82BC00 !important;                  
-  opacity: 0.3 !important;                               
-  line-height: 1 !important;
-}
-
-:host ::ng-deep .news-content blockquote p {
-  font-style: italic !important;
-  color: #495057 !important;
-  font-size: 1.1rem !important;
-  margin: 0 !important;                       
-}
-
-/* Optionnel : adoucir le texte à l'intérieur */
-.news-content blockquote p {
-  font-style: italic !important;
-  color: #495057 !important;
-  font-size: 1.1rem !important;
-  margin: 0 !important;                       /* Enlever les marges par défaut des paragraphes internes */
-}
-/* 1. On met un fond gris transparent pour occuper l'espace avant que l'image n'arrive */
+/* Fond gris pendant le chargement de la grande image */
 .news-content-img-container, .ratio-21x9 {
   background-color: #f0f0f0 !important;
 }
 
-/* 2. On fait apparaître l'image en douceur au lieu d'un pop agressif */
+/* Animation douce pour la grande image */
 .ratio-21x9 img {
+  object-fit: cover !important;
+  object-position: center !important;
   animation: fadeIn 0.4s ease-in-out;
 }
 
@@ -86,8 +22,74 @@ img {
   to { opacity: 1; }
 }
 
+/* Image globale par défaut */
+img {
+  width: 100%;
+  height: auto;
+}
 
 
+/* ==========================================
+   2. IMAGES INSÉRÉES DANS LE TEXTE (TINYMCE)
+   ========================================== */
+div.news-content img {
+  float: left;
+  margin: 0 15px 10px 0;
+  max-width: 40%;
+  height: auto;
+  border-radius: 5px;
+  border: 3px solid blue;
+}
+
+/* Sécurise le texte pour qu'il s'aligne proprement à droite de l'image */
+.news-content p {
+  overflow: hidden;
+}
+
+
+
+/* ==========================================
+   3. ÉLÉMENTS DE MISE EN PAGE (HR & BLOCKQUOTE)
+   ========================================== */
+
+/* 🧹 Le bouton HR : Force tout à repasser SOUS l'image */
+:host ::ng-deep .news-content hr {
+  clear: both !important;
+  display: block !important;
+  margin: 2rem 0 !important;
+}
+
+/* 💡 Style personnalisé du Blockquote (Citation) */
+:host ::ng-deep .news-content blockquote {
+  position: relative !important;
+  background-color: #f8f9fa !important;   /* Fond gris doux */
+  border-left: 5px solid #82BC00 !important;  /* Bordure verte */
+  margin: 1.5rem 0 !important;
+  padding: 1.5rem 2rem 1.5rem 3.5rem !important; 
+  border-radius: 0 8px 8px 0 !important;
+  display: block !important;
+}
+
+/* Le gros guillemet décoratif */
+:host ::ng-deep .news-content blockquote::before {
+  content: "“" !important;                    
+  position: absolute !important;
+  top: 0 !important;
+  left: 1rem !important;
+  font-size: 5rem !important;                
+  color: #82BC00 !important;                  
+  opacity: 0.3 !important;                                             
+  line-height: 1 !important;
+}
+
+:host ::ng-deep .news-content blockquote p {
+  font-size: 1.1rem !important;
+}
+
+
+/* ==========================================
+   4. RESPONSIVE MOBILE (ÉCRANS RESTEINTS)
+   ========================================== */
 @media (max-width: 450px) {
   .news-content img {
     float: none;
