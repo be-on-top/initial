@@ -174,13 +174,13 @@ export class AdminNewsEditComponent implements OnInit {
   }
 
   editorConfig = {
-    plugins: 'lists image',
+    plugins: 'lists image, emoticons',
     
     // 🛠️ ÉTAPE 1 : On désactive complètement le menu du haut (Fichier, Insérer, etc.)
     menubar: false, 
 
     // 🛠️ On ajoute 'blockquote' dans la barre d'outils (il prendra la forme d'une icône de guillemets " )
-    toolbar: 'undo redo | blocks | bold italic | blockquote | image | hr | bullist numlist',
+    toolbar: 'undo redo | blocks | bold italic | blockquote | emoticons | image | hr | bullist numlist',
 
     block_formats: 'Paragraphe=p; Titre 2=h2',
     images_file_types: 'webp',
