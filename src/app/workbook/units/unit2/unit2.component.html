@@ -1,0 +1,1498 @@
+<!-- Conteneur principal -->
+<div class="container mt-4">
+
+  <!-- Message de bienvenue pour les étudiants (Étape 0) -->
+  <div class="alert w-100 p-4 pe-5 bg-dark alert-dismissible text-white mb-4 fade show display-5"
+    *ngIf="isStudent && currentStep === 0">
+    <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
+      aria-label="Fermer le message"></button>
+    Bienvenue, vous allez commencer vos exercices de Français Langue Étrangère débutant.
+  </div>
+
+  <!-- Alerte d'authentification requise -->
+  <div class="alert alert-warning instructions" *ngIf="isNotAuthenticated">
+    Authentification requise pour accéder aux exercices.
+    <a role="link" aria-label="Avertissement : se connecter pour démarrer un questionnaire" [routerLink]="['/login']"
+      class="text-light">Vous identifier</a>
+  </div>
+
+  <!-- Alerte restriction d'accès aux candidats -->
+  <div class="alert alert-danger" *ngIf="!isNotAuthenticated && !isStudent && !isReferentView">
+    Seul un candidat authentifié peut passer une évaluation.
+  </div>
+
+  <div>
+
+    <!-- ===================================================== -->
+<!-- EXERCICE 3 - PARTIE 1 - QUESTION 1 = EXERCICE 8 -->
+<!-- ===================================================== -->
+
+<form
+  *ngIf="isReferentView || currentStep === 7"
+  [formGroup]="formEx8"
+  (ngSubmit)="submitEx8()">
+
+  <!-- HEADER -->
+
+  <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+    <span class="badge text-bg-dark text-white">
+      <i class="bi bi-tag-fill me-2"></i>
+      Catégorie : {{steps[7].category}}
+    </span>
+
+    <div class="d-flex gap-2 ms-md-auto">
+
+      <span class="badge text-bg-warning">
+
+        Exercice 8
+
+      </span>
+
+      <span
+        *ngIf="isReferentView"
+        class="badge border border-secondary text-secondary">
+
+        Max {{ steps[7].maxScore }} PNTS
+
+      </span>
+
+      <span class="badge text-bg-dark">
+
+        {{ getCurrentScore(7) }} PNTS
+
+      </span>
+
+    </div>
+
+  </div>
+
+  <!-- DOCUMENT -->
+
+  <div class="alert bg-info">
+
+    <h5>
+      Règles d'hygiène
+    </h5>
+
+    <p>
+      Dans un restaurant, la propreté est très importante.
+      Les salariés doivent arriver avec des vêtements propres
+      et les cheveux attachés.
+    </p>
+
+    <p>
+      Ils doivent se laver les mains avant de commencer le travail.
+      Ils doivent aussi vérifier que leur poste de travail est propre.
+    </p>
+
+    <p>
+      Pendant le service, ils ne doivent pas toucher leur visage
+      et doivent nettoyer les surfaces régulièrement.
+    </p>
+
+    <p>
+      Ces règles permettent de protéger les clients
+      et les salariés.
+    </p>
+
+  </div>
+
+  <!-- QUESTION -->
+
+  <div class="alert bg-info instructions">
+
+    Où travaillent les salariés ?
+
+  </div>
+
+  <!--
+    Les réponses sont affichées horizontalement lorsque toutes les propositions
+    sont suffisamment courtes (ex. Oui / Non, Vrai / Faux, 1 / 2 / 3).
+
+    Dans les autres cas, l'affichage reste vertical afin de préserver
+    la lisibilité, notamment sur mobile.
+
+    La décision est prise automatiquement par shouldDisplayInline().
+  -->
+
+  <div
+    [class.d-flex]="shouldDisplayInline(ex8Options)"
+    class="gap-4 flex-wrap">
+
+    <div
+      class="form-check"
+      *ngFor="let opt of ex8Options">
+
+      <input
+        class="form-check-input"
+        type="radio"
+        formControlName="answer"
+        [value]="opt.value">
+
+      <label class="form-check-label">
+
+        {{ opt.label }}
+
+      </label>
+
+    </div>
+
+  </div>
+
+  <button
+    class="btn btn-primary mt-4">
+
+    Suivant
+
+  </button>
+
+</form>
+  
+<!-- ===================================================== -->
+<!-- EXERCICE 3 - PARTIE 1 - QUESTION 2 = EXERCICE 9 -->
+<!-- ===================================================== -->
+
+<form
+  *ngIf="isReferentView || currentStep === 8"
+  [formGroup]="formEx9"
+  (ngSubmit)="submitEx9()">
+
+  <!-- HEADER -->
+
+  <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+    <span class="badge text-bg-dark text-white">
+      <i class="bi bi-tag-fill me-2"></i>
+          Catégorie : {{steps[8].category}}
+    </span>
+
+    <div class="d-flex gap-2 ms-md-auto">
+
+      <span class="badge text-bg-warning">
+        Exercice 9
+      </span>
+
+      <span
+        *ngIf="isReferentView"
+        class="badge border border-secondary text-secondary">
+
+        Max {{ steps[8].maxScore }} PNTS
+
+      </span>
+
+      <span class="badge text-bg-dark">
+
+        {{ getCurrentScore(8) }} PNTS
+
+      </span>
+
+    </div>
+
+  </div>
+
+  <!-- DOCUMENT -->
+
+  <div class="alert bg-info">
+
+    <h5>Règles d'hygiène</h5>
+
+    <p>
+      Dans un restaurant, la propreté est très importante.
+      Les salariés doivent arriver avec des vêtements propres
+      et les cheveux attachés.
+    </p>
+
+    <p>
+      Ils doivent se laver les mains avant de commencer le travail.
+      Ils doivent aussi vérifier que leur poste de travail est propre.
+    </p>
+
+    <p>
+      Pendant le service, ils ne doivent pas toucher leur visage
+      et doivent nettoyer les surfaces régulièrement.
+    </p>
+
+    <p>
+      Ces règles permettent de protéger les clients
+      et les salariés.
+    </p>
+
+  </div>
+
+  <!-- QUESTION -->
+
+  <div class="alert bg-info instructions">
+
+    Comment doivent être les vêtements ?
+
+  </div>
+
+  <div
+    [class.d-flex]="shouldDisplayInline(ex9Options)"
+    class="gap-4 flex-wrap">
+
+    <div class="form-check" *ngFor="let opt of ex9Options">
+
+      <input
+        class="form-check-input"
+        type="radio"
+        formControlName="answer"
+        [value]="opt.value">
+
+      <label class="form-check-label">
+
+        {{ opt.label }}
+
+      </label>
+
+    </div>
+
+  </div>
+
+  <button class="btn btn-primary mt-4">
+
+    Suivant
+
+  </button>
+
+</form>
+
+<!-- ===================================================== -->
+<!-- EXERCICE 3 - PARTIE 1 - QUESTION 3 = EXERCICE 10 -->
+<!-- ===================================================== -->
+
+<form
+  *ngIf="isReferentView || currentStep === 9"
+  [formGroup]="formEx10"
+  (ngSubmit)="submitEx10()">
+
+  <!-- HEADER identique -->
+
+  <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+    <span class="badge text-bg-dark text-white">
+      <i class="bi bi-tag-fill me-2"></i>
+          Catégorie : {{steps[9].category}}
+    </span>
+
+    <div class="d-flex gap-2 ms-md-auto">
+
+      <span class="badge text-bg-warning">
+        Exercice 10
+      </span>
+
+      <span *ngIf="isReferentView"
+        class="badge border border-secondary text-secondary">
+
+        Max {{ steps[9].maxScore }} PNTS
+
+      </span>
+
+      <span class="badge text-bg-dark">
+
+        {{ getCurrentScore(9) }} PNTS
+
+      </span>
+
+    </div>
+
+  </div>
+
+  <!-- DOCUMENT -->
+
+  <div class="alert bg-info">
+
+    <h5>Règles d'hygiène</h5>
+
+    <p>
+      Dans un restaurant, la propreté est très importante.
+      Les salariés doivent arriver avec des vêtements propres
+      et les cheveux attachés.
+    </p>
+
+    <p>
+      Ils doivent se laver les mains avant de commencer le travail.
+      Ils doivent aussi vérifier que leur poste de travail est propre.
+    </p>
+
+    <p>
+      Pendant le service, ils ne doivent pas toucher leur visage
+      et doivent nettoyer les surfaces régulièrement.
+    </p>
+
+    <p>
+      Ces règles permettent de protéger les clients
+      et les salariés.
+    </p>
+
+  </div>
+
+  <!-- QUESTION -->
+
+  <div class="alert bg-info instructions">
+
+    Les salariés peuvent-ils toucher leur visage pendant le service ?
+
+  </div>
+
+  <div
+    [class.d-flex]="shouldDisplayInline(ex10Options)"
+    class="gap-4 flex-wrap">
+
+    <div class="form-check" *ngFor="let opt of ex10Options">
+
+      <input
+        class="form-check-input"
+        type="radio"
+        formControlName="answer"
+        [value]="opt.value">
+
+      <label class="form-check-label">
+
+        {{ opt.label }}
+
+      </label>
+
+    </div>
+
+  </div>
+
+  <button class="btn btn-primary mt-4">
+
+    Suivant
+
+  </button>
+
+</form>
+
+<!-- ===================================================== -->
+<!-- EXERCICE 3 - PARTIE 1 - QUESTION 4 = EXERCICE 11 -->
+<!-- ===================================================== -->
+
+<form
+  *ngIf="isReferentView || currentStep === 10"
+  [formGroup]="formEx11"
+  (ngSubmit)="submitEx11()">
+
+  <!-- HEADER -->
+
+  <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+    <span class="badge text-bg-dark text-white">
+      <i class="bi bi-tag-fill me-2"></i>
+          Catégorie : {{steps[10].category}}
+    </span>
+
+    <div class="d-flex gap-2 ms-md-auto">
+
+      <span class="badge text-bg-warning">
+        Exercice 11
+      </span>
+
+      <span
+        *ngIf="isReferentView"
+        class="badge border border-secondary text-secondary">
+
+        Max {{ steps[10].maxScore }} PNTS
+
+      </span>
+
+      <span class="badge text-bg-dark">
+
+        {{ getCurrentScore(10) }} PNTS
+
+      </span>
+
+    </div>
+
+  </div>
+
+  <!-- DOCUMENT -->
+
+  <div class="alert bg-info">
+
+    <h5>Règles d'hygiène</h5>
+
+    <p>
+      Dans un restaurant, la propreté est très importante.
+      Les salariés doivent arriver avec des vêtements propres
+      et les cheveux attachés.
+    </p>
+
+    <p>
+      Ils doivent se laver les mains avant de commencer le travail.
+      Ils doivent aussi vérifier que leur poste de travail est propre.
+    </p>
+
+    <p>
+      Pendant le service, ils ne doivent pas toucher leur visage
+      et doivent nettoyer les surfaces régulièrement.
+    </p>
+
+    <p>
+      Ces règles permettent de protéger les clients
+      et les salariés.
+    </p>
+
+  </div>
+
+  <!-- QUESTION -->
+
+  <div class="alert bg-info instructions">
+
+    Pourquoi ces règles sont-elles importantes ?
+
+  </div>
+
+  <div
+    [class.d-flex]="shouldDisplayInline(ex11Options)"
+    class="gap-4 flex-wrap">
+
+    <div class="form-check" *ngFor="let opt of ex11Options">
+
+      <input
+        class="form-check-input"
+        type="radio"
+        formControlName="answer"
+        [value]="opt.value">
+
+      <label class="form-check-label">
+
+        {{ opt.label }}
+
+      </label>
+
+    </div>
+
+  </div>
+
+  <button class="btn btn-primary mt-4">
+
+    Suivant
+
+  </button>
+
+</form>
+
+
+    <!-- ===================================================== -->
+    <!-- EXERCICE 3 - PARTIE 2 - QUESTION 1 = EXERCICE 12 -->
+    <!-- ===================================================== -->
+
+    <form *ngIf="isReferentView || currentStep === 11" [formGroup]="formEx12" (ngSubmit)="submitEx12()">
+
+      <!-- HEADER -->
+
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+        <span class="badge text-bg-dark text-white">
+          <i class="bi bi-tag-fill me-2"></i>
+          Catégorie : Compréhension des écrits
+        </span>
+
+        <div class="d-flex gap-2 ms-md-auto">
+
+          <span class="badge text-bg-warning">
+            Exercice 12
+          </span>
+
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+
+            Max {{ steps[11].maxScore }} PNTS
+
+          </span>
+
+          <span class="badge text-bg-dark">
+
+            {{ getCurrentScore(11) }} PNTS
+
+          </span>
+
+        </div>
+
+      </div>
+
+      <!-- DOCUMENT -->
+
+      <div class="alert bg-info">
+
+        <!-- Document support -->
+        <h5><i class="bi bi-stickies me-3"></i>Info équipe :</h5>
+
+        <p>Bénédicte est malade aujourd'hui. Merci de la remplacer et de faire particulièrement attention au dressage
+          des tables.</p>
+        <p>Nous avons plusieurs réservations en plus :</p>
+        <ul>
+          <li>1 table de 5 personnes</li>
+          <li>1 table de 2 personnes</li>
+        </ul>
+        <p>Merci de mettre des fleurs rouges à l'entrée du restaurant pour la Saint-Valentin.</p>
+
+      </div>
+
+      <!-- QUESTION -->
+
+      <div class="alert bg-info instructions">
+
+        Pourquoi faut-il remplacer Bénédicte ?
+
+      </div>
+
+      <div class="form-check" *ngFor="let opt of ex12Options">
+
+        <input class="form-check-input" type="radio" formControlName="answer" [value]="opt.value">
+
+        <label class="form-check-label">
+
+          {{ opt.label }}
+
+        </label>
+
+      </div>
+
+      <button class="btn btn-primary mt-4">
+
+        Suivant
+
+      </button>
+
+    </form>
+
+    <!-- ===================================================== -->
+    <!-- EXERCICE 3 - PARTIE 2 - QUESTION 2 = EXERCICE 13 -->
+    <!-- ===================================================== -->
+
+    <form *ngIf="isReferentView || currentStep === 12" [formGroup]="formEx13" (ngSubmit)="submitEx13()">
+
+      <!-- HEADER -->
+
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+        <span class="badge text-bg-dark text-white">
+          <i class="bi bi-tag-fill me-2"></i>
+          Catégorie : Compréhension des écrits
+        </span>
+
+        <div class="d-flex gap-2 ms-md-auto">
+
+          <span class="badge text-bg-warning">
+            Exercice 13
+          </span>
+
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+
+            Max {{ steps[12].maxScore }} PNTS
+
+          </span>
+
+          <span class="badge text-bg-dark">
+
+            {{ getCurrentScore(12) }} PNTS
+
+          </span>
+
+        </div>
+
+      </div>
+
+      <!-- DOCUMENT -->
+
+      <div class="alert bg-info">
+        <!-- Même document que l'exercice 12 -->
+        <h5><i class="bi bi-stickies me-3"></i>Info équipe :</h5>
+
+        <p>Bénédicte est malade aujourd'hui. Merci de la remplacer et de faire particulièrement attention au dressage
+          des tables.</p>
+        <p>Nous avons plusieurs réservations en plus :</p>
+        <ul>
+          <li>1 table de 5 personnes</li>
+          <li>1 table de 2 personnes</li>
+        </ul>
+        <p>Merci de mettre des fleurs rouges à l'entrée du restaurant pour la Saint-Valentin.</p>
+
+      </div>
+
+      <!-- QUESTION -->
+
+<div class="alert bg-info instructions">
+  Combien de personnes en plus sont attendues au restaurant ?
+</div>
+
+<!--
+  Les réponses sont affichées horizontalement lorsque toutes les propositions
+  sont suffisamment courtes (ex. Oui / Non, Vrai / Faux, 1 / 2 / 3).
+
+  Dans les autres cas, l'affichage reste vertical afin de préserver
+  la lisibilité, notamment sur mobile.
+
+  La décision est prise automatiquement par shouldDisplayInline().
+-->
+
+<div
+  [class.d-flex]="shouldDisplayInline(ex13Options)"
+  class="gap-4 flex-wrap">
+
+  <div
+    class="form-check"
+    *ngFor="let opt of ex13Options">
+
+    <input
+      class="form-check-input"
+      type="radio"
+      formControlName="answer"
+      [value]="opt.value">
+
+    <label class="form-check-label">
+
+      {{ opt.label }}
+
+    </label>
+
+  </div>
+
+</div>
+
+      <button class="btn btn-primary mt-4">
+
+        Suivant
+
+      </button>
+
+    </form>
+
+
+
+    <!-- ===================================================== -->
+    <!-- EXERCICE 3 - PARTIE 3 - QUESTION 1 = EXERCICE 14 -->
+    <!-- ===================================================== -->
+
+    <form *ngIf="isReferentView || currentStep === 13" [formGroup]="formEx14" (ngSubmit)="submitEx14()">
+
+      <!-- HEADER -->
+
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+        <span class="badge text-bg-dark text-white">
+          <i class="bi bi-tag-fill me-2"></i>
+          Catégorie : Compréhension des écrits
+        </span>
+
+        <div class="d-flex gap-2 ms-md-auto">
+
+          <span class="badge text-bg-warning">
+            Exercice 14
+          </span>
+
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+
+            Max {{ steps[13].maxScore }} PNTS
+
+          </span>
+
+          <span class="badge text-bg-dark">
+
+            {{ getCurrentScore(13) }} PNTS
+
+          </span>
+
+        </div>
+
+      </div>
+
+      <!-- DOCUMENT -->
+
+      <div class="alert bg-info">
+
+        <h5>Mode d'emploi : Machine à café</h5>
+
+        <ol class="mb-0">
+
+          <li>Vérifier que la machine est propre.</li>
+
+          <li>Allumer la machine.</li>
+
+          <li>Placer une tasse sous le bec verseur.</li>
+
+          <li>Choisir la boisson.</li>
+
+          <li>Appuyer sur le bouton de démarrage.</li>
+
+        </ol>
+
+      </div>
+
+      <!-- QUESTION -->
+
+      <div class="alert bg-info instructions">
+
+        Que faut-il vérifier avant d'allumer la machine ?
+
+      </div>
+
+      <div class="form-check" *ngFor="let opt of ex14Options">
+
+        <input class="form-check-input" type="radio" formControlName="answer" [value]="opt.value">
+
+        <label class="form-check-label">
+
+          {{ opt.label }}
+
+        </label>
+
+      </div>
+
+      <button class="btn btn-primary mt-4">
+
+        Suivant
+
+      </button>
+
+    </form>
+
+
+    <!-- ===================================================== -->
+    <!-- EXERCICE 3 - PARTIE 3 - QUESTION 2 = EXERCICE 15 -->
+    <!-- ===================================================== -->
+
+    <form *ngIf="isReferentView || currentStep === 14" [formGroup]="formEx15" (ngSubmit)="submitEx15()">
+
+      <!-- HEADER -->
+
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+        <span class="badge text-bg-dark text-white">
+          <i class="bi bi-tag-fill me-2"></i>
+          Catégorie : Compréhension des écrits
+        </span>
+
+        <div class="d-flex gap-2 ms-md-auto">
+
+          <span class="badge text-bg-warning">
+            Exercice 15
+          </span>
+
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+
+            Max {{ steps[14].maxScore }} PNTS
+
+          </span>
+
+          <span class="badge text-bg-dark">
+
+            {{ getCurrentScore(14) }} PNTS
+
+          </span>
+
+        </div>
+
+      </div>
+
+      <!-- DOCUMENT -->
+
+      <div class="alert bg-info">
+
+        <h5>Mode d'emploi : Machine à café</h5>
+
+        <ol class="mb-0">
+
+          <li>Vérifier que la machine est propre.</li>
+
+          <li>Allumer la machine.</li>
+
+          <li>Placer une tasse sous le bec verseur.</li>
+
+          <li>Choisir la boisson.</li>
+
+          <li>Appuyer sur le bouton de démarrage.</li>
+
+        </ol>
+
+      </div>
+
+      <!-- QUESTION -->
+
+      <div class="alert bg-info instructions">
+
+        Où faut-il mettre la tasse ?
+
+      </div>
+
+      <div class="form-check" *ngFor="let opt of ex15Options">
+
+        <input class="form-check-input" type="radio" formControlName="answer" [value]="opt.value">
+
+        <label class="form-check-label">
+
+          {{ opt.label }}
+
+        </label>
+
+      </div>
+
+      <button class="btn btn-primary mt-4">
+
+        Suivant
+
+      </button>
+
+    </form>
+
+    <!-- ===================================================== -->
+    <!-- EXERCICE 4 - QUESTION 1 = EXERCICE 16 -->
+    <!-- ===================================================== -->
+
+    <form *ngIf="isReferentView || currentStep === 15" [formGroup]="formEx16" (ngSubmit)="submitEx16()">
+
+      <!-- HEADER -->
+
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+        <span class="badge text-bg-dark text-white">
+          <i class="bi bi-tag-fill me-2"></i>
+          Catégorie : Compréhension des écrits
+        </span>
+
+        <div class="d-flex gap-2 ms-md-auto">
+
+          <span class="badge text-bg-warning">
+            Exercice 16
+          </span>
+
+          <!-- Le petit badge transparent/gris pour le barème -->
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+            Max {{ steps[15].maxScore }}PNTS
+          </span>
+
+          <span class="badge text-bg-dark">
+            {{ getCurrentScore(15) }} PNTS
+          </span>
+
+        </div>
+
+      </div>
+
+      <!-- DOCUMENT -->
+
+      <div class="row alert">
+
+        <div class="col-md-4 order-2 order-md-1 mt-3 mt-md-0">
+
+          <img src="https://www.bigcitynantes.fr/wp-content/uploads/2026/01/Image-MZR25-min-2-1044x783.webp"
+            class="img-fluid rounded" alt="Salon Maison & Déco">
+
+        </div>
+
+        <div class="col-md-8 order-1 order-md-2">
+
+          <div class="alert bg-info mb-0">
+
+            <h5>Salon Maison & Déco</h5>
+
+            <p>
+              Près de 120 exposants sont prêts à t'accueillir au Salon Maison &
+              Déco de Rezé du 13 au 15 février 2026.
+            </p>
+
+            <p>
+              Tu y retrouveras des créateurs, des décorateurs, des designers et des
+              artisans pour te partager leur savoir-faire, te montrer leurs
+              nouveautés et t'accompagner dans la création d'un intérieur qui te
+              ressemble.
+            </p>
+
+            <p>
+              Objets décoratifs, luminaires, pièces uniques et belles matières
+              t'attendent afin d'échanger avec les créateurs.
+            </p>
+
+            <p>
+              De plus, viens rencontrer des spécialistes de l'aménagement
+              d'intérieur qui sauront te conseiller.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- QUESTION -->
+
+      <div class="alert bg-info instructions">
+
+        Quel est le titre de cet article ?
+
+      </div>
+
+      <input type="text" class="form-control" formControlName="title">
+
+      <div class="mt-4">
+
+        <button class="btn btn-primary" type="submit">
+
+          Suivant
+
+        </button>
+
+      </div>
+
+    </form>
+
+    <!-- ===================================================== -->
+    <!-- EXERCICE 4 - QUESTION 2 + EXERCICE 17 -->
+    <!-- ===================================================== -->
+
+    <form *ngIf="isReferentView || currentStep === 16" [formGroup]="formEx17" (ngSubmit)="submitEx17()">
+
+      <!-- HEADER -->
+
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+        <span class="badge text-bg-dark text-white">
+          <i class="bi bi-tag-fill me-2"></i>
+          Catégorie : Compréhension des écrits
+        </span>
+
+        <div class="d-flex gap-2 ms-md-auto">
+
+          <span class="badge text-bg-warning">
+            Exercice 17
+          </span>
+
+          <!-- Le petit badge transparent/gris pour le barème -->
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+            Max {{ steps[16].maxScore }}PNTS
+          </span>
+
+          <span class="badge text-bg-dark">
+            {{ getCurrentScore(16) }} PNTS
+          </span>
+
+        </div>
+
+      </div>
+
+      <!-- DOCUMENT -->
+
+      <div class="row alert">
+
+        <div class="col-md-4 order-2 order-md-1 mt-3 mt-md-0">
+
+          <img src="https://www.bigcitynantes.fr/wp-content/uploads/2026/01/Image-MZR25-min-2-1044x783.webp"
+            class="img-fluid rounded" alt="Salon Maison & Déco">
+
+        </div>
+
+        <div class="col-md-8 order-1 order-md-2">
+
+          <div class="alert bg-info mb-0">
+
+            <h5>Salon Maison & Déco</h5>
+
+            <p>
+              Près de 120 exposants sont prêts à t'accueillir au Salon Maison &
+              Déco de Rezé du 13 au 15 février 2026.
+            </p>
+
+            <p>
+              Tu y retrouveras des créateurs, des décorateurs, des designers et des
+              artisans pour te partager leur savoir-faire, te montrer leurs
+              nouveautés et t'accompagner dans la création d'un intérieur qui te
+              ressemble.
+            </p>
+
+            <p>
+              Objets décoratifs, luminaires, pièces uniques et belles matières
+              t'attendent afin d'échanger avec les créateurs.
+            </p>
+
+            <p>
+              De plus, viens rencontrer des spécialistes de l'aménagement
+              d'intérieur qui sauront te conseiller.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+      <!-- DOCUMENT -->
+
+
+
+      <div class="alert bg-info instructions">
+
+        Cet article parle...
+
+      </div>
+
+      <div class="form-check" *ngFor="let opt of ex17Options">
+
+        <input class="form-check-input" type="radio" formControlName="answer" [value]="opt.value">
+
+        <label class="form-check-label">
+
+          {{ opt.label }}
+
+        </label>
+
+      </div>
+
+      <button class="btn btn-primary mt-4">
+
+        Suivant
+
+      </button>
+
+    </form>
+
+    <!-- ===================================================== -->
+    <!-- EXERCICE 4 - QUESTION 3 = EXERCICE 17 -->
+    <!-- ===================================================== -->
+
+    <form *ngIf="isReferentView || currentStep === 17" [formGroup]="formEx18" (ngSubmit)="submitEx18()">
+
+      <!-- HEADER -->
+
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+        <span class="badge text-bg-dark text-white">
+          <i class="bi bi-tag-fill me-2"></i>
+          Catégorie : Compréhension des écrits
+        </span>
+
+        <div class="d-flex gap-2 ms-md-auto">
+
+          <span class="badge text-bg-warning">
+            Exercice 18
+          </span>
+
+          <!-- Le petit badge transparent/gris pour le barème -->
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+            Max {{ steps[17].maxScore }}PNTS
+          </span>
+
+          <span class="badge text-bg-dark">
+            {{ getCurrentScore(17) }} PNTS
+          </span>
+
+        </div>
+
+      </div>
+
+      <!-- DOCUMENT -->
+
+      <div class="row alert">
+
+        <div class="col-md-4 order-2 order-md-1 mt-3 mt-md-0">
+
+          <img src="https://www.bigcitynantes.fr/wp-content/uploads/2026/01/Image-MZR25-min-2-1044x783.webp"
+            class="img-fluid rounded" alt="Salon Maison & Déco">
+
+        </div>
+
+        <div class="col-md-8 order-1 order-md-2">
+
+          <div class="alert bg-info mb-0">
+
+            <h5>Salon Maison & Déco</h5>
+
+            <p>
+              Près de 120 exposants sont prêts à t'accueillir au Salon Maison &
+              Déco de Rezé du 13 au 15 février 2026.
+            </p>
+
+            <p>
+              Tu y retrouveras des créateurs, des décorateurs, des designers et des
+              artisans pour te partager leur savoir-faire, te montrer leurs
+              nouveautés et t'accompagner dans la création d'un intérieur qui te
+              ressemble.
+            </p>
+
+            <p>
+              Objets décoratifs, luminaires, pièces uniques et belles matières
+              t'attendent afin d'échanger avec les créateurs.
+            </p>
+
+            <p>
+              De plus, viens rencontrer des spécialistes de l'aménagement
+              d'intérieur qui sauront te conseiller.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+      <!-- DOCUMENT -->
+
+      <div class="alert bg-info instructions">
+
+        Que pouvez-vous faire dans ce lieu ?
+
+      </div>
+
+      <div class="form-check" *ngFor="let opt of ex18Options">
+
+        <input class="form-check-input" type="radio" formControlName="answer" [value]="opt.value">
+
+        <label class="form-check-label">
+
+          {{ opt.label }}
+
+        </label>
+
+      </div>
+
+      <button class="btn btn-primary mt-4">
+
+        Suivant
+
+      </button>
+
+    </form>
+
+    <!-- ===================================================== -->
+    <!-- EXERCICE 4 - QUESTION 4 = EXERCICE 19 -->
+    <!-- ===================================================== -->
+
+    <form *ngIf="isReferentView || currentStep === 18" [formGroup]="formEx19" (ngSubmit)="submitEx19()">
+
+      <!-- HEADER -->
+
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+        <span class="badge text-bg-dark text-white">
+          <i class="bi bi-tag-fill me-2"></i>
+          Catégorie : Compréhension des écrits
+        </span>
+
+        <div class="d-flex gap-2 ms-md-auto">
+
+          <span class="badge text-bg-warning">
+            Exercice 19
+          </span>
+          <!-- Le petit badge transparent/gris pour le barème -->
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+            Max {{ steps[18].maxScore }}PNTS
+          </span>
+
+          <span class="badge text-bg-dark">
+            {{ getCurrentScore(18) }} PNTS
+          </span>
+
+        </div>
+
+      </div>
+
+      <!-- DOCUMENT -->
+
+      <div class="row alert">
+
+        <div class="col-md-4 order-2 order-md-1 mt-3 mt-md-0">
+
+          <img src="https://www.bigcitynantes.fr/wp-content/uploads/2026/01/Image-MZR25-min-2-1044x783.webp"
+            class="img-fluid rounded" alt="Salon Maison & Déco">
+
+        </div>
+
+        <div class="col-md-8 order-1 order-md-2">
+
+          <div class="alert bg-info mb-0">
+
+            <h5>Salon Maison & Déco</h5>
+
+            <p>
+              Près de 120 exposants sont prêts à t'accueillir au Salon Maison &
+              Déco de Rezé du 13 au 15 février 2026.
+            </p>
+
+            <p>
+              Tu y retrouveras des créateurs, des décorateurs, des designers et des
+              artisans pour te partager leur savoir-faire, te montrer leurs
+              nouveautés et t'accompagner dans la création d'un intérieur qui te
+              ressemble.
+            </p>
+
+            <p>
+              Objets décoratifs, luminaires, pièces uniques et belles matières
+              t'attendent afin d'échanger avec les créateurs.
+            </p>
+
+            <p>
+              De plus, viens rencontrer des spécialistes de l'aménagement
+              d'intérieur qui sauront te conseiller.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+      <!-- DOCUMENT -->
+
+      <div class="alert bg-info instructions">
+
+        Ce lieu est réservé aux enfants.
+
+      </div>
+
+      <div *ngFor="let opt of ex19Options" class="form-check">
+
+        <input class="form-check-input" type="radio" formControlName="answer" [value]="opt.value">
+
+        <label class="form-check-label">
+          {{ opt.label }}
+        </label>
+
+      </div>
+
+      <button class="btn btn-primary mt-4">
+
+        Suivant
+
+      </button>
+
+    </form>
+
+    <!-- ===================================================== -->
+    <!-- EXERCICE 4 - QUESTION 5 = EXERCICE20 -->
+    <!-- ===================================================== -->
+
+    <form *ngIf="isReferentView || currentStep === 19" [formGroup]="formEx20" (ngSubmit)="submitEx20()">
+
+      <!-- HEADER -->
+
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+        <span class="badge text-bg-dark text-white">
+          <i class="bi bi-tag-fill me-2"></i>
+          Catégorie : Compréhension des écrits
+        </span>
+
+        <div class="d-flex gap-2 ms-md-auto">
+
+          <span class="badge text-bg-warning">
+            Exercice 20
+          </span>
+
+          <!-- Le petit badge transparent/gris pour le barème -->
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+            Max {{ steps[19].maxScore }}PNTS
+          </span>
+
+          <span class="badge text-bg-dark">
+            {{ getCurrentScore(15) }} PNTS
+          </span>
+
+        </div>
+
+      </div>
+
+      <!-- DOCUMENT -->
+
+      <div class="row alert">
+
+        <div class="col-md-4 order-2 order-md-1 mt-3 mt-md-0">
+
+          <img src="https://www.bigcitynantes.fr/wp-content/uploads/2026/01/Image-MZR25-min-2-1044x783.webp"
+            class="img-fluid rounded" alt="Salon Maison & Déco">
+
+        </div>
+
+        <div class="col-md-8 order-1 order-md-2">
+
+          <div class="alert bg-info mb-0">
+
+            <h5>Salon Maison & Déco</h5>
+
+            <p>
+              Près de 120 exposants sont prêts à t'accueillir au Salon Maison &
+              Déco de Rezé du 13 au 15 février 2026.
+            </p>
+
+            <p>
+              Tu y retrouveras des créateurs, des décorateurs, des designers et des
+              artisans pour te partager leur savoir-faire, te montrer leurs
+              nouveautés et t'accompagner dans la création d'un intérieur qui te
+              ressemble.
+            </p>
+
+            <p>
+              Objets décoratifs, luminaires, pièces uniques et belles matières
+              t'attendent afin d'échanger avec les créateurs.
+            </p>
+
+            <p>
+              De plus, viens rencontrer des spécialistes de l'aménagement
+              d'intérieur qui sauront te conseiller.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+      <!-- DOCUMENT -->
+
+      <div class="alert bg-info instructions">
+
+        Qui peux-tu rencontrer lors de ce salon ?
+
+      </div>
+
+      <div class="form-check" *ngFor="let opt of ex20Options">
+
+        <input class="form-check-input" type="radio" formControlName="answer" [value]="opt.value">
+
+        <label class="form-check-label">
+
+          {{ opt.label }}
+
+        </label>
+
+      </div>
+
+      <button class="btn btn-primary mt-4">
+
+        Suivant
+
+      </button>
+
+    </form>
+
+  </div>
+
+  <!-- Message de succès final -->
+  <div *ngIf="showFinalMessage" class="alert alert-success mt-3">
+    ✅ Bravo et merci d'avoir répondu aux questions.<br>
+    Vos résultats ont été enregistrés.<br>
+    Un conseiller projet va prendre contact avec vous pour en discuter.
+  </div>
+
+  <!-- 📊 SYNTHÈSE DES SCORES POUR LE RÉFÉRENT -->
+  <div *ngIf="isReferentView && aggregateState" class="mt-4 p-3 bg-light border rounded-0">
+    <h5 class="mb-3 text-primary">📊 Synthèse des compétences (Vue Référent)</h5>
+
+    <!-- <ul class="list-group list-group-flush">
+      <li *ngFor="let score of aggregateState | keyvalue"
+        class="list-group-item bg-transparent d-flex justify-content-between align-items-center ps-0 border-bottom py-3">
+
+        <div [class.bg-primary]="score.key==='isFinal'">
+          <h6 class="mb-0 fw-bold">{{ score.key }}</h6>
+
+          <small *ngIf="score.value !== null && getCategoryMaxScore(score.key) as maxScore" class="text-muted">
+            Note calculée : {{ ((score.value / maxScore) * 20) | number:'1.1-1' }} / 20
+          </small>
+        </div>
+
+        <button *ngIf="score.value !== null && getCategoryMaxScore(score.key) as maxScore"
+          (click)="editCategoryScore(score.key)" type="button" class="btn btn-primary btn-sm rounded-0 fs-6">
+          ⭐ {{ score.value }} / {{ maxScore }} pts
+        </button>
+
+        <button *ngIf="score.value === null" (click)="editCategoryScore(score.key)" type="button"
+          class="btn btn-secondary btn-sm rounded-0 fs-6 text-uppercase text-white">
+          ✍️ Non scoré / À évaluer
+        </button>
+
+      </li>
+    </ul> -->
+
+    <ul class="list-group list-group-flush">
+      <ng-container *ngFor="let score of aggregateState | keyvalue">
+
+        <li *ngIf="score.key !== 'isFinal'"
+          class="list-group-item bg-transparent d-flex justify-content-between align-items-center ps-0 border-bottom py-3">
+
+          <div>
+            <h6 class="mb-0 fw-bold">{{ score.key }}</h6>
+            <small *ngIf="score.value !== null && getCategoryMaxScore(score.key) as maxScore" class="text-muted">
+              Note calculée : {{ ((score.value / maxScore) * 20) | number:'1.1-1' }} / 20
+            </small>
+          </div>
+
+          <button [disabled]="aggregateState['isFinal']"
+            *ngIf="score.value !== null && getCategoryMaxScore(score.key) as maxScore"
+            (click)="editCategoryScore(score.key)" type="button" class="btn btn-primary btn-sm rounded-0 fs-6">
+            ⭐ {{ score.value }} / {{ maxScore }} pts
+          </button>
+
+          <button [disabled]="aggregateState['isFinal']" *ngIf="score.value === null"
+            (click)="editCategoryScore(score.key)" type="button"
+            class="btn btn-secondary btn-sm rounded-0 fs-6 text-uppercase text-white">
+            ✍️ Non scoré / À évaluer
+          </button>
+
+        </li>
+      </ng-container>
+    </ul>
+
+    <div *ngIf="getGlobalScore() as global" class="mt-4 pt-3 d-flex justify-content-between align-items-center">
+      <div>
+        <h4 class="mb-0 text-dark fw-bold">Note Globale Finale</h4>
+        <small class="text-muted">
+          Basée sur un cumul de {{ global.obtenu }} / {{ global.max }} points
+        </small>
+      </div>
+
+      <div class="text-end">
+        <span class="fs-2 fw-black text-primary border border-primary p-2 px-3 bg-white">
+          {{ getGlobalNoteOn20() }} / 20
+        </span>
+      </div>
+    </div>
+
+  </div>
+
+
+
+  <!-- ### Ce qui change visuellement :
+1. Les exercices libres (`null`) affichent un bouton jaune/orange **"✍️ À ÉVALUER"** bien visible.
+2. Les catégories déjà calculées automatiquement s'affichent sous forme de bouton bleu standard.
+3. Dès que le référent clique sur l'un ou l'autre, la fonction se déclenche, le prompt s'ouvre, enregistre dans Firestore, et le calcul global en bas se met à jour immédiatement sur l'écran. -->
+
+  <!-- Fin du div principal Vue Référent -->
+
+  <div *ngIf="isReferentView" class="mb-4 mt-3">
+    <label for="commentaireReferent" class="form-label text-secondary">
+      <i class="bi bi-chat-left-text-fill me-2"></i>Commentaire et observations :
+    </label>
+
+    <textarea id="commentaireReferent" class="form-control rounded-0" rows="3"
+      placeholder="Saisissez vos observations sur le candidat ici..." [formControl]="commentCtrl"
+      [attr.disabled]="aggregateState['isFinal'] ? true : null" (blur)="saveCommentReferent()">
+  </textarea>
+  </div>
+
+
+
+  <!-- pour afficher le bouton ou le badge de confirmation proprement selon l'état de la base : -->
+  <button *ngIf="isReferentView && !aggregateState['isFinal']" type="button" class="btn btn-danger my-3"
+    (click)="cloturerEvaluation()">
+    <i class="bi bi-lock-fill me-2"></i>Clôturer l'évaluation
+  </button>
+
+
+  <ng-container *ngIf="aggregateState['isFinal']">
+    <div class="alert alert-success my-3 p-2 text-center">
+      <i class="bi bi-check-circle-fill me-2"></i> Évaluation clôturée définitivement. Les notes sont figées.
+    </div>
+    <!-- pour afficher le bouton impression PDF : -->
+    <div *ngIf="isReferentView" class="text-center my-4 d-print-none">
+      <button type="button" class="btn btn-primary" (click)="printPage()">
+        <i class="bi bi-printer-fill me-2"></i>
+        Imprimer / Enregistrer en PDF
+      </button>
+      <p class="text-muted small mt-2">
+        💡 Dans la fenêtre qui s'ouvre, choisissez <b>"Enregistrer au format PDF"</b> pour l'envoyer par mail.
+      </p>
+    </div>
+  </ng-container>
+
+
+
+
+
+</div>
