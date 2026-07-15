@@ -413,6 +413,31 @@ export class Unit2Component {
 
 
     // ======================================================
+    // EXERCICE 3 Partie 1 
+    // ======================================================
+
+    // Question 1
+    this.formEx8 = this.fb.group({
+      answer: ['']
+    });
+
+    // Question 2
+    this.formEx9 = this.fb.group({
+      answer: ['']
+    });
+
+    // Question 3
+    this.formEx10 = this.fb.group({
+      answer: ['']
+    });
+
+    // Question 4
+    this.formEx11 = this.fb.group({
+      answer: ['']
+    });
+
+
+    // ======================================================
     // EXERCICE 3 Partie 2 
     // ======================================================
 
@@ -707,7 +732,11 @@ export class Unit2Component {
 
     let score = 0;
 
-    // TODO : logique de correction de l'exercice 8
+    // Logique de correction de l'exercice 8
+    const answer = this.formEx8.value.answer
+    if (answer === this.correctAnswerEx8) {
+      score = 1;
+    }
 
     const category = this.getCurrentCategory();
 
@@ -733,7 +762,11 @@ export class Unit2Component {
 
     let score = 0;
 
-    // TODO : logique de correction de l'exercice 9
+    // Logique de correction de l'exercice 9
+    const answer = this.formEx9.value.answer
+    if (answer === this.correctAnswerEx9) {
+      score = 1;
+    }
 
     const category = this.getCurrentCategory();
 
@@ -759,7 +792,11 @@ export class Unit2Component {
 
     let score = 0;
 
-    // TODO : logique de correction de l'exercice 10
+    // Logique de correction de l'exercice 10
+    const answer = this.formEx10.value.answer
+    if (answer === this.correctAnswerEx10) {
+      score = 1;
+    }
 
     const category = this.getCurrentCategory();
 
@@ -785,7 +822,11 @@ export class Unit2Component {
 
     let score = 0;
 
-    // TODO : logique de correction de l'exercice 11
+    // Logique de correction de l'exercice 11
+    const answer = this.formEx12.value.answer
+    if (answer === this.correctAnswerEx11) {
+      score = 1;
+    }
 
     const category = this.getCurrentCategory();
 
@@ -1666,9 +1707,13 @@ export class Unit2Component {
   shouldDisplayInline(options: { label: string }[]): boolean {
 
     return options.length <= 3 &&
-      options.every(o => o.label.length <= 8);
+      options.every(o => o.label.length <= 20);
 
   }
+
+//   shouldDisplayInline(options: { label: string }[]): boolean {
+//   return options.every(o => o.label.length <= 12);
+// }
 
 
 

@@ -116,9 +116,13 @@
     La décision est prise automatiquement par shouldDisplayInline().
   -->
 
-  <div
-    [class.d-flex]="shouldDisplayInline(ex8Options)"
-    class="gap-4 flex-wrap">
+<div
+  class="d-flex flex-column"
+  [class.d-md-flex]="shouldDisplayInline(ex8Options)"
+  [class.flex-md-row]="shouldDisplayInline(ex8Options)"
+  [class.gap-md-4]="shouldDisplayInline(ex8Options)"
+  [class.flex-wrap]="shouldDisplayInline(ex8Options)">
+
 
     <div
       class="form-check"
