@@ -1,9 +1,14 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, Inject } from '@angular/core'; // 👈 Ajout de Inject
+import { DOCUMENT } from '@angular/common'; // 👈 Important pour accéder proprement au DOM sous Angular
+import { Title, Meta } from '@angular/platform-browser'; // 👈 Les services natifs d'Angular pour le SEO
 import { NewsService } from '../news.service';
-import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators'; // 👈 Important pour le basculement propre
+import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { News } from '../news';
 import { AuthService } from 'src/app/admin/auth.service';
+
+// Déclaration pour éviter les erreurs TypeScript avec Bootstrap global
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-news-list',
@@ -12,48 +17,75 @@ import { AuthService } from 'src/app/admin/auth.service';
 })
 export class NewsListComponent implements OnInit, AfterViewInit {
 
-  // 1️⃣ PAR DÉFAUT : On charge le publié. Si le service d'auth met du temps ou ne répond pas, la page n'est PAS vide.
   news$: Observable<News[]> = this.newsService.getPublished();
   userRole: string = "";
 
-
   @ViewChild('socialCarousel') carouselElement!: ElementRef;
 
-  // Vos propriétés d'origine
-  // news$ = ...
   socialCards = [
     { name: 'Facebook', url: 'https://www.facebook.com/beontop.io', icon: 'bi-facebook', description: 'Rejoignez-nous sur Facebook.' },
     { name: 'Linkedin', url: 'https://www.linkedin.com/company/be-on-top-io/posts/?feedView=all', icon: 'bi-linkedin', description: 'Suivez-nous sur Linkedin.' },
     { name: 'Instagram', url: 'https://www.instagram.com/be_on_top.io/', icon: 'bi-instagram', description: 'Découvrez nos photos sur Instagram.' }
   ];
 
-
-
   constructor(
     private newsService: NewsService,
-    private authService: AuthService
+    private authService: AuthService,
+    private titleService: Title, // 👈 Service Title
+    private metaService: Meta,   // 👈 Service Meta
+    @Inject(DOCUMENT) private document: Document // 👈 Injection du Document pour la balise canonique
   ) { }
 
   ngOnInit(): void {
-    // 2️⃣ On écoute le rôle. 
-    // Grâce à switchMap, on change dynamiquement la source SANS casser le comportement par défaut.
+    // 1️⃣ Configuration des Meta-données et de l'URL Canonique pour la liste
+    this.setMetaData();
+
+    // 2️⃣ Chargement des données d'authentification et des articles
     this.news$ = this.authService.getCurrentUserRole().pipe(
       switchMap(userInfo => {
-        // TRÈS IMPORTANT : La vraie comparaison ===
         if (userInfo === 'editor') {
           this.userRole = 'editor';
-          return this.newsService.getAll(); // L'éditeur voit TOUT
+          return this.newsService.getAll();
         } else {
           this.userRole = '';
-          return this.newsService.getPublished(); // Tous les autres voient UNIQUEMENT le publié
+          return this.newsService.getPublished();
         }
       })
     );
   }
 
+  /**
+   * Configure dynamiquement les balises SEO indispensables pour la page liste
+   */
+  private setMetaData(): void {
+    const title = "Le Mag' de la Formation - Be on Top";
+    const description = "Retrouvez nos articles de fond, témoignages, documentations et actualités pour vous accompagner dans vos projets de formation.";
+    const canonicalUrl = "https://beontop.io/news"; // 👈 Remplacer par ton vrai nom de domaine si besoin
+
+    // A. Titre de l'onglet
+    this.titleService.setTitle(title);
+
+    // B. Balises Meta (Standard et Réseaux Sociaux / Open Graph)
+    this.metaService.updateTag({ name: 'description', content: description });
+    this.metaService.updateTag({ property: 'og:title', content: title });
+    this.metaService.updateTag({ property: 'og:description', content: description });
+    this.metaService.updateTag({ property: 'og:url', content: canonicalUrl });
+
+    // C. Injection / Mise à jour propre de la balise Canonique dans le Head
+    let canonicalLink = this.document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
+    if (canonicalLink) {
+      canonicalLink.setAttribute('href', canonicalUrl);
+    } else {
+      canonicalLink = this.document.createElement('link');
+      canonicalLink.setAttribute('rel', 'canonical');
+      canonicalLink.setAttribute('href', canonicalUrl);
+      this.document.head.appendChild(canonicalLink);
+    }
+  }
+
   stripHtml(text: string): string {
     if (!text) return '';
-    const div = document.createElement('div');
+    const div = this.document.createElement('div');
     div.innerHTML = text;
     const images = div.getElementsByTagName('img');
     while (images.length) {
@@ -62,13 +94,9 @@ export class NewsListComponent implements OnInit, AfterViewInit {
     return div.textContent || '';
   }
 
-
   ngAfterViewInit() {
-    // On attend 2 secondes après l'affichage initial de la page
-    // Googlebot aura déjà fait son snapshot des articles et s'en fichera
     setTimeout(() => {
       if (this.carouselElement && typeof bootstrap !== 'undefined') {
-        // Initialisation manuelle et propre du carrousel après le délai
         const carousel = new bootstrap.Carousel(this.carouselElement.nativeElement, {
           interval: 3000,
           ride: 'carousel'
@@ -76,7 +104,4 @@ export class NewsListComponent implements OnInit, AfterViewInit {
       }
     }, 2000);
   }
-  
-
-
 }
