@@ -24,89 +24,287 @@
   <div>
 
     <!-- ===================================================== -->
-<!-- EXERCICE 3 - PARTIE 1 - QUESTION 1 = EXERCICE 8 -->
-<!-- ===================================================== -->
+    <!-- EXERCICE 2 - QUESTION 1 = EXERCICE 2 -->
+    <!-- ===================================================== -->
 
-<form
-  *ngIf="isReferentView || currentStep === 7"
-  [formGroup]="formEx8"
-  (ngSubmit)="submitEx8()">
+    <form *ngIf="isReferentView || currentStep === 1" [formGroup]="formEx2" (ngSubmit)="submitEx2()">
 
-  <!-- HEADER -->
+      <!-- HEADER -->
 
-  <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
 
-    <span class="badge text-bg-dark text-white">
-      <i class="bi bi-tag-fill me-2"></i>
-      Catégorie : {{steps[7].category}}
-    </span>
+        <span class="badge text-bg-dark text-white">
+          Catégorie : {{ steps[1].category }}
+        </span>
 
-    <div class="d-flex gap-2 ms-md-auto">
+        <div class="d-flex gap-2 ms-md-auto">
 
-      <span class="badge text-bg-warning">
+          <span class="badge text-bg-warning">
+            Exercice 2
+          </span>
 
-        Exercice 8
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
 
-      </span>
+            Max {{ steps[1].maxScore }} PNTS
 
-      <span
-        *ngIf="isReferentView"
-        class="badge border border-secondary text-secondary">
+          </span>
 
-        Max {{ steps[7].maxScore }} PNTS
+          <span class="badge text-bg-dark">
 
-      </span>
+            {{ getCurrentScore(1) }} PNTS
 
-      <span class="badge text-bg-dark">
+          </span>
 
-        {{ getCurrentScore(7) }} PNTS
+        </div>
 
-      </span>
+      </div>
 
-    </div>
+      <!-- DOCUMENT -->
+      <!-- Visu with d-print-none -->
+      <div class="alert row d-print-none">
+        <div class="col-md-5 mb-md-2">
+          <img src="assets/img/unit2/voisins_fete.webp" alt="Bibliothèque">
+        </div>
+        <div class="col-md-7 bg-warning alert mb-0">
+          <h5 class="mb-3">Invitation</h5>
+          <p>
+            Chers voisins,
+          </p>
+          <p>Le printemps est là, et avec lui l'envie de partager un moment chaleureux
+            entre habitants de notre immeuble ! Nous avons le plaisir de vous proposer
+            une Fête des Voisins afin de mieux nous connaître et de passer un agréable
+            moment ensemble.
+          </p>
+          <p>
+            Rendez-vous dans le hall de l'immeuble le 21 juin à partir de 19 heures.
+            Chacun est invité à apporter une petite contribution à partager :
+            boisson, plat sucré ou salé.
+          </p>
+          <p>
+            Ce sera l'occasion d'échanger, de rencontrer les nouveaux résidents
+            et de renforcer la convivialité.
+          </p>
+          <p>
+            Petits et grands sont les bienvenus.
+          </p>
+        </div>
+      </div>
 
-  </div>
+      <!-- INSTRUCTIONS -->
+      <div class="alert alert-light"><i class="bi bi-info-circle me-2"></i>Pour répondre aux questions, cochez la bonne
+        réponse</div>
 
-  <!-- DOCUMENT -->
+      <!-- QUESTION -->
+      <div class="alert bg-info instructions">
+        On vous invite à une fête pour...
+      </div>
+      <!-- FIN DOCUMENT  -->
 
-  <div class="alert bg-info">
+      <div class="d-flex flex-column" [class.d-md-flex]="shouldDisplayInline(ex2Options)"
+        [class.flex-md-row]="shouldDisplayInline(ex2Options)" [class.gap-md-4]="shouldDisplayInline(ex2Options)"
+        [class.flex-wrap]="shouldDisplayInline(ex2Options)">
 
-    <h5>
-      Règles d'hygiène
-    </h5>
+        <div class="form-check" *ngFor="let opt of ex2Options">
 
-    <p>
-      Dans un restaurant, la propreté est très importante.
-      Les salariés doivent arriver avec des vêtements propres
-      et les cheveux attachés.
-    </p>
+          <input class="form-check-input" type="radio" formControlName="answer" [value]="opt.value">
 
-    <p>
-      Ils doivent se laver les mains avant de commencer le travail.
-      Ils doivent aussi vérifier que leur poste de travail est propre.
-    </p>
+          <label class="form-check-label">
 
-    <p>
-      Pendant le service, ils ne doivent pas toucher leur visage
-      et doivent nettoyer les surfaces régulièrement.
-    </p>
+            {{ opt.label }}
 
-    <p>
-      Ces règles permettent de protéger les clients
-      et les salariés.
-    </p>
+          </label>
 
-  </div>
+        </div>
 
-  <!-- QUESTION -->
+      </div>
 
-  <div class="alert bg-info instructions">
+      <button type="button" class="btn btn-primary mt-4">
+        Suivant
+      </button>
 
-    Où travaillent les salariés ?
+    </form>
 
-  </div>
+    <!-- ===================================================== -->
+    <!-- EXERCICE 2 - QUESTION 2 = EXERCICE 3 -->
+    <!-- ===================================================== -->
 
-  <!--
+    <form *ngIf="isReferentView || currentStep === 2" [formGroup]="formEx3" (ngSubmit)="submitEx3()">
+
+      <!-- HEADER -->
+
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+        <span class="badge text-bg-dark text-white">
+          Catégorie : {{ steps[2].category }}
+        </span>
+
+        <div class="d-flex gap-2 ms-md-auto">
+
+          <span class="badge text-bg-warning">
+            Exercice 3
+          </span>
+
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+
+            Max {{ steps[2].maxScore }} PNTS
+
+          </span>
+
+          <span class="badge text-bg-dark">
+
+            {{ getCurrentScore(2) }} PNTS
+
+          </span>
+
+        </div>
+
+      </div>
+
+      <!-- DOCUMENT -->
+      <!-- Visu with d-print-none -->
+      <div class="alert row d-print-none">
+        <div class="col-md-5 mb-md-2">
+          <img src="assets/img/unit2/voisins_fete.webp" alt="Bibliothèque">
+        </div>
+        <div class="col-md-7 bg-warning alert mb-0">
+          <h5 class="mb-3">Invitation</h5>
+          <p>
+            Chers voisins,
+          </p>
+          <p>Le printemps est là, et avec lui l'envie de partager un moment chaleureux
+            entre habitants de notre immeuble ! Nous avons le plaisir de vous proposer
+            une Fête des Voisins afin de mieux nous connaître et de passer un agréable
+            moment ensemble.
+          </p>
+          <p>
+            Rendez-vous dans le hall de l'immeuble le 21 juin à partir de 19 heures.
+            Chacun est invité à apporter une petite contribution à partager :
+            boisson, plat sucré ou salé.
+          </p>
+          <p>
+            Ce sera l'occasion d'échanger, de rencontrer les nouveaux résidents
+            et de renforcer la convivialité.
+          </p>
+          <p>
+            Petits et grands sont les bienvenus.
+          </p>
+        </div>
+      </div>
+
+      <!-- INSTRUCTIONS -->
+      <div class="alert alert-light"><i class="bi bi-info-circle me-2"></i>Pour répondre aux questions, cochez la bonne
+        réponse</div>
+
+      <!-- QUESTION -->
+      <div class="alert bg-info instructions">
+         Où est la fête ?
+      </div>
+      <!-- FIN DOCUMENT  -->
+
+      <div class="d-flex flex-column" [class.d-md-flex]="shouldDisplayInline(ex3Options)"
+        [class.flex-md-row]="shouldDisplayInline(ex3Options)" [class.gap-md-4]="shouldDisplayInline(ex3Options)"
+        [class.flex-wrap]="shouldDisplayInline(ex3Options)">
+
+        <div class="form-check" *ngFor="let opt of ex3Options">
+
+          <input class="form-check-input" type="radio" formControlName="answer" [value]="opt.value">
+
+          <label class="form-check-label">
+
+            {{ opt.label }}
+
+          </label>
+
+        </div>
+
+      </div>
+
+      <button type="button" class="btn btn-primary mt-4">
+        Suivant
+      </button>
+
+    </form>
+
+
+    <!-- ===================================================== -->
+    <!-- EXERCICE 3 - PARTIE 1 - QUESTION 1 = EXERCICE 8 -->
+    <!-- ===================================================== -->
+
+    <form *ngIf="isReferentView || currentStep === 7" [formGroup]="formEx8" (ngSubmit)="submitEx8()">
+
+      <!-- HEADER -->
+
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+        <span class="badge text-bg-dark text-white">
+          <i class="bi bi-tag-fill me-2"></i>
+          Catégorie : {{steps[7].category}}
+        </span>
+
+        <div class="d-flex gap-2 ms-md-auto">
+
+          <span class="badge text-bg-warning">
+
+            Exercice 8
+
+          </span>
+
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+
+            Max {{ steps[7].maxScore }} PNTS
+
+          </span>
+
+          <span class="badge text-bg-dark">
+
+            {{ getCurrentScore(7) }} PNTS
+
+          </span>
+
+        </div>
+
+      </div>
+
+      <!-- DOCUMENT -->
+
+      <div class="alert bg-info">
+
+        <h5>
+          Règles d'hygiène
+        </h5>
+
+        <p>
+          Dans un restaurant, la propreté est très importante.
+          Les salariés doivent arriver avec des vêtements propres
+          et les cheveux attachés.
+        </p>
+
+        <p>
+          Ils doivent se laver les mains avant de commencer le travail.
+          Ils doivent aussi vérifier que leur poste de travail est propre.
+        </p>
+
+        <p>
+          Pendant le service, ils ne doivent pas toucher leur visage
+          et doivent nettoyer les surfaces régulièrement.
+        </p>
+
+        <p>
+          Ces règles permettent de protéger les clients
+          et les salariés.
+        </p>
+
+      </div>
+
+      <!-- QUESTION -->
+
+      <div class="alert bg-info instructions">
+
+        Où travaillent les salariés ?
+
+      </div>
+
+      <!--
     Les réponses sont affichées horizontalement lorsque toutes les propositions
     sont suffisamment courtes (ex. Oui / Non, Vrai / Faux, 1 / 2 / 3).
 
@@ -116,368 +314,326 @@
     La décision est prise automatiquement par shouldDisplayInline().
   -->
 
-<div
-  class="d-flex flex-column"
-  [class.d-md-flex]="shouldDisplayInline(ex8Options)"
-  [class.flex-md-row]="shouldDisplayInline(ex8Options)"
-  [class.gap-md-4]="shouldDisplayInline(ex8Options)"
-  [class.flex-wrap]="shouldDisplayInline(ex8Options)">
+      <div class="d-flex flex-column" [class.d-md-flex]="shouldDisplayInline(ex8Options)"
+        [class.flex-md-row]="shouldDisplayInline(ex8Options)" [class.gap-md-4]="shouldDisplayInline(ex8Options)"
+        [class.flex-wrap]="shouldDisplayInline(ex8Options)">
 
 
-    <div
-      class="form-check"
-      *ngFor="let opt of ex8Options">
+        <div class="form-check" *ngFor="let opt of ex8Options">
 
-      <input
-        class="form-check-input"
-        type="radio"
-        formControlName="answer"
-        [value]="opt.value">
+          <input class="form-check-input" type="radio" formControlName="answer" [value]="opt.value">
 
-      <label class="form-check-label">
+          <label class="form-check-label">
 
-        {{ opt.label }}
+            {{ opt.label }}
 
-      </label>
+          </label>
 
-    </div>
+        </div>
 
-  </div>
+      </div>
 
-  <button
-    class="btn btn-primary mt-4">
+      <button class="btn btn-primary mt-4">
 
-    Suivant
+        Suivant
 
-  </button>
+      </button>
 
-</form>
-  
-<!-- ===================================================== -->
-<!-- EXERCICE 3 - PARTIE 1 - QUESTION 2 = EXERCICE 9 -->
-<!-- ===================================================== -->
+    </form>
 
-<form
-  *ngIf="isReferentView || currentStep === 8"
-  [formGroup]="formEx9"
-  (ngSubmit)="submitEx9()">
+    <!-- ===================================================== -->
+    <!-- EXERCICE 3 - PARTIE 1 - QUESTION 2 = EXERCICE 9 -->
+    <!-- ===================================================== -->
 
-  <!-- HEADER -->
+    <form *ngIf="isReferentView || currentStep === 8" [formGroup]="formEx9" (ngSubmit)="submitEx9()">
 
-  <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+      <!-- HEADER -->
 
-    <span class="badge text-bg-dark text-white">
-      <i class="bi bi-tag-fill me-2"></i>
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+        <span class="badge text-bg-dark text-white">
+          <i class="bi bi-tag-fill me-2"></i>
           Catégorie : {{steps[8].category}}
-    </span>
+        </span>
 
-    <div class="d-flex gap-2 ms-md-auto">
+        <div class="d-flex gap-2 ms-md-auto">
 
-      <span class="badge text-bg-warning">
-        Exercice 9
-      </span>
+          <span class="badge text-bg-warning">
+            Exercice 9
+          </span>
 
-      <span
-        *ngIf="isReferentView"
-        class="badge border border-secondary text-secondary">
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
 
-        Max {{ steps[8].maxScore }} PNTS
+            Max {{ steps[8].maxScore }} PNTS
 
-      </span>
+          </span>
 
-      <span class="badge text-bg-dark">
+          <span class="badge text-bg-dark">
 
-        {{ getCurrentScore(8) }} PNTS
+            {{ getCurrentScore(8) }} PNTS
 
-      </span>
+          </span>
 
-    </div>
+        </div>
 
-  </div>
+      </div>
 
-  <!-- DOCUMENT -->
+      <!-- DOCUMENT -->
 
-  <div class="alert bg-info">
+      <div class="alert bg-info">
 
-    <h5>Règles d'hygiène</h5>
+        <h5>Règles d'hygiène</h5>
 
-    <p>
-      Dans un restaurant, la propreté est très importante.
-      Les salariés doivent arriver avec des vêtements propres
-      et les cheveux attachés.
-    </p>
+        <p>
+          Dans un restaurant, la propreté est très importante.
+          Les salariés doivent arriver avec des vêtements propres
+          et les cheveux attachés.
+        </p>
 
-    <p>
-      Ils doivent se laver les mains avant de commencer le travail.
-      Ils doivent aussi vérifier que leur poste de travail est propre.
-    </p>
+        <p>
+          Ils doivent se laver les mains avant de commencer le travail.
+          Ils doivent aussi vérifier que leur poste de travail est propre.
+        </p>
 
-    <p>
-      Pendant le service, ils ne doivent pas toucher leur visage
-      et doivent nettoyer les surfaces régulièrement.
-    </p>
+        <p>
+          Pendant le service, ils ne doivent pas toucher leur visage
+          et doivent nettoyer les surfaces régulièrement.
+        </p>
 
-    <p>
-      Ces règles permettent de protéger les clients
-      et les salariés.
-    </p>
+        <p>
+          Ces règles permettent de protéger les clients
+          et les salariés.
+        </p>
 
-  </div>
+      </div>
 
-  <!-- QUESTION -->
+      <!-- QUESTION -->
 
-  <div class="alert bg-info instructions">
+      <div class="alert bg-info instructions">
 
-    Comment doivent être les vêtements ?
+        Comment doivent être les vêtements ?
 
-  </div>
+      </div>
 
-  <div
-    [class.d-flex]="shouldDisplayInline(ex9Options)"
-    class="gap-4 flex-wrap">
+      <div [class.d-flex]="shouldDisplayInline(ex9Options)" class="gap-4 flex-wrap">
 
-    <div class="form-check" *ngFor="let opt of ex9Options">
+        <div class="form-check" *ngFor="let opt of ex9Options">
 
-      <input
-        class="form-check-input"
-        type="radio"
-        formControlName="answer"
-        [value]="opt.value">
+          <input class="form-check-input" type="radio" formControlName="answer" [value]="opt.value">
 
-      <label class="form-check-label">
+          <label class="form-check-label">
 
-        {{ opt.label }}
+            {{ opt.label }}
 
-      </label>
+          </label>
 
-    </div>
+        </div>
 
-  </div>
+      </div>
 
-  <button class="btn btn-primary mt-4">
+      <button class="btn btn-primary mt-4">
 
-    Suivant
+        Suivant
 
-  </button>
+      </button>
 
-</form>
+    </form>
 
-<!-- ===================================================== -->
-<!-- EXERCICE 3 - PARTIE 1 - QUESTION 3 = EXERCICE 10 -->
-<!-- ===================================================== -->
+    <!-- ===================================================== -->
+    <!-- EXERCICE 3 - PARTIE 1 - QUESTION 3 = EXERCICE 10 -->
+    <!-- ===================================================== -->
 
-<form
-  *ngIf="isReferentView || currentStep === 9"
-  [formGroup]="formEx10"
-  (ngSubmit)="submitEx10()">
+    <form *ngIf="isReferentView || currentStep === 9" [formGroup]="formEx10" (ngSubmit)="submitEx10()">
 
-  <!-- HEADER identique -->
+      <!-- HEADER identique -->
 
-  <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
 
-    <span class="badge text-bg-dark text-white">
-      <i class="bi bi-tag-fill me-2"></i>
+        <span class="badge text-bg-dark text-white">
+          <i class="bi bi-tag-fill me-2"></i>
           Catégorie : {{steps[9].category}}
-    </span>
+        </span>
 
-    <div class="d-flex gap-2 ms-md-auto">
+        <div class="d-flex gap-2 ms-md-auto">
 
-      <span class="badge text-bg-warning">
-        Exercice 10
-      </span>
+          <span class="badge text-bg-warning">
+            Exercice 10
+          </span>
 
-      <span *ngIf="isReferentView"
-        class="badge border border-secondary text-secondary">
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
 
-        Max {{ steps[9].maxScore }} PNTS
+            Max {{ steps[9].maxScore }} PNTS
 
-      </span>
+          </span>
 
-      <span class="badge text-bg-dark">
+          <span class="badge text-bg-dark">
 
-        {{ getCurrentScore(9) }} PNTS
+            {{ getCurrentScore(9) }} PNTS
 
-      </span>
+          </span>
 
-    </div>
+        </div>
 
-  </div>
+      </div>
 
-  <!-- DOCUMENT -->
+      <!-- DOCUMENT -->
 
-  <div class="alert bg-info">
+      <div class="alert bg-info">
 
-    <h5>Règles d'hygiène</h5>
+        <h5>Règles d'hygiène</h5>
 
-    <p>
-      Dans un restaurant, la propreté est très importante.
-      Les salariés doivent arriver avec des vêtements propres
-      et les cheveux attachés.
-    </p>
+        <p>
+          Dans un restaurant, la propreté est très importante.
+          Les salariés doivent arriver avec des vêtements propres
+          et les cheveux attachés.
+        </p>
 
-    <p>
-      Ils doivent se laver les mains avant de commencer le travail.
-      Ils doivent aussi vérifier que leur poste de travail est propre.
-    </p>
+        <p>
+          Ils doivent se laver les mains avant de commencer le travail.
+          Ils doivent aussi vérifier que leur poste de travail est propre.
+        </p>
 
-    <p>
-      Pendant le service, ils ne doivent pas toucher leur visage
-      et doivent nettoyer les surfaces régulièrement.
-    </p>
+        <p>
+          Pendant le service, ils ne doivent pas toucher leur visage
+          et doivent nettoyer les surfaces régulièrement.
+        </p>
 
-    <p>
-      Ces règles permettent de protéger les clients
-      et les salariés.
-    </p>
+        <p>
+          Ces règles permettent de protéger les clients
+          et les salariés.
+        </p>
 
-  </div>
+      </div>
 
-  <!-- QUESTION -->
+      <!-- QUESTION -->
 
-  <div class="alert bg-info instructions">
+      <div class="alert bg-info instructions">
 
-    Les salariés peuvent-ils toucher leur visage pendant le service ?
+        Les salariés peuvent-ils toucher leur visage pendant le service ?
 
-  </div>
+      </div>
 
-  <div
-    [class.d-flex]="shouldDisplayInline(ex10Options)"
-    class="gap-4 flex-wrap">
+      <div [class.d-flex]="shouldDisplayInline(ex10Options)" class="gap-4 flex-wrap">
 
-    <div class="form-check" *ngFor="let opt of ex10Options">
+        <div class="form-check" *ngFor="let opt of ex10Options">
 
-      <input
-        class="form-check-input"
-        type="radio"
-        formControlName="answer"
-        [value]="opt.value">
+          <input class="form-check-input" type="radio" formControlName="answer" [value]="opt.value">
 
-      <label class="form-check-label">
+          <label class="form-check-label">
 
-        {{ opt.label }}
+            {{ opt.label }}
 
-      </label>
+          </label>
 
-    </div>
+        </div>
 
-  </div>
+      </div>
 
-  <button class="btn btn-primary mt-4">
+      <button class="btn btn-primary mt-4">
 
-    Suivant
+        Suivant
 
-  </button>
+      </button>
 
-</form>
+    </form>
 
-<!-- ===================================================== -->
-<!-- EXERCICE 3 - PARTIE 1 - QUESTION 4 = EXERCICE 11 -->
-<!-- ===================================================== -->
+    <!-- ===================================================== -->
+    <!-- EXERCICE 3 - PARTIE 1 - QUESTION 4 = EXERCICE 11 -->
+    <!-- ===================================================== -->
 
-<form
-  *ngIf="isReferentView || currentStep === 10"
-  [formGroup]="formEx11"
-  (ngSubmit)="submitEx11()">
+    <form *ngIf="isReferentView || currentStep === 10" [formGroup]="formEx11" (ngSubmit)="submitEx11()">
 
-  <!-- HEADER -->
+      <!-- HEADER -->
 
-  <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
 
-    <span class="badge text-bg-dark text-white">
-      <i class="bi bi-tag-fill me-2"></i>
+        <span class="badge text-bg-dark text-white">
+          <i class="bi bi-tag-fill me-2"></i>
           Catégorie : {{steps[10].category}}
-    </span>
+        </span>
 
-    <div class="d-flex gap-2 ms-md-auto">
+        <div class="d-flex gap-2 ms-md-auto">
 
-      <span class="badge text-bg-warning">
-        Exercice 11
-      </span>
+          <span class="badge text-bg-warning">
+            Exercice 11
+          </span>
 
-      <span
-        *ngIf="isReferentView"
-        class="badge border border-secondary text-secondary">
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
 
-        Max {{ steps[10].maxScore }} PNTS
+            Max {{ steps[10].maxScore }} PNTS
 
-      </span>
+          </span>
 
-      <span class="badge text-bg-dark">
+          <span class="badge text-bg-dark">
 
-        {{ getCurrentScore(10) }} PNTS
+            {{ getCurrentScore(10) }} PNTS
 
-      </span>
+          </span>
 
-    </div>
+        </div>
 
-  </div>
+      </div>
 
-  <!-- DOCUMENT -->
+      <!-- DOCUMENT -->
 
-  <div class="alert bg-info">
+      <div class="alert bg-info">
 
-    <h5>Règles d'hygiène</h5>
+        <h5>Règles d'hygiène</h5>
 
-    <p>
-      Dans un restaurant, la propreté est très importante.
-      Les salariés doivent arriver avec des vêtements propres
-      et les cheveux attachés.
-    </p>
+        <p>
+          Dans un restaurant, la propreté est très importante.
+          Les salariés doivent arriver avec des vêtements propres
+          et les cheveux attachés.
+        </p>
 
-    <p>
-      Ils doivent se laver les mains avant de commencer le travail.
-      Ils doivent aussi vérifier que leur poste de travail est propre.
-    </p>
+        <p>
+          Ils doivent se laver les mains avant de commencer le travail.
+          Ils doivent aussi vérifier que leur poste de travail est propre.
+        </p>
 
-    <p>
-      Pendant le service, ils ne doivent pas toucher leur visage
-      et doivent nettoyer les surfaces régulièrement.
-    </p>
+        <p>
+          Pendant le service, ils ne doivent pas toucher leur visage
+          et doivent nettoyer les surfaces régulièrement.
+        </p>
 
-    <p>
-      Ces règles permettent de protéger les clients
-      et les salariés.
-    </p>
+        <p>
+          Ces règles permettent de protéger les clients
+          et les salariés.
+        </p>
 
-  </div>
+      </div>
 
-  <!-- QUESTION -->
+      <!-- QUESTION -->
 
-  <div class="alert bg-info instructions">
+      <div class="alert bg-info instructions">
 
-    Pourquoi ces règles sont-elles importantes ?
+        Pourquoi ces règles sont-elles importantes ?
 
-  </div>
+      </div>
 
-  <div
-    [class.d-flex]="shouldDisplayInline(ex11Options)"
-    class="gap-4 flex-wrap">
+      <div [class.d-flex]="shouldDisplayInline(ex11Options)" class="gap-4 flex-wrap">
 
-    <div class="form-check" *ngFor="let opt of ex11Options">
+        <div class="form-check" *ngFor="let opt of ex11Options">
 
-      <input
-        class="form-check-input"
-        type="radio"
-        formControlName="answer"
-        [value]="opt.value">
+          <input class="form-check-input" type="radio" formControlName="answer" [value]="opt.value">
 
-      <label class="form-check-label">
+          <label class="form-check-label">
 
-        {{ opt.label }}
+            {{ opt.label }}
 
-      </label>
+          </label>
 
-    </div>
+        </div>
 
-  </div>
+      </div>
 
-  <button class="btn btn-primary mt-4">
+      <button class="btn btn-primary mt-4">
 
-    Suivant
+        Suivant
 
-  </button>
+      </button>
 
-</form>
+    </form>
 
 
     <!-- ===================================================== -->
@@ -619,11 +775,11 @@
 
       <!-- QUESTION -->
 
-<div class="alert bg-info instructions">
-  Combien de personnes en plus sont attendues au restaurant ?
-</div>
+      <div class="alert bg-info instructions">
+        Combien de personnes en plus sont attendues au restaurant ?
+      </div>
 
-<!--
+      <!--
   Les réponses sont affichées horizontalement lorsque toutes les propositions
   sont suffisamment courtes (ex. Oui / Non, Vrai / Faux, 1 / 2 / 3).
 
@@ -633,29 +789,21 @@
   La décision est prise automatiquement par shouldDisplayInline().
 -->
 
-<div
-  [class.d-flex]="shouldDisplayInline(ex13Options)"
-  class="gap-4 flex-wrap">
+      <div [class.d-flex]="shouldDisplayInline(ex13Options)" class="gap-4 flex-wrap">
 
-  <div
-    class="form-check"
-    *ngFor="let opt of ex13Options">
+        <div class="form-check" *ngFor="let opt of ex13Options">
 
-    <input
-      class="form-check-input"
-      type="radio"
-      formControlName="answer"
-      [value]="opt.value">
+          <input class="form-check-input" type="radio" formControlName="answer" [value]="opt.value">
 
-    <label class="form-check-label">
+          <label class="form-check-label">
 
-      {{ opt.label }}
+            {{ opt.label }}
 
-    </label>
+          </label>
 
-  </div>
+        </div>
 
-</div>
+      </div>
 
       <button class="btn btn-primary mt-4">
 

@@ -79,7 +79,7 @@ export class Unit2Component {
 
 
 
-  currentStep = 7;
+  currentStep = 2;
 
   //   const step = this.steps[this.currentStep];
   // const category = step.category;
@@ -131,6 +131,30 @@ export class Unit2Component {
     { name: 'loisir', label: 'Mes loisirs', type: 'textarea' },
     { name: 'aime', label: 'J\'aime', type: 'textarea' }
   ];
+
+  // ------------------------------------------------------
+  // Exercice 2 - Question 1 = EX2
+  // ------------------------------------------------------
+
+  ex2Options = [
+    { value: 'rep1', label: 'Le début des vacances' },
+    { value: 'rep2', label: 'La fête des voisins' },
+    { value: 'rep3', label: 'Un nouveau locataire' }
+  ];
+
+  correctAnswerEx2 = 'rep2';
+
+  // ------------------------------------------------------
+  // Exercice 2 - Question 2 = EX3
+  // ------------------------------------------------------
+
+  ex3Options = [
+    { value: 'rep1', label: 'Dans le parc de la mairie' },
+    { value: 'rep2', label: "Dans le hall de l'immeuble" },
+    { value: 'rep3', label: "Dans l'appartement d'un voisin" }
+  ];
+
+  correctAnswerEx3 = 'rep2';
 
   // ------------------------------------------------------
   // Exercice 3 - Partie 1
@@ -410,6 +434,30 @@ export class Unit2Component {
   }
 
   initForms() {
+
+    // ======================================================
+    // EXERCICE 2 
+    // ======================================================
+
+    // Question 1
+    this.formEx2 = this.fb.group({
+      answer: ['']
+    });
+
+    // Question 2
+    this.formEx3 = this.fb.group({
+      answer: ['']
+    });
+
+    // Question 4
+    this.formEx10 = this.fb.group({
+      answer: ['']
+    });
+
+    // Question 5
+    this.formEx11 = this.fb.group({
+      answer: ['']
+    });
 
 
     // ======================================================
@@ -1707,13 +1755,13 @@ export class Unit2Component {
   shouldDisplayInline(options: { label: string }[]): boolean {
 
     return options.length <= 3 &&
-      options.every(o => o.label.length <= 20);
+      options.every(o => o.label.length <= 30);
 
   }
 
-//   shouldDisplayInline(options: { label: string }[]): boolean {
-//   return options.every(o => o.label.length <= 12);
-// }
+  //   shouldDisplayInline(options: { label: string }[]): boolean {
+  //   return options.every(o => o.label.length <= 12);
+  // }
 
 
 

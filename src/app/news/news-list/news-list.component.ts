@@ -58,8 +58,8 @@ export class NewsListComponent implements OnInit, AfterViewInit {
    * Configure dynamiquement les balises SEO indispensables pour la page liste
    */
   private setMetaData(): void {
-    const title = "Le Mag' de la Formation - Be on Top";
-    const description = "Retrouvez nos articles de fond, témoignages, documentations et actualités pour vous accompagner dans vos projets de formation.";
+    const title = "Le Magazine de la Formation sur Mesure - Be-On-Top";
+    const description = "Articles, retours d'expérience et analyses d'experts sur l'évaluation en amont et la personnalisation des parcours de formation sur mesure.";
     const canonicalUrl = "https://beontop.io/news"; // 👈 Remplacer par ton vrai nom de domaine si besoin
 
     // A. Titre de l'onglet

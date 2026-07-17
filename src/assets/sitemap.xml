@@ -139,4 +139,14 @@
     <changefreq>weekly</changefreq>
   </url>
 
+   <url>
+    <loc>https://be-on-top.io/partners</loc>
+    <changefreq>weekly</changefreq>
+  </url>
+
+    <url>
+    <loc>https://be-on-top.io/news</loc>
+    <changefreq>weekly</changefreq>
+  </url>
+
 </urlset>
