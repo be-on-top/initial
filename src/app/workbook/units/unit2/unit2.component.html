@@ -23,6 +23,7 @@
 
   <div>
 
+
     <!-- ===================================================== -->
     <!-- EXERCICE 2 - QUESTION 1 = EXERCICE 2 -->
     <!-- ===================================================== -->
@@ -44,51 +45,21 @@
           </span>
 
           <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
-
             Max {{ steps[1].maxScore }} PNTS
-
           </span>
 
           <span class="badge text-bg-dark">
-
             {{ getCurrentScore(1) }} PNTS
-
           </span>
 
         </div>
 
       </div>
+      <!-- FIN HEADER  -->
 
-      <!-- DOCUMENT -->
-      <!-- Visu with d-print-none -->
-      <div class="alert row d-print-none">
-        <div class="col-md-5 mb-md-2">
-          <img src="assets/img/unit2/voisins_fete.webp" alt="Bibliothèque">
-        </div>
-        <div class="col-md-7 bg-warning alert mb-0">
-          <h5 class="mb-3">Invitation</h5>
-          <p>
-            Chers voisins,
-          </p>
-          <p>Le printemps est là, et avec lui l'envie de partager un moment chaleureux
-            entre habitants de notre immeuble ! Nous avons le plaisir de vous proposer
-            une Fête des Voisins afin de mieux nous connaître et de passer un agréable
-            moment ensemble.
-          </p>
-          <p>
-            Rendez-vous dans le hall de l'immeuble le 21 juin à partir de 19 heures.
-            Chacun est invité à apporter une petite contribution à partager :
-            boisson, plat sucré ou salé.
-          </p>
-          <p>
-            Ce sera l'occasion d'échanger, de rencontrer les nouveaux résidents
-            et de renforcer la convivialité.
-          </p>
-          <p>
-            Petits et grands sont les bienvenus.
-          </p>
-        </div>
-      </div>
+      <!-- DOCUMENT COMMUN ENFANT -->
+      <app-doc-voisins></app-doc-voisins>
+      <!-- FIN DOCUMENT  -->
 
       <!-- INSTRUCTIONS -->
       <div class="alert alert-light"><i class="bi bi-info-circle me-2"></i>Pour répondre aux questions, cochez la bonne
@@ -98,7 +69,6 @@
       <div class="alert bg-info instructions">
         On vous invite à une fête pour...
       </div>
-      <!-- FIN DOCUMENT  -->
 
       <div class="d-flex flex-column" [class.d-md-flex]="shouldDisplayInline(ex2Options)"
         [class.flex-md-row]="shouldDisplayInline(ex2Options)" [class.gap-md-4]="shouldDisplayInline(ex2Options)"
@@ -131,7 +101,6 @@
     <form *ngIf="isReferentView || currentStep === 2" [formGroup]="formEx3" (ngSubmit)="submitEx3()">
 
       <!-- HEADER -->
-
       <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
 
         <span class="badge text-bg-dark text-white">
@@ -139,67 +108,28 @@
         </span>
 
         <div class="d-flex gap-2 ms-md-auto">
-
           <span class="badge text-bg-warning">
             Exercice 3
           </span>
-
           <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
-
             Max {{ steps[2].maxScore }} PNTS
-
           </span>
-
           <span class="badge text-bg-dark">
-
             {{ getCurrentScore(2) }} PNTS
-
           </span>
-
         </div>
 
       </div>
+      <!-- FIN HEADER  -->
 
-      <!-- DOCUMENT -->
-      <!-- Visu with d-print-none -->
-      <div class="alert row d-print-none">
-        <div class="col-md-5 mb-md-2">
-          <img src="assets/img/unit2/voisins_fete.webp" alt="Bibliothèque">
-        </div>
-        <div class="col-md-7 bg-warning alert mb-0">
-          <h5 class="mb-3">Invitation</h5>
-          <p>
-            Chers voisins,
-          </p>
-          <p>Le printemps est là, et avec lui l'envie de partager un moment chaleureux
-            entre habitants de notre immeuble ! Nous avons le plaisir de vous proposer
-            une Fête des Voisins afin de mieux nous connaître et de passer un agréable
-            moment ensemble.
-          </p>
-          <p>
-            Rendez-vous dans le hall de l'immeuble le 21 juin à partir de 19 heures.
-            Chacun est invité à apporter une petite contribution à partager :
-            boisson, plat sucré ou salé.
-          </p>
-          <p>
-            Ce sera l'occasion d'échanger, de rencontrer les nouveaux résidents
-            et de renforcer la convivialité.
-          </p>
-          <p>
-            Petits et grands sont les bienvenus.
-          </p>
-        </div>
-      </div>
-
-      <!-- INSTRUCTIONS -->
-      <div class="alert alert-light"><i class="bi bi-info-circle me-2"></i>Pour répondre aux questions, cochez la bonne
-        réponse</div>
+      <!-- DOCUMENT COMMUN ENFANT -->
+      <app-doc-voisins></app-doc-voisins>
+      <!-- FIN DOCUMENT  -->
 
       <!-- QUESTION -->
       <div class="alert bg-info instructions">
-         Où est la fête ?
+        Où est la fête ?
       </div>
-      <!-- FIN DOCUMENT  -->
 
       <div class="d-flex flex-column" [class.d-md-flex]="shouldDisplayInline(ex3Options)"
         [class.flex-md-row]="shouldDisplayInline(ex3Options)" [class.gap-md-4]="shouldDisplayInline(ex3Options)"
@@ -218,6 +148,218 @@
         </div>
 
       </div>
+
+      <button type="button" class="btn btn-primary mt-4">
+        Suivant
+      </button>
+
+    </form>
+
+    <!-- ===================================================== -->
+    <!-- EXERCICE 2 - QUESTION 3 = EXERCICE 4 -->
+    <!-- ===================================================== -->
+
+    <form *ngIf="isReferentView || currentStep === 3" [formGroup]="formEx4" (ngSubmit)="submitEx4()">
+
+      <!-- HEADER -->
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+        <span class="badge text-bg-dark text-white">
+          Catégorie : {{ steps[3].category }}
+        </span>
+
+        <div class="d-flex gap-2 ms-md-auto">
+          <span class="badge text-bg-warning">
+            Exercice 4
+          </span>
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+            Max {{ steps[3].maxScore }} PNTS
+          </span>
+          <span class="badge text-bg-dark">
+            {{ getCurrentScore(3) }} PNTS
+          </span>
+        </div>
+
+      </div>
+      <!-- FIN HEADER  -->
+
+      <!-- DOCUMENT COMMUN ENFANT -->
+      <app-doc-voisins></app-doc-voisins>
+      <!-- FIN DOCUMENT  -->
+
+      <!-- QUESTION -->
+      <div class="alert bg-info instructions">
+        Pour cette fête, vous devez apporter…
+      </div>
+
+      <div class="d-flex flex-column" [class.d-md-flex]="shouldDisplayInline(ex4Options)"
+        [class.flex-md-row]="shouldDisplayInline(ex4Options)" [class.gap-md-4]="shouldDisplayInline(ex4Options)"
+        [class.flex-wrap]="shouldDisplayInline(ex4Options)">
+
+        <div class="form-check" *ngFor="let opt of ex4Options">
+
+          <input class="form-check-input" type="radio" formControlName="answer" [value]="opt.value">
+
+          <label class="form-check-label">
+
+            {{ opt.label }}
+
+          </label>
+
+        </div>
+
+      </div>
+
+      <button type="button" class="btn btn-primary mt-4">
+        Suivant
+      </button>
+
+    </form>
+
+    <!-- ===================================================== -->
+    <!-- EXERCICE 2 - QUESTION 4 = EXERCICE 5 -->
+    <!-- ===================================================== -->
+
+    <form *ngIf="isReferentView || currentStep === 4" [formGroup]="formEx5" (ngSubmit)="submitEx5()">
+
+      <!-- HEADER -->
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+        <span class="badge text-bg-dark text-white">
+          Catégorie : {{ steps[4].category }}
+        </span>
+
+        <div class="d-flex gap-2 ms-md-auto">
+          <span class="badge text-bg-warning">
+            Exercice 5
+          </span>
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+            Max {{ steps[4].maxScore }} PNTS
+          </span>
+          <span class="badge text-bg-dark">
+            {{ getCurrentScore(4) }} PNTS
+          </span>
+        </div>
+
+      </div>
+      <!-- FIN HEADER  -->
+
+      <!-- DOCUMENT COMMUN ENFANT -->
+      <app-doc-voisins></app-doc-voisins>
+      <!-- FIN DOCUMENT  -->
+
+      <!-- QUESTION -->
+      <div class="alert bg-info instructions">
+        Quelle est la saison de la fête ?
+      </div>
+
+      <div class="d-flex flex-column" [class.d-md-flex]="shouldDisplayInline(ex5Options)"
+        [class.flex-md-row]="shouldDisplayInline(ex5Options)" [class.gap-md-4]="shouldDisplayInline(ex5Options)"
+        [class.flex-wrap]="shouldDisplayInline(ex5Options)">
+
+        <div class="form-check" *ngFor="let opt of ex5Options">
+
+          <input class="form-check-input" type="radio" formControlName="answer" [value]="opt.value">
+
+          <label class="form-check-label">
+
+            {{ opt.label }}
+
+          </label>
+
+        </div>
+
+      </div>
+
+      <button type="button" class="btn btn-primary mt-4">
+        Suivant
+      </button>
+
+    </form>
+
+    <!-- ===================================================== -->
+    <!-- EXERCICE 2 - QUESTION 5 = EXERCICE 6 -->
+    <!-- ===================================================== -->
+
+    <form *ngIf="isReferentView || currentStep === 5" [formGroup]="formEx6" (ngSubmit)="submitEx6()">
+
+      <!-- HEADER -->
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+        <span class="badge text-bg-dark text-white">
+          Catégorie : {{ steps[5].category }}
+        </span>
+
+        <div class="d-flex gap-2 ms-md-auto">
+          <span class="badge text-bg-warning">
+            Exercice 6
+          </span>
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+            Max {{ steps[5].maxScore }} PNTS
+          </span>
+          <span class="badge text-bg-dark">
+            {{ getCurrentScore(5) }} PNTS
+          </span>
+        </div>
+
+      </div>
+      <!-- FIN HEADER  -->
+
+      <!-- DOCUMENT COMMUN ENFANT -->
+      <app-doc-voisins></app-doc-voisins>
+      <!-- FIN DOCUMENT  -->
+
+      <!-- QUESTION -->
+      <div class="alert bg-info instructions">
+        Quel est le jour de la fête ?
+      </div>
+
+      <input type="date" class="form-control" formControlName="answer">
+
+      <button type="button" class="btn btn-primary mt-4">
+        Suivant
+      </button>
+
+    </form>
+
+    <!-- ===================================================== -->
+    <!-- EXERCICE 2 - QUESTION 6 = EXERCICE 7 -->
+    <!-- ===================================================== -->
+
+    <form *ngIf="isReferentView || currentStep === 6" [formGroup]="formEx6" (ngSubmit)="submitEx7()">
+
+      <!-- HEADER -->
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+        <span class="badge text-bg-dark text-white">
+          Catégorie : {{ steps[6].category }}
+        </span>
+
+        <div class="d-flex gap-2 ms-md-auto">
+          <span class="badge text-bg-warning">
+            Exercice 7
+          </span>
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+            Max {{ steps[6].maxScore }} PNTS
+          </span>
+          <span class="badge text-bg-dark">
+            {{ getCurrentScore(6) }} PNTS
+          </span>
+        </div>
+
+      </div>
+      <!-- FIN HEADER  -->
+
+      <!-- DOCUMENT COMMUN ENFANT -->
+      <app-doc-voisins></app-doc-voisins>
+      <!-- FIN DOCUMENT  -->
+
+      <!-- QUESTION -->
+      <div class="alert bg-info instructions">
+        Quelle est l'heure de la fête ?
+      </div>
+
+      <input type="time" class="form-control" formControlName="answer">
 
       <button type="button" class="btn btn-primary mt-4">
         Suivant

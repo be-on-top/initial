@@ -77,9 +77,7 @@ export class Unit2Component {
 
 
 
-
-
-  currentStep = 2;
+  currentStep = 6;
 
   //   const step = this.steps[this.currentStep];
   // const category = step.category;
@@ -155,6 +153,45 @@ export class Unit2Component {
   ];
 
   correctAnswerEx3 = 'rep2';
+
+  // ------------------------------------------------------
+  // Exercice 2 - Question 3 = EX4
+  // ------------------------------------------------------
+
+  ex4Options = [
+    { value: 'rep1', label: 'La quittance de loyer' },
+    { value: 'rep2', label: "Papi et mamie" },
+    { value: 'rep3', label: "Un plat sucré ou salé" }
+  ];
+
+  correctAnswerEx4 = 'rep3';
+
+  // ------------------------------------------------------
+  // Exercice 2 - Question 4 = EX5
+  // ------------------------------------------------------
+
+  ex5Options = [
+    { value: 'rep1', label: "L'automne" },
+    { value: 'rep2', label: "L'hiver" },
+    { value: 'rep3', label: "Le printemps" },
+    { value: 'rep4', label: "L'été" }
+  ];
+
+  correctAnswerEx5 = 'rep2';
+
+  // ------------------------------------------------------
+  // Exercice 2 - Question 5 = EX6
+  // ------------------------------------------------------
+
+  // correctAnswerEx6 = '2026-06-21';
+  correctAnswerEx6 = `${new Date().getFullYear()}-06-21`;
+
+
+  // ------------------------------------------------------
+  // Exercice 2 - Question 6 = EX7
+  // ------------------------------------------------------
+
+  correctAnswerEx7 = '19:00';
 
   // ------------------------------------------------------
   // Exercice 3 - Partie 1
@@ -450,12 +487,22 @@ export class Unit2Component {
     });
 
     // Question 4
-    this.formEx10 = this.fb.group({
+    this.formEx4 = this.fb.group({
       answer: ['']
     });
 
     // Question 5
-    this.formEx11 = this.fb.group({
+    this.formEx5 = this.fb.group({
+      answer: ['']
+    });
+
+    // Question 6
+    this.formEx6 = this.fb.group({
+      answer: ['']
+    });
+
+    // Question 7
+    this.formEx7 = this.fb.group({
       answer: ['']
     });
 
@@ -593,12 +640,15 @@ export class Unit2Component {
   submitEx2() {
 
     // TODO : récupérer les valeurs du formulaire
-
     this.alreadySubmitted = true;
 
     let score = 0;
 
-    // TODO : calcul du score (si exercice auto-corrigé)
+    // Logique de correction de l'exercice 2
+    const answer = this.formEx2.value.answer
+    if (answer === this.correctAnswerEx2) {
+      score = 1;
+    }
 
     const category = this.getCurrentCategory();
 
@@ -630,7 +680,11 @@ export class Unit2Component {
 
     let score = 0;
 
-    // TODO : calcul du score (si exercice auto-corrigé)
+    // Logique de correction de l'exercice 3
+    const answer = this.formEx3.value.answer
+    if (answer === this.correctAnswerEx3) {
+      score = 1;
+    }
 
     const category = this.getCurrentCategory();
 
@@ -662,7 +716,11 @@ export class Unit2Component {
 
     let score = 0;
 
-    // TODO : calcul du score (si exercice auto-corrigé)
+    // Logique de correction de l'exercice 4
+    const answer = this.formEx4.value.answer
+    if (answer === this.correctAnswerEx4) {
+      score = 1;
+    }
 
     const category = this.getCurrentCategory();
 
@@ -692,7 +750,11 @@ export class Unit2Component {
 
     let score = 0;
 
-    // TODO : calcul du score (si exercice auto-corrigé)
+    // Logique de correction de l'exercice 5
+    const answer = this.formEx5.value.answer
+    if (answer === this.correctAnswerEx5) {
+      score = 1;
+    }
 
     const category = this.getCurrentCategory();
 
@@ -722,7 +784,11 @@ export class Unit2Component {
 
     let score = 0;
 
-    // TODO : calcul du score (si exercice auto-corrigé)
+    // Logique de correction de l'exercice 8
+    const answer = this.formEx6.value.answer
+    if (answer === this.correctAnswerEx6) {
+      score = 1;
+    }
 
     const category = this.getCurrentCategory();
 
@@ -752,7 +818,11 @@ export class Unit2Component {
 
     let score = 0;
 
-    // TODO : calcul du score (si exercice auto-corrigé)
+    // Logique de correction de l'exercice 8
+    const answer = this.formEx7.value.answer
+    if (answer === this.correctAnswerEx7) {
+      score = 1;
+    }
 
     const category = this.getCurrentCategory();
 
@@ -1754,7 +1824,7 @@ export class Unit2Component {
 
   shouldDisplayInline(options: { label: string }[]): boolean {
 
-    return options.length <= 3 &&
+    return options.length <= 4 &&
       options.every(o => o.label.length <= 30);
 
   }
