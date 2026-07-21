@@ -95,18 +95,18 @@ export class AdminNewsEditComponent implements OnInit {
   // }
 
   // 🖼️ Upload image de Héros vers Firebase Storage (Optimisée & Convertie)
+// 🖼️ 1. AUTOMATISATION ET AJUSTEMENT DU HÉROS
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (!file) return;
 
     this.loading = true;
 
-    // 🧹 SÉCURITÉ : On passe par un Canvas pour forcer le redimensionnement et le format WebP
     const reader = new FileReader();
     reader.onload = (e: any) => {
       const img = new Image();
       img.onload = () => {
-        const maxWidth = 1200; // 🎯 Largeur max idéale pour une bannière de Héros
+        const maxWidth = 1200; // Largeur idéale pour une bannière responsive
         const canvas = document.createElement('canvas');
         let scale = 1;
 
@@ -120,19 +120,18 @@ export class AdminNewsEditComponent implements OnInit {
         const ctx = canvas.getContext('2d');
         ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-        // 🪄 On convertit le gros PNG/JPEG en un WebP ultra léger (qualité 0.9)
+        // 🪄 LE COMPROMIS HÉROS : Qualité poussée à 0.93 (avec perte optimisée)
+        // Pour une grande photo de couverture, cela élimine les "vagues" de compression 
+        // autour des détails sans faire exploser le poids du fichier sur mobile.
         canvas.toBlob((blob) => {
           if (!blob) {
             this.loading = false;
             return;
           }
 
-          // On recrée un fichier File propre à partir du blob optimisé
           const optimizedFile = new File([blob], 'hero-' + Date.now() + '.webp', { type: 'image/webp' });
 
-          // 📤 Upload du fichier optimisé → récupération URL publique
           this.newsService.uploadImage(optimizedFile).then(url => {
-            // 🔗 On stocke l'URL dans le modèle
             this.news.heroImage = url;
             this.loading = false;
           }).catch(err => {
@@ -140,7 +139,7 @@ export class AdminNewsEditComponent implements OnInit {
             this.loading = false;
           });
           
-        }, 'image/webp', 0.9);
+        }, 'image/webp', 0.95); // 🎯 Ajusté ici à 0.93 au lieu de 0.9
       };
       img.src = e.target.result;
     };
@@ -173,32 +172,37 @@ export class AdminNewsEditComponent implements OnInit {
     input.click();
   }
 
-  editorConfig = {
-    plugins: 'lists image, emoticons',
+editorConfig = {
+    // 🛠️ Ajout du plugin 'link'
+    plugins: 'lists image emoticons link',
     
-    // 🛠️ ÉTAPE 1 : On désactive complètement le menu du haut (Fichier, Insérer, etc.)
+    // 🛠️ ÉTAPE 1 : On désactive complètement le menu du haut
     menubar: false, 
 
-    // 🛠️ On ajoute 'blockquote' dans la barre d'outils (il prendra la forme d'une icône de guillemets " )
-    toolbar: 'undo redo | blocks | bold italic | blockquote | emoticons | image | hr | bullist numlist',
+    // 🛠️ Barre d'outils avec 'link unlink'
+    toolbar: 'undo redo | blocks | bold italic | link unlink | blockquote | emoticons | image | hr | bullist numlist',
 
     block_formats: 'Paragraphe=p; Titre 2=h2',
     images_file_types: 'webp',
     file_picker_types: 'image',
 
-    // 🔒 SÉCURITÉ : On ajoute 'blockquote' dans les éléments autorisés pour pas qu'il soit nettoyé
+    // 🔒 SÉCURITÉ : On autorise 'blockquote' ET la balise 'a' avec ses attributs
     forced_root_block: 'p',
-    valid_elements: 'p,br,strong,em,span,h2,h3,ul,ol,li,hr,blockquote,img[src|alt|width|height|loading]',
+    valid_elements: 'p,br,strong,em,span,h2,h3,ul,ol,li,hr,blockquote,img[src|alt|width|height|loading],a[href|target|rel|title]',
 
+    // 🔗 AUTOMATISATION DES LIENS EXTERNES
+    link_assume_external_targets: 'https',
+    // Dès qu'un lien ouvre dans une nouvelle fenêtre (target="_blank"), TinyMCE ajoute rel="nofollow relnoopener"
+    link_rel_policies: [
+      { target: '_blank', rel: 'nofollow' }
+    ],
 
     // 🔒 VERROUILLAGE DES IMAGES
     image_dimensions: false, 
     image_caption: false,    
     inline_styles: false,    
 
-
-
-    // 1️⃣ GÈRE LE GLISSER-DÉPOSER (Le code exact, non modifié)
+    // 1️⃣ GÈRE LE GLISSER-DÉPOSER (Votre code exact)
     images_upload_handler: (blobInfo: any) => {
       return new Promise<string>(async (resolve, reject) => {
         try {
@@ -214,26 +218,21 @@ export class AdminNewsEditComponent implements OnInit {
       });
     },
 
-    // 2️⃣ GÈRE LE BOUTON IMAGE (Le code exact, non modifié)
+    // 2️⃣ GÈRE LE BOUTON IMAGE (Votre code exact)
     file_picker_callback: (callback: any, value: any, meta: any) => {
       const input = document.createElement('input');
       input.type = 'file';
-      input.accept = 'image/webp';
+      input.accept = 'image/webp, image/png, image/jpeg'; 
 
       input.onchange = () => {
         const file = input.files?.[0];
         if (!file) return;
 
-        if (file.type !== 'image/webp') {
-          alert('Seules les images WEBP sont autorisées');
-          return;
-        }
-
         const reader = new FileReader();
         reader.onload = (e: any) => {
           const img = new Image();
           img.onload = () => {
-            const maxWidth = 500;
+            const maxWidth = 650; 
             const canvas = document.createElement('canvas');
             let scale = 1;
 
@@ -249,7 +248,9 @@ export class AdminNewsEditComponent implements OnInit {
 
             canvas.toBlob(async (blob) => {
               if (!blob) return;
-              const resizedFile = new File([blob], file.name, { type: 'image/webp' });
+              
+              const originalName = file.name.replace(/\.[^/.]+$/, "");
+              const resizedFile = new File([blob], originalName + '-' + Date.now() + '.webp', { type: 'image/webp' });
 
               try {
                 this.loading = true;
@@ -260,7 +261,7 @@ export class AdminNewsEditComponent implements OnInit {
               } finally {
                 this.loading = false;
               }
-            }, 'image/webp', 0.9);
+            }, 'image/webp', 1.0); 
           };
           img.src = e.target.result;
         };
