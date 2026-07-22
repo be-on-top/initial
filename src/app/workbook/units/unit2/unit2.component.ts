@@ -162,12 +162,12 @@ export class Unit2Component {
   ];
 
   situations = [
-    'Sophie cherche un appartement pas trop cher. Elle est étudiante.',
-    'Robert cherche un appartement en ville. Il n\'aime pas le bruit.',
-    'Germaine, 75 ans, se déplace difficilement et ne veut pas d\'appartement à l\'étage.',
-    'Sacha et Bénédicte cherchent un appartement avec 2 chambres. Ils ont 1 enfant.',
-    'Jean change de département et cherche un appartement avec les meubles.',
-    'Vanille et Fred cherchent un appartement en ville.'
+    'A. Sophie cherche un appartement pas trop cher. Elle est étudiante.',
+    'B. Robert cherche un appartement en ville. Il n\'aime pas le bruit.',
+    'C. Germaine, 75 ans, se déplace difficilement et ne veut pas d\'appartement à l\'étage.',
+    'D. Sacha et Bénédicte cherchent un appartement avec 2 chambres. Ils ont 1 enfant.',
+    'E. Jean change de département et cherche un appartement avec les meubles.',
+    'F. Vanille et Fred cherchent un appartement en ville.'
   ];
 
   correctAnswers: { [key: number]: number } = {
@@ -668,36 +668,47 @@ export class Unit2Component {
 
 
   // EX1
-  submitEx1() {
+submitEx1() {
 
-    // TODO : récupérer les valeurs du formulaire
+  this.alreadySubmitted = true;
 
-    this.alreadySubmitted = true;
+  let score = 0;
 
-    let score = 0;
+  const answers = this.formEx1.value;
 
-    // TODO : calcul du score (si exercice auto-corrigé)
+  Object.keys(this.correctAnswers).forEach(key => {
 
-    const category = this.getCurrentCategory();
+    const situationId = Number(key);
 
-    // TODO : sauvegarde spécifique si nécessaire
+    // Réponse sélectionnée dans le formulaire.
+    // Le <select> renvoie une chaîne de caractères,
+    // donc on la convertit en nombre.
+    const answer = Number(answers[situationId]);
 
-    this.service.saveUnitFlat(
-      this.uid,
-      "unit2",
-      "ex1",
-      this.formEx1,
-      score,
-      category
-    );
+    // Comparaison avec la bonne réponse.
+    if (answer === this.correctAnswers[situationId]) {
+      score++;
+    }
 
-    this.aggregate(category, score);
+  });
 
-    this.next();
+  const category = this.getCurrentCategory();
 
-  }
+  this.service.saveUnitFlat(
+    this.uid,
+    "unit2",
+    "ex1",
+    this.formEx1,
+    score,
+    category
+  );
 
-  // EX1
+  this.aggregate(category, score);
+
+  this.next();
+
+}
+  // EX2
   submitEx2() {
 
     // TODO : récupérer les valeurs du formulaire

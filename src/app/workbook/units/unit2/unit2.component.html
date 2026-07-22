@@ -60,14 +60,14 @@
 
       <div class="row g-2">
 
-        <div class="col-md-6" *ngFor="let item of ex1Items">
+        <div class="col-md-6 col-lg-4" *ngFor="let item of ex1Items">
 
-          <div class="card h-100">
+          <div class="card h-100 bg-info">
 
-            <div class="card-body">
+            <div class="card-body text-white">
 
-              <h5 class="card-title">
-                Annonce {{ item.id }}
+              <h5 class="card-title d-flex justify-content-between">
+                  <span>Annonce {{ item.id }}</span><i class="bi bi-pin-angle-fill"></i>
               </h5>
 
               <p class="card-text">
@@ -84,33 +84,37 @@
 
       <!-- INSTRUCTIONS -->
 
-      <div class="alert alert-light mt-4">
-        Pour chaque situation, sélectionnez l'annonce correspondante.
+      <div class="alert bg-info instructions mt-4">
+        👇 Pour chaque situation, associez l'annonce correspondante.
       </div>
 
       <!-- SITUATIONS -->
 
       <div *ngFor="let situation of situations; let i = index" class="mb-4">
 
-        <div class="row g-2 mb-3">
+        <div class="row g-2 mb-3 ps-2">
 
-          <div class="alert bg-info instructions  col-lg-8">
+          <div class="col-lg-8 bg-light">
             {{ situation }}
           </div>
 
-          <select class="form-select col-lg-4" [formControlName]="i + 1">
+           <div class="col-lg-4">
 
-            <option value="">
-              Sélectionnez une annonce
-            </option>
+             <select class="form-select col-lg-4" [formControlName]="i + 1">
+   
+               <option value="">
+                 👉 Sélectionnez l'annonce
+               </option>
+   
+               <option *ngFor="let item of ex1Items" [value]="item.id">
+   
+                 Annonce {{ item.id }}
+   
+               </option>
+   
+             </select>
+           </div>
 
-            <option *ngFor="let item of ex1Items" [value]="item.id">
-
-              Annonce {{ item.id }}
-
-            </option>
-
-          </select>
 
         </div>
 
