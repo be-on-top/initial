@@ -23,6 +23,108 @@
 
   <div>
 
+    <form *ngIf="isReferentView || currentStep === 0" [formGroup]="formEx1" (ngSubmit)="submitEx1()">
+
+      <!-- HEADER -->
+
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+        <span class="badge text-bg-dark text-white">
+          <i class="bi bi-tag-fill me-2"></i>
+          Catégorie : {{ steps[0].category }}
+        </span>
+
+        <div class="d-flex gap-2 ms-md-auto">
+
+          <span class="badge text-bg-warning">
+            Exercice 1
+          </span>
+
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+
+            Max {{ steps[0].maxScore }} PNTS
+
+          </span>
+
+          <span class="badge text-bg-dark">
+
+            {{ getCurrentScore(0) }} PNTS
+
+          </span>
+
+        </div>
+
+      </div>
+
+      <!-- DOCUMENT : LES ANNONCES -->
+
+      <div class="row g-2">
+
+        <div class="col-md-6" *ngFor="let item of ex1Items">
+
+          <div class="card h-100">
+
+            <div class="card-body">
+
+              <h5 class="card-title">
+                Annonce {{ item.id }}
+              </h5>
+
+              <p class="card-text">
+                {{ item.annonce }}
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- INSTRUCTIONS -->
+
+      <div class="alert alert-light mt-4">
+        Pour chaque situation, sélectionnez l'annonce correspondante.
+      </div>
+
+      <!-- SITUATIONS -->
+
+      <div *ngFor="let situation of situations; let i = index" class="mb-4">
+
+        <div class="row g-2 mb-3">
+
+          <div class="alert bg-info instructions  col-lg-8">
+            {{ situation }}
+          </div>
+
+          <select class="form-select col-lg-4" [formControlName]="i + 1">
+
+            <option value="">
+              Sélectionnez une annonce
+            </option>
+
+            <option *ngFor="let item of ex1Items" [value]="item.id">
+
+              Annonce {{ item.id }}
+
+            </option>
+
+          </select>
+
+        </div>
+
+
+      </div>
+
+      <button type="submit" class="btn btn-primary mt-4">
+
+        Suivant
+
+      </button>
+
+    </form>
+
 
     <!-- ===================================================== -->
     <!-- EXERCICE 2 - QUESTION 1 = EXERCICE 2 -->

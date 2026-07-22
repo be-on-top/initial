@@ -77,7 +77,7 @@ export class Unit2Component {
 
 
 
-  currentStep = 6;
+  currentStep = 0;
 
   //   const step = this.steps[this.currentStep];
   // const category = step.category;
@@ -116,8 +116,7 @@ export class Unit2Component {
   formEx21!: FormGroup;
   formEx22!: FormGroup;
 
-  // EX1
-  ex1Fields = [
+    ex1Fields = [
     { name: 'nom', label: 'Nom', type: 'text' },
     { name: 'prenom', label: 'Prénom', type: 'text' },
     { name: 'dateNaissance', label: 'Date de naissance', type: 'text' },
@@ -129,6 +128,56 @@ export class Unit2Component {
     { name: 'loisir', label: 'Mes loisirs', type: 'textarea' },
     { name: 'aime', label: 'J\'aime', type: 'textarea' }
   ];
+
+  // ------------------------------------------------------
+  // Exercice 1 
+  // Association annonces / situations
+  // ------------------------------------------------------
+
+  ex1Items = [
+    {
+      id: 1,
+      annonce: 'Jeune couple sérieux recherche appartement T2 ou T3, non meublé, secteur centre ou proche transports. Budget raisonnable. Références solides.'
+    },
+    {
+      id: 2,
+      annonce: 'Étudiante calme et soigneuse cherche studio ou petit T2, meublé de préférence, proche université. Entrée rapide souhaitée. Garant disponible.'
+    },
+    {
+      id: 3,
+      annonce: 'Famille avec un enfant cherche T3 minimum, ascenseur souhaité, écoles à proximité. Budget adapté. Dossier complet.'
+    },
+    {
+      id: 4,
+      annonce: 'Salarié en CDI, non-fumeur, sans animaux, recherche appartement 2 pièces lumineux, avec balcon si possible. Quartier calme apprécié.'
+    },
+    {
+      id: 5,
+      annonce: 'Retraitée seule, discrète et solvable, recherche petit appartement au calme, rez-de-chaussée ou ascenseur indispensable.'
+    },
+    {
+      id: 6,
+      annonce: 'Professionnel muté recherche appartement meublé, T1 ou T2, pour longue durée. Sérieux et disponible immédiatement.'
+    }
+  ];
+
+  situations = [
+    'Sophie cherche un appartement pas trop cher. Elle est étudiante.',
+    'Robert cherche un appartement en ville. Il n\'aime pas le bruit.',
+    'Germaine, 75 ans, se déplace difficilement et ne veut pas d\'appartement à l\'étage.',
+    'Sacha et Bénédicte cherchent un appartement avec 2 chambres. Ils ont 1 enfant.',
+    'Jean change de département et cherche un appartement avec les meubles.',
+    'Vanille et Fred cherchent un appartement en ville.'
+  ];
+
+  correctAnswers: { [key: number]: number } = {
+    1: 2,
+    2: 4,
+    3: 5,
+    4: 3,
+    5: 6,
+    6: 1
+  };
 
   // ------------------------------------------------------
   // Exercice 2 - Question 1 = EX2
@@ -471,6 +520,18 @@ export class Unit2Component {
   }
 
   initForms() {
+
+    // ======================================================
+    // EXERCICE 1
+    // ======================================================
+
+    const group1: any = {};
+
+    this.ex1Items.forEach(item => {
+      group1[item.id] = [''];
+    });
+
+    this.formEx1 = this.fb.group(group1);
 
     // ======================================================
     // EXERCICE 2 

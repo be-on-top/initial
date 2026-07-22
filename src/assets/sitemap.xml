@@ -144,8 +144,28 @@
     <changefreq>weekly</changefreq>
   </url>
 
-    <url>
+  <url>
     <loc>https://be-on-top.io/news</loc>
+    <changefreq>weekly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://be-on-top.io/news/EDhosQebJty7MC47HJky</loc>
+    <changefreq>weekly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://be-on-top.io/news/WEspgBycKCSKsWOQNpik</loc>
+    <changefreq>weekly</changefreq>
+  </url>
+  
+  <url>
+    <loc>https://be-on-top.io/news/6ZGbLtSeLxPAMzmVGE4i</loc>
+    <changefreq>weekly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://be-on-top.io/news/JCpuRqqbRj1HknWGlKU6</loc>
     <changefreq>weekly</changefreq>
   </url>
 
