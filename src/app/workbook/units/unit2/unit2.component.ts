@@ -71,13 +71,13 @@ export class Unit2Component {
     { id: 'ex19', category: this.categories[0], duration: 50, maxScore: 1 },
     { id: 'ex20', category: this.categories[0], duration: 50, maxScore: 1 },
 
-    { id: 'ex21', category: this.categories[1], duration: 50, maxScore: 1 },
-    { id: 'ex22', category: this.categories[1], duration: 50, maxScore: 1 }
+    { id: 'ex21', category: this.categories[1], maxScore: 12 },
+    { id: 'ex22', category: this.categories[1], maxScore: 12 }
   ];
 
 
 
-  currentStep = 0;
+  currentStep = 20;
 
   //   const step = this.steps[this.currentStep];
   // const category = step.category;
@@ -116,7 +116,7 @@ export class Unit2Component {
   formEx21!: FormGroup;
   formEx22!: FormGroup;
 
-    ex1Fields = [
+  ex1Fields = [
     { name: 'nom', label: 'Nom', type: 'text' },
     { name: 'prenom', label: 'Prénom', type: 'text' },
     { name: 'dateNaissance', label: 'Date de naissance', type: 'text' },
@@ -398,6 +398,18 @@ export class Unit2Component {
 
   correctAnswerEx20 = 'specialistes';
 
+  // ------------------------------------------------------
+  // EX21 + EX22
+  // ------------------------------------------------------
+
+  mailFields = [
+    { name: 'from', label: 'De', type: 'email' },
+    { name: 'to', label: 'À', type: 'email' },
+    { name: 'cc', label: 'Cc', type: 'email' },
+    { name: 'subject', label: 'Objet', type: 'text' },
+    { name: 'message', label: 'Message', type: 'textarea' }
+  ];
+
 
   constructor(private fb: FormBuilder, private auth: AuthService, private service: WorkbookService, private route: ActivatedRoute, private router: Router) {
     this.initForms();
@@ -651,6 +663,16 @@ export class Unit2Component {
       answer: ['']
     });
 
+    // EXERCICE 21
+
+    this.formEx21 = this.fb.group({
+      from: [''],
+      to: [''],
+      cc: [''],
+      subject: [''],
+      message: ['']
+    });
+
   }
 
   // next() {
@@ -668,46 +690,46 @@ export class Unit2Component {
 
 
   // EX1
-submitEx1() {
+  submitEx1() {
 
-  this.alreadySubmitted = true;
+    this.alreadySubmitted = true;
 
-  let score = 0;
+    let score = 0;
 
-  const answers = this.formEx1.value;
+    const answers = this.formEx1.value;
 
-  Object.keys(this.correctAnswers).forEach(key => {
+    Object.keys(this.correctAnswers).forEach(key => {
 
-    const situationId = Number(key);
+      const situationId = Number(key);
 
-    // Réponse sélectionnée dans le formulaire.
-    // Le <select> renvoie une chaîne de caractères,
-    // donc on la convertit en nombre.
-    const answer = Number(answers[situationId]);
+      // Réponse sélectionnée dans le formulaire.
+      // Le <select> renvoie une chaîne de caractères,
+      // donc on la convertit en nombre.
+      const answer = Number(answers[situationId]);
 
-    // Comparaison avec la bonne réponse.
-    if (answer === this.correctAnswers[situationId]) {
-      score++;
-    }
+      // Comparaison avec la bonne réponse.
+      if (answer === this.correctAnswers[situationId]) {
+        score++;
+      }
 
-  });
+    });
 
-  const category = this.getCurrentCategory();
+    const category = this.getCurrentCategory();
 
-  this.service.saveUnitFlat(
-    this.uid,
-    "unit2",
-    "ex1",
-    this.formEx1,
-    score,
-    category
-  );
+    this.service.saveUnitFlat(
+      this.uid,
+      "unit2",
+      "ex1",
+      this.formEx1,
+      score,
+      category
+    );
 
-  this.aggregate(category, score);
+    this.aggregate(category, score);
 
-  this.next();
+    this.next();
 
-}
+  }
   // EX2
   submitEx2() {
 
@@ -1325,14 +1347,37 @@ submitEx1() {
   }
 
 
-  // EX20
+  // EX21
   submitEx21() {
 
     this.alreadySubmitted = true;
 
     let score = 0;
 
-    // TODO : logique de correction de l'exercice 21
+    const values = this.formEx21.value;
+
+    // Expression régulière simple pour vérifier
+    // la structure générale d'une adresse email.
+    const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // 1 point pour une adresse email valide
+    if (regexEmail.test(values.from)) {
+      score++;
+    }
+
+    // 1 point pour une adresse email valide
+    if (regexEmail.test(values.to)) {
+      score++;
+    }
+
+    // 1 point pour une adresse email valide
+    if (regexEmail.test(values.cc)) {
+      score++;
+    }
+
+    // TODO :
+    // Objet : éventuellement scoré selon les mots-clés attendus
+    // Message : enregistré mais non scoré automatiquement
 
     const category = this.getCurrentCategory();
 
@@ -1352,14 +1397,19 @@ submitEx1() {
   }
 
 
-  // EX20
+  // EX22
   submitEx22() {
 
     this.alreadySubmitted = true;
 
     let score = 0;
 
-    // TODO : logique de correction de l'exercice 22
+    // TODO :
+    // email expéditeur
+    // email destinataire
+    // email copie
+    // objet
+    // message (non scoré)
 
     const category = this.getCurrentCategory();
 

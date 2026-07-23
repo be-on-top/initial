@@ -67,7 +67,7 @@
             <div class="card-body text-white">
 
               <h5 class="card-title d-flex justify-content-between">
-                  <span>Annonce {{ item.id }}</span><i class="bi bi-pin-angle-fill"></i>
+                <span>Annonce {{ item.id }}</span><i class="bi bi-pin-angle-fill"></i>
               </h5>
 
               <p class="card-text">
@@ -98,22 +98,22 @@
             {{ situation }}
           </div>
 
-           <div class="col-lg-4">
+          <div class="col-lg-4">
 
-             <select class="form-select col-lg-4" [formControlName]="i + 1">
-   
-               <option value="">
-                 👉 Sélectionnez l'annonce
-               </option>
-   
-               <option *ngFor="let item of ex1Items" [value]="item.id">
-   
-                 Annonce {{ item.id }}
-   
-               </option>
-   
-             </select>
-           </div>
+            <select class="form-select col-lg-4" [formControlName]="i + 1">
+
+              <option value="">
+                👉 Sélectionnez l'annonce
+              </option>
+
+              <option *ngFor="let item of ex1Items" [value]="item.id">
+
+                Annonce {{ item.id }}
+
+              </option>
+
+            </select>
+          </div>
 
 
         </div>
@@ -1755,6 +1755,102 @@
       </div>
 
       <button class="btn btn-primary mt-4">
+
+        Suivant
+
+      </button>
+
+    </form>
+
+
+    <!-- ===================================================== -->
+    <!-- EXERCICE 21 -->
+    <!-- ===================================================== -->
+
+    <form *ngIf="isReferentView || currentStep === 20" [formGroup]="formEx21" (ngSubmit)="submitEx21()">
+
+      <!-- HEADER -->
+
+      <div class="title mb-4 d-flex flex-column flex-md-row
+              align-items-start align-items-md-center gap-2">
+
+        <span class="badge text-bg-dark text-white">
+          <i class="bi bi-tag-fill me-2"></i>
+          Catégorie : Production écrite
+        </span>
+
+        <div class="d-flex gap-2 ms-md-auto">
+
+          <span class="badge text-bg-warning">
+            Exercice 21
+          </span>
+
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+
+            Max {{ steps[20].maxScore }} PNTS
+
+          </span>
+
+          <span class="badge text-bg-dark">
+
+            {{ getCurrentScore(20) }} PNTS
+
+          </span>
+
+        </div>
+
+      </div>
+
+      <!-- DOCUMENT / CONSIGNE -->
+
+      <div class="alert bg-info instructions">
+    
+          Hier vous avez fêté votre anniversaire avec votre famille
+          et vos amis. Vous écrivez un mail à votre ami(e) pour lui raconter ce que
+          vous avez fait pendant cette journée. Vous lui donnez aussi
+          vos impressions sur la fête.
+
+        <!-- <p class="mb-0">
+          <strong>60 mots minimum.</strong>
+        </p> -->
+
+      </div>
+
+            <div class="mb-4">
+        <p>Merci d'utiliser un minimum de 60 mots</p>
+      </div>
+
+
+
+      <!-- FORMULAIRE DE COURRIEL -->
+
+      <div class="card">
+
+        <div class="card-body">
+
+          <div *ngFor="let field of mailFields" class="mb-3">
+
+            <label [for]="field.name" class="form-label">
+              {{ field.label }}
+            </label>
+
+            <input *ngIf="field.type !== 'textarea'" [id]="field.name" [type]="field.type" class="form-control"
+              [formControlName]="field.name">
+
+            <textarea *ngIf="field.type === 'textarea'" [id]="field.name" class="form-control" rows="10"
+              [formControlName]="field.name">
+  </textarea>
+
+          </div>
+        </div>
+
+        
+      </div>
+      <div *ngIf="countWords(formEx21.value.message) < 60 && !alreadySubmitted" class="text-danger">
+Minimum 60 mots requis
+</div>
+
+      <button type="submit" class="btn btn-primary mt-4">
 
         Suivant
 
