@@ -118,10 +118,10 @@ export class MarketAppComponent implements OnInit, AfterViewInit, OnDestroy {
     const schema = {
       '@context': 'https://schema.org',
       '@type': 'SoftwareApplication',
-      'name': 'BE-ON-TOP',
+      'name': 'BE-ON-TOP.io',
       'applicationCategory': 'EducationalApplication', // Ou BusinessApplication selon votre cible
       'operatingSystem': 'All',
-      'description': 'Application PWA d\'évaluation sémantique et de positionnement initial des candidats en amont de la formation professionnelle. Gère l\'individualisation des parcours, le suivi des compétences en présentiel, le tutorat en entreprise et le sourcing pour les recruteurs.',
+      'description': 'Application PWA d\'évaluation de compétences et de positionnement initial des candidats en amont de la formation professionnelle. Gère l\'individualisation des parcours, le suivi des compétences en présentiel, le tutorat en entreprise et le sourcing pour les recruteurs.',
       // Ici, on s'efforce de verrouiller les fonctionnalités clés pour éviter les erreurs de la Communication
       'featureList': [
         'Évaluation initiale et positionnement des candidats en amont de la formation',
@@ -132,11 +132,19 @@ export class MarketAppComponent implements OnInit, AfterViewInit, OnDestroy {
         'Mise à disposition des profils de compétences qualifiés pour les recruteurs'
       ],
 
+      //  L'OFFRE GRATUITE EST PLACÉE ICI
+      'offers': {
+        '@type': 'Offer',
+        'price': '0',
+        'priceCurrency': 'EUR',
+        'category': 'Free'
+      },
+
       // On peut lier l'organisation (votre marque) pour faire le pont sémantique
       'publisher': {
         '@type': 'Organization',
         '@id': 'https://be-on-top.io/#organization', // Identifiant sémantique unique de la marque mère
-        'name': 'BE-ON-TOP', 
+        'name': 'BE-ON-TOP.io',
         'url': 'https://be-on-top.io'
       }
     };
