@@ -77,7 +77,7 @@ export class Unit2Component {
 
 
 
-  currentStep = 20;
+  currentStep = 0;
 
   //   const step = this.steps[this.currentStep];
   // const category = step.category;
@@ -1350,34 +1350,52 @@ export class Unit2Component {
   // EX21
   submitEx21() {
 
+    const values = this.formEx21.value;
+
+    const message = values.message || '';
+
+    // Le message doit contenir au minimum 60 mots.
+    // Si ce minimum n'est pas atteint, la soumission est bloquée.
+    const wordCount = this.countWords(message);
+
+    if (wordCount < 60) {
+      return;
+    }
+
     this.alreadySubmitted = true;
 
     let score = 0;
 
-    const values = this.formEx21.value;
-
-    // Expression régulière simple pour vérifier
-    // la structure générale d'une adresse email.
+    // Vérification de la structure générale d'une adresse email.
     const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    // 1 point pour une adresse email valide
+    // Email expéditeur : 1 point
     if (regexEmail.test(values.from)) {
       score++;
     }
 
-    // 1 point pour une adresse email valide
+    // Email destinataire : 1 point
     if (regexEmail.test(values.to)) {
       score++;
     }
 
-    // 1 point pour une adresse email valide
+    // Email en copie : 1 point
     if (regexEmail.test(values.cc)) {
       score++;
     }
 
-    // TODO :
-    // Objet : éventuellement scoré selon les mots-clés attendus
-    // Message : enregistré mais non scoré automatiquement
+    // Objet renseigné : 1 point
+    if (values.subject && values.subject.trim() !== '') {
+      score++;
+    }
+
+    // Mot-clé attendu dans l'objet : 1 point
+    if (
+      values.subject &&
+      values.subject.toLowerCase().includes('anniversaire')
+    ) {
+      score++;
+    }
 
     const category = this.getCurrentCategory();
 
@@ -1400,16 +1418,52 @@ export class Unit2Component {
   // EX22
   submitEx22() {
 
+    const values = this.formEx22.value;
+
+    const message = values.message || '';
+
+    // Le message doit contenir au minimum 60 mots.
+    // Si ce minimum n'est pas atteint, la soumission est bloquée.
+    const wordCount = this.countWords(message);
+
+    if (wordCount < 60) {
+      return;
+    }
+
     this.alreadySubmitted = true;
 
     let score = 0;
 
-    // TODO :
-    // email expéditeur
-    // email destinataire
-    // email copie
-    // objet
-    // message (non scoré)
+    // Vérification de la structure générale d'une adresse email.
+    const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Email expéditeur : 1 point
+    if (regexEmail.test(values.from)) {
+      score++;
+    }
+
+    // Email destinataire : 1 point
+    if (regexEmail.test(values.to)) {
+      score++;
+    }
+
+    // Email en copie : 1 point
+    if (regexEmail.test(values.cc)) {
+      score++;
+    }
+
+    // Objet renseigné : 1 point
+    if (values.subject && values.subject.trim() !== '') {
+      score++;
+    }
+
+    // Mot-clé attendu dans l'objet : 1 point
+    if (
+      values.subject &&
+      values.subject.toLowerCase().includes('naissance')
+    ) {
+      score++;
+    }
 
     const category = this.getCurrentCategory();
 

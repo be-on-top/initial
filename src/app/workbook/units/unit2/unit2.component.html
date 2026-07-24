@@ -1804,11 +1804,11 @@
       <!-- DOCUMENT / CONSIGNE -->
 
       <div class="alert bg-info instructions">
-    
-          Hier vous avez fêté votre anniversaire avec votre famille
-          et vos amis. Vous écrivez un mail à votre ami(e) pour lui raconter ce que
-          vous avez fait pendant cette journée. Vous lui donnez aussi
-          vos impressions sur la fête.
+
+        Hier vous avez fêté votre anniversaire avec votre famille
+        et vos amis. Vous écrivez un mail à votre ami(e) pour lui raconter ce que
+        vous avez fait pendant cette journée. Vous lui donnez aussi
+        vos impressions sur la fête.
 
         <!-- <p class="mb-0">
           <strong>60 mots minimum.</strong>
@@ -1816,7 +1816,7 @@
 
       </div>
 
-            <div class="mb-4">
+      <div class="mb-4">
         <p>Merci d'utiliser un minimum de 60 mots</p>
       </div>
 
@@ -1844,11 +1844,127 @@
           </div>
         </div>
 
-        
       </div>
       <div *ngIf="countWords(formEx21.value.message) < 60 && !alreadySubmitted" class="text-danger">
-Minimum 60 mots requis
-</div>
+        Minimum 60 mots requis
+      </div>
+
+      <button type="submit" class="btn btn-primary mt-4">
+
+        Suivant
+
+      </button>
+
+    </form>
+
+    <!-- ===================================================== -->
+    <!-- EXERCICE 22 -->
+    <!-- ===================================================== -->
+
+    <form *ngIf="isReferentView || currentStep === 21" [formGroup]="formEx22" (ngSubmit)="submitEx22()">
+
+      <!-- HEADER -->
+
+      <div class="title mb-4 d-flex flex-column flex-md-row
+              align-items-start align-items-md-center gap-2">
+
+        <span class="badge text-bg-dark text-white">
+          <i class="bi bi-tag-fill me-2"></i>
+          Catégorie : {{ steps[21].category }}
+        </span>
+
+        <div class="d-flex gap-2 ms-md-auto">
+
+          <span class="badge text-bg-warning">
+            Exercice 22
+          </span>
+
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+
+            Max {{ steps[21].maxScore }} PNTS
+
+          </span>
+
+          <span class="badge text-bg-dark">
+
+            {{ getCurrentScore(21) }} PNTS
+
+          </span>
+
+        </div>
+
+      </div>
+
+      <!-- DOCUMENT / CONSIGNE -->
+
+      <!-- DOCUMENT / CONSIGNE -->
+
+      <div class="alert row">
+
+        <div class="col-md-3 order-2 order-md-1 mt-1 mt-md-0 p-0 pe-md-2 position-relative">
+
+          <img src="assets/img/unit2/naissance.webp" alt="Naissance" class="img-fluid">
+
+          <div class="invitation-text">
+
+            <span class="fs-3">Juliette</span> <br>Née le 20/07/2026.<br>
+            Elle a hâte de vous rencontrer !
+
+          </div>
+
+        </div>
+
+        <div class="col-md-9 bg-info alert mt-3 mt-md-0 order-1 order-md-2 mb-0 d-flex flex-column justify-content-between">
+          <div>
+
+            <p class="fs-3">Vous avez reçu ce faire-part de naissance.</p>
+            <p class="fs-4">Vous allez envoyer un courriel à vos amis pour les féliciter
+            de la naissance de leur premier enfant.</p> 
+          </div>
+
+
+          <p class="mt-5"> <i class="bi bi-info-square-fill me-2"></i>Merci d'utiliser un minimum de 60 mots</p>
+
+        </div>
+
+            
+        
+      
+
+      </div>
+
+      <!-- <div class="mb-4">
+        <p> <i class="bi bi-info-square-fill me-2"></i>Merci d'utiliser un minimum de 60 mots</p>
+      </div> -->
+
+
+
+      <!-- FORMULAIRE DE COURRIEL -->
+
+      <div class="card">
+
+        <div class="card-body">
+
+          <div *ngFor="let field of mailFields" class="mb-3">
+
+            <label [for]="field.name" class="form-label">
+              {{ field.label }}
+            </label>
+
+            <input *ngIf="field.type !== 'textarea'" [id]="field.name" [type]="field.type" class="form-control"
+              [formControlName]="field.name">
+
+            <textarea *ngIf="field.type === 'textarea'" [id]="field.name" class="form-control" rows="10"
+              [formControlName]="field.name">
+  </textarea>
+
+          </div>
+        </div>
+
+      </div>
+      <div *ngIf="countWords(formEx21.value.message) < 60 && !alreadySubmitted" class="text-danger">
+        Minimum 60 mots requis
+      </div>
 
       <button type="submit" class="btn btn-primary mt-4">
 
