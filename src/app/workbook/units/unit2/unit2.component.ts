@@ -1423,10 +1423,7 @@ export class Unit2Component {
     const message = values.message || '';
 
     // Le message doit contenir au minimum 60 mots.
-    // Si ce minimum n'est pas atteint, la soumission est bloquée.
-    const wordCount = this.countWords(message);
-
-    if (wordCount < 60) {
+    if (this.countWords(message) < 60) {
       return;
     }
 
@@ -1434,7 +1431,6 @@ export class Unit2Component {
 
     let score = 0;
 
-    // Vérification de la structure générale d'une adresse email.
     const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     // Email expéditeur : 1 point
@@ -1457,7 +1453,7 @@ export class Unit2Component {
       score++;
     }
 
-    // Mot-clé attendu dans l'objet : 1 point
+    // Mot-clé attendu : 1 point
     if (
       values.subject &&
       values.subject.toLowerCase().includes('naissance')
@@ -1478,7 +1474,17 @@ export class Unit2Component {
 
     this.aggregate(category, score);
 
-    this.next();
+    // Dernier exercice de l'unité :
+    // on enregistre les résultats finaux au lieu de passer à l'exercice suivant.
+    this.service.saveUnitResult(
+      this.uid,
+      "unit2",
+      this.aggregateState
+    ).then(() => {
+
+      this.showFinalMessage = true;
+
+    });
 
   }
 
@@ -1773,51 +1779,116 @@ export class Unit2Component {
 
     // ⚠️ IMPORTANT :
     // On accède aux données via des clés "flat"
-    // ex: 'units.unit1.ex1' → objet contenant { answers, score, ... }
+    // ex: 'units.unit2.ex1' → objet contenant { answers, score, ... }
 
     // EXERCICE 1
-    if (data['units.unit1.ex1']?.answers) {
-      this.formEx1.patchValue(data['units.unit1.ex1'].answers);
+    if (data['units.unit2.ex1']?.answers) {
+      this.formEx1.patchValue(data['units.unit2.ex1'].answers);
     }
 
     // EXERCICE 2
-    if (data['units.unit1.ex2']?.answers) {
-      this.formEx2.patchValue(data['units.unit1.ex2'].answers);
+    if (data['units.unit2.ex2']?.answers) {
+      this.formEx2.patchValue(data['units.unit2.ex2'].answers);
     }
 
     // EXERCICE 3
-    if (data['units.unit1.ex3']?.answers) {
-      this.formEx3.patchValue(data['units.unit1.ex3'].answers);
+    if (data['units.unit2.ex3']?.answers) {
+      this.formEx3.patchValue(data['units.unit2.ex3'].answers);
     }
 
     // EXERCICE 4
-    if (data['units.unit1.ex4']?.answers) {
-      this.formEx4.patchValue(data['units.unit1.ex4'].answers);
+    if (data['units.unit2.ex4']?.answers) {
+      this.formEx4.patchValue(data['units.unit2.ex4'].answers);
     }
 
     // EXERCICE 5
-    if (data['units.unit1.ex5']?.answers) {
-      this.formEx5.patchValue(data['units.unit1.ex5'].answers);
+    if (data['units.unit2.ex5']?.answers) {
+      this.formEx5.patchValue(data['units.unit2.ex5'].answers);
     }
 
     // EXERCICE 6
-    if (data['units.unit1.ex6']?.answers) {
-      this.formEx6.patchValue(data['units.unit1.ex6'].answers);
+    if (data['units.unit2.ex6']?.answers) {
+      this.formEx6.patchValue(data['units.unit2.ex6'].answers);
     }
 
     // EXERCICE 7
-    if (data['units.unit1.ex7']?.answers) {
-      this.formEx7.patchValue(data['units.unit1.ex7'].answers);
+    if (data['units.unit2.ex7']?.answers) {
+      this.formEx7.patchValue(data['units.unit2.ex7'].answers);
     }
 
     // EXERCICE 8
-    if (data['units.unit1.ex8']?.answers) {
-      this.formEx8.patchValue(data['units.unit1.ex8'].answers);
+    if (data['units.unit2.ex8']?.answers) {
+      this.formEx8.patchValue(data['units.unit2.ex8'].answers);
     }
 
     // EXERCICE 9
-    if (data['units.unit1.ex9']?.answers) {
-      this.formEx9.patchValue(data['units.unit1.ex9'].answers);
+    if (data['units.unit2.ex9']?.answers) {
+      this.formEx9.patchValue(data['units.unit2.ex9'].answers);
+    }
+
+    // EXERCICE 10
+    if (data['units.unit2.ex10']?.answers) {
+      this.formEx10.patchValue(data['units.unit2.ex10'].answers);
+    }
+
+    // EXERCICE 11
+    if (data['units.unit2.ex11']?.answers) {
+      this.formEx11.patchValue(data['units.unit2.ex11'].answers);
+    }
+
+    // EXERCICE 12
+    if (data['units.unit2.ex12']?.answers) {
+      this.formEx12.patchValue(data['units.unit2.ex12'].answers);
+    }
+
+    // EXERCICE 13
+    if (data['units.unit2.ex13']?.answers) {
+      this.formEx13.patchValue(data['units.unit2.ex13'].answers);
+    }
+
+    // EXERCICE 14
+    if (data['units.unit2.ex14']?.answers) {
+      this.formEx14.patchValue(data['units.unit2.ex14'].answers);
+    }
+
+    // EXERCICE 15
+    if (data['units.unit2.ex15']?.answers) {
+      this.formEx15.patchValue(data['units.unit2.ex15'].answers);
+    }
+
+    // EXERCICE 16
+    if (data['units.unit2.ex16']?.answers) {
+      this.formEx16.patchValue(data['units.unit2.ex16'].answers);
+    }
+
+    // EXERCICE 17
+    if (data['units.unit2.ex17']?.answers) {
+      this.formEx17.patchValue(data['units.unit2.ex17'].answers);
+    }
+
+    // EXERCICE 18
+    if (data['units.unit2.ex18']?.answers) {
+      this.formEx18.patchValue(data['units.unit2.ex18'].answers);
+    }
+
+    // EXERCICE 19
+    if (data['units.unit2.ex19']?.answers) {
+      this.formEx19.patchValue(data['units.unit2.ex19'].answers);
+    }
+
+    // EXERCICE 20
+    if (data['units.unit2.ex20']?.answers) {
+      this.formEx20.patchValue(data['units.unit2.ex20'].answers);
+    }
+
+    // EXERCICE 21
+    if (data['units.unit2.ex21']?.answers) {
+      this.formEx21.patchValue(data['units.unit2.ex21'].answers);
+    }
+
+    // EXERCICE 22
+    if (data['units.unit2.ex22']?.answers) {
+      this.formEx22.patchValue(data['units.unit2.ex22'].answers);
     }
 
     // 👇 ON COUPE LES ACCÈS ICI SI C'EST UN RÉFÉRENT
@@ -1831,17 +1902,30 @@ export class Unit2Component {
       this.formEx7.disable();
       this.formEx8.disable();
       this.formEx9.disable();
+      this.formEx10.disable();
+      this.formEx11.disable();
+      this.formEx12.disable();
+      this.formEx13.disable();
+      this.formEx14.disable();
+      this.formEx15.disable();
+      this.formEx16.disable();
+      this.formEx17.disable();
+      this.formEx18.disable();
+      this.formEx19.disable();
+      this.formEx20.disable();
+      this.formEx21.disable();
+      this.formEx22.disable();
     }
 
-    // On récupère ce que le candidat a enregistré en base à la fin de son EX9
-    this.aggregateState = this.unitData['units.unit1.result'] || {};
+    // On récupère ce que le candidat a enregistré en base à la fin de son EX22
+    this.aggregateState = this.unitData['units.unit2.result'] || {};
 
 
 
     // 💬 ZONE COMMENTAIRE RÉFÉRENT (Ajout ici)
     // On récupère le commentaire global de l'unité s'il existe déjà dans Firestore
-    if (data['units.unit1.commentReferent']) {
-      this.commentCtrl.setValue(data['units.unit1.commentReferent']);
+    if (data['units.unit2.commentReferent']) {
+      this.commentCtrl.setValue(data['units.unit2.commentReferent']);
     }
 
   }
