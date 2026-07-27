@@ -126,10 +126,12 @@ export class MarketAppComponent implements OnInit, AfterViewInit, OnDestroy {
       'featureList': [
         'Évaluation initiale et positionnement des candidats en amont de la formation',
         'Ingénierie de parcours personnalisés (optimisation des coûts et de la durée)',
+        'Instruction en ligne des dossiers de financement (collecte sécurisée des historiques et statuts candidats)',
         'Suivi des compétences professionnelles en présentiel',
         'Suivi et évaluation des acquis en tutorat d\'entreprise',
         'Accès back-office pour les prescripteurs, financeurs et réseaux de centres de formation',
-        'Mise à disposition des profils de compétences qualifiés pour les recruteurs'
+        'Mise à disposition des profils de compétences qualifiés pour les recruteurs',
+        'Déploiement multi-instances adaptable (configuration mono-centre ou gestion de réseaux multi-sites)'
       ],
 
       //  L'OFFRE GRATUITE EST PLACÉE ICI
