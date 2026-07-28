@@ -49,25 +49,24 @@ export class Unit2Component {
 
 
   steps: Step[] = [
-    { id: 'ex1', category: this.categories[0], duration: 195, maxScore: 10 },
-
-    { id: 'ex2', category: this.categories[0], duration: 50, maxScore: 1 },
+    { id: 'ex1', category: this.categories[0], duration: 200, maxScore: 10 },
+    { id: 'ex2', category: this.categories[0], duration: 90, maxScore: 1 }, // premier d'une série
     { id: 'ex3', category: this.categories[0], duration: 50, maxScore: 1 },
     { id: 'ex4', category: this.categories[0], duration: 50, maxScore: 1 },
     { id: 'ex5', category: this.categories[0], duration: 50, maxScore: 1 },
-    { id: 'ex6', category: this.categories[0], duration: 50, maxScore: 1 },
-    { id: 'ex7', category: this.categories[0], duration: 50, maxScore: 1 },
+    { id: 'ex6', category: this.categories[0], duration: 60, maxScore: 1 },
+    { id: 'ex7', category: this.categories[0], duration: 60, maxScore: 1 },
     { id: 'ex8', category: this.categories[0], duration: 50, maxScore: 1 },
-    { id: 'ex9', category: this.categories[0], duration: 50, maxScore: 1 },
+    { id: 'ex9', category: this.categories[0], duration: 90, maxScore: 1 }, // premier d'une série
     { id: 'ex10', category: this.categories[0], duration: 50, maxScore: 1 },
     { id: 'ex11', category: this.categories[0], duration: 50, maxScore: 1 },
-    { id: 'ex12', category: this.categories[0], duration: 50, maxScore: 1 },
+    { id: 'ex12', category: this.categories[0], duration: 90, maxScore: 1 }, // premier d'une série
     { id: 'ex13', category: this.categories[0], duration: 50, maxScore: 1 },
-    { id: 'ex14', category: this.categories[0], duration: 50, maxScore: 1 },
+    { id: 'ex14', category: this.categories[0], duration: 90, maxScore: 1 }, // premier d'une série
     { id: 'ex15', category: this.categories[0], duration: 50, maxScore: 1 },
-    { id: 'ex16', category: this.categories[0], duration: 50, maxScore: 1 },
+    { id: 'ex16', category: this.categories[0], duration: 90, maxScore: 1 }, // premier d'une série
     { id: 'ex17', category: this.categories[0], duration: 50, maxScore: 1 },
-    { id: 'ex18', category: this.categories[0], duration: 50, maxScore: 1 },
+    { id: 'ex18', category: this.categories[0], duration: 60, maxScore: 1 },
     { id: 'ex19', category: this.categories[0], duration: 50, maxScore: 1 },
     { id: 'ex20', category: this.categories[0], duration: 50, maxScore: 1 },
 
@@ -77,7 +76,7 @@ export class Unit2Component {
 
 
 
-  currentStep = 0;
+  currentStep = 5;
 
   //   const step = this.steps[this.currentStep];
   // const category = step.category;
@@ -769,7 +768,6 @@ export class Unit2Component {
   submitEx3() {
 
     // TODO : récupérer les valeurs du formulaire
-
     this.alreadySubmitted = true;
 
     let score = 0;
@@ -804,8 +802,7 @@ export class Unit2Component {
   // EX4
   submitEx4() {
 
-    // TODO : récupérer les valeurs du formulaire
-
+    // récupérer les valeurs du formulaire
     this.alreadySubmitted = true;
 
     let score = 0;
@@ -838,8 +835,7 @@ export class Unit2Component {
   // EX5
   submitEx5() {
 
-    // TODO : récupérer les valeurs du formulaire
-
+    // récupérer les valeurs du formulaire
     this.alreadySubmitted = true;
 
     let score = 0;
@@ -873,7 +869,6 @@ export class Unit2Component {
   submitEx6() {
 
     // TODO : récupérer les valeurs du formulaire
-
     this.alreadySubmitted = true;
 
     let score = 0;
@@ -906,21 +901,27 @@ export class Unit2Component {
   // EX7
   submitEx7() {
 
-    // TODO : récupérer les valeurs du formulaire
-
     this.alreadySubmitted = true;
 
     let score = 0;
 
-    // Logique de correction de l'exercice 8
-    const answer = this.formEx7.value.answer
+        console.log(this.formEx7.value);
+console.log(this.formEx7.get('answer')?.value);
+
+
+    const answer = this.formEx7.value.answer;
+
+
+
+    console.log('answer =', answer);
+    console.log('correctAnswerEx7 =', this.correctAnswerEx7);
+    console.log('égalité =', answer === this.correctAnswerEx7);
+
     if (answer === this.correctAnswerEx7) {
       score = 1;
     }
 
     const category = this.getCurrentCategory();
-
-    // TODO : sauvegarde spécifique si nécessaire
 
     this.service.saveUnitFlat(
       this.uid,
@@ -1564,6 +1565,42 @@ export class Unit2Component {
   //     this.submitCurrent(); // même logique que bouton ?????
   //   }, step.duration * 1000);
   // }
+  // startTimer() {
+  //   const step = this.steps[this.currentStep];
+
+  //   // 1. sécurité : pas de durée → aucun timer
+  //   if (!step?.duration) {
+  //     this.progress = 0;
+  //     this.clearTimers();
+  //     return;
+  //   }
+
+  //   this.clearTimers();
+
+  //   this.alreadySubmitted = false;
+  //   this.progress = 0;
+
+  //   const total = step.duration;
+  //   let elapsed = 0;
+
+  //   this.intervalId = setInterval(() => {
+  //     elapsed++;
+
+  //     this.progress = Math.min((elapsed / total) * 100, 100);
+
+  //     // stop propre de l'interval
+  //     if (elapsed >= total) {
+  //       clearInterval(this.intervalId);
+  //       this.intervalId = null;
+  //     }
+  //   }, 1000);
+
+  //   this.timerId = setTimeout(() => {
+  //     this.submitCurrent();
+  //     this.next();
+  //   }, total * 1000);
+  // }
+
   startTimer() {
     const step = this.steps[this.currentStep];
 
@@ -1587,7 +1624,6 @@ export class Unit2Component {
 
       this.progress = Math.min((elapsed / total) * 100, 100);
 
-      // stop propre de l'interval
       if (elapsed >= total) {
         clearInterval(this.intervalId);
         this.intervalId = null;
@@ -1596,7 +1632,6 @@ export class Unit2Component {
 
     this.timerId = setTimeout(() => {
       this.submitCurrent();
-      this.next();
     }, total * 1000);
   }
 

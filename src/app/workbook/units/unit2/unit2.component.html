@@ -23,6 +23,8 @@
 
   <div>
 
+    <!-- EXERCICE 1 -->
+
     <form *ngIf="isReferentView || currentStep === 0" [formGroup]="formEx1" (ngSubmit)="submitEx1()">
 
       <!-- HEADER -->
@@ -121,6 +123,17 @@
 
       </div>
 
+      <!-- TIMELINE -->
+      <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+        Temps donné : {{ steps[currentStep].duration }} secondes
+      </div>
+      <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4" role="progressbar"
+        aria-label="'Progression de l\'exercice ' + (currentStep + 1)" [attr.aria-valuenow]="progress" aria-valuemin="0"
+        aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
+
+      <!-- SOUMISSION -->
       <button type="submit" class="btn btn-primary mt-4">
 
         Suivant
@@ -194,7 +207,18 @@
 
       </div>
 
-      <button type="button" class="btn btn-primary mt-4">
+      <!-- TIMELINE -->
+      <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+        Temps donné : {{ steps[currentStep].duration }} secondes
+      </div>
+      <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4" role="progressbar"
+        aria-label="Progression de l\'exercice ' + (currentStep + 1)" [attr.aria-valuenow]="progress" aria-valuemin="0"
+        aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
+
+      <!-- SOUMISSION -->
+      <button type="submit" class="btn btn-primary mt-4">
         Suivant
       </button>
 
@@ -255,7 +279,18 @@
 
       </div>
 
-      <button type="button" class="btn btn-primary mt-4">
+      <!-- TIMELINE -->
+      <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+        Temps donné : {{ steps[currentStep].duration }} secondes
+      </div>
+      <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4" role="progressbar"
+        aria-label="Progression de l\'exercice ' + (currentStep + 1)" [attr.aria-valuenow]="progress" aria-valuemin="0"
+        aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
+
+      <!-- SOUMISSION -->
+      <button type="submit" class="btn btn-primary mt-4">
         Suivant
       </button>
 
@@ -316,7 +351,17 @@
 
       </div>
 
-      <button type="button" class="btn btn-primary mt-4">
+      <!-- TIMELINE -->
+      <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+        Temps donné : {{ steps[currentStep].duration }} secondes
+      </div>
+      <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4" role="progressbar"
+        aria-label="Progression de l\'exercice ' + (currentStep + 1)" [attr.aria-valuenow]="progress" aria-valuemin="0"
+        aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
+
+      <button type="submit" class="btn btn-primary mt-4">
         Suivant
       </button>
 
@@ -377,7 +422,18 @@
 
       </div>
 
-      <button type="button" class="btn btn-primary mt-4">
+      <!-- TIMELINE -->
+      <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+        Temps donné : {{ steps[currentStep].duration }} secondes
+      </div>
+      <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4" role="progressbar"
+        aria-label="Progression de l\'exercice ' + (currentStep + 1)" [attr.aria-valuenow]="progress" aria-valuemin="0"
+        aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
+
+      <!-- SOUMISSION -->
+      <button type="submit" class="btn btn-primary mt-4">
         Suivant
       </button>
 
@@ -422,7 +478,18 @@
 
       <input type="date" class="form-control" formControlName="answer">
 
-      <button type="button" class="btn btn-primary mt-4">
+      <!-- TIMELINE -->
+      <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+        Temps donné : {{ steps[currentStep].duration }} secondes
+      </div>
+      <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4" role="progressbar"
+        aria-label="Progression de l\'exercice ' + (currentStep + 1)" [attr.aria-valuenow]="progress" aria-valuemin="0"
+        aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
+
+      <!-- SOUMISSION -->
+      <button type="submit" class="btn btn-primary mt-4">
         Suivant
       </button>
 
@@ -432,7 +499,7 @@
     <!-- EXERCICE 2 - QUESTION 6 = EXERCICE 7 -->
     <!-- ===================================================== -->
 
-    <form *ngIf="isReferentView || currentStep === 6" [formGroup]="formEx6" (ngSubmit)="submitEx7()">
+    <form *ngIf="isReferentView || currentStep === 6" [formGroup]="formEx7" (ngSubmit)="submitEx7()">
 
       <!-- HEADER -->
       <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
@@ -467,7 +534,18 @@
 
       <input type="time" class="form-control" formControlName="answer">
 
-      <button type="button" class="btn btn-primary mt-4">
+      <!-- TIMELINE -->
+      <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+        Temps donné : {{ steps[currentStep].duration }} secondes
+      </div>
+      <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4" role="progressbar"
+        aria-label="Progression de l\'exercice ' + (currentStep + 1)" [attr.aria-valuenow]="progress" aria-valuemin="0"
+        aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
+
+      <!-- SOUMISSION -->
+      <button type="submit" class="btn btn-primary mt-4">
         Suivant
       </button>
 
@@ -581,7 +659,18 @@
 
       </div>
 
-      <button class="btn btn-primary mt-4">
+      <!-- TIMELINE -->
+      <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+        Temps donné : {{ steps[currentStep].duration }} secondes
+      </div>
+      <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4" role="progressbar"
+        aria-label="Progression de l\'exercice ' + (currentStep + 1)" [attr.aria-valuenow]="progress" aria-valuemin="0"
+        aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
+
+      <!-- SOUMISSION -->
+      <button type="submit" class="btn btn-primary mt-4">
 
         Suivant
 
@@ -679,10 +768,19 @@
 
       </div>
 
-      <button class="btn btn-primary mt-4">
+      <!-- TIMELINE -->
+      <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+        Temps donné : {{ steps[currentStep].duration }} secondes
+      </div>
+      <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4" role="progressbar"
+        aria-label="Progression de l\'exercice ' + (currentStep + 1)" [attr.aria-valuenow]="progress" aria-valuemin="0"
+        aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
 
+      <!-- SOUMISSION -->
+      <button type="submit" class="btn btn-primary mt-4">
         Suivant
-
       </button>
 
     </form>
@@ -777,10 +875,19 @@
 
       </div>
 
-      <button class="btn btn-primary mt-4">
+      <!-- TIMELINE -->
+      <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+        Temps donné : {{ steps[currentStep].duration }} secondes
+      </div>
+      <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4" role="progressbar"
+        aria-label="Progression de l\'exercice ' + (currentStep + 1)" [attr.aria-valuenow]="progress" aria-valuemin="0"
+        aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
 
+      <!-- SOUMISSION -->
+      <button type="submit" class="btn btn-primary mt-4">
         Suivant
-
       </button>
 
     </form>
@@ -875,10 +982,19 @@
 
       </div>
 
-      <button class="btn btn-primary mt-4">
+      <!-- TIMELINE -->
+      <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+        Temps donné : {{ steps[currentStep].duration }} secondes
+      </div>
+      <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4" role="progressbar"
+        aria-label="Progression de l\'exercice ' + (currentStep + 1)" [attr.aria-valuenow]="progress" aria-valuemin="0"
+        aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
 
+      <!-- SOUMISSION -->
+      <button type="submit" class="btn btn-primary mt-4">
         Suivant
-
       </button>
 
     </form>
@@ -959,7 +1075,18 @@
 
       </div>
 
-      <button class="btn btn-primary mt-4">
+      <!-- TIMELINE -->
+      <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+        Temps donné : {{ steps[currentStep].duration }} secondes
+      </div>
+      <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4" role="progressbar"
+        aria-label="Progression de l\'exercice ' + (currentStep + 1)" [attr.aria-valuenow]="progress" aria-valuemin="0"
+        aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
+
+      <!-- SOUMISSION -->
+      <button type="submit" class="btn btn-primary mt-4">
 
         Suivant
 
@@ -1053,7 +1180,18 @@
 
       </div>
 
-      <button class="btn btn-primary mt-4">
+      <!-- TIMELINE -->
+      <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+        Temps donné : {{ steps[currentStep].duration }} secondes
+      </div>
+      <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4" role="progressbar"
+        aria-label="Progression de l\'exercice ' + (currentStep + 1)" [attr.aria-valuenow]="progress" aria-valuemin="0"
+        aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
+
+      <!-- SOUMISSION -->
+      <button type="submit" class="btn btn-primary mt-4">
 
         Suivant
 
@@ -1142,10 +1280,19 @@
 
       </div>
 
-      <button class="btn btn-primary mt-4">
+      <!-- TIMELINE -->
+      <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+        Temps donné : {{ steps[currentStep].duration }} secondes
+      </div>
+      <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4" role="progressbar"
+        aria-label="Progression de l\'exercice ' + (currentStep + 1)" [attr.aria-valuenow]="progress" aria-valuemin="0"
+        aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
 
+      <!-- SOUMISSION -->
+      <button type="submit" class="btn btn-primary mt-4">
         Suivant
-
       </button>
 
     </form>
@@ -1230,10 +1377,19 @@
 
       </div>
 
-      <button class="btn btn-primary mt-4">
+      <!-- TIMELINE -->
+      <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+        Temps donné : {{ steps[currentStep].duration }} secondes
+      </div>
+      <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4" role="progressbar"
+        aria-label="Progression de l\'exercice ' + (currentStep + 1)" [attr.aria-valuenow]="progress" aria-valuemin="0"
+        aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
 
+      <!-- SOUMISSION -->
+      <button type="submit" class="btn btn-primary mt-4">
         Suivant
-
       </button>
 
     </form>
@@ -1328,11 +1484,19 @@
       <input type="text" class="form-control" formControlName="title">
 
       <div class="mt-4">
+        <!-- TIMELINE -->
+        <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+          Temps donné : {{ steps[currentStep].duration }} secondes
+        </div>
+        <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4" role="progressbar"
+          aria-label="Progression de l\'exercice ' + (currentStep + 1)" [attr.aria-valuenow]="progress"
+          aria-valuemin="0" aria-valuemax="100">
+          <div class="progress-bar" [style.width.%]="progress"></div>
+        </div>
 
+        <!-- SOUMISSION -->
         <button class="btn btn-primary" type="submit">
-
           Suivant
-
         </button>
 
       </div>
@@ -1420,7 +1584,6 @@
       <!-- DOCUMENT -->
 
 
-
       <div class="alert bg-info instructions">
 
         Cet article parle...
@@ -1439,10 +1602,19 @@
 
       </div>
 
-      <button class="btn btn-primary mt-4">
+      <!-- TIMELINE -->
+      <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+        Temps donné : {{ steps[currentStep].duration }} secondes
+      </div>
+      <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4" role="progressbar"
+        aria-label="Progression de l\'exercice ' + (currentStep + 1)" [attr.aria-valuenow]="progress" aria-valuemin="0"
+        aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
 
+      <!-- SOUMISSION -->
+      <button type="submit" class="btn btn-primary mt-4">
         Suivant
-
       </button>
 
     </form>
@@ -1545,10 +1717,20 @@
 
       </div>
 
-      <button class="btn btn-primary mt-4">
+      <!-- TIMELINE -->
+      <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+        Temps donné : {{ steps[currentStep].duration }} secondes
+      </div>
+      <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4" role="progressbar"
+        aria-label="Progression de l\'exercice ' + (currentStep + 1)" [attr.aria-valuenow]="progress" aria-valuemin="0"
+        aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
 
+      <!-- SOUMISSION -->
+
+      <button type="submit" class="btn btn-primary mt-4">
         Suivant
-
       </button>
 
     </form>
@@ -1648,10 +1830,19 @@
 
       </div>
 
-      <button class="btn btn-primary mt-4">
+      <!-- TIMELINE -->
+      <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+        Temps donné : {{ steps[currentStep].duration }} secondes
+      </div>
+      <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4" role="progressbar"
+        aria-label="Progression de l\'exercice ' + (currentStep + 1)" [attr.aria-valuenow]="progress" aria-valuemin="0"
+        aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
 
+      <!-- SOUMISSION -->
+      <button type="submit" class="btn btn-primary mt-4">
         Suivant
-
       </button>
 
     </form>
@@ -1754,10 +1945,19 @@
 
       </div>
 
-      <button class="btn btn-primary mt-4">
+      <!-- TIMELINE -->
+      <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+        Temps donné : {{ steps[currentStep].duration }} secondes
+      </div>
+      <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4" role="progressbar"
+        aria-label="Progression de l\'exercice ' + (currentStep + 1)" [attr.aria-valuenow]="progress" aria-valuemin="0"
+        aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
 
+      <!-- SOUMISSION -->
+      <button type="submit" class="btn btn-primary mt-4">
         Suivant
-
       </button>
 
     </form>
@@ -1914,12 +2114,13 @@
 
         </div>
 
-        <div class="col-md-9 bg-info alert mt-3 mt-md-0 order-1 order-md-2 mb-0 d-flex flex-column justify-content-between">
+        <div
+          class="col-md-9 bg-info alert mt-3 mt-md-0 order-1 order-md-2 mb-0 d-flex flex-column justify-content-between">
           <div>
 
             <p class="fs-3">Vous avez reçu ce faire-part de naissance.</p>
             <p class="fs-4">Vous allez envoyer un courriel à vos amis pour les féliciter
-            de la naissance de leur premier enfant.</p> 
+              de la naissance de leur premier enfant.</p>
           </div>
 
 
@@ -1927,9 +2128,9 @@
 
         </div>
 
-            
-        
-      
+
+
+
 
       </div>
 
