@@ -76,9 +76,9 @@ export class Unit2Component {
 
 
 
-  currentStep = 5;
+  currentStep = 0;
 
-  //   const step = this.steps[this.currentStep];
+  // const step = this.steps[this.currentStep];
   // const category = step.category;
 
   formEx1!: FormGroup;
@@ -672,6 +672,17 @@ export class Unit2Component {
       message: ['']
     });
 
+    // EXERCICE 22
+
+    this.formEx22 = this.fb.group({
+      from: [''],
+      to: [''],
+      cc: [''],
+      subject: [''],
+      message: ['']
+    });
+
+  
   }
 
   // next() {
@@ -1474,9 +1485,16 @@ console.log(this.formEx7.get('answer')?.value);
     );
 
     this.aggregate(category, score);
+    
 
     // Dernier exercice de l'unité :
     // on enregistre les résultats finaux au lieu de passer à l'exercice suivant.
+
+    // S'assure que la catégorie existe dans l'agrégation,
+// même si aucun point n'a été obtenu.
+if (!this.aggregateState[category]) {
+  this.aggregateState[category] = null as any;
+}
     this.service.saveUnitResult(
       this.uid,
       "unit2",
@@ -1524,7 +1542,7 @@ console.log(this.formEx7.get('answer')?.value);
     // 3️⃣ On sauvegarde l'état global dans le localStorage
     // → permet de conserver les scores même après refresh
     localStorage.setItem(
-      'unit1_aggregation',
+      'unit2_aggregation',
       JSON.stringify(this.aggregateState)
     );
 
@@ -2047,7 +2065,7 @@ console.log(this.formEx7.get('answer')?.value);
     this.aggregateState[categoryName] = parsedScore;
 
     // 6️⃣ Sauvegarde exclusive dans le Workbook via la méthode dédiée
-    this.service.saveUnitResultUpdate(this.uid, "unit1", this.aggregateState)
+    this.service.saveUnitResultUpdate(this.uid, "unit2", this.aggregateState)
       .then(() => {
         console.log(`✅ Score mis à jour avec succès pour : ${categoryName}`);
       })
@@ -2069,7 +2087,7 @@ console.log(this.formEx7.get('answer')?.value);
     // 2️⃣ On passe 'texteFinal' comme 6ème argument à ton service
     await this.service.finalizeUnit(
       this.uid,
-      'unit1',
+      'unit2',
       this.aggregateState,
       noteFinale,
       this.label,
@@ -2097,7 +2115,7 @@ console.log(this.formEx7.get('answer')?.value);
 
     // On met à jour directement le document dans Firestore
     // Via une méthode de service qui fait un .update() ou .set(..., {merge: true})
-    this.service.updateUnitComment(this.uid, "unit1", texte);
+    this.service.updateUnitComment(this.uid, "unit2", texte);
   }
 
   /**
