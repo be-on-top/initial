@@ -1507,7 +1507,7 @@ if (!this.aggregateState[category]) {
 
   }
 
-  // 1. Compter les mots (minimum 30)
+  // 1. Compter les mots (minimum 60)
   countWords(text: string): number {
     if (!text) return 0;
     return text.trim().split(/\s+/).length;

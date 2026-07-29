@@ -2043,14 +2043,25 @@
         </div>
 
       </div>
-      <div *ngIf="countWords(formEx21.value.message) < 60 && !alreadySubmitted" class="text-danger">
+      <!-- <div *ngIf="countWords(formEx21.value.message) < 60 && !alreadySubmitted" class="text-danger">
         Minimum 60 mots requis
       </div>
 
       <button type="submit" class="btn btn-primary mt-4">
-
         Suivant
+      </button> -->
 
+      <div class="text-muted mt-2">
+        {{ countWords(formEx21.value.message) }} / 60 mots
+      </div>
+
+      <div *ngIf="countWords(formEx21.value.message) < 60 && !alreadySubmitted" class="text-danger">
+        Minimum 60 mots requis
+      </div>
+
+      <button *ngIf="!isReferentView" class="btn btn-success mt-5" type="submit"
+        [disabled]="countWords(formEx21.value.message) < 60" [class.disabled]="countWords(formEx21.value.message) < 60">
+        Suivant
       </button>
 
     </form>
@@ -2153,14 +2164,17 @@
         </div>
 
       </div>
-      <div *ngIf="countWords(formEx22.value.message) < 60 && !alreadySubmitted" class="text-danger">
+      <div class="text-muted mt-2">
+        {{ countWords(formEx22.value.message) }} / 60 mots
+      </div>
+
+      <div *ngIf="countWords(formEx22.value.message) < 60 && alreadySubmitted" class="text-danger">
         Minimum 60 mots requis
       </div>
 
-      <button type="submit" class="btn btn-primary mt-4">
-
-        Suivant
-
+      <button *ngIf="!isReferentView" class="btn btn-success mt-5" type="submit"
+        [disabled]="countWords(formEx22.value.texte) < 60" [class.disabled]="countWords(formEx22.value.texte) < 60">
+        Valider et terminer
       </button>
 
     </form>
