@@ -225,7 +225,7 @@ export class Unit2Component {
     { value: 'rep4', label: "L'été" }
   ];
 
-  correctAnswerEx5 = 'rep2';
+  correctAnswerEx5 = 'rep3';
 
   // ------------------------------------------------------
   // Exercice 2 - Question 5 = EX6
