@@ -682,7 +682,7 @@ export class Unit2Component {
       message: ['']
     });
 
-  
+
   }
 
   // next() {
@@ -916,8 +916,8 @@ export class Unit2Component {
 
     let score = 0;
 
-        console.log(this.formEx7.value);
-console.log(this.formEx7.get('answer')?.value);
+    console.log(this.formEx7.value);
+    console.log(this.formEx7.get('answer')?.value);
 
 
     const answer = this.formEx7.value.answer;
@@ -928,7 +928,12 @@ console.log(this.formEx7.get('answer')?.value);
     console.log('correctAnswerEx7 =', this.correctAnswerEx7);
     console.log('égalité =', answer === this.correctAnswerEx7);
 
-    if (answer === this.correctAnswerEx7) {
+    // if (answer === this.correctAnswerEx7) {
+    //   score = 1;
+    // }
+
+    // Accepte toute heure comprise entre 19:00 et 19:59
+    if (answer?.startsWith('19:')) {
       score = 1;
     }
 
@@ -1485,16 +1490,16 @@ console.log(this.formEx7.get('answer')?.value);
     );
 
     this.aggregate(category, score);
-    
+
 
     // Dernier exercice de l'unité :
     // on enregistre les résultats finaux au lieu de passer à l'exercice suivant.
 
     // S'assure que la catégorie existe dans l'agrégation,
-// même si aucun point n'a été obtenu.
-if (!this.aggregateState[category]) {
-  this.aggregateState[category] = null as any;
-}
+    // même si aucun point n'a été obtenu.
+    if (!this.aggregateState[category]) {
+      this.aggregateState[category] = null as any;
+    }
     this.service.saveUnitResult(
       this.uid,
       "unit2",
