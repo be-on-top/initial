@@ -122,6 +122,12 @@ export class MarketAppComponent implements OnInit, AfterViewInit, OnDestroy {
       'applicationCategory': 'EducationalApplication', // Ou BusinessApplication selon votre cible
       'operatingSystem': 'All',
       'description': 'Application PWA d\'évaluation de compétences et de positionnement initial des candidats en amont de la formation professionnelle. Gère l\'individualisation des parcours, le suivi des compétences en présentiel, le tutorat en entreprise et le sourcing pour les recruteurs.',
+
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Entreprises, prescripteurs, financeurs, réseaux de centres de formation"
+      },
+
       // Ici, on s'efforce de verrouiller les fonctionnalités clés pour éviter les erreurs de la Communication
       'featureList': [
         'Évaluation initiale et positionnement des candidats en amont de la formation',
