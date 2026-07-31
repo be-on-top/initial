@@ -89,7 +89,9 @@ export class AddFollowUpComponent implements OnInit {
       console.log('tableau des inscriptions', this.receivedTrades);
       // this.receivedTrades = this.activatedRoute.snapshot.queryParams['trades'] ? this.activatedRoute.snapshot.queryParams['trades'].split(',') : [this.subscriptions];
       // on appelle la méthode qui va nous permettre de récupérer les compétences 
-
+      console.log('DATA STUDENT =', data);
+      console.log('DATA EVALUATIONS =', data.evaluations);
+      console.log('DATA TUTORIAL =', data.tutorials);
 
       // ⚡ Directement ici : si un seul métier, on pré-sélectionne
       if (this.receivedTrades.length === 1) {
@@ -99,18 +101,38 @@ export class AddFollowUpComponent implements OnInit {
         this.selectedSigle = this.receivedTrades[0];
       }
 
-      // 🧠 Parcours des évaluations existantes pour en extraire les compétences
-      if (data.evaluations) {
+      // 🧠 Les compétences déjà utilisées dépendent du type d'évaluation
+      if (this.userRouterLinks === 'trainer' && data.evaluations) {
+
         for (const evalKey in data.evaluations) {
           const evaluation = data.evaluations[evalKey];
 
-          // Vérifie que la propriété est bien présente et de type string
           if (typeof evaluation.competence === 'string') {
             this.alreadyUsedCompetences.push(evaluation.competence);
-            console.log('this.alreadyUsedCompetences', this.alreadyUsedCompetences);
-
           }
         }
+
+        console.log(
+          'Compétences déjà évaluées par le trainer :',
+          this.alreadyUsedCompetences
+        );
+      }
+
+      // 🧠 Cas du tuteur en entreprise
+      if (this.userRouterLinks === 'tutor' && data.tutorials) {
+
+        for (const tutorialKey in data.tutorials) {
+          const tutorial = data.tutorials[tutorialKey];
+
+          if (typeof tutorial.competence === 'string') {
+            this.alreadyUsedCompetences.push(tutorial.competence);
+          }
+        }
+
+        console.log(
+          'Compétences déjà évaluées par le tutor :',
+          this.alreadyUsedCompetences
+        );
       }
 
       this.getRelatedCompetences()
@@ -209,28 +231,54 @@ export class AddFollowUpComponent implements OnInit {
   }
 
 
-  addTutorial(studentId: string, tutorial: NgForm) {
-    console.log(tutorial.value.date)
-    // let evaluations:any={}
-    let evalKey: string = 'tutorial-' + tutorial.value.date + Math.floor(Math.random() * 2)
-    const tutorials = { [evalKey]: tutorial.value }
-    // this.service.addFollowUpTutorial(studentId, { tutorials })
-    //   .then(() => {
+  // addTutorial(studentId: string, tutorial: NgForm) {
+  //   console.log(tutorial.value.date)
+  //   // let evaluations:any={}
+  //   let evalKey: string = 'tutorial-' + tutorial.value.date + Math.floor(Math.random() * 2)
+  //   const tutorials = { [evalKey]: tutorial.value }
+  //   this.service.addFollowUpTutorial(studentId, { tutorials })
+  //     .then(() => {
 
-    //     this.feedbackMessages = `Enregistrement OK`;
-    //     setTimeout(() => {
-    //       this.router.navigate(['/admin/tutor/myStudentDetails', studentId])
-    //     }, 2000)
-    //     // this.router.navigate(['/admin/trainers']);
-    //     // ...
-    //   })
-    //   .catch((error) => {
-    //     this.feedbackMessages = error.message;
-    //     // this.feedbackMessages = this.firebaseErrors[error.code];
-    //     this.isSuccessMessage = false;
-    //     console.log(this.feedbackMessages)
-    //   })
-  }
+  //       this.feedbackMessages = `Enregistrement OK`;
+  //       setTimeout(() => {
+  //         this.router.navigate(['/admin/tutor/myStudentDetails', studentId])
+  //       }, 2000)
+  //       // this.router.navigate(['/admin/trainers']);
+  //       // ...
+  //     })
+  //     .catch((error) => {
+  //       this.feedbackMessages = error.message;
+  //       // this.feedbackMessages = this.firebaseErrors[error.code];
+  //       this.isSuccessMessage = false;
+  //       console.log(this.feedbackMessages)
+  //     })
+  // }
+
+  addTutorial(studentId: string, tutorial: NgForm) {
+  console.log(tutorial.value.date);
+
+  const tutorialKey = `tutorial-${tutorial.value.date}-${Date.now()}`;
+
+  const tutorials = {
+    [tutorialKey]: tutorial.value
+  };
+
+  this.service.addFollowUpTutorial(studentId, { tutorials })
+    .then(() => {
+      this.feedbackMessages = `Enregistrement OK`;
+
+      setTimeout(() => {
+        this.router.navigate(['/admin/tutor/myStudentDetails', studentId]);
+      }, 2000);
+    })
+    .catch((error) => {
+      this.feedbackMessages = error.message;
+      this.isSuccessMessage = false;
+      console.log(this.feedbackMessages);
+    });
+}
+
+
 
   // ngAfterViewInit() {
 
@@ -268,7 +316,6 @@ export class AddFollowUpComponent implements OnInit {
           console.log('relatedCompetences renvoyées par le service setting !!!!!!', this.relatedCompetences)
         }
       })
-
     }
     console.log('relatedCompetences en dehors de la boucle', this.relatedCompetences)
     // return this.relatedCompetences
