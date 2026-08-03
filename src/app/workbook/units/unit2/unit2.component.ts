@@ -37,6 +37,8 @@ export class Unit2Component {
   isReferentView: boolean = false;
 
   categories: string[] = ["Compréhension écrite", "Production écrite"]
+  // Catégorie entièrement calculée automatiquement
+  readonly autoCategory: string = this.categories[0]; // "Compréhension écrite"
 
   // préconisé si on fait une timeline
   alreadySubmitted = false;
@@ -56,8 +58,8 @@ export class Unit2Component {
     { id: 'ex5', category: this.categories[0], duration: 50, maxScore: 1 },
     { id: 'ex6', category: this.categories[0], duration: 60, maxScore: 1 },
     { id: 'ex7', category: this.categories[0], duration: 60, maxScore: 1 },
-    { id: 'ex8', category: this.categories[0], duration: 50, maxScore: 1 },
-    { id: 'ex9', category: this.categories[0], duration: 90, maxScore: 1 }, // premier d'une série
+    { id: 'ex8', category: this.categories[0], duration: 90, maxScore: 1 }, // premier d'une série
+    { id: 'ex9', category: this.categories[0], duration: 50, maxScore: 1 },
     { id: 'ex10', category: this.categories[0], duration: 50, maxScore: 1 },
     { id: 'ex11', category: this.categories[0], duration: 50, maxScore: 1 },
     { id: 'ex12', category: this.categories[0], duration: 90, maxScore: 1 }, // premier d'une série
@@ -75,8 +77,7 @@ export class Unit2Component {
   ];
 
 
-
-  currentStep = 0;
+  currentStep = 16;
 
   // const step = this.steps[this.currentStep];
   // const category = step.category;
@@ -233,7 +234,6 @@ export class Unit2Component {
 
   // correctAnswerEx6 = '2026-06-21';
   correctAnswerEx6 = `${new Date().getFullYear()}-06-21`;
-
 
   // ------------------------------------------------------
   // Exercice 2 - Question 6 = EX7
@@ -773,8 +773,6 @@ export class Unit2Component {
 
   }
 
-
-
   // EX3
   submitEx3() {
 
@@ -911,31 +909,19 @@ export class Unit2Component {
 
   // EX7
   submitEx7() {
-
     this.alreadySubmitted = true;
-
     let score = 0;
 
-    console.log(this.formEx7.value);
-    console.log(this.formEx7.get('answer')?.value);
+    const answer = this.formEx7.value.answer?.toString().trim();
 
+    // Accepte "19", "19:", "19:0", "19:00", "19:59", etc.
+    const isCorrect = /^19(:[0-5]?[0-9]?)?$/.test(answer ?? '');
 
-    const answer = this.formEx7.value.answer;
-
-
-
-    console.log('answer =', answer);
-    console.log('correctAnswerEx7 =', this.correctAnswerEx7);
-    console.log('égalité =', answer === this.correctAnswerEx7);
-
-    // if (answer === this.correctAnswerEx7) {
-    //   score = 1;
-    // }
-
-    // Accepte toute heure comprise entre 19:00 et 19:59
-    if (answer?.startsWith('19:')) {
+    if (isCorrect) {
       score = 1;
     }
+
+    console.log('Réponse saisie :', answer, '-> Score attribué :', score);
 
     const category = this.getCurrentCategory();
 
@@ -949,16 +935,13 @@ export class Unit2Component {
     );
 
     this.aggregate(category, score);
-
     this.next();
-
   }
 
   // EX8
   submitEx8() {
 
     this.alreadySubmitted = true;
-
     let score = 0;
 
     // Logique de correction de l'exercice 8
@@ -979,7 +962,6 @@ export class Unit2Component {
     );
 
     this.aggregate(category, score);
-
     this.next();
 
   }
@@ -1196,32 +1178,59 @@ export class Unit2Component {
   }
 
   // EX16
+  // submitEx16() {
+
+  //   this.alreadySubmitted = true;
+
+  //   let score = 0;
+
+  //   // Logique de correction de l'exercice 16
+  //   const title = (this.formEx16.value.title ?? '')
+  //     .trim()
+  //     .toLowerCase()
+  //     .normalize('NFD')
+  //     .replace(/[\u0300-\u036f]/g, '')
+  //     .replace(/&/g, 'et');
+
+  //   const expected = this.correctTitle
+  //     .trim()
+  //     .toLowerCase()
+  //     .normalize('NFD')
+  //     .replace(/[\u0300-\u036f]/g, '')
+  //     .replace(/&/g, 'et');
+
+  //   if (title === expected) {
+  //     score = 1;
+  //   }
+
+
+  //   const category = this.getCurrentCategory();
+
+  //   this.service.saveUnitFlat(
+  //     this.uid,
+  //     "unit2",
+  //     "ex16",
+  //     this.formEx16,
+  //     score,
+  //     category
+  //   );
+
+  //   this.aggregate(category, score);
+
+  //   this.next();
+
+  // }
+  // EX16
   submitEx16() {
-
     this.alreadySubmitted = true;
-
     let score = 0;
 
-    // Logique de correction de l'exercice 16
-    const title = (this.formEx16.value.title ?? '')
-      .trim()
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/&/g, 'et');
-
-    const expected = this.correctTitle
-      .trim()
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/&/g, 'et');
+    const title = this.clean(this.formEx16.value.title);
+    const expected = this.clean(this.correctTitle);
 
     if (title === expected) {
       score = 1;
     }
-
-
     const category = this.getCurrentCategory();
 
     this.service.saveUnitFlat(
@@ -1234,9 +1243,17 @@ export class Unit2Component {
     );
 
     this.aggregate(category, score);
-
     this.next();
-
+  }
+  private clean(text: string = ''): string {
+    return text
+      .toLowerCase()                           // Insensible à la casse (salon = Salon = SALON)
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')         // Supprime les accents
+      .replace(/&/g, 'et')                     // & devient et
+      .replace(/decoration/g, 'deco')          // decoration devient deco
+      .replace(/\s+/g, ' ')                    // Nettoie les espaces en trop
+      .trim();
   }
 
   // EX17
@@ -1491,7 +1508,6 @@ export class Unit2Component {
 
     this.aggregate(category, score);
 
-
     // Dernier exercice de l'unité :
     // on enregistre les résultats finaux au lieu de passer à l'exercice suivant.
 
@@ -1671,11 +1687,7 @@ export class Unit2Component {
   submitCurrent() {
     if (this.alreadySubmitted) return;
 
-
-
     switch (this.currentStep) {
-
-
 
       case 0: this.submitEx1(); break;
 
@@ -1720,8 +1732,6 @@ export class Unit2Component {
       case 20: this.submitEx21(); break;
 
       case 21: this.submitEx22(); break;
-
-
 
     }
 
@@ -2043,6 +2053,19 @@ export class Unit2Component {
   // ✍️ Permet au référent d'attribuer une note à une catégorie non scorée (ou de la modifier)
   editCategoryScore(categoryName: string) {
     if (!this.isReferentView) return;
+
+    // A - Interception pour la catégorie automatique
+    if (categoryName === this.autoCategory) {
+      alert(
+        `La catégorie "${categoryName}" est entièrement corrigée et calculée de manière automatique.\n\n` +
+        `Il n'est pas nécessaire d'ajuster ce score manuellement.`
+      );
+      return; // On stoppe l'action ici
+    }
+
+
+
+    // B - Logique d'édition habituelle pour les autres catégories (ex: "Production écrite")
 
     // 1️⃣ Le max score est calculé 100% AUTOMATIQUEMENT ici par ta méthode
     const maxPoints = this.getCategoryMaxScore(categoryName);

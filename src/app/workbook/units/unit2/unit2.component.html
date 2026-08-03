@@ -134,13 +134,14 @@
       </div>
 
       <!-- SOUMISSION -->
-      <button type="submit" class="btn btn-primary mt-4">
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
 
         Suivant
 
       </button>
 
     </form>
+    <hr *ngIf="isReferentView">
 
 
     <!-- ===================================================== -->
@@ -218,11 +219,12 @@
       </div>
 
       <!-- SOUMISSION -->
-      <button type="submit" class="btn btn-primary mt-4">
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
         Suivant
       </button>
 
     </form>
+    <hr *ngIf="isReferentView">
 
     <!-- ===================================================== -->
     <!-- EXERCICE 2 - QUESTION 2 = EXERCICE 3 -->
@@ -253,7 +255,7 @@
       <!-- FIN HEADER  -->
 
       <!-- DOCUMENT COMMUN ENFANT -->
-      <app-doc-voisins></app-doc-voisins>
+      <app-doc-voisins *ngIf="!isReferentView"></app-doc-voisins>
       <!-- FIN DOCUMENT  -->
 
       <!-- QUESTION -->
@@ -290,11 +292,12 @@
       </div>
 
       <!-- SOUMISSION -->
-      <button type="submit" class="btn btn-primary mt-4">
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
         Suivant
       </button>
 
     </form>
+    <hr *ngIf="isReferentView">
 
     <!-- ===================================================== -->
     <!-- EXERCICE 2 - QUESTION 3 = EXERCICE 4 -->
@@ -325,7 +328,7 @@
       <!-- FIN HEADER  -->
 
       <!-- DOCUMENT COMMUN ENFANT -->
-      <app-doc-voisins></app-doc-voisins>
+      <app-doc-voisins *ngIf="!isReferentView"></app-doc-voisins>
       <!-- FIN DOCUMENT  -->
 
       <!-- QUESTION -->
@@ -361,11 +364,13 @@
         <div class="progress-bar" [style.width.%]="progress"></div>
       </div>
 
-      <button type="submit" class="btn btn-primary mt-4">
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
         Suivant
       </button>
 
     </form>
+
+    <hr *ngIf="isReferentView">
 
     <!-- ===================================================== -->
     <!-- EXERCICE 2 - QUESTION 4 = EXERCICE 5 -->
@@ -396,7 +401,7 @@
       <!-- FIN HEADER  -->
 
       <!-- DOCUMENT COMMUN ENFANT -->
-      <app-doc-voisins></app-doc-voisins>
+      <app-doc-voisins *ngIf="!isReferentView"></app-doc-voisins>
       <!-- FIN DOCUMENT  -->
 
       <!-- QUESTION -->
@@ -433,11 +438,13 @@
       </div>
 
       <!-- SOUMISSION -->
-      <button type="submit" class="btn btn-primary mt-4">
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
         Suivant
       </button>
 
     </form>
+
+    <hr *ngIf="isReferentView">
 
     <!-- ===================================================== -->
     <!-- EXERCICE 2 - QUESTION 5 = EXERCICE 6 -->
@@ -468,7 +475,7 @@
       <!-- FIN HEADER  -->
 
       <!-- DOCUMENT COMMUN ENFANT -->
-      <app-doc-voisins></app-doc-voisins>
+      <app-doc-voisins *ngIf="!isReferentView"></app-doc-voisins>
       <!-- FIN DOCUMENT  -->
 
       <!-- QUESTION -->
@@ -489,11 +496,13 @@
       </div>
 
       <!-- SOUMISSION -->
-      <button type="submit" class="btn btn-primary mt-4">
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
         Suivant
       </button>
 
     </form>
+
+    <hr *ngIf="isReferentView">
 
     <!-- ===================================================== -->
     <!-- EXERCICE 2 - QUESTION 6 = EXERCICE 7 -->
@@ -524,7 +533,7 @@
       <!-- FIN HEADER  -->
 
       <!-- DOCUMENT COMMUN ENFANT -->
-      <app-doc-voisins></app-doc-voisins>
+      <app-doc-voisins *ngIf="!isReferentView"></app-doc-voisins>
       <!-- FIN DOCUMENT  -->
 
       <!-- QUESTION -->
@@ -545,11 +554,12 @@
       </div>
 
       <!-- SOUMISSION -->
-      <button type="submit" class="btn btn-primary mt-4">
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
         Suivant
       </button>
 
     </form>
+    <hr *ngIf="isReferentView">
 
 
     <!-- ===================================================== -->
@@ -670,13 +680,12 @@
       </div>
 
       <!-- SOUMISSION -->
-      <button type="submit" class="btn btn-primary mt-4">
-
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
         Suivant
-
       </button>
 
     </form>
+    <hr *ngIf="isReferentView">
 
     <!-- ===================================================== -->
     <!-- EXERCICE 3 - PARTIE 1 - QUESTION 2 = EXERCICE 9 -->
@@ -717,7 +726,7 @@
 
       <!-- DOCUMENT -->
 
-      <div class="alert bg-info">
+      <div class="alert bg-info" *ngIf="!isReferentView">
 
         <h5>Règles d'hygiène</h5>
 
@@ -779,11 +788,13 @@
       </div>
 
       <!-- SOUMISSION -->
-      <button type="submit" class="btn btn-primary mt-4">
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
         Suivant
       </button>
 
     </form>
+
+    <hr *ngIf="isReferentView">
 
     <!-- ===================================================== -->
     <!-- EXERCICE 3 - PARTIE 1 - QUESTION 3 = EXERCICE 10 -->
@@ -824,7 +835,7 @@
 
       <!-- DOCUMENT -->
 
-      <div class="alert bg-info">
+      <div class="alert bg-info" *ngIf="!isReferentView">
 
         <h5>Règles d'hygiène</h5>
 
@@ -886,11 +897,13 @@
       </div>
 
       <!-- SOUMISSION -->
-      <button type="submit" class="btn btn-primary mt-4">
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
         Suivant
       </button>
 
     </form>
+
+    <hr *ngIf="isReferentView">
 
     <!-- ===================================================== -->
     <!-- EXERCICE 3 - PARTIE 1 - QUESTION 4 = EXERCICE 11 -->
@@ -931,7 +944,7 @@
 
       <!-- DOCUMENT -->
 
-      <div class="alert bg-info">
+      <div class="alert bg-info" *ngIf="!isReferentView">
 
         <h5>Règles d'hygiène</h5>
 
@@ -993,12 +1006,13 @@
       </div>
 
       <!-- SOUMISSION -->
-      <button type="submit" class="btn btn-primary mt-4">
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
         Suivant
       </button>
 
     </form>
 
+    <hr *ngIf="isReferentView">
 
     <!-- ===================================================== -->
     <!-- EXERCICE 3 - PARTIE 2 - QUESTION 1 = EXERCICE 12 -->
@@ -1046,6 +1060,7 @@
 
         <p>Bénédicte est malade aujourd'hui. Merci de la remplacer et de faire particulièrement attention au dressage
           des tables.</p>
+
         <p>Nous avons plusieurs réservations en plus :</p>
         <ul>
           <li>1 table de 5 personnes</li>
@@ -1086,13 +1101,15 @@
       </div>
 
       <!-- SOUMISSION -->
-      <button type="submit" class="btn btn-primary mt-4">
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
 
         Suivant
 
       </button>
 
     </form>
+
+    <hr *ngIf="isReferentView">
 
     <!-- ===================================================== -->
     <!-- EXERCICE 3 - PARTIE 2 - QUESTION 2 = EXERCICE 13 -->
@@ -1133,7 +1150,7 @@
 
       <!-- DOCUMENT -->
 
-      <div class="alert bg-info">
+      <div class="alert bg-info" *ngIf="!isReferentView">
         <!-- Même document que l'exercice 12 -->
         <h5><i class="bi bi-stickies me-3"></i>Info équipe :</h5>
 
@@ -1191,7 +1208,7 @@
       </div>
 
       <!-- SOUMISSION -->
-      <button type="submit" class="btn btn-primary mt-4">
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
 
         Suivant
 
@@ -1199,7 +1216,7 @@
 
     </form>
 
-
+    <hr *ngIf="isReferentView">
 
     <!-- ===================================================== -->
     <!-- EXERCICE 3 - PARTIE 3 - QUESTION 1 = EXERCICE 14 -->
@@ -1291,11 +1308,13 @@
       </div>
 
       <!-- SOUMISSION -->
-      <button type="submit" class="btn btn-primary mt-4">
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
         Suivant
       </button>
 
     </form>
+
+    <hr *ngIf="isReferentView">
 
 
     <!-- ===================================================== -->
@@ -1337,7 +1356,7 @@
 
       <!-- DOCUMENT -->
 
-      <div class="alert bg-info">
+      <div class="alert bg-info" *ngIf="!isReferentView">
 
         <h5>Mode d'emploi : Machine à café</h5>
 
@@ -1388,11 +1407,12 @@
       </div>
 
       <!-- SOUMISSION -->
-      <button type="submit" class="btn btn-primary mt-4">
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
         Suivant
       </button>
 
     </form>
+    <hr *ngIf="isReferentView">
 
     <!-- ===================================================== -->
     <!-- EXERCICE 4 - QUESTION 1 = EXERCICE 16 -->
@@ -1495,13 +1515,15 @@
         </div>
 
         <!-- SOUMISSION -->
-        <button class="btn btn-primary" type="submit">
+        <button *ngIf="!isReferentView" class="btn btn-primary" type="submit">
           Suivant
         </button>
 
       </div>
 
     </form>
+
+    <hr *ngIf="isReferentView">
 
     <!-- ===================================================== -->
     <!-- EXERCICE 4 - QUESTION 2 + EXERCICE 17 -->
@@ -1539,7 +1561,7 @@
 
       <!-- DOCUMENT -->
 
-      <div class="row alert">
+      <div class="row alert" *ngIf="!isReferentView">
 
         <div class="col-md-4 order-2 order-md-1 mt-3 mt-md-0">
 
@@ -1581,13 +1603,14 @@
         </div>
 
       </div>
+
       <!-- DOCUMENT -->
-
-
       <div class="alert bg-info instructions">
+        Cet article parle de :
+      </div>
 
-        Cet article parle...
-
+      <div class="text-muted my-2">
+        Attention: Une seule bonne réponse !
       </div>
 
       <div class="form-check" *ngFor="let opt of ex17Options">
@@ -1606,6 +1629,7 @@
       <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
         Temps donné : {{ steps[currentStep].duration }} secondes
       </div>
+
       <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4" role="progressbar"
         aria-label="Progression de l\'exercice ' + (currentStep + 1)" [attr.aria-valuenow]="progress" aria-valuemin="0"
         aria-valuemax="100">
@@ -1613,14 +1637,16 @@
       </div>
 
       <!-- SOUMISSION -->
-      <button type="submit" class="btn btn-primary mt-4">
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
         Suivant
       </button>
 
     </form>
 
+    <hr *ngIf="isReferentView">
+
     <!-- ===================================================== -->
-    <!-- EXERCICE 4 - QUESTION 3 = EXERCICE 17 -->
+    <!-- EXERCICE 4 - QUESTION 3 = EXERCICE 18 -->
     <!-- ===================================================== -->
 
     <form *ngIf="isReferentView || currentStep === 17" [formGroup]="formEx18" (ngSubmit)="submitEx18()">
@@ -1655,7 +1681,7 @@
 
       <!-- DOCUMENT -->
 
-      <div class="row alert">
+      <div class="row alert" *ngIf="!isReferentView">
 
         <div class="col-md-4 order-2 order-md-1 mt-3 mt-md-0">
 
@@ -1729,11 +1755,13 @@
 
       <!-- SOUMISSION -->
 
-      <button type="submit" class="btn btn-primary mt-4">
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
         Suivant
       </button>
 
     </form>
+
+    <hr *ngIf="isReferentView">
 
     <!-- ===================================================== -->
     <!-- EXERCICE 4 - QUESTION 4 = EXERCICE 19 -->
@@ -1770,7 +1798,7 @@
 
       <!-- DOCUMENT -->
 
-      <div class="row alert">
+      <div class="row alert" *ngIf="!isReferentView">
 
         <div class="col-md-4 order-2 order-md-1 mt-3 mt-md-0">
 
@@ -1841,11 +1869,13 @@
       </div>
 
       <!-- SOUMISSION -->
-      <button type="submit" class="btn btn-primary mt-4">
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
         Suivant
       </button>
 
     </form>
+
+    <hr *ngIf="isReferentView">
 
     <!-- ===================================================== -->
     <!-- EXERCICE 4 - QUESTION 5 = EXERCICE20 -->
@@ -1859,7 +1889,7 @@
 
         <span class="badge text-bg-dark text-white">
           <i class="bi bi-tag-fill me-2"></i>
-          Catégorie : Compréhension des écrits
+          Catégorie : {{steps[19].category}}
         </span>
 
         <div class="d-flex gap-2 ms-md-auto">
@@ -1874,7 +1904,7 @@
           </span>
 
           <span class="badge text-bg-dark">
-            {{ getCurrentScore(15) }} PNTS
+            {{ getCurrentScore(19) }} PNTS
           </span>
 
         </div>
@@ -1883,7 +1913,7 @@
 
       <!-- DOCUMENT -->
 
-      <div class="row alert">
+      <div class="row alert" *!ngIf="isReferentView">
 
         <div class="col-md-4 order-2 order-md-1 mt-3 mt-md-0">
 
@@ -1928,9 +1958,7 @@
       <!-- DOCUMENT -->
 
       <div class="alert bg-info instructions">
-
         Qui peux-tu rencontrer lors de ce salon ?
-
       </div>
 
       <div class="form-check" *ngFor="let opt of ex20Options">
@@ -1956,11 +1984,13 @@
       </div>
 
       <!-- SOUMISSION -->
-      <button type="submit" class="btn btn-primary mt-4">
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
         Suivant
       </button>
 
     </form>
+
+    <hr *ngIf="isReferentView">
 
 
     <!-- ===================================================== -->
@@ -2047,7 +2077,7 @@
         Minimum 60 mots requis
       </div>
 
-      <button type="submit" class="btn btn-primary mt-4">
+      <button  *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
         Suivant
       </button> -->
 
@@ -2065,6 +2095,8 @@
       </button>
 
     </form>
+
+    <hr *ngIf="isReferentView">
 
     <!-- ===================================================== -->
     <!-- EXERCICE 22 -->
@@ -2123,21 +2155,16 @@
 
         <div
           class="col-md-9 bg-info alert mt-3 mt-md-0 order-1 order-md-2 mb-0 d-flex flex-column justify-content-between">
-          <div>
 
+          <div>
             <p class="fs-3">Vous avez reçu ce faire-part de naissance.</p>
             <p class="fs-4">Vous allez envoyer un courriel à vos amis pour les féliciter
               de la naissance de leur premier enfant.</p>
           </div>
 
-
           <p class="mt-5"> <i class="bi bi-info-square-fill me-2"></i>Merci d'utiliser un minimum de 60 mots</p>
 
         </div>
-
-
-
-
 
       </div>
 
@@ -2157,13 +2184,13 @@
               [formControlName]="field.name">
 
             <textarea *ngIf="field.type === 'textarea'" [id]="field.name" class="form-control" rows="10"
-              [formControlName]="field.name">
-  </textarea>
+              [formControlName]="field.name"></textarea>
 
           </div>
         </div>
 
       </div>
+
       <div class="text-muted mt-2">
         {{ countWords(formEx22.value.message) }} / 60 mots
       </div>
@@ -2173,11 +2200,13 @@
       </div>
 
       <button *ngIf="!isReferentView" class="btn btn-success mt-5" type="submit"
-        [disabled]="countWords(formEx22.value.texte) < 60" [class.disabled]="countWords(formEx22.value.texte) < 60">
+        [disabled]="countWords(formEx22.value.message) < 60" [class.disabled]="countWords(formEx22.value.message) < 60">
         Valider et terminer
       </button>
 
     </form>
+
+    <hr *ngIf="isReferentView">
 
   </div>
 
@@ -2191,31 +2220,6 @@
   <!-- 📊 SYNTHÈSE DES SCORES POUR LE RÉFÉRENT -->
   <div *ngIf="isReferentView && aggregateState" class="mt-4 p-3 bg-light border rounded-0">
     <h5 class="mb-3 text-primary">📊 Synthèse des compétences (Vue Référent)</h5>
-
-    <!-- <ul class="list-group list-group-flush">
-      <li *ngFor="let score of aggregateState | keyvalue"
-        class="list-group-item bg-transparent d-flex justify-content-between align-items-center ps-0 border-bottom py-3">
-
-        <div [class.bg-primary]="score.key==='isFinal'">
-          <h6 class="mb-0 fw-bold">{{ score.key }}</h6>
-
-          <small *ngIf="score.value !== null && getCategoryMaxScore(score.key) as maxScore" class="text-muted">
-            Note calculée : {{ ((score.value / maxScore) * 20) | number:'1.1-1' }} / 20
-          </small>
-        </div>
-
-        <button *ngIf="score.value !== null && getCategoryMaxScore(score.key) as maxScore"
-          (click)="editCategoryScore(score.key)" type="button" class="btn btn-primary btn-sm rounded-0 fs-6">
-          ⭐ {{ score.value }} / {{ maxScore }} pts
-        </button>
-
-        <button *ngIf="score.value === null" (click)="editCategoryScore(score.key)" type="button"
-          class="btn btn-secondary btn-sm rounded-0 fs-6 text-uppercase text-white">
-          ✍️ Non scoré / À évaluer
-        </button>
-
-      </li>
-    </ul> -->
 
     <ul class="list-group list-group-flush">
       <ng-container *ngFor="let score of aggregateState | keyvalue">
@@ -2263,9 +2267,7 @@
 
   </div>
 
-
-
-  <!-- ### Ce qui change visuellement :
+<!-- ### Ce qui change visuellement :
 1. Les exercices libres (`null`) affichent un bouton jaune/orange **"✍️ À ÉVALUER"** bien visible.
 2. Les catégories déjà calculées automatiquement s'affichent sous forme de bouton bleu standard.
 3. Dès que le référent clique sur l'un ou l'autre, la fonction se déclenche, le prompt s'ouvre, enregistre dans Firestore, et le calcul global en bas se met à jour immédiatement sur l'écran. -->
@@ -2282,8 +2284,6 @@
       [attr.disabled]="aggregateState['isFinal'] ? true : null" (blur)="saveCommentReferent()">
   </textarea>
   </div>
-
-
 
   <!-- pour afficher le bouton ou le badge de confirmation proprement selon l'état de la base : -->
   <button *ngIf="isReferentView && !aggregateState['isFinal']" type="button" class="btn btn-danger my-3"
@@ -2307,8 +2307,6 @@
       </p>
     </div>
   </ng-container>
-
-
 
 
 
