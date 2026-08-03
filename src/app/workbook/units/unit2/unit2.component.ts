@@ -2174,6 +2174,77 @@ export class Unit2Component {
   //   return options.every(o => o.label.length <= 12);
   // }
 
+editStepScore(stepIndex: number) {
+  if (!this.isReferentView || this.aggregateState?.['isFinal']) return;
+
+  const step = this.steps[stepIndex];
+  const exId = step.id;
+  const max = step.maxScore;
+  if (!max) return;
+
+  const currentScore = this.getCurrentScore(stepIndex);
+
+  // 1️⃣ Saisie de la note pour CET exercice
+  const response = prompt(`Note pour l'Exercice ${stepIndex + 1} (Max : ${max} pts) :`, currentScore.toString());
+  if (response === null || response.trim() === '') return;
+
+  const parsedScore = parseFloat(response);
+  if (isNaN(parsedScore) || parsedScore < 0 || parsedScore > max) {
+    alert(`Veuillez entrer une note valide entre 0 et ${max}.`);
+    return;
+  }
+
+  // 2️⃣ Mise à jour locale dans unitData
+  const key = `units.unit2.${exId}`;
+  if (!this.unitData[key]) {
+    this.unitData[key] = {};
+  }
+  this.unitData[key].score = parsedScore;
+
+  // 3️⃣ Recalcul direct de la catégorie basée sur unitData mis à jour
+  const categoryName = step.category;
+  
+  // Somme explicite des scores des exercices de cette catégorie
+  let categoryTotal = 0;
+  this.steps.forEach(s => {
+    if (s.category === categoryName) {
+      const exKey = `units.unit2.${s.id}`;
+      // On prend la nouvelle valeur pour cet exercice ou la valeur existante
+      const score = s.id === exId ? parsedScore : (this.unitData[exKey]?.score || 0);
+      categoryTotal += score;
+    }
+  });
+
+  // 4️⃣ EXACTEMENT la même affectation que dans editCategoryScore
+  this.aggregateState[categoryName] = categoryTotal;
+
+  // Rafraîchissement des références d'objets pour la détection de changement Angular
+  this.unitData = { ...this.unitData };
+  this.aggregateState = { ...this.aggregateState };
+
+  // 5️⃣ Sauvegarde de l'exercice (saveUnitFlat)
+  const formGroup = stepIndex === 20 ? this.formEx21 : this.formEx22;
+  this.service.saveUnitFlat(
+    this.uid,
+    "unit2",
+    exId,
+    formGroup,
+    parsedScore,
+    categoryName
+  );
+
+  // 6️⃣ EXACTEMENT le même appel Firestore que dans editCategoryScore
+  this.service.saveUnitResultUpdate(this.uid, "unit2", this.aggregateState)
+    .then(() => {
+      console.log(`✅ Score Ex ${stepIndex + 1} (${exId}) et catégorie "${categoryName}" mis à jour avec succès : ${categoryTotal} pts`);
+    })
+    .catch(err => {
+      console.error("Erreur Firestore :", err);
+      alert("Erreur lors de l'enregistrement.");
+    });
+}
+
+
 
 
 }

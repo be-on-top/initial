@@ -2021,11 +2021,19 @@
 
           </span>
 
-          <span class="badge text-bg-dark">
+          <!-- <span class="badge text-bg-dark">
 
             {{ getCurrentScore(20) }} PNTS
 
-          </span>
+          </span> -->
+          <span class="badge text-bg-dark" 
+      [class.pe-auto]="isReferentView"
+      [style.cursor]="isReferentView ? 'pointer' : 'default'"
+      (click)="editStepScore(20)">
+
+  {{ getCurrentScore(20) }} PNTS
+
+</span>
 
         </div>
 
