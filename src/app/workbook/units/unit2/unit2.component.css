@@ -110,7 +110,6 @@ div span {
   * {
     /* Propriété préfixée en premier */
     -webkit-print-color-adjust: exact !important;
-
     /* Propriété standard en dernier pour qu'elle prévale */
     print-color-adjust: exact !important;
   }
@@ -120,14 +119,24 @@ div span {
     break-inside: avoid;
   }
 
-  .nouvelle-page {
-    page-break-before: always;
-    /* Force un saut de page avant cet élément */
-  }
-
   /* Règle appliquée à l'impression */
   .badge.clickable-step-badge {
     border: none !important;
   }
-  
+
+  @media print and (orientation: portrait) {
+    .nouvelle-page {
+      page-break-before: always;
+      break-before: page;
+      margin-top: 20px;
+      /* Syntaxe CSS moderne pour la compatibilité */
+    }
+
+    .additional-margin {
+      display: block !important;
+      padding-top: 20px !important;
+      /* Le padding n'est jamais ignoré à l'impression */
+    }
+  }
+
 }
