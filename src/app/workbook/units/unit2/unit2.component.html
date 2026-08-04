@@ -2022,18 +2022,13 @@
           </span>
 
           <!-- <span class="badge text-bg-dark">
-
             {{ getCurrentScore(20) }} PNTS
-
           </span> -->
-          <span class="badge text-bg-dark" 
-      [class.pe-auto]="isReferentView"
-      [style.cursor]="isReferentView ? 'pointer' : 'default'"
-      (click)="editStepScore(20)">
-
-  {{ getCurrentScore(20) }} PNTS
-
-</span>
+            <!-- pour éditer le score à ce niveau de lecture -->
+          <span class="badge text-bg-dark" [class.clickable-step-badge]="!aggregateState['isFinal']"
+            (click)="!aggregateState['isFinal'] && editStepScore(20)">
+            {{ getCurrentScore(20) }} PNTS
+          </span>
 
         </div>
 
@@ -2134,10 +2129,13 @@
 
           </span>
 
-          <span class="badge text-bg-dark">
-
+          <!-- <span class="badge text-bg-dark">
+                        {{ getCurrentScore(21) }} PNTS
+                                  </span>-->
+          <!-- pour éditer le score à ce niveau de lecture -->
+          <span class="badge text-bg-dark" [class.clickable-step-badge]="!aggregateState['isFinal']"
+            (click)="!aggregateState['isFinal'] && editStepScore(21)">
             {{ getCurrentScore(21) }} PNTS
-
           </span>
 
         </div>
@@ -2275,7 +2273,7 @@
 
   </div>
 
-<!-- ### Ce qui change visuellement :
+  <!-- ### Ce qui change visuellement :
 1. Les exercices libres (`null`) affichent un bouton jaune/orange **"✍️ À ÉVALUER"** bien visible.
 2. Les catégories déjà calculées automatiquement s'affichent sous forme de bouton bleu standard.
 3. Dès que le référent clique sur l'un ou l'autre, la fonction se déclenche, le prompt s'ouvre, enregistre dans Firestore, et le calcul global en bas se met à jour immédiatement sur l'écran. -->
