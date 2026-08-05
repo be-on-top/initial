@@ -84,7 +84,8 @@ export class StudentDetailsComponent implements OnInit, AfterViewInit {
   centerPriorName?: string = ""
 
   hasCompletedUnit1 = false; // Flag simplifié pour unité 1 du workbook
-  
+  hasCompletedUnit2 = false; // Flag simplifié pour unité 2 du workbook
+
   private workbookSub!: Subscription;
 
 
@@ -129,11 +130,38 @@ export class StudentDetailsComponent implements OnInit, AfterViewInit {
     });
 
     // Pour accéder de manière autonome sans couplage avec le module workbook à l'état de workbook :
+    // this.workbookSub = this.service.checkUserUnit1Status(this.studentId)
+    //   .subscribe(exists => {
+    //     this.hasCompletedUnit1 = exists;
+    //     console.log('📊 État Workbook Unité 1 (via StudentsService) :', this.hasCompletedUnit1);
+    //   });
+
+    // Maintenant qu'on en a 2
+
+    // NE FONCTIONNE  PAS
+    // this.workbookSub = forkJoin({
+    //   unit1: this.service.checkUserUnit1Status(this.studentId),
+    //   unit2: this.service.checkUserUnit2Status(this.studentId) // si cette méthode existe dans StudentsService
+    // }).subscribe(({ unit1, unit2 }) => {
+    //   this.hasCompletedUnit1 = unit1;
+    //   this.hasCompletedUnit2 = unit2;
+    //   console.log('📊 États Workbooks :', { unit1, unit2 });
+    // });
+
+    // Unité 1 (votre code d'origine qui fonctionnait)
     this.workbookSub = this.service.checkUserUnit1Status(this.studentId)
       .subscribe(exists => {
         this.hasCompletedUnit1 = exists;
-        console.log('📊 État Workbook Unité 1 (via StudentsService) :', this.hasCompletedUnit1);
+        console.log('📊 Unité 1 :', this.hasCompletedUnit1);
       });
+
+    // Unité 2 (exactement le même pattern)
+    this.service.checkUserUnit2Status(this.studentId)
+      .subscribe(exists => {
+        this.hasCompletedUnit2 = exists;
+        console.log('📊 Unité 2 :', this.hasCompletedUnit2);
+      });
+
 
 
   }
