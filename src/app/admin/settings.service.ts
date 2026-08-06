@@ -301,6 +301,20 @@ export class SettingsService {
     );
   }
 
+  // À ajouter dans votre Service Firestore
+updatePartner(updatedPartner: any): Observable<void> {
+  return this.fetchPartners().pipe(
+    switchMap((partners: any[]) => {
+      // On remplace le partenaire correspondant dans le tableau
+      const newPartnersList = partners.map(p => 
+        (p.id === updatedPartner.id || p.id == updatedPartner.id) ? updatedPartner : p
+      );
+      // On sauvegarde la liste mise à jour dans Firestore
+      return this.addPartners(newPartnersList);
+    })
+  );
+}
+
 
   // getLevelsCursors() {
   //   const cursorsRef = collection(this.firestore, "cursors")

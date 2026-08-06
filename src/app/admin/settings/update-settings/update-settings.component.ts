@@ -52,7 +52,6 @@ export class UpdateSettingsComponent {
       console.log("data de getMaximums()", data)
       this.maximums = data
       console.log(this.maximums.maxIndexQuestion)
-
     })
 
   }

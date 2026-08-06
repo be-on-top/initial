@@ -76,6 +76,7 @@ import { MyCentersComponent } from './my-centers/my-centers.component';
 import { ExportStudentsComponent } from './export-students/export-students.component';
 import { MarketDocFormComponent } from './market_doc/market-doc-form/market-doc-form.component';
 import { MarketDocsListComponent } from './market_doc/market-docs-list/market-docs-list.component';
+import { UpdatePartnersComponent } from './settings/update-partners/update-partners.component';
 // import { AdminNewsListComponent } from '../news/admin-news-list/admin-news-list.component';
 // import { AdminNewsEditComponent } from '../news/admin-news-edit/admin-news-edit.component';
 
@@ -153,6 +154,7 @@ const routesAdmin: Routes = [
       { path: 'addSettings', component: SettingsComponent },
       { path: 'settings', component: SettingsListComponent },
       { path: 'updateTrades/:id', component: UpdateTradesComponent, data: { user: 'admin' } },
+      { path: 'updatePartners/:id', component: UpdatePartnersComponent, data: { user: 'admin' } }, /** omis à la création */
       { path: 'updateSettings', component: UpdateSettingsComponent },
       { path: 'myStudents', component: MyStudentsComponent, data: { user: 'trainer' } },
       // { path: 'trainer/myStudents', component: MyStudentsComponent, data: { user: 'trainer' } },
@@ -291,6 +293,7 @@ const routesAdmin: Routes = [
     ExportStudentsComponent,
     MarketDocFormComponent,
     MarketDocsListComponent,
+    UpdatePartnersComponent,
     // AdminNewsListComponent,
     // AdminNewsEditComponent
   ],

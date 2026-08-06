@@ -232,18 +232,28 @@ export class SettingsComponent implements OnInit {
   //   }
   // }
 
-  // pour ajouter le traitement de l'image
+  // pour ajouter le traitement de l'image et injecter un id dans chaque objet du tableau
+
   addPartners(partnersForm: NgForm) {
     if (partnersForm.valid) {
+      // Calcule le prochain ID numérique (0 si premier, sinon 1, 2, 3...)
+      const nextId = (this.partners ? this.partners.length : 0).toString();
+
       const partnerData = {
+        id: nextId, // <-- ID numérique aligné sur l'index Firestore
         name: partnersForm.value.name,
         description: partnersForm.value.description,
         url: partnersForm.value.url
       };
 
       const submitPartner = (finalPartner: any) => {
-        this.partners = [finalPartner, ...this.partners];
-        this.service.addPartners(this.partners).subscribe(() => {
+        // Attention : si vous faites un unshift ([finalPartner, ...this.partners]),
+        // l'ordre des index va s'inverser par rapport à l'ID.
+        // Pour garder la cohérence index <-> ID dans le tableau Firestore :
+        const updatedPartners = [...this.partners, finalPartner];
+
+        this.service.addPartners(updatedPartners).subscribe(() => {
+          this.partners = updatedPartners;
           partnersForm.resetForm();
           this.feedbackMessages = `Partenaire enregistré`;
           this.isSuccessMessage = true;

@@ -1,0 +1,62 @@
+<div class="container py-5">
+    <h4 class="mt-5">Modification du partenaire</h4>
+
+    <div *ngIf="feedbackMessages" class="alert mt-3"
+        [ngClass]="{'alert-success': isSuccessMessage, 'alert-danger': !isSuccessMessage}">
+        {{ feedbackMessages }}
+    </div>
+
+    <form #updateForm="ngForm" class="mt-4 was-validated" (ngSubmit)="updatePartner(updateForm)">
+        <div class="form-group">
+
+            <!-- Nom -->
+            <label for="name" class="form-label mt-3">Nom</label>
+            <input type="text" name="name" [(ngModel)]="partner.name" #name="ngModel" class="form-control" required
+                minlength="3">
+            <div *ngIf="name.dirty || (name.touched && name.invalid)" class="invalid-feedback">
+                Veuillez fournir un nom valide.
+            </div>
+            <div *ngIf="name.valid" class="valid-feedback">
+                Nom OK.
+            </div>
+
+            <!-- Description -->
+            <label for="description" class="form-label mt-3">Description</label>
+            <input type="text" name="description" [(ngModel)]="partner.description" #description="ngModel"
+                class="form-control" required minlength="50">
+            <div *ngIf="description.dirty || (description.touched && description.invalid)" class="invalid-feedback">
+                Veuillez fournir une description valide (50 caractères min).
+            </div>
+            <div *ngIf="description.valid" class="valid-feedback">
+                Description OK.
+            </div>
+
+            <!-- Lien URL -->
+            <label for="url" class="form-label mt-3">Lien</label>
+            <input type="url" name="url" [(ngModel)]="partner.url" #url="ngModel" class="form-control">
+            <div *ngIf="url.dirty || (url.touched && url.invalid)" class="invalid-feedback">
+                Veuillez fournir une URL valide.
+            </div>
+            <div *ngIf="url.valid" class="valid-feedback">
+                URL OK.
+            </div>
+
+            <!-- Logo / Image -->
+            <label for="logo" class="form-label mt-3">Logo (laisser vide pour conserver l'actuel)</label>
+            <input type="file" (change)="onFileSelected($event)" class="form-control" accept="image/*">
+
+            <div *ngIf="previewUrl" class="mt-3">
+                <label>Aperçu du logo actuel / nouveau :</label>
+                <div>
+                    <img [src]="previewUrl" alt="Aperçu du logo" class="img-thumbnail mt-2" style="max-height: 150px;">
+                </div>
+            </div>
+
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-4" [disabled]="updateForm.invalid">
+            Enregistrer les modifications
+        </button>
+    </form>
+
+</div>

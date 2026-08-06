@@ -4,7 +4,7 @@
   <app-feedback-messages [feedbackMessages]="feedbackMessages"
     [isSuccessMessage]="isSuccessMessage"></app-feedback-messages>
 
-  <h4 class="mt-5">Ajout des métiers (sigles) et leurs compétences (AT)</h4>
+  <h4 class="mt-5">Ajout des métiers (sigles) et leurs compétences (AT) {{userRole}}</h4>
   <form #settingsForm="ngForm" class="mt-4" (submit)="addSigles(settingsForm)" class="was-validated">
 
     <div class="form-group">
@@ -177,7 +177,7 @@
 
   <hr>
 
-  <ng-container *ngIf="userRole==='admin'">
+  <ng-container *ngIf="userRole.includes('admin')">
 
     <h4 class="mt-5">Ajout de curseurs personnalisés pour le calcul des 3 niveaux de résultat au terme du positionnement
       des

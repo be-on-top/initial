@@ -53,9 +53,7 @@
 
     <hr>
 
-    <ng-container *ngIf="userRole==='admin'">
-
-
+    <ng-container *ngIf="userRole.includes('admin')">
 
         <!-- <h4 class="my-5">Ajustement des Maximums</h4>
 
@@ -95,8 +93,8 @@
                     <div class="col-sm-4 col-4 text-center d-flex justify-content-between flex-column">
                         <a href="{{partner.url}}" target="_blank" rel="noopener noreferrer">{{partner.url}}</a>
                         <div>
-                            <button class="btn btn-primary"><a [routerLink]="['/admin/updateSettings', partner.id]"
-                                    class="text-white"><i class="bi bi-pencil-square"></i>Editer</a></button>
+                            <button class="btn btn-primary"><a [routerLink]="['/admin/updatePartners', partner.id]"
+                                    class="text-white"><i class="bi bi-pencil-square"></i>Editer {{partner.id}}</a></button>
                         </div>
                     </div>
                 </div>
