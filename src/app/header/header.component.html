@@ -508,6 +508,14 @@
                                     aria-label="Ouvrir la présentation de support Diapo dans un nouvel onglet"
                                     (click)="closeNavbar()">Guide Conseiller PDF</a>
                             </li>
+                            <!-- Documentation officielle du CERC pour comprendre la nomenclature des Niveaux FLE  -->
+                            <li class="nav-item">
+                                <a rel="noopener" class="dropdown-item" href="https://firebasestorage.googleapis.com/v0/b/be-on-top-beta.appspot.com/o/admin-docs%2FREFERENTIEL%20DE%20COMPETENCES%20FLE.pdf?alt=media&token=d4466159-0bc4-40c2-83f7-f4d48bc746a" role="button"
+                                    aria-label="Consulter le référentiel de compétences FLES" target="_blank" (click)="closeNavbar()">
+                                    Référentiel Compétences FLES
+                                </a>
+                            </li>
+                            <hr class="dropdown-divider">
 
                             <li class="nav-item">
                                 <a class="dropdown-item" [routerLink]="['/admin/my-centers']" role="button"
@@ -515,6 +523,8 @@
                                     Mon/mes centre(s)
                                 </a>
                             </li>
+
+ 
 
                             <!-- Informations générale BtoB -->
                             <li>
@@ -532,11 +542,10 @@
                                     aria-label="Visuels en téléchargement pour vos actions de communication"
                                     (click)="closeNavbar()" [routerLink]="['/marketing-pack']">Kit Communication</a>
                             </li>
-                            <li>
+                            <!-- <li>
                                 <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" [routerLink]="['/partners']" (click)="closeNavbar()">Nos
-                                    Partenaires</a></li>
+                            </li> -->
+                            <li><a class="dropdown-item" [routerLink]="['/partners']" (click)="closeNavbar()">Partenaires Généraux</a></li>
                             <!-- Fin Informations générales BtoB -->
 
                         </ul>
