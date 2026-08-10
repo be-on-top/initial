@@ -82,12 +82,14 @@
                             </li>
 
 
-                            <li *ngIf="userRole?.includes('editor')"><a class="dropdown-item" rel="noopener noreferrer" role="button"
+                            <li *ngIf="userRole?.includes('editor')"><a class="dropdown-item" rel="noopener noreferrer"
+                                    role="button"
                                     aria-label="Visuels en téléchargement pour vos actions de communication"
                                     (click)="closeNavbar()" [routerLink]="['/marketing-pack']">Vue publique du Kit</a>
                             </li>
 
-                            <li *ngIf="userRole?.includes('editor')"><a class="dropdown-item" [routerLink]="['/news']" (click)="closeNavbar()">Vue publique des articles</a>
+                            <li *ngIf="userRole?.includes('editor')"><a class="dropdown-item" [routerLink]="['/news']"
+                                    (click)="closeNavbar()">Vue publique des articles</a>
                             </li>
 
                             <li *ngIf="userRole?.includes('editor')">
@@ -219,6 +221,33 @@
                                 <hr>
                                 <a class="dropdown-item" [routerLink]="['/admin/externals']">Gestion des
                                     contacts <span class="d-block d-md-inline">(observateurs externes)</span></a>
+                            </li>
+                            <!-- WORKBOOK : liens à communiquer aux candidats -->
+                            <li *ngIf="userRole?.includes('referent')" class="dropdown-submenu">
+                                <hr>
+                                <span class="dropdown-item">
+                                    WorkBook <span class="d-none d-md-inline">(Évaluations transverses)</span>
+                                </span>
+
+                                <ul class="list-unstyled ms-3 mb-0">
+                                    <li>
+                                        <button type="button"
+                                            class="dropdown-item d-flex align-items-center justify-content-between"
+                                            (click)="copyWorkbookUrl('unit1')" title="Copier le lien à envoyer au candidat">
+                                            <span>FLE A1</span>
+                                            <i class="bi bi-copy ms-3"></i>
+                                        </button>
+                                    </li>
+
+                                    <li>
+                                        <button type="button"
+                                            class="dropdown-item d-flex align-items-center justify-content-between"
+                                            (click)="copyWorkbookUrl('unit2')" title="Copier le lien à envoyer au candidat">
+                                            <span>FLE A2</span>
+                                            <i class="bi bi-copy ms-3"></i>
+                                        </button>
+                                    </li>
+                                </ul>
                             </li>
                         </ul>
                     </li>
@@ -492,7 +521,8 @@
                                 <hr class="dropdown-divider">
                             </li>
                             <!-- <li><a class="dropdown-item" (click)="logOut()" [routerLink]="['']">Logout</a></li> -->
-                            <li><a class="dropdown-item" (click)="closeNavbar()" [routerLink]="['/market-app']">Mission/FAQ
+                            <li><a class="dropdown-item" (click)="closeNavbar()"
+                                    [routerLink]="['/market-app']">Mission/FAQ
                                     BE-ON-TOP</a>
                             </li>
                             <li><a class="dropdown-item" [routerLink]="['/news']" (click)="closeNavbar()">Le Mag'

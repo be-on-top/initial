@@ -126,14 +126,14 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
       this.getStudentData(this.userUid)
 
-if (this.userRole?.includes('external') && this.userUid) {
-  const userDocRef = doc(this.firestore, `users/${this.userUid}`);
-  docData(userDocRef, { idField: 'uid' })  // `idField` est optionnel ici
-    .pipe(take(1))
-    .subscribe(data => {
-      this.userHasReferent = !!data['referentUid'];
-    });
-}
+      if (this.userRole?.includes('external') && this.userUid) {
+        const userDocRef = doc(this.firestore, `users/${this.userUid}`);
+        docData(userDocRef, { idField: 'uid' })  // `idField` est optionnel ici
+          .pipe(take(1))
+          .subscribe(data => {
+            this.userHasReferent = !!data['referentUid'];
+          });
+      }
 
 
     });
@@ -171,7 +171,7 @@ if (this.userRole?.includes('external') && this.userUid) {
 
   private getStudentData(uid: string) {
     if (!uid) return;
-    
+
     if (this.studentSubscription) {
       this.studentSubscription.unsubscribe();
     }
@@ -377,10 +377,10 @@ if (this.userRole?.includes('external') && this.userUid) {
     } else if (this.userRole?.includes('editor')) {
       // Rediriger vers support Tuteurs
       this.router.navigate(['/market-app']);
-    }    else if (this.userRole?.includes('external') || this.userRole?.includes('referentsContacts') ) {
+    } else if (this.userRole?.includes('external') || this.userRole?.includes('referentsContacts')) {
       // Rediriger vers support Tuteurs
       this.router.navigate(['/market-app']);
-    } 
+    }
     else {
       // Rediriger vers une route interne de l'application
       this.router.navigate(['/benefits']);
@@ -422,11 +422,13 @@ if (this.userRole?.includes('external') && this.userUid) {
   }
 
 
+  copyWorkbookUrl(unit: 'unit1' | 'unit2') {
 
+    const url = `${window.location.origin}/workbook/${unit}`;
 
+    navigator.clipboard.writeText(url);
 
-
-
+  }
 
 
 
