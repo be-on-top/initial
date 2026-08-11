@@ -1,0 +1,23 @@
+.document-image {
+    float: left;
+    width: min(40%, 600px);
+    height: auto;
+    margin: 0 1rem 0.5rem 0;
+}
+
+.document-batiment p {
+    margin-bottom: 0.75rem;
+}
+
+.document-batiment::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+@media (max-width: 576px) {
+    .document-image {
+        width: 42%;
+        margin-right: 0.75rem;
+    }
+}

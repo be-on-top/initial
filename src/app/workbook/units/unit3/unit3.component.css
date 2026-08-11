@@ -1,0 +1,166 @@
+.document-image {
+    float: left;
+    width: min(40%, 600px);
+    height: auto;
+    margin: 0 1rem 0.5rem 0;
+}
+
+.document-batiment p {
+    margin-bottom: 0.75rem;
+}
+
+.document-batiment::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+@media (max-width: 576px) {
+    .document-image {
+        width: 42%;
+        margin-right: 0.75rem;
+    }
+}
+
+.badge.clickable-step-badge {
+  border: 2px solid #0ae42b !important;
+  /* Vert Bootstrap success (ou votre vert habituel) */
+}
+
+.bi-exposure {
+  font-size: 0.80em;
+}
+
+
+img {
+  width: 100%;
+  /* aspect-ratio: 5 / 3; */
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.invitation-text {
+  position: absolute;
+
+  bottom: 10%;
+  left: 50%;
+
+  width: 75%;
+
+  transform: translateX(-50%);
+
+  text-align: center;
+
+  background-color: rgba(255, 255, 255, 0.60);
+}
+
+/* .category{
+  font-size: inherit;
+  text-decoration: dashed;
+  text-decoration-line: underline;
+  text-decoration-color: rgb(250, 192, 3);
+} */
+
+/* h2{
+  position: relative;
+} */
+
+.category {
+  position: relative;
+  display: inline-block;
+  font-size: inherit;
+}
+
+.category::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 100%;
+  height: 3px;
+  background-color: rgb(250, 192, 3);
+}
+
+h2>i {
+  color: rgb(250, 192, 3);
+  font-size: 1.5rem;
+}
+
+.badge {
+  font-weight: normal;
+}
+
+/* .ex1 {
+  background-image: url('/assets/presenter.webp');
+  background-size: content;
+} */
+
+button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.title,
+.instructions {
+  font-weight: 400;
+  font-size: 1.2rem;
+}
+
+div span {
+  font-size: inherit;
+}
+
+.alert.bg-info {
+  color: white;
+}
+
+:focus {
+  outline: 3px solid #0d6efd;
+  outline-offset: 2px;
+}
+
+.form-locked {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+@media (max-width: 765px) {
+  span.badge.text-bg-dark.text-white {
+    display: none !important;
+  }
+}
+
+@media print {
+  * {
+    /* Propriété préfixée en premier */
+    -webkit-print-color-adjust: exact !important;
+    /* Propriété standard en dernier pour qu'elle prévale */
+    print-color-adjust: exact !important;
+  }
+
+  .card,
+  .page-break-avoid {
+    break-inside: avoid;
+  }
+
+  /* Règle appliquée à l'impression */
+  .badge.clickable-step-badge {
+    border: none !important;
+  }
+
+  @media print and (orientation: portrait) {
+    .nouvelle-page {
+      page-break-before: always;
+      break-before: page;
+      margin-top: 20px;
+      /* Syntaxe CSS moderne pour la compatibilité */
+    }
+
+    .additional-margin {
+      display: block !important;
+      padding-top: 20px !important;
+      /* Le padding n'est jamais ignoré à l'impression */
+    }
+  }
+
+}

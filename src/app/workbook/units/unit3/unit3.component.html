@@ -1,0 +1,757 @@
+
+<!-- Conteneur principal -->
+<div class="container mt-4">
+
+  <!-- Message de bienvenue pour les étudiants (Étape 0) -->
+  <div class="alert w-100 p-4 pe-5 bg-dark alert-dismissible text-white mb-4 fade show display-5"
+    *ngIf="isStudent && currentStep === 0">
+    <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
+      aria-label="Fermer le message"></button>
+    Bienvenue, vous allez commencer vos exercices de Français Langue Étrangère débutant.
+  </div>
+
+  <!-- Alerte d'authentification requise -->
+  <div class="alert alert-warning instructions" *ngIf="isNotAuthenticated">
+    Authentification requise pour accéder aux exercices.
+    <a role="link" aria-label="Avertissement : se connecter pour démarrer un questionnaire" [routerLink]="['/login']"
+      class="text-light">Vous identifier</a>
+  </div>
+
+  <!-- Alerte restriction d'accès aux candidats -->
+  <div class="alert alert-danger" *ngIf="!isNotAuthenticated && !isStudent && !isReferentView">
+    Seul un candidat authentifié peut passer une évaluation.
+  </div>
+
+  <div>
+
+    <!-- EXERCICE 1 -->
+
+<!-- ===================================================== -->
+<!-- UNITÉ 3 - COMPRÉHENSION DES ÉCRITS -->
+<!-- EXERCICE 1 - QUESTION 1 -->
+<!-- ===================================================== -->
+
+<form *ngIf="isReferentView || currentStep === 0" [formGroup]="formEx1" (ngSubmit)="submitEx1()">
+
+  <!-- HEADER -->
+
+  <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+    <span class="badge text-bg-dark text-white">
+      <i class="bi bi-tag-fill me-2"></i>
+      Catégorie : Compréhension des écrits
+    </span>
+
+    <div class="d-flex gap-2 ms-md-auto">
+
+      <span class="badge text-bg-warning">
+        Exercice 1
+      </span>
+
+      <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+        Max {{ steps[0].maxScore }} PNTS
+      </span>
+
+      <span class="badge text-bg-dark">
+        {{ getCurrentScore(0) }} PNTS
+      </span>
+
+    </div>
+
+  </div>
+
+  <!-- DOCUMENT -->
+
+  <app-document-batiment></app-document-batiment>
+
+  <!-- QUESTION -->
+
+  <div class="alert bg-info instructions">
+    Quel est le thème de cet article ?
+  </div>
+
+  <textarea
+    class="form-control"
+    rows="4"
+    formControlName="answer">
+  </textarea>
+
+  <!-- TIMELINE -->
+
+  <div *ngIf="steps && steps[currentStep]?.duration"
+    class="text-muted small mt-4 d-print-none">
+    Temps donné : {{ steps[currentStep].duration }} secondes
+  </div>
+
+  <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView"
+    class="progress mb-4"
+    role="progressbar"
+    aria-label="Progression de l'exercice"
+    [attr.aria-valuenow]="progress"
+    aria-valuemin="0"
+    aria-valuemax="100">
+
+    <div class="progress-bar" [style.width.%]="progress"></div>
+
+  </div>
+
+  <!-- SOUMISSION -->
+
+  <button *ngIf="!isReferentView"
+    type="submit"
+    class="btn btn-primary mt-4">
+    Suivant
+  </button>
+
+</form>
+
+<hr *ngIf="isReferentView">
+
+
+<!-- ===================================================== -->
+<!-- EXERCICE 2 - QUESTION 2 -->
+<!-- ===================================================== -->
+
+<form *ngIf="isReferentView || currentStep === 1" [formGroup]="formEx2" (ngSubmit)="submitEx2()">
+
+  <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+    <span class="badge text-bg-dark text-white">
+      <i class="bi bi-tag-fill me-2"></i>
+      Catégorie : Compréhension des écrits
+    </span>
+
+    <div class="d-flex gap-2 ms-md-auto">
+
+      <span class="badge text-bg-warning">
+        Exercice 2
+      </span>
+
+      <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+        Max {{ steps[1].maxScore }} PNTS
+      </span>
+
+      <span class="badge text-bg-dark">
+        {{ getCurrentScore(1) }} PNTS
+      </span>
+
+    </div>
+
+  </div>
+
+  <!-- DOCUMENT -->
+
+  <app-document-batiment></app-document-batiment>
+
+  <!-- QUESTION -->
+
+  <div class="alert bg-info instructions">
+    Quel est le secteur le plus touché ?
+  </div>
+
+  <textarea
+    class="form-control"
+    rows="4"
+    formControlName="answer">
+  </textarea>
+
+  <!-- TIMELINE -->
+
+  <div *ngIf="steps && steps[currentStep]?.duration"
+    class="text-muted small mt-4 d-print-none">
+    Temps donné : {{ steps[currentStep].duration }} secondes
+  </div>
+
+  <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView"
+    class="progress mb-4"
+    role="progressbar"
+    aria-label="Progression de l'exercice"
+    [attr.aria-valuenow]="progress"
+    aria-valuemin="0"
+    aria-valuemax="100">
+
+    <div class="progress-bar" [style.width.%]="progress"></div>
+
+  </div>
+
+  <button *ngIf="!isReferentView"
+    type="submit"
+    class="btn btn-primary mt-4">
+    Suivant
+  </button>
+
+</form>
+
+<hr *ngIf="isReferentView">
+
+
+<!-- ===================================================== -->
+<!-- EXERCICE 3 - QUESTION 3 -->
+<!-- ===================================================== -->
+
+<form *ngIf="isReferentView || currentStep === 2" [formGroup]="formEx3" (ngSubmit)="submitEx3()">
+
+  <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+    <span class="badge text-bg-dark text-white">
+      <i class="bi bi-tag-fill me-2"></i>
+      Catégorie : Compréhension des écrits
+    </span>
+
+    <div class="d-flex gap-2 ms-md-auto">
+
+      <span class="badge text-bg-warning">
+        Exercice 3
+      </span>
+
+      <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+        Max {{ steps[2].maxScore }} PNTS
+      </span>
+
+      <span class="badge text-bg-dark">
+        {{ getCurrentScore(2) }} PNTS
+      </span>
+
+    </div>
+
+  </div>
+
+  <app-document-batiment></app-document-batiment>
+
+  <div class="alert bg-info instructions">
+    Que veut dire l'acronyme FFB ?
+  </div>
+
+  <textarea
+    class="form-control"
+    rows="4"
+    formControlName="answer">
+  </textarea>
+
+  <div *ngIf="steps && steps[currentStep]?.duration"
+    class="text-muted small mt-4 d-print-none">
+    Temps donné : {{ steps[currentStep].duration }} secondes
+  </div>
+
+  <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView"
+    class="progress mb-4"
+    role="progressbar"
+    aria-label="Progression de l'exercice"
+    [attr.aria-valuenow]="progress"
+    aria-valuemin="0"
+    aria-valuemax="100">
+
+    <div class="progress-bar" [style.width.%]="progress"></div>
+
+  </div>
+
+  <button *ngIf="!isReferentView"
+    type="submit"
+    class="btn btn-primary mt-4">
+    Suivant
+  </button>
+
+</form>
+
+<hr *ngIf="isReferentView">
+
+
+<!-- ===================================================== -->
+<!-- EXERCICE 4 - QUESTION 4 -->
+<!-- ===================================================== -->
+
+<form *ngIf="isReferentView || currentStep === 3" [formGroup]="formEx4" (ngSubmit)="submitEx4()">
+
+  <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+    <span class="badge text-bg-dark text-white">
+      <i class="bi bi-tag-fill me-2"></i>
+      Catégorie : Compréhension des écrits
+    </span>
+
+    <div class="d-flex gap-2 ms-md-auto">
+
+      <span class="badge text-bg-warning">
+        Exercice 4
+      </span>
+
+      <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+        Max {{ steps[3].maxScore }} PNTS
+      </span>
+
+      <span class="badge text-bg-dark">
+        {{ getCurrentScore(3) }} PNTS
+      </span>
+
+    </div>
+
+  </div>
+
+  <app-document-batiment></app-document-batiment>
+
+  <div class="alert bg-info instructions">
+    Quelles sont les entretiens-améliorations ?
+  </div>
+
+  <textarea
+    class="form-control"
+    rows="4"
+    formControlName="answer">
+  </textarea>
+
+  <div *ngIf="steps && steps[currentStep]?.duration"
+    class="text-muted small mt-4 d-print-none">
+    Temps donné : {{ steps[currentStep].duration }} secondes
+  </div>
+
+  <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView"
+    class="progress mb-4"
+    role="progressbar"
+    aria-label="Progression de l'exercice"
+    [attr.aria-valuenow]="progress"
+    aria-valuemin="0"
+    aria-valuemax="100">
+
+    <div class="progress-bar" [style.width.%]="progress"></div>
+
+  </div>
+
+  <button *ngIf="!isReferentView"
+    type="submit"
+    class="btn btn-primary mt-4">
+    Suivant
+  </button>
+
+</form>
+
+<hr *ngIf="isReferentView">
+
+
+<!-- ===================================================== -->
+<!-- EXERCICE 5 - QUESTION 5 -->
+<!-- ===================================================== -->
+
+<form *ngIf="isReferentView || currentStep === 4" [formGroup]="formEx5" (ngSubmit)="submitEx5()">
+
+  <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+    <span class="badge text-bg-dark text-white">
+      <i class="bi bi-tag-fill me-2"></i>
+      Catégorie : Compréhension des écrits
+    </span>
+
+    <div class="d-flex gap-2 ms-md-auto">
+
+      <span class="badge text-bg-warning">
+        Exercice 5
+      </span>
+
+      <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+        Max {{ steps[4].maxScore }} PNTS
+      </span>
+
+      <span class="badge text-bg-dark">
+        {{ getCurrentScore(4) }} PNTS
+      </span>
+
+    </div>
+
+  </div>
+
+  <app-document-batiment></app-document-batiment>
+
+  <div class="alert bg-info instructions">
+    Pourquoi l’achat d’un logement ancien est en net recul ?
+  </div>
+
+  <textarea
+    class="form-control"
+    rows="4"
+    formControlName="answer">
+  </textarea>
+
+  <div *ngIf="steps && steps[currentStep]?.duration"
+    class="text-muted small mt-4 d-print-none">
+    Temps donné : {{ steps[currentStep].duration }} secondes
+  </div>
+
+  <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView"
+    class="progress mb-4"
+    role="progressbar"
+    aria-label="Progression de l'exercice"
+    [attr.aria-valuenow]="progress"
+    aria-valuemin="0"
+    aria-valuemax="100">
+
+    <div class="progress-bar" [style.width.%]="progress"></div>
+
+  </div>
+
+  <button *ngIf="!isReferentView"
+    type="submit"
+    class="btn btn-primary mt-4">
+    Suivant
+  </button>
+
+</form>
+
+<hr *ngIf="isReferentView">
+
+<!-- ===================================================== -->
+<!-- EXERCICE 6 - QUESTION 6 -->
+<!-- ===================================================== -->
+
+<form *ngIf="isReferentView || currentStep === 5" [formGroup]="formEx6" (ngSubmit)="submitEx6()">
+
+  <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+    <span class="badge text-bg-dark text-white">
+      <i class="bi bi-tag-fill me-2"></i>
+      Catégorie : Compréhension des écrits
+    </span>
+
+    <div class="d-flex gap-2 ms-md-auto">
+
+      <span class="badge text-bg-warning">
+        Exercice 6
+      </span>
+
+      <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+        Max {{ steps[5].maxScore }} PNTS
+      </span>
+
+      <span class="badge text-bg-dark">
+        {{ getCurrentScore(5) }} PNTS
+      </span>
+
+    </div>
+
+  </div>
+
+  <app-document-batiment></app-document-batiment>
+
+  <div class="alert bg-info instructions">
+    Certaines mesures ont été gelées, dû à quoi ?
+  </div>
+
+  <textarea
+    class="form-control"
+    rows="4"
+    formControlName="answer">
+  </textarea>
+
+  <div *ngIf="steps && steps[currentStep]?.duration"
+    class="text-muted small mt-4 d-print-none">
+    Temps donné : {{ steps[currentStep].duration }} secondes
+  </div>
+
+  <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView"
+    class="progress mb-4"
+    role="progressbar"
+    aria-label="Progression de l'exercice"
+    [attr.aria-valuenow]="progress"
+    aria-valuemin="0"
+    aria-valuemax="100">
+
+    <div class="progress-bar" [style.width.%]="progress"></div>
+
+  </div>
+
+  <button *ngIf="!isReferentView"
+    type="submit"
+    class="btn btn-primary mt-4">
+    Suivant
+  </button>
+
+</form>
+
+<hr *ngIf="isReferentView">
+
+
+<!-- ===================================================== -->
+<!-- EXERCICE 7 - QUESTION 7 -->
+<!-- ===================================================== -->
+
+<form *ngIf="isReferentView || currentStep === 6" [formGroup]="formEx7" (ngSubmit)="submitEx7()">
+
+  <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+    <span class="badge text-bg-dark text-white">
+      <i class="bi bi-tag-fill me-2"></i>
+      Catégorie : Compréhension des écrits
+    </span>
+
+    <div class="d-flex gap-2 ms-md-auto">
+
+      <span class="badge text-bg-warning">
+        Exercice 7
+      </span>
+
+      <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+        Max {{ steps[6].maxScore }} PNTS
+      </span>
+
+      <span class="badge text-bg-dark">
+        {{ getCurrentScore(6) }} PNTS
+      </span>
+
+    </div>
+
+  </div>
+
+  <app-document-batiment></app-document-batiment>
+
+  <div class="alert bg-info instructions">
+    Quel est le pourcentage de la chute du logement neuf ?
+  </div>
+
+  <textarea
+    class="form-control"
+    rows="4"
+    formControlName="answer">
+  </textarea>
+
+  <div *ngIf="steps && steps[currentStep]?.duration"
+    class="text-muted small mt-4 d-print-none">
+    Temps donné : {{ steps[currentStep].duration }} secondes
+  </div>
+
+  <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView"
+    class="progress mb-4"
+    role="progressbar"
+    aria-label="Progression de l'exercice"
+    [attr.aria-valuenow]="progress"
+    aria-valuemin="0"
+    aria-valuemax="100">
+
+    <div class="progress-bar" [style.width.%]="progress"></div>
+
+  </div>
+
+  <button *ngIf="!isReferentView"
+    type="submit"
+    class="btn btn-primary mt-4">
+    Suivant
+  </button>
+
+</form>
+
+<hr *ngIf="isReferentView">
+
+
+<!-- ===================================================== -->
+<!-- EXERCICE 8 - QUESTION 8 -->
+<!-- ===================================================== -->
+
+<form *ngIf="isReferentView || currentStep === 7" [formGroup]="formEx8" (ngSubmit)="submitEx8()">
+
+  <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+    <span class="badge text-bg-dark text-white">
+      <i class="bi bi-tag-fill me-2"></i>
+      Catégorie : Compréhension des écrits
+    </span>
+
+    <div class="d-flex gap-2 ms-md-auto">
+
+      <span class="badge text-bg-warning">
+        Exercice 8
+      </span>
+
+      <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+        Max {{ steps[7].maxScore }} PNTS
+      </span>
+
+      <span class="badge text-bg-dark">
+        {{ getCurrentScore(7) }} PNTS
+      </span>
+
+    </div>
+
+  </div>
+
+  <app-document-batiment></app-document-batiment>
+
+  <div class="alert bg-info instructions">
+    L'année 2025 a-t-elle un impact sur les emplois ?
+  </div>
+
+  <textarea
+    class="form-control"
+    rows="4"
+    formControlName="answer">
+  </textarea>
+
+  <div *ngIf="steps && steps[currentStep]?.duration"
+    class="text-muted small mt-4 d-print-none">
+    Temps donné : {{ steps[currentStep].duration }} secondes
+  </div>
+
+  <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView"
+    class="progress mb-4"
+    role="progressbar"
+    aria-label="Progression de l'exercice"
+    [attr.aria-valuenow]="progress"
+    aria-valuemin="0"
+    aria-valuemax="100">
+
+    <div class="progress-bar" [style.width.%]="progress"></div>
+
+  </div>
+
+  <button *ngIf="!isReferentView"
+    type="submit"
+    class="btn btn-primary mt-4">
+    Suivant
+  </button>
+
+</form>
+
+<hr *ngIf="isReferentView">
+
+
+<!-- ===================================================== -->
+<!-- EXERCICE 9 - QUESTION 9 -->
+<!-- ===================================================== -->
+
+<form *ngIf="isReferentView || currentStep === 8" [formGroup]="formEx9" (ngSubmit)="submitEx9()">
+
+  <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+    <span class="badge text-bg-dark text-white">
+      <i class="bi bi-tag-fill me-2"></i>
+      Catégorie : Compréhension des écrits
+    </span>
+
+    <div class="d-flex gap-2 ms-md-auto">
+
+      <span class="badge text-bg-warning">
+        Exercice 9
+      </span>
+
+      <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+        Max {{ steps[8].maxScore }} PNTS
+      </span>
+
+      <span class="badge text-bg-dark">
+        {{ getCurrentScore(8) }} PNTS
+      </span>
+
+    </div>
+
+  </div>
+
+  <app-document-batiment></app-document-batiment>
+
+  <div class="alert bg-info instructions">
+    Donnez le chiffre des actifs dans le BTP 2024-2025 ?
+  </div>
+
+  <textarea
+    class="form-control"
+    rows="4"
+    formControlName="answer">
+  </textarea>
+
+  <div *ngIf="steps && steps[currentStep]?.duration"
+    class="text-muted small mt-4 d-print-none">
+    Temps donné : {{ steps[currentStep].duration }} secondes
+  </div>
+
+  <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView"
+    class="progress mb-4"
+    role="progressbar"
+    aria-label="Progression de l'exercice"
+    [attr.aria-valuenow]="progress"
+    aria-valuemin="0"
+    aria-valuemax="100">
+
+    <div class="progress-bar" [style.width.%]="progress"></div>
+
+  </div>
+
+  <button *ngIf="!isReferentView"
+    type="submit"
+    class="btn btn-primary mt-4">
+    Suivant
+  </button>
+
+</form>
+
+<hr *ngIf="isReferentView">
+
+
+<!-- ===================================================== -->
+<!-- EXERCICE 10 - QUESTION 10 -->
+<!-- ===================================================== -->
+
+<form class="nouvelle-page"
+  *ngIf="isReferentView || currentStep === 9"
+  [formGroup]="formEx10"
+  (ngSubmit)="submitEx10()">
+
+  <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+    <span class="badge text-bg-dark text-white">
+      <i class="bi bi-tag-fill me-2"></i>
+      Catégorie : Compréhension des écrits
+    </span>
+
+    <div class="d-flex gap-2 ms-md-auto">
+
+      <span class="badge text-bg-warning">
+        Exercice 10
+      </span>
+
+      <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+        Max {{ steps[9].maxScore }} PNTS
+      </span>
+
+      <span class="badge text-bg-dark">
+        {{ getCurrentScore(9) }} PNTS
+      </span>
+
+    </div>
+
+  </div>
+
+<app-document-batiment></app-document-batiment>
+
+  <div class="alert bg-info instructions">
+    Que faites-vous comme différence entre une construction neuve et une construction ancienne ?
+  </div>
+
+  <textarea
+    class="form-control"
+    rows="5"
+    formControlName="answer">
+  </textarea>
+
+  <div *ngIf="steps && steps[currentStep]?.duration"
+    class="text-muted small mt-4 d-print-none">
+    Temps donné : {{ steps[currentStep].duration }} secondes
+  </div>
+
+  <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView"
+    class="progress mb-4"
+    role="progressbar"
+    aria-label="Progression de l'exercice"
+    [attr.aria-valuenow]="progress"
+    aria-valuemin="0"
+    aria-valuemax="100">
+
+    <div class="progress-bar" [style.width.%]="progress"></div>
+
+  </div>
+
+  <button *ngIf="!isReferentView"
+    type="submit"
+    class="btn btn-primary mt-4">
+    Suivant
+  </button>
+
+</form>
+
+<hr *ngIf="isReferentView">
+
+</div>
