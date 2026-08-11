@@ -218,22 +218,26 @@
                                     tuteurs</a>
                             </li>
                             <li *ngIf="userRole?.includes('referent')">
-                                <hr>
+                                <hr class="dropdown-divider">
                                 <a class="dropdown-item" [routerLink]="['/admin/externals']">Gestion des
                                     contacts <span class="d-block d-md-inline">(observateurs externes)</span></a>
                             </li>
                             <!-- WORKBOOK : liens à communiquer aux candidats -->
                             <li *ngIf="userRole?.includes('referent')" class="dropdown-submenu">
-                                <hr>
-                                <span class="dropdown-item">
+                                <hr class="dropdown-divider">
+                                <!-- <span class="dropdown-item">
                                     WorkBook <span class="d-none d-md-inline">(Évaluations transverses)</span>
-                                </span>
+                                </span> -->
+                                <a class="dropdown-item" href="javascript:void(0)">
+                                    WorkBook <span class="d-block d-md-inline">(Évaluations transverses)</span>
+                                </a>
 
                                 <ul class="list-unstyled ms-3 mb-0">
                                     <li>
                                         <button type="button"
                                             class="dropdown-item d-flex align-items-center justify-content-between"
-                                            (click)="copyWorkbookUrl('unit1')" title="Copier le lien à envoyer au candidat">
+                                            (click)="copyWorkbookUrl('unit1')"
+                                            title="Copier le lien à envoyer au candidat">
                                             <span>FLE A1</span>
                                             <i class="bi bi-copy ms-3"></i>
                                         </button>
@@ -242,7 +246,8 @@
                                     <li>
                                         <button type="button"
                                             class="dropdown-item d-flex align-items-center justify-content-between"
-                                            (click)="copyWorkbookUrl('unit2')" title="Copier le lien à envoyer au candidat">
+                                            (click)="copyWorkbookUrl('unit2')"
+                                            title="Copier le lien à envoyer au candidat">
                                             <span>FLE A2</span>
                                             <i class="bi bi-copy ms-3"></i>
                                         </button>
@@ -510,8 +515,10 @@
                             </li>
                             <!-- Documentation officielle du CERC pour comprendre la nomenclature des Niveaux FLE  -->
                             <li class="nav-item">
-                                <a rel="noopener" class="dropdown-item" href="https://firebasestorage.googleapis.com/v0/b/be-on-top-beta.appspot.com/o/admin-docs%2FREFERENTIEL%20DE%20COMPETENCES%20FLE.pdf?alt=media&token=d4466159-0bc4-40c2-83f7-f4d48bc746a" role="button"
-                                    aria-label="Consulter le référentiel de compétences FLES" target="_blank" (click)="closeNavbar()">
+                                <a class="dropdown-item"
+                                    href="https://firebasestorage.googleapis.com/v0/b/be-on-top-beta.appspot.com/o/admin-docs%2FREFERENTIEL%20DE%20COMPETENCES%20FLE.pdf?alt=media&token=d4466159-0bc4-40c2-83f7-f4d48bc746a"
+                                    aria-label="Consulter le référentiel de compétences FLES" target="_blank"
+                                    rel="noopener noreferrer" role="button" (click)="closeNavbar()">
                                     Référentiel Compétences FLES
                                 </a>
                             </li>
@@ -524,7 +531,7 @@
                                 </a>
                             </li>
 
- 
+
 
                             <!-- Informations générale BtoB -->
                             <li>
@@ -545,7 +552,8 @@
                             <!-- <li>
                                 <hr class="dropdown-divider">
                             </li> -->
-                            <li><a class="dropdown-item" [routerLink]="['/partners']" (click)="closeNavbar()">Partenaires Généraux</a></li>
+                            <li><a class="dropdown-item" [routerLink]="['/partners']"
+                                    (click)="closeNavbar()">Partenaires Généraux</a></li>
                             <!-- Fin Informations générales BtoB -->
 
                         </ul>
