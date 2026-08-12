@@ -9,6 +9,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DocVoisinsComponent } from './units/unit2/doc-voisins/doc-voisins.component';
 import { Unit3Component } from './units/unit3/unit3.component';
 import { DocumentBatimentComponent } from './units/unit3/document-batiment/document-batiment.component';
+import { DocumentEolienComponent } from './units/unit3/document-eolien/document-eolien.component';
 
 
 
@@ -19,7 +20,8 @@ import { DocumentBatimentComponent } from './units/unit3/document-batiment/docum
     Unit2Component,
     DocVoisinsComponent,
     Unit3Component,
-    DocumentBatimentComponent
+    DocumentBatimentComponent,
+    DocumentEolienComponent
   ],
   imports: [
     CommonModule,
