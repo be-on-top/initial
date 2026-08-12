@@ -60,22 +60,22 @@ export class Unit3Component {
 
   steps: Step[] = [
     { id: 'ex1', category: this.categories[0], duration: 90, maxScore: 1 }, // premier d'une série
-    { id: 'ex2', category: this.categories[0], duration: 90, maxScore: 1 }, 
+    { id: 'ex2', category: this.categories[0], duration: 90, maxScore: 1 },
     { id: 'ex3', category: this.categories[0], duration: 90, maxScore: 1 },
     { id: 'ex4', category: this.categories[0], duration: 90, maxScore: 1 },
     { id: 'ex5', category: this.categories[0], duration: 90, maxScore: 1 },
     { id: 'ex6', category: this.categories[0], duration: 90, maxScore: 1 },
     { id: 'ex7', category: this.categories[0], duration: 90, maxScore: 1 },
-    { id: 'ex8', category: this.categories[0], duration: 90, maxScore: 1 }, 
+    { id: 'ex8', category: this.categories[0], duration: 90, maxScore: 1 },
     { id: 'ex9', category: this.categories[0], duration: 90, maxScore: 1 },
     { id: 'ex10', category: this.categories[0], duration: 90, maxScore: 1 },
     // à venir ... :
     { id: 'ex11', category: this.categories[0], duration: 50, maxScore: 1 }, // premier d'une série ?
-    { id: 'ex12', category: this.categories[0], duration: 90, maxScore: 1 }, 
+    { id: 'ex12', category: this.categories[0], duration: 90, maxScore: 1 },
     { id: 'ex13', category: this.categories[0], duration: 50, maxScore: 1 },
-    { id: 'ex14', category: this.categories[0], duration: 90, maxScore: 1 }, 
+    { id: 'ex14', category: this.categories[0], duration: 90, maxScore: 1 },
     { id: 'ex15', category: this.categories[0], duration: 50, maxScore: 1 },
-    { id: 'ex16', category: this.categories[0], duration: 90, maxScore: 1 }, 
+    { id: 'ex16', category: this.categories[0], duration: 90, maxScore: 1 },
     { id: 'ex17', category: this.categories[0], duration: 50, maxScore: 1 },
     { id: 'ex18', category: this.categories[0], duration: 60, maxScore: 1 },
     { id: 'ex19', category: this.categories[0], duration: 50, maxScore: 1 },
@@ -144,7 +144,11 @@ export class Unit3Component {
 
   correctAnswerEx9 = ['1,6 million', '1.6 million', '1,6 millions'];
 
-  correctAnswerEx10 = ['neuve', 'ancienne'];
+  // correctAnswerEx10 = ['neuve', 'ancienne'];
+
+  termesNeuf10 = ['neuve', 'nouvelle', 'récente'];
+  termesAncien10 = ['ancienne', 'vieille'];
+
 
 
   constructor(private fb: FormBuilder, private auth: AuthService, private service: WorkbookService, private route: ActivatedRoute, private router: Router) {
@@ -593,32 +597,49 @@ export class Unit3Component {
     this.next();
   }
 
-  submitEx10() {
-    this.alreadySubmitted = true;
+submitEx10() {
+  this.alreadySubmitted = true;
 
-    let score = 0;
+  let score = 0;
 
-    const answer = this.formEx10.value.answer;
+  const answer = this.formEx10.value.answer || '';
 
-    if (this.containsKeywords(answer, this.correctAnswerEx10)) {
-      score = 1;
-    }
+  const normalizedAnswer = answer
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
 
-    const category = this.getCurrentCategory();
+  const hasNeuf = this.termesNeuf10.some(term =>
+    normalizedAnswer.includes(
+      term.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    )
+  );
 
-    this.service.saveUnitFlat(
-      this.uid,
-      "unit3",
-      "ex10",
-      this.formEx10,
-      score,
-      category
-    );
+  const hasAncien = this.termesAncien10.some(term =>
+    normalizedAnswer.includes(
+      term.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    )
+  );
 
-    this.aggregate(category, score);
-
-    this.next();
+  if (hasNeuf && hasAncien) {
+    score = 1;
   }
+
+  const category = this.getCurrentCategory();
+
+  this.service.saveUnitFlat(
+    this.uid,
+    "unit3",
+    "ex10",
+    this.formEx10,
+    score,
+    category
+  );
+
+  this.aggregate(category, score);
+
+  this.next();
+}
 
 
   // 1. Compter les mots (minimum 60)
@@ -1088,8 +1109,6 @@ export class Unit3Component {
         alert("Erreur lors de l'enregistrement.");
       });
   }
-
-
 
   async cloturerEvaluation() {
     // 1️⃣ On récupère la valeur actuelle du champ texte (et on nettoie les espaces)

@@ -5,6 +5,10 @@
     margin: 0 1rem 0.5rem 0;
 }
 
+strong{
+    font-weight: 400;
+}
+
 .document-batiment p {
     margin-bottom: 0.75rem;
 }
