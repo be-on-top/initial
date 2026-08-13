@@ -752,6 +752,817 @@
 
 </form>
 
+
+<!-- ===================================================== -->
+<!-- EXERCICE 11 -->
+<!-- ===================================================== -->
+
+<form *ngIf="isReferentView || currentStep === 10"
+      [formGroup]="formEx11"
+      (ngSubmit)="submitEx11()">
+
+  <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+    <span class="badge text-bg-dark text-white">
+      Catégorie : {{ steps[10].category }}
+    </span>
+
+    <div class="d-flex gap-2 ms-md-auto">
+
+      <span class="badge text-bg-warning">
+        Exercice 11
+      </span>
+
+      <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+        Max {{ steps[10].maxScore }} PNTS
+      </span>
+
+      <span class="badge text-bg-dark">
+        {{ getCurrentScore(10) }} PNTS
+      </span>
+
+    </div>
+
+  </div>
+
+  <!-- DOCUMENT COMMUN -->
+  <app-document-eolien></app-document-eolien>
+
+  <div class="alert alert-light">
+    <i class="bi bi-info-circle me-2"></i>
+    Pour répondre à la question, cochez la bonne réponse.
+  </div>
+
+  <div class="alert bg-info instructions">
+    Le texte parle de…
+  </div>
+
+  <div class="d-flex flex-column"
+       [class.d-md-flex]="shouldDisplayInline(ex11Options)"
+       [class.flex-md-row]="shouldDisplayInline(ex11Options)"
+       [class.gap-md-4]="shouldDisplayInline(ex11Options)"
+       [class.flex-wrap]="shouldDisplayInline(ex11Options)">
+
+    <div class="form-check" *ngFor="let opt of ex11Options">
+
+      <input
+        class="form-check-input"
+        type="radio"
+        formControlName="answer"
+        [value]="opt.value">
+
+      <label class="form-check-label">
+        {{ opt.label }}
+      </label>
+
+    </div>
+
+  </div>
+
+  <div *ngIf="steps && steps[currentStep]?.duration"
+       class="text-muted small mt-4 d-print-none">
+    Temps donné : {{ steps[currentStep].duration }} secondes
+  </div>
+
+  <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView"
+       class="progress mb-4"
+       role="progressbar"
+       aria-label="Progression de l'exercice"
+       [attr.aria-valuenow]="progress"
+       aria-valuemin="0"
+       aria-valuemax="100">
+
+    <div class="progress-bar" [style.width.%]="progress"></div>
+
+  </div>
+
+  <button *ngIf="!isReferentView"
+          type="submit"
+          class="btn btn-primary mt-4">
+    Suivant
+  </button>
+
+</form>
+
+<hr *ngIf="isReferentView">
+
+
+<!-- ===================================================== -->
+<!-- EXERCICE 12 -->
+<!-- ===================================================== -->
+
+<form *ngIf="isReferentView || currentStep === 11"
+      [formGroup]="formEx12"
+      (ngSubmit)="submitEx12()">
+
+  <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+    <span class="badge text-bg-dark text-white">
+      Catégorie : {{ steps[11].category }}
+    </span>
+
+    <div class="d-flex gap-2 ms-md-auto">
+      <span class="badge text-bg-warning">Exercice 12</span>
+
+      <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+        Max {{ steps[11].maxScore }} PNTS
+      </span>
+
+      <span class="badge text-bg-dark">
+        {{ getCurrentScore(11) }} PNTS
+      </span>
+    </div>
+
+  </div>
+
+  <app-document-eolien></app-document-eolien>
+
+  <div class="alert alert-light">
+    <i class="bi bi-info-circle me-2"></i>
+    Pour répondre à la question, cochez la bonne réponse.
+  </div>
+
+  <div class="alert bg-info instructions">
+    Le tribunal correctionnel de Montpellier a ordonné…
+  </div>
+
+  <div class="d-flex flex-column"
+       [class.d-md-flex]="shouldDisplayInline(ex12Options)"
+       [class.flex-md-row]="shouldDisplayInline(ex12Options)"
+       [class.gap-md-4]="shouldDisplayInline(ex12Options)"
+       [class.flex-wrap]="shouldDisplayInline(ex12Options)">
+
+    <div class="form-check" *ngFor="let opt of ex12Options">
+      <input class="form-check-input"
+             type="radio"
+             formControlName="answer"
+             [value]="opt.value">
+
+      <label class="form-check-label">
+        {{ opt.label }}
+      </label>
+    </div>
+
+  </div>
+
+  <div *ngIf="steps && steps[currentStep]?.duration"
+       class="text-muted small mt-4 d-print-none">
+    Temps donné : {{ steps[currentStep].duration }} secondes
+  </div>
+
+  <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView"
+       class="progress mb-4"
+       role="progressbar"
+       aria-label="Progression de l'exercice"
+       [attr.aria-valuenow]="progress"
+       aria-valuemin="0"
+       aria-valuemax="100">
+    <div class="progress-bar" [style.width.%]="progress"></div>
+  </div>
+
+  <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
+    Suivant
+  </button>
+
+</form>
+
+<hr *ngIf="isReferentView">
+
+
+<!-- ===================================================== -->
+<!-- EXERCICE 13 -->
+<!-- ===================================================== -->
+
+<form *ngIf="isReferentView || currentStep === 12"
+      [formGroup]="formEx13"
+      (ngSubmit)="submitEx13()">
+
+  <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+    <span class="badge text-bg-dark text-white">
+      Catégorie : {{ steps[12].category }}
+    </span>
+
+    <div class="d-flex gap-2 ms-md-auto">
+      <span class="badge text-bg-warning">Exercice 13</span>
+
+      <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+        Max {{ steps[12].maxScore }} PNTS
+      </span>
+
+      <span class="badge text-bg-dark">
+        {{ getCurrentScore(12) }} PNTS
+      </span>
+    </div>
+
+  </div>
+
+  <app-document-eolien></app-document-eolien>
+
+  <div class="alert alert-light">
+    <i class="bi bi-info-circle me-2"></i>
+    Pour répondre à la question, cochez la bonne réponse.
+  </div>
+
+  <div class="alert bg-info instructions">
+    Où se situe le parc d’Aumelas ?
+  </div>
+
+  <div class="d-flex flex-column"
+       [class.d-md-flex]="shouldDisplayInline(ex13Options)"
+       [class.flex-md-row]="shouldDisplayInline(ex13Options)"
+       [class.gap-md-4]="shouldDisplayInline(ex13Options)"
+       [class.flex-wrap]="shouldDisplayInline(ex13Options)">
+
+    <div class="form-check" *ngFor="let opt of ex13Options">
+      <input class="form-check-input"
+             type="radio"
+             formControlName="answer"
+             [value]="opt.value">
+
+      <label class="form-check-label">{{ opt.label }}</label>
+    </div>
+
+  </div>
+
+  <div *ngIf="steps && steps[currentStep]?.duration"
+       class="text-muted small mt-4 d-print-none">
+    Temps donné : {{ steps[currentStep].duration }} secondes
+  </div>
+
+  <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView"
+       class="progress mb-4"
+       role="progressbar"
+       aria-label="Progression de l'exercice"
+       [attr.aria-valuenow]="progress"
+       aria-valuemin="0"
+       aria-valuemax="100">
+    <div class="progress-bar" [style.width.%]="progress"></div>
+  </div>
+
+  <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
+    Suivant
+  </button>
+
+</form>
+
+<hr *ngIf="isReferentView">
+
+
+<!-- ===================================================== -->
+<!-- EXERCICE 14 -->
+<!-- ===================================================== -->
+
+<form *ngIf="isReferentView || currentStep === 13"
+      [formGroup]="formEx14"
+      (ngSubmit)="submitEx14()">
+
+  <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+    <span class="badge text-bg-dark text-white">
+      Catégorie : {{ steps[13].category }}
+    </span>
+
+    <div class="d-flex gap-2 ms-md-auto">
+      <span class="badge text-bg-warning">Exercice 14</span>
+
+      <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+        Max {{ steps[13].maxScore }} PNTS
+      </span>
+
+      <span class="badge text-bg-dark">
+        {{ getCurrentScore(13) }} PNTS
+      </span>
+    </div>
+
+  </div>
+
+  <app-document-eolien></app-document-eolien>
+
+  <div class="alert alert-light">
+    <i class="bi bi-info-circle me-2"></i>
+    Pour répondre à la question, cochez la bonne réponse.
+  </div>
+
+  <div class="alert bg-info instructions">
+    Pourquoi le tribunal a ordonné l’arrêt des 2 parcs éoliens ?
+  </div>
+
+  <div class="d-flex flex-column"
+       [class.d-md-flex]="shouldDisplayInline(ex14Options)"
+       [class.flex-md-row]="shouldDisplayInline(ex14Options)"
+       [class.gap-md-4]="shouldDisplayInline(ex14Options)"
+       [class.flex-wrap]="shouldDisplayInline(ex14Options)">
+
+    <div class="form-check" *ngFor="let opt of ex14Options">
+      <input class="form-check-input"
+             type="radio"
+             formControlName="answer"
+             [value]="opt.value">
+
+      <label class="form-check-label">{{ opt.label }}</label>
+    </div>
+
+  </div>
+
+  <div *ngIf="steps && steps[currentStep]?.duration"
+       class="text-muted small mt-4 d-print-none">
+    Temps donné : {{ steps[currentStep].duration }} secondes
+  </div>
+
+  <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView"
+       class="progress mb-4"
+       role="progressbar"
+       aria-label="Progression de l'exercice"
+       [attr.aria-valuenow]="progress"
+       aria-valuemin="0"
+       aria-valuemax="100">
+    <div class="progress-bar" [style.width.%]="progress"></div>
+  </div>
+
+  <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
+    Suivant
+  </button>
+
+</form>
+
+<hr *ngIf="isReferentView">
+
+
+<!-- ===================================================== -->
+<!-- EXERCICE 15 -->
+<!-- ===================================================== -->
+
+<form *ngIf="isReferentView || currentStep === 14"
+      [formGroup]="formEx15"
+      (ngSubmit)="submitEx15()">
+
+  <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+    <span class="badge text-bg-dark text-white">
+      Catégorie : {{ steps[14].category }}
+    </span>
+
+    <div class="d-flex gap-2 ms-md-auto">
+      <span class="badge text-bg-warning">Exercice 15</span>
+
+      <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+        Max {{ steps[14].maxScore }} PNTS
+      </span>
+
+      <span class="badge text-bg-dark">
+        {{ getCurrentScore(14) }} PNTS
+      </span>
+    </div>
+
+  </div>
+
+  <app-document-eolien></app-document-eolien>
+
+  <div class="alert alert-light">
+    <i class="bi bi-info-circle me-2"></i>
+    Pour répondre à la question, cochez la bonne réponse.
+  </div>
+
+  <div class="alert bg-info instructions">
+    Que veut dire « espèces protégées » ?
+  </div>
+
+  <div class="d-flex flex-column"
+       [class.d-md-flex]="shouldDisplayInline(ex15Options)"
+       [class.flex-md-row]="shouldDisplayInline(ex15Options)"
+       [class.gap-md-4]="shouldDisplayInline(ex15Options)"
+       [class.flex-wrap]="shouldDisplayInline(ex15Options)">
+
+    <div class="form-check" *ngFor="let opt of ex15Options">
+      <input class="form-check-input"
+             type="radio"
+             formControlName="answer"
+             [value]="opt.value">
+
+      <label class="form-check-label">{{ opt.label }}</label>
+    </div>
+
+  </div>
+
+  <div *ngIf="steps && steps[currentStep]?.duration"
+       class="text-muted small mt-4 d-print-none">
+    Temps donné : {{ steps[currentStep].duration }} secondes
+  </div>
+
+  <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView"
+       class="progress mb-4"
+       role="progressbar"
+       aria-label="Progression de l'exercice"
+       [attr.aria-valuenow]="progress"
+       aria-valuemin="0"
+       aria-valuemax="100">
+    <div class="progress-bar" [style.width.%]="progress"></div>
+  </div>
+
+  <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
+    Suivant
+  </button>
+
+</form>
+
+<hr *ngIf="isReferentView">
+
+
+<!-- ===================================================== -->
+<!-- EXERCICE 16 -->
+<!-- ===================================================== -->
+
+<form *ngIf="isReferentView || currentStep === 15"
+      [formGroup]="formEx16"
+      (ngSubmit)="submitEx16()">
+
+  <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+    <span class="badge text-bg-dark text-white">
+      Catégorie : {{ steps[15].category }}
+    </span>
+
+    <div class="d-flex gap-2 ms-md-auto">
+      <span class="badge text-bg-warning">Exercice 16</span>
+
+      <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+        Max {{ steps[15].maxScore }} PNTS
+      </span>
+
+      <span class="badge text-bg-dark">
+        {{ getCurrentScore(15) }} PNTS
+      </span>
+    </div>
+
+  </div>
+
+  <app-document-eolien></app-document-eolien>
+
+  <div class="alert alert-light">
+    <i class="bi bi-info-circle me-2"></i>
+    Pour répondre à la question, cochez la bonne réponse.
+  </div>
+
+  <div class="alert bg-info instructions">
+    Quelle est la condamnation de la Société Energie Renouvelable du Languedoc ?
+  </div>
+
+  <div class="d-flex flex-column"
+       [class.d-md-flex]="shouldDisplayInline(ex16Options)"
+       [class.flex-md-row]="shouldDisplayInline(ex16Options)"
+       [class.gap-md-4]="shouldDisplayInline(ex16Options)"
+       [class.flex-wrap]="shouldDisplayInline(ex16Options)">
+
+    <div class="form-check" *ngFor="let opt of ex16Options">
+      <input class="form-check-input"
+             type="radio"
+             formControlName="answer"
+             [value]="opt.value">
+
+      <label class="form-check-label">{{ opt.label }}</label>
+    </div>
+
+  </div>
+
+  <div *ngIf="steps && steps[currentStep]?.duration"
+       class="text-muted small mt-4 d-print-none">
+    Temps donné : {{ steps[currentStep].duration }} secondes
+  </div>
+
+  <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView"
+       class="progress mb-4"
+       role="progressbar"
+       aria-label="Progression de l'exercice"
+       [attr.aria-valuenow]="progress"
+       aria-valuemin="0"
+       aria-valuemax="100">
+    <div class="progress-bar" [style.width.%]="progress"></div>
+  </div>
+
+  <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
+    Suivant
+  </button>
+
+</form>
+
+<hr *ngIf="isReferentView">
+
+
+<!-- ===================================================== -->
+<!-- EXERCICE 17 -->
+<!-- ===================================================== -->
+
+<form *ngIf="isReferentView || currentStep === 16"
+      [formGroup]="formEx17"
+      (ngSubmit)="submitEx17()">
+
+  <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+
+    <span class="badge text-bg-dark text-white">
+      Catégorie : {{ steps[16].category }}
+    </span>
+
+    <div class="d-flex gap-2 ms-md-auto">
+      <span class="badge text-bg-warning">Exercice 17</span>
+
+      <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+        Max {{ steps[16].maxScore }} PNTS
+      </span>
+
+      <span class="badge text-bg-dark">
+        {{ getCurrentScore(16) }} PNTS
+      </span>
+    </div>
+
+  </div>
+
+  <app-document-eolien></app-document-eolien>
+
+  <div class="alert alert-light">
+    <i class="bi bi-info-circle me-2"></i>
+    Pour répondre à la question, cochez la bonne réponse.
+  </div>
+
+  <div class="alert bg-info instructions">
+    Quel est le montant total à verser aux associations qui défendent les espèces protégées ?
+  </div>
+
+  <div class="d-flex flex-column"
+       [class.d-md-flex]="shouldDisplayInline(ex17Options)"
+       [class.flex-md-row]="shouldDisplayInline(ex17Options)"
+       [class.gap-md-4]="shouldDisplayInline(ex17Options)"
+       [class.flex-wrap]="shouldDisplayInline(ex17Options)">
+
+    <div class="form-check" *ngFor="let opt of ex17Options">
+      <input class="form-check-input"
+             type="radio"
+             formControlName="answer"
+             [value]="opt.value">
+
+      <label class="form-check-label">{{ opt.label }}</label>
+    </div>
+
+  </div>
+
+  <div *ngIf="steps && steps[currentStep]?.duration"
+       class="text-muted small mt-4 d-print-none">
+    Temps donné : {{ steps[currentStep].duration }} secondes
+  </div>
+
+  <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView"
+       class="progress mb-4"
+       role="progressbar"
+       aria-label="Progression de l'exercice"
+       [attr.aria-valuenow]="progress"
+       aria-valuemin="0"
+       aria-valuemax="100">
+    <div class="progress-bar" [style.width.%]="progress"></div>
+  </div>
+
+  <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
+    Suivant
+  </button>
+
+</form>
+
+<!-- ===================================================== -->
+<!-- EXERCICE 18 -->
+<!-- ===================================================== -->
+
+<form
+  class="nouvelle-page"
+  *ngIf="isReferentView || currentStep === 17"
+  [formGroup]="formEx18"
+  (ngSubmit)="submitEx18()">
+
+  <!-- HEADER -->
+
+  <div class="title mb-4 d-flex flex-column flex-md-row
+              align-items-start align-items-md-center gap-2">
+
+    <span class="badge text-bg-dark text-white">
+      <i class="bi bi-tag-fill me-2"></i>
+      Catégorie : Compréhension des écrits
+    </span>
+
+    <div class="d-flex gap-2 ms-md-auto">
+
+      <span class="badge text-bg-warning">
+        Exercice 18
+      </span>
+
+      <span *ngIf="isReferentView"
+            class="badge border border-secondary text-secondary">
+        Max {{ steps[17].maxScore }} PNTS
+      </span>
+
+      <!-- Score éditable par le référent -->
+      <span
+        class="badge text-bg-dark"
+        [class.clickable-step-badge]="isReferentView && !aggregateState['isFinal']"
+        (click)="isReferentView && !aggregateState['isFinal'] && editStepScore(17)">
+
+        {{ getCurrentScore(17) }} PNTS
+
+      </span>
+
+    </div>
+
+  </div>
+
+  <!-- DOCUMENT COMMUN -->
+
+  <app-document-eolien></app-document-eolien>
+
+  <!-- QUESTION -->
+
+  <div class="alert bg-info instructions">
+
+    « La protection du climat ne peut pas se faire au détriment de la biodiversité »
+
+    <br><br>
+
+    Que veut dire Allain Bougrain Dubourg au travers de cette phrase ?
+
+  </div>
+
+  <!-- RÉPONSE LIBRE -->
+
+  <textarea
+    class="form-control"
+    rows="6"
+    formControlName="answer">
+  </textarea>
+
+  <!-- TIMELINE -->
+
+  <div
+    *ngIf="steps && steps[currentStep]?.duration"
+    class="text-muted small mt-4 d-print-none">
+
+    Temps donné : {{ steps[currentStep].duration }} secondes
+
+  </div>
+
+  <div
+    *ngIf="steps && steps[currentStep]?.duration && !isReferentView"
+    class="progress mb-4"
+    role="progressbar"
+    aria-label="Progression de l'exercice"
+    [attr.aria-valuenow]="progress"
+    aria-valuemin="0"
+    aria-valuemax="100">
+
+    <div
+      class="progress-bar"
+      [style.width.%]="progress">
+    </div>
+
+  </div>
+
+  <!-- SOUMISSION -->
+
+  <button
+    *ngIf="!isReferentView"
+    type="submit"
+    class="btn btn-primary mt-4">
+
+    Suivant
+
+  </button>
+
+</form>
+
+<hr *ngIf="isReferentView">
+
+<!-- ===================================================== -->
+<!-- EXERCICE 19 -->
+<!-- ===================================================== -->
+
+<form
+  class="nouvelle-page"
+  *ngIf="isReferentView || currentStep === 18"
+  [formGroup]="formEx19"
+  (ngSubmit)="submitEx19()">
+
+  <!-- HEADER -->
+
+  <div class="title mb-4 d-flex flex-column flex-md-row
+              align-items-start align-items-md-center gap-2">
+
+    <span class="badge text-bg-dark text-white">
+      <i class="bi bi-tag-fill me-2"></i>
+      Catégorie : Compréhension des écrits
+    </span>
+
+    <div class="d-flex gap-2 ms-md-auto">
+
+      <span class="badge text-bg-warning">
+        Exercice 19
+      </span>
+
+      <span *ngIf="isReferentView"
+            class="badge border border-secondary text-secondary">
+        Max {{ steps[18].maxScore }} PNTS
+      </span>
+
+      <span class="badge text-bg-dark">
+        {{ getCurrentScore(18) }} PNTS
+      </span>
+
+    </div>
+
+  </div>
+
+  <!-- DOCUMENT COMMUN -->
+
+  <app-document-eolien></app-document-eolien>
+
+  <!-- INSTRUCTIONS -->
+
+  <div class="alert alert-light">
+    <i class="bi bi-info-circle me-2"></i>
+    Pour répondre à la question, cochez la bonne réponse.
+  </div>
+
+  <!-- QUESTION -->
+
+  <div class="alert bg-info instructions">
+    Combien d’associations sont parties civiles dans cette affaire ?
+  </div>
+
+  <!-- OPTIONS -->
+
+  <div
+    class="d-flex flex-column"
+    [class.d-md-flex]="shouldDisplayInline(ex19Options)"
+    [class.flex-md-row]="shouldDisplayInline(ex19Options)"
+    [class.gap-md-4]="shouldDisplayInline(ex19Options)"
+    [class.flex-wrap]="shouldDisplayInline(ex19Options)">
+
+    <div
+      class="form-check"
+      *ngFor="let opt of ex19Options">
+
+      <input
+        class="form-check-input"
+        type="radio"
+        formControlName="answer"
+        [value]="opt.value">
+
+      <label class="form-check-label">
+        {{ opt.label }}
+      </label>
+
+    </div>
+
+  </div>
+
+  <!-- TIMELINE -->
+
+  <div
+    *ngIf="steps && steps[currentStep]?.duration"
+    class="text-muted small mt-4 d-print-none">
+
+    Temps donné : {{ steps[currentStep].duration }} secondes
+
+  </div>
+
+  <div
+    *ngIf="steps && steps[currentStep]?.duration && !isReferentView"
+    class="progress mb-4"
+    role="progressbar"
+    aria-label="Progression de l'exercice"
+    [attr.aria-valuenow]="progress"
+    aria-valuemin="0"
+    aria-valuemax="100">
+
+    <div
+      class="progress-bar"
+      [style.width.%]="progress">
+    </div>
+
+  </div>
+
+  <!-- SOUMISSION -->
+
+  <button
+    *ngIf="!isReferentView"
+    type="submit"
+    class="btn btn-primary mt-4">
+
+    Suivant
+
+  </button>
+
+</form>
+
+<hr *ngIf="isReferentView">
+
+
+
+
 <hr *ngIf="isReferentView">
 
 </div>

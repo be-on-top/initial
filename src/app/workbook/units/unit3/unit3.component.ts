@@ -21,7 +21,7 @@ interface Step {
 
 export class Unit3Component {
 
-  label: string = "FLE niveau B1"
+  label: string = "FLE niveau B1 & B2"
 
   // On déclare en haut du composant
   commentCtrl = new FormControl('');
@@ -77,11 +77,12 @@ export class Unit3Component {
     { id: 'ex15', category: this.categories[0], duration: 50, maxScore: 1 },
     { id: 'ex16', category: this.categories[0], duration: 90, maxScore: 1 },
     { id: 'ex17', category: this.categories[0], duration: 50, maxScore: 1 },
-    { id: 'ex18', category: this.categories[0], duration: 60, maxScore: 1 },
+    { id: 'ex18', category: this.categories[0], maxScore: 2 }, // le seul en texte libre
     { id: 'ex19', category: this.categories[0], duration: 50, maxScore: 1 },
-    { id: 'ex20', category: this.categories[0], duration: 50, maxScore: 1 },
+    { id: 'ex20', category: this.categories[0], duration: 50, maxScore: 1 }, // autre série
 
-    { id: 'ex21', category: this.categories[1], maxScore: 1 },
+    // à faire...
+    { id: 'ex21', category: this.categories[1], maxScore: 11 },
     { id: 'ex22', category: this.categories[1], maxScore: 11 }
   ];
 
@@ -149,6 +150,71 @@ export class Unit3Component {
   termesNeuf10 = ['neuve', 'nouvelle', 'récente'];
   termesAncien10 = ['ancienne', 'vieille'];
 
+  // Ex11 = question 1
+  ex11Options = [
+    { value: 'eole', label: 'Éole' },
+    { value: 'eoliennes', label: 'Éoliennes' },
+    { value: 'ventilateurs', label: 'Ventilateurs' }
+  ];
+  correctAnswerEx11 = 'eoliennes';
+
+  // Ex12 = question 2
+  ex12Options = [
+    { value: 'arret_aumelas', label: "L'arrêt pour 4 mois des éoliennes du parc 'Aumelas" },
+    { value: 'arret_valeco', label: "L'arrêt du groupe Valeco" },
+    { value: 'arret_oiseaux', label: "L'arrêt du vol des oiseaux en voie de disparition" }
+  ];
+  correctAnswerEx12 = 'arret_aumelas';
+
+  // Ex13 = question 3
+  ex13Options = [
+    { value: 'var', label: 'Dans le Var' },
+    { value: 'bouches_du_rhone', label: 'Dans les Bouches-du-Rhône' },
+    { value: 'herault', label: "Dans l'Hérault" }
+  ];
+  correctAnswerEx13 = 'herault';
+
+  // Ex14 = question 4
+  ex14Options = [
+    { value: 'vent', label: "Car il n'y a pas assez de vent pour faire tourner les pales" },
+    { value: 'oiseaux', label: "Car responsables de la mort d'oiseaux d'espèces protégées" },
+    { value: 'normes', label: "Car pas aux normes pour le respect de l'environnement" }
+  ];
+  correctAnswerEx14 = 'oiseaux';
+
+  // Ex15 = question 5
+  ex15Options = [
+    { value: 'conservation', label: "Qui fait l'objet de mesures de conservation" },
+    { value: 'disciplinaires', label: "Qui fait l'objet de mesures disciplinaires" },
+    { value: 'destruction', label: "Qui fait l'objet de mesures de destruction" }
+  ];
+  correctAnswerEx15 = 'conservation';
+
+  // Ex16 = question 6
+  ex16Options = [
+    { value: 'demolition', label: 'La démolition complète des éoliennes' },
+    { value: '200000', label: 'Une amende de 200.000 €' },
+    { value: '40000', label: 'Une amende de 40.000 €' }
+  ];
+  correctAnswerEx16 = '200000';
+
+  // Ex17 = question 7
+  ex17Options = [
+    { value: '30000', label: '30.000 €' },
+    { value: '38000', label: '38.000 €' },
+    { value: '39000', label: '39.000 €' }
+  ];
+  correctAnswerEx17 = '39000';
+
+  // Ex19 = question 9
+
+  ex19Options = [
+    { value: 'plus_10', label: 'Plus de 10' },
+    { value: 'moins_5', label: 'Moins de 5' },
+    { value: '6', label: '6' }
+  ];
+
+  correctAnswerEx19 = '6';
 
 
   constructor(private fb: FormBuilder, private auth: AuthService, private service: WorkbookService, private route: ActivatedRoute, private router: Router) {
@@ -333,8 +399,43 @@ export class Unit3Component {
       answer: ['']
     });
 
-    // Question 4
+    // Ex11
     this.formEx11 = this.fb.group({
+      answer: ['']
+    });
+
+    // Ex12
+    this.formEx12 = this.fb.group({
+      answer: ['']
+    });
+
+    // Ex13
+    this.formEx13 = this.fb.group({
+      answer: ['']
+    });
+
+    // Ex14
+    this.formEx14 = this.fb.group({
+      answer: ['']
+    });
+
+    // Ex15
+    this.formEx15 = this.fb.group({
+      answer: ['']
+    });
+
+    // Ex16
+    this.formEx16 = this.fb.group({
+      answer: ['']
+    });
+
+    // Ex17
+    this.formEx17 = this.fb.group({
+      answer: ['']
+    });
+
+    // Ex18
+    this.formEx18 = this.fb.group({
       answer: ['']
     });
 
@@ -597,31 +698,268 @@ export class Unit3Component {
     this.next();
   }
 
-submitEx10() {
+  submitEx10() {
+    this.alreadySubmitted = true;
+
+    let score = 0;
+
+    const answer = this.formEx10.value.answer || '';
+
+    const normalizedAnswer = answer
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+
+    const hasNeuf = this.termesNeuf10.some(term =>
+      normalizedAnswer.includes(
+        term.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      )
+    );
+
+    const hasAncien = this.termesAncien10.some(term =>
+      normalizedAnswer.includes(
+        term.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      )
+    );
+
+    if (hasNeuf && hasAncien) {
+      score = 1;
+    }
+
+    const category = this.getCurrentCategory();
+
+    this.service.saveUnitFlat(
+      this.uid,
+      "unit3",
+      "ex10",
+      this.formEx10,
+      score,
+      category
+    );
+
+    this.aggregate(category, score);
+
+    this.next();
+  }
+
+  submitEx11() {
+    this.alreadySubmitted = true;
+
+    let score = 0;
+
+    const answer = this.formEx11.value.answer;
+
+    if (answer === this.correctAnswerEx11) {
+      score = 1;
+    }
+
+    const category = this.getCurrentCategory();
+
+    this.service.saveUnitFlat(
+      this.uid,
+      "unit3",
+      "ex11",
+      this.formEx11,
+      score,
+      category
+    );
+
+    this.aggregate(category, score);
+
+    this.next();
+  }
+
+  submitEx12() {
+    this.alreadySubmitted = true;
+
+    let score = 0;
+
+    const answer = this.formEx12.value.answer;
+
+    if (answer === this.correctAnswerEx12) {
+      score = 1;
+    }
+
+    const category = this.getCurrentCategory();
+
+    this.service.saveUnitFlat(
+      this.uid,
+      "unit3",
+      "ex12",
+      this.formEx12,
+      score,
+      category
+    );
+
+    this.aggregate(category, score);
+
+    this.next();
+  }
+
+  submitEx13() {
+    this.alreadySubmitted = true;
+
+    let score = 0;
+
+    const answer = this.formEx13.value.answer;
+
+    if (answer === this.correctAnswerEx13) {
+      score = 1;
+    }
+
+    const category = this.getCurrentCategory();
+
+    this.service.saveUnitFlat(
+      this.uid,
+      "unit3",
+      "ex13",
+      this.formEx13,
+      score,
+      category
+    );
+
+    this.aggregate(category, score);
+
+    this.next();
+  }
+
+  submitEx14() {
+    this.alreadySubmitted = true;
+
+    let score = 0;
+
+    const answer = this.formEx14.value.answer;
+
+    if (answer === this.correctAnswerEx14) {
+      score = 1;
+    }
+
+    const category = this.getCurrentCategory();
+
+    this.service.saveUnitFlat(
+      this.uid,
+      "unit3",
+      "ex14",
+      this.formEx14,
+      score,
+      category
+    );
+
+    this.aggregate(category, score);
+
+    this.next();
+  }
+
+  submitEx15() {
+    this.alreadySubmitted = true;
+
+    let score = 0;
+
+    const answer = this.formEx15.value.answer;
+
+    if (answer === this.correctAnswerEx15) {
+      score = 1;
+    }
+
+    const category = this.getCurrentCategory();
+
+    this.service.saveUnitFlat(
+      this.uid,
+      "unit3",
+      "ex15",
+      this.formEx15,
+      score,
+      category
+    );
+
+    this.aggregate(category, score);
+
+    this.next();
+  }
+
+  submitEx16() {
+    this.alreadySubmitted = true;
+
+    let score = 0;
+
+    const answer = this.formEx16.value.answer;
+
+    if (answer === this.correctAnswerEx16) {
+      score = 1;
+    }
+
+    const category = this.getCurrentCategory();
+
+    this.service.saveUnitFlat(
+      this.uid,
+      "unit3",
+      "ex16",
+      this.formEx16,
+      score,
+      category
+    );
+
+    this.aggregate(category, score);
+
+    this.next();
+  }
+
+  submitEx17() {
+    this.alreadySubmitted = true;
+
+    let score = 0;
+
+    const answer = this.formEx17.value.answer;
+
+    if (answer === this.correctAnswerEx17) {
+      score = 1;
+    }
+
+    const category = this.getCurrentCategory();
+
+    this.service.saveUnitFlat(
+      this.uid,
+      "unit3",
+      "ex17",
+      this.formEx17,
+      score,
+      category
+    );
+
+    this.aggregate(category, score);
+
+    this.next();
+  }
+
+  submitEx18() {
+    this.alreadySubmitted = true;
+
+    const score = 0;
+
+    const category = this.getCurrentCategory();
+
+    this.service.saveUnitFlat(
+      this.uid,
+      "unit3",
+      "ex18",
+      this.formEx18,
+      score,
+      category
+    );
+
+    this.aggregate(category, score);
+
+    this.next();
+  }
+
+  submitEx19() {
   this.alreadySubmitted = true;
 
   let score = 0;
 
-  const answer = this.formEx10.value.answer || '';
+  const answer = this.formEx19.value.answer;
 
-  const normalizedAnswer = answer
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '');
-
-  const hasNeuf = this.termesNeuf10.some(term =>
-    normalizedAnswer.includes(
-      term.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    )
-  );
-
-  const hasAncien = this.termesAncien10.some(term =>
-    normalizedAnswer.includes(
-      term.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    )
-  );
-
-  if (hasNeuf && hasAncien) {
+  if (answer === this.correctAnswerEx19) {
     score = 1;
   }
 
@@ -630,8 +968,8 @@ submitEx10() {
   this.service.saveUnitFlat(
     this.uid,
     "unit3",
-    "ex10",
-    this.formEx10,
+    "ex19",
+    this.formEx19,
     score,
     category
   );
@@ -747,24 +1085,23 @@ submitEx10() {
     switch (this.currentStep) {
 
       case 0: this.submitEx1(); break;
-
       case 1: this.submitEx2(); break;
-
       case 2: this.submitEx3(); break;
-
       case 3: this.submitEx4(); break;
-
       case 4: this.submitEx5(); break;
-
       case 5: this.submitEx6(); break;
-
       case 6: this.submitEx7(); break;
-
       case 7: this.submitEx8(); break;
-
       case 8: this.submitEx9(); break;
-
       case 9: this.submitEx10(); break;
+      case 9: this.submitEx10(); break;
+      case 10: this.submitEx11(); break;
+      case 11: this.submitEx12(); break;
+      case 12: this.submitEx13(); break;
+      case 13: this.submitEx14(); break;
+      case 14: this.submitEx15(); break;
+      case 15: this.submitEx16(); break;
+      case 16: this.submitEx17(); break;
 
 
     }
