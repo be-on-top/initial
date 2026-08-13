@@ -87,7 +87,7 @@ export class Unit3Component {
   ];
 
 
-  currentStep = 0;
+  currentStep = 17;
 
   // const step = this.steps[this.currentStep];
   // const category = step.category;
@@ -436,6 +436,21 @@ export class Unit3Component {
 
     // Ex18
     this.formEx18 = this.fb.group({
+      answer: ['']
+    });
+
+    // Ex19
+    this.formEx19 = this.fb.group({
+      answer: ['']
+    });
+
+    // Ex20
+    this.formEx20 = this.fb.group({
+      answer: ['']
+    });
+
+    // Ex21
+    this.formEx21 = this.fb.group({
       answer: ['']
     });
 
@@ -953,32 +968,97 @@ export class Unit3Component {
   }
 
   submitEx19() {
-  this.alreadySubmitted = true;
+    this.alreadySubmitted = true;
 
-  let score = 0;
+    let score = 0;
 
-  const answer = this.formEx19.value.answer;
+    const answer = this.formEx19.value.answer;
 
-  if (answer === this.correctAnswerEx19) {
-    score = 1;
+    if (answer === this.correctAnswerEx19) {
+      score = 1;
+    }
+
+    const category = this.getCurrentCategory();
+
+    this.service.saveUnitFlat(
+      this.uid,
+      "unit3",
+      "ex19",
+      this.formEx19,
+      score,
+      category
+    );
+
+    this.aggregate(category, score);
+
+    this.next();
   }
 
-  const category = this.getCurrentCategory();
+  submitEx20() {
+    this.alreadySubmitted = true;
 
-  this.service.saveUnitFlat(
-    this.uid,
-    "unit3",
-    "ex19",
-    this.formEx19,
-    score,
-    category
-  );
+    const score = 0;
 
-  this.aggregate(category, score);
+    const category = this.getCurrentCategory();
 
-  this.next();
-}
+    this.service.saveUnitFlat(
+      this.uid,
+      "unit3",
+      "ex20",
+      this.formEx20,
+      score,
+      category
+    );
 
+    this.aggregate(category, score);
+
+    this.next();
+  }
+
+
+
+  // EX21 - Dernier exercice de l'unité
+  submitEx21() {
+
+    this.alreadySubmitted = true;
+
+    // Production écrite :
+    // aucun scoring automatique.
+    const score = 0;
+
+    const category = this.getCurrentCategory();
+
+    this.service.saveUnitFlat(
+      this.uid,
+      "unit3",
+      "ex21",
+      this.formEx21,
+      score,
+      category
+    );
+
+    this.aggregate(category, score);
+
+    // Dernier exercice de l'unité :
+    // on enregistre les résultats finaux au lieu
+    // de passer à l'exercice suivant.
+
+    // S'assure que la catégorie existe dans l'agrégation,
+    // même si aucun point n'a été obtenu.
+    if (!this.aggregateState[category]) {
+      this.aggregateState[category] = null as any;
+    }
+
+    this.service.saveUnitResult(
+      this.uid,
+      "unit3",
+      this.aggregateState
+    ).then(() => {
+
+      this.showFinalMessage = true;
+
+    });
+  }
 
   // 1. Compter les mots (minimum 60)
   countWords(text: string): number {
