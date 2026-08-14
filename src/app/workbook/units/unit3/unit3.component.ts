@@ -1015,8 +1015,6 @@ export class Unit3Component {
     this.next();
   }
 
-
-
   // EX21 - Dernier exercice de l'unité
   submitEx21() {
 
@@ -1182,6 +1180,10 @@ export class Unit3Component {
       case 14: this.submitEx15(); break;
       case 15: this.submitEx16(); break;
       case 16: this.submitEx17(); break;
+      case 17: this.submitEx18(); break;
+      case 18: this.submitEx19(); break;
+      case 19: this.submitEx20(); break;
+      case 20: this.submitEx21(); break;
 
 
     }
@@ -1406,7 +1408,6 @@ export class Unit3Component {
       this.formEx19.disable();
       this.formEx20.disable();
       this.formEx21.disable();
-      this.formEx22.disable();
     }
 
     // On récupère ce que le candidat a enregistré en base à la fin de son EX22
