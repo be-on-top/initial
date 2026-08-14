@@ -26,7 +26,7 @@ export class PartnersComponent implements OnInit {
 
     // SEO : exécuté immédiatement, sans attendre Firebase
     this.title.setTitle(
-      'Nos partenaires | Be-On-Top'
+      'Partenaires de nos parcours de formation et d\'accompagnement | Be-On-Top'
     );
 
     this.meta.updateTag({
