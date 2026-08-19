@@ -285,6 +285,27 @@
         </div>
     </div>
 
+        <!-- ==================== BLOC UNITÉ 3 ==================== -->
+    <div class="mb-3 p-3 border rounded bg-light">
+        <!-- Cas A : Unité 3 complétée -->
+        <div *ngIf="hasCompletedUnit3" class="d-flex align-items-center justify-content-between py-1">
+            <div>
+                <span class="badge bg-success rounded-0 me-2">Unité 3 (FLE Niveau B1-B2)</span>
+                <span class="fw-semibold text-success">Terminée !</span>
+            </div>
+            <a *ngIf="studentId" [routerLink]="['/workbook/unit3', studentId]" target="_blank"
+                class="btn btn-primary btn-sm rounded-0">
+                📊 Consulter les résultats
+            </a>
+        </div>
+
+        <!-- Cas B : Unité 2 non réalisée -->
+        <div *ngIf="!hasCompletedUnit3" class="py-1">
+            <span class="badge bg-secondary rounded-0 me-2">Unité 3 (FLE Niveau B1-B2)</span>
+            <span class="text-muted small">Aucune évaluation soumise pour le moment.</span>
+        </div>
+    </div>
+
 </div>
 <!-- FIN EVALUATIONS TRANSVERSES WORKBOOK -->
 
