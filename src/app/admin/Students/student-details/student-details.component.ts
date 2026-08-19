@@ -85,6 +85,8 @@ export class StudentDetailsComponent implements OnInit, AfterViewInit {
 
   hasCompletedUnit1 = false; // Flag simplifié pour unité 1 du workbook
   hasCompletedUnit2 = false; // Flag simplifié pour unité 2 du workbook
+  hasCompletedUnit3 = false; // Flag simplifié pour unité 3 du workbook
+  
 
   private workbookSub!: Subscription;
 
@@ -160,6 +162,13 @@ export class StudentDetailsComponent implements OnInit, AfterViewInit {
       .subscribe(exists => {
         this.hasCompletedUnit2 = exists;
         console.log('📊 Unité 2 :', this.hasCompletedUnit2);
+      });
+
+    // Unité 3 (exactement le même pattern)
+    this.service.checkUserUnit3Status(this.studentId)
+      .subscribe(exists => {
+        this.hasCompletedUnit3 = exists;
+        console.log('📊 Unité 3 :', this.hasCompletedUnit3);
       });
 
 

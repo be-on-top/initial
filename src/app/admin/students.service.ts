@@ -2026,6 +2026,18 @@ export class StudentsService {
       })
     );
   }
+  
+  checkUserUnit3Status(studentId: string): Observable<boolean> {
+    const workbookRef = doc(this.firestore, 'workbook', studentId);
+
+    return docData(workbookRef).pipe(
+      map((docData: any) => {
+        // 🕵️‍♂️ On va chercher directement la clé textuelle "units.unit2.result"
+        // Si elle existe dans le document, cela signifie que les scores ont été calculés !
+        return !!(docData && docData['units.unit3.result']);
+      })
+    );
+  }
 
 
 

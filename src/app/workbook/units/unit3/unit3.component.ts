@@ -57,7 +57,6 @@ export class Unit3Component {
  * de l'unité 3 sans modifier les formulaires.
  * ===================================================== */
 
-
   steps: Step[] = [
     { id: 'ex1', category: this.categories[0], duration: 90, maxScore: 1 }, // premier d'une série
     { id: 'ex2', category: this.categories[0], duration: 90, maxScore: 1 },
@@ -87,7 +86,7 @@ export class Unit3Component {
   ];
 
 
-  currentStep = 17;
+  currentStep = 19;
 
   // const step = this.steps[this.currentStep];
   // const category = step.category;
