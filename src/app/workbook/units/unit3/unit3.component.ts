@@ -67,7 +67,7 @@ export class Unit3Component {
     { id: 'ex7', category: this.categories[0], duration: 90, maxScore: 1 },
     { id: 'ex8', category: this.categories[0], duration: 90, maxScore: 1 },
     { id: 'ex9', category: this.categories[0], duration: 90, maxScore: 1 },
-    { id: 'ex10', category: this.categories[0], duration: 90, maxScore: 1 },
+    { id: 'ex10', category: this.categories[0], duration: 100, maxScore: 1 },
     // à venir ... :
     { id: 'ex11', category: this.categories[0], duration: 50, maxScore: 1 }, // premier d'une série ?
     { id: 'ex12', category: this.categories[0], duration: 90, maxScore: 1 },
@@ -86,7 +86,7 @@ export class Unit3Component {
   ];
 
 
-  currentStep = 19;
+  currentStep = 0;
 
   // const step = this.steps[this.currentStep];
   // const category = step.category;
@@ -132,9 +132,38 @@ export class Unit3Component {
 
   correctAnswerEx3 = ['fédération', 'française', 'bâtiment'];
 
-  correctAnswerEx4 = ['entretien', 'amélioration'];
+  // correctAnswerEx4 = ['entretien', 'amélioration'];
+  correctAnswerEx4 = [
+    'isoler',
+    'isolation',
+    'combles',
+    'extérieur',
+    'intérieur',
+    'chauffage',
+    'aérothermique',
+    'ventilation'
+  ];
 
-  correctAnswerEx5 = ['recul', 'transactions', 'logements anciens'];
+  // correctAnswerEx5 = ['recul', 'transactions', 'logements anciens'];
+  termesRenovationEx5 = [
+    'travaux',
+    'rénovation',
+    'rénover'
+  ];
+
+  termesCoutEx5 = [
+    'cher',
+    'coûte',
+    'coût',
+    'prix'
+  ];
+
+  termesFinancementEx5 = [
+    'taux zéro',
+    'taux à zéro',
+    'ptz',
+    'gel'
+  ];
 
   correctAnswerEx6 = ['motion de censure', 'renversement du gouvernement'];
 
@@ -148,6 +177,23 @@ export class Unit3Component {
 
   termesNeuf10 = ['neuve', 'nouvelle', 'récente'];
   termesAncien10 = ['ancienne', 'vieille'];
+  // ajout recherche de comparaison
+  termesComparaison10 = [
+    'cher',
+    'prix',
+    'coût',
+    'travaux',
+    'rénovation',
+    'énergie',
+    'énergivore',
+    'thermique',
+    'phonique',
+    'performante',
+    'habitable',
+    'patient',
+    'mois',
+    'taxe foncière'
+  ];
 
   // Ex11 = question 1
   ex11Options = [
@@ -550,14 +596,52 @@ export class Unit3Component {
     this.next();
   }
 
+  // submitEx4() {
+  //   this.alreadySubmitted = true;
+
+  //   let score = 0;
+
+  //   const answer = this.formEx4.value.answer;
+
+  //   if (this.containsKeywords(answer, this.correctAnswerEx4)) {
+  //     score = 1;
+  //   }
+
+  //   const category = this.getCurrentCategory();
+
+  //   this.service.saveUnitFlat(
+  //     this.uid,
+  //     "unit3",
+  //     "ex4",
+  //     this.formEx4,
+  //     score,
+  //     category
+  //   );
+
+  //   this.aggregate(category, score);
+
+  //   this.next();
+  // }
+
   submitEx4() {
     this.alreadySubmitted = true;
 
     let score = 0;
 
-    const answer = this.formEx4.value.answer;
+    const answer = this.formEx4.value.answer || '';
 
-    if (this.containsKeywords(answer, this.correctAnswerEx4)) {
+    const normalizedAnswer = answer
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+
+    const hasExpectedElement = this.correctAnswerEx4.some(term =>
+      normalizedAnswer.includes(
+        term.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      )
+    );
+
+    if (hasExpectedElement) {
       score = 1;
     }
 
@@ -577,14 +661,60 @@ export class Unit3Component {
     this.next();
   }
 
+  // submitEx5() {
+  //   this.alreadySubmitted = true;
+
+  //   let score = 0;
+
+  //   const answer = this.formEx5.value.answer;
+
+  //   if (this.containsKeywords(answer, this.correctAnswerEx5)) {
+  //     score = 1;
+  //   }
+
+  //   const category = this.getCurrentCategory();
+
+  //   this.service.saveUnitFlat(
+  //     this.uid,
+  //     "unit3",
+  //     "ex5",
+  //     this.formEx5,
+  //     score,
+  //     category
+  //   );
+
+  //   this.aggregate(category, score);
+
+  //   this.next();
+  // }
   submitEx5() {
     this.alreadySubmitted = true;
 
     let score = 0;
 
-    const answer = this.formEx5.value.answer;
+    const answer = this.formEx5.value.answer || '';
 
-    if (this.containsKeywords(answer, this.correctAnswerEx5)) {
+    const normalizedAnswer = answer
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+
+    const normalize = (term: string) =>
+      term.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+    const hasRenovation = this.termesRenovationEx5.some(term =>
+      normalizedAnswer.includes(normalize(term))
+    );
+
+    const hasCout = this.termesCoutEx5.some(term =>
+      normalizedAnswer.includes(normalize(term))
+    );
+
+    const hasFinancement = this.termesFinancementEx5.some(term =>
+      normalizedAnswer.includes(normalize(term))
+    );
+
+    if ((hasRenovation && hasCout) || hasFinancement) {
       score = 1;
     }
 
@@ -692,7 +822,21 @@ export class Unit3Component {
 
     const answer = this.formEx9.value.answer;
 
-    if (this.containsKeywords(answer, this.correctAnswerEx9)) {
+    const normalizedAnswer = (answer || '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+
+    const isCorrect = this.correctAnswerEx9.some(term =>
+      normalizedAnswer.includes(
+        term
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+      )
+    );
+
+    if (isCorrect) {
       score = 1;
     }
 
@@ -736,9 +880,20 @@ export class Unit3Component {
       )
     );
 
-    if (hasNeuf && hasAncien) {
+    const hasComparaison = this.termesComparaison10.some(term =>
+      normalizedAnswer.includes(
+        term.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      )
+    );
+
+    // if (hasNeuf && hasAncien) {
+    //   score = 1;
+    // }
+
+    if (hasNeuf && hasAncien && hasComparaison) {
       score = 1;
     }
+
 
     const category = this.getCurrentCategory();
 
