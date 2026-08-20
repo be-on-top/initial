@@ -785,9 +785,23 @@ export class Unit3Component {
 
     let score = 0;
 
-    const answer = this.formEx8.value.answer;
+    const answer = this.formEx8.value.answer || '';
 
-    if (this.containsKeywords(answer, this.correctAnswerEx8)) {
+    const normalizedAnswer = answer
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+
+    const isCorrect = this.correctAnswerEx8.some(term =>
+      normalizedAnswer.includes(
+        term
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+      )
+    );
+
+    if (isCorrect) {
       score = 1;
     }
 

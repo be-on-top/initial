@@ -50,8 +50,12 @@
           <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
             Max {{ steps[0].maxScore }} PNTS
           </span>
-
+          <!-- 
           <span class="badge text-bg-dark">
+            {{ getCurrentScore(0) }} PNTS
+          </span> -->
+          <span class="badge text-bg-dark" [class.clickable-step-badge]="isReferentView && !aggregateState['isFinal']"
+            (click)="isReferentView && !aggregateState['isFinal'] && editStepScore(0)">
             {{ getCurrentScore(0) }} PNTS
           </span>
 
@@ -119,7 +123,12 @@
             Max {{ steps[1].maxScore }} PNTS
           </span>
 
-          <span class="badge text-bg-dark">
+          <!-- <span class="badge text-bg-dark">
+            {{ getCurrentScore(1) }} PNTS
+          </span> -->
+
+          <span class="badge text-bg-dark" [class.clickable-step-badge]="isReferentView && !aggregateState['isFinal']"
+            (click)="isReferentView && !aggregateState['isFinal'] && editStepScore(1)">
             {{ getCurrentScore(1) }} PNTS
           </span>
 
@@ -185,7 +194,11 @@
             Max {{ steps[2].maxScore }} PNTS
           </span>
 
-          <span class="badge text-bg-dark">
+          <!-- <span class="badge text-bg-dark">
+            {{ getCurrentScore(2) }} PNTS
+          </span> -->
+          <span class="badge text-bg-dark" [class.clickable-step-badge]="isReferentView && !aggregateState['isFinal']"
+            (click)="isReferentView && !aggregateState['isFinal'] && editStepScore(2)">
             {{ getCurrentScore(2) }} PNTS
           </span>
 
@@ -245,7 +258,11 @@
             Max {{ steps[3].maxScore }} PNTS
           </span>
 
-          <span class="badge text-bg-dark">
+          <!-- <span class="badge text-bg-dark">
+            {{ getCurrentScore(3) }} PNTS
+          </span> -->
+          <span class="badge text-bg-dark" [class.clickable-step-badge]="isReferentView && !aggregateState['isFinal']"
+            (click)="isReferentView && !aggregateState['isFinal'] && editStepScore(3)">
             {{ getCurrentScore(3) }} PNTS
           </span>
 
@@ -305,7 +322,11 @@
             Max {{ steps[4].maxScore }} PNTS
           </span>
 
-          <span class="badge text-bg-dark">
+          <!-- <span class="badge text-bg-dark">
+            {{ getCurrentScore(4) }} PNTS
+          </span> -->
+          <span class="badge text-bg-dark" [class.clickable-step-badge]="isReferentView && !aggregateState['isFinal']"
+            (click)="isReferentView && !aggregateState['isFinal'] && editStepScore(4)">
             {{ getCurrentScore(4) }} PNTS
           </span>
 
@@ -364,7 +385,11 @@
             Max {{ steps[5].maxScore }} PNTS
           </span>
 
-          <span class="badge text-bg-dark">
+          <!-- <span class="badge text-bg-dark">
+            {{ getCurrentScore(5) }} PNTS
+          </span> -->
+          <span class="badge text-bg-dark" [class.clickable-step-badge]="isReferentView && !aggregateState['isFinal']"
+            (click)="isReferentView && !aggregateState['isFinal'] && editStepScore(5)">
             {{ getCurrentScore(5) }} PNTS
           </span>
 
@@ -424,7 +449,11 @@
             Max {{ steps[6].maxScore }} PNTS
           </span>
 
-          <span class="badge text-bg-dark">
+          <!-- <span class="badge text-bg-dark">
+            {{ getCurrentScore(6) }} PNTS
+          </span> -->
+          <span class="badge text-bg-dark" [class.clickable-step-badge]="isReferentView && !aggregateState['isFinal']"
+            (click)="isReferentView && !aggregateState['isFinal'] && editStepScore(6)">
             {{ getCurrentScore(6) }} PNTS
           </span>
 
@@ -484,7 +513,11 @@
             Max {{ steps[7].maxScore }} PNTS
           </span>
 
-          <span class="badge text-bg-dark">
+          <!-- <span class="badge text-bg-dark">
+            {{ getCurrentScore(7) }} PNTS
+          </span> -->
+          <span class="badge text-bg-dark" [class.clickable-step-badge]="isReferentView && !aggregateState['isFinal']"
+            (click)="isReferentView && !aggregateState['isFinal'] && editStepScore(7)">
             {{ getCurrentScore(7) }} PNTS
           </span>
 
@@ -544,7 +577,11 @@
             Max {{ steps[8].maxScore }} PNTS
           </span>
 
-          <span class="badge text-bg-dark">
+          <!-- <span class="badge text-bg-dark">
+            {{ getCurrentScore(8) }} PNTS
+          </span> -->
+          <span class="badge text-bg-dark" [class.clickable-step-badge]="isReferentView && !aggregateState['isFinal']"
+            (click)="isReferentView && !aggregateState['isFinal'] && editStepScore(8)">
             {{ getCurrentScore(8) }} PNTS
           </span>
 
@@ -605,7 +642,11 @@
             Max {{ steps[9].maxScore }} PNTS
           </span>
 
-          <span class="badge text-bg-dark">
+          <!-- <span class="badge text-bg-dark">
+            {{ getCurrentScore(9) }} PNTS
+          </span> -->
+          <span class="badge text-bg-dark" [class.clickable-step-badge]="isReferentView && !aggregateState['isFinal']"
+            (click)="isReferentView && !aggregateState['isFinal'] && editStepScore(9)">
             {{ getCurrentScore(9) }} PNTS
           </span>
 
@@ -813,7 +854,7 @@
 
       </div>
 
-      <app-document-eolien  *ngIf="!isReferentView"></app-document-eolien>
+      <app-document-eolien *ngIf="!isReferentView"></app-document-eolien>
 
       <div class="alert alert-light">
         <i class="bi bi-info-circle me-2"></i>
@@ -1244,7 +1285,7 @@
 
       <!-- DOCUMENT COMMUN -->
 
-       <app-document-eolien *ngIf="!isReferentView"></app-document-eolien>
+      <app-document-eolien *ngIf="!isReferentView"></app-document-eolien>
 
       <!-- INSTRUCTIONS -->
 
