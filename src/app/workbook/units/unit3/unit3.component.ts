@@ -318,9 +318,6 @@ export class Unit3Component {
       return; // ⛔ on ne passe PAS par auth pour la logique student en dessous
     }
 
-    // 🧹 Reset de l'état local des scores à chaque chargement de l'unité
-    // localStorage.removeItem('unit1_aggregation');
-    this.aggregateState = {};
 
     // 🔐 Récupération de l'utilisateur connecté
     this.auth.getCurrentUserInfo().subscribe(userInfo => {
@@ -346,29 +343,24 @@ export class Unit3Component {
         // 📦 Chargement des données de l'unité depuis Firestore
         this.service.getUnit(this.uid).subscribe(data => {
 
-          // 🔥 Sécurité : si aucune donnée → on ne casse rien
-          // if (!data) return;
-
           console.log("DATA FIRESTORE:", data);
 
-          // ✅ même si vide → on initialise
           this.unitData = data ?? {};
+
+          // 🔄 Reconstruction du cumul à partir des scores enregistrés en base
+          this.rebuildAggregateFromUnitData();
 
           console.log("UNIT DATA:", this.unitData);
 
-          // 🔄 Synchronisation de l'état :
-          // → détermine le step actuel selon les exercices déjà soumis
+          // 🔄 Reprise au bon exercice
           this.syncStep();
 
-          // détecte si l'entièreté de l'unité a été finalisée
+          // Détecte si l'unité est finalisée
           if (this.unitData?.['units.unit3.result']) {
             this.showFinalMessage = true;
           }
 
         });
-
-        // ⚠️ ANCIENNE LOGIQUE (désactivée)
-        // this.startTimer();
 
       }
 
@@ -839,6 +831,7 @@ export class Unit3Component {
     if (isCorrect) {
       score = 1;
     }
+
 
     const category = this.getCurrentCategory();
 
@@ -1840,6 +1833,39 @@ export class Unit3Component {
           .replace(/[\u0300-\u036f]/g, '')
       )
     );
+  }
+
+  rebuildAggregateFromUnitData() {
+    const rebuilt: Record<string, number> = {};
+
+    this.steps.forEach(step => {
+      const key = `units.unit3.${step.id}`;
+      const exerciseData = this.unitData?.[key];
+
+      // On ne recompte que les exercices déjà soumis
+      if (!exerciseData?.submitted) {
+        return;
+      }
+
+      const category = step.category;
+      const score = Number(exerciseData.score) || 0;
+
+      if (rebuilt[category] === undefined) {
+        rebuilt[category] = 0;
+      }
+
+      rebuilt[category] += score;
+    });
+
+    this.aggregateState = rebuilt;
+
+    // Le localStorage devient simplement un miroir local
+    localStorage.setItem(
+      'unit3_aggregation',
+      JSON.stringify(this.aggregateState)
+    );
+
+    console.log('♻️ AGGREGATE RECONSTRUIT =>', this.aggregateState);
   }
 
 }

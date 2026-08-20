@@ -1576,6 +1576,39 @@ export class Unit1Component {
     this.service.updateUnitComment(this.uid, "unit1", texte);
   }
 
+  rebuildAggregateFromUnitData() {
+  const rebuilt: Record<string, number> = {};
+
+  this.steps.forEach(step => {
+    const key = `units.unit3.${step.id}`;
+    const exerciseData = this.unitData?.[key];
+
+    // On ne recompte que les exercices déjà soumis
+    if (!exerciseData?.submitted) {
+      return;
+    }
+
+    const category = step.category;
+    const score = Number(exerciseData.score) || 0;
+
+    if (rebuilt[category] === undefined) {
+      rebuilt[category] = 0;
+    }
+
+    rebuilt[category] += score;
+  });
+
+  this.aggregateState = rebuilt;
+
+  // Le localStorage devient simplement un miroir local
+  localStorage.setItem(
+    'unit3_aggregation',
+    JSON.stringify(this.aggregateState)
+  );
+
+  console.log('♻️ AGGREGATE RECONSTRUIT =>', this.aggregateState);
+}
+
 
 
 }
