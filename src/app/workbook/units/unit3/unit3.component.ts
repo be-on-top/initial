@@ -78,7 +78,7 @@ export class Unit3Component {
     { id: 'ex17', category: this.categories[0], duration: 120, maxScore: 1 },
     { id: 'ex18', category: this.categories[0], maxScore: 2 }, // le seul en texte libre
     { id: 'ex19', category: this.categories[0], duration: 120, maxScore: 1 },
-    { id: 'ex20', category: this.categories[0], maxScore: 10 }, // autre série
+    { id: 'ex20', category: this.categories[1], maxScore: 10 }, // autre série
 
     // à faire...
     { id: 'ex21', category: this.categories[1], maxScore: 10 },
@@ -1640,14 +1640,14 @@ export class Unit3Component {
   editCategoryScore(categoryName: string) {
     if (!this.isReferentView) return;
 
-    // A - Interception pour la catégorie automatique
-    if (categoryName === this.autoCategory) {
-      alert(
-        `La catégorie "${categoryName}" est entièrement corrigée et calculée de manière automatique.\n\n` +
-        `Il n'est pas nécessaire d'ajuster ce score manuellement.`
-      );
-      return; // On stoppe l'action ici
-    }
+    // A - Interception pour la catégorie automatique (héritée de l'unit2) n'est pas souhaitable pour cette unité
+    // if (categoryName === this.autoCategory) {
+    //   alert(
+    //     `La catégorie "${categoryName}" est entièrement corrigée et calculée de manière automatique.\n\n` +
+    //     `Il n'est pas nécessaire d'ajuster ce score manuellement.`
+    //   );
+    //   return; // On stoppe l'action ici
+    // }
 
 
 
@@ -1754,13 +1754,30 @@ export class Unit3Component {
 
   }
 
-  //   shouldDisplayInline(options: { label: string }[]): boolean {
-  //   return options.every(o => o.label.length <= 12);
-  // }
 
+  /**
+   * Permet au référent d'ajuster manuellement le score d'un exercice.
+   *
+   * Cette méthode est utilisée uniquement pour les exercices dont le score
+   * doit pouvoir être corrigé manuellement depuis la vue référent.
+   *
+   * Fonctionnement :
+   * - récupère l'exercice à partir de son index dans `steps`
+   * - contrôle que la note saisie respecte le `maxScore`
+   * - met à jour le score de l'exercice dans `unitData`
+   * - recalcule immédiatement le total de la catégorie concernée
+   * - récupère le FormGroup correspondant à l'exercice via getFormByStepIndex()
+   * - sauvegarde le nouveau score de l'exercice dans Firestore
+   * - met également à jour le résultat agrégé de l'unité
+   *
+   * IMPORTANT :
+   * Le mapping du FormGroup ne doit pas être codé en dur pour seulement
+   * deux exercices : plusieurs exercices de l'Unit3 sont désormais éditables.
+   */
   editStepScore(stepIndex: number) {
     if (!this.isReferentView || this.aggregateState?.['isFinal']) return;
 
+    // Récupération de l'exercice concerné à partir du tableau `steps`
     const step = this.steps[stepIndex];
     const exId = step.id;
     const max = step.maxScore;
@@ -1768,46 +1785,72 @@ export class Unit3Component {
 
     const currentScore = this.getCurrentScore(stepIndex);
 
-    // 1️⃣ Saisie de la note pour CET exercice
-    const response = prompt(`Note pour l'Exercice ${stepIndex + 1} (Max : ${max} pts) :`, currentScore.toString());
+    // 1️⃣ Demande au référent la nouvelle note pour CET exercice
+    const response = prompt(
+      `Note pour l'Exercice ${stepIndex + 1} (Max : ${max} pts) :`,
+      currentScore.toString()
+    );
+
     if (response === null || response.trim() === '') return;
 
     const parsedScore = parseFloat(response);
+
+    // Contrôle : impossible de saisir une note hors du barème de l'exercice
     if (isNaN(parsedScore) || parsedScore < 0 || parsedScore > max) {
       alert(`Veuillez entrer une note valide entre 0 et ${max}.`);
       return;
     }
 
-    // 2️⃣ Mise à jour locale dans unitData
+    // 2️⃣ Mise à jour locale du score de l'exercice
     const key = `units.unit3.${exId}`;
+
     if (!this.unitData[key]) {
       this.unitData[key] = {};
     }
+
     this.unitData[key].score = parsedScore;
 
-    // 3️⃣ Recalcul direct de la catégorie basée sur unitData mis à jour
+    // 3️⃣ Récupération de la catégorie depuis `steps`
+    // IMPORTANT : la catégorie définie dans `steps` détermine
+    // dans quel total le score de l'exercice sera comptabilisé.
     const categoryName = step.category;
 
-    // Somme explicite des scores des exercices de cette catégorie
+    // Recalcul complet du total de la catégorie à partir des scores
+    // actuellement présents dans unitData.
     let categoryTotal = 0;
+
     this.steps.forEach(s => {
       if (s.category === categoryName) {
         const exKey = `units.unit3.${s.id}`;
-        // On prend la nouvelle valeur pour cet exercice ou la valeur existante
-        const score = s.id === exId ? parsedScore : (this.unitData[exKey]?.score || 0);
+
+        const score =
+          s.id === exId
+            ? parsedScore
+            : (this.unitData[exKey]?.score || 0);
+
         categoryTotal += score;
       }
     });
 
-    // 4️⃣ EXACTEMENT la même affectation que dans editCategoryScore
+    // 4️⃣ Mise à jour de la synthèse locale de la catégorie
     this.aggregateState[categoryName] = categoryTotal;
 
-    // Rafraîchissement des références d'objets pour la détection de changement Angular
+    // Nouvelles références pour forcer la détection de changement Angular
     this.unitData = { ...this.unitData };
     this.aggregateState = { ...this.aggregateState };
 
-    // 5️⃣ Sauvegarde de l'exercice (saveUnitFlat)
-    const formGroup = stepIndex === 20 ? this.formEx21 : this.formEx22;
+    // 5️⃣ Récupération du FormGroup correspondant réellement à l'exercice.
+    // Nécessaire car saveUnitFlat() sauvegarde également `form.value`.
+    // Plusieurs exercices étant maintenant éditables, on ne peut plus
+    // utiliser un simple ternaire limité à Ex20 / Ex21.
+    const formGroup = this.getFormByStepIndex(stepIndex);
+
+    if (!formGroup) {
+      console.warn(`Aucun formulaire éditable pour le step ${stepIndex}`);
+      return;
+    }
+
+    // Sauvegarde de l'exercice avec son nouveau score
     this.service.saveUnitFlat(
       this.uid,
       "unit3",
@@ -1817,10 +1860,17 @@ export class Unit3Component {
       categoryName
     );
 
-    // 6️⃣ EXACTEMENT le même appel Firestore que dans editCategoryScore
-    this.service.saveUnitResultUpdate(this.uid, "unit3", this.aggregateState)
+    // 6️⃣ Persistance du nouveau total de catégorie dans le résultat Unit3
+    this.service.saveUnitResultUpdate(
+      this.uid,
+      "unit3",
+      this.aggregateState
+    )
       .then(() => {
-        console.log(`✅ Score Ex ${stepIndex + 1} (${exId}) et catégorie "${categoryName}" mis à jour avec succès : ${categoryTotal} pts`);
+        console.log(
+          `✅ Score Ex ${stepIndex + 1} (${exId}) et catégorie "${categoryName}" ` +
+          `mis à jour avec succès : ${categoryTotal} pts`
+        );
       })
       .catch(err => {
         console.error("Erreur Firestore :", err);
@@ -1849,6 +1899,28 @@ export class Unit3Component {
     );
   }
 
+  /**
+   * Reconstruit entièrement aggregateState à partir des exercices
+   * réellement enregistrés dans Firestore.
+   *
+   * Objectif :
+   * ne plus considérer le localStorage comme la source de vérité du cumul.
+   *
+   * Lors d'une reprise d'unité, les scores déjà soumis sont récupérés
+   * depuis `unitData`, puis regroupés selon la catégorie définie dans `steps`.
+   *
+   * Cela évite notamment :
+   * - la perte du cumul après déconnexion / reconnexion
+   * - les incohérences liées à un localStorage vide ou obsolète
+   * - la nécessité de recalculer les anciens exercices en les resoumettant
+   *
+   * IMPORTANT :
+   * `steps` fournit ici la catégorie de référence de chaque exercice.
+   * Une mauvaise catégorie dans `steps` entraîne donc mécaniquement
+   * l'affectation du score à la mauvaise catégorie dans la synthèse.
+   *
+   * Le localStorage n'est plus qu'un miroir du résultat reconstruit.
+   */
   rebuildAggregateFromUnitData() {
     const rebuilt: Record<string, number> = {};
 
@@ -1856,30 +1928,62 @@ export class Unit3Component {
       const key = `units.unit3.${step.id}`;
       const exerciseData = this.unitData?.[key];
 
-      // On ne recompte que les exercices déjà soumis
+      // On ne prend en compte que les exercices réellement soumis.
       if (!exerciseData?.submitted) {
         return;
       }
 
+      // La catégorie de référence provient du tableau `steps`.
       const category = step.category;
+
+      // Sécurisation du score : toute valeur absente/non numérique vaut 0.
       const score = Number(exerciseData.score) || 0;
 
+      // Première rencontre de cette catégorie : initialisation du cumul.
       if (rebuilt[category] === undefined) {
         rebuilt[category] = 0;
       }
 
+      // Ajout du score de l'exercice au cumul de sa catégorie.
       rebuilt[category] += score;
     });
 
+    // Firestore/unitData a permis de reconstruire l'état agrégé complet.
     this.aggregateState = rebuilt;
 
-    // Le localStorage devient simplement un miroir local
+    // Le localStorage devient uniquement un miroir local de cet état.
     localStorage.setItem(
       'unit3_aggregation',
       JSON.stringify(this.aggregateState)
     );
 
-    console.log('♻️ AGGREGATE RECONSTRUIT =>', this.aggregateState);
+    console.log(
+      '♻️ AGGREGATE RECONSTRUIT =>',
+      this.aggregateState
+    );
+  }
+
+
+  private getFormByStepIndex(stepIndex: number): FormGroup | null {
+    switch (stepIndex) {
+      case 0: return this.formEx1;
+      case 1: return this.formEx2;
+      case 2: return this.formEx3;
+      case 3: return this.formEx4;
+      case 4: return this.formEx5;
+      case 5: return this.formEx6;
+      case 6: return this.formEx7;
+      case 7: return this.formEx8;
+      case 8: return this.formEx9;
+      case 9: return this.formEx10;
+
+      case 17: return this.formEx18;
+
+      case 19: return this.formEx20;
+      case 20: return this.formEx21;
+
+      default: return null;
+    }
   }
 
 }
