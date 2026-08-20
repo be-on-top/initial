@@ -58,31 +58,31 @@ export class Unit3Component {
  * ===================================================== */
 
   steps: Step[] = [
-    { id: 'ex1', category: this.categories[0], duration: 90, maxScore: 1 }, // premier d'une série
-    { id: 'ex2', category: this.categories[0], duration: 90, maxScore: 1 },
-    { id: 'ex3', category: this.categories[0], duration: 90, maxScore: 1 },
-    { id: 'ex4', category: this.categories[0], duration: 90, maxScore: 1 },
-    { id: 'ex5', category: this.categories[0], duration: 90, maxScore: 1 },
-    { id: 'ex6', category: this.categories[0], duration: 90, maxScore: 1 },
-    { id: 'ex7', category: this.categories[0], duration: 90, maxScore: 1 },
-    { id: 'ex8', category: this.categories[0], duration: 90, maxScore: 1 },
-    { id: 'ex9', category: this.categories[0], duration: 90, maxScore: 1 },
+    { id: 'ex1', category: this.categories[0], duration: 160, maxScore: 1 }, // premier d'une série
+    { id: 'ex2', category: this.categories[0], duration: 120, maxScore: 1 },
+    { id: 'ex3', category: this.categories[0], duration: 120, maxScore: 1 },
+    { id: 'ex4', category: this.categories[0], duration: 120, maxScore: 1 },
+    { id: 'ex5', category: this.categories[0], duration: 120, maxScore: 1 },
+    { id: 'ex6', category: this.categories[0], duration: 120, maxScore: 1 },
+    { id: 'ex7', category: this.categories[0], duration: 120, maxScore: 1 },
+    { id: 'ex8', category: this.categories[0], duration: 120, maxScore: 1 },
+    { id: 'ex9', category: this.categories[0], duration: 120, maxScore: 1 },
     { id: 'ex10', category: this.categories[0], duration: 100, maxScore: 1 },
     // à venir ... :
-    { id: 'ex11', category: this.categories[0], duration: 50, maxScore: 1 }, // premier d'une série ?
-    { id: 'ex12', category: this.categories[0], duration: 90, maxScore: 1 },
-    { id: 'ex13', category: this.categories[0], duration: 50, maxScore: 1 },
-    { id: 'ex14', category: this.categories[0], duration: 90, maxScore: 1 },
-    { id: 'ex15', category: this.categories[0], duration: 50, maxScore: 1 },
-    { id: 'ex16', category: this.categories[0], duration: 90, maxScore: 1 },
-    { id: 'ex17', category: this.categories[0], duration: 50, maxScore: 1 },
+    { id: 'ex11', category: this.categories[0], duration: 160, maxScore: 1 }, // premier d'une série ?
+    { id: 'ex12', category: this.categories[0], duration: 120, maxScore: 1 },
+    { id: 'ex13', category: this.categories[0], duration: 120, maxScore: 1 },
+    { id: 'ex14', category: this.categories[0], duration: 120, maxScore: 1 },
+    { id: 'ex15', category: this.categories[0], duration: 120, maxScore: 1 },
+    { id: 'ex16', category: this.categories[0], duration: 120, maxScore: 1 },
+    { id: 'ex17', category: this.categories[0], duration: 120, maxScore: 1 },
     { id: 'ex18', category: this.categories[0], maxScore: 2 }, // le seul en texte libre
-    { id: 'ex19', category: this.categories[0], duration: 50, maxScore: 1 },
-    { id: 'ex20', category: this.categories[0], duration: 50, maxScore: 1 }, // autre série
+    { id: 'ex19', category: this.categories[0], duration: 120, maxScore: 1 },
+    { id: 'ex20', category: this.categories[0], maxScore: 10 }, // autre série
 
     // à faire...
-    { id: 'ex21', category: this.categories[1], maxScore: 11 },
-    { id: 'ex22', category: this.categories[1], maxScore: 11 }
+    { id: 'ex21', category: this.categories[1], maxScore: 10 },
+    // { id: 'ex22', category: this.categories[1], maxScore: 11 }
   ];
 
 
