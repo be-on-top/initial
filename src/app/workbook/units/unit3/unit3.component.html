@@ -38,7 +38,7 @@
 
         <span class="badge text-bg-dark text-white">
           <i class="bi bi-tag-fill me-2"></i>
-          Catégorie : Compréhension des écrits
+          Catégorie : {{ steps[0].category }}
         </span>
 
         <div class="d-flex gap-2 ms-md-auto">
@@ -110,7 +110,7 @@
 
         <span class="badge text-bg-dark text-white">
           <i class="bi bi-tag-fill me-2"></i>
-          Catégorie : Compréhension des écrits
+          Catégorie : {{ steps[1].category }}
         </span>
 
         <div class="d-flex gap-2 ms-md-auto">
@@ -181,7 +181,7 @@
 
         <span class="badge text-bg-dark text-white">
           <i class="bi bi-tag-fill me-2"></i>
-          Catégorie : Compréhension des écrits
+          Catégorie : {{ steps[2].category }}
         </span>
 
         <div class="d-flex gap-2 ms-md-auto">
@@ -212,7 +212,7 @@
         Que veut dire l'acronyme FFB ?
       </div>
 
-      <textarea class="form-control" rows="4" formControlName="answer">
+      <textarea class="form-control nouvelle-page" rows="4" formControlName="answer">
   </textarea>
 
       <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
@@ -245,7 +245,7 @@
 
         <span class="badge text-bg-dark text-white">
           <i class="bi bi-tag-fill me-2"></i>
-          Catégorie : Compréhension des écrits
+          Catégorie : {{ steps[3].category }}
         </span>
 
         <div class="d-flex gap-2 ms-md-auto">
@@ -309,7 +309,7 @@
 
         <span class="badge text-bg-dark text-white">
           <i class="bi bi-tag-fill me-2"></i>
-          Catégorie : Compréhension des écrits
+          Catégorie : {{ steps[4].category }}
         </span>
 
         <div class="d-flex gap-2 ms-md-auto">
@@ -372,7 +372,7 @@
 
         <span class="badge text-bg-dark text-white">
           <i class="bi bi-tag-fill me-2"></i>
-          Catégorie : Compréhension des écrits
+          Catégorie : {{ steps[5].category }}
         </span>
 
         <div class="d-flex gap-2 ms-md-auto">
@@ -432,11 +432,12 @@
 
     <form *ngIf="isReferentView || currentStep === 6" [formGroup]="formEx7" (ngSubmit)="submitEx7()">
 
-      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+      <div
+        class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2 nouvelle-page">
 
         <span class="badge text-bg-dark text-white">
           <i class="bi bi-tag-fill me-2"></i>
-          Catégorie : Compréhension des écrits
+          Catégorie : {{ steps[6].category }}
         </span>
 
         <div class="d-flex gap-2 ms-md-auto">
@@ -500,7 +501,7 @@
 
         <span class="badge text-bg-dark text-white">
           <i class="bi bi-tag-fill me-2"></i>
-          Catégorie : Compréhension des écrits
+          Catégorie : {{ steps[7].category }}
         </span>
 
         <div class="d-flex gap-2 ms-md-auto">
@@ -564,7 +565,7 @@
 
         <span class="badge text-bg-dark text-white">
           <i class="bi bi-tag-fill me-2"></i>
-          Catégorie : Compréhension des écrits
+          Catégorie : {{ steps[8].category }}
         </span>
 
         <div class="d-flex gap-2 ms-md-auto">
@@ -622,14 +623,13 @@
     <!-- EXERCICE 10 - QUESTION 10 -->
     <!-- ===================================================== -->
 
-    <form class="nouvelle-page" *ngIf="isReferentView || currentStep === 9" [formGroup]="formEx10"
-      (ngSubmit)="submitEx10()">
+    <form *ngIf="isReferentView || currentStep === 9" [formGroup]="formEx10" (ngSubmit)="submitEx10()">
 
       <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
 
         <span class="badge text-bg-dark text-white">
           <i class="bi bi-tag-fill me-2"></i>
-          Catégorie : Compréhension des écrits
+          Catégorie : {{ steps[9].category }}
         </span>
 
         <div class="d-flex gap-2 ms-md-auto">
@@ -660,7 +660,7 @@
         Que faites-vous comme différence entre une construction neuve et une construction ancienne ?
       </div>
 
-      <textarea class="form-control" rows="5" formControlName="answer">
+      <textarea class="form-control nouvelle-page" rows="5" formControlName="answer">
   </textarea>
 
       <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
@@ -680,12 +680,14 @@
 
     </form>
 
+    <hr *ngIf="isReferentView">
 
     <!-- ===================================================== -->
     <!-- EXERCICE 11 -->
     <!-- ===================================================== -->
 
-    <form *ngIf="isReferentView || currentStep === 10" [formGroup]="formEx11" (ngSubmit)="submitEx11()">
+    <form *ngIf="isReferentView || currentStep === 10" [formGroup]="formEx11" (ngSubmit)="submitEx11()"
+      class="additional-margin">
 
       <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
 
@@ -787,7 +789,7 @@
 
       <app-document-eolien *ngIf="!isReferentView"></app-document-eolien>
 
-      <div class="alert alert-light">
+      <div class="alert alert-light" *ngIf="!isReferentView">
         <i class="bi bi-info-circle me-2"></i>
         Pour répondre à la question, cochez la bonne réponse.
       </div>
@@ -832,7 +834,7 @@
     <!-- EXERCICE 13 -->
     <!-- ===================================================== -->
 
-    <form *ngIf="isReferentView || currentStep === 12" [formGroup]="formEx13" (ngSubmit)="submitEx13()">
+    <form *ngIf="isReferentView || currentStep === 12" [formGroup]="formEx13" (ngSubmit)="submitEx13()" class="nouvelle-page">
 
       <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
 
@@ -856,13 +858,13 @@
 
       <app-document-eolien *ngIf="!isReferentView"></app-document-eolien>
 
-      <div class="alert alert-light">
+      <div class="alert alert-light" *ngIf="!isReferentView">
         <i class="bi bi-info-circle me-2"></i>
         Pour répondre à la question, cochez la bonne réponse.
       </div>
 
       <div class="alert bg-info instructions">
-        Où se situe le parc d’Aumelas ?
+        Où se situe le parc d'Aumelas ?
       </div>
 
       <div class="d-flex flex-column" [class.d-md-flex]="shouldDisplayInline(ex13Options)"
@@ -923,7 +925,7 @@
 
       <app-document-eolien *ngIf="!isReferentView"></app-document-eolien>
 
-      <div class="alert alert-light">
+      <div class="alert alert-light" *ngIf="!isReferentView">
         <i class="bi bi-info-circle me-2"></i>
         Pour répondre à la question, cochez la bonne réponse.
       </div>
@@ -990,7 +992,7 @@
 
       <app-document-eolien *ngIf="!isReferentView"></app-document-eolien>
 
-      <div class="alert alert-light">
+      <div class="alert alert-light" *ngIf="!isReferentView">
         <i class="bi bi-info-circle me-2"></i>
         Pour répondre à la question, cochez la bonne réponse.
       </div>
@@ -1057,7 +1059,7 @@
 
       <app-document-eolien *ngIf="!isReferentView"></app-document-eolien>
 
-      <div class="alert alert-light">
+      <div class="alert alert-light" *ngIf="!isReferentView">
         <i class="bi bi-info-circle me-2"></i>
         Pour répondre à la question, cochez la bonne réponse.
       </div>
@@ -1100,7 +1102,7 @@
     <!-- EXERCICE 17 -->
     <!-- ===================================================== -->
 
-    <form *ngIf="isReferentView || currentStep === 16" [formGroup]="formEx17" (ngSubmit)="submitEx17()">
+    <form *ngIf="isReferentView || currentStep === 16" [formGroup]="formEx17" (ngSubmit)="submitEx17()" class="nouvelle-page">
 
       <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
 
@@ -1124,7 +1126,7 @@
 
       <app-document-eolien *ngIf="!isReferentView"></app-document-eolien>
 
-      <div class="alert alert-light">
+      <div class="alert alert-light" *ngIf="!isReferentView">
         <i class="bi bi-info-circle me-2"></i>
         Pour répondre à la question, cochez la bonne réponse.
       </div>
@@ -1160,11 +1162,13 @@
 
     </form>
 
+     <hr *ngIf="isReferentView">
+
     <!-- ===================================================== -->
     <!-- EXERCICE 18 -->
     <!-- ===================================================== -->
 
-    <form class="nouvelle-page" *ngIf="isReferentView || currentStep === 17" [formGroup]="formEx18"
+    <form *ngIf="isReferentView || currentStep === 17" [formGroup]="formEx18"
       (ngSubmit)="submitEx18()">
 
       <!-- HEADER -->
@@ -1174,7 +1178,7 @@
 
         <span class="badge text-bg-dark text-white">
           <i class="bi bi-tag-fill me-2"></i>
-          Catégorie : Compréhension des écrits
+          Catégorie : {{ steps[17].category }}
         </span>
 
         <div class="d-flex gap-2 ms-md-auto">
@@ -1262,7 +1266,7 @@
 
         <span class="badge text-bg-dark text-white">
           <i class="bi bi-tag-fill me-2"></i>
-          Catégorie : Compréhension des écrits
+          Catégorie : {{ steps[18].category }}
         </span>
 
         <div class="d-flex gap-2 ms-md-auto">
@@ -1289,7 +1293,7 @@
 
       <!-- INSTRUCTIONS -->
 
-      <div class="alert alert-light">
+      <div class="alert alert-light" *ngIf="!isReferentView">
         <i class="bi bi-info-circle me-2"></i>
         Pour répondre à la question, cochez la bonne réponse.
       </div>
@@ -1297,7 +1301,7 @@
       <!-- QUESTION -->
 
       <div class="alert bg-info instructions">
-        Combien d’associations sont parties civiles dans cette affaire ?
+        Combien d'associations sont parties civiles dans cette affaire ?
       </div>
 
       <!-- OPTIONS -->
@@ -1350,7 +1354,7 @@
     <!-- EXERCICE 20 -->
     <!-- ===================================================== -->
 
-    <form class="nouvelle-page" *ngIf="isReferentView || currentStep === 19" [formGroup]="formEx20"
+    <form *ngIf="isReferentView || currentStep === 19" [formGroup]="formEx20"
       (ngSubmit)="submitEx20()">
 
       <!-- HEADER -->
@@ -1360,7 +1364,7 @@
 
         <span class="badge text-bg-dark text-white">
           <i class="bi bi-tag-fill me-2"></i>
-          Catégorie : Expression écrite
+          Catégorie : {{ steps[19].category }}
         </span>
 
         <div class="d-flex gap-2 ms-md-auto">
@@ -1456,7 +1460,7 @@
 
         <span class="badge text-bg-dark text-white">
           <i class="bi bi-tag-fill me-2"></i>
-          Catégorie : Expression écrite
+          Catégorie : {{ steps[20].category }}
         </span>
 
         <div class="d-flex gap-2 ms-md-auto">
@@ -1582,3 +1586,38 @@
     </div>
 
   </div>
+
+
+  <div *ngIf="isReferentView" class="mb-4 mt-3">
+    <label for="commentaireReferent" class="form-label text-secondary">
+      <i class="bi bi-chat-left-text-fill me-2"></i>Commentaire et observations :
+    </label>
+
+    <textarea id="commentaireReferent" class="form-control rounded-0" rows="3"
+      placeholder="Saisissez vos observations sur le candidat ici..." [formControl]="commentCtrl"
+      [attr.disabled]="aggregateState['isFinal'] ? true : null" (blur)="saveCommentReferent()">
+  </textarea>
+  </div>
+
+  <!-- pour afficher le bouton ou le badge de confirmation proprement selon l'état de la base : -->
+  <button *ngIf="isReferentView && !aggregateState['isFinal']" type="button" class="btn btn-danger my-3"
+    (click)="cloturerEvaluation()">
+    <i class="bi bi-lock-fill me-2"></i>Clôturer l'évaluation
+  </button>
+
+
+  <ng-container *ngIf="aggregateState['isFinal']">
+    <div class="alert alert-success my-3 p-2 text-center">
+      <i class="bi bi-check-circle-fill me-2"></i> Évaluation clôturée définitivement. Les notes sont figées.
+    </div>
+    <!-- pour afficher le bouton impression PDF : -->
+    <div *ngIf="isReferentView" class="text-center my-4 d-print-none">
+      <button type="button" class="btn btn-primary" (click)="printPage()">
+        <i class="bi bi-printer-fill me-2"></i>
+        Imprimer / Enregistrer en PDF
+      </button>
+      <p class="text-muted small mt-2">
+        💡 Dans la fenêtre qui s'ouvre, choisissez <b>"Enregistrer au format PDF"</b> pour l'envoyer par mail.
+      </p>
+    </div>
+  </ng-container>

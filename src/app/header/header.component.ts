@@ -422,7 +422,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   }
 
 
-  copyWorkbookUrl(unit: 'unit1' | 'unit2') {
+  copyWorkbookUrl(unit: 'unit1' | 'unit2'| 'unit3') {
 
     const url = `${window.location.origin}/workbook/${unit}`;
 
