@@ -104,4 +104,9 @@ export class NewsListComponent implements OnInit, AfterViewInit {
       }
     }, 2000);
   }
+
+  formatTitle(title: string): string {
+    return title
+      .replace(/\s+([:;!?])/g, '\u00A0$1');
+  }
 }
