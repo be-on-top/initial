@@ -49,13 +49,10 @@
 
     <div *ngIf="allStudents">
 
-        <!-- Tests préalables à l'activation du nouveau filtre, maintenant inutiles -->
-        <!-- <div *ngFor="let dedicated of filteredStudents" >
-            <p>{{dedicated.firstName}} {{dedicated.lastName}} {{dedicated.id}}</p>
-        </div> -->
 
-        <!-- on introduit un champ de recherche -->
-        <app-search (searchTextChanged)="onSearchTextEntered($event)"></app-search>
+
+        <!-- on introduit un champ de recherche que j'ai tagué pour pouvoir faire un reset ponctuellement depuis d'autres endroits du tempmate -->
+        <app-search  #search (searchTextChanged)="onSearchTextEntered($event)"></app-search>
         <!-- ajoute un bouton d'ajout en haut du composant j'aime  pas sur petits écrans !!!! -->
         <button type="submit" class="btn btn-primary mt-5 w-auto"
             *ngIf="userRouterLinks.user!=='external' && userRouterLinks.user!=='editor' && userRouterLinks.user!=='referentsContacts' && userRouterLinks.user!=='data-analyst'">
@@ -240,7 +237,7 @@
                 <!-- si il faut relancer (l'admin décidera à qui l'honneur) -->
                 <button button class="btn btn-primary position-relative me-sm-2"
                     *ngIf="userRouterLinks.user==='admin' || userRouterLinks.user=='editor' || userRouterLinks.user=='data-analyst'"
-                    (click)="getStudentsWithNoInterest()">
+                    (click)="search.resetSearch(); getStudentsWithNoInterest()">
                     {{showNoInterestStudents ? 'Masquer les comptes inactifs à relancer'
                     : 'Afficher les comptes inactifs à relancer' }}
                     <span *ngIf="showNoInterestStudents"
@@ -248,6 +245,7 @@
                         {{studentsWithNoInterest.length}}
                     </span>
                 </button>
+                
                 <!-- pour exporter la liste à relancer -->
                 <button *ngIf="showNoInterestStudents" type="button" class="btn btn-danger mt-sm-2 mt-xl-0"
                     (click)="exportInactifsCSV()">
@@ -270,7 +268,7 @@
         <!-- <div class="row mt-4 d-xs-none ps-2" *ngIf="userRouterLinks.user=='admin' || userRouterLinks.user=='referent'"> -->
 
         <div class="row mt-4 ps-2"
-            *ngIf="userRouterLinks.user=='admin' || userRouterLinks.user=='referent' || userRouterLinks.user=='editor' ">
+            *ngIf="userRouterLinks.user=='admin' || userRouterLinks.user=='referent' || userRouterLinks.user=='editor' || userRouterLinks.user==='data-analyst' ">
 
             <div class="col-sm-3 h5 d-none d-md-inline">Nom</div>
             <div class="col-sm-3 h5 d-none d-md-inline">Prénom</div>
