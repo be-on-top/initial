@@ -11,8 +11,8 @@
     <h3 *ngIf="userRouterLinks.user=='admin'">Gestion des candidats<span
             class="badge bg-primary ms-2">{{collectionStudents.length}}</span></h3>
 
-    <h3 *ngIf="userRouterLinks.user=='editor' || userRouterLinks.user=='data-analyst'">Vue quantitative des candidats<span
-            class="badge bg-primary ms-2">{{collectionStudents.length}}</span></h3>
+    <h3 *ngIf="userRouterLinks.user=='editor' || userRouterLinks.user=='data-analyst'">Vue quantitative des
+        candidats<span class="badge bg-primary ms-2">{{collectionStudents.length}}</span></h3>
     <!-- pour vérifier userUid du référent et le comparer au champ student.referent facilement -->
     <!-- <h3 *ngIf="userRouterLinks.user=='referent'">Suivi administratif des candidats ({{userUid}})</h3> -->
     <h3 *ngIf="userRouterLinks.user=='referent'">Suivi administratif des candidats</h3>
@@ -52,7 +52,7 @@
 
 
         <!-- on introduit un champ de recherche que j'ai tagué pour pouvoir faire un reset ponctuellement depuis d'autres endroits du tempmate -->
-        <app-search  #search (searchTextChanged)="onSearchTextEntered($event)"></app-search>
+        <app-search #search (searchTextChanged)="onSearchTextEntered($event)"></app-search>
         <!-- ajoute un bouton d'ajout en haut du composant j'aime  pas sur petits écrans !!!! -->
         <button type="submit" class="btn btn-primary mt-5 w-auto"
             *ngIf="userRouterLinks.user!=='external' && userRouterLinks.user!=='editor' && userRouterLinks.user!=='referentsContacts' && userRouterLinks.user!=='data-analyst'">
@@ -86,21 +86,25 @@
                         id="myCenterStudents"
                         [checked]="storedValue=='myCenterStudentsFilter' || myCenterStudents===true">
                 </div>
-                <div class="form-check" *ngIf="userRouterLinks.user==='admin'|| userRouterLinks.user==='editor' || userRouterLinks.user=='data-analyst'">
+                <div class="form-check"
+                    *ngIf="userRouterLinks.user==='admin'|| userRouterLinks.user==='editor' || userRouterLinks.user=='data-analyst'">
                     <label class="form-check-label" for="socialCheckbox">Formulaire administratif envoyé</label>
                     <input type="checkbox" (change)="onCheckboxChangeSocial($event)" class="form-check-input"
                         id="socialCheckbox"
                         [checked]="storedValue=='socialFormSentFilter' || isSocialFormSentFilter===true">
                 </div>
-                <div class="form-check" *ngIf="userRouterLinks.user==='admin'|| userRouterLinks.user==='editor' || userRouterLinks.user=='data-analyst'">
+                <div class="form-check"
+                    *ngIf="userRouterLinks.user==='admin'|| userRouterLinks.user==='editor' || userRouterLinks.user=='data-analyst'">
                     <label class="form-check-label" for="socialCheckbox">Formulaire administratif non renseigné</label>
                     <input type="checkbox" (change)="onCheckboxChangeNoSocial($event)" class="form-check-input"
                         id="noSocialCheckbox"
                         [checked]="storedValue=='noSocialFormSentFilter' || noSocialFormSentFilter===true">
                 </div>
                 <!-- étudiant interne : innerStudent -->
-                <div class="form-check" *ngIf="userRouterLinks.user==='admin'|| userRouterLinks.user==='editor' || userRouterLinks.user=='data-analyst'">
-                    <label class="form-check-label" for="innerStudentCheckbox">Candidats internes (dispensés de formulaires)</label>
+                <div class="form-check"
+                    *ngIf="userRouterLinks.user==='admin'|| userRouterLinks.user==='editor' || userRouterLinks.user=='data-analyst'">
+                    <label class="form-check-label" for="innerStudentCheckbox">Candidats internes (dispensés de
+                        formulaires)</label>
                     <input type="checkbox" (change)="onCheckboxChangeInner($event)" class="form-check-input"
                         id="innerStudentCheckbox"
                         [checked]="isInnerStudentFilter===true || storedValue==='isInnerStudentFilter'">
@@ -122,10 +126,10 @@
 
                 <!-- pour tester l'existence d'une unité d'exercices finalisée -->
                 <div class="form-check" *ngIf="userRouterLinks.user==='admin' || userRouterLinks.user==='referent'">
-                    <label class="form-check-label" for="workbookCheckbox">A finalisé une unité d'exercice (compétences transversales)</label>
-                    <input type="checkbox" (change)="onCheckboxChangeWorkBookUnit($event)"
-                        class="form-check-input" id="workbookCheckbox"
-                        [checked]="isWorkbookFilter===true || storedValue==='isWorkbookFilter'">
+                    <label class="form-check-label" for="workbookCheckbox">A finalisé une unité d'exercice (compétences
+                        transversales)</label>
+                    <input type="checkbox" (change)="onCheckboxChangeWorkBookUnit($event)" class="form-check-input"
+                        id="workbookCheckbox" [checked]="isWorkbookFilter===true || storedValue==='isWorkbookFilter'">
                 </div>
 
                 <!-- pour fliquer ce que font les formateurs quand ils sont formés par quelqu'un qui les induit en erreur -->
@@ -158,7 +162,8 @@
                     </div> -->
                     <!-- pour tenter la même chose avec un select (test OK) -->
 
-                    <ng-container *ngIf="userRouterLinks.user!=='external' && userRouterLinks.user!=='referentsContacts'">
+                    <ng-container
+                        *ngIf="userRouterLinks.user!=='external' && userRouterLinks.user!=='referentsContacts'">
                         <hr>
                         <label for="qcmStarted">Questionnaire commencé (non terminé) pour :</label>
                         <select id="qcmStarted" class="form-control" [(ngModel)]="selectedTradeForQCMStarted"
@@ -183,7 +188,7 @@
                             <option *ngFor="let trade of trades" [ngValue]="trade">{{ trade }}</option>
                         </select>
 
-                   </ng-container> 
+                    </ng-container>
 
 
                     <!-- <ng-container *ngIf="tradesActivated"> -->
@@ -245,7 +250,7 @@
                         {{studentsWithNoInterest.length}}
                     </span>
                 </button>
-                
+
                 <!-- pour exporter la liste à relancer -->
                 <button *ngIf="showNoInterestStudents" type="button" class="btn btn-danger mt-sm-2 mt-xl-0"
                     (click)="exportInactifsCSV()">
@@ -280,11 +285,14 @@
                 <div class="alert alert-warning mx-0 fw-regular fs-auto">Comptes inactifs<span
                         class="badge bg-danger ms-2">{{studentsWithNoInterest.length}}</span></div>
                 <div *ngFor="let student of studentsWithNoInterest">
-                    <div *ngIf="userRouterLinks.user==='admin' || userRouterLinks.user==='editor' || userRouterLinks.user==='data-analyst'">
-                        <div class="row mt-4 ps-sm-0"
-                            *ngIf="searchText===''|| student.lastName.includes(searchText) || student.lastName.toLowerCase().includes(searchText) 
-                                                  || student.firstName.includes(searchText) || student.firstName.toLowerCase().includes(searchText)
-                                                  || student.email.includes(searchText) || student.email.toLowerCase().includes(searchText)">
+                    <div
+                        *ngIf="userRouterLinks.user==='admin' || userRouterLinks.user==='editor' || userRouterLinks.user==='data-analyst'">
+                        <div class="row mt-4 ps-sm-0" *ngIf="searchText === '' 
+    || student.lastName.toLowerCase().includes(searchText.toLowerCase()) 
+    || student.firstName.toLowerCase().includes(searchText.toLowerCase()) 
+    || student.email.toLowerCase().includes(searchText.toLowerCase())
+    || (student.firstName + ' ' + student.lastName).toLowerCase().includes(searchText.toLowerCase())
+    || (student.lastName + ' ' + student.firstName).toLowerCase().includes(searchText.toLowerCase())">
 
                             <div class="col-sm-3 col-6">{{student.lastName}}</div>
                             <div class="col-sm-3 col-6 order-perso2">{{student.firstName}}</div>
@@ -309,17 +317,19 @@
                                         [routerLink]="['/admin/leads/studentDetails', student.id]" class="text-white"><i
                                             class="bi bi-person-lines-fill"></i>Détails</a>
                                     <a *ngIf="userRouterLinks.user=='data-analyst'"
-                                        [routerLink]="['/admin/analyst-leads/studentDetails', student.id]" class="text-white"><i
-                                            class="bi bi-person-lines-fill"></i>Détails</a>
+                                        [routerLink]="['/admin/analyst-leads/studentDetails', student.id]"
+                                        class="text-white"><i class="bi bi-person-lines-fill"></i>Détails</a>
                                 </button>
                             </div>
                         </div>
                     </div>
                     <ng-template #external>
-                        <div class="row mt-4 justify-content-start"
-                            *ngIf="searchText===''|| student.lastName.includes(searchText) || student.lastName.toLowerCase().includes(searchText)
-                                                  || student.firstName.includes(searchText) || student.firstName.toLowerCase().includes(searchText)
-                                                  || student.email.includes(searchText) || student.email.toLowerCase().includes(searchText)">
+                        <div class="row mt-4 justify-content-start" *ngIf="searchText === '' 
+    || student.lastName.toLowerCase().includes(searchText.toLowerCase()) 
+    || student.firstName.toLowerCase().includes(searchText.toLowerCase()) 
+    || student.email.toLowerCase().includes(searchText.toLowerCase())
+    || (student.firstName + ' ' + student.lastName).toLowerCase().includes(searchText.toLowerCase())
+    || (student.lastName + ' ' + student.firstName).toLowerCase().includes(searchText.toLowerCase())">
                             <div class="col-sm-3 col-6">{{student.lastName}}</div>
                             <div class="col-sm-3 col-6">{{student.firstName}}</div>
                             <div class="col-sm-3 col-6 mt-3 m-sm-0">
@@ -362,10 +372,16 @@
             <div
                 *ngIf="userRouterLinks.user=='admin' || (userRouterLinks.user=='referent'&& !isLoading) || userRouterLinks.user=='editor'|| userRouterLinks.user=='data-analyst', else external">
 
-                <div class="row mt-4 ps-5 ps-sm-0" *ngIf="searchText === '' 
+                <!-- <div class="row mt-4 ps-5 ps-sm-0" *ngIf="searchText === '' 
         || student.lastName.toLowerCase().includes(searchText.toLowerCase()) 
         || student.firstName.toLowerCase().includes(searchText.toLowerCase()) 
-        || student.email.toLowerCase().includes(searchText.toLowerCase())">
+        || student.email.toLowerCase().includes(searchText.toLowerCase())"> -->
+                <div class="row mt-4 ps-5 ps-sm-0" *ngIf="searchText === '' 
+    || student.lastName.toLowerCase().includes(searchText.toLowerCase()) 
+    || student.firstName.toLowerCase().includes(searchText.toLowerCase()) 
+    || student.email.toLowerCase().includes(searchText.toLowerCase())
+    || (student.firstName + ' ' + student.lastName).toLowerCase().includes(searchText.toLowerCase())
+    || (student.lastName + ' ' + student.firstName).toLowerCase().includes(searchText.toLowerCase())">
 
 
                     <div class="col-sm-3 col-6">{{student.lastName}}</div>
@@ -394,9 +410,11 @@
             </div>
             <ng-template #external>
                 <div class="row mt-4 justify-content-start" *ngIf="searchText === '' 
-        || student.lastName.toLowerCase().includes(searchText.toLowerCase()) 
-        || student.firstName.toLowerCase().includes(searchText.toLowerCase()) 
-        || student.email.toLowerCase().includes(searchText.toLowerCase())">
+    || student.lastName.toLowerCase().includes(searchText.toLowerCase()) 
+    || student.firstName.toLowerCase().includes(searchText.toLowerCase()) 
+    || student.email.toLowerCase().includes(searchText.toLowerCase())
+    || (student.firstName + ' ' + student.lastName).toLowerCase().includes(searchText.toLowerCase())
+    || (student.lastName + ' ' + student.firstName).toLowerCase().includes(searchText.toLowerCase())">
                     <div class="col-sm-4 col-6">{{student.lastName}}</div>
                     <div class="col-sm-4 col-6">{{student.firstName}}</div>
                     <div class="col-sm-4 col-6 mt-3 m-sm-0">
@@ -457,6 +475,7 @@
     <app-export-students *ngIf="userRouterLinks.user === 'referent'" [students]="allStudents">
     </app-export-students>
 
-    <app-export-students *ngIf="userRouterLinks.user==='admin' || userRouterLinks.user==='data-analyst'"></app-export-students>
+    <app-export-students
+        *ngIf="userRouterLinks.user==='admin' || userRouterLinks.user==='data-analyst'"></app-export-students>
 
 </div>

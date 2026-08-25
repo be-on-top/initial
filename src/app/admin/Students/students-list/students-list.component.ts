@@ -1147,18 +1147,34 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
  *    - On affiche les étudiants paginés normalement,
  *      en fonction de currentPage et pageSize.
  */
+  // get paginatedStudents(): Student[] {
+  //   if (this.searchText) {
+  //     return this.allStudents.filter(s =>
+  //       s.lastName.toLowerCase().includes(this.searchText.toLowerCase()) ||
+  //       s.firstName.toLowerCase().includes(this.searchText.toLowerCase()) ||
+  //       s.email.toLowerCase().includes(this.searchText.toLowerCase())
+  //     )
+  //   } else {
+  //     const startIndex = (this.currentPage - 1) * this.pageSize;
+  //     return this.allStudents.slice(startIndex, startIndex + this.pageSize)
+  //   }
+  // }
   get paginatedStudents(): Student[] {
-    if (this.searchText) {
-      return this.allStudents.filter(s =>
-        s.lastName.toLowerCase().includes(this.searchText.toLowerCase()) ||
-        s.firstName.toLowerCase().includes(this.searchText.toLowerCase()) ||
-        s.email.toLowerCase().includes(this.searchText.toLowerCase())
-      )
-    } else {
-      const startIndex = (this.currentPage - 1) * this.pageSize;
-      return this.allStudents.slice(startIndex, startIndex + this.pageSize)
-    }
+  if (this.searchText) {
+    return this.allStudents.filter(s =>
+      s.lastName.toLowerCase().includes(this.searchText.toLowerCase()) ||
+      s.firstName.toLowerCase().includes(this.searchText.toLowerCase()) ||
+      s.email.toLowerCase().includes(this.searchText.toLowerCase()) ||
+      (s.firstName + ' ' + s.lastName).toLowerCase().includes(this.searchText.toLowerCase()) ||
+      (s.lastName + ' ' + s.firstName).toLowerCase().includes(this.searchText.toLowerCase())
+    )
+  } else {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    return this.allStudents.slice(startIndex, startIndex + this.pageSize)
   }
+}
+
+
 
 
 
