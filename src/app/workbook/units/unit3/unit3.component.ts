@@ -1721,8 +1721,22 @@ export class Unit3Component {
   }
 
 
-  printPage() {
+  // printPage() {
+  //   window.print();
+  // }
+
+  printPage(): void {
+    const originalTitle = document.title;
+
+    const safeLabel = this.label
+      .replace(/\s+/g, '-')
+      .replace(/[^\w-]/g, '');
+
+    document.title = `BE-ON-TOP_Evaluation_${safeLabel}_${this.uid}`;
+
     window.print();
+
+    document.title = originalTitle;
   }
 
 
@@ -1990,5 +2004,9 @@ export class Unit3Component {
       default: return null;
     }
   }
+
+
+
+
 
 }

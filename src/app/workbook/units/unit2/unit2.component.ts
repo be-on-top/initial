@@ -2137,9 +2137,23 @@ export class Unit2Component {
   }
 
 
-  printPage() {
+  // printPage() {
+  //   window.print();
+  // }
+    printPage(): void {
+    const originalTitle = document.title;
+
+    const safeLabel = this.label
+      .replace(/\s+/g, '-')
+      .replace(/[^\w-]/g, '');
+
+    document.title = `BE-ON-TOP_Evaluation_${safeLabel}_${this.uid}`;
+
     window.print();
+
+    document.title = originalTitle;
   }
+
 
 
   // 3. La nouvelle méthode de sauvegarde automatique pour le référent :
