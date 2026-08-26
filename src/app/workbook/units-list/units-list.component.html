@@ -1,0 +1,60 @@
+<div class="container py-4">
+
+    <div class="alert alert-info">
+        Le Workbook regroupe, sous forme d'unités, des exercices visant à évaluer des compétences transverses
+        académiques ou nécessaires au déroulement pédagogique et aux processus d'insertion.
+        Ces évaluations sont destinées aux candidats.
+        En tant que conseiller projet, à vous de choisir l'évaluation adaptée et de copier l'URL correspondante pour la
+        transmettre aux candidats de votre liste lorsque vous le jugez nécessaire.
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-12 col-md-6 col-xl-4" *ngFor="let unit of units">
+            <div class="card h-100 shadow-sm">
+
+                <!-- LABEL -->
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        {{ unit.label }}
+                    </h5>
+                </div>
+
+                <!-- CONTENU -->
+                <div class="card-body d-flex flex-column">
+
+                    <h6 class="card-subtitle mb-3 text-muted">
+                        {{ unit.profile }}
+                    </h6>
+
+                    <p class="card-text">
+                        {{ unit.description }}
+                    </p>
+
+                </div>
+
+                <!-- PIED DE CARTE -->
+                <div class="card-footer">
+
+                    <div class="d-flex justify-content-between align-items-center gap-3">
+
+                        <small class="text-muted">
+                            {{ unit.id }}
+                        </small>
+
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            (click)="copyCandidateUrl(unit.candidateRoute)"
+                            title="Copier l'URL à transmettre au candidat">
+                            Copier l'URL candidat
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>

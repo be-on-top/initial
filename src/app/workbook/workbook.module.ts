@@ -10,6 +10,7 @@ import { DocVoisinsComponent } from './units/unit2/doc-voisins/doc-voisins.compo
 import { Unit3Component } from './units/unit3/unit3.component';
 import { DocumentBatimentComponent } from './units/unit3/document-batiment/document-batiment.component';
 import { DocumentEolienComponent } from './units/unit3/document-eolien/document-eolien.component';
+import { UnitsListComponent } from './units-list/units-list.component';
 
 
 
@@ -21,7 +22,8 @@ import { DocumentEolienComponent } from './units/unit3/document-eolien/document-
     DocVoisinsComponent,
     Unit3Component,
     DocumentBatimentComponent,
-    DocumentEolienComponent
+    DocumentEolienComponent,
+    UnitsListComponent
   ],
   imports: [
     CommonModule,
