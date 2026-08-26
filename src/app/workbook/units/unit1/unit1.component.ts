@@ -4,6 +4,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { WorkbookService } from '../../workbook.service';
 import { AuthService } from 'src/app/admin/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { WORKBOOK_UNITS } from "../../workbookUnits";
 
 interface Step {
   id: string;
@@ -21,7 +22,12 @@ interface Step {
 
 export class Unit1Component {
 
-  label: string = "FLE niveau A1"
+  // label: string = "FLE niveau A1"
+  label: string = WORKBOOK_UNITS.find(unit => unit.id === 'unit1')!.label;
+  profile: string = WORKBOOK_UNITS.find(unit => unit.id === 'unit1')!.profile;
+  description: string = WORKBOOK_UNITS.find(unit => unit.id === 'unit1')!.description;
+
+
 
   // On déclare en haut du composant
   commentCtrl = new FormControl('');
@@ -1577,37 +1583,37 @@ export class Unit1Component {
   }
 
   rebuildAggregateFromUnitData() {
-  const rebuilt: Record<string, number> = {};
+    const rebuilt: Record<string, number> = {};
 
-  this.steps.forEach(step => {
-    const key = `units.unit3.${step.id}`;
-    const exerciseData = this.unitData?.[key];
+    this.steps.forEach(step => {
+      const key = `units.unit3.${step.id}`;
+      const exerciseData = this.unitData?.[key];
 
-    // On ne recompte que les exercices déjà soumis
-    if (!exerciseData?.submitted) {
-      return;
-    }
+      // On ne recompte que les exercices déjà soumis
+      if (!exerciseData?.submitted) {
+        return;
+      }
 
-    const category = step.category;
-    const score = Number(exerciseData.score) || 0;
+      const category = step.category;
+      const score = Number(exerciseData.score) || 0;
 
-    if (rebuilt[category] === undefined) {
-      rebuilt[category] = 0;
-    }
+      if (rebuilt[category] === undefined) {
+        rebuilt[category] = 0;
+      }
 
-    rebuilt[category] += score;
-  });
+      rebuilt[category] += score;
+    });
 
-  this.aggregateState = rebuilt;
+    this.aggregateState = rebuilt;
 
-  // Le localStorage devient simplement un miroir local
-  localStorage.setItem(
-    'unit3_aggregation',
-    JSON.stringify(this.aggregateState)
-  );
+    // Le localStorage devient simplement un miroir local
+    localStorage.setItem(
+      'unit3_aggregation',
+      JSON.stringify(this.aggregateState)
+    );
 
-  console.log('♻️ AGGREGATE RECONSTRUIT =>', this.aggregateState);
-}
+    console.log('♻️ AGGREGATE RECONSTRUIT =>', this.aggregateState);
+  }
 
 
 

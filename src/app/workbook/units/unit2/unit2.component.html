@@ -21,6 +21,12 @@
     Seul un candidat authentifié peut passer une évaluation.
   </div>
 
+
+  <!-- Contexte de l'unité pour le référent -->
+  <div class="alert alert-light" *ngIf="!isNotAuthenticated && isReferentView">
+    <strong>Unité 2 ({{ label }})</strong>. Profil ciblé : {{ profile }}. Capacités évaluées : {{description}}
+  </div>
+
   <div>
 
     <!-- EXERCICE 1 -->
@@ -450,7 +456,8 @@
     <!-- EXERCICE 2 - QUESTION 5 = EXERCICE 6 -->
     <!-- ===================================================== -->
 
-    <form class="additional-margin" *ngIf="isReferentView || currentStep === 5" [formGroup]="formEx6" (ngSubmit)="submitEx6()">
+    <form class="additional-margin" *ngIf="isReferentView || currentStep === 5" [formGroup]="formEx6"
+      (ngSubmit)="submitEx6()">
 
       <!-- HEADER -->
       <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
@@ -800,7 +807,8 @@
     <!-- EXERCICE 3 - PARTIE 1 - QUESTION 3 = EXERCICE 10 -->
     <!-- ===================================================== -->
 
-    <form class="additional-margin" *ngIf="isReferentView || currentStep === 9" [formGroup]="formEx10" (ngSubmit)="submitEx10()">
+    <form class="additional-margin" *ngIf="isReferentView || currentStep === 9" [formGroup]="formEx10"
+      (ngSubmit)="submitEx10()">
 
       <!-- HEADER identique -->
 
@@ -1115,7 +1123,8 @@
     <!-- EXERCICE 3 - PARTIE 2 - QUESTION 2 = EXERCICE 13 -->
     <!-- ===================================================== -->
 
-    <form  class="nouvelle-page" *ngIf="isReferentView || currentStep === 12" [formGroup]="formEx13" (ngSubmit)="submitEx13()">
+    <form class="nouvelle-page" *ngIf="isReferentView || currentStep === 12" [formGroup]="formEx13"
+      (ngSubmit)="submitEx13()">
 
       <!-- HEADER -->
 
@@ -1418,7 +1427,8 @@
     <!-- EXERCICE 4 - QUESTION 1 = EXERCICE 16 -->
     <!-- ===================================================== -->
 
-    <form class="nouvelle-page" *ngIf="isReferentView || currentStep === 15" [formGroup]="formEx16" (ngSubmit)="submitEx16()">
+    <form class="nouvelle-page" *ngIf="isReferentView || currentStep === 15" [formGroup]="formEx16"
+      (ngSubmit)="submitEx16()">
 
       <!-- HEADER -->
 
@@ -1649,7 +1659,8 @@
     <!-- EXERCICE 4 - QUESTION 3 = EXERCICE 18 -->
     <!-- ===================================================== -->
 
-    <form class="nouvelle-page" *ngIf="isReferentView || currentStep === 17" [formGroup]="formEx18" (ngSubmit)="submitEx18()">
+    <form class="nouvelle-page" *ngIf="isReferentView || currentStep === 17" [formGroup]="formEx18"
+      (ngSubmit)="submitEx18()">
 
       <!-- HEADER -->
 
@@ -1997,7 +2008,8 @@
     <!-- EXERCICE 21 -->
     <!-- ===================================================== -->
 
-    <form class="nouvelle-page" *ngIf="isReferentView || currentStep === 20" [formGroup]="formEx21" (ngSubmit)="submitEx21()">
+    <form class="nouvelle-page" *ngIf="isReferentView || currentStep === 20" [formGroup]="formEx21"
+      (ngSubmit)="submitEx21()">
 
       <!-- HEADER -->
 
@@ -2024,7 +2036,7 @@
           <!-- <span class="badge text-bg-dark">
             {{ getCurrentScore(20) }} PNTS
           </span> -->
-            <!-- pour éditer le score à ce niveau de lecture -->
+          <!-- pour éditer le score à ce niveau de lecture -->
           <span class="badge text-bg-dark" [class.clickable-step-badge]="!aggregateState['isFinal']"
             (click)="!aggregateState['isFinal'] && editStepScore(20)">
             {{ getCurrentScore(20) }} PNTS
@@ -2105,7 +2117,8 @@
     <!-- EXERCICE 22 -->
     <!-- ===================================================== -->
 
-    <form class="nouvelle-page" *ngIf="isReferentView || currentStep === 21" [formGroup]="formEx22" (ngSubmit)="submitEx22()">
+    <form class="nouvelle-page" *ngIf="isReferentView || currentStep === 21" [formGroup]="formEx22"
+      (ngSubmit)="submitEx22()">
 
       <!-- HEADER -->
 
@@ -2168,7 +2181,8 @@
               de la naissance de leur premier enfant.</p>
           </div>
 
-          <p class="mt-5 d-print-none"> <i class="bi bi-info-square-fill me-2"></i>Merci d'utiliser un minimum de 60 mots</p>
+          <p class="mt-5 d-print-none"> <i class="bi bi-info-square-fill me-2"></i>Merci d'utiliser un minimum de 60
+            mots</p>
 
         </div>
 

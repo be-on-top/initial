@@ -4,6 +4,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { WorkbookService } from '../../workbook.service';
 import { AuthService } from 'src/app/admin/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { WORKBOOK_UNITS } from "../../workbookUnits";
 
 interface Step {
   id: string;
@@ -21,7 +22,11 @@ interface Step {
 
 export class Unit2Component {
 
-  label: string = "FLE niveau A2"
+  // label: string = "FLE niveau A2"
+  // label: string = "FLE niveau B1 & B2"
+  label: string = WORKBOOK_UNITS.find(unit => unit.id === 'unit2')!.label;
+  profile: string = WORKBOOK_UNITS.find(unit => unit.id === 'unit2')!.profile;
+  description: string = WORKBOOK_UNITS.find(unit => unit.id === 'unit2')!.description;
 
   // On déclare en haut du composant
   commentCtrl = new FormControl('');

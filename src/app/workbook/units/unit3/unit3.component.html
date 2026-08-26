@@ -21,6 +21,11 @@
     Seul un candidat authentifié peut passer une évaluation.
   </div>
 
+  <!-- Contexte de l'unité pour le référent -->
+  <div class="alert alert-light" *ngIf="!isNotAuthenticated && isReferentView">
+    <strong>Unité 3 ({{ label }})</strong>. Profil ciblé : {{ profile }}. Capacités évaluées : {{description}}
+  </div>
+
   <div>
 
     <!-- EXERCICE 1 -->
@@ -834,7 +839,8 @@
     <!-- EXERCICE 13 -->
     <!-- ===================================================== -->
 
-    <form *ngIf="isReferentView || currentStep === 12" [formGroup]="formEx13" (ngSubmit)="submitEx13()" class="nouvelle-page">
+    <form *ngIf="isReferentView || currentStep === 12" [formGroup]="formEx13" (ngSubmit)="submitEx13()"
+      class="nouvelle-page">
 
       <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
 
@@ -1102,7 +1108,8 @@
     <!-- EXERCICE 17 -->
     <!-- ===================================================== -->
 
-    <form *ngIf="isReferentView || currentStep === 16" [formGroup]="formEx17" (ngSubmit)="submitEx17()" class="nouvelle-page">
+    <form *ngIf="isReferentView || currentStep === 16" [formGroup]="formEx17" (ngSubmit)="submitEx17()"
+      class="nouvelle-page">
 
       <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
 
@@ -1162,14 +1169,13 @@
 
     </form>
 
-     <hr *ngIf="isReferentView">
+    <hr *ngIf="isReferentView">
 
     <!-- ===================================================== -->
     <!-- EXERCICE 18 -->
     <!-- ===================================================== -->
 
-    <form *ngIf="isReferentView || currentStep === 17" [formGroup]="formEx18"
-      (ngSubmit)="submitEx18()">
+    <form *ngIf="isReferentView || currentStep === 17" [formGroup]="formEx18" (ngSubmit)="submitEx18()">
 
       <!-- HEADER -->
 
@@ -1354,8 +1360,7 @@
     <!-- EXERCICE 20 -->
     <!-- ===================================================== -->
 
-    <form *ngIf="isReferentView || currentStep === 19" [formGroup]="formEx20"
-      (ngSubmit)="submitEx20()">
+    <form *ngIf="isReferentView || currentStep === 19" [formGroup]="formEx20" (ngSubmit)="submitEx20()">
 
       <!-- HEADER -->
 
