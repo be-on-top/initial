@@ -256,7 +256,8 @@ export class Unit1Component {
 
     // 🧹 Reset de l'état local des scores à chaque chargement de l'unité
     // localStorage.removeItem('unit1_aggregation');
-    this.aggregateState = {};
+    // this.aggregateState = {};
+
 
     // 🔐 Récupération de l'utilisateur connecté
     this.auth.getCurrentUserInfo().subscribe(userInfo => {
@@ -290,10 +291,10 @@ export class Unit1Component {
           // ✅ même si vide → on initialise
           this.unitData = data ?? {};
 
+          this.rebuildAggregateFromUnitData();
+
           console.log("UNIT DATA:", this.unitData);
 
-          // 🔄 Synchronisation de l'état :
-          // → détermine le step actuel selon les exercices déjà soumis
           this.syncStep();
 
           // détecte si l'entièreté de l'unité a été finalisée
@@ -1596,37 +1597,69 @@ export class Unit1Component {
     this.service.updateUnitComment(this.uid, "unit1", texte);
   }
 
+  /**
+ * Reconstruit entièrement aggregateState à partir des exercices
+ * réellement enregistrés dans Firestore.
+ *
+ * Objectif :
+ * ne plus considérer le localStorage comme la source de vérité du cumul.
+ *
+ * Lors d'une reprise d'unité, les scores déjà soumis sont récupérés
+ * depuis `unitData`, puis regroupés selon la catégorie définie dans `steps`.
+ *
+ * Cela évite notamment :
+ * - la perte du cumul après déconnexion / reconnexion
+ * - les incohérences liées à un localStorage vide ou obsolète
+ * - la nécessité de recalculer les anciens exercices en les resoumettant
+ *
+ * IMPORTANT :
+ * `steps` fournit ici la catégorie de référence de chaque exercice.
+ * Une mauvaise catégorie dans `steps` entraîne donc mécaniquement
+ * l'affectation du score à la mauvaise catégorie dans la synthèse.
+ *
+ * Le localStorage n'est plus qu'un miroir du résultat reconstruit.
+ */
   rebuildAggregateFromUnitData() {
     const rebuilt: Record<string, number> = {};
 
     this.steps.forEach(step => {
-      const key = `units.unit3.${step.id}`;
+      const key = `units.unit1.${step.id}`;
       const exerciseData = this.unitData?.[key];
 
-      // On ne recompte que les exercices déjà soumis
+      // On ne prend en compte que les exercices réellement soumis.
       if (!exerciseData?.submitted) {
         return;
       }
 
+      // La catégorie de référence provient du tableau `steps`.
       const category = step.category;
+
+      // Sécurisation du score : toute valeur absente/non numérique vaut 0.
       const score = Number(exerciseData.score) || 0;
 
+      // Première rencontre de cette catégorie : initialisation du cumul.
       if (rebuilt[category] === undefined) {
         rebuilt[category] = 0;
       }
 
+      // Ajout du score de l'exercice au cumul de sa catégorie.
       rebuilt[category] += score;
     });
 
+    // Firestore/unitData a permis de reconstruire l'état agrégé complet.
     this.aggregateState = rebuilt;
 
-    // Le localStorage devient simplement un miroir local
+    // Le localStorage devient uniquement un miroir local de cet état.
     localStorage.setItem(
-      'unit3_aggregation',
+      'unit1_aggregation',
       JSON.stringify(this.aggregateState)
     );
 
-    console.log('♻️ AGGREGATE RECONSTRUIT =>', this.aggregateState);
+    console.log(
+      '♻️ AGGREGATE RECONSTRUIT =>',
+      this.aggregateState
+    );
+
   }
 
 
