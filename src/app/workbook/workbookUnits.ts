@@ -17,7 +17,7 @@ export const WORKBOOK_UNITS = [
     id: 'unit3',
     label: 'FLE niveaux B1-B2',
     profile: 'Utilisateur indépendant',
-    description: 'Comprendre les points essentiels d’un langage clair et standard ainsi que des contenus plus complexes. Produire un discours cohérent et détaillé, expliquer un projet ou une idée, exprimer un avis et communiquer avec davantage de spontanéité et d’aisance.',
+    description: 'Comprendre les points essentiels d\'un langage clair et standard ainsi que des contenus plus complexes. Produire un discours cohérent et détaillé, expliquer un projet ou une idée, exprimer un avis et communiquer avec davantage de spontanéité et d’aisance.',
     candidateRoute: '/workbook/unit3'
   }
 ];
