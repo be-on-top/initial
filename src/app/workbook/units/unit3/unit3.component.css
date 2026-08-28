@@ -1,32 +1,40 @@
 .document-image {
-    float: left;
-    width: min(40%, 600px);
-    height: auto;
-    margin: 0 1rem 0.5rem 0;
+  float: left;
+  width: min(40%, 600px);
+  height: auto;
+  margin: 0 1rem 0.5rem 0;
 }
 
 .document-batiment p {
-    margin-bottom: 0.75rem;
+  margin-bottom: 0.75rem;
 }
 
 .document-batiment::after {
-    content: "";
-    display: block;
-    clear: both;
+  content: "";
+  display: block;
+  clear: both;
 }
 
-strong{font-weight: 900;}
+strong {
+  font-weight: 900;
+}
 
 @media (max-width: 576px) {
-    .document-image {
-        width: 42%;
-        margin-right: 0.75rem;
-    }
+  .document-image {
+    width: 42%;
+    margin-right: 0.75rem;
+  }
 }
 
 .badge.clickable-step-badge {
   border: 2px solid #0ae42b !important;
   /* Vert Bootstrap success (ou votre vert habituel) */
+}
+
+.badge.clickable-step-badge::after {
+  content: " ±";
+  font-weight: 700;
+  margin-left: 0.25rem;
 }
 
 .bi-exposure {
@@ -148,6 +156,10 @@ div span {
   /* Règle appliquée à l'impression */
   .badge.clickable-step-badge {
     border: none !important;
+  }
+
+  .badge.clickable-step-badge::after {
+    content: none;
   }
 
   @media print and (orientation: portrait) {

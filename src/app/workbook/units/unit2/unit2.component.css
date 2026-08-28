@@ -3,6 +3,12 @@
   /* Vert Bootstrap success (ou votre vert habituel) */
 }
 
+.badge.clickable-step-badge::after {
+  content: " ±";
+  font-weight: 700;
+  margin-left: 0.25rem;
+}
+
 .bi-exposure {
   font-size: 0.80em;
 }
@@ -123,6 +129,11 @@ div span {
   .badge.clickable-step-badge {
     border: none !important;
   }
+
+  .badge.clickable-step-badge::after {
+    content: none;
+  }
+
 
   @media print and (orientation: portrait) {
     .nouvelle-page {
