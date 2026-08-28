@@ -22,9 +22,12 @@
   </div>
 
   <!-- Contexte de l'unité pour le référent -->
-  <div class="alert alert-light d-print-none" *ngIf="!isNotAuthenticated && isReferentView">
-    <strong>Unité 3 ({{ label }})</strong>. Profil ciblé : {{ profile }}. Capacités évaluées : {{description}}
-  </div>
+<div class="alert alert-light" *ngIf="!isNotAuthenticated && isReferentView">
+  <span class="fw-bold text-nowrap">Candidat :</span> {{ lastName }} {{ firstName }}.
+  <span class="fw-bold text-nowrap">Unité 3 ({{ label }})</span>.
+  <span class="fw-bold text-nowrap">Profil ciblé :</span> {{ profile }}.
+  <span class="fw-bold text-nowrap">Capacités évaluées :</span> {{ description }}.
+</div>
 
   <div>
 
@@ -180,7 +183,7 @@
     <!-- EXERCICE 3 - QUESTION 3 -->
     <!-- ===================================================== -->
 
-    <form *ngIf="isReferentView || currentStep === 2" [formGroup]="formEx3" (ngSubmit)="submitEx3()">
+    <form *ngIf="isReferentView || currentStep === 2" [formGroup]="formEx3" (ngSubmit)="submitEx3()" class="nouvelle-page">
 
       <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
 
@@ -217,7 +220,7 @@
         Que veut dire l'acronyme FFB ?
       </div>
 
-      <textarea class="form-control nouvelle-page" rows="4" formControlName="answer">
+      <textarea class="form-control" rows="4" formControlName="answer">
   </textarea>
 
       <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
@@ -438,7 +441,7 @@
     <form *ngIf="isReferentView || currentStep === 6" [formGroup]="formEx7" (ngSubmit)="submitEx7()">
 
       <div
-        class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2 nouvelle-page">
+        class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
 
         <span class="badge text-bg-dark text-white">
           <i class="bi bi-tag-fill me-2"></i>

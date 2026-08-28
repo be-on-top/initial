@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { doc, docData, Firestore, setDoc, updateDoc } from '@angular/fire/firestore';
 import { FormGroup, NgForm } from '@angular/forms';
 import { logEvent } from 'firebase/analytics';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -276,5 +277,11 @@ async finalizeUnit(
     return Promise.all([saveWorkbook, saveStudent]);
   }
 
+
+
+    getStudentById(studentId: string) {
+      const studentRef = doc(this.firestore, 'students/' + studentId);
+      return docData(studentRef) as Observable<any>;
+    }
 
 }

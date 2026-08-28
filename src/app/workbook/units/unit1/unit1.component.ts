@@ -34,6 +34,10 @@ export class Unit1Component {
 
   // pour authentification à venir
   uid: string = "";
+  // si student
+  lastName: string = ''
+  firstName: string = ''
+
   userRole: string | null = null
 
   unitData: any = {};
@@ -249,6 +253,9 @@ export class Unit1Component {
         // Si on arrive ici, c'est que cleanedRole vaut 'admin' ou 'referent'
         console.log("✅ Accès accordé pour le rôle :", cleanedRole);
         this.loadData();
+
+        // 👤 Récupération de l'identité du candidat
+        this.getCandidateIdentity(this.uid);
       });
 
       return; // ⛔ on ne passe PAS par auth pour la logique student en dessous
@@ -1662,6 +1669,14 @@ export class Unit1Component {
 
   }
 
+  getCandidateIdentity(uid: string) {
+    this.service.getStudentById(uid).subscribe(data => {
+      if (!data) return;
+
+      this.firstName = data.firstName;
+      this.lastName = data.lastName;
+    });
+  }
 
 
 }

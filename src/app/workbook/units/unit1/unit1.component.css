@@ -57,10 +57,12 @@ button:disabled {
   font-size: 1.2rem;
 }
 
-div span{font-size: inherit;}
+div span {
+  font-size: inherit;
+}
 
-.alert.bg-info{
-    color: white;
+.alert.bg-info {
+  color: white;
 }
 
 :focus {
@@ -83,16 +85,27 @@ div span{font-size: inherit;}
   * {
     /* Propriété préfixée en premier */
     -webkit-print-color-adjust: exact !important;
-    
+
     /* Propriété standard en dernier pour qu'elle prévale */
     print-color-adjust: exact !important;
   }
 
-  .card, .page-break-avoid {
-  break-inside: avoid;
-}
+  .card,
+  .page-break-avoid {
+    break-inside: avoid;
+  }
 
-.nouvelle-page {
-  page-break-before: always; /* Force un saut de page avant cet élément */
-}
+  .nouvelle-page {
+    page-break-before: always;
+    break-before: page;
+    margin-top: 20px;
+    /* Syntaxe CSS moderne pour la compatibilité */
+  }
+
+  .additional-margin {
+    display: block !important;
+    padding-top: 20px !important;
+    /* Le padding n'est jamais ignoré à l'impression */
+  }
+
 }

@@ -22,9 +22,12 @@
   </div>
 
   <!-- Contexte de l'unité pour le référent -->
-<div class="alert alert-light d-print-none" *ngIf="!isNotAuthenticated && isReferentView">
-  <strong>Unité 1 ({{ label }})</strong>. Profil ciblé : {{ profile }}. Capacités évaluées : {{description}}
-</div>
+  <div class="alert alert-light" *ngIf="!isNotAuthenticated && isReferentView">
+    <span class="fw-bold text-nowrap">Candidat :</span> {{ lastName }} {{ firstName }}.
+    <span class="fw-bold text-nowrap">Unité 3 ({{ label }})</span>.
+    <span class="fw-bold text-nowrap">Profil ciblé :</span> {{ profile }}.
+    <span class="fw-bold text-nowrap">Capacités évaluées :</span> {{ description }}.
+  </div>
 
   <div>
     <!-- ===================== -->
@@ -106,7 +109,7 @@
     <!-- ===================== -->
     <!-- EXERCICE 2            -->
     <!-- ===================== -->
-    <form *ngIf="isReferentView || currentStep === 1" [formGroup]="formEx2" (ngSubmit)="submitEx2()">
+    <form *ngIf="isReferentView || currentStep === 1" [formGroup]="formEx2" (ngSubmit)="submitEx2()" class="nouvelle-page">
 
       <!-- HEADER -->
       <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
@@ -321,7 +324,7 @@
     <!-- ===================== -->
     <!-- EXERCICE 5            -->
     <!-- ===================== -->
-    <form *ngIf="isReferentView || currentStep === 4" [formGroup]="formEx5" (ngSubmit)="submitEx5()">
+    <form *ngIf="isReferentView || currentStep === 4" [formGroup]="formEx5" (ngSubmit)="submitEx5()" class="nouvelle-page">
 
       <!-- HEADER -->
       <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
@@ -464,7 +467,7 @@
     <!-- ===================== -->
     <!-- EXERCICE 7            -->
     <!-- ===================== -->
-    <form *ngIf="isReferentView || currentStep === 6" [formGroup]="formEx7" (ngSubmit)="submitEx7()">
+    <form *ngIf="isReferentView || currentStep === 6" [formGroup]="formEx7" (ngSubmit)="submitEx7()" class="nouvelle-page">
 
       <!-- HEADER -->
       <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
@@ -525,7 +528,7 @@
     <!-- ===================== -->
     <!-- EXERCICE 8            -->
     <!-- ===================== -->
-    <form *ngIf="isReferentView || currentStep === 7" [formGroup]="formEx8" (ngSubmit)="submitEx8()">
+    <form *ngIf="isReferentView || currentStep === 7" [formGroup]="formEx8" (ngSubmit)="submitEx8()" class="nouvelle-page">
 
       <!-- HEADER -->
       <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
@@ -580,7 +583,7 @@
     <!-- ===================== -->
     <!-- EXERCICE 9            -->
     <!-- ===================== -->
-    <form *ngIf="isReferentView || currentStep === 8" [formGroup]="formEx9" (ngSubmit)="submitEx9()">
+    <form *ngIf="isReferentView || currentStep === 8" [formGroup]="formEx9" (ngSubmit)="submitEx9()" class="nouvelle-page">
 
       <!-- HEADER -->
       <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
@@ -640,7 +643,7 @@
   </div>
 
   <!-- 📊 SYNTHÈSE DES SCORES POUR LE RÉFÉRENT -->
-  <div *ngIf="isReferentView && aggregateState" class="mt-4 p-3 bg-light border rounded-0">
+  <div *ngIf="isReferentView && aggregateState" class="mt-4 p-3 bg-light border rounded-0" class="nouvelle-page">
     <h5 class="mb-3 text-primary">📊 Synthèse des compétences (Vue Référent)</h5>
 
     <!-- <ul class="list-group list-group-flush">

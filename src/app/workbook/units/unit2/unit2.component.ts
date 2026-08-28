@@ -33,6 +33,10 @@ export class Unit2Component {
 
   // pour authentification à venir
   uid: string = "";
+  // si student
+  lastName: string = ''
+  firstName: string = ''
+
   userRole: string | null = null
 
   unitData: any = {};
@@ -465,7 +469,11 @@ export class Unit2Component {
 
         // Si on arrive ici, c'est que cleanedRole vaut 'admin' ou 'referent'
         console.log("✅ Accès accordé pour le rôle :", cleanedRole);
+        
         this.loadData();
+
+        // 👤 Récupération de l'identité du candidat
+        this.getCandidateIdentity(this.uid);
       });
 
       return; // ⛔ on ne passe PAS par auth pour la logique student en dessous
@@ -2140,7 +2148,7 @@ export class Unit2Component {
   // printPage() {
   //   window.print();
   // }
-    printPage(): void {
+  printPage(): void {
     const originalTitle = document.title;
 
     const safeLabel = this.label
@@ -2261,6 +2269,15 @@ export class Unit2Component {
         console.error("Erreur Firestore :", err);
         alert("Erreur lors de l'enregistrement.");
       });
+  }
+
+  getCandidateIdentity(uid: string) {
+    this.service.getStudentById(uid).subscribe(data => {
+      if (!data) return;
+
+      this.firstName = data.firstName;
+      this.lastName = data.lastName;
+    });
   }
 
 }
