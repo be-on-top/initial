@@ -11,9 +11,10 @@
             regards croisés autour de la formation et de l'application.
         </p>
     </div>
-    <div class="row g-3 mt-2">
+<!-- Utilisation de *ngIf / else pour basculer du Skeleton aux cartes réelles -->
+    <div *ngIf="news$ | async as news; else loading" class="row g-3 mt-2">
 
-        <div *ngFor="let n of news$ | async" class="col-12 col-md-6">
+        <div *ngFor="let n of news" class="col-12 col-md-6">
 
             <a [routerLink]="['/news', n.id]"
                 class="card h-100 text-decoration-none text-reset border-0 shadow-sm news-card">
@@ -38,6 +39,26 @@
         </div>
 
     </div>
+
+    <!-- ⚡ SKELETON LOADER (Affiche 4 cartes grises animées Bootstrap pendant le subscribe) -->
+    <ng-template #loading>
+        <div class="row g-3 mt-2" aria-hidden="true">
+            <div *ngFor="let item of [1,2,3,4]" class="col-12 col-md-6">
+                <div class="card h-100 border-0 shadow-sm p-3">
+                    <div class="card-body p-0 placeholder-glow">
+                        <h2 class="h5 card-title mb-2">
+                            <span class="placeholder col-8 rounded"></span>
+                        </h2>
+                        <p class="card-text">
+                            <span class="placeholder col-12 rounded"></span>
+                            <span class="placeholder col-10 rounded"></span>
+                            <span class="placeholder col-6 rounded"></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
 
     <div class="alert bg-dark text-white w-100 text-center mt-3" role="region"
         aria-label="Informations générale et mission de l'application">

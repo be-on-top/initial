@@ -66,11 +66,11 @@ export class Unit3Component {
  * ===================================================== */
 
   steps: Step[] = [
-    { id: 'ex1', category: this.categories[0], duration: 160, maxScore: 1 }, // premier d'une série
-    { id: 'ex2', category: this.categories[0], duration: 120, maxScore: 1 },
-    { id: 'ex3', category: this.categories[0], duration: 120, maxScore: 1 },
-    { id: 'ex4', category: this.categories[0], duration: 120, maxScore: 1 },
-    { id: 'ex5', category: this.categories[0], duration: 120, maxScore: 1 },
+    { id: 'ex1', category: this.categories[0], duration: 180, maxScore: 1 }, // premier d'une série
+    { id: 'ex2', category: this.categories[0], duration: 140, maxScore: 1 },
+    { id: 'ex3', category: this.categories[0], duration: 140, maxScore: 1 },
+    { id: 'ex4', category: this.categories[0], duration: 140, maxScore: 1 },
+    { id: 'ex5', category: this.categories[0], duration: 140, maxScore: 1 },
     { id: 'ex6', category: this.categories[0], duration: 120, maxScore: 1 },
     { id: 'ex7', category: this.categories[0], duration: 120, maxScore: 1 },
     { id: 'ex8', category: this.categories[0], duration: 120, maxScore: 1 },

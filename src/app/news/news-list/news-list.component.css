@@ -2,3 +2,14 @@
     font-weight: 400;
     font-size: 2rem !important;
 }
+
+/* Couleur personnalisée : gris très doux et discret */
+.placeholder {
+  background-color: #bdbebe !important; /* Gris très clair natif Bootstrap (bg-light) */
+  opacity: 0.6; /* Translucide pour être encore plus subtil */
+}
+
+/* Ralentit légèrement l'animation de clignotement pour un effet très doux */
+.placeholder-glow .placeholder {
+  animation-duration: 2s;
+}
