@@ -60,7 +60,7 @@ export class Unit2Component {
 
 
   steps: Step[] = [
-    { id: 'ex1', category: this.categories[0], duration: 200, maxScore: 10 },
+    { id: 'ex1', category: this.categories[0], duration: 230, maxScore: 10 },
     { id: 'ex2', category: this.categories[0], duration: 90, maxScore: 1 }, // premier d'une série
     { id: 'ex3', category: this.categories[0], duration: 50, maxScore: 1 },
     { id: 'ex4', category: this.categories[0], duration: 50, maxScore: 1 },
@@ -1079,7 +1079,7 @@ submitEx6() {
     let score = 0;
 
     // Logique de correction de l'exercice 11
-    const answer = this.formEx12.value.answer
+    const answer = this.formEx11.value.answer
     if (answer === this.correctAnswerEx11) {
       score = 1;
     }

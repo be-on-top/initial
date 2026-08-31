@@ -476,7 +476,13 @@
           <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
             Max {{ steps[5].maxScore }} PNTS
           </span>
-          <span class="badge text-bg-dark">
+
+          <!-- <span class="badge text-bg-dark">
+            {{ getCurrentScore(5) }} PNTS
+          </span> -->
+          <!-- pour éditer le score à ce niveau de lecture -->
+          <span class="badge text-bg-dark" [class.clickable-step-badge]="isReferentView && !aggregateState['isFinal']"
+            (click)="isReferentView && !aggregateState['isFinal'] && editStepScore(5)">
             {{ getCurrentScore(5) }} PNTS
           </span>
         </div>
@@ -534,7 +540,11 @@
           <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
             Max {{ steps[6].maxScore }} PNTS
           </span>
-          <span class="badge text-bg-dark">
+          <!-- <span class="badge text-bg-dark">
+            {{ getCurrentScore(6) }} PNTS
+          </span> -->
+          <span class="badge text-bg-dark" [class.clickable-step-badge]="isReferentView && !aggregateState['isFinal']"
+            (click)="isReferentView && !aggregateState['isFinal'] && editStepScore(6)">
             {{ getCurrentScore(6) }} PNTS
           </span>
         </div>
@@ -2040,8 +2050,8 @@
             {{ getCurrentScore(20) }} PNTS
           </span> -->
           <!-- pour éditer le score à ce niveau de lecture -->
-          <span class="badge text-bg-dark" [class.clickable-step-badge]="!aggregateState['isFinal']"
-            (click)="!aggregateState['isFinal'] && editStepScore(20)">
+          <span class="badge text-bg-dark" [class.clickable-step-badge]="isReferentView &&!aggregateState['isFinal']"
+            (click)="isReferentView &&!aggregateState['isFinal'] && editStepScore(20)">
             {{ getCurrentScore(20) }} PNTS
           </span>
 
@@ -2149,8 +2159,8 @@
                         {{ getCurrentScore(21) }} PNTS
                                   </span>-->
           <!-- pour éditer le score à ce niveau de lecture -->
-          <span class="badge text-bg-dark" [class.clickable-step-badge]="!aggregateState['isFinal']"
-            (click)="!aggregateState['isFinal'] && editStepScore(21)">
+          <span class="badge text-bg-dark" [class.clickable-step-badge]="isReferentView && !aggregateState['isFinal']"
+            (click)="isReferentView && !aggregateState['isFinal'] && editStepScore(21)">
             {{ getCurrentScore(21) }} PNTS
           </span>
 
