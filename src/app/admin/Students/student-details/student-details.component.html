@@ -98,7 +98,8 @@
 
         <!-- zone dédiée au suivi des QCM et estimations chiffrées si elles existent -->
         <!-- Hypothèse à revoir selon le statut de external !!!! -->
-        <div class="card" *ngIf="(nonVide(tradesEvaluated) || hasCompletedUnit1 || hasCompletedUnit2 || hasCompletedUnit3) && userRouterLinks.user!=='external'">
+        <div class="card"
+            *ngIf="(nonVide(tradesEvaluated) || hasCompletedUnit1 || hasCompletedUnit2 || hasCompletedUnit3) && userRouterLinks.user!=='external'">
             <div class="card-header bg-primary">
                 <a class="btn text-light d-flex justify-content-between px-0" data-bs-toggle="collapse"
                     href="#collapseTwo">
@@ -251,14 +252,20 @@
                                 <div>
                                     <span class="badge bg-success rounded-0 me-2">Unité 1 (FLE Niveau A1)</span>
                                     <span class="fw-semibold text-success">Terminée !</span>
+                                    <!-- pour afficher la note globale -->
+                                    <span class="ms-2" *ngIf="student?.['units']?.['unit1']?.['finalGrade'] != null">
+                                        Note finale :
+                                        <span class="fw-bold">
+                                            {{ student['units']['unit1']['finalGrade'] }} / 20
+                                        </span>
+                                    </span>
                                 </div>
                                 <a *ngIf="studentId 
                                 && userRouterLinks.user !== 'editor'
                                 && userRouterLinks.user !== 'data-analyst' 
                                 && userRouterLinks.user !== 'trainer' 
-                                && userRouterLinks.user !== 'tutor'" 
-                                [routerLink]="['/workbook/unit1', studentId]" target="_blank"
-                                    class="btn btn-primary btn-sm rounded-0">
+                                && userRouterLinks.user !== 'tutor'" [routerLink]="['/workbook/unit1', studentId]"
+                                    target="_blank" class="btn btn-primary btn-sm rounded-0">
                                     📊 Consulter les résultats
                                 </a>
                             </div>
@@ -278,14 +285,20 @@
                                 <div>
                                     <span class="badge bg-success rounded-0 me-2">Unité 2 (FLE Niveau A2)</span>
                                     <span class="fw-semibold text-success">Terminée !</span>
+                                    <!-- pour afficher la note globale -->
+                                    <span class="ms-2" *ngIf="student?.['units']?.['unit2']?.['finalGrade'] != null">
+                                        Note finale :
+                                        <span class="fw-bold">
+                                            {{ student['units']['unit2']['finalGrade'] }} / 20
+                                        </span>
+                                    </span>
                                 </div>
-                               <a *ngIf="studentId 
+                                <a *ngIf="studentId 
                                 && userRouterLinks.user !== 'editor'
                                 && userRouterLinks.user !== 'data-analyst' 
                                 && userRouterLinks.user !== 'trainer' 
-                                && userRouterLinks.user !== 'tutor'" 
-                                [routerLink]="['/workbook/unit2', studentId]" target="_blank"
-                                    class="btn btn-primary btn-sm rounded-0">
+                                && userRouterLinks.user !== 'tutor'" [routerLink]="['/workbook/unit2', studentId]"
+                                    target="_blank" class="btn btn-primary btn-sm rounded-0">
                                     📊 Consulter les résultats
                                 </a>
                             </div>
@@ -305,14 +318,20 @@
                                 <div>
                                     <span class="badge bg-success rounded-0 me-2">Unité 3 (FLE Niveau B1-B2)</span>
                                     <span class="fw-semibold text-success">Terminée !</span>
+                                    <!-- pour afficher la note globale -->
+                                    <span class="ms-2" *ngIf="student?.['units']?.['unit3']?.['finalGrade'] != null">
+                                        Note finale :
+                                        <span class="fw-bold">
+                                            {{ student['units']['unit3']['finalGrade'] }} / 20
+                                        </span>
+                                    </span>
                                 </div>
                                 <a *ngIf="studentId 
                                 && userRouterLinks.user !== 'editor'
                                 && userRouterLinks.user !== 'data-analyst' 
                                 && userRouterLinks.user !== 'trainer' 
-                                && userRouterLinks.user !== 'tutor'"
-                                [routerLink]="['/workbook/unit3', studentId]" target="_blank"
-                                    class="btn btn-primary btn-sm rounded-0">
+                                && userRouterLinks.user !== 'tutor'" [routerLink]="['/workbook/unit3', studentId]"
+                                    target="_blank" class="btn btn-primary btn-sm rounded-0">
                                     📊 Consulter les résultats
                                 </a>
                             </div>
