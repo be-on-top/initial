@@ -32,3 +32,14 @@
 .timeline-item .content{
   margin-left: 60px;
 }
+
+
+@media print {
+
+    * {
+    /* Propriété préfixée en premier */
+    -webkit-print-color-adjust: exact !important;
+    /* Propriété standard en dernier pour qu'elle prévale */
+    print-color-adjust: exact !important;
+  }
+}

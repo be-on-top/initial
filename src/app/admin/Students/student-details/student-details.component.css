@@ -161,6 +161,13 @@ a[aria-expanded="true"] .toggle-arrow {
 
 @media print {
 
+    * {
+    /* Propriété préfixée en premier */
+    -webkit-print-color-adjust: exact !important;
+    /* Propriété standard en dernier pour qu'elle prévale */
+    print-color-adjust: exact !important;
+  }
+
   .collapse,
   .collapsing {
     display: block !important;
@@ -172,6 +179,9 @@ a[aria-expanded="true"] .toggle-arrow {
     display: none;
   }
 }
+
+
+
 
 
 
