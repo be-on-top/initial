@@ -1,10 +1,13 @@
 <div class="container py-4">
 
-<div class="alert bg-primary">
-    Le Workbook regroupe, sous forme d'unités, des exercices permettant d'évaluer des <span class="fw-bold">compétences transverses académiques ou fondamentales</span> mobilisées dans les parcours de formation et d'insertion.
-    Ces évaluations sont destinées aux candidats.
-    En tant que conseiller projet, <span class="fw-bold">vous choisissez l'évaluation adaptée et copiez l'URL correspondante pour la transmettre aux candidats de votre liste lorsque vous le jugez nécessaire</span>.
-</div>
+    <div class="alert bg-primary">
+        Le Workbook regroupe, sous forme d'unités, des exercices permettant d'évaluer des <span
+            class="fw-bold">compétences transverses académiques ou fondamentales</span> mobilisées dans les parcours de
+        formation et d'insertion.
+        Ces évaluations sont destinées aux candidats.
+        En tant que conseiller projet, <span class="fw-bold">vous choisissez l'évaluation adaptée et copiez l'URL
+            correspondante pour la transmettre aux candidats de votre liste lorsque vous le jugez nécessaire</span>.
+    </div>
 
     <div class="row g-4">
 
@@ -27,6 +30,19 @@
 
                     <p class="card-text">
                         {{ unit.description }}
+                    </p>
+                    <!-- support source à télécharger -->
+
+                    <p class="mb-0">
+                        <a *ngIf="unit.sourceDocumentUrl" [href]="unit.sourceDocumentUrl" target="_blank"
+                            rel="noopener noreferrer"><i class="bi bi-arrow-down-square me-2"></i>
+                            Support source de l'unité
+                            <span class="visually-hidden">(s'ouvre dans un nouvel onglet)</span>
+                        </a>
+
+                        <span *ngIf="!unit.sourceDocumentUrl" class="text-muted">
+                            Support source de l'unité : à venir
+                        </span>
                     </p>
 
                 </div>
