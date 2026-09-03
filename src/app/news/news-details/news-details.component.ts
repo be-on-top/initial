@@ -1,11 +1,21 @@
 import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import { NewsService } from '../news.service';
 import { News } from '../news';
 import { Title, Meta } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
+
+interface NewsFallbackItem {
+  title: string;
+  excerpt: string;
+}
+
+interface NewsFallbackMap {
+  [id: string]: NewsFallbackItem;
+}
 
 @Component({
   selector: 'app-news-details',
@@ -19,6 +29,7 @@ export class NewsDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
+    private http: HttpClient,
     private newsService: NewsService,
     private titleService: Title,
     private metaService: Meta,
@@ -31,11 +42,24 @@ export class NewsDetailsComponent implements OnInit, OnDestroy {
     if (id) {
       const fullUrl = `https://be-on-top.io/news/${id}`;
 
-      // 1. Positionnement SYNCHRONE immédiat (avant Firestore)
+      // 1. Positionnement SYNCHRONE de l'URL Canonical
       this.setCanonical(fullUrl);
-      this.titleService.setTitle('Actualité Formation & Évaluation des Compétences | BE-ON-TO'); // Évite le titre par défaut de la homepage
-      
-      // 2. Appel Firestore avec coupure automatique du Subscription (take(1))
+
+      // 2. Chargement immédiat du Fallback JSON (Rendu ultrarapide pour Googlebot)
+      this.http.get<NewsFallbackMap>('/assets/news-fallback.json')
+        .pipe(take(1))
+        .subscribe(fallbackMap => {
+          // Si l'appel Firestore n'a pas encore répondu et qu'on a le fallback pour cet ID
+          if (!this.news && fallbackMap && fallbackMap[id]) {
+            const fallback = fallbackMap[id];
+            this.titleService.setTitle(`${fallback.title} | BE-ON-TOP`);
+            this.metaService.updateTag({ name: 'description', content: fallback.excerpt });
+            this.metaService.updateTag({ property: 'og:title', content: fallback.title });
+            this.metaService.updateTag({ property: 'og:description', content: fallback.excerpt });
+          }
+        });
+
+      // 3. Appel Firestore (Récupération des données dynamiques complètes)
       this.newsSub = this.newsService.getOne(id).pipe(
         take(1)
       ).subscribe(n => {
@@ -45,10 +69,10 @@ export class NewsDetailsComponent implements OnInit, OnDestroy {
         const pageTitle = `${n.title} | BE-ON-TOP`;
         const description = this.stripHtmlFast(n.content).slice(0, 150);
 
-        // Mise à jour des métadonnées
+        // Remplacement dynamique des métadonnées par celles du backend
         this.titleService.setTitle(pageTitle);
         this.metaService.updateTag({ name: 'description', content: description });
-        
+
         // OpenGraph
         this.metaService.updateTag({ property: 'og:title', content: n.title });
         this.metaService.updateTag({ property: 'og:description', content: description });
