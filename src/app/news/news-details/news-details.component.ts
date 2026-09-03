@@ -1,122 +1,84 @@
-
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NewsService } from '../news.service';
 import { News } from '../news';
-
-// SEO
 import { Title, Meta } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/common';
-import { Inject } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-news-details',
   templateUrl: './news-details.component.html',
   styleUrls: ['./news-details.component.css']
 })
-export class NewsDetailsComponent implements OnInit {
+export class NewsDetailsComponent implements OnInit, OnDestroy {
 
   news: News | null = null;
+  private newsSub?: Subscription;
 
   constructor(
     private route: ActivatedRoute,
     private newsService: NewsService,
-    // SEO
     private titleService: Title,
     private metaService: Meta,
     @Inject(DOCUMENT) private document: Document
   ) { }
 
-  // ngOnInit() {
-  //   const id = this.route.snapshot.paramMap.get('id');
-
-  //   if (id) {
-  //     this.newsService.getOne(id).subscribe(n => {
-  //       if (!n) return;
-
-  //       this.news = n;
-
-  //       // 🔹 TITLE
-  //       this.titleService.setTitle(n.title + ' | Mon site');
-
-  //       // 🔹 DESCRIPTION (fallback si pas d'excerpt)
-  //       const description = this.stripHtml(n.content).slice(0, 150);
-
-  //       this.metaService.updateTag({
-  //         name: 'description',
-  //         content: description
-  //       });
-
-  //       // 🔹 CANONICAL
-  //       this.setCanonical(`https://be-on-top.io/news/${id}`);
-
-  //       this.metaService.updateTag({
-  //         property: 'og:title',
-  //         content: n.title
-  //       });
-
-  //       this.metaService.updateTag({
-
-  //         property: 'og:description',
-  //         content: description
-  //       });
-
-  //       if (n.heroImage) {
-  //         this.metaService.updateTag({
-  //           property: 'og:image',
-  //           content: n.heroImage
-  //         });
-  //       }
-
-
-  //     });
-  //   }
-  // }
-
   ngOnInit() {
-  const id = this.route.snapshot.paramMap.get('id');
+    const id = this.route.snapshot.paramMap.get('id');
 
-  if (id) {
-    // 🔹 On force la canonique DIRECTEMENT ici, sans attendre Firebase
-    this.setCanonical(`https://be-on-top.io/news/${id}`);
+    if (id) {
+      const fullUrl = `https://be-on-top.io/news/${id}`;
 
-    this.newsService.getOne(id).subscribe(n => {
-      if (!n) return;
-      this.news = n;
+      // 1. Positionnement SYNCHRONE immédiat (avant Firestore)
+      this.setCanonical(fullUrl);
+      this.titleService.setTitle('Article | BE-ON-TOP'); // Évite le titre par défaut de la homepage
+      
+      // 2. Appel Firestore avec coupure automatique du Subscription (take(1))
+      this.newsSub = this.newsService.getOne(id).pipe(
+        take(1)
+      ).subscribe(n => {
+        if (!n) return;
+        this.news = n;
 
-      this.titleService.setTitle(n.title + ' | Mon site');
-      const description = this.stripHtml(n.content).slice(0, 150);
+        const pageTitle = `${n.title} | BE-ON-TOP`;
+        const description = this.stripHtmlFast(n.content).slice(0, 150);
 
-      this.metaService.updateTag({ name: 'description', content: description });
-      this.metaService.updateTag({ property: 'og:title', content: n.title });
-      this.metaService.updateTag({ property: 'og:description', content: description });
+        // Mise à jour des métadonnées
+        this.titleService.setTitle(pageTitle);
+        this.metaService.updateTag({ name: 'description', content: description });
+        
+        // OpenGraph
+        this.metaService.updateTag({ property: 'og:title', content: n.title });
+        this.metaService.updateTag({ property: 'og:description', content: description });
+        this.metaService.updateTag({ property: 'og:url', content: fullUrl });
 
-      if (n.heroImage) {
-        this.metaService.updateTag({ property: 'og:image', content: n.heroImage });
-      }
-    });
-  }
-}
-
-  stripHtml(text: string): string {
-    if (!text) return '';
-
-    const div = document.createElement('div');
-    div.innerHTML = text;
-
-    // Enlève toutes les images
-    const images = div.getElementsByTagName('img');
-    while (images.length) {
-      images[0].remove();
+        if (n.heroImage) {
+          this.metaService.updateTag({ property: 'og:image', content: n.heroImage });
+        }
+      });
     }
-
-    return div.textContent || '';
   }
 
-  setCanonical(url: string) {
-    let link: HTMLLinkElement | null =
-      // this.document.querySelector("link[rel='canonical']");
-      this.document.querySelector('link[rel="canonical"]') // 👈 Guillemets simples dehors, doubles dedans
+  ngOnDestroy() {
+    if (this.newsSub) {
+      this.newsSub.unsubscribe();
+    }
+  }
+
+  // Nettoyage HTML performant sans instancier de DOM
+  private stripHtmlFast(html: string): string {
+    if (!html) return '';
+    return html
+      .replace(/<img[^>]*>/gi, '') // Supprime les balises <img>
+      .replace(/<[^>]+>/g, '')     // Supprime toutes les autres balises HTML
+      .replace(/\s+/g, ' ')        // Normalise les espaces/retours à la ligne
+      .trim();
+  }
+
+  private setCanonical(url: string) {
+    let link: HTMLLinkElement | null = this.document.querySelector('link[rel="canonical"]');
 
     if (!link) {
       link = this.document.createElement('link');
@@ -126,5 +88,4 @@ export class NewsDetailsComponent implements OnInit {
 
     link.setAttribute('href', url);
   }
-
 }
