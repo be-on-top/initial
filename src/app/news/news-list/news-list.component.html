@@ -40,19 +40,21 @@
 
     </div>
 
-    <!-- ⚡ SKELETON LOADER (Affiche 4 cartes grises animées Bootstrap pendant le subscribe) -->
+<!-- ⚡ SKELETON LOADER OPTIMISÉ CLS -->
     <ng-template #loading>
         <div class="row g-3 mt-2" aria-hidden="true">
             <div *ngFor="let item of [1,2,3,4]" class="col-12 col-md-6">
-                <div class="card h-100 border-0 shadow-sm p-3">
-                    <div class="card-body p-0 placeholder-glow">
-                        <h2 class="h5 card-title mb-2">
-                            <span class="placeholder col-8 rounded"></span>
-                        </h2>
-                        <p class="card-text">
-                            <span class="placeholder col-12 rounded"></span>
-                            <span class="placeholder col-10 rounded"></span>
-                            <span class="placeholder col-6 rounded"></span>
+                <div class="card h-100 border-0 shadow-sm news-card">
+                    <div class="card-body p-3 placeholder-glow">
+                        <div class="d-flex align-items-start justify-content-between gap-2 mb-2">
+                            <h2 class="h5 card-title mb-0 w-100">
+                                <span class="placeholder col-8 rounded"></span>
+                            </h2>
+                        </div>
+                        <p class="card-text text-muted mb-0">
+                            <span class="placeholder col-12 rounded d-block mb-1"></span>
+                            <span class="placeholder col-10 rounded d-block mb-1"></span>
+                            <span class="placeholder col-4 rounded d-block"></span>
                         </p>
                     </div>
                 </div>

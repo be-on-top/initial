@@ -1,13 +1,12 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, Inject } from '@angular/core'; // 👈 Ajout de Inject
-import { DOCUMENT } from '@angular/common'; // 👈 Important pour accéder proprement au DOM sous Angular
-import { Title, Meta } from '@angular/platform-browser'; // 👈 Les services natifs d'Angular pour le SEO
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, Inject, NgZone } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Title, Meta } from '@angular/platform-browser';
 import { NewsService } from '../news.service';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { News } from '../news';
 import { AuthService } from 'src/app/admin/auth.service';
 
-// Déclaration pour éviter les erreurs TypeScript avec Bootstrap global
 declare var bootstrap: any;
 
 @Component({
@@ -31,16 +30,15 @@ export class NewsListComponent implements OnInit, AfterViewInit {
   constructor(
     private newsService: NewsService,
     private authService: AuthService,
-    private titleService: Title, // 👈 Service Title
-    private metaService: Meta,   // 👈 Service Meta
-    @Inject(DOCUMENT) private document: Document // 👈 Injection du Document pour la balise canonique
+    private titleService: Title,
+    private metaService: Meta,
+    @Inject(DOCUMENT) private document: Document,
+    private ngZone: NgZone, // 👈 Ajout ici
   ) { }
 
   ngOnInit(): void {
-    // 1️⃣ Configuration des Meta-données et de l'URL Canonique pour la liste
     this.setMetaData();
 
-    // 2️⃣ Chargement des données d'authentification et des articles
     this.news$ = this.authService.getCurrentUserRole().pipe(
       switchMap(userInfo => {
         if (userInfo === 'editor') {
@@ -54,24 +52,18 @@ export class NewsListComponent implements OnInit, AfterViewInit {
     );
   }
 
-  /**
-   * Configure dynamiquement les balises SEO indispensables pour la page liste
-   */
   private setMetaData(): void {
     const title = "Le Magazine de la Formation sur Mesure - Be-On-Top";
     const description = "Articles, retours d'expérience et analyses d'experts sur l'évaluation en amont et la personnalisation des parcours de formation sur mesure.";
-    const canonicalUrl = "https://beontop.io/news"; // 👈 Remplacer par ton vrai nom de domaine si besoin
+    const canonicalUrl = "https://beontop.io/news";
 
-    // A. Titre de l'onglet
     this.titleService.setTitle(title);
 
-    // B. Balises Meta (Standard et Réseaux Sociaux / Open Graph)
     this.metaService.updateTag({ name: 'description', content: description });
     this.metaService.updateTag({ property: 'og:title', content: title });
     this.metaService.updateTag({ property: 'og:description', content: description });
     this.metaService.updateTag({ property: 'og:url', content: canonicalUrl });
 
-    // C. Injection / Mise à jour propre de la balise Canonique dans le Head
     let canonicalLink = this.document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
     if (canonicalLink) {
       canonicalLink.setAttribute('href', canonicalUrl);
@@ -83,30 +75,41 @@ export class NewsListComponent implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * Nettoyage purement textuel sans interaction avec le DOM
+   * Supprime les balises HTML via Regex pour ne pas bloquer le thread principal.
+   */
   stripHtml(text: string): string {
     if (!text) return '';
-    const div = this.document.createElement('div');
-    div.innerHTML = text;
-    const images = div.getElementsByTagName('img');
-    while (images.length) {
-      images[0].remove();
-    }
-    return div.textContent || '';
+    return text.replace(/<[^>]*>?/gm, '').trim();
   }
 
+  // ngAfterViewInit() {
+  //   setTimeout(() => {
+  //     if (this.carouselElement && typeof bootstrap !== 'undefined') {
+  //       const carousel = new bootstrap.Carousel(this.carouselElement.nativeElement, {
+  //         interval: 3000,
+  //         ride: 'carousel'
+  //       });
+  //     }
+  //   }, 2000);
+  // }
+
   ngAfterViewInit() {
+  // Sort le carrousel du cycle de détection d'Angular
+  this.ngZone.runOutsideAngular(() => {
     setTimeout(() => {
       if (this.carouselElement && typeof bootstrap !== 'undefined') {
-        const carousel = new bootstrap.Carousel(this.carouselElement.nativeElement, {
+        new bootstrap.Carousel(this.carouselElement.nativeElement, {
           interval: 3000,
           ride: 'carousel'
         });
       }
-    }, 2000);
-  }
+    }, 1000);
+  });
+}
 
   formatTitle(title: string): string {
-    return title
-      .replace(/\s+([:;!?])/g, '\u00A0$1');
+    return title.replace(/\s+([:;!?])/g, '\u00A0$1');
   }
 }

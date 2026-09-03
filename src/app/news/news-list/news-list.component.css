@@ -13,3 +13,8 @@
 .placeholder-glow .placeholder {
   animation-duration: 2s;
 }
+
+/* Force la zone de news à garder une taille constante pendant le switch skeleton -> data */
+.row.g-3.mt-2 {
+  min-height: 380px;
+}
