@@ -33,7 +33,7 @@ export class NewsDetailsComponent implements OnInit, OnDestroy {
 
       // 1. Positionnement SYNCHRONE immédiat (avant Firestore)
       this.setCanonical(fullUrl);
-      this.titleService.setTitle('Article | BE-ON-TOP'); // Évite le titre par défaut de la homepage
+      this.titleService.setTitle('Actualité Formation & Évaluation des Compétences | BE-ON-TO'); // Évite le titre par défaut de la homepage
       
       // 2. Appel Firestore avec coupure automatique du Subscription (take(1))
       this.newsSub = this.newsService.getOne(id).pipe(
