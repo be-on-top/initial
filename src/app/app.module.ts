@@ -69,12 +69,11 @@ import { TimelineComponent } from './timeline/timeline.component';
 import { PrescriberTimelineComponent } from './prescriber-timeline/prescriber-timeline.component';
 import { MarketingDocsPublicComponent } from './marketing-docs-public/marketing-docs-public.component';
 import { RgpdComponent } from './rgpd/rgpd.component';
+import { AttachStudentModalComponent } from './admin/students/attach-student-modal/attach-student-modal.component';
 // import { CollapsesAlertComponent } from './collapses-alert/collapses-alert.component';
 // import { AutoChangeDirective } from './auto-change.directive';
 
 // import { getMessaging } from 'firebase/messaging';
-
-
 
 
 @NgModule({
@@ -124,7 +123,8 @@ import { RgpdComponent } from './rgpd/rgpd.component';
     MarketingDocsPublicComponent,
     // CollapsesAlertComponent,
     // AutoChangeDirective,
-    // TooltipComponent
+    // TooltipComponent,
+    AttachStudentModalComponent
   ],
   imports: [
     BrowserModule,

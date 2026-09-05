@@ -77,6 +77,7 @@ import { ExportStudentsComponent } from './export-students/export-students.compo
 import { MarketDocFormComponent } from './market_doc/market-doc-form/market-doc-form.component';
 import { MarketDocsListComponent } from './market_doc/market-docs-list/market-docs-list.component';
 import { UpdatePartnersComponent } from './settings/update-partners/update-partners.component';
+import { AttachStudentModalComponent } from './students/attach-student-modal/attach-student-modal.component';
 // import { AdminNewsListComponent } from '../news/admin-news-list/admin-news-list.component';
 // import { AdminNewsEditComponent } from '../news/admin-news-edit/admin-news-edit.component';
 
@@ -294,6 +295,7 @@ const routesAdmin: Routes = [
     MarketDocFormComponent,
     MarketDocsListComponent,
     UpdatePartnersComponent,
+    // AttachStudentModalComponent,
     // AdminNewsListComponent,
     // AdminNewsEditComponent
   ],

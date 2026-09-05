@@ -1,0 +1,60 @@
+<div class="modal fade" id="attachCandidateModal" tabindex="-1" aria-labelledby="attachCandidateModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header bg-light">
+                <h5 class="modal-title h6 text-primary fw-bold" id="attachCandidateModalLabel">
+                    Rattachement exceptionnel d'un candidat à votre portefeuille
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="alert bg-danger mb-3 text-white" role="alert">
+                    <strong class="d-block mb-1">Procédure d'exception (WorkBook)</strong>
+                    <p class="mb-2">
+                        Permet de rattacher manuellement à votre liste un candidat ayant créé son compte à votre demande
+                        pour passer une évaluation transverse.
+                    </p>
+                    <ul class="mb-0 ps-3">
+                        <li>Sont concernées : les adresses en @icloud.com, @me.com, @mac.com et @laposte.net.</li>
+                        <li>Le candidat ne doit pas déjà être rattaché à un autre référent ni inscrit en centre.</li>
+                    </ul>
+                </div>
+
+                <!-- Formulaire HTML standard sans ngModel -->
+                <div class="mb-3">
+                    <label for="candidateEmailInput" class="form-label fw-bold small">
+                        Adresse e-mail du candidat :
+                    </label>
+                    <input type="email" id="candidateEmailInput" #emailInput class="form-control"
+                        placeholder="exemple@icloud.com" [disabled]="loading">
+                    <div class="form-text fs-7">
+                        Assurez-vous que le candidat a bien finalisé la création de son compte avant de valider.
+                    </div>
+                </div>
+
+                <button type="button"
+                    class="btn btn-primary w-100 d-flex align-items-center justify-content-center gap-2"
+                    (click)="onSubmit(emailInput.value, emailInput)" [disabled]="loading">
+                    <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status"
+                        aria-hidden="true"></span>
+                    <span *ngIf="!loading">Vérifier et rattacher le candidat</span>
+                    <span *ngIf="loading">Vérification en cours...</span>
+                </button>
+
+                <div *ngIf="successMessage" class="alert alert-success mt-3 mb-0 small" role="alert">
+                    ✅ {{ successMessage }}
+                </div>
+
+                <div *ngIf="errorMessage" class="alert alert-danger mt-3 mb-0 small" role="alert">
+                    ❌ {{ errorMessage }}
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>

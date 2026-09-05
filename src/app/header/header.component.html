@@ -267,6 +267,19 @@
                                         <!-- <hr> -->
                                         <a class="dropdown-item" [routerLink]="['/workbook/units']">Vue d'ensemble</a>
                                     </li>
+
+                                    <!-- <li>
+                                        <hr class="dropdown-divider">
+                                    </li> -->
+<li>
+    <a href="javascript:void(0)"
+       class="dropdown-item d-flex align-items-center justify-content-between small text-wrap"
+       data-bs-toggle="modal" 
+       data-bs-target="#attachCandidateModal">
+        <span>Rattacher candidat (iCloud / La Poste)</span>
+        <i class="bi bi-person-plus ms-2 flex-shrink-0"></i>
+    </a>
+</li>
                                 </ul>
 
                         </ul>
@@ -713,5 +726,9 @@
     <button type="button" class="btn btn-primary btn-sm info-button pe-2" (click)="goToInfoPage()"
         aria-label="Informations et mission de BE-ON-TOP"><i class="bi bi-info me-2"
             aria-hidden="true"></i>{{userRole?.includes('referent')?'Informations':'information'}}</button>
+
+
+<app-attach-student-modal></app-attach-student-modal>
+
 
 </header>
