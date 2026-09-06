@@ -79,9 +79,21 @@ export class NewsListComponent implements OnInit, AfterViewInit {
    * Nettoyage purement textuel sans interaction avec le DOM
    * Supprime les balises HTML via Regex pour ne pas bloquer le thread principal.
    */
+  // stripHtml(text: string): string {
+  //   if (!text) return '';
+  //   return text.replace(/<[^>]*>?/gm, '').trim();
+  // }
   stripHtml(text: string): string {
     if (!text) return '';
-    return text.replace(/<[^>]*>?/gm, '').trim();
+
+    const withoutTags = text.replace(/<[^>]*>?/gm, '');
+
+    const textarea = this.document.createElement('textarea');
+    textarea.innerHTML = withoutTags;
+
+    return textarea.value
+      .replace(/\s+/g, ' ')
+      .trim();
   }
 
   // ngAfterViewInit() {
@@ -96,20 +108,34 @@ export class NewsListComponent implements OnInit, AfterViewInit {
   // }
 
   ngAfterViewInit() {
-  // Sort le carrousel du cycle de détection d'Angular
-  this.ngZone.runOutsideAngular(() => {
-    setTimeout(() => {
-      if (this.carouselElement && typeof bootstrap !== 'undefined') {
-        new bootstrap.Carousel(this.carouselElement.nativeElement, {
-          interval: 3000,
-          ride: 'carousel'
-        });
-      }
-    }, 1000);
-  });
-}
+    // Sort le carrousel du cycle de détection d'Angular
+    this.ngZone.runOutsideAngular(() => {
+      setTimeout(() => {
+        if (this.carouselElement && typeof bootstrap !== 'undefined') {
+          new bootstrap.Carousel(this.carouselElement.nativeElement, {
+            interval: 3000,
+            ride: 'carousel'
+          });
+        }
+      }, 1000);
+    });
+  }
 
   formatTitle(title: string): string {
     return title.replace(/\s+([:;!?])/g, '\u00A0$1');
   }
+
+  truncate(text: string, maxLength: number = 210): string {
+    const cleanText = this.stripHtml(text);
+
+    if (cleanText.length <= maxLength) {
+      return cleanText;
+    }
+
+    const truncated = cleanText.slice(0, maxLength);
+    const lastSpace = truncated.lastIndexOf(' ');
+
+    return truncated.slice(0, lastSpace) + '...';
+  }
+
 }

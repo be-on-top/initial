@@ -30,7 +30,8 @@
                     </div>
 
                     <p class="card-text text-muted mb-0">
-                        {{ stripHtml(n.content) | slice:0:200 }}...
+                        <!-- {{ stripHtml(n.content) | slice:0:200 }}... -->
+                              {{ truncate(n.content) }}
                     </p>
 
                 </div>
