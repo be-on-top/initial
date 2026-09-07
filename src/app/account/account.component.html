@@ -233,37 +233,38 @@
                     <div *ngIf="userData['units']" class="mt-5 border-top pt-5">
                         <h5 class="mb-2">🎯 Évaluations transverses (Exercices en ligne)</h5>
 
-<div *ngFor="let unitKey of objectKeys(userData['units'])" class="py-2">
+                        <div *ngFor="let unitKey of objectKeys(userData['units'])" class="py-2">
 
-    <div class="d-flex align-items-center">
-        <p>
-            <span class="me-2">
-                {{ unitKey | titlecase }}
-                {{ userData['units'][unitKey]?.['label'] ? '(' +
-                userData['units'][unitKey]?.['label'] + ')' : '' }}
-            </span>
+                            <div class="d-flex align-items-center">
+                                <p>
+                                    <span class="me-2">
+                                        {{ unitKey | titlecase }}
+                                        {{ userData['units'][unitKey]?.['label'] ? '(' +
+                                        userData['units'][unitKey]?.['label'] + ')' : '' }}
+                                    </span>
 
-            <span class="fw-bold" *ngIf="userData['units'][unitKey]?.['finalGrade'] !== undefined">
-                Terminée !
-            </span>
+                                    <span class="fw-bold"
+                                        *ngIf="userData['units'][unitKey]?.['finalGrade'] !== undefined">
+                                        Terminée !
+                                    </span>
 
-            <span *ngIf="userData['units'][unitKey]?.['finalGrade'] === undefined">
-                En cours d'évaluation...
-            </span>
-        </p>
+                                    <span *ngIf="userData['units'][unitKey]?.['finalGrade'] === undefined">
+                                        En cours d'évaluation...
+                                    </span>
+                                </p>
 
-        <p *ngIf="userData['units'][unitKey]?.['finalGrade'] !== undefined">
-            <span class="fw-bold">Note finale :</span>
-            {{ userData['units'][unitKey]['finalGrade'] }} / 20
-        </p>
-    </div>
+                                <p *ngIf="userData['units'][unitKey]?.['finalGrade'] !== undefined">
+                                    <span class="fw-bold ms-2">Note finale :</span>
+                                    {{ userData['units'][unitKey]['finalGrade'] }} / 20
+                                </p>
+                            </div>
 
-    <p *ngIf="userData['units'][unitKey]?.['finalGrade'] !== undefined">
-        <span class="fw-bold">Commentaire :</span>
-        {{ userData['units'][unitKey]['commentReferent'] }}
-    </p>
+                            <p *ngIf="userData['units'][unitKey]?.['finalGrade'] !== undefined">
+                                <span class="fw-bold">Commentaire :</span>
+                                {{ userData['units'][unitKey]['commentReferent'] }}
+                            </p>
 
-</div>
+                        </div>
                     </div>
                     <!-- FIN TEST EVALUATIONS TRANSVERSES WORKBOOK -->
                     <!-- </div> -->
