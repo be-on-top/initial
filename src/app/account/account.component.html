@@ -230,45 +230,40 @@
                     </div>
 
                     <!-- Pour EVALUATIONS TRANSVERSES WORKBOOK -->
-                    <!-- <div *ngIf="userData['hasWorkbookunit1']" class="mt-5 border-top pt-5">
-
-                        <h5 class="mb-2">🎯 Évaluations transverses (Exercices en ligne)</h5>
-                        <div class="d-flex align-items-center justify-content-between py-2">
-                            <p>
-                                <span class="fw-bold me-2">Unité 1 FLE</span>
-                                Terminée !
-                            </p>
-                            <p><span class="fw-bold">Note finale obtenue :</span>
-                                {{ userData['units']?.['unit1']?.['finalGrade'] }} / 20
-                            </p>
-                        </div>
-                    </div> -->
                     <div *ngIf="userData['units']" class="mt-5 border-top pt-5">
                         <h5 class="mb-2">🎯 Évaluations transverses (Exercices en ligne)</h5>
 
-                        <div *ngFor="let unitKey of objectKeys(userData['units'])"
-                            class="d-flex align-items-center justify-content-between py-2">
+<div *ngFor="let unitKey of objectKeys(userData['units'])" class="py-2">
 
+    <div class="d-flex align-items-center">
+        <p>
+            <span class="me-2">
+                {{ unitKey | titlecase }}
+                {{ userData['units'][unitKey]?.['label'] ? '(' +
+                userData['units'][unitKey]?.['label'] + ')' : '' }}
+            </span>
 
-                            <p>
-                                <span class="me-2">
-                                    {{ unitKey | titlecase }}
-                                    {{ userData['units'][unitKey]?.['label'] ? '(' +
-                                    userData['units'][unitKey]?.['label'] + ')' : '' }}
-                                </span>
-                                <span class="fw-bold" *ngIf="userData['units'][unitKey]?.['finalGrade'] !== undefined">
-                                    Terminée !
-                                </span>
-                                <span *ngIf="userData['units'][unitKey]?.['finalGrade'] === undefined">
-                                    En cours d'évaluation...
-                                </span>
-                            </p>
+            <span class="fw-bold" *ngIf="userData['units'][unitKey]?.['finalGrade'] !== undefined">
+                Terminée !
+            </span>
 
-                            <p *ngIf="userData['units'][unitKey]?.['finalGrade'] !== undefined">
-                                <span class="fw-bold">Note finale :</span>
-                                {{ userData['units'][unitKey]['finalGrade'] }} / 20
-                            </p>
-                        </div>
+            <span *ngIf="userData['units'][unitKey]?.['finalGrade'] === undefined">
+                En cours d'évaluation...
+            </span>
+        </p>
+
+        <p *ngIf="userData['units'][unitKey]?.['finalGrade'] !== undefined">
+            <span class="fw-bold">Note finale :</span>
+            {{ userData['units'][unitKey]['finalGrade'] }} / 20
+        </p>
+    </div>
+
+    <p *ngIf="userData['units'][unitKey]?.['finalGrade'] !== undefined">
+        <span class="fw-bold">Commentaire :</span>
+        {{ userData['units'][unitKey]['commentReferent'] }}
+    </p>
+
+</div>
                     </div>
                     <!-- FIN TEST EVALUATIONS TRANSVERSES WORKBOOK -->
                     <!-- </div> -->
@@ -298,8 +293,8 @@
             <!-- estimation seule -->
             <div class="card" *ngIf="isOneQuizzAchieved">
                 <div class="card-header bg-primary">
-                    <a class="collapsed btn text-light d-flex justify-content-between px-0"
-                        data-bs-toggle="collapse" href="#collapseFullResults">
+                    <a class="collapsed btn text-light d-flex justify-content-between px-0" data-bs-toggle="collapse"
+                        href="#collapseFullResults">
                         <div class="d-flex align-items-center gap-2 justify-content-between">
                             <span class="text-nowrap" *ngIf="displayPrices==true">Parcours de formation estimé</span>
                             <span class="text-nowrap" *ngIf="displayPrices==false">Durées estimées de Formation</span>
@@ -596,19 +591,6 @@
                                                     <div class="card-text"
                                                         [innerHTML]="sanitizer.bypassSecurityTrustHtml(evaluation.value.details)">
                                                     </div>
-                                                    <!-- pour l'hypothèse où on ajoute des accusés de réception : pas d'impératif juridique -->
-                                                    <!-- <div class="form-check">
-                                                    <input type="checkbox" class="form-check-input"
-                                                        [checked]="evaluation.value.readen"
-                                                        [disabled]="evaluation.value.readen"
-                                                        (change)="markAsRead(evaluation.key)"
-                                                        id="readen-{{ evaluation.key }}">
-
-                                                    <label class="form-check-label" [for]="'readen-' + evaluation.key">
-                                                        {{ evaluation.value.readen ? 'Lu' : 'Marquer comme lu' }}
-                                                    </label>
-                                                </div> -->
-                                                    <!-- fin de l'hypothèse -->
                                                 </div>
                                                 <!-- fin de la sous partie censée être cachée -->
                                             </div>
