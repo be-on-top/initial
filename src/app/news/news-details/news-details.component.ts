@@ -26,6 +26,7 @@ export class NewsDetailsComponent implements OnInit, OnDestroy {
 
   news: News | null = null;
   private newsSub?: Subscription;
+  private jsonLdScriptElement: HTMLScriptElement | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -56,6 +57,9 @@ export class NewsDetailsComponent implements OnInit, OnDestroy {
             this.metaService.updateTag({ name: 'description', content: fallback.excerpt });
             this.metaService.updateTag({ property: 'og:title', content: fallback.title });
             this.metaService.updateTag({ property: 'og:description', content: fallback.excerpt });
+
+            // Injection immédiate du Schema Article via Fallback
+            this.injectArticleSchema(fullUrl, fallback.title, fallback.excerpt);
           }
         });
 
@@ -81,6 +85,9 @@ export class NewsDetailsComponent implements OnInit, OnDestroy {
         if (n.heroImage) {
           this.metaService.updateTag({ property: 'og:image', content: n.heroImage });
         }
+
+        // Injection / Mise à jour du Schema Article complet
+        this.injectArticleSchema(fullUrl, n.title, description, n.heroImage, n.createdAt);
       });
     }
   }
@@ -89,6 +96,102 @@ export class NewsDetailsComponent implements OnInit, OnDestroy {
     if (this.newsSub) {
       this.newsSub.unsubscribe();
     }
+    // Nettoyage de la balise JSON-LD du DOM à la destruction du composant
+    if (this.jsonLdScriptElement) {
+      this.jsonLdScriptElement.remove();
+    }
+  }
+
+  // Injection centralisée du schéma JSON-LD test OK
+  // private injectArticleSchema(
+  //   url: string,
+  //   title: string,
+  //   description: string,
+  //   imageUrl?: string,
+  //   datePublished?: string | Date
+  // ) {
+  //   if (!this.jsonLdScriptElement) {
+  //     this.jsonLdScriptElement = this.document.createElement('script');
+  //     this.jsonLdScriptElement.type = 'application/ld+json';
+  //     this.document.head.appendChild(this.jsonLdScriptElement);
+  //   }
+
+  //   const schema: Record<string, any> = {
+  //     '@context': 'https://schema.org',
+  //     '@type': 'Article',
+  //     'mainEntityOfPage': {
+  //       '@type': 'WebPage',
+  //       '@id': url
+  //     },
+  //     'headline': title,
+  //     'description': description,
+  //     'author': {
+  //       '@type': 'Organization',
+  //       '@id': 'https://be-on-top.io/#organization',
+  //       'name': 'BE-ON-TOP.io'
+  //     },
+  //     'publisher': {
+  //       '@type': 'Organization',
+  //       '@id': 'https://be-on-top.io/#organization',
+  //       'name': 'BE-ON-TOP.io'
+  //     }
+  //   };
+
+  //   if (imageUrl) {
+  //     schema['image'] = [imageUrl];
+  //   }
+
+  //   if (datePublished) {
+  //     schema['datePublished'] = new Date(datePublished).toISOString();
+  //   }
+
+  //   this.jsonLdScriptElement.text = JSON.stringify(schema);
+  // }
+  private injectArticleSchema(
+    url: string,
+    title: string,
+    description: string,
+    imageUrl?: string,
+    datePublished?: string | Date
+  ) {
+    if (!this.jsonLdScriptElement) {
+      this.jsonLdScriptElement = this.document.createElement('script');
+      this.jsonLdScriptElement.type = 'application/ld+json';
+      this.document.head.appendChild(this.jsonLdScriptElement);
+    }
+
+    // Image transmise ou image de fallback par défaut
+    const finalImage = imageUrl || 'https://be-on-top.io/assets/icons/icon-512x512.png';
+
+    const schema: Record<string, any> = {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      'mainEntityOfPage': {
+        '@type': 'WebPage',
+        '@id': url
+      },
+      'headline': title,
+      'description': description,
+      'image': [finalImage],
+      'author': {
+        '@type': 'Organization',
+        '@id': 'https://be-on-top.io/#organization',
+        'name': 'BE-ON-TOP.io',
+        'url': 'https://be-on-top.io'
+      },
+      'publisher': {
+        '@type': 'Organization',
+        '@id': 'https://be-on-top.io/#organization',
+        'name': 'BE-ON-TOP.io',
+        'url': 'https://be-on-top.io'
+      }
+    };
+
+    if (datePublished) {
+      schema['datePublished'] = new Date(datePublished).toISOString();
+    }
+
+    this.jsonLdScriptElement.text = JSON.stringify(schema);
   }
 
   // Nettoyage HTML performant sans instancier de DOM
