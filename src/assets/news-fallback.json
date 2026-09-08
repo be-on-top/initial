@@ -32,7 +32,7 @@
         "excerpt": "Comment condenser un cursus pédagogique sans altérer la maîtrise des gestes professionnels ni la qualité du diplôme visé."
     },
     "HNaukM6grZ3tHV03YFzR": {
-        "title": "Algorithmes pédagogiques : la génération automatique d'emplois du temps personnalisés",
+        "title": "Algorithmes pédagogiques : la génération automatique de durées personnalisées",
         "excerpt": "Découvrez la technologie qui convertit un test de niveau en une feuille de route pédagogique sur-mesure sans intervention manuelle."
     },
     "lP7cu9xjqm1KmmrwHupx": {
@@ -48,8 +48,8 @@
         "excerpt": "Ingénierie terrain et règles métier : découvrez comment nos questionnaires conçus par des formateurs ajustent dynamiquement les parcours sans éliminer les candidats."
     },
     "G8mJGmyKdViH5ipzbxOz": {
-        "title": "Conception d'un référentiel métier : méthodologie et cartographie des aptitudes",
-        "excerpt": "Les étapes clés pour modéliser une grille d'évaluation alignée sur les besoins opérationnels directs des recruteurs du secteur."
+        "title": "Référentiel de compétences : structuration et critères d'évaluation",
+        "excerpt": "Méthode pour organiser un référentiel opérationnel : domaines, niveaux de maîtrise et critères observables pour une évaluation objective."
     },
     "KYcnDduo0LgQufrj93cW": {
         "title": "Gestion des promotions et pilotage des cohortes en centre de formation",
@@ -77,7 +77,7 @@
     },
     "4E4mK1QTyZAW2dK1UtRt": {
         "title": "Obsolescence du CV papier : privilégier la preuve par la mise en situation",
-        "excerpt": "Pourquoi les diplômes déclaratifs ne suffisent plus aux recruteurs et comment la démonstration pratique remplace le CV."
+        "excerpt": "Pourquoi le déclaratif ne suffit plus : mesurer la compétence réelle par la démonstration pratique et l'évaluation terrain"
     },
     "JCpuRqqbRj1HknWGlKU6": {
         "title": "Objectivation des contrôles de connaissances : éliminer la partialité",
@@ -93,6 +93,6 @@
     },
     "X8QBA2J8pHKxBtS4Eg9S": {
         "title": "Quand un composant unique devient le fil conducteur du parcours candidat",
-        "excerpt": "Avec BE-ON-TOP, le compte candidat est un espace évolutif conçu comme un composant dynamique qui centralise la mémoire de sa progression."
+        "excerpt": "Avec BE-ON-TOP, l'espace candidat est un environnement évolutif qui centralise et met à jour en temps réel l'ensemble de son parcours."
     }
 }
