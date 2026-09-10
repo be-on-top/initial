@@ -55,7 +55,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   private authSubscription: Subscription | undefined;
   private studentSubscription: Subscription | undefined;
 
-
+  isAttachModalOpen = false;
 
 
   @ViewChild('collapsibleNavbar') collapsibleNavbar!: ElementRef;
@@ -422,13 +422,26 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   }
 
 
-  copyWorkbookUrl(unit: 'unit1' | 'unit2'| 'unit3') {
+  copyWorkbookUrl(unit: 'unit1' | 'unit2' | 'unit3') {
 
     const url = `${window.location.origin}/workbook/${unit}`;
 
     navigator.clipboard.writeText(url);
 
   }
+
+
+openAttachModal(): void {
+  // 1. On bascule le drapeau pour autoriser la création dans le DOM
+  this.isAttachModalOpen = true;
+  
+  // 2. On demande à Angular de créer le DOM de la modale IMMÉDIATEMENT
+  this.cdRef.detectChanges();
+}
+
+closeAttachModal(): void {
+  this.isAttachModalOpen = false;
+}
 
 
 
