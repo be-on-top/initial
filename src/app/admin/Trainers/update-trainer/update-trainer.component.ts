@@ -112,10 +112,14 @@ export class UpdateTrainerComponent implements OnInit {
               (ended: any) => ended.sigle === subscription
             )
           ) &&
-          
+
           // que la localisation d'inscription corresponde au formateur
           this.user.cp.includes(student.localTraining)
         )
+          .sort((a, b) =>
+            a.lastName.localeCompare(b.lastName, 'fr', { sensitivity: 'base' })
+          );
+          
         this.mirorList = [...this.studentsList]
       })
     })
