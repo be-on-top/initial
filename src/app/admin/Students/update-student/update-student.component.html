@@ -198,10 +198,18 @@
                     notamment avec le formateur, pour le suvi pédagogique...
                 </div>
 
-                <p *ngIf="student.subscriptions && student.subscriptions.length !== 0">
+                <!-- <p *ngIf="student.subscriptions && student.subscriptions.length !== 0">
                     <strong>Inscriptions en cours :</strong>
                     <span *ngFor="let sub of student.subscriptions">
                         <span *ngIf="!student.endedSubscriptions?.includes(sub)">
+                            {{sub}}
+                        </span>
+                    </span>
+                </p> -->
+                <p *ngIf="student.subscriptions && student.subscriptions.length !== 0">
+                    <strong>Inscriptions en cours :</strong>
+                    <span *ngFor="let sub of student.subscriptions">
+                        <span *ngIf="!isSubscriptionEnded(sub)">
                             {{sub}}
                         </span>
                     </span>

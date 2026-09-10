@@ -87,16 +87,34 @@ export class UpdateTrainerComponent implements OnInit {
 
       // Appel à `getStudents` après avoir obtenu `this.user.sigle`
       this.studentsService.getStudents().subscribe((students) => {
+        // this.studentsList = students.filter(student =>
+        //   // qu'il soit inscrit
+        //   student.subscriptions &&
+        //   // que le tableau de ses inscriptions contienne un des métiers du formateur
+        //   student.subscriptions.some(subscription => this.user.sigle.includes(subscription))
+        //   // que le tableau du formateur contienne le localTraining candidat
+        //   // &&   this.user.cp.includes(student['localTraining'])
+        //   && this.user.cp.includes(student.localTraining)
+        //   // que la fin de formation ne soit pas actéé
+        //   && !student.endedSubscriptions
+        // )
         this.studentsList = students.filter(student =>
           // qu'il soit inscrit
           student.subscriptions &&
-          // que le tableau de ses inscriptions contienne un des métiers du formateur
-          student.subscriptions.some(subscription => this.user.sigle.includes(subscription))
-          // que le tableau du formateur contienne le localTraining candidat
-          // &&   this.user.cp.includes(student['localTraining'])
-          && this.user.cp.includes(student.localTraining)
-          // que la fin de formation ne soit pas actéé
-          && !student.endedSubscriptions
+
+          // qu'il ait une inscription correspondant à un métier du formateur
+          student.subscriptions.some((subscription: string) =>
+            // le formateur dispense ce métier
+            this.user.sigle.includes(subscription) &&
+
+            // cette inscription n'est pas terminée
+            !(student.endedSubscriptions || []).some(
+              (ended: any) => ended.sigle === subscription
+            )
+          ) &&
+          
+          // que la localisation d'inscription corresponde au formateur
+          this.user.cp.includes(student.localTraining)
         )
         this.mirorList = [...this.studentsList]
       })
@@ -144,34 +162,34 @@ export class UpdateTrainerComponent implements OnInit {
     }
   }
 
-  
-  
- updateUser(form: NgForm) {
+
+
+  updateUser(form: NgForm) {
     if (!form.valid) {
       console.log('form non valid');
       return;
     }
-  
+
     // Sécurité : on aligne form.value.students sur selectedStudent
     form.value.students = this.selectedStudent;
 
-      // 🚨 Conversion de cp en tableau si c’est une string
-  if (typeof form.value.cp === 'string') {
-    form.value.cp = form.value.cp
-      .split(',')
-      .map((cp: string) => cp.trim())
-      .filter((cp: string) => cp); // enlève les vides
-  }
-  
+    // 🚨 Conversion de cp en tableau si c’est une string
+    if (typeof form.value.cp === 'string') {
+      form.value.cp = form.value.cp
+        .split(',')
+        .map((cp: string) => cp.trim())
+        .filter((cp: string) => cp); // enlève les vides
+    }
+
     console.log('form update values', form.value);
-  
+
     this.service.updateTrainer(this.userId, form.value);
-  
+
     this.userRouterLinks.user === 'referent'
       ? this.router.navigate(['/admin/referent/trainerDetails', this.userId])
       : this.router.navigate(['/admin/trainer', this.userId]);
-  }  
-  
+  }
+
 
 
   // pour affecation métiers
@@ -183,16 +201,16 @@ export class UpdateTrainerComponent implements OnInit {
 
 
 
-alertMessage: string | null = null;
+  alertMessage: string | null = null;
 
-onStudentSelect(selectedIds: string[]) {
-  selectedIds.forEach((studentId: string) => {
-    const student = this.mirorList.find((s: Student) => s.id === studentId);
-    if (student && student.trainers && student.trainers.length > 0 && !this.trainerStudents.includes(student.id)) {
-      this.alertMessage = `L'étudiant ${student.firstName} ${student.lastName} a déjà un formateur.`;
-    }
-  });
-}
+  onStudentSelect(selectedIds: string[]) {
+    selectedIds.forEach((studentId: string) => {
+      const student = this.mirorList.find((s: Student) => s.id === studentId);
+      if (student && student.trainers && student.trainers.length > 0 && !this.trainerStudents.includes(student.id)) {
+        this.alertMessage = `L'étudiant ${student.firstName} ${student.lastName} a déjà un formateur.`;
+      }
+    });
+  }
 
 
 
