@@ -27,6 +27,7 @@ export class NewsDetailsComponent implements OnInit, OnDestroy {
   news: News | null = null;
   private newsSub?: Subscription;
   private jsonLdScriptElement: HTMLScriptElement | null = null;
+  private breadcrumbScriptElement: HTMLScriptElement | null = null; // <- Ajout
 
   constructor(
     private route: ActivatedRoute,
@@ -46,11 +47,10 @@ export class NewsDetailsComponent implements OnInit, OnDestroy {
       // 1. Positionnement SYNCHRONE de l'URL Canonical
       this.setCanonical(fullUrl);
 
-      // 2. Chargement immédiat du Fallback JSON (Rendu ultrarapide pour Googlebot)
+      // 2. Chargement immédiat du Fallback JSON
       this.http.get<NewsFallbackMap>('/assets/news-fallback.json')
         .pipe(take(1))
         .subscribe(fallbackMap => {
-          // Si l'appel Firestore n'a pas encore répondu et qu'on a le fallback pour cet ID
           if (!this.news && fallbackMap && fallbackMap[id]) {
             const fallback = fallbackMap[id];
             this.titleService.setTitle(`${fallback.title} | BE-ON-TOP`);
@@ -58,12 +58,13 @@ export class NewsDetailsComponent implements OnInit, OnDestroy {
             this.metaService.updateTag({ property: 'og:title', content: fallback.title });
             this.metaService.updateTag({ property: 'og:description', content: fallback.excerpt });
 
-            // Injection immédiate du Schema Article via Fallback
+            // Injection immédiate des Schémas
             this.injectArticleSchema(fullUrl, fallback.title, fallback.excerpt);
+            this.injectBreadcrumbSchema(fullUrl, fallback.title); // <- Ajout
           }
         });
 
-      // 3. Appel Firestore (Récupération des données dynamiques complètes)
+      // 3. Appel Firestore
       this.newsSub = this.newsService.getOne(id).pipe(
         take(1)
       ).subscribe(n => {
@@ -73,11 +74,9 @@ export class NewsDetailsComponent implements OnInit, OnDestroy {
         const pageTitle = `${n.title} | BE-ON-TOP`;
         const description = this.stripHtmlFast(n.content).slice(0, 150);
 
-        // Remplacement dynamique des métadonnées par celles du backend
         this.titleService.setTitle(pageTitle);
         this.metaService.updateTag({ name: 'description', content: description });
 
-        // OpenGraph
         this.metaService.updateTag({ property: 'og:title', content: n.title });
         this.metaService.updateTag({ property: 'og:description', content: description });
         this.metaService.updateTag({ property: 'og:url', content: fullUrl });
@@ -86,8 +85,9 @@ export class NewsDetailsComponent implements OnInit, OnDestroy {
           this.metaService.updateTag({ property: 'og:image', content: n.heroImage });
         }
 
-        // Injection / Mise à jour du Schema Article complet
+        // Mise à jour des Schémas
         this.injectArticleSchema(fullUrl, n.title, description, n.heroImage, n.createdAt);
+        this.injectBreadcrumbSchema(fullUrl, n.title); // <- Ajout
       });
     }
   }
@@ -96,57 +96,50 @@ export class NewsDetailsComponent implements OnInit, OnDestroy {
     if (this.newsSub) {
       this.newsSub.unsubscribe();
     }
-    // Nettoyage de la balise JSON-LD du DOM à la destruction du composant
     if (this.jsonLdScriptElement) {
       this.jsonLdScriptElement.remove();
     }
+    if (this.breadcrumbScriptElement) { // <- Nettoyage
+      this.breadcrumbScriptElement.remove();
+    }
   }
 
-  // Injection centralisée du schéma JSON-LD test OK
-  // private injectArticleSchema(
-  //   url: string,
-  //   title: string,
-  //   description: string,
-  //   imageUrl?: string,
-  //   datePublished?: string | Date
-  // ) {
-  //   if (!this.jsonLdScriptElement) {
-  //     this.jsonLdScriptElement = this.document.createElement('script');
-  //     this.jsonLdScriptElement.type = 'application/ld+json';
-  //     this.document.head.appendChild(this.jsonLdScriptElement);
-  //   }
+  // --- Injection du Fil d'Ariane Schema.org ---
+  private injectBreadcrumbSchema(url: string, title: string) {
+    if (!this.breadcrumbScriptElement) {
+      this.breadcrumbScriptElement = this.document.createElement('script');
+      this.breadcrumbScriptElement.type = 'application/ld+json';
+      this.document.head.appendChild(this.breadcrumbScriptElement);
+    }
 
-  //   const schema: Record<string, any> = {
-  //     '@context': 'https://schema.org',
-  //     '@type': 'Article',
-  //     'mainEntityOfPage': {
-  //       '@type': 'WebPage',
-  //       '@id': url
-  //     },
-  //     'headline': title,
-  //     'description': description,
-  //     'author': {
-  //       '@type': 'Organization',
-  //       '@id': 'https://be-on-top.io/#organization',
-  //       'name': 'BE-ON-TOP.io'
-  //     },
-  //     'publisher': {
-  //       '@type': 'Organization',
-  //       '@id': 'https://be-on-top.io/#organization',
-  //       'name': 'BE-ON-TOP.io'
-  //     }
-  //   };
+    const schema = {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      'itemListElement': [
+        {
+          '@type': 'ListItem',
+          'position': 1,
+          'name': 'Accueil',
+          'item': 'https://be-on-top.io'
+        },
+        {
+          '@type': 'ListItem',
+          'position': 2,
+          'name': 'Actualités',
+          'item': 'https://be-on-top.io/news'
+        },
+        {
+          '@type': 'ListItem',
+          'position': 3,
+          'name': title,
+          'item': url
+        }
+      ]
+    };
 
-  //   if (imageUrl) {
-  //     schema['image'] = [imageUrl];
-  //   }
+    this.breadcrumbScriptElement.text = JSON.stringify(schema);
+  }
 
-  //   if (datePublished) {
-  //     schema['datePublished'] = new Date(datePublished).toISOString();
-  //   }
-
-  //   this.jsonLdScriptElement.text = JSON.stringify(schema);
-  // }
   private injectArticleSchema(
     url: string,
     title: string,
@@ -160,7 +153,6 @@ export class NewsDetailsComponent implements OnInit, OnDestroy {
       this.document.head.appendChild(this.jsonLdScriptElement);
     }
 
-    // Image transmise ou image de fallback par défaut
     const finalImage = imageUrl || 'https://be-on-top.io/assets/icons/icon-512x512.png';
 
     const schema: Record<string, any> = {
@@ -194,13 +186,12 @@ export class NewsDetailsComponent implements OnInit, OnDestroy {
     this.jsonLdScriptElement.text = JSON.stringify(schema);
   }
 
-  // Nettoyage HTML performant sans instancier de DOM
   private stripHtmlFast(html: string): string {
     if (!html) return '';
     return html
-      .replace(/<img[^>]*>/gi, '') // Supprime les balises <img>
-      .replace(/<[^>]+>/g, '')     // Supprime toutes les autres balises HTML
-      .replace(/\s+/g, ' ')        // Normalise les espaces/retours à la ligne
+      .replace(/<img[^>]*>/gi, '')
+      .replace(/<[^>]+>/g, '')
+      .replace(/\s+/g, ' ')
       .trim();
   }
 

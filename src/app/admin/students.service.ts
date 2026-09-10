@@ -2029,7 +2029,7 @@ export class StudentsService {
       })
     );
   }
-  
+
   checkUserUnit3Status(studentId: string): Observable<boolean> {
     const workbookRef = doc(this.firestore, 'workbook', studentId);
 
@@ -2043,17 +2043,73 @@ export class StudentsService {
   }
 
 
- /**
+  /**
+    * Rattachement d'exception d'un candidat autonome au Conseiller Projet connecté
+    */
+  // async attachStudentByEmail(emailCandidate: string): Promise<string> {
+  //   // 1. Authentification du CP
+  //   const currentUser = this.auth.currentUser;
+  //   if (!currentUser) {
+  //     throw new Error('Vous devez être connecté pour effectuer cette opération.');
+  //   }
+  //   const cpUid = currentUser.uid;
+
+  //   const formattedEmail = emailCandidate.trim().toLowerCase();
+
+  //   // 🛑 VERROU 1 : Restriction stricte du domaine e-mail
+  //   const isDomainAllowed = this.ALLOWED_DOMAINS.some(domain => formattedEmail.endsWith(domain));
+  //   if (!isDomainAllowed) {
+  //     throw new Error(
+  //       'Procédure refusée : réservé exclusivement aux adresses Apple (@icloud.com, @me.com, @mac.com) et La Poste (@laposte.net).'
+  //     );
+  //   }
+
+  //   // 2. Recherche ciblée du candidat par e-mail dans Firestore (1 seule lecture)
+  //   const studentsRef = collection(this.firestore, 'students');
+  //   const q = query(studentsRef, where('email', '==', formattedEmail), limit(1));
+  //   const snapshot = await getDocs(q);
+
+  //   if (snapshot.empty) {
+  //     throw new Error(`Aucun candidat trouvé avec l'adresse e-mail : ${formattedEmail}`);
+  //   }
+
+  //   const studentDoc = snapshot.docs[0];
+  //   const studentData = studentDoc.data() as any;
+
+  //   // 🔒 VERROU 2 (Sécurité principale) : Le candidat a déjà un référent
+  //   if (studentData.referent && String(studentData.referent).trim() !== '') {
+  //     throw new Error('Action impossible : ce candidat est déjà rattaché à un Conseiller Projet.');
+  //   }
+
+  //   // 🔒 VERROU 3 : Le candidat est déjà inscrit en centre
+  //   if (studentData.subvention && String(studentData.subvention).trim() !== '') {
+  //     throw new Error('Action impossible : ce candidat est déjà inscrit en centre (dossier de subvention existant).');
+  //   }
+
+  //   // 3. Attribution (1 seule écriture)
+  //   const candidateUid = studentDoc.id;
+  //   const candidateDocRef = doc(this.firestore, 'students', candidateUid);
+
+  //   await updateDoc(candidateDocRef, {
+  //     referent: cpUid,
+  //     attachedAt: new Date().toISOString(),
+  //     attachedMethod: 'manual_icloud_override'
+  //   });
+
+  //   return candidateUid;
+  // }
+  /**
+ * Rattachement d'exception d'un candidat autonome au Conseiller Projet connecté
+ */
+  /**
    * Rattachement d'exception d'un candidat autonome au Conseiller Projet connecté
    */
   async attachStudentByEmail(emailCandidate: string): Promise<string> {
-    // 1. Authentification du CP
     const currentUser = this.auth.currentUser;
     if (!currentUser) {
       throw new Error('Vous devez être connecté pour effectuer cette opération.');
     }
     const cpUid = currentUser.uid;
-
     const formattedEmail = emailCandidate.trim().toLowerCase();
 
     // 🛑 VERROU 1 : Restriction stricte du domaine e-mail
@@ -2076,14 +2132,25 @@ export class StudentsService {
     const studentDoc = snapshot.docs[0];
     const studentData = studentDoc.data() as any;
 
-    // 🔒 VERROU 2 (Sécurité principale) : Le candidat a déjà un référent
+    // 🔒 VERROU 2 : Le candidat a déjà un référent attribué
     if (studentData.referent && String(studentData.referent).trim() !== '') {
       throw new Error('Action impossible : ce candidat est déjà rattaché à un Conseiller Projet.');
     }
 
-    // 🔒 VERROU 3 : Le candidat est déjà inscrit en centre
-    if (studentData.subvention && String(studentData.subvention).trim() !== '') {
-      throw new Error('Action impossible : ce candidat est déjà inscrit en centre (dossier de subvention existant).');
+    // 🔒 VERROU 3 : Le candidat est déjà inscrit en centre (subscriptions au pluriel)
+    const hasSubscriptions = Array.isArray(studentData.subscriptions)
+      ? studentData.subscriptions.length > 0
+      : Boolean(studentData.subscriptions);
+
+    if (hasSubscriptions) {
+      throw new Error('Action impossible : ce candidat est déjà inscrit en centre.');
+    }
+
+    // 🔒 VERROU 4 : Dossier de pré-inscription déjà transmis (isSocialFormSent)
+    if (studentData.isSocialFormSent === true) {
+      throw new Error(
+        'Action impossible : ce candidat a déjà transmis son dossier de pré-inscription et sélectionné son centre.'
+      );
     }
 
     // 3. Attribution (1 seule écriture)
