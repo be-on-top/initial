@@ -2159,6 +2159,7 @@ export class StudentsService {
 
     await updateDoc(candidateDocRef, {
       referent: cpUid,
+      innerStudent: true, // 👈 Ajout pour marquer le candidat en circuit interne
       attachedAt: new Date().toISOString(),
       attachedMethod: 'manual_icloud_override'
     });
