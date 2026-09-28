@@ -140,12 +140,58 @@ export class NewsDetailsComponent implements OnInit, OnDestroy {
     this.breadcrumbScriptElement.text = JSON.stringify(schema);
   }
 
+  // private injectArticleSchema(
+  //   url: string,
+  //   title: string,
+  //   description: string,
+  //   imageUrl?: string,
+  //   datePublished?: string | Date
+  // ) {
+  //   if (!this.jsonLdScriptElement) {
+  //     this.jsonLdScriptElement = this.document.createElement('script');
+  //     this.jsonLdScriptElement.type = 'application/ld+json';
+  //     this.document.head.appendChild(this.jsonLdScriptElement);
+  //   }
+
+  //   const finalImage = imageUrl || 'https://be-on-top.io/assets/icons/icon-512x512.png';
+
+  //   const schema: Record<string, any> = {
+  //     '@context': 'https://schema.org',
+  //     '@type': 'Article',
+  //     'mainEntityOfPage': {
+  //       '@type': 'WebPage',
+  //       '@id': url
+  //     },
+  //     'headline': title,
+  //     'description': description,
+  //     'image': [finalImage],
+  //     'author': {
+  //       '@type': 'Organization',
+  //       '@id': 'https://be-on-top.io/#organization',
+  //       'name': 'BE-ON-TOP.io',
+  //       'url': 'https://be-on-top.io'
+  //     },
+  //     'publisher': {
+  //       '@type': 'Organization',
+  //       '@id': 'https://be-on-top.io/#organization',
+  //       'name': 'BE-ON-TOP.io',
+  //       'url': 'https://be-on-top.io'
+  //     }
+  //   };
+
+  //   if (datePublished) {
+  //     schema['datePublished'] = new Date(datePublished).toISOString();
+  //   }
+
+  //   this.jsonLdScriptElement.text = JSON.stringify(schema);
+  // }
+
   private injectArticleSchema(
     url: string,
     title: string,
     description: string,
     imageUrl?: string,
-    datePublished?: string | Date
+    datePublished?: any
   ) {
     if (!this.jsonLdScriptElement) {
       this.jsonLdScriptElement = this.document.createElement('script');
@@ -179,8 +225,25 @@ export class NewsDetailsComponent implements OnInit, OnDestroy {
       }
     };
 
+    // --- CONVERSION SÉCURISÉE DE LA DATE ---
     if (datePublished) {
-      schema['datePublished'] = new Date(datePublished).toISOString();
+      try {
+        let dateObj: Date | null = null;
+
+        // Check 1: Est-ce un Timestamp Firestore ?
+        if (datePublished && typeof datePublished.toDate === 'function') {
+          dateObj = datePublished.toDate();
+        } else if (datePublished) {
+          dateObj = new Date(datePublished);
+        }
+
+        // Check 2: Validation de la date avant toISOString()
+        if (dateObj && !isNaN(dateObj.getTime())) {
+          schema['datePublished'] = dateObj.toISOString();
+        }
+      } catch (e) {
+        console.warn('Erreur lors du formatage de la date SEO:', e);
+      }
     }
 
     this.jsonLdScriptElement.text = JSON.stringify(schema);
