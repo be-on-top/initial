@@ -97,11 +97,22 @@ export class UsersListComponent {
       this.title = "Référents Administratifs"
       this.linkToDetails = "/admin/referent"
       this.linkBackToList = "/admin/referents"
+      // this.sUsers.getUsers().subscribe(data => {
+      //   console.log("data de getUers pour admin()", data)
+      //   this.allUsers = data.filter(user => user.role == 'referent')
+      //   return this.allUsers
+      // })
+
+      // pour reprendre exactement le principe de ProfessionalsList par précaution (?).
       this.sUsers.getUsers().subscribe(data => {
-        console.log("data de getUers pour admin()", data)
-        this.allUsers = data.filter(user => user.role == 'referent')
-        return this.allUsers
-      })
+        console.log("data de getUsers pour referents()", data);
+        this.allUsers = data.filter(user => {
+          const roles = Array.isArray(user.role) ? user.role : [user.role];
+          return roles.includes('referent');
+        });
+        return this.allUsers;
+      });
+
     } else if (this.userRouterLinks.user == "admin" && this.userRouterLinks.data == "editors") {
       this.title = "Contributeurs"
       this.linkToDetails = "/admin/editor"
@@ -180,9 +191,20 @@ export class UsersListComponent {
 
 
   // pour utiliser le composant de recherche
+  // onSearchTextEntered(searchValue: string) {
+  //   this.searchText = searchValue
+  //   console.log(this.searchText);
+  // }
+  //   onSearchTextEntered(searchValue: string) {
+  //   this.searchText = searchValue.toLowerCase();
+  //   console.log(this.searchText);
+  // }
+
   onSearchTextEntered(searchValue: string) {
     this.searchText = searchValue
-    console.log(this.searchText);
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, ' ');
   }
 
   isInnerContactFilter: boolean = false
