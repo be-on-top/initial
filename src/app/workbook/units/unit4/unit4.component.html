@@ -1,0 +1,353 @@
+<!-- pour le début avec les 3 premiers exercices -->
+
+<!-- Conteneur principal -->
+<div class="container mt-4">
+
+    <!-- Message de bienvenue pour les étudiants -->
+    <div class="alert w-100 p-4 pe-5 bg-dark alert-dismissible text-white mb-4 fade show display-5"
+        *ngIf="isStudent && currentStep === 0">
+
+        <button type="button" class="btn-close btn-close-white mt-2" data-bs-dismiss="alert"
+            aria-label="Fermer le message">
+        </button>
+
+        Bienvenue, vous allez commencer vos exercices de Mathématiques ({{ label }}).
+
+    </div>
+
+    <!-- Alerte d'authentification requise -->
+    <div class="alert alert-warning instructions" *ngIf="isNotAuthenticated">
+
+        Authentification requise pour accéder aux exercices.
+
+        <a role="link" aria-label="Avertissement : se connecter pour démarrer un questionnaire"
+            [routerLink]="['/login']" class="text-light">
+            Vous identifier
+        </a>
+
+    </div>
+
+    <!-- Alerte restriction d'accès -->
+    <div class="alert alert-danger" *ngIf="!isNotAuthenticated && !isStudent && !isReferentView">
+
+        Seul un candidat authentifié peut passer une évaluation.
+
+    </div>
+
+    <!-- Contexte de l'unité pour le référent -->
+    <div class="alert alert-light" *ngIf="!isNotAuthenticated && isReferentView">
+
+        <span class="fw-bold text-nowrap">Candidat :</span>
+        {{ lastName }} {{ firstName }}.
+
+        <span class="fw-bold text-nowrap">
+            Unité 4 ({{ label }})
+        </span>.
+
+        <span class="fw-bold text-nowrap">Profil ciblé :</span>
+        {{ profile }}.
+
+        <span class="fw-bold text-nowrap">Capacités évaluées :</span>
+        {{ description }}.
+
+    </div>
+
+
+    <div>
+
+        <!-- ===================================================== -->
+        <!-- UNITÉ 4 - MATHÉMATIQUES -->
+        <!-- CATÉGORIE : OPÉRATIONS DE BASE -->
+        <!-- EXERCICE 1 - ADDITION -->
+        <!-- ===================================================== -->
+
+        <form *ngIf="isReferentView || currentStep === 0" [formGroup]="formEx1" (ngSubmit)="submitEx1()">
+
+            <!-- HEADER -->
+
+            <div class="title mb-4 d-flex flex-column flex-md-row
+                  align-items-start align-items-md-center gap-2">
+
+                <span class="badge text-bg-dark text-white">
+                    <i class="bi bi-tag-fill me-2"></i>
+                    Catégorie : {{ steps[0].category }}
+                </span>
+
+                <div class="d-flex gap-2 ms-md-auto">
+
+                    <span class="badge text-bg-warning">
+                        Exercice 1
+                    </span>
+
+                    <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+
+                        Max {{ steps[0].maxScore }} PNTS
+
+                    </span>
+
+                    <span class="badge text-bg-dark"
+                        [class.clickable-step-badge]="isReferentView && !aggregateState['isFinal']"
+                        (click)="isReferentView && !aggregateState['isFinal'] && editStepScore(0)">
+
+                        {{ getCurrentScore(0) }} PNTS
+
+                    </span>
+
+                </div>
+
+            </div>
+
+            <!-- ÉNONCÉ -->
+
+            <div class="alert bg-info">
+
+                <h5 class="fw-bold">L'ADDITION (+)</h5>
+
+                <p>
+                    Un terrain irrégulier mesure :
+                </p>
+
+                <ul>
+                    <li>63 mètres côté Sud</li>
+                    <li>28 mètres côté Nord</li>
+                    <li>28 mètres côté Ouest</li>
+                    <li>21 mètres côté Est</li>
+                </ul>
+
+                <p class="mb-0">
+                    Monsieur Martin décide de le clôturer en totalité avec un grillage.
+                </p>
+
+            </div>
+
+            <!-- QUESTION -->
+
+            <div class="alert bg-info instructions">
+                Combien lui faudra-t-il de grillage pour clôturer son terrain ?
+            </div>
+
+            <label class="form-label" for="answerEx1">
+                Écrivez votre résultat :
+            </label>
+
+            <div class="input-group">
+                <input id="answerEx1" type="number" class="form-control" formControlName="answer" inputmode="decimal">
+
+                <span class="input-group-text">m</span>
+            </div>
+
+            <!-- TIMELINE -->
+
+            <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+
+                Temps donné : {{ steps[currentStep].duration }} secondes
+
+            </div>
+
+            <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4"
+                role="progressbar" aria-label="Progression de l'exercice" [attr.aria-valuenow]="progress"
+                aria-valuemin="0" aria-valuemax="100">
+
+                <div class="progress-bar" [style.width.%]="progress">
+                </div>
+
+            </div>
+
+            <!-- SOUMISSION -->
+
+            <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
+
+                Suivant
+
+            </button>
+
+        </form>
+
+        <hr *ngIf="isReferentView">
+
+
+        <!-- ===================================================== -->
+        <!-- EXERCICE 2 - SOUSTRACTION -->
+        <!-- ===================================================== -->
+
+        <form *ngIf="isReferentView || currentStep === 1" [formGroup]="formEx2" (ngSubmit)="submitEx2()">
+
+            <div class="title mb-4 d-flex flex-column flex-md-row
+                  align-items-start align-items-md-center gap-2">
+
+                <span class="badge text-bg-dark text-white">
+                    <i class="bi bi-tag-fill me-2"></i>
+                    Catégorie : {{ steps[1].category }}
+                </span>
+
+                <div class="d-flex gap-2 ms-md-auto">
+
+                    <span class="badge text-bg-warning">
+                        Exercice 2
+                    </span>
+
+                    <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+
+                        Max {{ steps[1].maxScore }} PNTS
+
+                    </span>
+
+                    <span class="badge text-bg-dark"
+                        [class.clickable-step-badge]="isReferentView && !aggregateState['isFinal']"
+                        (click)="isReferentView && !aggregateState['isFinal'] && editStepScore(1)">
+
+                        {{ getCurrentScore(1) }} PNTS
+
+                    </span>
+
+                </div>
+
+            </div>
+
+            <!-- ÉNONCÉ -->
+
+            <div class="alert bg-info">
+
+                <h5 class="fw-bold">LA SOUSTRACTION (-)</h5>
+
+                <p>
+                    Pour résoudre ce problème, on recherche la différence.
+                </p>
+
+                <p>
+                    Mme GRANDIN a 2 500 € d'économie.
+                    Elle décide de s'acheter un canapé à 959 €.
+                </p>
+
+            </div>
+
+            <!-- QUESTION -->
+
+            <div class="alert bg-info instructions">
+                Combien lui reste-t-il ?
+            </div>
+
+            <div class="input-group">
+
+                <input type="number" class="form-control" formControlName="answer" inputmode="decimal">
+
+                <span class="input-group-text">€</span>
+
+            </div>
+
+            <!-- TIMELINE -->
+
+            <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+
+                Temps donné : {{ steps[currentStep].duration }} secondes
+
+            </div>
+
+            <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4"
+                role="progressbar" aria-label="Progression de l'exercice" [attr.aria-valuenow]="progress"
+                aria-valuemin="0" aria-valuemax="100">
+
+                <div class="progress-bar" [style.width.%]="progress"></div>
+
+            </div>
+
+            <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
+
+                Suivant
+
+            </button>
+
+        </form>
+
+        <hr *ngIf="isReferentView">
+
+
+        <!-- ===================================================== -->
+        <!-- EXERCICE 3 - MULTIPLICATION -->
+        <!-- ===================================================== -->
+
+        <form *ngIf="isReferentView || currentStep === 2" [formGroup]="formEx3" (ngSubmit)="submitEx3()">
+
+            <div class="title mb-4 d-flex flex-column flex-md-row
+                  align-items-start align-items-md-center gap-2">
+
+                <span class="badge text-bg-dark text-white">
+                    <i class="bi bi-tag-fill me-2"></i>
+                    Catégorie : {{ steps[2].category }}
+                </span>
+
+                <div class="d-flex gap-2 ms-md-auto">
+
+                    <span class="badge text-bg-warning">
+                        Exercice 3
+                    </span>
+
+                    <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+
+                        Max {{ steps[2].maxScore }} PNTS
+
+                    </span>
+
+                    <span class="badge text-bg-dark"
+                        [class.clickable-step-badge]="isReferentView && !aggregateState['isFinal']"
+                        (click)="isReferentView && !aggregateState['isFinal'] && editStepScore(2)">
+
+                        {{ getCurrentScore(2) }} PNTS
+
+                    </span>
+
+                </div>
+
+            </div>
+
+            <!-- ÉNONCÉ -->
+
+            <div class="alert bg-info">
+
+                <h5 class="fw-bold">LA MULTIPLICATION (×)</h5>
+
+                <p class="mb-0">
+                    Vous achetez 5 baguettes à 0,85 € l'unité.
+                </p>
+
+            </div>
+
+            <!-- QUESTION -->
+
+            <div class="alert bg-info instructions">
+                Combien allez-vous payer les 5 baguettes ?
+            </div>
+
+            <div class="input-group">
+
+                <input type="number" step="0.01" class="form-control" formControlName="answer" inputmode="decimal">
+
+                <span class="input-group-text">€</span>
+
+            </div>
+
+            <!-- TIMELINE -->
+
+            <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+
+                Temps donné : {{ steps[currentStep].duration }} secondes
+
+            </div>
+
+            <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4"
+                role="progressbar" aria-label="Progression de l'exercice" [attr.aria-valuenow]="progress"
+                aria-valuemin="0" aria-valuemax="100">
+
+                <div class="progress-bar" [style.width.%]="progress"></div>
+
+            </div>
+
+            <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
+
+                Suivant
+
+            </button>
+
+        </form>
+
+        <hr *ngIf="isReferentView">

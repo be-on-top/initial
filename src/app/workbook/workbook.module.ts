@@ -11,6 +11,7 @@ import { Unit3Component } from './units/unit3/unit3.component';
 import { DocumentBatimentComponent } from './units/unit3/document-batiment/document-batiment.component';
 import { DocumentEolienComponent } from './units/unit3/document-eolien/document-eolien.component';
 import { UnitsListComponent } from './units-list/units-list.component';
+import { Unit4Component } from './units/unit4/unit4.component';
 
 
 
@@ -23,7 +24,8 @@ import { UnitsListComponent } from './units-list/units-list.component';
     Unit3Component,
     DocumentBatimentComponent,
     DocumentEolienComponent,
-    UnitsListComponent
+    UnitsListComponent,
+    Unit4Component
   ],
   imports: [
     CommonModule,

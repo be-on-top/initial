@@ -4,7 +4,7 @@ import { Unit1Component } from './units/unit1/unit1.component';
 import { Unit2Component } from './units/unit2/unit2.component';
 import { Unit3Component } from './units/unit3/unit3.component';
 import { UnitsListComponent } from './units-list/units-list.component';
-
+import { Unit4Component } from './units/unit4/unit4.component';
 
 
 const routes: Routes = [
@@ -17,6 +17,9 @@ const routes: Routes = [
   { path: 'unit3', component: Unit3Component },
   // pour pouvoir accéder  à  : http://localhost:4200/workbook/unit3/GEzJgCWOeTa7O7xKCDzXeDVHNc23
   { path: 'unit3/:uid', component: Unit3Component },
+    { path: 'unit4', component: Unit4Component },
+  // pour pouvoir accéder  à  : http://localhost:4200/workbook/unit4/GEzJgCWOeTa7O7xKCDzXeDVHNc23
+  { path: 'unit4/:uid', component: Unit4Component },
   {
   path: 'units',
   component: UnitsListComponent

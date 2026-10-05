@@ -21,5 +21,13 @@ export const WORKBOOK_UNITS = [
     description: 'Comprendre les points essentiels d\'un langage clair et standard ainsi que des contenus plus complexes. Produire un discours cohérent et détaillé, expliquer un projet ou une idée, exprimer un avis et communiquer avec davantage de spontanéité et d’aisance.',
     candidateRoute: '/workbook/unit3',
     sourceDocumentUrl: 'https://firebasestorage.googleapis.com/v0/b/be-on-top-beta.appspot.com/o/admin-docs%2Fworkbook%2Fsupport-source-unit3.docx?alt=media&token=85d40e21-1132-4ad9-b031-23dacc9dd231'
-  }
+  },
+  {
+  id: 'unit4',
+  label: 'Mathématiques niveau élémentaire',
+  profile: 'Utilisateur élémentaire',
+  description: 'Comprendre et utiliser les éléments mathématiques de base en calcul et en géométrie dans des situations simples.',
+  candidateRoute: '/workbook/unit4',
+  sourceDocumentUrl: ''
+}
 ];
