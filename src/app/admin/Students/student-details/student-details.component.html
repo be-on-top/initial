@@ -189,9 +189,8 @@
 
                                     <p *ngIf="tradesData?.length > 0"><span class="fw-bold">Total</span> :
                                         {{totalTime}}/{{
-                                        calculateTotalTime(trade) | json }} heures de formation pour <span class="cost">
-                                            {{totalCost}}/{{
-                                            calculateTotalCost(trade) }}€</span>
+                                        calculateTotalTime(trade) | json }} heures de formation <span class="cost">
+                                            pour {{totalCost}}/{{calculateTotalCost(trade) }}€</span>
 
                                         <!-- pour les arrondis multiples de 7 -->
                                         <!-- Si l'arrondi dépasse le total, on force l'arrondi inférieur -->
