@@ -1,0 +1,387 @@
+<div class="container mt-4">
+  <div *ngIf="isStudent && currentStep === 0 && !showFinalMessage" class="alert bg-dark text-white p-4">
+    Bienvenue dans l'évaluation « {{ label }} ».
+  </div>
+  <div *ngIf="isNotAuthenticated" class="alert alert-warning">
+    Authentification requise. <a [routerLink]="['/login']">Vous identifier</a>
+  </div>
+  <div *ngIf="!isNotAuthenticated && !isStudent && !isReferentView" class="alert alert-danger">
+    Seul un candidat authentifié peut passer cette évaluation.
+  </div>
+  <div *ngIf="isReferentView" class="alert alert-light">
+    <strong>Candidat :</strong> {{ lastName }} {{ firstName }}.
+    <strong>Unité 5 :</strong> {{ label }}.
+    <strong>Profil ciblé :</strong> {{ profile }}.
+    <strong>Capacités évaluées :</strong> {{ description }}.
+  </div>
+  <div *ngIf="(isStudent && !showFinalMessage) || isReferentView">
+    <!-- EXERCICE 1 -->
+    <form class="nouvelle-page mb-5" *ngIf="isReferentView || currentStep === 0" [formGroup]="formEx1" (ngSubmit)="submitEx1()">
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+        <span class="badge text-bg-dark"><i class="bi bi-tag-fill me-2"></i>Catégorie : {{ steps[0].category }}</span>
+        <div class="d-flex flex-wrap gap-2 ms-md-auto">
+          <span class="badge text-bg-warning">Exercice 1</span>
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">Max {{ steps[0].maxScore }} PNTS</span>
+          <button *ngIf="isReferentView" type="button" class="badge text-bg-dark border-0"
+            [disabled]="aggregateState['isFinal']" (click)="editStepScore(0)">{{ getCurrentScore(0) }} PNTS</button>
+        </div>
+      </div>
+      <div class="alert bg-info instructions"><h5 class="fw-bold mb-0">Quel outil utiliser ?</h5></div>
+      <div class="mb-3"><p>Associez chaque situation à l'outil numérique le plus adapté.</p>
+<div class="row g-3" *ngFor="let item of [{key:'letter',label:'Écrire un courrier'},{key:'site',label:'Consulter un site Internet'},{key:'email',label:'Envoyer un message électronique'},{key:'meeting',label:'Participer à une visioconférence'}]">
+  <div class="col-12 col-md-6"><label class="form-label">{{ item.label }}</label></div>
+  <div class="col-12 col-md-6"><select class="form-select" [formControlName]="item.key"><option value="">Choisissez un outil</option><option *ngFor="let option of toolOptions" [value]="option.value">{{ option.label }}</option></select></div>
+</div></div>
+      <div *ngIf="!isReferentView" class="text-muted small mt-4 d-print-none">Temps donné : {{ steps[0].duration }} secondes</div>
+      <div *ngIf="!isReferentView" class="progress mb-4 d-print-none" role="progressbar" aria-label="Progression de l'exercice"
+        [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-success mt-3 d-print-none">Suivant</button>
+    </form>
+    <hr *ngIf="isReferentView">
+    <!-- EXERCICE 2 -->
+    <form class="nouvelle-page mb-5" *ngIf="isReferentView || currentStep === 1" [formGroup]="formEx2" (ngSubmit)="submitEx2()">
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+        <span class="badge text-bg-dark"><i class="bi bi-tag-fill me-2"></i>Catégorie : {{ steps[1].category }}</span>
+        <div class="d-flex flex-wrap gap-2 ms-md-auto">
+          <span class="badge text-bg-warning">Exercice 2</span>
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">Max {{ steps[1].maxScore }} PNTS</span>
+          <button *ngIf="isReferentView" type="button" class="badge text-bg-dark border-0"
+            [disabled]="aggregateState['isFinal']" (click)="editStepScore(1)">{{ getCurrentScore(1) }} PNTS</button>
+        </div>
+      </div>
+      <div class="alert bg-info instructions"><h5 class="fw-bold mb-0">Reconnaître les éléments d’une interface</h5></div>
+      <div class="mb-3"><p>Sur ces quatre tuiles d'une interface simplifiée, reconnaissez la fonction de chaque icône.</p>
+<div class="row g-3">
+  <div class="col-12 col-sm-6" *ngFor="let item of [{key:'globe',icon:'bi-globe2'},{key:'folder',icon:'bi-folder-fill'},{key:'trash',icon:'bi-trash3-fill'},{key:'wifi',icon:'bi-wifi'}]">
+    <div class="card h-100"><div class="card-body text-center">
+      <div class="fs-1 mb-3"><i class="bi" [ngClass]="item.icon" aria-hidden="true"></i></div>
+      <label class="form-label" [attr.for]="'icon-' + item.key">À quoi correspond cette icône ?</label>
+      <select class="form-select" [id]="'icon-' + item.key" [formControlName]="item.key"><option value="">Choisissez</option><option *ngFor="let option of iconOptions" [value]="option.value">{{ option.label }}</option></select>
+    </div></div>
+  </div>
+</div></div>
+      <div *ngIf="!isReferentView" class="text-muted small mt-4 d-print-none">Temps donné : {{ steps[1].duration }} secondes</div>
+      <div *ngIf="!isReferentView" class="progress mb-4 d-print-none" role="progressbar" aria-label="Progression de l'exercice"
+        [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-success mt-3 d-print-none">Suivant</button>
+    </form>
+    <hr *ngIf="isReferentView">
+    <!-- EXERCICE 3 -->
+    <form class="nouvelle-page mb-5" *ngIf="isReferentView || currentStep === 2" [formGroup]="formEx3" (ngSubmit)="submitEx3()">
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+        <span class="badge text-bg-dark"><i class="bi bi-tag-fill me-2"></i>Catégorie : {{ steps[2].category }}</span>
+        <div class="d-flex flex-wrap gap-2 ms-md-auto">
+          <span class="badge text-bg-warning">Exercice 3</span>
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">Max {{ steps[2].maxScore }} PNTS</span>
+          <button *ngIf="isReferentView" type="button" class="badge text-bg-dark border-0"
+            [disabled]="aggregateState['isFinal']" (click)="editStepScore(2)">{{ getCurrentScore(2) }} PNTS</button>
+        </div>
+      </div>
+      <div class="alert bg-info instructions"><h5 class="fw-bold mb-0">Se connecter à un service</h5></div>
+      <div class="mb-3"><p>Remettez les actions dans l'ordre pour vous connecter à un espace de formation. Utilisez les flèches.</p>
+<div class="list-group">
+  <div class="list-group-item d-flex align-items-center gap-2" *ngFor="let action of getOrder(3); let i = index">
+    <strong>{{ i + 1 }}.</strong><span class="flex-grow-1">{{ ex3Labels[action] }}</span>
+    <button type="button" class="btn btn-outline-secondary btn-sm" aria-label="Monter" [disabled]="isReferentView || i === 0" (click)="moveOrder(i,-1,3)"><i class="bi bi-arrow-up"></i></button>
+    <button type="button" class="btn btn-outline-secondary btn-sm" aria-label="Descendre" [disabled]="isReferentView || i === getOrder(3).length-1" (click)="moveOrder(i,1,3)"><i class="bi bi-arrow-down"></i></button>
+  </div>
+</div></div>
+      <div *ngIf="!isReferentView" class="text-muted small mt-4 d-print-none">Temps donné : {{ steps[2].duration }} secondes</div>
+      <div *ngIf="!isReferentView" class="progress mb-4 d-print-none" role="progressbar" aria-label="Progression de l'exercice"
+        [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-success mt-3 d-print-none">Suivant</button>
+    </form>
+    <hr *ngIf="isReferentView">
+    <!-- EXERCICE 4 -->
+    <form class="nouvelle-page mb-5" *ngIf="isReferentView || currentStep === 3" [formGroup]="formEx4" (ngSubmit)="submitEx4()">
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+        <span class="badge text-bg-dark"><i class="bi bi-tag-fill me-2"></i>Catégorie : {{ steps[3].category }}</span>
+        <div class="d-flex flex-wrap gap-2 ms-md-auto">
+          <span class="badge text-bg-warning">Exercice 4</span>
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">Max {{ steps[3].maxScore }} PNTS</span>
+          <button *ngIf="isReferentView" type="button" class="badge text-bg-dark border-0"
+            [disabled]="aggregateState['isFinal']" (click)="editStepScore(3)">{{ getCurrentScore(3) }} PNTS</button>
+        </div>
+      </div>
+      <div class="alert bg-info instructions"><h5 class="fw-bold mb-0">Retrouver un document</h5></div>
+      <div class="mb-3"><p>Dans quel dossier se trouve le fichier <strong>convocation.pdf</strong> ?</p>
+<div class="border rounded p-3">
+  <div class="mb-2"><i class="bi bi-folder-fill me-2"></i>Documents</div>
+  <div class="ms-3 mb-2"><i class="bi bi-folder-fill me-2"></i>Formation</div>
+  <div class="ms-4 mb-2"><i class="bi bi-folder-fill me-2"></i>Convocations</div>
+  <div class="ms-4 ps-3"><i class="bi bi-file-earmark-pdf me-2"></i>convocation.pdf</div>
+</div>
+<div class="mt-3" *ngFor="let item of [{value:'documents',label:'Documents'},{value:'formation',label:'Formation'},{value:'convocations',label:'Convocations'},{value:'other',label:'Aucun de ces dossiers'}]">
+  <label class="d-flex gap-2 align-items-center py-2"><input type="radio" formControlName="selected" [value]="item.value"> {{ item.label }}</label>
+</div></div>
+      <div *ngIf="!isReferentView" class="text-muted small mt-4 d-print-none">Temps donné : {{ steps[3].duration }} secondes</div>
+      <div *ngIf="!isReferentView" class="progress mb-4 d-print-none" role="progressbar" aria-label="Progression de l'exercice"
+        [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-success mt-3 d-print-none">Suivant</button>
+    </form>
+    <hr *ngIf="isReferentView">
+    <!-- EXERCICE 5 -->
+    <form class="nouvelle-page mb-5" *ngIf="isReferentView || currentStep === 4" [formGroup]="formEx5" (ngSubmit)="submitEx5()">
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+        <span class="badge text-bg-dark"><i class="bi bi-tag-fill me-2"></i>Catégorie : {{ steps[4].category }}</span>
+        <div class="d-flex flex-wrap gap-2 ms-md-auto">
+          <span class="badge text-bg-warning">Exercice 5</span>
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">Max {{ steps[4].maxScore }} PNTS</span>
+          <button *ngIf="isReferentView" type="button" class="badge text-bg-dark border-0"
+            [disabled]="aggregateState['isFinal']" (click)="editStepScore(4)">{{ getCurrentScore(4) }} PNTS</button>
+        </div>
+      </div>
+      <div class="alert bg-info instructions"><h5 class="fw-bold mb-0">Reconnaître les fichiers</h5></div>
+      <div class="mb-3"><p>Associez chaque nom de fichier à sa nature.</p>
+<div class="row g-3" *ngFor="let item of [{key:'cv',label:'CV.pdf'},{key:'photo',label:'photo.jpg'},{key:'letter',label:'lettre.docx'},{key:'sheet',label:'tableau.xlsx'}]">
+  <div class="col-12 col-sm-5"><label class="form-label">{{ item.label }}</label></div>
+  <div class="col-12 col-sm-7"><select class="form-select" [formControlName]="item.key"><option value="">Choisissez un type</option><option *ngFor="let option of fileOptions" [value]="option.value">{{ option.label }}</option></select></div>
+</div></div>
+      <div *ngIf="!isReferentView" class="text-muted small mt-4 d-print-none">Temps donné : {{ steps[4].duration }} secondes</div>
+      <div *ngIf="!isReferentView" class="progress mb-4 d-print-none" role="progressbar" aria-label="Progression de l'exercice"
+        [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-success mt-3 d-print-none">Suivant</button>
+    </form>
+    <hr *ngIf="isReferentView">
+    <!-- EXERCICE 6 -->
+    <form class="nouvelle-page mb-5" *ngIf="isReferentView || currentStep === 5" [formGroup]="formEx6" (ngSubmit)="submitEx6()">
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+        <span class="badge text-bg-dark"><i class="bi bi-tag-fill me-2"></i>Catégorie : {{ steps[5].category }}</span>
+        <div class="d-flex flex-wrap gap-2 ms-md-auto">
+          <span class="badge text-bg-warning">Exercice 6</span>
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">Max {{ steps[5].maxScore }} PNTS</span>
+          <button *ngIf="isReferentView" type="button" class="badge text-bg-dark border-0"
+            [disabled]="aggregateState['isFinal']" (click)="editStepScore(5)">{{ getCurrentScore(5) }} PNTS</button>
+        </div>
+      </div>
+      <div class="alert bg-info instructions"><h5 class="fw-bold mb-0">Recevoir puis renvoyer un document</h5></div>
+      <div class="mb-3"><p>Vous avez reçu un document de votre formateur et devez le lui renvoyer. Classez les cinq actions dans le bon ordre.</p>
+<div class="list-group">
+  <div class="list-group-item d-flex align-items-center gap-2" *ngFor="let action of getOrder(6); let i = index">
+    <strong>{{ i + 1 }}.</strong><span class="flex-grow-1">{{ ex6Labels[action] }}</span>
+    <button type="button" class="btn btn-outline-secondary btn-sm" aria-label="Monter" [disabled]="isReferentView || i === 0" (click)="moveOrder(i,-1,6)"><i class="bi bi-arrow-up"></i></button>
+    <button type="button" class="btn btn-outline-secondary btn-sm" aria-label="Descendre" [disabled]="isReferentView || i === getOrder(6).length-1" (click)="moveOrder(i,1,6)"><i class="bi bi-arrow-down"></i></button>
+  </div>
+</div></div>
+      <div *ngIf="!isReferentView" class="text-muted small mt-4 d-print-none">Temps donné : {{ steps[5].duration }} secondes</div>
+      <div *ngIf="!isReferentView" class="progress mb-4 d-print-none" role="progressbar" aria-label="Progression de l'exercice"
+        [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-success mt-3 d-print-none">Suivant</button>
+    </form>
+    <hr *ngIf="isReferentView">
+    <!-- EXERCICE 7 -->
+    <form class="nouvelle-page mb-5" *ngIf="isReferentView || currentStep === 6" [formGroup]="formEx7" (ngSubmit)="submitEx7()">
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+        <span class="badge text-bg-dark"><i class="bi bi-tag-fill me-2"></i>Catégorie : {{ steps[6].category }}</span>
+        <div class="d-flex flex-wrap gap-2 ms-md-auto">
+          <span class="badge text-bg-warning">Exercice 7</span>
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">Max {{ steps[6].maxScore }} PNTS</span>
+          <button *ngIf="isReferentView" type="button" class="badge text-bg-dark border-0"
+            [disabled]="aggregateState['isFinal']" (click)="editStepScore(6)">{{ getCurrentScore(6) }} PNTS</button>
+        </div>
+      </div>
+      <div class="alert bg-info instructions"><h5 class="fw-bold mb-0">Trouver une information sur Internet</h5></div>
+      <div class="mb-3"><p>Vous cherchez les horaires d'ouverture de la médiathèque de votre ville. Quelle recherche est la plus utile ?</p>
+<div *ngFor="let option of [{value:'internet',label:'Internet'},{value:'precise',label:'Horaires médiathèque + nom de ma ville'},{value:'books',label:'Livres'},{value:'all',label:'Toutes les médiathèques du monde'}]" class="py-2">
+  <label class="d-flex gap-2"><input type="radio" formControlName="answer" [value]="option.value"> {{ option.label }}</label>
+</div></div>
+      <div *ngIf="!isReferentView" class="text-muted small mt-4 d-print-none">Temps donné : {{ steps[6].duration }} secondes</div>
+      <div *ngIf="!isReferentView" class="progress mb-4 d-print-none" role="progressbar" aria-label="Progression de l'exercice"
+        [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-success mt-3 d-print-none">Suivant</button>
+    </form>
+    <hr *ngIf="isReferentView">
+    <!-- EXERCICE 8 -->
+    <form class="nouvelle-page mb-5" *ngIf="isReferentView || currentStep === 7" [formGroup]="formEx8" (ngSubmit)="submitEx8()">
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+        <span class="badge text-bg-dark"><i class="bi bi-tag-fill me-2"></i>Catégorie : {{ steps[7].category }}</span>
+        <div class="d-flex flex-wrap gap-2 ms-md-auto">
+          <span class="badge text-bg-warning">Exercice 8</span>
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">Max {{ steps[7].maxScore }} PNTS</span>
+          <button *ngIf="isReferentView" type="button" class="badge text-bg-dark border-0"
+            [disabled]="aggregateState['isFinal']" (click)="editStepScore(7)">{{ getCurrentScore(7) }} PNTS</button>
+        </div>
+      </div>
+      <div class="alert bg-info instructions"><h5 class="fw-bold mb-0">Envoyer un e-mail</h5></div>
+      <div class="mb-3"><p>Votre formateur vous demande d'envoyer votre CV à <strong>formation@exemple.fr</strong> avec l'objet <strong>CV - Candidature</strong>.</p>
+<div class="border rounded p-3 bg-white">
+  <h6><i class="bi bi-envelope me-2"></i>Nouveau message</h6>
+  <label for="ex8-to" class="form-label">À (destinataire)</label>
+  <input id="ex8-to" class="form-control mb-3" type="email" formControlName="recipient" placeholder="Adresse e-mail">
+  <label for="ex8-subject" class="form-label">Objet</label>
+  <input id="ex8-subject" class="form-control mb-3" type="text" formControlName="subject" placeholder="Objet du message">
+  <label for="ex8-file" class="form-label"><i class="bi bi-paperclip me-2"></i>Pièce jointe</label>
+  <select id="ex8-file" class="form-select" formControlName="attachment">
+    <option value="">Choisir le fichier à joindre</option><option value="photo">photo.jpg</option><option value="cv">CV.pdf</option><option value="notes">notes.txt</option>
+  </select>
+</div></div>
+      <div *ngIf="!isReferentView" class="text-muted small mt-4 d-print-none">Temps donné : {{ steps[7].duration }} secondes</div>
+      <div *ngIf="!isReferentView" class="progress mb-4 d-print-none" role="progressbar" aria-label="Progression de l'exercice"
+        [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-success mt-3 d-print-none">Suivant</button>
+    </form>
+    <hr *ngIf="isReferentView">
+    <!-- EXERCICE 9 -->
+    <form class="nouvelle-page mb-5" *ngIf="isReferentView || currentStep === 8" [formGroup]="formEx9" (ngSubmit)="submitEx9()">
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+        <span class="badge text-bg-dark"><i class="bi bi-tag-fill me-2"></i>Catégorie : {{ steps[8].category }}</span>
+        <div class="d-flex flex-wrap gap-2 ms-md-auto">
+          <span class="badge text-bg-warning">Exercice 9</span>
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">Max {{ steps[8].maxScore }} PNTS</span>
+          <button *ngIf="isReferentView" type="button" class="badge text-bg-dark border-0"
+            [disabled]="aggregateState['isFinal']" (click)="editStepScore(8)">{{ getCurrentScore(8) }} PNTS</button>
+        </div>
+      </div>
+      <div class="alert bg-info instructions"><h5 class="fw-bold mb-0">Rejoindre une formation à distance</h5></div>
+      <div class="mb-3"><div class="border rounded p-3 bg-white mb-3">
+  <div><strong>De :</strong> votre formateur</div><div><strong>Objet :</strong> Invitation à une formation à distance</div>
+  <hr><p>Bonjour, votre formation aura lieu <strong>mardi 14 mai à 10 h</strong>.</p>
+  <p class="mb-0">Pour participer, utilisez le lien : <span class="text-primary text-decoration-underline">Rejoindre la visioconférence</span>.</p>
+</div>
+<p>Que devez-vous faire pour participer ?</p>
+<div class="py-2" *ngFor="let option of [{value:'reply',label:'Répondre au mail en écrivant « Je suis connecté »'},{value:'join',label:'Ouvrir le lien de visioconférence à l’heure indiquée'},{value:'delete',label:'Supprimer le message'},{value:'tomorrow',label:'Attendre le lendemain pour ouvrir le lien'}]">
+  <label class="d-flex gap-2"><input type="radio" formControlName="answer" [value]="option.value"> {{ option.label }}</label>
+</div></div>
+      <div *ngIf="!isReferentView" class="text-muted small mt-4 d-print-none">Temps donné : {{ steps[8].duration }} secondes</div>
+      <div *ngIf="!isReferentView" class="progress mb-4 d-print-none" role="progressbar" aria-label="Progression de l'exercice"
+        [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-success mt-3 d-print-none">Suivant</button>
+    </form>
+    <hr *ngIf="isReferentView">
+    <!-- EXERCICE 10 -->
+    <form class="nouvelle-page mb-5" *ngIf="isReferentView || currentStep === 9" [formGroup]="formEx10" (ngSubmit)="submitEx10()">
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+        <span class="badge text-bg-dark"><i class="bi bi-tag-fill me-2"></i>Catégorie : {{ steps[9].category }}</span>
+        <div class="d-flex flex-wrap gap-2 ms-md-auto">
+          <span class="badge text-bg-warning">Exercice 10</span>
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">Max {{ steps[9].maxScore }} PNTS</span>
+          <button *ngIf="isReferentView" type="button" class="badge text-bg-dark border-0"
+            [disabled]="aggregateState['isFinal']" (click)="editStepScore(9)">{{ getCurrentScore(9) }} PNTS</button>
+        </div>
+      </div>
+      <div class="alert bg-info instructions"><h5 class="fw-bold mb-0">Choisir un mot de passe</h5></div>
+      <div class="mb-3"><p>Quel mot de passe est le plus difficile à deviner parmi ces propositions ?</p>
+<div class="py-2" *ngFor="let option of [{value:'simple',label:'12345678'},{value:'name',label:'prenom2026'},{value:'medium',label:'Formation!'},{value:'strong',label:'M7#vQ2!pL9'}]">
+  <label class="d-flex gap-2"><input type="radio" formControlName="answer" [value]="option.value"> <code>{{ option.label }}</code></label>
+</div></div>
+      <div *ngIf="!isReferentView" class="text-muted small mt-4 d-print-none">Temps donné : {{ steps[9].duration }} secondes</div>
+      <div *ngIf="!isReferentView" class="progress mb-4 d-print-none" role="progressbar" aria-label="Progression de l'exercice"
+        [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-success mt-3 d-print-none">Suivant</button>
+    </form>
+    <hr *ngIf="isReferentView">
+    <!-- EXERCICE 11 -->
+    <form class="nouvelle-page mb-5" *ngIf="isReferentView || currentStep === 10" [formGroup]="formEx11" (ngSubmit)="submitEx11()">
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+        <span class="badge text-bg-dark"><i class="bi bi-tag-fill me-2"></i>Catégorie : {{ steps[10].category }}</span>
+        <div class="d-flex flex-wrap gap-2 ms-md-auto">
+          <span class="badge text-bg-warning">Exercice 11</span>
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">Max {{ steps[10].maxScore }} PNTS</span>
+          <button *ngIf="isReferentView" type="button" class="badge text-bg-dark border-0"
+            [disabled]="aggregateState['isFinal']" (click)="editStepScore(10)">{{ getCurrentScore(10) }} PNTS</button>
+        </div>
+      </div>
+      <div class="alert bg-info instructions"><h5 class="fw-bold mb-0">Repérer un message suspect</h5></div>
+      <div class="mb-3"><p>Vous recevez ce message. Sélectionnez les éléments qui doivent vous alerter.</p>
+<div class="border rounded bg-white p-3 mb-3">
+  <div class="mb-2"><strong>De :</strong> support-formation@securite-compte.xyz</div>
+  <div class="mb-2"><strong>Objet :</strong> URGENT : compte bloqué dans 30 minutes</div>
+  <p>Pour garder votre accès, saisissez immédiatement votre mot de passe sur ce lien :</p>
+  <p class="text-primary text-break">http://verification-compte-exemple.xyz</p>
+  <div class="small text-muted">Logo du centre de formation — L'équipe support</div>
+</div>
+<div class="form-check mb-2" *ngFor="let item of [{key:'sender',label:'L’adresse de l’expéditeur est inhabituelle'},{key:'urgency',label:'Le message impose un délai très court'},{key:'password',label:'Le message demande le mot de passe'},{key:'link',label:'Le lien proposé paraît douteux'},{key:'logo',label:'La simple présence d’un logo'},{key:'signature',label:'La simple présence d’une signature'}]">
+  <input class="form-check-input" type="checkbox" [id]="'ex11-' + item.key" [formControlName]="item.key">
+  <label class="form-check-label" [for]="'ex11-' + item.key">{{ item.label }}</label>
+</div></div>
+      <div *ngIf="!isReferentView" class="text-muted small mt-4 d-print-none">Temps donné : {{ steps[10].duration }} secondes</div>
+      <div *ngIf="!isReferentView" class="progress mb-4 d-print-none" role="progressbar" aria-label="Progression de l'exercice"
+        [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-success mt-3 d-print-none">Suivant</button>
+    </form>
+    <hr *ngIf="isReferentView">
+    <!-- EXERCICE 12 -->
+    <form class="nouvelle-page mb-5" *ngIf="isReferentView || currentStep === 11" [formGroup]="formEx12" (ngSubmit)="submitEx12()">
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+        <span class="badge text-bg-dark"><i class="bi bi-tag-fill me-2"></i>Catégorie : {{ steps[11].category }}</span>
+        <div class="d-flex flex-wrap gap-2 ms-md-auto">
+          <span class="badge text-bg-warning">Exercice 12</span>
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">Max {{ steps[11].maxScore }} PNTS</span>
+          <button *ngIf="isReferentView" type="button" class="badge text-bg-dark border-0"
+            [disabled]="aggregateState['isFinal']" (click)="editStepScore(11)">{{ getCurrentScore(11) }} PNTS</button>
+        </div>
+      </div>
+      <div class="alert bg-info instructions"><h5 class="fw-bold mb-0">Que faut-il faire ?</h5></div>
+      <div class="mb-3"><p>Vous recevez un message vous demandant vos identifiants pour conserver l'accès à votre espace de formation. Que faites-vous ?</p>
+<div class="py-2" *ngFor="let option of [{value:'send',label:'Je transmets immédiatement mon identifiant et mon mot de passe'},{value:'click',label:'Je clique sur le lien et je saisis mes identifiants'},{value:'ignore',label:'Je ne fais rien, même si je dois vérifier mon accès'},{value:'verify',label:'Je ne communique pas mes identifiants et je contacte le centre par son canal habituel pour vérifier'}]">
+  <label class="d-flex gap-2"><input type="radio" formControlName="answer" [value]="option.value"> {{ option.label }}</label>
+</div></div>
+      <div *ngIf="!isReferentView" class="text-muted small mt-4 d-print-none">Temps donné : {{ steps[11].duration }} secondes</div>
+      <div *ngIf="!isReferentView" class="progress mb-4 d-print-none" role="progressbar" aria-label="Progression de l'exercice"
+        [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-success mt-3 d-print-none">Suivant</button>
+    </form>
+    <hr *ngIf="isReferentView">
+  </div>
+  <div *ngIf="showFinalMessage && !isReferentView" class="alert alert-success mt-3">
+    Bravo et merci d'avoir répondu aux questions. Vos résultats ont été enregistrés.
+    Un conseiller projet va prendre contact avec vous pour en discuter.
+  </div>
+  <div *ngIf="isReferentView" class="mt-4 p-3 bg-light border nouvelle-page">
+    <h5 class="mb-3 text-primary">Synthèse des compétences (Vue Référent)</h5>
+    <ul class="list-group list-group-flush">
+      <li *ngFor="let category of categories" class="list-group-item bg-transparent d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2 ps-0 border-bottom py-3">
+        <div><h6 class="mb-0 fw-bold">{{ category }}</h6>
+          <small *ngIf="aggregateState[category] !== undefined" class="text-muted">Note calculée : {{ aggregateState[category] / getCategoryMaxScore(category) * 20 | number:'1.1-1' }} / 20</small>
+        </div>
+        <button type="button" class="btn btn-primary btn-sm rounded-0" [disabled]="aggregateState['isFinal']" (click)="editCategoryScore(category)">
+          <ng-container *ngIf="aggregateState[category] !== undefined; else missing">{{ aggregateState[category] }} / {{ getCategoryMaxScore(category) }} pts</ng-container>
+          <ng-template #missing>Non scoré / À évaluer</ng-template>
+        </button>
+      </li>
+    </ul>
+    <div *ngIf="getGlobalScore() as global" class="mt-4 pt-3 d-flex flex-column flex-sm-row justify-content-between gap-3">
+      <div><h4 class="mb-0 fw-bold">Note Globale Finale</h4><small class="text-muted">Basée sur un cumul de {{ global.obtenu }} / {{ global.max }} points</small></div>
+      <div class="fs-3 fw-bold text-primary">{{ getGlobalNoteOn20() }} / 20</div>
+    </div>
+  </div>
+  <div *ngIf="isReferentView" class="mb-4 mt-3">
+    <label for="commentaireReferent" class="form-label text-secondary">Commentaire et observations :</label>
+    <textarea id="commentaireReferent" class="form-control rounded-0" rows="3" [formControl]="commentCtrl"
+      [attr.disabled]="aggregateState['isFinal'] ? true : null" (blur)="saveCommentReferent()"></textarea>
+  </div>
+  <button *ngIf="isReferentView && !aggregateState['isFinal']" type="button" class="btn btn-danger my-3 d-print-none" (click)="cloturerEvaluation()">
+    <i class="bi bi-lock-fill me-2"></i>Clôturer l'évaluation
+  </button>
+  <ng-container *ngIf="aggregateState['isFinal'] && isReferentView">
+    <div class="alert alert-success my-3 text-center">Évaluation clôturée définitivement. Les notes sont figées.</div>
+    <div class="text-center my-4 d-print-none"><button type="button" class="btn btn-primary" (click)="printPage()">
+      <i class="bi bi-printer-fill me-2"></i>Imprimer / Enregistrer en PDF</button>
+      <p class="text-muted small mt-2">Dans la fenêtre d'impression, choisissez « Enregistrer au format PDF ».</p>
+    </div>
+  </ng-container>
+</div>
