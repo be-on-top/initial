@@ -180,18 +180,45 @@ export class Unit4Component implements OnInit, OnDestroy {
   ];
 
   // ======================================================
-
-  // FORMULAIRES
-
+  // FORMULAIRES — 27 exercices actifs (EX22 en réserve)
   // ======================================================
 
+  // Opérations de base : EX1 à EX5
   formEx1!: FormGroup;
-
   formEx2!: FormGroup;
-
   formEx3!: FormGroup;
-
   formEx4!: FormGroup;
+  formEx5!: FormGroup;
+
+  // Unités de mesure : EX6 à EX14
+  formEx6!: FormGroup;
+  formEx7!: FormGroup;
+  formEx8!: FormGroup;
+  formEx9!: FormGroup;
+  formEx10!: FormGroup;
+  formEx11!: FormGroup;
+  formEx12!: FormGroup;
+  formEx13!: FormGroup;
+  formEx14!: FormGroup;
+
+  // Géométrie / surfaces / volumes : EX15 à EX21
+  formEx15!: FormGroup;
+  formEx16!: FormGroup;
+  formEx17!: FormGroup;
+  formEx18!: FormGroup;
+  formEx19!: FormGroup;
+  formEx20!: FormGroup;
+  formEx21!: FormGroup;
+
+  // EX22 — ASSIFEP Test 6 : en réserve, aucun formulaire
+
+  // Pourcentages : EX23 à EX28
+  formEx23!: FormGroup;
+  formEx24!: FormGroup;
+  formEx25!: FormGroup;
+  formEx26!: FormGroup;
+  formEx27!: FormGroup;
+  formEx28!: FormGroup;
 
   // ======================================================
 
@@ -566,11 +593,11 @@ export class Unit4Component implements OnInit, OnDestroy {
 
   ex16Options = [
 
-    { value: 'cote_cote', label: 'côté × côté' },
+    { value: 'cote_cote', label: 'côté x côté' },
 
-    { value: 'cote_4', label: 'côté × 4' },
+    { value: 'cote_4', label: 'côté x 4' },
 
-    { value: '4_4', label: '4 × 4' }
+    { value: '4_4', label: '4 x 4' }
 
   ];
 
@@ -584,11 +611,11 @@ export class Unit4Component implements OnInit, OnDestroy {
 
   ex17Options = [
 
-    { value: 'l_plus_l_fois_2', label: '(L + l) × 2' },
+    { value: 'l_plus_l_fois_2', label: '(L + l) x 2' },
 
-    { value: 'l_fois_l', label: 'L × l' },
+    { value: 'l_fois_l', label: 'L x l' },
 
-    { value: 'l_fois_4', label: 'L × 4' }
+    { value: 'l_fois_4', label: 'L x 4' }
 
   ];
 
