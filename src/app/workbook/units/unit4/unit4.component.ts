@@ -1587,15 +1587,47 @@ export class Unit4Component implements OnInit, OnDestroy {
     this.intervalId = null;
   }
 
+ // ======================================================
+  // ÉTAPE 4 — ROUTAGE DES SOUMISSIONS (timer et validation)
+  // Par ID de steps[] : ne jamais confondre indice et n° EX.
+  // EX22 est en réserve ; après EX21, l'étape suivante est EX23.
+  // ======================================================
   submitCurrent(): void {
-
     if (this.alreadySubmitted) return;
 
-    switch (this.currentStep) {
-      case 0: this.submitEx1(); break;
-      case 1: this.submitEx2(); break;
-      case 2: this.submitEx3(); break;
-      case 3: this.submitEx4(); break;
+    const exId = this.steps[this.currentStep]?.id;
+
+    switch (exId) {
+      case 'ex1': this.submitEx1(); break;
+      case 'ex2': this.submitEx2(); break;
+      case 'ex3': this.submitEx3(); break;
+      case 'ex4': this.submitEx4(); break;
+      case 'ex5': this.submitEx5(); break;
+      case 'ex6': this.submitEx6(); break;
+      case 'ex7': this.submitEx7(); break;
+      case 'ex8': this.submitEx8(); break;
+      case 'ex9': this.submitEx9(); break;
+      case 'ex10': this.submitEx10(); break;
+      case 'ex11': this.submitEx11(); break;
+      case 'ex12': this.submitEx12(); break;
+      case 'ex13': this.submitEx13(); break;
+      case 'ex14': this.submitEx14(); break;
+      case 'ex15': this.submitEx15(); break;
+      case 'ex16': this.submitEx16(); break;
+      case 'ex17': this.submitEx17(); break;
+      case 'ex18': this.submitEx18(); break;
+      case 'ex19': this.submitEx19(); break;
+      case 'ex20': this.submitEx20(); break;
+      case 'ex21': this.submitEx21(); break;
+      case 'ex23': this.submitEx23(); break;
+      case 'ex24': this.submitEx24(); break;
+      case 'ex25': this.submitEx25(); break;
+      case 'ex26': this.submitEx26(); break;
+      case 'ex27': this.submitEx27(); break;
+      case 'ex28': this.submitEx28(); break;
+      default:
+        console.warn(`Aucune soumission associée à l'étape : ${exId ?? 'inconnue'}`);
+        break;
     }
   }
 
@@ -1672,28 +1704,25 @@ export class Unit4Component implements OnInit, OnDestroy {
     });
   }
 
+// ======================================================
+  // ÉTAPE 4 — RECHARGEMENT DES RÉPONSES EN VUE RÉFÉRENT
+  // Ne recharge que les formulaires des exercices actifs.
+  // La clé Firestore reste units.unit4.exN (sans EX22).
+  // ======================================================
   patchForms(): void {
-
     const data = this.unitData;
-
     if (!data) return;
 
-    if (data['units.unit4.ex1']?.answers) {
-      this.formEx1.patchValue(data['units.unit4.ex1'].answers);
-    }
+    this.steps.forEach((step, stepIndex) => {
+      const answers = data[`units.unit4.${step.id}`]?.answers;
+      const form = this.getFormByStepIndex(stepIndex);
 
-    if (data['units.unit4.ex2']?.answers) {
-      this.formEx2.patchValue(data['units.unit4.ex2'].answers);
-    }
+      if (answers && form) {
+        form.patchValue(answers);
+      }
+    });
 
-    if (data['units.unit4.ex3']?.answers) {
-      this.formEx3.patchValue(data['units.unit4.ex3'].answers);
-    }
-
-    if (data['units.unit4.ex4']?.answers) {
-      this.formEx4.patchValue(data['units.unit4.ex4'].answers);
-    }
-
+    // Comportement initial conservé : commentaire du référent.
     if (data['units.unit4.commentReferent']) {
       this.commentCtrl.setValue(data['units.unit4.commentReferent']);
     }
@@ -1939,16 +1968,44 @@ export class Unit4Component implements OnInit, OnDestroy {
         alert("Erreur lors de l'enregistrement.");
       });
   }
+  
 
-  private getFormByStepIndex(
-    stepIndex: number
-  ): FormGroup | null {
+ // ======================================================
+  // ÉTAPE 4 — FORMULAIRE LIÉ À L'EXERCICE ACTIF
+  // stepIndex est un indice 0..26, pas le numéro de l'exercice.
+  // Attention : après EX21, index 21 => EX23.
+  // ======================================================
+  private getFormByStepIndex(stepIndex: number): FormGroup | null {
+    const exId = this.steps[stepIndex]?.id;
 
-    switch (stepIndex) {
-      case 0: return this.formEx1;
-      case 1: return this.formEx2;
-      case 2: return this.formEx3;
-      case 3: return this.formEx4;
+    switch (exId) {
+      case 'ex1': return this.formEx1;
+      case 'ex2': return this.formEx2;
+      case 'ex3': return this.formEx3;
+      case 'ex4': return this.formEx4;
+      case 'ex5': return this.formEx5;
+      case 'ex6': return this.formEx6;
+      case 'ex7': return this.formEx7;
+      case 'ex8': return this.formEx8;
+      case 'ex9': return this.formEx9;
+      case 'ex10': return this.formEx10;
+      case 'ex11': return this.formEx11;
+      case 'ex12': return this.formEx12;
+      case 'ex13': return this.formEx13;
+      case 'ex14': return this.formEx14;
+      case 'ex15': return this.formEx15;
+      case 'ex16': return this.formEx16;
+      case 'ex17': return this.formEx17;
+      case 'ex18': return this.formEx18;
+      case 'ex19': return this.formEx19;
+      case 'ex20': return this.formEx20;
+      case 'ex21': return this.formEx21;
+      case 'ex23': return this.formEx23;
+      case 'ex24': return this.formEx24;
+      case 'ex25': return this.formEx25;
+      case 'ex26': return this.formEx26;
+      case 'ex27': return this.formEx27;
+      case 'ex28': return this.formEx28;
       default: return null;
     }
   }
