@@ -1,3 +1,6 @@
+// SOCLE DE DONNÉES — ÉTAPE 1 : PRO-FORMATION initial + apports ASSIFEP.
+// EX22 réservé. Formulaires/submit supplémentaires NON développés à cette étape.
+// Ne pas utiliser tel quel comme composant final : les étapes ajoutées n’ont pas encore de submit.
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
@@ -40,10 +43,11 @@ export class Unit4Component implements OnInit, OnDestroy {
   currentStep = 0;
 
   categories: string[] = [
-  'Opérations de base',
-  'Unités de mesure',
-  'Géométrie'
-];
+    'Opérations de base',
+    'Unités de mesure',
+    'Géométrie',
+    'Pourcentages'
+  ];
   alreadySubmitted = false;
 
   private intervalId: any = null;
@@ -53,250 +57,615 @@ export class Unit4Component implements OnInit, OnDestroy {
 
   aggregateState: Record<string, any> = {};
 
+
+
   // ======================================================
-  // ÉTAPES
-  // Barèmes et durées PROVISOIRES dans l'attente
-  // des documents officiels.
+  // UNITÉ 4 — ÉTAPES ET DONNÉES DE CORRECTION
+  // Numérotation consolidée PRO-FORMATION / ASSIFEP.
+  // EX22 (ASSIFEP Test 6) est mis en réserve : absent de steps[],
+  // donc hors navigation, progression et calcul des points.
+  // Durées et barèmes : choix de développement, adaptables après tests.
   // ======================================================
 
   steps: Step[] = [
+
+    // PRO-FORMATION — addition
+
     { id: 'ex1', category: this.categories[0], duration: 100, maxScore: 2 },
+
+    // PRO-FORMATION — soustraction
+
     { id: 'ex2', category: this.categories[0], duration: 100, maxScore: 2 },
+
+    // PRO-FORMATION — multiplication
+
     { id: 'ex3', category: this.categories[0], duration: 100, maxScore: 2 },
+
+    // PRO-FORMATION — chaîne de calculs
+
     { id: 'ex4', category: this.categories[0], duration: 200, maxScore: 8 },
 
-  // PROVISOIRE - Unités de mesure
-  { id: 'ex5', category: this.categories[1], duration: 100, maxScore: 4 },
-  { id: 'ex6', category: this.categories[1], duration: 100, maxScore: null },
-  { id: 'ex7', category: this.categories[1], duration: 150, maxScore: 6 },
-  { id: 'ex8', category: this.categories[1], duration: 150, maxScore: 3 },
-  { id: 'ex9', category: this.categories[1], duration: 150, maxScore: 3 },
+    // ASSIFEP — Test 4 : division colis/palettes
 
-  // PROVISOIRE - Géométrie
-  { id: 'ex10', category: this.categories[2], duration: 150, maxScore: 5 },
-  { id: 'ex11', category: this.categories[2], duration: 100, maxScore: 1 },
-  { id: 'ex12', category: this.categories[2], duration: 100, maxScore: 1 },
-  { id: 'ex13', category: this.categories[2], duration: 150, maxScore: 1 }
-];
+    { id: 'ex5', category: this.categories[0], duration: 100, maxScore: 1 },
+
+    // PRO-FORMATION — ancien EX5 : unités de masse
+
+    { id: 'ex6', category: this.categories[1], duration: 100, maxScore: 4 },
+
+    // PRO-FORMATION — ancien EX6 : unités de longueur
+
+    { id: 'ex7', category: this.categories[1], duration: 100, maxScore: 5 },
+
+    // PRO-FORMATION — ancien EX7 : association des mesures
+
+    { id: 'ex8', category: this.categories[1], duration: 150, maxScore: 6 },
+
+    // PRO-FORMATION — ancien EX8 : conversions de longueur
+
+    { id: 'ex9', category: this.categories[1], duration: 150, maxScore: 3 },
+
+    // PRO-FORMATION — ancien EX9 : conversions de capacités
+
+    { id: 'ex10', category: this.categories[1], duration: 150, maxScore: 3 },
+
+    // ASSIFEP — Test 5 : 1 300 g en kg
+
+    { id: 'ex11', category: this.categories[1], duration: 100, maxScore: 1 },
+
+    // ASSIFEP — Test 5 : 500 kg en tonnes
+
+    { id: 'ex12', category: this.categories[1], duration: 100, maxScore: 1 },
+
+    // ASSIFEP — Test 5 : 1,75 t en kg
+
+    { id: 'ex13', category: this.categories[1], duration: 100, maxScore: 1 },
+
+    // ASSIFEP — Test 5 : 3 kg en grammes
+
+    { id: 'ex14', category: this.categories[1], duration: 100, maxScore: 1 },
+
+    // PRO-FORMATION — ancien EX10 : formes géométriques
+
+    { id: 'ex15', category: this.categories[2], duration: 150, maxScore: 5 },
+
+    // PRO-FORMATION — ancien EX11 : périmètre carré
+
+    { id: 'ex16', category: this.categories[2], duration: 100, maxScore: 1 },
+
+    // PRO-FORMATION — ancien EX12 : périmètre rectangle
+
+    { id: 'ex17', category: this.categories[2], duration: 100, maxScore: 1 },
+
+    // PRO-FORMATION — ancien EX13 : périmètre triangle
+
+    { id: 'ex18', category: this.categories[2], duration: 150, maxScore: 1 },
+
+    // ASSIFEP — Test 6 : surface palette
+
+    { id: 'ex19', category: this.categories[2], duration: 150, maxScore: 1 },
+
+    // ASSIFEP — Test 6 : surface remorque
+
+    { id: 'ex20', category: this.categories[2], duration: 150, maxScore: 1 },
+
+    // ASSIFEP — Test 6 : volume remorque
+
+    { id: 'ex21', category: this.categories[2], duration: 150, maxScore: 1 },
+
+    // ASSIFEP — Test 7 : voix liste B
+
+    { id: 'ex23', category: this.categories[3], duration: 150, maxScore: 1 },
+
+    // ASSIFEP — Test 8 : affirmation 1
+
+    { id: 'ex24', category: this.categories[3], duration: 100, maxScore: 1 },
+
+    // ASSIFEP — Test 8 : affirmation 2
+
+    { id: 'ex25', category: this.categories[3], duration: 100, maxScore: 1 },
+
+    // ASSIFEP — Test 8 : affirmation 3
+
+    { id: 'ex26', category: this.categories[3], duration: 100, maxScore: 1 },
+
+    // ASSIFEP — Test 8 : affirmation 4
+
+    { id: 'ex27', category: this.categories[3], duration: 100, maxScore: 1 },
+
+    // ASSIFEP — Test 8 : affirmation 5
+
+    { id: 'ex28', category: this.categories[3], duration: 100, maxScore: 1 }
+
+  ];
 
   // ======================================================
+
   // FORMULAIRES
+
   // ======================================================
 
   formEx1!: FormGroup;
+
   formEx2!: FormGroup;
+
   formEx3!: FormGroup;
+
   formEx4!: FormGroup;
 
   // ======================================================
+
   // RÉPONSES ATTENDUES
+
   // ======================================================
 
   correctAnswerEx1 = 140;
+
   correctAnswerEx2 = 1541;
+
   correctAnswerEx3 = 4.25;
 
   correctAnswerEx4 = {
+
     answer1: 48,
+
     answer2: 144,
+
     answer3: 44,
+
     answer4: 22,
+
     operation: 30,
+
     answer5: 104,
+
     answer6: 200,
+
     answer7: 20
+
   };
-  
 
-// ======================================================
-// DONNÉES / RÉPONSES ATTENDUES — EXERCICES 5 À 13
-// PROVISOIRE : transposition du support source.
-// Référentiel, niveau, barèmes et durées à confirmer.
-// ======================================================
+  // ======================================================
 
+  // PRO-FORMATION — DONNÉES ET RÉPONSES ATTENDUES
+  // Ancienne numérotation EX5 à EX13 ; nouveaux EX6 à EX18.
+  // Les réponses des EX8, EX9 et EX15 sont maintenant renseignées.
 
-// ------------------------------------------------------
-// EXERCICE 5 — Bonne unité de masse
-// ------------------------------------------------------
+  // ======================================================
 
-// Les chemins d'images seront renseignés lors de la
-// réalisation du template.
-ex5Items = [
-  { id: 1, label: 'Gomme', image: 'assets/img/unit4/gomme.webp' },
-  { id: 2, label: 'Oiseau', image: 'assets/img/unit4/oiseau.webp' },
-  { id: 3, label: 'Éléphant', image: 'assets/img/unit4/elephant.webp' },
-  { id: 4, label: 'Crayon', image: 'assets/img/unit4/crayon.webp' }
-];
+  // ------------------------------------------------------
 
-ex5Options = [
-  { value: 'mg', label: 'mg' },
-  { value: 'g', label: 'g' },
-  { value: 'kg', label: 'kg' },
-  { value: 't', label: 't' }
-];
+  // EX6 — PRO-FORMATION (ancien EX5) : choisir l'unité de masse adaptée
 
-// À confirmer précisément à partir du support source
-// avant implémentation de la correction.
-correctAnswersEx5: { [key: number]: string } = {
-  1: 'g',
-  2: 'g',
-  3: 't',
-  4: 'g'
-};
+  // ------------------------------------------------------
 
+  // Illustrations propres à prévoir pour le template.
+  // Les chemins 'assets/img/unit4/...' restent des emplacements prévus.
 
-// ------------------------------------------------------
-// EXERCICE 6 — Unités de longueur
-// Réinterprétation du nuage sous forme de checkboxes.
-// ------------------------------------------------------
+  ex6Items = [
 
-ex6Options = [
-  { value: 'km', label: 'km' },
-  { value: 'dam', label: 'dam' },
-  { value: 'dm', label: 'dm' },
-  { value: 'cm', label: 'cm' },
-  { value: 'mm', label: 'mm' },
+    { id: 1, label: 'Gomme', image: 'assets/img/unit4/gomme.webp' },
 
-  // Fausses propositions issues du nuage source.
-  // Liste à ajuster au plus près du document original.
-  { value: 'g', label: 'g' },
-  { value: 'kg', label: 'kg' },
-  { value: 'mg', label: 'mg' },
-  { value: 'l', label: 'l' },
-  { value: 'cl', label: 'cl' },
-  { value: 'ml', label: 'ml' },
-  { value: 'hl', label: 'hl' }
-];
+    { id: 2, label: 'Oiseau', image: 'assets/img/unit4/oiseau.webp' },
 
-correctAnswersEx6 = [
-  'km',
-  'dam',
-  'dm',
-  'cm',
-  'mm'
-];
+    { id: 3, label: 'Éléphant', image: 'assets/img/unit4/elephant.webp' },
 
+    { id: 4, label: 'Crayon', image: 'assets/img/unit4/crayon.webp' }
 
-// ------------------------------------------------------
-// EXERCICE 7 — Associer une grandeur à sa mesure
-// ------------------------------------------------------
+  ];
 
-ex7Items = [
-  { id: 1, label: 'Tasse à café' },
-  { id: 2, label: 'Livre' },
-  { id: 3, label: 'Feuille' },
-  { id: 4, label: 'Éléphant' },
-  { id: 5, label: 'Baignoire' },
-  { id: 6, label: 'Voiture' }
-];
+  ex6Options = [
 
-// Valeurs exactes à reprendre du support source.
-// On pose la structure maintenant sans inventer
-// les mesures absentes du cadrage fonctionnel.
-ex7Options: { value: string; label: string }[] = [];
+    { value: 'mg', label: 'mg' },
 
-correctAnswersEx7: { [key: number]: string } = {};
+    { value: 'g', label: 'g' },
 
+    { value: 'kg', label: 'kg' },
 
-// ------------------------------------------------------
-// EXERCICE 8 — Conversions avec choix de réponse
-// ------------------------------------------------------
+    { value: 't', label: 't' }
 
-ex8Items = [
-  {
-    id: 1,
-    source: '1 km',
-    options: [] as { value: string; label: string }[]
-  },
-  {
-    id: 2,
-    source: '36520 mm',
-    options: [] as { value: string; label: string }[]
-  },
-  {
-    id: 3,
-    source: '54,75 dam',
-    options: [] as { value: string; label: string }[]
-  }
-];
+  ];
 
-// Les valeurs de conversion et les pièges doivent être
-// repris du support avant de figer la correction.
-correctAnswersEx8: { [key: number]: string } = {};
+  // Correspondances retenues dans le cadrage PRO-FORMATION : 4 points.
+  // Ne pas remplacer ces réponses lors du développement du template.
 
+  correctAnswersEx6: { [key: number]: string } = {
 
-// ------------------------------------------------------
-// EXERCICE 9 — Conversions de capacités
-// Trois champs de saisie.
-// ------------------------------------------------------
+    1: 'g',
 
-correctAnswersEx9 = {
-  answer1: 1000,      // 1 l -> ml
-  answer2: 2594,      // 25,94 dal -> dl
-  answer3: 540000     // 54 hl -> cl
-};
+    2: 'g',
 
+    3: 't',
 
-// ------------------------------------------------------
-// EXERCICE 10 — Associer un objet à une forme géométrique
-// Une image + un choix pour chaque item.
-// ------------------------------------------------------
+    4: 'g'
 
-// Noms et chemins à ajuster aux visuels retenus.
-ex10Items = [
-  { id: 1, image: 'assets/img/unit4/forme1.webp' },
-  { id: 2, image: 'assets/img/unit4/forme2.webp' },
-  { id: 3, image: 'assets/img/unit4/forme3.webp' },
-  { id: 4, image: 'assets/img/unit4/forme4.webp' },
-  { id: 5, image: 'assets/img/unit4/forme5.webp' }
-];
+  };
 
-ex10Options = [
-  { value: 'rectangle', label: 'Rectangle' },
-  { value: 'trapeze', label: 'Trapèze' },
-  { value: 'cercle', label: 'Cercle' },
-  { value: 'carre', label: 'Carré' },
-  { value: 'triangle', label: 'Triangle' }
-];
+  // ------------------------------------------------------
 
-// À raccorder aux images définitives.
-correctAnswersEx10: { [key: number]: string } = {};
+  // EX7 — PRO-FORMATION (ancien EX6) : identifier les unités de longueur
 
+  // Cases à cocher : 5 unités correctes, soit 5 points maximum.
+  // Lors du submit : +1 par unité correcte cochée, -1 par
+  // proposition erronée cochée ; score borné entre 0 et 5.
 
-// ------------------------------------------------------
-// EXERCICE 11 — Périmètre d'un carré
-// ------------------------------------------------------
+  // ------------------------------------------------------
 
-ex11Options = [
-  { value: 'cote_cote', label: 'côté × côté' },
-  { value: 'cote_4', label: 'côté × 4' },
-  { value: '4_4', label: '4 × 4' }
-];
+  ex7Options = [
 
-correctAnswerEx11 = 'cote_4';
+    { value: 'km', label: 'km' },
 
+    { value: 'dam', label: 'dam' },
 
-// ------------------------------------------------------
-// EXERCICE 12 — Périmètre d'un rectangle
-// ------------------------------------------------------
+    { value: 'dm', label: 'dm' },
 
-ex12Options = [
-  { value: 'l_plus_l_fois_2', label: '(L + l) × 2' },
-  { value: 'l_fois_l', label: 'L × l' },
-  { value: 'l_fois_4', label: 'L × 4' }
-];
+    { value: 'cm', label: 'cm' },
 
-correctAnswerEx12 = 'l_plus_l_fois_2';
+    { value: 'mm', label: 'mm' },
 
+    // Distracteurs (unités de masse/capacité).
 
-// ------------------------------------------------------
-// EXERCICE 13 — Périmètre du triangle
-// 3,20 + 4 + 7 = 14,20 m
-// ------------------------------------------------------
+    { value: 'g', label: 'g' },
 
-correctAnswerEx13 = 14.2;
+    { value: 'kg', label: 'kg' },
 
+    { value: 'mg', label: 'mg' },
 
+    { value: 'l', label: 'l' },
+
+    { value: 'cl', label: 'cl' },
+
+    { value: 'ml', label: 'ml' },
+
+    { value: 'hl', label: 'hl' }
+
+  ];
+
+  correctAnswersEx7 = [
+
+    'km',
+
+    'dam',
+
+    'dm',
+
+    'cm',
+
+    'mm'
+
+  ];
+
+  // ======================================================
+
+  // EX8 — PRO-FORMATION (ancien EX7)
+
+  // Associer une grandeur à sa mesure
+
+  // 6 associations — 6 selects — score maximal : 6 points
+
+  // ======================================================
+
+  ex8Items = [
+
+    { id: 1, label: "Capacité d'une tasse à café" },
+
+    { id: 2, label: "Épaisseur d'un livre" },
+
+    { id: 3, label: "Épaisseur d'une feuille de papier" },
+
+    { id: 4, label: "Masse d'un éléphant" },
+
+    { id: 5, label: "Volume d'une baignoire" },
+
+    { id: 6, label: "Longueur d'une voiture moyenne" }
+
+  ];
+
+  // Options communes aux 6 listes déroulantes.
+
+  ex8Options = [
+
+    { value: '2,3 t', label: '2,3 t' },
+
+    { value: '20 cl', label: '20 cl' },
+
+    { value: '4,10 m', label: '4,10 m' },
+
+    { value: '3,2 cm', label: '3,2 cm' },
+
+    { value: '1200 l', label: '1 200 l' },
+
+    { value: '0,1 mm', label: '0,1 mm' }
+
+  ];
+
+  // Réponses attendues — correction automatique.
+
+  correctAnswersEx8: { [key: number]: string } = {
+
+    1: '20 cl',
+
+    2: '3,2 cm',
+
+    3: '0,1 mm',
+
+    4: '2,3 t',
+
+    5: '1200 l',
+
+    6: '4,10 m'
+
+  };
+
+  // ======================================================
+
+  // EX9 — PRO-FORMATION (ancien EX8)
+
+  // Conversions de longueur avec choix de réponse
+
+  // 3 conversions — 2 choix par conversion
+
+  // Correction automatique — maximum 3 points
+
+  // ======================================================
+
+  ex9Items = [
+
+    {
+
+      id: 1,
+
+      source: '1 km',
+
+      target: 'm',
+
+      options: [
+
+        { value: '100', label: '100 m' },
+
+        { value: '1000', label: '1 000 m' }
+
+      ]
+
+    },
+
+    {
+
+      id: 2,
+
+      source: '36520 mm',
+
+      target: 'dm',
+
+      options: [
+
+        { value: '365,20', label: '365,20 dm' },
+
+        { value: '36,520', label: '36,520 dm' }
+
+      ]
+
+    },
+
+    {
+
+      id: 3,
+
+      source: '54,75 dam',
+
+      target: 'hm',
+
+      options: [
+
+        { value: '5,475', label: '5,475 hm' },
+
+        { value: '54,75', label: '54,75 hm' }
+
+      ]
+
+    }
+
+  ];
+
+  // Réponses attendues — correction automatique.
+
+  correctAnswersEx9: { [key: number]: string } = {
+
+    1: '1000',
+
+    2: '365,20',
+
+    3: '5,475'
+
+  };
+
+  // ------------------------------------------------------
+
+  // EX10 — PRO-FORMATION (ancien EX9) : conversions de capacités
+
+  // Trois champs de saisie numérique, 1 point chacun (maximum 3).
+
+  // ------------------------------------------------------
+
+  correctAnswersEx10 = {
+
+    answer1: 1000,      // 1 l -> ml
+
+    answer2: 2594,      // 25,94 dal -> dl
+
+    answer3: 540000     // 54 hl -> cl
+
+  };
+
+  // ======================================================
+
+  // EX15 — PRO-FORMATION (ancien EX10)
+
+  // Associer un objet à une forme géométrique
+
+  // 5 images — 5 selects — score maximal : 5 points
+
+  // ======================================================
+
+  // Les images définitives seront intégrées au template.
+
+  // Ordre de présentation figé pour la correction automatique.
+  // Les fichiers d'images devront représenter les objets indiqués.
+
+  ex15Items = [
+
+    { id: 1, label: 'Réfrigérateur', image: 'assets/img/unit4/forme1.webp' },
+
+    { id: 2, label: 'Panier', image: 'assets/img/unit4/forme2.webp' },
+
+    { id: 3, label: 'Ballon', image: 'assets/img/unit4/forme3.webp' },
+
+    { id: 4, label: 'Dés', image: 'assets/img/unit4/forme4.webp' },
+
+    { id: 5, label: 'Guirlande triangulaire', image: 'assets/img/unit4/forme5.webp' }
+
+  ];
+
+  // Options communes aux cinq listes déroulantes.
+
+  ex15Options = [
+
+    { value: 'rectangle', label: 'Rectangle' },
+
+    { value: 'trapeze', label: 'Trapèze' },
+
+    { value: 'cercle', label: 'Cercle' },
+
+    { value: 'carre', label: 'Carré' },
+
+    { value: 'triangle', label: 'Triangle' }
+
+  ];
+
+  // Réponses attendues — correction automatique.
+
+  correctAnswersEx15: { [key: number]: string } = {
+
+    1: 'rectangle', // Réfrigérateur
+
+    2: 'trapeze',   // Panier
+
+    3: 'cercle',    // Ballon
+
+    4: 'carre',     // Dés
+
+    5: 'triangle'   // Guirlande triangulaire
+
+  };
+
+  // ------------------------------------------------------
+
+  // EX16 — PRO-FORMATION (ancien EX11) : périmètre d'un carré
+
+  // ------------------------------------------------------
+
+  ex16Options = [
+
+    { value: 'cote_cote', label: 'côté × côté' },
+
+    { value: 'cote_4', label: 'côté × 4' },
+
+    { value: '4_4', label: '4 × 4' }
+
+  ];
+
+  correctAnswerEx16 = 'cote_4';
+
+  // ------------------------------------------------------
+
+  // EX17 — PRO-FORMATION (ancien EX12) : périmètre d'un rectangle
+
+  // ------------------------------------------------------
+
+  ex17Options = [
+
+    { value: 'l_plus_l_fois_2', label: '(L + l) × 2' },
+
+    { value: 'l_fois_l', label: 'L × l' },
+
+    { value: 'l_fois_4', label: 'L × 4' }
+
+  ];
+
+  correctAnswerEx17 = 'l_plus_l_fois_2';
+
+  // ------------------------------------------------------
+
+  // EX18 — PRO-FORMATION (ancien EX13) : périmètre du triangle
+
+  // 3,20 + 4 + 7 = 14,20 m
+
+  // ------------------------------------------------------
+
+  correctAnswerEx18 = 14.2;
+
+  // ======================================================
+
+  // ASSIFEP — DONNÉES ET RÉPONSES ATTENDUES (CONSOLIDATION)
+
+  // Chaque question autonome ASSIFEP a son propre identifiant.
+  // Ce bloc ne fait que préparer les réponses : pas de nouveaux submits.
+
+  // ======================================================
+
+  // ASSIFEP Test 4 — EX5 : 1 200 colis répartis sur 6 palettes.
+
+  correctAnswerEx5 = 200;
+
+  // ASSIFEP Test 5 — EX11 à EX14 : conversions de masse.
+
+  // Une conversion = un exercice ; saisie numérique prévue.
+
+  correctAnswerEx11 = 1.3;   // 1 300 g = 1,3 kg
+
+  correctAnswerEx12 = 0.5;   // 500 kg = 0,5 t
+
+  correctAnswerEx13 = 1750;  // 1,75 t = 1 750 kg
+
+  correctAnswerEx14 = 3000;  // 3 kg = 3 000 g
+
+  // ASSIFEP Test 6 — Schéma commun : palette 1,20 m × 0,80 m,
+
+  // remorque 13,50 m × 2,44 m, hauteur 4 m.
+
+  // EX19 : surface palette, EX20 : surface remorque,
+
+  // EX21 : volume remorque.
+
+  correctAnswerEx19 = 0.96;   // m²
+
+  correctAnswerEx20 = 32.94;  // m²
+
+  correctAnswerEx21 = 131.76; // m³
+
+  // ASSIFEP Test 6 — EX22 EN RÉSERVE : aucune réponse automatique.
+
+  // L'énoncé ne précise pas les conditions d'empilement des palettes.
+
+  // Exercice volontairement absent de steps[] (navigation et barème).
+
+  // ASSIFEP Test 7 — EX23 : liste A = 40 % = 150 voix ; liste B = 60 %.
+
+  correctAnswerEx23 = 225;
+
+  // ASSIFEP Test 8 — EX24 à EX28 : choix Vrai/Faux uniquement.
+
+  // Une affirmation = un exercice. Pas de champ justification.
+
+  correctAnswerEx24 = false; // 4/200 = 2 %, objectif strictement < 2 %
+
+  correctAnswerEx25 = false; // 250/300 < 85 %, minimum 255
+
+  correctAnswerEx26 = false; // 2 femmes sur 5 suffisent à 40 %
+
+  correctAnswerEx27 = true;  // 22/25 = 88 % >= 85 %
+
+  correctAnswerEx28 = false; // 45/2250 = 2 %, maximum 44
 
 
   constructor(
