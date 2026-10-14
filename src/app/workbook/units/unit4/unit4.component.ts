@@ -1056,6 +1056,397 @@ export class Unit4Component implements OnInit, OnDestroy {
     this.saveExercise('ex4', this.formEx4, score);
   }
 
+    // ======================================================
+  // ÉTAPE 3 — SOUMISSIONS / SCORING AUTOMATIQUE
+  // EX1 à EX4 inchangés ; EX22 en réserve (aucun submit).
+  // Chaque méthode utilise les correctAnswers consolidés.
+  // ======================================================
+
+  // ------------------------------------------------------
+  // EX5 — ASSIFEP Test 4 : division de 1 200 colis sur 6 palettes
+  // ------------------------------------------------------
+  submitEx5(): void {
+    if (this.alreadySubmitted) return;
+
+    const answer = this.toNumber(this.formEx5.value.answer);
+    const score = answer === this.correctAnswerEx5 ? 1 : 0;
+
+    this.alreadySubmitted = true;
+    this.saveExercise('ex5', this.formEx5, score);
+  }
+
+  // ------------------------------------------------------
+  // EX6 — PRO-FORMATION (ancien EX5) : quatre associations objet / unité de masse
+  // ------------------------------------------------------
+  submitEx6(): void {
+    if (this.alreadySubmitted) return;
+
+    // Un point par correspondance correcte, dans la limite du maxScore.
+    const answers = this.formEx6.value;
+    let score = 0;
+
+    for (const item of this.ex6Items) {
+      if (answers[`answer${item.id}`] === this.correctAnswersEx6[item.id]) {
+        score++;
+      }
+    }
+
+    this.alreadySubmitted = true;
+    this.saveExercise('ex6', this.formEx6, score);
+  }
+
+  // ------------------------------------------------------
+  // EX7 — PRO-FORMATION (ancien EX6) : cocher les unités de longueur
+  // ------------------------------------------------------
+  submitEx7(): void {
+    if (this.alreadySubmitted) return;
+
+    // +1 par unité de longueur cochée, -1 par distracteur coché.
+    // Score borné à [0, 5] conformément au cadrage du barème.
+    const answers = this.formEx7.value;
+    let score = 0;
+
+    for (const option of this.ex7Options) {
+      if (answers[option.value] === true) {
+        score += this.correctAnswersEx7.includes(option.value) ? 1 : -1;
+      }
+    }
+
+    score = Math.max(0, Math.min(5, score));
+
+    this.alreadySubmitted = true;
+    this.saveExercise('ex7', this.formEx7, score);
+  }
+
+  // ------------------------------------------------------
+  // EX8 — PRO-FORMATION (ancien EX7) : six associations grandeur / mesure
+  // ------------------------------------------------------
+  submitEx8(): void {
+    if (this.alreadySubmitted) return;
+
+    // Un point par correspondance correcte, dans la limite du maxScore.
+    const answers = this.formEx8.value;
+    let score = 0;
+
+    for (const item of this.ex8Items) {
+      if (answers[`answer${item.id}`] === this.correctAnswersEx8[item.id]) {
+        score++;
+      }
+    }
+
+    this.alreadySubmitted = true;
+    this.saveExercise('ex8', this.formEx8, score);
+  }
+
+  // ------------------------------------------------------
+  // EX9 — PRO-FORMATION (ancien EX8) : trois conversions de longueur à choix multiples
+  // ------------------------------------------------------
+  submitEx9(): void {
+    if (this.alreadySubmitted) return;
+
+    // Une bonne réponse par conversion, maximum 3 points.
+    const answers = this.formEx9.value;
+    let score = 0;
+
+    for (const item of this.ex9Items) {
+      if (answers[`answer${item.id}`] === this.correctAnswersEx9[item.id]) {
+        score++;
+      }
+    }
+
+    this.alreadySubmitted = true;
+    this.saveExercise('ex9', this.formEx9, score);
+  }
+
+  // ------------------------------------------------------
+  // EX10 — PRO-FORMATION (ancien EX9) : trois conversions de capacités
+  // ------------------------------------------------------
+  submitEx10(): void {
+    if (this.alreadySubmitted) return;
+
+    // Un point par conversion numérique correcte, maximum 3 points.
+    const answers = this.formEx10.value;
+    let score = 0;
+
+    if (this.toNumber(answers.answer1) === this.correctAnswersEx10.answer1) score++;
+    if (this.toNumber(answers.answer2) === this.correctAnswersEx10.answer2) score++;
+    if (this.toNumber(answers.answer3) === this.correctAnswersEx10.answer3) score++;
+
+    this.alreadySubmitted = true;
+    this.saveExercise('ex10', this.formEx10, score);
+  }
+
+  // ------------------------------------------------------
+  // EX11 — ASSIFEP Test 5 : 1 300 g vers kg
+  // ------------------------------------------------------
+  submitEx11(): void {
+    if (this.alreadySubmitted) return;
+
+    const answer = this.toNumber(this.formEx11.value.answer);
+    const score = answer === this.correctAnswerEx11 ? 1 : 0;
+
+    this.alreadySubmitted = true;
+    this.saveExercise('ex11', this.formEx11, score);
+  }
+
+  // ------------------------------------------------------
+  // EX12 — ASSIFEP Test 5 : 500 kg vers tonnes
+  // ------------------------------------------------------
+  submitEx12(): void {
+    if (this.alreadySubmitted) return;
+
+    const answer = this.toNumber(this.formEx12.value.answer);
+    const score = answer === this.correctAnswerEx12 ? 1 : 0;
+
+    this.alreadySubmitted = true;
+    this.saveExercise('ex12', this.formEx12, score);
+  }
+
+  // ------------------------------------------------------
+  // EX13 — ASSIFEP Test 5 : 1,75 t vers kg
+  // ------------------------------------------------------
+  submitEx13(): void {
+    if (this.alreadySubmitted) return;
+
+    const answer = this.toNumber(this.formEx13.value.answer);
+    const score = answer === this.correctAnswerEx13 ? 1 : 0;
+
+    this.alreadySubmitted = true;
+    this.saveExercise('ex13', this.formEx13, score);
+  }
+
+  // ------------------------------------------------------
+  // EX14 — ASSIFEP Test 5 : 3 kg vers grammes
+  // ------------------------------------------------------
+  submitEx14(): void {
+    if (this.alreadySubmitted) return;
+
+    const answer = this.toNumber(this.formEx14.value.answer);
+    const score = answer === this.correctAnswerEx14 ? 1 : 0;
+
+    this.alreadySubmitted = true;
+    this.saveExercise('ex14', this.formEx14, score);
+  }
+
+  // ------------------------------------------------------
+  // EX15 — PRO-FORMATION (ancien EX10) : cinq associations image / forme géométrique
+  // ------------------------------------------------------
+  submitEx15(): void {
+    if (this.alreadySubmitted) return;
+
+    // Un point par bonne association, maximum 5 points.
+    const answers = this.formEx15.value;
+    let score = 0;
+
+    for (const item of this.ex15Items) {
+      if (answers[`answer${item.id}`] === this.correctAnswersEx15[item.id]) {
+        score++;
+      }
+    }
+
+    this.alreadySubmitted = true;
+    this.saveExercise('ex15', this.formEx15, score);
+  }
+
+  // ------------------------------------------------------
+  // EX16 — PRO-FORMATION (ancien EX11) : périmètre du carré : formule
+  // ------------------------------------------------------
+  submitEx16(): void {
+    if (this.alreadySubmitted) return;
+
+    // Choix unique : comparer la valeur, pas le libellé affiché.
+    const answer = this.formEx16.value.answer;
+    const score = answer === this.correctAnswerEx16 ? 1 : 0;
+
+    this.alreadySubmitted = true;
+    this.saveExercise('ex16', this.formEx16, score);
+  }
+
+  // ------------------------------------------------------
+  // EX17 — PRO-FORMATION (ancien EX12) : périmètre du rectangle : formule
+  // ------------------------------------------------------
+  submitEx17(): void {
+    if (this.alreadySubmitted) return;
+
+    // Choix unique : comparer la valeur, pas le libellé affiché.
+    const answer = this.formEx17.value.answer;
+    const score = answer === this.correctAnswerEx17 ? 1 : 0;
+
+    this.alreadySubmitted = true;
+    this.saveExercise('ex17', this.formEx17, score);
+  }
+
+  // ------------------------------------------------------
+  // EX18 — PRO-FORMATION (ancien EX13) : périmètre du triangle
+  // ------------------------------------------------------
+  submitEx18(): void {
+    if (this.alreadySubmitted) return;
+
+    const answer = this.toNumber(this.formEx18.value.answer);
+    const score = answer === this.correctAnswerEx18 ? 1 : 0;
+
+    this.alreadySubmitted = true;
+    this.saveExercise('ex18', this.formEx18, score);
+  }
+
+  // ------------------------------------------------------
+  // EX19 — ASSIFEP Test 6 : surface de la palette en m²
+  // ------------------------------------------------------
+  submitEx19(): void {
+    if (this.alreadySubmitted) return;
+
+    const answer = this.toNumber(this.formEx19.value.answer);
+    const score = answer === this.correctAnswerEx19 ? 1 : 0;
+
+    this.alreadySubmitted = true;
+    this.saveExercise('ex19', this.formEx19, score);
+  }
+
+  // ------------------------------------------------------
+  // EX20 — ASSIFEP Test 6 : surface de la remorque en m²
+  // ------------------------------------------------------
+  submitEx20(): void {
+    if (this.alreadySubmitted) return;
+
+    const answer = this.toNumber(this.formEx20.value.answer);
+    const score = answer === this.correctAnswerEx20 ? 1 : 0;
+
+    this.alreadySubmitted = true;
+    this.saveExercise('ex20', this.formEx20, score);
+  }
+
+  // ------------------------------------------------------
+  // EX21 — ASSIFEP Test 6 : volume de la remorque en m³
+  // ------------------------------------------------------
+  submitEx21(): void {
+    if (this.alreadySubmitted) return;
+
+    const answer = this.toNumber(this.formEx21.value.answer);
+    const score = answer === this.correctAnswerEx21 ? 1 : 0;
+
+    this.alreadySubmitted = true;
+    this.saveExercise('ex21', this.formEx21, score);
+  }
+
+  // ------------------------------------------------------
+  // EX23 — ASSIFEP Test 7 : voix obtenues par la liste B
+  // ------------------------------------------------------
+  submitEx23(): void {
+    if (this.alreadySubmitted) return;
+
+    const answer = this.toNumber(this.formEx23.value.answer);
+    const score = answer === this.correctAnswerEx23 ? 1 : 0;
+
+    this.alreadySubmitted = true;
+    this.saveExercise('ex23', this.formEx23, score);
+  }
+
+  // ------------------------------------------------------
+  // EX24 — ASSIFEP Test 8 (affirmation 1) : choix Vrai / Faux
+  // ------------------------------------------------------
+  submitEx24(): void {
+    if (this.alreadySubmitted) return;
+
+    // Une réponse non sélectionnée (null) ne rapporte aucun point.
+    // Accepte les booléens ou les chaînes transmises par des radios HTML.
+    const raw = this.formEx24.value.answer;
+    const answer: boolean | null = (raw === true || raw === 'true')
+      ? true
+      : (raw === false || raw === 'false')
+        ? false
+        : null;
+
+    const score = answer !== null && answer === this.correctAnswerEx24 ? 1 : 0;
+
+    this.alreadySubmitted = true;
+    this.saveExercise('ex24', this.formEx24, score);
+  }
+
+  // ------------------------------------------------------
+  // EX25 — ASSIFEP Test 8 (affirmation 2) : choix Vrai / Faux
+  // ------------------------------------------------------
+  submitEx25(): void {
+    if (this.alreadySubmitted) return;
+
+    // Une réponse non sélectionnée (null) ne rapporte aucun point.
+    // Accepte les booléens ou les chaînes transmises par des radios HTML.
+    const raw = this.formEx25.value.answer;
+    const answer: boolean | null = (raw === true || raw === 'true')
+      ? true
+      : (raw === false || raw === 'false')
+        ? false
+        : null;
+
+    const score = answer !== null && answer === this.correctAnswerEx25 ? 1 : 0;
+
+    this.alreadySubmitted = true;
+    this.saveExercise('ex25', this.formEx25, score);
+  }
+
+  // ------------------------------------------------------
+  // EX26 — ASSIFEP Test 8 (affirmation 3) : choix Vrai / Faux
+  // ------------------------------------------------------
+  submitEx26(): void {
+    if (this.alreadySubmitted) return;
+
+    // Une réponse non sélectionnée (null) ne rapporte aucun point.
+    // Accepte les booléens ou les chaînes transmises par des radios HTML.
+    const raw = this.formEx26.value.answer;
+    const answer: boolean | null = (raw === true || raw === 'true')
+      ? true
+      : (raw === false || raw === 'false')
+        ? false
+        : null;
+
+    const score = answer !== null && answer === this.correctAnswerEx26 ? 1 : 0;
+
+    this.alreadySubmitted = true;
+    this.saveExercise('ex26', this.formEx26, score);
+  }
+
+  // ------------------------------------------------------
+  // EX27 — ASSIFEP Test 8 (affirmation 4) : choix Vrai / Faux
+  // ------------------------------------------------------
+  submitEx27(): void {
+    if (this.alreadySubmitted) return;
+
+    // Une réponse non sélectionnée (null) ne rapporte aucun point.
+    // Accepte les booléens ou les chaînes transmises par des radios HTML.
+    const raw = this.formEx27.value.answer;
+    const answer: boolean | null = (raw === true || raw === 'true')
+      ? true
+      : (raw === false || raw === 'false')
+        ? false
+        : null;
+
+    const score = answer !== null && answer === this.correctAnswerEx27 ? 1 : 0;
+
+    this.alreadySubmitted = true;
+    this.saveExercise('ex27', this.formEx27, score);
+  }
+
+  // ------------------------------------------------------
+  // EX28 — ASSIFEP Test 8 (affirmation 5) : choix Vrai / Faux
+  // ------------------------------------------------------
+  submitEx28(): void {
+    if (this.alreadySubmitted) return;
+
+    // Une réponse non sélectionnée (null) ne rapporte aucun point.
+    // Accepte les booléens ou les chaînes transmises par des radios HTML.
+    const raw = this.formEx28.value.answer;
+    const answer: boolean | null = (raw === true || raw === 'true')
+      ? true
+      : (raw === false || raw === 'false')
+        ? false
+        : null;
+
+    const score = answer !== null && answer === this.correctAnswerEx28 ? 1 : 0;
+
+    this.alreadySubmitted = true;
+    this.saveExercise('ex28', this.formEx28, score);
+  }
+
+
   private saveExercise(
     exId: string,
     form: FormGroup,
