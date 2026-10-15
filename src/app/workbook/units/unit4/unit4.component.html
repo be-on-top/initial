@@ -569,4 +569,116 @@
         <hr *ngIf="isReferentView">
 
 
+
+        <!-- ===================================================== -->
+        <!-- EXERCICE 6 — PRO-FORMATION : UNITÉS DE MASSE -->
+        <!-- currentStep = 5 — 4 réponses — 4 points maximum -->
+        <!-- ===================================================== -->
+
+        <form *ngIf="isReferentView || currentStep === 5" [formGroup]="formEx6" (ngSubmit)="submitEx6()">
+
+            <!-- HEADER -->
+            <div class="title mb-4 d-flex flex-column flex-md-row
+              align-items-start align-items-md-center gap-2">
+
+                <span class="badge text-bg-dark text-white">
+                    <i class="bi bi-tag-fill me-2"></i>
+                    Catégorie : {{ steps[5].category }}
+                </span>
+
+                <div class="d-flex gap-2 ms-md-auto">
+
+                    <span class="badge text-bg-warning">
+                        Exercice 6
+                    </span>
+
+                    <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+                        Max {{ steps[5].maxScore }} PNTS
+                    </span>
+
+                    <!-- Score informatif, sans édition manuelle -->
+                    <span class="badge text-bg-dark">
+                        {{ getCurrentScore(5) }} PNTS
+                    </span>
+
+                </div>
+            </div>
+
+            <!-- ÉNONCÉ -->
+            <div class="alert bg-info">
+                <h5 class="fw-bold">LES UNITÉS DE MASSE</h5>
+
+                <p class="mb-0">
+                    Choisissez l'unité de masse la plus adaptée
+                    à chacun des éléments présentés.
+                </p>
+            </div>
+
+            <!-- QUATRE CARTES RESPONSIVES -->
+            <div class="row g-3 my-4">
+
+                <div *ngFor="let item of ex6Items" class="col-12 col-sm-6 col-xl-3">
+
+                    <div class="card h-100">
+
+                        <!-- Illustration : fichier à fournir -->
+                        <img [src]="item.image" [alt]="item.label" class="card-img-top"
+                            style="height: 160px; object-fit: contain;">
+
+                        <div class="card-body d-flex flex-column">
+
+                            <h5 class="card-title text-center fw-bold">
+                                {{ item.label }}
+                            </h5>
+
+                            <label class="form-label mt-auto" [for]="'answerEx6_' + item.id">
+                                Unité de masse :
+                            </label>
+
+                            <select class="form-select" [id]="'answerEx6_' + item.id"
+                                [formControlName]="'answer' + item.id">
+
+                                <option value="">
+                                    Choisissez une unité
+                                </option>
+
+                                <option *ngFor="let option of ex6Options" [value]="option.value">
+                                    {{ option.label }}
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- TIMELINE -->
+            <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+                Temps donné : {{ steps[currentStep].duration }} secondes
+            </div>
+
+            <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4"
+                role="progressbar" aria-label="Progression de l'exercice" [attr.aria-valuenow]="progress"
+                aria-valuemin="0" aria-valuemax="100">
+
+                <div class="progress-bar" [style.width.%]="progress">
+                </div>
+
+            </div>
+
+            <!-- SOUMISSION -->
+            <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
+                Suivant
+            </button>
+
+        </form>
+
+        <hr *ngIf="isReferentView">
+
+
+
     </div>
