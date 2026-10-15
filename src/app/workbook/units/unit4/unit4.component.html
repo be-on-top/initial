@@ -351,3 +351,238 @@
         </form>
 
         <hr *ngIf="isReferentView">
+
+        
+<!-- ===================================================== -->
+<!-- EXERCICE 4 — PRO-FORMATION : CHAÎNE DE CALCULS -->
+<!-- currentStep = 3 — 8 réponses — 8 points maximum -->
+<!-- ===================================================== -->
+
+<form *ngIf="isReferentView || currentStep === 3"
+      [formGroup]="formEx4"
+      (ngSubmit)="submitEx4()">
+
+  <!-- HEADER -->
+  <div class="title mb-4 d-flex flex-column flex-md-row
+              align-items-start align-items-md-center gap-2">
+
+    <span class="badge text-bg-dark text-white">
+      <i class="bi bi-tag-fill me-2"></i>
+      Catégorie : {{ steps[3].category }}
+    </span>
+
+    <div class="d-flex gap-2 ms-md-auto">
+
+      <span class="badge text-bg-warning">
+        Exercice 4
+      </span>
+
+      <span *ngIf="isReferentView"
+            class="badge border border-secondary text-secondary">
+        Max {{ steps[3].maxScore }} PNTS
+      </span>
+
+      <span class="badge text-bg-dark"
+            [class.clickable-step-badge]="isReferentView && !aggregateState['isFinal']"
+            (click)="isReferentView && !aggregateState['isFinal'] && editStepScore(3)">
+        {{ getCurrentScore(3) }} PNTS
+      </span>
+
+    </div>
+  </div>
+
+  <!-- ÉNONCÉ -->
+  <div class="alert bg-info">
+    <h5 class="fw-bold">COMPLÉTER LES CALCULS</h5>
+    <p class="mb-0">
+      Complétez les résultats manquants dans cette chaîne
+      de calculs, ainsi que l'opération permettant de
+      passer de 22 à 52.
+    </p>
+  </div>
+
+  <!-- CHAÎNE VERTICALE RESPONSIVE -->
+  <div class="d-flex flex-column align-items-center gap-2 my-4">
+
+    <div class="fw-bold fs-4">36</div>
+    <div>↓</div>
+    <div>+ 12</div>
+    <div>↓</div>
+
+    <input type="number" class="form-control text-center"
+           style="max-width: 180px"
+           formControlName="answer1"
+           aria-label="Premier résultat">
+
+    <div>↓</div>
+    <div>* 3</div>
+    <div>↓</div>
+
+    <input type="number" class="form-control text-center"
+           style="max-width: 180px"
+           formControlName="answer2"
+           aria-label="Deuxième résultat">
+
+    <div>↓</div>
+    <div>- 100</div>
+    <div>↓</div>
+
+    <input type="number" class="form-control text-center"
+           style="max-width: 180px"
+           formControlName="answer3"
+           aria-label="Troisième résultat">
+
+    <div>↓</div>
+    <div>÷ 2</div>
+    <div>↓</div>
+
+    <input type="number" class="form-control text-center"
+           style="max-width: 180px"
+           formControlName="answer4"
+           aria-label="Quatrième résultat">
+
+    <div>↓</div>
+
+    <!-- Opération manquante : +30 attendu -->
+    <div class="input-group" style="max-width: 180px">
+      <span class="input-group-text">+</span>
+      <input type="number" class="form-control text-center"
+             formControlName="operation"
+             aria-label="Valeur à ajouter">
+    </div>
+
+    <div>↓</div>
+    <div class="fw-bold fs-4">52</div>
+    <div>↓</div>
+    <div>* 2</div>
+    <div>↓</div>
+
+    <input type="number" class="form-control text-center"
+           style="max-width: 180px"
+           formControlName="answer5"
+           aria-label="Cinquième résultat">
+
+    <div>↓</div>
+    <div>+ 96</div>
+    <div>↓</div>
+
+    <input type="number" class="form-control text-center"
+           style="max-width: 180px"
+           formControlName="answer6"
+           aria-label="Sixième résultat">
+
+    <div>↓</div>
+    <div>÷ 10</div>
+    <div>↓</div>
+
+    <input type="number" class="form-control text-center"
+           style="max-width: 180px"
+           formControlName="answer7"
+           aria-label="Septième résultat">
+
+  </div>
+
+  <!-- TIMELINE -->
+  <div *ngIf="steps && steps[currentStep]?.duration"
+       class="text-muted small mt-4 d-print-none">
+    Temps donné : {{ steps[currentStep].duration }} secondes
+  </div>
+
+  <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView"
+       class="progress mb-4"
+       role="progressbar"
+       aria-label="Progression de l'exercice"
+       [attr.aria-valuenow]="progress"
+       aria-valuemin="0"
+       aria-valuemax="100">
+    <div class="progress-bar" [style.width.%]="progress"></div>
+  </div>
+
+  <!-- SOUMISSION -->
+  <button *ngIf="!isReferentView"
+          type="submit"
+          class="btn btn-primary mt-4">
+    Suivant
+  </button>
+
+</form>
+
+<hr *ngIf="isReferentView">
+
+
+                <!-- ===================================================== -->
+        <!-- UNITÉ 4 — MATHÉMATIQUES -->
+        <!-- CATÉGORIE : OPÉRATIONS DE BASE -->
+        <!-- EXERCICE 5 — ASSIFEP TEST 4 : DIVISION -->
+        <!-- À INSÉRER APRÈS LE FORMULAIRE DE L'EXERCICE 4 -->
+        <!-- ===================================================== -->
+
+        <form *ngIf="isReferentView || currentStep === 4" [formGroup]="formEx5" (ngSubmit)="submitEx5()">
+
+            <!-- HEADER -->
+            <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+                <span class="badge text-bg-dark text-white">
+                    <i class="bi bi-tag-fill me-2"></i>
+                    Catégorie : {{ steps[4].category }}
+                </span>
+
+                <div class="d-flex gap-2 ms-md-auto">
+                    <span class="badge text-bg-warning">Exercice 5</span>
+
+                    <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+                        Max {{ steps[4].maxScore }} PNTS
+                    </span>
+
+                    <span class="badge text-bg-dark"
+                        [class.clickable-step-badge]="isReferentView && !aggregateState['isFinal']"
+                        (click)="isReferentView && !aggregateState['isFinal'] && editStepScore(4)">
+                        {{ getCurrentScore(4) }} PNTS
+                    </span>
+                </div>
+            </div>
+
+            <!-- ÉNONCÉ — ASSIFEP TEST 4 -->
+            <div class="alert bg-info">
+                <h5 class="fw-bold">LA DIVISION (÷)</h5>
+                <p class="mb-0">
+                    On a chargé 6 palettes. À l'arrivée, on compte 1 200 colis.
+                </p>
+            </div>
+
+            <!-- QUESTION -->
+            <div class="alert bg-info instructions">
+                Combien de colis peut-on ranger par palette ?
+            </div>
+
+            <label class="form-label" for="answerEx5">
+                Écrivez votre résultat :
+            </label>
+
+            <div class="input-group">
+                <input id="answerEx5" type="number" step="1" min="0"
+                    class="form-control" formControlName="answer" inputmode="numeric">
+                <span class="input-group-text">colis par palette</span>
+            </div>
+
+            <!-- TIMELINE -->
+            <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+                Temps donné : {{ steps[currentStep].duration }} secondes
+            </div>
+
+            <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView"
+                class="progress mb-4" role="progressbar"
+                aria-label="Progression de l'exercice" [attr.aria-valuenow]="progress"
+                aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar" [style.width.%]="progress"></div>
+            </div>
+
+            <!-- SOUMISSION -->
+            <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
+                Suivant
+            </button>
+        </form>
+
+        <hr *ngIf="isReferentView">
+
+
+    </div>

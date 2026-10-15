@@ -23,20 +23,20 @@ export const WORKBOOK_UNITS = [
     candidateRoute: '/workbook/unit3',
     sourceDocumentUrl: 'https://firebasestorage.googleapis.com/v0/b/be-on-top-beta.appspot.com/o/admin-docs%2Fworkbook%2Fsupport-source-unit3.docx?alt=media&token=85d40e21-1132-4ad9-b031-23dacc9dd231'
   },
-  // {
-  //   id: 'unit4',
-  //   label: 'Mathématiques niveau élémentaire',
-  //   profile: 'Utilisateur élémentaire',
-  //   description: 'Comprendre et utiliser les éléments mathématiques de base en calcul et en géométrie dans des situations simples.',
-  //   candidateRoute: '/workbook/unit4',
-  //   sourceDocumentUrl: ''
-  // },
-  // {
-  //   id: 'unit5',
-  //   label: 'Connaissances numériques fondamentales',
-  //   profile: 'Utilisateur élémentaire',
-  //   description: 'Utiliser les fonctions numériques essentielles dans des situations courantes de formation et de vie professionnelle : se repérer dans un environnement numérique, gérer des fichiers et des documents, rechercher une information, communiquer à distance et adopter les bonnes pratiques de sécurité.',
-  //   candidateRoute: '/workbook/unit5',
-  //   sourceDocumentUrl: ''
-  // }
+  {
+    id: 'unit4',
+    label: 'Mathématiques niveau élémentaire',
+    profile: 'Utilisateur élémentaire',
+    description: 'Comprendre et utiliser les éléments mathématiques de base en calcul et en géométrie dans des situations simples.',
+    candidateRoute: '/workbook/unit4',
+    sourceDocumentUrl: ''
+  },
+  {
+    id: 'unit5',
+    label: 'Connaissances numériques fondamentales',
+    profile: 'Utilisateur élémentaire',
+    description: 'Utiliser les fonctions numériques essentielles dans des situations courantes de formation et de vie professionnelle : se repérer dans un environnement numérique, gérer des fichiers et des documents, rechercher une information, communiquer à distance et adopter les bonnes pratiques de sécurité.',
+    candidateRoute: '/workbook/unit5',
+    sourceDocumentUrl: ''
+  }
 ];
