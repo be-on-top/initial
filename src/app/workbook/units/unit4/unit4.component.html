@@ -1179,6 +1179,408 @@
         <hr *ngIf="isReferentView">
 
 
+        <!-- ===================================================== -->
+        <!-- EXERCICE 11 — ASSIFEP : CONVERSION DE MASSE -->
+        <!-- currentStep = 10 — 1 réponse — 1 point maximum -->
+        <!-- ===================================================== -->
+
+        <form *ngIf="isReferentView || currentStep === 10" [formGroup]="formEx11" (ngSubmit)="submitEx11()">
+
+            <!-- HEADER -->
+            <div class="title mb-4 d-flex flex-column flex-md-row
+              align-items-start align-items-md-center gap-2">
+
+                <span class="badge text-bg-dark text-white">
+                    <i class="bi bi-tag-fill me-2"></i>
+                    Catégorie : {{ steps[10].category }}
+                </span>
+
+                <div class="d-flex gap-2 ms-md-auto">
+
+                    <span class="badge text-bg-warning">
+                        Exercice 11
+                    </span>
+
+                    <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+                        Max {{ steps[10].maxScore }} PNTS
+                    </span>
+
+                    <span class="badge text-bg-dark">
+                        {{ getCurrentScore(10) }} PNTS
+                    </span>
+
+                </div>
+            </div>
+
+            <!-- ÉNONCÉ -->
+            <div class="alert bg-info">
+                <h5 class="fw-bold">CONVERSION DE MASSE</h5>
+                <p class="mb-0">
+                    Convertissez la masse suivante en kilogrammes.
+                </p>
+            </div>
+
+            <!-- QUESTION RESPONSIVE -->
+            <div class="row justify-content-center my-4">
+
+                <div class="col-12 col-md-8 col-lg-6">
+
+                    <div class="card">
+                        <div class="card-body p-4">
+
+                            <div class="text-center fw-bold fs-4 mb-4">
+                                1 300 g = ? kg
+                            </div>
+
+                            <label for="answerEx11" class="form-label">
+                                Votre réponse :
+                            </label>
+
+                            <div class="input-group">
+                                <input type="number" step="any" inputmode="decimal" id="answerEx11"
+                                    class="form-control text-center" formControlName="answer"
+                                    placeholder="Saisissez votre réponse">
+
+                                <span class="input-group-text">
+                                    kg
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- TIMELINE -->
+            <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+                Temps donné : {{ steps[currentStep].duration }} secondes
+            </div>
+
+            <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4"
+                role="progressbar" aria-label="Progression de l'exercice" [attr.aria-valuenow]="progress"
+                aria-valuemin="0" aria-valuemax="100">
+
+                <div class="progress-bar" [style.width.%]="progress">
+                </div>
+
+            </div>
+
+            <!-- SOUMISSION -->
+            <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
+                Suivant
+            </button>
+
+        </form>
+
+        <hr *ngIf="isReferentView">
+
+
+        <!-- ===================================================== -->
+        <!-- EXERCICE 12 — ASSIFEP : CONVERSION DE MASSE -->
+        <!-- currentStep = 11 — 1 réponse — 1 point maximum -->
+        <!-- ===================================================== -->
+
+        <form *ngIf="isReferentView || currentStep === 11" [formGroup]="formEx12" (ngSubmit)="submitEx12()">
+
+            <!-- HEADER -->
+            <div class="title mb-4 d-flex flex-column flex-md-row
+              align-items-start align-items-md-center gap-2">
+
+                <span class="badge text-bg-dark text-white">
+                    <i class="bi bi-tag-fill me-2"></i>
+                    Catégorie : {{ steps[11].category }}
+                </span>
+
+                <div class="d-flex gap-2 ms-md-auto">
+
+                    <span class="badge text-bg-warning">
+                        Exercice 12
+                    </span>
+
+                    <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+                        Max {{ steps[11].maxScore }} PNTS
+                    </span>
+
+                    <!-- Score informatif, sans édition manuelle -->
+                    <span class="badge text-bg-dark">
+                        {{ getCurrentScore(11) }} PNTS
+                    </span>
+
+                </div>
+            </div>
+
+            <!-- ÉNONCÉ -->
+            <div class="alert bg-info">
+                <h5 class="fw-bold">CONVERSION DE MASSE</h5>
+                <p class="mb-0">
+                    Convertissez la masse suivante en tonnes.
+                </p>
+            </div>
+
+            <!-- QUESTION RESPONSIVE -->
+            <div class="row justify-content-center my-4">
+
+                <div class="col-12 col-md-8 col-lg-6">
+
+                    <div class="card">
+                        <div class="card-body p-4">
+
+                            <div class="text-center fw-bold fs-4 mb-4">
+                                500 kg = ? t
+                            </div>
+
+                            <label for="answerEx12" class="form-label">
+                                Votre réponse :
+                            </label>
+
+                            <div class="input-group">
+                                <input type="number" step="any" inputmode="decimal" id="answerEx12"
+                                    class="form-control text-center" formControlName="answer"
+                                    placeholder="Saisissez votre réponse">
+
+                                <span class="input-group-text">
+                                    t
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- TIMELINE -->
+            <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+                Temps donné : {{ steps[currentStep].duration }} secondes
+            </div>
+
+            <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4"
+                role="progressbar" aria-label="Progression de l'exercice" [attr.aria-valuenow]="progress"
+                aria-valuemin="0" aria-valuemax="100">
+
+                <div class="progress-bar" [style.width.%]="progress">
+                </div>
+
+            </div>
+
+            <!-- SOUMISSION -->
+            <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
+                Suivant
+            </button>
+
+        </form>
+
+        <hr *ngIf="isReferentView">
+
+
+
+        <!-- ===================================================== -->
+        <!-- EXERCICE 13 — ASSIFEP : CONVERSION DE MASSE -->
+        <!-- currentStep = 12 — 1 réponse — 1 point maximum -->
+        <!-- ===================================================== -->
+
+        <form *ngIf="isReferentView || currentStep === 12" [formGroup]="formEx13" (ngSubmit)="submitEx13()">
+
+            <!-- HEADER -->
+            <div class="title mb-4 d-flex flex-column flex-md-row
+              align-items-start align-items-md-center gap-2">
+
+                <span class="badge text-bg-dark text-white">
+                    <i class="bi bi-tag-fill me-2"></i>
+                    Catégorie : {{ steps[12].category }}
+                </span>
+
+                <div class="d-flex gap-2 ms-md-auto">
+
+                    <span class="badge text-bg-warning">
+                        Exercice 13
+                    </span>
+
+                    <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+                        Max {{ steps[12].maxScore }} PNTS
+                    </span>
+
+                    <!-- Score informatif, sans édition manuelle -->
+                    <span class="badge text-bg-dark">
+                        {{ getCurrentScore(12) }} PNTS
+                    </span>
+
+                </div>
+            </div>
+
+            <!-- ÉNONCÉ -->
+            <div class="alert bg-info">
+                <h5 class="fw-bold">CONVERSION DE MASSE</h5>
+
+                <p class="mb-0">
+                    Convertissez la masse suivante en kilogrammes.
+                </p>
+            </div>
+
+            <!-- QUESTION RESPONSIVE -->
+            <div class="row justify-content-center my-4">
+
+                <div class="col-12 col-md-8 col-lg-6">
+
+                    <div class="card">
+                        <div class="card-body p-4">
+
+                            <div class="text-center fw-bold fs-4 mb-4">
+                                1,75 t = ? kg
+                            </div>
+
+                            <label for="answerEx13" class="form-label">
+                                Votre réponse :
+                            </label>
+
+                            <div class="input-group">
+
+                                <input type="number" step="any" inputmode="decimal" id="answerEx13"
+                                    class="form-control text-center" formControlName="answer"
+                                    placeholder="Saisissez votre réponse">
+
+                                <span class="input-group-text">
+                                    kg
+                                </span>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- TIMELINE -->
+            <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+                Temps donné : {{ steps[currentStep].duration }} secondes
+            </div>
+
+            <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4"
+                role="progressbar" aria-label="Progression de l'exercice" [attr.aria-valuenow]="progress"
+                aria-valuemin="0" aria-valuemax="100">
+
+                <div class="progress-bar" [style.width.%]="progress">
+                </div>
+
+            </div>
+
+            <!-- SOUMISSION -->
+            <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
+                Suivant
+            </button>
+
+        </form>
+
+        <hr *ngIf="isReferentView">
+
+
+        <!-- ===================================================== -->
+        <!-- EXERCICE 14 — ASSIFEP : CONVERSION DE MASSE -->
+        <!-- currentStep = 13 — 1 réponse — 1 point maximum -->
+        <!-- ===================================================== -->
+
+        <form *ngIf="isReferentView || currentStep === 13" [formGroup]="formEx14" (ngSubmit)="submitEx14()">
+
+            <!-- HEADER -->
+            <div class="title mb-4 d-flex flex-column flex-md-row
+              align-items-start align-items-md-center gap-2">
+
+                <span class="badge text-bg-dark text-white">
+                    <i class="bi bi-tag-fill me-2"></i>
+                    Catégorie : {{ steps[13].category }}
+                </span>
+
+                <div class="d-flex gap-2 ms-md-auto">
+
+                    <span class="badge text-bg-warning">
+                        Exercice 14
+                    </span>
+
+                    <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+                        Max {{ steps[13].maxScore }} PNTS
+                    </span>
+
+                    <!-- Score informatif, sans édition manuelle -->
+                    <span class="badge text-bg-dark">
+                        {{ getCurrentScore(13) }} PNTS
+                    </span>
+
+                </div>
+            </div>
+
+            <!-- ÉNONCÉ -->
+            <div class="alert bg-info">
+                <h5 class="fw-bold">CONVERSION DE MASSE</h5>
+
+                <p class="mb-0">
+                    Convertissez la masse suivante en grammes.
+                </p>
+            </div>
+
+            <!-- QUESTION RESPONSIVE -->
+            <div class="row justify-content-center my-4">
+
+                <div class="col-12 col-md-8 col-lg-6">
+
+                    <div class="card">
+                        <div class="card-body p-4">
+
+                            <div class="text-center fw-bold fs-4 mb-4">
+                                3 kg = ? g
+                            </div>
+
+                            <label for="answerEx14" class="form-label">
+                                Votre réponse :
+                            </label>
+
+                            <div class="input-group">
+
+                                <input type="number" step="any" inputmode="decimal" id="answerEx14"
+                                    class="form-control text-center" formControlName="answer"
+                                    placeholder="Saisissez votre réponse">
+
+                                <span class="input-group-text">
+                                    g
+                                </span>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- TIMELINE -->
+            <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+                Temps donné : {{ steps[currentStep].duration }} secondes
+            </div>
+
+            <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4"
+                role="progressbar" aria-label="Progression de l'exercice" [attr.aria-valuenow]="progress"
+                aria-valuemin="0" aria-valuemax="100">
+
+                <div class="progress-bar" [style.width.%]="progress">
+                </div>
+
+            </div>
+
+            <!-- SOUMISSION -->
+            <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
+                Suivant
+            </button>
+
+        </form>
+
+        <hr *ngIf="isReferentView">
+
+
 
 
 
