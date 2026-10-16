@@ -40,7 +40,7 @@ export class Unit4Component implements OnInit, OnDestroy {
   isReferentView: boolean = false;
 
 
-  currentStep = 0;
+  currentStep = 10;
 
   categories: string[] = [
     'Opérations de base',
@@ -110,8 +110,10 @@ export class Unit4Component implements OnInit, OnDestroy {
     { id: 'ex10', category: this.categories[1], duration: 150, maxScore: 3 },
 
     // ASSIFEP — Test 5 : 1 300 g en kg
+    // { id: 'ex11', category: this.categories[1], duration: 100, maxScore: 1 },
 
-    { id: 'ex11', category: this.categories[1], duration: 100, maxScore: 1 },
+     // ASSIFEP — Test 5 REFACTO: 4 conversions de masse
+    { id: 'ex11', category: this.categories[1], duration: 200, maxScore: 4 },
 
     // ASSIFEP — Test 5 : 500 kg en tonnes
 
@@ -648,13 +650,28 @@ export class Unit4Component implements OnInit, OnDestroy {
 
   // Une conversion = un exercice ; saisie numérique prévue.
 
-  correctAnswerEx11 = 1.3;   // 1 300 g = 1,3 kg
+  // correctAnswerEx11 = 1.3;   // 1 300 g = 1,3 kg
 
   correctAnswerEx12 = 0.5;   // 500 kg = 0,5 t
 
   correctAnswerEx13 = 1750;  // 1,75 t = 1 750 kg
 
   correctAnswerEx14 = 3000;  // 3 kg = 3 000 g
+
+  // ======================================================
+  // EX11 — ASSIFEP Test 5 (Refacto): conversions de masse !!!!!! 
+  // 4 conversions — 4 points maximum
+  // ======================================================
+
+  correctAnswersEx11 = {
+    answer1: 1.3,    // 1 300 g → 1,3 kg
+    answer2: 0.5,    // 500 kg → 0,5 t
+    answer3: 1750,   // 1,75 t → 1 750 kg
+    answer4: 3000    // 3 kg → 3 000 g
+  };
+
+
+
 
   // ASSIFEP Test 6 — Schéma commun : palette 1,20 m × 0,80 m,
 
@@ -787,7 +804,7 @@ export class Unit4Component implements OnInit, OnDestroy {
     this.clearTimers();
   }
 
- // ======================================================
+  // ======================================================
   // INITIALISATION DES FORMULAIRES — 27 exercices actifs
   // EX22 en réserve : aucun FormGroup.
   // Appel existant : this.initForms() dans le constructor.
@@ -881,9 +898,19 @@ export class Unit4Component implements OnInit, OnDestroy {
     });
 
     // EX11 — ASSIFEP Test 5 : 1 300 g en kg
+    // this.formEx11 = this.fb.group({
+    //   answer: ['']
+    // });
+
+    // SUITE à REFACTO ++++
+
     this.formEx11 = this.fb.group({
-      answer: ['']
+      answer1: [''],
+      answer2: [''],
+      answer3: [''],
+      answer4: ['']
     });
+
 
     // EX12 — ASSIFEP Test 5 : 500 kg en tonnes
     this.formEx12 = this.fb.group({
@@ -1056,7 +1083,7 @@ export class Unit4Component implements OnInit, OnDestroy {
     this.saveExercise('ex4', this.formEx4, score);
   }
 
-    // ======================================================
+  // ======================================================
   // ÉTAPE 3 — SOUMISSIONS / SCORING AUTOMATIQUE
   // EX1 à EX4 inchangés ; EX22 en réserve (aucun submit).
   // Chaque méthode utilise les correctAnswers consolidés.
@@ -1179,15 +1206,39 @@ export class Unit4Component implements OnInit, OnDestroy {
   // ------------------------------------------------------
   // EX11 — ASSIFEP Test 5 : 1 300 g vers kg
   // ------------------------------------------------------
+  // submitEx11(): void {
+  //   if (this.alreadySubmitted) return;
+
+  //   const answer = this.toNumber(this.formEx11.value.answer);
+  //   const score = answer === this.correctAnswerEx11 ? 1 : 0;
+
+  //   this.alreadySubmitted = true;
+  //   this.saveExercise('ex11', this.formEx11, score);
+  // }
+
+  
+  // ------------------------------------------------------
+  // EX11 — ASSIFEP Test 5 REFACTO : quatre conversions de masse
+  // Regroupement des anciens EX11 à EX14
+  // 1 point par réponse correcte — maximum 4 points
+  // ------------------------------------------------------
   submitEx11(): void {
     if (this.alreadySubmitted) return;
 
-    const answer = this.toNumber(this.formEx11.value.answer);
-    const score = answer === this.correctAnswerEx11 ? 1 : 0;
+    const answers = this.formEx11.value;
+    let score = 0;
+
+    if (this.toNumber(answers.answer1) === this.correctAnswersEx11.answer1) score++;
+    if (this.toNumber(answers.answer2) === this.correctAnswersEx11.answer2) score++;
+    if (this.toNumber(answers.answer3) === this.correctAnswersEx11.answer3) score++;
+    if (this.toNumber(answers.answer4) === this.correctAnswersEx11.answer4) score++;
 
     this.alreadySubmitted = true;
     this.saveExercise('ex11', this.formEx11, score);
   }
+
+
+
 
   // ------------------------------------------------------
   // EX12 — ASSIFEP Test 5 : 500 kg vers tonnes
@@ -1587,7 +1638,7 @@ export class Unit4Component implements OnInit, OnDestroy {
     this.intervalId = null;
   }
 
- // ======================================================
+  // ======================================================
   // ÉTAPE 4 — ROUTAGE DES SOUMISSIONS (timer et validation)
   // Par ID de steps[] : ne jamais confondre indice et n° EX.
   // EX22 est en réserve ; après EX21, l'étape suivante est EX23.
@@ -1704,7 +1755,7 @@ export class Unit4Component implements OnInit, OnDestroy {
     });
   }
 
-// ======================================================
+  // ======================================================
   // ÉTAPE 4 — RECHARGEMENT DES RÉPONSES EN VUE RÉFÉRENT
   // Ne recharge que les formulaires des exercices actifs.
   // La clé Firestore reste units.unit4.exN (sans EX22).
@@ -1968,9 +2019,9 @@ export class Unit4Component implements OnInit, OnDestroy {
         alert("Erreur lors de l'enregistrement.");
       });
   }
-  
 
- // ======================================================
+
+  // ======================================================
   // ÉTAPE 4 — FORMULAIRE LIÉ À L'EXERCICE ACTIF
   // stepIndex est un indice 0..26, pas le numéro de l'exercice.
   // Attention : après EX21, index 21 => EX23.

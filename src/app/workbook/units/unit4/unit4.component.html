@@ -1180,15 +1180,16 @@
 
 
         <!-- ===================================================== -->
-        <!-- EXERCICE 11 — ASSIFEP : CONVERSION DE MASSE -->
-        <!-- currentStep = 10 — 1 réponse — 1 point maximum -->
+        <!-- EXERCICE 11 — ASSIFEP : CONVERSIONS DE MASSE -->
+        <!-- currentStep = 10 — 4 réponses — 4 points maximum -->
+        <!-- Regroupement des anciens EX11 à EX14 -->
         <!-- ===================================================== -->
 
         <form *ngIf="isReferentView || currentStep === 10" [formGroup]="formEx11" (ngSubmit)="submitEx11()">
 
             <!-- HEADER -->
             <div class="title mb-4 d-flex flex-column flex-md-row
-              align-items-start align-items-md-center gap-2">
+                align-items-start align-items-md-center gap-2">
 
                 <span class="badge text-bg-dark text-white">
                     <i class="bi bi-tag-fill me-2"></i>
@@ -1205,6 +1206,7 @@
                         Max {{ steps[10].maxScore }} PNTS
                     </span>
 
+                    <!-- Score informatif, sans édition manuelle -->
                     <span class="badge text-bg-dark">
                         {{ getCurrentScore(10) }} PNTS
                     </span>
@@ -1214,41 +1216,143 @@
 
             <!-- ÉNONCÉ -->
             <div class="alert bg-info">
-                <h5 class="fw-bold">CONVERSION DE MASSE</h5>
+                <h5 class="fw-bold">CONVERSIONS DE MASSE</h5>
+
                 <p class="mb-0">
-                    Convertissez la masse suivante en kilogrammes.
+                    Effectuez les conversions suivantes et saisissez
+                    le résultat numérique dans chaque champ.
                 </p>
             </div>
 
-            <!-- QUESTION RESPONSIVE -->
-            <div class="row justify-content-center my-4">
+            <!-- QUATRE CARTES RESPONSIVES -->
+            <div class="row g-3 my-4">
 
-                <div class="col-12 col-md-8 col-lg-6">
+                <!-- CONVERSION 1 -->
+                <div class="col-12 col-md-6 col-xl-3">
+                    <div class="card h-100">
+                        <div class="card-body d-flex flex-column gap-3">
 
-                    <div class="card">
-                        <div class="card-body p-4">
+                            <span class="badge text-bg-secondary align-self-start">
+                                Conversion 1
+                            </span>
 
-                            <div class="text-center fw-bold fs-4 mb-4">
-                                1 300 g = ? kg
+                            <div class="text-center py-3">
+                                <div class="fw-bold fs-4">1 300 g</div>
+                                <div class="text-muted my-2">↓</div>
+                                <div class="fw-semibold">Convertir en kg</div>
                             </div>
 
-                            <label for="answerEx11" class="form-label">
-                                Votre réponse :
-                            </label>
+                            <div class="mt-auto">
+                                <label for="answerEx11_1" class="form-label">
+                                    Votre réponse :
+                                </label>
 
-                            <div class="input-group">
-                                <input type="number" step="any" inputmode="decimal" id="answerEx11"
-                                    class="form-control text-center" formControlName="answer"
-                                    placeholder="Saisissez votre réponse">
+                                <div class="input-group">
+                                    <input type="number" step="any" inputmode="decimal" class="form-control"
+                                        id="answerEx11_1" formControlName="answer1" placeholder="Résultat">
 
-                                <span class="input-group-text">
-                                    kg
-                                </span>
+                                    <span class="input-group-text">kg</span>
+                                </div>
                             </div>
 
                         </div>
                     </div>
+                </div>
 
+                <!-- CONVERSION 2 -->
+                <div class="col-12 col-md-6 col-xl-3">
+                    <div class="card h-100">
+                        <div class="card-body d-flex flex-column gap-3">
+
+                            <span class="badge text-bg-secondary align-self-start">
+                                Conversion 2
+                            </span>
+
+                            <div class="text-center py-3">
+                                <div class="fw-bold fs-4">500 kg</div>
+                                <div class="text-muted my-2">↓</div>
+                                <div class="fw-semibold">Convertir en t</div>
+                            </div>
+
+                            <div class="mt-auto">
+                                <label for="answerEx11_2" class="form-label">
+                                    Votre réponse :
+                                </label>
+
+                                <div class="input-group">
+                                    <input type="number" step="any" inputmode="decimal" class="form-control"
+                                        id="answerEx11_2" formControlName="answer2" placeholder="Résultat">
+
+                                    <span class="input-group-text">t</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONVERSION 3 -->
+                <div class="col-12 col-md-6 col-xl-3">
+                    <div class="card h-100">
+                        <div class="card-body d-flex flex-column gap-3">
+
+                            <span class="badge text-bg-secondary align-self-start">
+                                Conversion 3
+                            </span>
+
+                            <div class="text-center py-3">
+                                <div class="fw-bold fs-4">1,75 t</div>
+                                <div class="text-muted my-2">↓</div>
+                                <div class="fw-semibold">Convertir en kg</div>
+                            </div>
+
+                            <div class="mt-auto">
+                                <label for="answerEx11_3" class="form-label">
+                                    Votre réponse :
+                                </label>
+
+                                <div class="input-group">
+                                    <input type="number" step="any" inputmode="decimal" class="form-control"
+                                        id="answerEx11_3" formControlName="answer3" placeholder="Résultat">
+
+                                    <span class="input-group-text">kg</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONVERSION 4 -->
+                <div class="col-12 col-md-6 col-xl-3">
+                    <div class="card h-100">
+                        <div class="card-body d-flex flex-column gap-3">
+
+                            <span class="badge text-bg-secondary align-self-start">
+                                Conversion 4
+                            </span>
+
+                            <div class="text-center py-3">
+                                <div class="fw-bold fs-4">3 kg</div>
+                                <div class="text-muted my-2">↓</div>
+                                <div class="fw-semibold">Convertir en g</div>
+                            </div>
+
+                            <div class="mt-auto">
+                                <label for="answerEx11_4" class="form-label">
+                                    Votre réponse :
+                                </label>
+
+                                <div class="input-group">
+                                    <input type="number" step="any" inputmode="decimal" class="form-control"
+                                        id="answerEx11_4" formControlName="answer4" placeholder="Résultat">
+
+                                    <span class="input-group-text">g</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -1275,6 +1379,13 @@
         </form>
 
         <hr *ngIf="isReferentView">
+
+
+
+
+
+
+
 
 
         <!-- ===================================================== -->
