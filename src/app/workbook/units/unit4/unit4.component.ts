@@ -40,7 +40,7 @@ export class Unit4Component implements OnInit, OnDestroy {
   isReferentView: boolean = false;
 
 
-  currentStep = 10;
+  currentStep = 11;
 
   categories: string[] = [
     'Opérations de base',
@@ -109,75 +109,68 @@ export class Unit4Component implements OnInit, OnDestroy {
 
     { id: 'ex10', category: this.categories[1], duration: 150, maxScore: 3 },
 
-    // ASSIFEP — Test 5 : 1 300 g en kg
-    // { id: 'ex11', category: this.categories[1], duration: 100, maxScore: 1 },
 
      // ASSIFEP — Test 5 REFACTO: 4 conversions de masse
     { id: 'ex11', category: this.categories[1], duration: 200, maxScore: 4 },
 
-    // ASSIFEP — Test 5 : 500 kg en tonnes
-
-    { id: 'ex12', category: this.categories[1], duration: 100, maxScore: 1 },
-
-    // ASSIFEP — Test 5 : 1,75 t en kg
-
-    { id: 'ex13', category: this.categories[1], duration: 100, maxScore: 1 },
-
-    // ASSIFEP — Test 5 : 3 kg en grammes
-
-    { id: 'ex14', category: this.categories[1], duration: 100, maxScore: 1 },
+    // ASSIFEP — Test 5 : 500 kg en tonnes plus d'actualité fusionné avec ex11
+    // { id: 'ex12', category: this.categories[1], duration: 100, maxScore: 1 },
+    // ASSIFEP — Test 5 : 1,75 t en kg plus d'actualité fusionné avec ex11
+    // { id: 'ex13', category: this.categories[1], duration: 100, maxScore: 1 },
+    // ASSIFEP — Test 5 : 3 kg en grammes plus d'actualité fusionné avec ex11
+    // { id: 'ex14', category: this.categories[1], duration: 100, maxScore: 1 },
 
     // PRO-FORMATION — ancien EX10 : formes géométriques
 
-    { id: 'ex15', category: this.categories[2], duration: 150, maxScore: 5 },
+    { id: 'ex12', category: this.categories[2], duration: 150, maxScore: 5 },
 
     // PRO-FORMATION — ancien EX11 : périmètre carré
 
-    { id: 'ex16', category: this.categories[2], duration: 100, maxScore: 1 },
+    { id: 'ex13', category: this.categories[2], duration: 100, maxScore: 1 },
 
     // PRO-FORMATION — ancien EX12 : périmètre rectangle
 
-    { id: 'ex17', category: this.categories[2], duration: 100, maxScore: 1 },
+    { id: 'ex14', category: this.categories[2], duration: 100, maxScore: 1 },
 
     // PRO-FORMATION — ancien EX13 : périmètre triangle
 
-    { id: 'ex18', category: this.categories[2], duration: 150, maxScore: 1 },
+    { id: 'ex15', category: this.categories[2], duration: 150, maxScore: 1 },
 
     // ASSIFEP — Test 6 : surface palette
 
-    { id: 'ex19', category: this.categories[2], duration: 150, maxScore: 1 },
+    { id: 'ex16', category: this.categories[2], duration: 150, maxScore: 1 },
 
     // ASSIFEP — Test 6 : surface remorque
 
-    { id: 'ex20', category: this.categories[2], duration: 150, maxScore: 1 },
+    { id: 'ex17', category: this.categories[2], duration: 150, maxScore: 1 },
 
     // ASSIFEP — Test 6 : volume remorque
 
-    { id: 'ex21', category: this.categories[2], duration: 150, maxScore: 1 },
+    { id: 'ex18', category: this.categories[2], duration: 150, maxScore: 1 },
 
     // ASSIFEP — Test 7 : voix liste B
 
-    { id: 'ex23', category: this.categories[3], duration: 150, maxScore: 1 },
+    { id: 'ex19', category: this.categories[3], duration: 150, maxScore: 1 },
 
     // ASSIFEP — Test 8 : affirmation 1
 
-    { id: 'ex24', category: this.categories[3], duration: 100, maxScore: 1 },
+    { id: 'ex20', category: this.categories[3], duration: 100, maxScore: 1 },
 
     // ASSIFEP — Test 8 : affirmation 2
 
-    { id: 'ex25', category: this.categories[3], duration: 100, maxScore: 1 },
+    { id: 'ex21', category: this.categories[3], duration: 100, maxScore: 1 },
 
     // ASSIFEP — Test 8 : affirmation 3
 
-    { id: 'ex26', category: this.categories[3], duration: 100, maxScore: 1 },
+    { id: 'ex22', category: this.categories[3], duration: 100, maxScore: 1 },
 
     // ASSIFEP — Test 8 : affirmation 4
 
-    { id: 'ex27', category: this.categories[3], duration: 100, maxScore: 1 },
+    { id: 'ex23', category: this.categories[3], duration: 100, maxScore: 1 },
 
     // ASSIFEP — Test 8 : affirmation 5
 
-    { id: 'ex28', category: this.categories[3], duration: 100, maxScore: 1 }
+    { id: 'ex24', category: this.categories[3], duration: 100, maxScore: 1 }
 
   ];
 
@@ -199,6 +192,7 @@ export class Unit4Component implements OnInit, OnDestroy {
   formEx9!: FormGroup;
   formEx10!: FormGroup;
   formEx11!: FormGroup;
+  
   formEx12!: FormGroup;
   formEx13!: FormGroup;
   formEx14!: FormGroup;
@@ -211,6 +205,7 @@ export class Unit4Component implements OnInit, OnDestroy {
   formEx19!: FormGroup;
   formEx20!: FormGroup;
   formEx21!: FormGroup;
+  formEx22!: FormGroup;
 
   // EX22 — ASSIFEP Test 6 : en réserve, aucun formulaire
 
@@ -526,141 +521,99 @@ export class Unit4Component implements OnInit, OnDestroy {
 
   };
 
+  
   // ======================================================
-
-  // EX15 — PRO-FORMATION (ancien EX10)
-
+  // EX12 — PRO-FORMATION (ancien EX15)
   // Associer un objet à une forme géométrique
-
   // 5 images — 5 selects — score maximal : 5 points
-
   // ======================================================
 
   // Les images définitives seront intégrées au template.
-
   // Ordre de présentation figé pour la correction automatique.
-  // Les fichiers d'images devront représenter les objets indiqués.
+  // Les fichiers d'images représentent les objets indiqués.
 
-  ex15Items = [
-
+  ex12Items = [
     { id: 1, label: 'Réfrigérateur', image: 'assets/img/unit4/forme1.webp' },
-
     { id: 2, label: 'Panier', image: 'assets/img/unit4/forme2.webp' },
-
     { id: 3, label: 'Ballon', image: 'assets/img/unit4/forme3.webp' },
-
     { id: 4, label: 'Dés', image: 'assets/img/unit4/forme4.webp' },
-
     { id: 5, label: 'Guirlande triangulaire', image: 'assets/img/unit4/forme5.webp' }
-
   ];
 
   // Options communes aux cinq listes déroulantes.
 
-  ex15Options = [
-
+  ex12Options = [
     { value: 'rectangle', label: 'Rectangle' },
-
     { value: 'trapeze', label: 'Trapèze' },
-
     { value: 'cercle', label: 'Cercle' },
-
     { value: 'carre', label: 'Carré' },
-
     { value: 'triangle', label: 'Triangle' }
-
   ];
 
   // Réponses attendues — correction automatique.
 
-  correctAnswersEx15: { [key: number]: string } = {
-
+  correctAnswersEx12: { [key: number]: string } = {
     1: 'rectangle', // Réfrigérateur
-
     2: 'trapeze',   // Panier
-
     3: 'cercle',    // Ballon
-
     4: 'carre',     // Dés
-
     5: 'triangle'   // Guirlande triangulaire
-
   };
 
   // ------------------------------------------------------
-
-  // EX16 — PRO-FORMATION (ancien EX11) : périmètre d'un carré
-
+  // EX13 — PRO-FORMATION (ancien EX16)
+  // Périmètre d'un carré
   // ------------------------------------------------------
 
-  ex16Options = [
-
+  ex13Options = [
     { value: 'cote_cote', label: 'côté x côté' },
-
     { value: 'cote_4', label: 'côté x 4' },
-
     { value: '4_4', label: '4 x 4' }
-
   ];
 
-  correctAnswerEx16 = 'cote_4';
+  correctAnswerEx13 = 'cote_4';
 
   // ------------------------------------------------------
-
-  // EX17 — PRO-FORMATION (ancien EX12) : périmètre d'un rectangle
-
+  // EX14 — PRO-FORMATION (ancien EX17)
+  // Périmètre d'un rectangle
   // ------------------------------------------------------
 
-  ex17Options = [
-
+  ex14Options = [
     { value: 'l_plus_l_fois_2', label: '(L + l) x 2' },
-
     { value: 'l_fois_l', label: 'L x l' },
-
     { value: 'l_fois_4', label: 'L x 4' }
-
   ];
 
-  correctAnswerEx17 = 'l_plus_l_fois_2';
+  correctAnswerEx14 = 'l_plus_l_fois_2';
 
   // ------------------------------------------------------
-
-  // EX18 — PRO-FORMATION (ancien EX13) : périmètre du triangle
-
+  // EX15 — PRO-FORMATION (ancien EX18)
+  // Périmètre du triangle
   // 3,20 + 4 + 7 = 14,20 m
-
   // ------------------------------------------------------
 
-  correctAnswerEx18 = 14.2;
+  correctAnswerEx15 = 14.2;
 
   // ======================================================
-
-  // ASSIFEP — DONNÉES ET RÉPONSES ATTENDUES (CONSOLIDATION)
-
-  // Chaque question autonome ASSIFEP a son propre identifiant.
-  // Ce bloc ne fait que préparer les réponses : pas de nouveaux submits.
-
+  // ASSIFEP — DONNÉES ET RÉPONSES ATTENDUES
+  // Chaque exercice possède son propre identifiant.
+  // Ce bloc prépare les corrections automatiques.
+  // Aucune modification des méthodes submit à ce stade.
   // ======================================================
 
-  // ASSIFEP Test 4 — EX5 : 1 200 colis répartis sur 6 palettes.
+  // ------------------------------------------------------
+  // EX5 — ASSIFEP Test 4
+  // 1 200 colis répartis sur 6 palettes
+  // Inchangé
+  // ------------------------------------------------------
 
   correctAnswerEx5 = 200;
 
-  // ASSIFEP Test 5 — EX11 à EX14 : conversions de masse.
-
-  // Une conversion = un exercice ; saisie numérique prévue.
-
-  // correctAnswerEx11 = 1.3;   // 1 300 g = 1,3 kg
-
-  correctAnswerEx12 = 0.5;   // 500 kg = 0,5 t
-
-  correctAnswerEx13 = 1750;  // 1,75 t = 1 750 kg
-
-  correctAnswerEx14 = 3000;  // 3 kg = 3 000 g
-
   // ======================================================
-  // EX11 — ASSIFEP Test 5 (Refacto): conversions de masse !!!!!! 
+  // EX11 — ASSIFEP Test 5
+  // Quatre conversions de masse regroupées
   // 4 conversions — 4 points maximum
+  // Inchangé depuis la consolidation
   // ======================================================
 
   correctAnswersEx11 = {
@@ -670,46 +623,65 @@ export class Unit4Component implements OnInit, OnDestroy {
     answer4: 3000    // 3 kg → 3 000 g
   };
 
+  // ======================================================
+  // ASSIFEP Test 6
+  // Schéma commun :
+  // Palette : 1,20 m × 0,80 m
+  // Remorque : 13,50 m × 2,44 m
+  // Hauteur : 4 m
+  // ======================================================
 
+  // ------------------------------------------------------
+  // EX16 — Surface palette (ancien EX19)
+  // ------------------------------------------------------
 
+  correctAnswerEx16 = 0.96; // m²
 
-  // ASSIFEP Test 6 — Schéma commun : palette 1,20 m × 0,80 m,
+  // ------------------------------------------------------
+  // EX17 — Surface remorque (ancien EX20)
+  // ------------------------------------------------------
 
-  // remorque 13,50 m × 2,44 m, hauteur 4 m.
+  correctAnswerEx17 = 32.94; // m²
 
-  // EX19 : surface palette, EX20 : surface remorque,
+  // ------------------------------------------------------
+  // EX18 — Volume remorque (ancien EX21)
+  // ------------------------------------------------------
 
-  // EX21 : volume remorque.
+  correctAnswerEx18 = 131.76; // m³
 
-  correctAnswerEx19 = 0.96;   // m²
+  // ======================================================
+  // ASSIFEP Test 7
+  // ======================================================
 
-  correctAnswerEx20 = 32.94;  // m²
+  // ------------------------------------------------------
+  // EX19 — Liste B (ancien EX23)
+  // Liste A = 40 % = 150 voix
+  // Liste B = 60 %
+  // ------------------------------------------------------
 
-  correctAnswerEx21 = 131.76; // m³
+  correctAnswerEx19 = 225;
 
-  // ASSIFEP Test 6 — EX22 EN RÉSERVE : aucune réponse automatique.
+  // ======================================================
+  // ASSIFEP Test 8 — Vrai / Faux
+  // EX20 à EX24 (anciens EX24 à EX28)
+  // Une affirmation = un exercice.
+  // Pas de champ justification.
+  // ======================================================
 
-  // L'énoncé ne précise pas les conditions d'empilement des palettes.
+  // EX20 — Affirmation 1 (ancien EX24)
+  correctAnswerEx20 = false; // 4/200 = 2 %, objectif strictement < 2 %
 
-  // Exercice volontairement absent de steps[] (navigation et barème).
+  // EX21 — Affirmation 2 (ancien EX25)
+  correctAnswerEx21 = false; // 250/300 < 85 %, minimum 255
 
-  // ASSIFEP Test 7 — EX23 : liste A = 40 % = 150 voix ; liste B = 60 %.
+  // EX22 — Affirmation 3 (ancien EX26)
+  correctAnswerEx22 = false; // 2 femmes sur 5 suffisent à 40 %
 
-  correctAnswerEx23 = 225;
+  // EX23 — Affirmation 4 (ancien EX27)
+  correctAnswerEx23 = true;  // 22/25 = 88 % >= 85 %
 
-  // ASSIFEP Test 8 — EX24 à EX28 : choix Vrai/Faux uniquement.
-
-  // Une affirmation = un exercice. Pas de champ justification.
-
-  correctAnswerEx24 = false; // 4/200 = 2 %, objectif strictement < 2 %
-
-  correctAnswerEx25 = false; // 250/300 < 85 %, minimum 255
-
-  correctAnswerEx26 = false; // 2 femmes sur 5 suffisent à 40 %
-
-  correctAnswerEx27 = true;  // 22/25 = 88 % >= 85 %
-
-  correctAnswerEx28 = false; // 45/2250 = 2 %, maximum 44
+  // EX24 — Affirmation 5 (ancien EX28)
+  correctAnswerEx24 = false; // 45/2250 = 2 %, maximum 44
 
 
   constructor(
@@ -912,25 +884,14 @@ export class Unit4Component implements OnInit, OnDestroy {
     });
 
 
-    // EX12 — ASSIFEP Test 5 : 500 kg en tonnes
+  
+    // ======================================================
+    // GÉOMÉTRIE / SURFACES / VOLUMES
+    // ======================================================
+
+    // EX12 — PRO-FORMATION (ancien EX15)
+    // Cinq associations image / forme
     this.formEx12 = this.fb.group({
-      answer: ['']
-    });
-
-    // EX13 — ASSIFEP Test 5 : 1,75 t en kg
-    this.formEx13 = this.fb.group({
-      answer: ['']
-    });
-
-    // EX14 — ASSIFEP Test 5 : 3 kg en grammes
-    this.formEx14 = this.fb.group({
-      answer: ['']
-    });
-
-    // ===== GÉOMÉTRIE / SURFACES / VOLUMES =====
-
-    // EX15 — PRO-FORMATION (ancien EX10) : cinq associations image / forme
-    this.formEx15 = this.fb.group({
       answer1: [''],
       answer2: [''],
       answer3: [''],
@@ -938,77 +899,86 @@ export class Unit4Component implements OnInit, OnDestroy {
       answer5: ['']
     });
 
-    // EX16 — PRO-FORMATION (ancien EX11) : périmètre du carré
+    // EX13 — PRO-FORMATION (ancien EX16)
+    // Périmètre du carré
+    this.formEx13 = this.fb.group({
+      answer: ['']
+    });
+
+    // EX14 — PRO-FORMATION (ancien EX17)
+    // Périmètre du rectangle
+    this.formEx14 = this.fb.group({
+      answer: ['']
+    });
+
+    // EX15 — PRO-FORMATION (ancien EX18)
+    // Périmètre du triangle
+    this.formEx15 = this.fb.group({
+      answer: ['']
+    });
+
+    // EX16 — ASSIFEP Test 6 (ancien EX19)
+    // Surface palette
     this.formEx16 = this.fb.group({
       answer: ['']
     });
 
-    // EX17 — PRO-FORMATION (ancien EX12) : périmètre du rectangle
+    // EX17 — ASSIFEP Test 6 (ancien EX20)
+    // Surface remorque
     this.formEx17 = this.fb.group({
       answer: ['']
     });
 
-    // EX18 — PRO-FORMATION (ancien EX13) : périmètre du triangle
+    // EX18 — ASSIFEP Test 6 (ancien EX21)
+    // Volume remorque
     this.formEx18 = this.fb.group({
       answer: ['']
     });
 
-    // EX19 — ASSIFEP Test 6 : surface palette
+    // ======================================================
+    // POURCENTAGES
+    // ======================================================
+
+    // EX19 — ASSIFEP Test 7 (ancien EX23)
+    // Calcul des voix de la liste B
     this.formEx19 = this.fb.group({
       answer: ['']
     });
 
-    // EX20 — ASSIFEP Test 6 : surface remorque
+    // EX20 — ASSIFEP Test 8 (ancien EX24)
+    // Affirmation 1 — Vrai/Faux
+    // null = non répondu ; true = Vrai ; false = Faux.
     this.formEx20 = this.fb.group({
-      answer: ['']
+      answer: [null]
     });
 
-    // EX21 — ASSIFEP Test 6 : volume remorque
+    // EX21 — ASSIFEP Test 8 (ancien EX25)
+    // Affirmation 2 — Vrai/Faux
     this.formEx21 = this.fb.group({
-      answer: ['']
+      answer: [null]
     });
 
-    // EX22 — ASSIFEP Test 6 : EN RÉSERVE, aucun formulaire.
+    // EX22 — ASSIFEP Test 8 (ancien EX26)
+    // Affirmation 3 — Vrai/Faux
+    this.formEx22 = this.fb.group({
+      answer: [null]
+    });
 
-    // ===== POURCENTAGES =====
-
-    // EX23 — ASSIFEP Test 7 : calcul des voix de la liste B
+    // EX23 — ASSIFEP Test 8 (ancien EX27)
+    // Affirmation 4 — Vrai/Faux
     this.formEx23 = this.fb.group({
-      answer: ['']
+      answer: [null]
     });
 
-    // EX24 — ASSIFEP Test 8 : affirmation 1, Vrai/Faux
-    // null = non répondu ; true = Vrai ; false = Faux.
+    // EX24 — ASSIFEP Test 8 (ancien EX28)
+    // Affirmation 5 — Vrai/Faux
     this.formEx24 = this.fb.group({
-      answer: [null]
-    });
-
-    // EX25 — ASSIFEP Test 8 : affirmation 2, Vrai/Faux
-    // null = non répondu ; true = Vrai ; false = Faux.
-    this.formEx25 = this.fb.group({
-      answer: [null]
-    });
-
-    // EX26 — ASSIFEP Test 8 : affirmation 3, Vrai/Faux
-    // null = non répondu ; true = Vrai ; false = Faux.
-    this.formEx26 = this.fb.group({
-      answer: [null]
-    });
-
-    // EX27 — ASSIFEP Test 8 : affirmation 4, Vrai/Faux
-    // null = non répondu ; true = Vrai ; false = Faux.
-    this.formEx27 = this.fb.group({
-      answer: [null]
-    });
-
-    // EX28 — ASSIFEP Test 8 : affirmation 5, Vrai/Faux
-    // null = non répondu ; true = Vrai ; false = Faux.
-    this.formEx28 = this.fb.group({
       answer: [null]
     });
   }
 
   // ======================================================
+
   // NAVIGATION
   // ======================================================
 
@@ -1238,28 +1208,37 @@ export class Unit4Component implements OnInit, OnDestroy {
   }
 
 
-
-
+  
   // ------------------------------------------------------
-  // EX12 — ASSIFEP Test 5 : 500 kg vers tonnes
+  // EX12 — PRO-FORMATION (ancien EX15)
+  // Cinq associations image / forme géométrique
   // ------------------------------------------------------
   submitEx12(): void {
     if (this.alreadySubmitted) return;
 
-    const answer = this.toNumber(this.formEx12.value.answer);
-    const score = answer === this.correctAnswerEx12 ? 1 : 0;
+    // Un point par bonne association, maximum 5 points.
+    const answers = this.formEx12.value;
+    let score = 0;
+
+    for (const item of this.ex12Items) {
+      if (answers[`answer${item.id}`] === this.correctAnswersEx12[item.id]) {
+        score++;
+      }
+    }
 
     this.alreadySubmitted = true;
     this.saveExercise('ex12', this.formEx12, score);
   }
 
   // ------------------------------------------------------
-  // EX13 — ASSIFEP Test 5 : 1,75 t vers kg
+  // EX13 — PRO-FORMATION (ancien EX16)
+  // Périmètre du carré : formule
   // ------------------------------------------------------
   submitEx13(): void {
     if (this.alreadySubmitted) return;
 
-    const answer = this.toNumber(this.formEx13.value.answer);
+    // Choix unique : comparer la valeur, pas le libellé affiché.
+    const answer = this.formEx13.value.answer;
     const score = answer === this.correctAnswerEx13 ? 1 : 0;
 
     this.alreadySubmitted = true;
@@ -1267,12 +1246,14 @@ export class Unit4Component implements OnInit, OnDestroy {
   }
 
   // ------------------------------------------------------
-  // EX14 — ASSIFEP Test 5 : 3 kg vers grammes
+  // EX14 — PRO-FORMATION (ancien EX17)
+  // Périmètre du rectangle : formule
   // ------------------------------------------------------
   submitEx14(): void {
     if (this.alreadySubmitted) return;
 
-    const answer = this.toNumber(this.formEx14.value.answer);
+    // Choix unique : comparer la valeur, pas le libellé affiché.
+    const answer = this.formEx14.value.answer;
     const score = answer === this.correctAnswerEx14 ? 1 : 0;
 
     this.alreadySubmitted = true;
@@ -1280,33 +1261,27 @@ export class Unit4Component implements OnInit, OnDestroy {
   }
 
   // ------------------------------------------------------
-  // EX15 — PRO-FORMATION (ancien EX10) : cinq associations image / forme géométrique
+  // EX15 — PRO-FORMATION (ancien EX18)
+  // Périmètre du triangle
   // ------------------------------------------------------
   submitEx15(): void {
     if (this.alreadySubmitted) return;
 
-    // Un point par bonne association, maximum 5 points.
-    const answers = this.formEx15.value;
-    let score = 0;
-
-    for (const item of this.ex15Items) {
-      if (answers[`answer${item.id}`] === this.correctAnswersEx15[item.id]) {
-        score++;
-      }
-    }
+    const answer = this.toNumber(this.formEx15.value.answer);
+    const score = answer === this.correctAnswerEx15 ? 1 : 0;
 
     this.alreadySubmitted = true;
     this.saveExercise('ex15', this.formEx15, score);
   }
 
   // ------------------------------------------------------
-  // EX16 — PRO-FORMATION (ancien EX11) : périmètre du carré : formule
+  // EX16 — ASSIFEP Test 6 (ancien EX19)
+  // Surface de la palette en m²
   // ------------------------------------------------------
   submitEx16(): void {
     if (this.alreadySubmitted) return;
 
-    // Choix unique : comparer la valeur, pas le libellé affiché.
-    const answer = this.formEx16.value.answer;
+    const answer = this.toNumber(this.formEx16.value.answer);
     const score = answer === this.correctAnswerEx16 ? 1 : 0;
 
     this.alreadySubmitted = true;
@@ -1314,13 +1289,13 @@ export class Unit4Component implements OnInit, OnDestroy {
   }
 
   // ------------------------------------------------------
-  // EX17 — PRO-FORMATION (ancien EX12) : périmètre du rectangle : formule
+  // EX17 — ASSIFEP Test 6 (ancien EX20)
+  // Surface de la remorque en m²
   // ------------------------------------------------------
   submitEx17(): void {
     if (this.alreadySubmitted) return;
 
-    // Choix unique : comparer la valeur, pas le libellé affiché.
-    const answer = this.formEx17.value.answer;
+    const answer = this.toNumber(this.formEx17.value.answer);
     const score = answer === this.correctAnswerEx17 ? 1 : 0;
 
     this.alreadySubmitted = true;
@@ -1328,7 +1303,8 @@ export class Unit4Component implements OnInit, OnDestroy {
   }
 
   // ------------------------------------------------------
-  // EX18 — PRO-FORMATION (ancien EX13) : périmètre du triangle
+  // EX18 — ASSIFEP Test 6 (ancien EX21)
+  // Volume de la remorque en m³
   // ------------------------------------------------------
   submitEx18(): void {
     if (this.alreadySubmitted) return;
@@ -1341,7 +1317,8 @@ export class Unit4Component implements OnInit, OnDestroy {
   }
 
   // ------------------------------------------------------
-  // EX19 — ASSIFEP Test 6 : surface de la palette en m²
+  // EX19 — ASSIFEP Test 7 (ancien EX23)
+  // Voix obtenues par la liste B
   // ------------------------------------------------------
   submitEx19(): void {
     if (this.alreadySubmitted) return;
@@ -1354,46 +1331,96 @@ export class Unit4Component implements OnInit, OnDestroy {
   }
 
   // ------------------------------------------------------
-  // EX20 — ASSIFEP Test 6 : surface de la remorque en m²
+  // EX20 — ASSIFEP Test 8 (ancienne affirmation EX24)
+  // Affirmation 1 : choix Vrai / Faux
   // ------------------------------------------------------
   submitEx20(): void {
     if (this.alreadySubmitted) return;
 
-    const answer = this.toNumber(this.formEx20.value.answer);
-    const score = answer === this.correctAnswerEx20 ? 1 : 0;
+    // Une réponse non sélectionnée (null) ne rapporte aucun point.
+    // Accepte les booléens ou les chaînes transmises par des radios HTML.
+    const raw = this.formEx20.value.answer;
+    const answer: boolean | null = (raw === true || raw === 'true')
+      ? true
+      : (raw === false || raw === 'false')
+        ? false
+        : null;
+
+    const score = answer !== null && answer === this.correctAnswerEx20 ? 1 : 0;
 
     this.alreadySubmitted = true;
     this.saveExercise('ex20', this.formEx20, score);
   }
 
   // ------------------------------------------------------
-  // EX21 — ASSIFEP Test 6 : volume de la remorque en m³
+  // EX21 — ASSIFEP Test 8 (ancienne affirmation EX25)
+  // Affirmation 2 : choix Vrai / Faux
   // ------------------------------------------------------
   submitEx21(): void {
     if (this.alreadySubmitted) return;
 
-    const answer = this.toNumber(this.formEx21.value.answer);
-    const score = answer === this.correctAnswerEx21 ? 1 : 0;
+    // Une réponse non sélectionnée (null) ne rapporte aucun point.
+    // Accepte les booléens ou les chaînes transmises par des radios HTML.
+    const raw = this.formEx21.value.answer;
+    const answer: boolean | null = (raw === true || raw === 'true')
+      ? true
+      : (raw === false || raw === 'false')
+        ? false
+        : null;
+
+    const score = answer !== null && answer === this.correctAnswerEx21 ? 1 : 0;
 
     this.alreadySubmitted = true;
     this.saveExercise('ex21', this.formEx21, score);
   }
 
   // ------------------------------------------------------
-  // EX23 — ASSIFEP Test 7 : voix obtenues par la liste B
+  // EX22 — ASSIFEP Test 8 (ancienne affirmation EX26)
+  // Affirmation 3 : choix Vrai / Faux
+  // ------------------------------------------------------
+  submitEx22(): void {
+    if (this.alreadySubmitted) return;
+
+    // Une réponse non sélectionnée (null) ne rapporte aucun point.
+    // Accepte les booléens ou les chaînes transmises par des radios HTML.
+    const raw = this.formEx22.value.answer;
+    const answer: boolean | null = (raw === true || raw === 'true')
+      ? true
+      : (raw === false || raw === 'false')
+        ? false
+        : null;
+
+    const score = answer !== null && answer === this.correctAnswerEx22 ? 1 : 0;
+
+    this.alreadySubmitted = true;
+    this.saveExercise('ex22', this.formEx22, score);
+  }
+
+  // ------------------------------------------------------
+  // EX23 — ASSIFEP Test 8 (ancienne affirmation EX27)
+  // Affirmation 4 : choix Vrai / Faux
   // ------------------------------------------------------
   submitEx23(): void {
     if (this.alreadySubmitted) return;
 
-    const answer = this.toNumber(this.formEx23.value.answer);
-    const score = answer === this.correctAnswerEx23 ? 1 : 0;
+    // Une réponse non sélectionnée (null) ne rapporte aucun point.
+    // Accepte les booléens ou les chaînes transmises par des radios HTML.
+    const raw = this.formEx23.value.answer;
+    const answer: boolean | null = (raw === true || raw === 'true')
+      ? true
+      : (raw === false || raw === 'false')
+        ? false
+        : null;
+
+    const score = answer !== null && answer === this.correctAnswerEx23 ? 1 : 0;
 
     this.alreadySubmitted = true;
     this.saveExercise('ex23', this.formEx23, score);
   }
 
   // ------------------------------------------------------
-  // EX24 — ASSIFEP Test 8 (affirmation 1) : choix Vrai / Faux
+  // EX24 — ASSIFEP Test 8 (ancienne affirmation EX28)
+  // Affirmation 5 : choix Vrai / Faux
   // ------------------------------------------------------
   submitEx24(): void {
     if (this.alreadySubmitted) return;
@@ -1413,89 +1440,9 @@ export class Unit4Component implements OnInit, OnDestroy {
     this.saveExercise('ex24', this.formEx24, score);
   }
 
-  // ------------------------------------------------------
-  // EX25 — ASSIFEP Test 8 (affirmation 2) : choix Vrai / Faux
-  // ------------------------------------------------------
-  submitEx25(): void {
-    if (this.alreadySubmitted) return;
 
-    // Une réponse non sélectionnée (null) ne rapporte aucun point.
-    // Accepte les booléens ou les chaînes transmises par des radios HTML.
-    const raw = this.formEx25.value.answer;
-    const answer: boolean | null = (raw === true || raw === 'true')
-      ? true
-      : (raw === false || raw === 'false')
-        ? false
-        : null;
 
-    const score = answer !== null && answer === this.correctAnswerEx25 ? 1 : 0;
 
-    this.alreadySubmitted = true;
-    this.saveExercise('ex25', this.formEx25, score);
-  }
-
-  // ------------------------------------------------------
-  // EX26 — ASSIFEP Test 8 (affirmation 3) : choix Vrai / Faux
-  // ------------------------------------------------------
-  submitEx26(): void {
-    if (this.alreadySubmitted) return;
-
-    // Une réponse non sélectionnée (null) ne rapporte aucun point.
-    // Accepte les booléens ou les chaînes transmises par des radios HTML.
-    const raw = this.formEx26.value.answer;
-    const answer: boolean | null = (raw === true || raw === 'true')
-      ? true
-      : (raw === false || raw === 'false')
-        ? false
-        : null;
-
-    const score = answer !== null && answer === this.correctAnswerEx26 ? 1 : 0;
-
-    this.alreadySubmitted = true;
-    this.saveExercise('ex26', this.formEx26, score);
-  }
-
-  // ------------------------------------------------------
-  // EX27 — ASSIFEP Test 8 (affirmation 4) : choix Vrai / Faux
-  // ------------------------------------------------------
-  submitEx27(): void {
-    if (this.alreadySubmitted) return;
-
-    // Une réponse non sélectionnée (null) ne rapporte aucun point.
-    // Accepte les booléens ou les chaînes transmises par des radios HTML.
-    const raw = this.formEx27.value.answer;
-    const answer: boolean | null = (raw === true || raw === 'true')
-      ? true
-      : (raw === false || raw === 'false')
-        ? false
-        : null;
-
-    const score = answer !== null && answer === this.correctAnswerEx27 ? 1 : 0;
-
-    this.alreadySubmitted = true;
-    this.saveExercise('ex27', this.formEx27, score);
-  }
-
-  // ------------------------------------------------------
-  // EX28 — ASSIFEP Test 8 (affirmation 5) : choix Vrai / Faux
-  // ------------------------------------------------------
-  submitEx28(): void {
-    if (this.alreadySubmitted) return;
-
-    // Une réponse non sélectionnée (null) ne rapporte aucun point.
-    // Accepte les booléens ou les chaînes transmises par des radios HTML.
-    const raw = this.formEx28.value.answer;
-    const answer: boolean | null = (raw === true || raw === 'true')
-      ? true
-      : (raw === false || raw === 'false')
-        ? false
-        : null;
-
-    const score = answer !== null && answer === this.correctAnswerEx28 ? 1 : 0;
-
-    this.alreadySubmitted = true;
-    this.saveExercise('ex28', this.formEx28, score);
-  }
 
 
   private saveExercise(
@@ -1672,10 +1619,7 @@ export class Unit4Component implements OnInit, OnDestroy {
       case 'ex21': this.submitEx21(); break;
       case 'ex23': this.submitEx23(); break;
       case 'ex24': this.submitEx24(); break;
-      case 'ex25': this.submitEx25(); break;
-      case 'ex26': this.submitEx26(); break;
-      case 'ex27': this.submitEx27(); break;
-      case 'ex28': this.submitEx28(); break;
+
       default:
         console.warn(`Aucune soumission associée à l'étape : ${exId ?? 'inconnue'}`);
         break;
