@@ -1494,6 +1494,382 @@
         <hr *ngIf="isReferentView">
 
 
+        <!-- ===================================================== -->
+        <!-- EXERCICE 13 — PRO-FORMATION : PÉRIMÈTRE D'UN CARRÉ -->
+        <!-- currentStep = 12 — 1 réponse — 1 point maximum -->
+        <!-- ===================================================== -->
+
+        <form *ngIf="isReferentView || currentStep === 12" [formGroup]="formEx13" (ngSubmit)="submitEx13()">
+
+            <!-- HEADER -->
+            <div class="title mb-4 d-flex flex-column flex-md-row
+                align-items-start align-items-md-center gap-2">
+
+                <span class="badge text-bg-dark text-white">
+                    <i class="bi bi-tag-fill me-2"></i>
+                    Catégorie : {{ steps[12].category }}
+                </span>
+
+                <div class="d-flex gap-2 ms-md-auto">
+
+                    <span class="badge text-bg-warning">
+                        Exercice 13
+                    </span>
+
+                    <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+                        Max {{ steps[12].maxScore }} PNTS
+                    </span>
+
+                    <!-- Score informatif, sans édition manuelle -->
+                    <span class="badge text-bg-dark">
+                        {{ getCurrentScore(12) }} PNTS
+                    </span>
+
+                </div>
+            </div>
+
+            <!-- ÉNONCÉ -->
+            <div class="alert bg-info">
+                <h5 class="fw-bold">PÉRIMÈTRE D'UN CARRÉ</h5>
+
+                <p class="mb-0">
+                    Quelle formule permet de calculer le périmètre
+                    d'un carré ? Sélectionnez la bonne réponse.
+                </p>
+            </div>
+
+            <!-- PROPOSITIONS -->
+
+            <!-- ===================================================== -->
+            <!-- PROPOSITIONS — CARTES RESPONSIVES -->
+            <!-- Mobile : 1 colonne -->
+            <!-- Tablette : 2 colonnes -->
+            <!-- Grand écran : 3 colonnes -->
+            <!-- ===================================================== -->
+
+            <div class="row g-3 my-4">
+
+                <div *ngFor="let option of ex13Options" class="col-12 col-md-6 col-xl-4">
+
+                    <div class="card h-100">
+
+                        <div class="card-body d-flex
+                        align-items-center justify-content-center
+                        py-4">
+
+                            <div class="form-check">
+
+                                <input class="form-check-input" type="radio" name="answer" formControlName="answer"
+                                    [id]="'answerEx13_' + option.value" [value]="option.value">
+
+                                <label class="form-check-label fw-semibold fs-5" [for]="'answerEx13_' + option.value">
+
+                                    {{ option.label }}
+
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- TIMELINE -->
+            <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+                Temps donné : {{ steps[currentStep].duration }} secondes
+            </div>
+
+            <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4"
+                role="progressbar" aria-label="Progression de l'exercice" [attr.aria-valuenow]="progress"
+                aria-valuemin="0" aria-valuemax="100">
+
+                <div class="progress-bar" [style.width.%]="progress">
+                </div>
+
+            </div>
+
+            <!-- SOUMISSION -->
+            <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
+                Suivant
+            </button>
+
+        </form>
+
+        <hr *ngIf="isReferentView">
+
+
+
+
+        <!-- ===================================================== -->
+        <!-- EXERCICE 14 — PRO-FORMATION : PÉRIMÈTRE DU RECTANGLE -->
+        <!-- currentStep = 13 — 1 réponse — 1 point maximum -->
+        <!-- ===================================================== -->
+
+        <form *ngIf="isReferentView || currentStep === 13" [formGroup]="formEx14" (ngSubmit)="submitEx14()">
+
+            <!-- HEADER -->
+            <div class="title mb-4 d-flex flex-column flex-md-row
+                align-items-start align-items-md-center gap-2">
+
+                <span class="badge text-bg-dark text-white">
+                    <i class="bi bi-tag-fill me-2"></i>
+                    Catégorie : {{ steps[13].category }}
+                </span>
+
+                <div class="d-flex gap-2 ms-md-auto">
+
+                    <span class="badge text-bg-warning">
+                        Exercice 14
+                    </span>
+
+                    <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+                        Max {{ steps[13].maxScore }} PNTS
+                    </span>
+
+                    <!-- Score informatif, sans édition manuelle -->
+                    <span class="badge text-bg-dark">
+                        {{ getCurrentScore(13) }} PNTS
+                    </span>
+
+                </div>
+            </div>
+
+            <!-- ÉNONCÉ -->
+            <div class="alert bg-info">
+                <h5 class="fw-bold">PÉRIMÈTRE D'UN RECTANGLE</h5>
+
+                <p class="mb-0">
+                    Quelle formule permet de calculer le périmètre
+                    d'un rectangle ? Sélectionnez la bonne réponse.
+                </p>
+            </div>
+
+            <!-- TROIS CARTES RESPONSIVES -->
+            <!-- Mobile : 1 colonne -->
+            <!-- Tablette : 2 colonnes -->
+            <!-- Grand écran : 3 colonnes -->
+
+            <div class="row g-3 my-4">
+
+                <div *ngFor="let option of ex14Options" class="col-12 col-md-6 col-xl-4">
+
+                    <div class="card h-100">
+
+                        <div class="card-body d-flex
+                            align-items-center justify-content-center
+                            py-4">
+
+                            <div class="form-check">
+
+                                <input class="form-check-input" type="radio" name="answer" formControlName="answer"
+                                    [id]="'answerEx14_' + option.value" [value]="option.value">
+
+                                <label class="form-check-label fw-semibold fs-5" [for]="'answerEx14_' + option.value">
+
+                                    {{ option.label }}
+
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- TIMELINE -->
+            <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+                Temps donné : {{ steps[currentStep].duration }} secondes
+            </div>
+
+            <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4"
+                role="progressbar" aria-label="Progression de l'exercice" [attr.aria-valuenow]="progress"
+                aria-valuemin="0" aria-valuemax="100">
+
+                <div class="progress-bar" [style.width.%]="progress">
+                </div>
+
+            </div>
+
+            <!-- SOUMISSION -->
+            <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
+                Suivant
+            </button>
+
+        </form>
+
+        <hr *ngIf="isReferentView">
+
+
+
+        <!-- ===================================================== -->
+        <!-- EXERCICE 15 — PRO-FORMATION : PÉRIMÈTRE D'UN TRIANGLE -->
+        <!-- currentStep = 14 — 1 réponse — 1 point maximum -->
+        <!-- ===================================================== -->
+
+        <form *ngIf="isReferentView || currentStep === 14" [formGroup]="formEx15" (ngSubmit)="submitEx15()">
+
+            <!-- HEADER -->
+            <div class="title mb-4 d-flex flex-column flex-md-row
+                align-items-start align-items-md-center gap-2">
+
+                <span class="badge text-bg-dark text-white">
+                    <i class="bi bi-tag-fill me-2"></i>
+                    Catégorie : {{ steps[14].category }}
+                </span>
+
+                <div class="d-flex gap-2 ms-md-auto">
+
+                    <span class="badge text-bg-warning">
+                        Exercice 15
+                    </span>
+
+                    <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+                        Max {{ steps[14].maxScore }} PNTS
+                    </span>
+
+                    <!-- Score informatif, sans édition manuelle -->
+                    <span class="badge text-bg-dark">
+                        {{ getCurrentScore(14) }} PNTS
+                    </span>
+
+                </div>
+            </div>
+
+            <!-- ÉNONCÉ -->
+            <div class="alert bg-info">
+                <h5 class="fw-bold">PÉRIMÈTRE D'UN TRIANGLE</h5>
+
+                <p class="mb-0">
+                    Un triangle possède trois côtés dont les longueurs
+                    sont indiquées ci-dessous.
+                    Calculez son périmètre et saisissez votre résultat
+                    en mètres.
+                </p>
+            </div>
+
+            <!-- TROIS CARTES RESPONSIVES -->
+            <div class="row g-3 my-4">
+
+                <!-- CÔTÉ 1 -->
+                <div class="col-12 col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center py-4">
+
+                            <span class="badge text-bg-secondary mb-3">
+                                Côté 1
+                            </span>
+
+                            <div class="fw-bold fs-3">
+                                3,20 m
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CÔTÉ 2 -->
+                <div class="col-12 col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center py-4">
+
+                            <span class="badge text-bg-secondary mb-3">
+                                Côté 2
+                            </span>
+
+                            <div class="fw-bold fs-3">
+                                4 m
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CÔTÉ 3 -->
+                <div class="col-12 col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center py-4">
+
+                            <span class="badge text-bg-secondary mb-3">
+                                Côté 3
+                            </span>
+
+                            <div class="fw-bold fs-3">
+                                7 m
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RÉPONSE NUMÉRIQUE -->
+            <div class="row justify-content-center my-4">
+                <div class="col-12 col-md-8 col-lg-6">
+
+                    <div class="card">
+                        <div class="card-body p-4">
+
+                            <label for="answerEx15" class="form-label fw-semibold">
+                                Quel est le périmètre du triangle ?
+                            </label>
+
+                            <div class="input-group">
+
+                                <!-- <input type="number" step="any" inputmode="decimal" class="form-control" id="answerEx15"
+                                    formControlName="answer" placeholder="Votre résultat"> -->
+
+                                <input type="text" inputmode="decimal" class="form-control" id="answerEx15"
+                                    formControlName="answer" placeholder="Votre résultat...">
+
+                                <span class="input-group-text">
+                                    m
+                                </span>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- TIMELINE -->
+            <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+                Temps donné : {{ steps[currentStep].duration }} secondes
+            </div>
+
+            <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4"
+                role="progressbar" aria-label="Progression de l'exercice" [attr.aria-valuenow]="progress"
+                aria-valuemin="0" aria-valuemax="100">
+
+                <div class="progress-bar" [style.width.%]="progress">
+                </div>
+
+            </div>
+
+            <!-- SOUMISSION -->
+            <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
+                Suivant
+            </button>
+
+        </form>
+
+        <hr *ngIf="isReferentView">
+
+
+
+
+
 
 
 
