@@ -2139,195 +2139,598 @@
 
         <hr *ngIf="isReferentView">
 
-        
-<!-- ===================================================== -->
-<!-- EXERCICE 18 — ASSIFEP TEST 6 : VOLUME D'UNE REMORQUE -->
-<!-- currentStep = 17 — 1 réponse — 1 point maximum -->
-<!-- ===================================================== -->
 
-<form *ngIf="isReferentView || currentStep === 17"
-      [formGroup]="formEx18"
-      (ngSubmit)="submitEx18()">
+        <!-- ===================================================== -->
+        <!-- EXERCICE 18 — ASSIFEP TEST 6 : VOLUME D'UNE REMORQUE -->
+        <!-- currentStep = 17 — 1 réponse — 1 point maximum -->
+        <!-- ===================================================== -->
 
-    <!-- HEADER -->
-    <div class="title mb-4 d-flex flex-column flex-md-row
+        <form *ngIf="isReferentView || currentStep === 17" [formGroup]="formEx18" (ngSubmit)="submitEx18()">
+
+            <!-- HEADER -->
+            <div class="title mb-4 d-flex flex-column flex-md-row
                 align-items-start align-items-md-center gap-2">
 
-        <span class="badge text-bg-dark text-white">
-            <i class="bi bi-tag-fill me-2"></i>
-            Catégorie : {{ steps[17].category }}
-        </span>
+                <span class="badge text-bg-dark text-white">
+                    <i class="bi bi-tag-fill me-2"></i>
+                    Catégorie : {{ steps[17].category }}
+                </span>
 
-        <div class="d-flex gap-2 ms-md-auto">
+                <div class="d-flex gap-2 ms-md-auto">
 
-            <span class="badge text-bg-warning">
-                Exercice 18
-            </span>
-
-            <span *ngIf="isReferentView"
-                  class="badge border border-secondary text-secondary">
-                Max {{ steps[17].maxScore }} PNTS
-            </span>
-
-            <!-- Score informatif, sans édition manuelle -->
-            <span class="badge text-bg-dark">
-                {{ getCurrentScore(17) }} PNTS
-            </span>
-
-        </div>
-    </div>
-
-    <!-- ÉNONCÉ -->
-    <div class="alert bg-info">
-        <h5 class="fw-bold">VOLUME D'UNE REMORQUE</h5>
-
-        <p class="mb-0">
-            Une remorque possède les dimensions intérieures
-            indiquées ci-dessous.
-            Calculez son volume en mètres cubes (m³).
-        </p>
-    </div>
-
-    <!-- TROIS DIMENSIONS : CARTES RESPONSIVES -->
-    <div class="row g-3 my-4">
-
-        <!-- LONGUEUR -->
-        <div class="col-12 col-md-4">
-            <div class="card h-100">
-                <div class="card-body text-center py-4">
-
-                    <span class="badge text-bg-secondary mb-3">
-                        Longueur
+                    <span class="badge text-bg-warning">
+                        Exercice 18
                     </span>
 
-                    <div class="fw-bold fs-3">
-                        13,50 m
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-        <!-- LARGEUR -->
-        <div class="col-12 col-md-4">
-            <div class="card h-100">
-                <div class="card-body text-center py-4">
-
-                    <span class="badge text-bg-secondary mb-3">
-                        Largeur
+                    <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+                        Max {{ steps[17].maxScore }} PNTS
                     </span>
 
-                    <div class="fw-bold fs-3">
-                        2,44 m
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-        <!-- HAUTEUR -->
-        <div class="col-12 col-md-4">
-            <div class="card h-100">
-                <div class="card-body text-center py-4">
-
-                    <span class="badge text-bg-secondary mb-3">
-                        Hauteur
+                    <!-- Score informatif, sans édition manuelle -->
+                    <span class="badge text-bg-dark">
+                        {{ getCurrentScore(17) }} PNTS
                     </span>
 
-                    <div class="fw-bold fs-3">
-                        4 m
+                </div>
+            </div>
+
+            <!-- ÉNONCÉ -->
+            <div class="alert bg-info">
+                <h5 class="fw-bold">VOLUME D'UNE REMORQUE</h5>
+
+                <p class="mb-0">
+                    Une remorque possède les dimensions intérieures
+                    indiquées ci-dessous.
+                    Calculez son volume en mètres cubes (m³).
+                </p>
+            </div>
+
+            <!-- TROIS DIMENSIONS : CARTES RESPONSIVES -->
+            <div class="row g-3 my-4">
+
+                <!-- LONGUEUR -->
+                <div class="col-12 col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center py-4">
+
+                            <span class="badge text-bg-secondary mb-3">
+                                Longueur
+                            </span>
+
+                            <div class="fw-bold fs-3">
+                                13,50 m
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LARGEUR -->
+                <div class="col-12 col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center py-4">
+
+                            <span class="badge text-bg-secondary mb-3">
+                                Largeur
+                            </span>
+
+                            <div class="fw-bold fs-3">
+                                2,44 m
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HAUTEUR -->
+                <div class="col-12 col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center py-4">
+
+                            <span class="badge text-bg-secondary mb-3">
+                                Hauteur
+                            </span>
+
+                            <div class="fw-bold fs-3">
+                                4 m
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RÉPONSE NUMÉRIQUE -->
+            <div class="row justify-content-center my-4">
+                <div class="col-12 col-md-8 col-lg-6">
+
+                    <div class="card">
+                        <div class="card-body p-4">
+
+                            <label for="answerEx18" class="form-label fw-semibold">
+                                Quel est le volume de la remorque ?
+                            </label>
+
+                            <div class="input-group">
+
+                                <input type="text" inputmode="decimal" class="form-control" id="answerEx18"
+                                    formControlName="answer" placeholder="Votre résultat">
+
+                                <span class="input-group-text">
+                                    m³
+                                </span>
+
+                            </div>
+
+                        </div>
                     </div>
 
                 </div>
             </div>
-        </div>
 
-    </div>
+            <!-- TIMELINE -->
+            <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+                Temps donné : {{ steps[currentStep].duration }} secondes
+            </div>
 
-    <!-- RÉPONSE NUMÉRIQUE -->
-    <div class="row justify-content-center my-4">
-        <div class="col-12 col-md-8 col-lg-6">
+            <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4"
+                role="progressbar" aria-label="Progression de l'exercice" [attr.aria-valuenow]="progress"
+                aria-valuemin="0" aria-valuemax="100">
 
-            <div class="card">
-                <div class="card-body p-4">
+                <div class="progress-bar" [style.width.%]="progress">
+                </div>
 
-                    <label for="answerEx18"
-                           class="form-label fw-semibold">
-                        Quel est le volume de la remorque ?
-                    </label>
+            </div>
 
-                    <div class="input-group">
+            <!-- SOUMISSION -->
+            <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
+                Suivant
+            </button>
 
-                        <input
-                            type="text"
-                            inputmode="decimal"
-                            class="form-control"
-                            id="answerEx18"
-                            formControlName="answer"
-                            placeholder="Votre résultat">
+        </form>
 
-                        <span class="input-group-text">
-                            m³
-                        </span>
+        <hr *ngIf="isReferentView">
 
+
+
+        <!-- ===================================================== -->
+        <!-- EXERCICE 19 — ASSIFEP TEST 7 : POURCENTAGES -->
+        <!-- currentStep = 18 — 1 réponse — 1 point maximum -->
+        <!-- ===================================================== -->
+
+        <form *ngIf="isReferentView || currentStep === 18" [formGroup]="formEx19" (ngSubmit)="submitEx19()">
+
+            <!-- HEADER -->
+            <div class="title mb-4 d-flex flex-column flex-md-row
+                align-items-start align-items-md-center gap-2">
+
+                <span class="badge text-bg-dark text-white">
+                    <i class="bi bi-tag-fill me-2"></i>
+                    Catégorie : {{ steps[18].category }}
+                </span>
+
+                <div class="d-flex gap-2 ms-md-auto">
+
+                    <span class="badge text-bg-warning">
+                        Exercice 19
+                    </span>
+
+                    <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+                        Max {{ steps[18].maxScore }} PNTS
+                    </span>
+
+                    <!-- Score informatif, sans édition manuelle -->
+                    <span class="badge text-bg-dark">
+                        {{ getCurrentScore(18) }} PNTS
+                    </span>
+
+                </div>
+            </div>
+
+            <!-- ÉNONCÉ -->
+            <div class="alert bg-info">
+                <h5 class="fw-bold">CALCUL DE POURCENTAGES</h5>
+
+                <p class="mb-0">
+                    Lors d'un vote, deux listes se présentent.
+                    La liste A obtient 40 % des suffrages,
+                    soit 150 voix.
+                    La liste B obtient les 60 % restants.
+                    Combien de voix la liste B a-t-elle obtenues ?
+                </p>
+            </div>
+
+            <!-- DONNÉES : DEUX CARTES RESPONSIVES -->
+            <div class="row g-3 my-4">
+
+                <!-- LISTE A -->
+                <div class="col-12 col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body text-center py-4">
+
+                            <span class="badge text-bg-secondary mb-3">
+                                Liste A
+                            </span>
+
+                            <div class="fw-bold fs-3 mb-2">
+                                40 %
+                            </div>
+
+                            <div class="fw-semibold">
+                                150 voix
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LISTE B -->
+                <div class="col-12 col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body text-center py-4">
+
+                            <span class="badge text-bg-secondary mb-3">
+                                Liste B
+                            </span>
+
+                            <div class="fw-bold fs-3 mb-2">
+                                60 %
+                            </div>
+
+                            <div class="fw-semibold">
+                                Nombre de voix à calculer
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RÉPONSE NUMÉRIQUE -->
+            <div class="row justify-content-center my-4">
+                <div class="col-12 col-md-8 col-lg-6">
+
+                    <div class="card">
+                        <div class="card-body p-4">
+
+                            <label for="answerEx19" class="form-label fw-semibold">
+                                Combien de voix la liste B
+                                a-t-elle obtenues ?
+                            </label>
+
+                            <div class="input-group">
+
+                                <input type="text" inputmode="numeric" class="form-control" id="answerEx19"
+                                    formControlName="answer" placeholder="Votre résultat">
+
+                                <span class="input-group-text">
+                                    voix
+                                </span>
+
+                            </div>
+
+                        </div>
                     </div>
 
                 </div>
             </div>
 
+            <!-- TIMELINE -->
+            <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+                Temps donné : {{ steps[currentStep].duration }} secondes
+            </div>
+
+            <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4"
+                role="progressbar" aria-label="Progression de l'exercice" [attr.aria-valuenow]="progress"
+                aria-valuemin="0" aria-valuemax="100">
+
+                <div class="progress-bar" [style.width.%]="progress">
+                </div>
+
+            </div>
+
+            <!-- SOUMISSION -->
+            <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
+                Suivant
+            </button>
+
+        </form>
+
+        <hr *ngIf="isReferentView">
+
+
+
+
+
+
+        <!-- ===================================================== -->
+        <!-- EXERCICE 20 — ASSIFEP TEST 8 : QCM POURCENTAGES -->
+        <!-- currentStep = 19 — 5 affirmations — 5 points maximum -->
+        <!-- Correction tout ou rien -->
+        <!-- ===================================================== -->
+
+        <form *ngIf="isReferentView || (currentStep === 19 && !showFinalMessage)" [formGroup]="formEx20"
+            (ngSubmit)="submitEx20()">
+
+            <!-- HEADER -->
+            <div class="title mb-4 d-flex flex-column flex-md-row
+        align-items-start align-items-md-center gap-2">
+
+                <span class="badge text-bg-dark text-white">
+                    <i class="bi bi-tag-fill me-2"></i>
+                    Catégorie : {{ steps[19].category }}
+                </span>
+
+                <div class="d-flex gap-2 ms-md-auto">
+
+                    <span class="badge text-bg-warning">
+                        Exercice 20
+                    </span>
+
+                    <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+                        Max {{ steps[19].maxScore }} PNTS
+                    </span>
+
+                    <!-- Score informatif, sans édition manuelle -->
+                    <span class="badge text-bg-dark">
+                        {{ getCurrentScore(19) }} PNTS
+                    </span>
+
+                </div>
+            </div>
+
+            <!-- ÉNONCÉ COMMUN — ASSIFEP TEST 8 -->
+            <div class="alert bg-info">
+
+                <h5 class="fw-bold">
+                    RÉALISER DES CALCULS DE POURCENTAGES
+                    ET INTERPRÉTER DES DONNÉES CHIFFRÉES
+                </h5>
+
+                <p class="fw-semibold">
+                    Les objectifs visés par l'entreprise Lebonplan
+                    sont les suivants :
+                </p>
+
+                <ul class="mb-0">
+                    <li>
+                        Moins de 2 % de produits non-conformes
+                    </li>
+                    <li>
+                        Au moins 85 % de satisfaction clients
+                    </li>
+                    <li>
+                        A minima 40 % de femmes parmi
+                        les responsables d'ateliers
+                    </li>
+                </ul>
+
+            </div>
+
+            <!-- QCM — CINQ AFFIRMATIONS -->
+            <fieldset class="my-4">
+
+                <legend class="fs-5 fw-semibold mb-4">
+                    Cochez les affirmations exactes :
+                </legend>
+
+                <div class="row g-4">
+
+                    <!-- AFFIRMATION 1 -->
+                    <div class="col-12 col-xl-6">
+
+                        <div class="form-check">
+
+                            <input class="form-check-input" type="checkbox" id="answerEx20_1" formControlName="answer1">
+
+                            <label class="form-check-label" for="answerEx20_1">
+                                Sur 200 produits, 4 seulement peuvent
+                                être non-conformes.
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <!-- AFFIRMATION 2 -->
+                    <div class="col-12 col-xl-6">
+
+                        <div class="form-check">
+
+                            <input class="form-check-input" type="checkbox" id="answerEx20_2" formControlName="answer2">
+
+                            <label class="form-check-label" for="answerEx20_2">
+                                Sur 300 clients, 250 doivent
+                                être satisfaits.
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <!-- AFFIRMATION 3 -->
+                    <div class="col-12 col-xl-6">
+
+                        <div class="form-check">
+
+                            <input class="form-check-input" type="checkbox" id="answerEx20_3" formControlName="answer3">
+
+                            <label class="form-check-label" for="answerEx20_3">
+                                Sur 5 responsables d'ateliers,
+                                a minima 3 doivent être des femmes.
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <!-- AFFIRMATION 4 -->
+                    <div class="col-12 col-xl-6">
+
+                        <div class="form-check">
+
+                            <input class="form-check-input" type="checkbox" id="answerEx20_4" formControlName="answer4">
+
+                            <label class="form-check-label" for="answerEx20_4">
+                                Sur 25 clients, a minima 22 clients
+                                doivent être satisfaits.
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <!-- AFFIRMATION 5 -->
+                    <div class="col-12">
+
+                        <div class="form-check">
+
+                            <input class="form-check-input" type="checkbox" id="answerEx20_5" formControlName="answer5">
+
+                            <label class="form-check-label" for="answerEx20_5">
+                                Sur les 2 250 articles produits
+                                tous les jours, 45 ont été identifiés
+                                comme non-conformes.
+                                L'entreprise atteint bien son objectif.
+                            </label>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </fieldset>
+
+            <!-- TIMELINE -->
+            <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+                Temps donné : {{ steps[currentStep].duration }} secondes
+            </div>
+
+            <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4"
+                role="progressbar" aria-label="Progression de l'exercice" [attr.aria-valuenow]="progress"
+                aria-valuemin="0" aria-valuemax="100">
+
+                <div class="progress-bar" [style.width.%]="progress">
+                </div>
+
+            </div>
+
+            <!-- SOUMISSION -->
+            <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
+                Suivant
+            </button>
+
+        </form>
+
+        <hr *ngIf="isReferentView">
+
+
+
+        <!-- ===================================================== -->
+        <!-- FIN DE L'UNITÉ 4 — MESSAGE CANDIDAT -->
+        <!-- ===================================================== -->
+
+        <div *ngIf="showFinalMessage && !isReferentView" class="alert alert-success mt-3">
+
+            ✅ Bravo et merci d'avoir répondu aux questions.
+
+            <p class="mt-2 mb-1">
+                Vos résultats ont été enregistrés.
+            </p>
+
+            <p class="mb-0">
+                Un conseiller projet va prendre contact
+                avec vous pour en discuter.
+            </p>
+
         </div>
-    </div>
 
-    <!-- TIMELINE -->
-    <div *ngIf="steps && steps[currentStep]?.duration"
-         class="text-muted small mt-4 d-print-none">
-        Temps donné : {{ steps[currentStep].duration }} secondes
-    </div>
 
-    <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView"
-         class="progress mb-4"
-         role="progressbar"
-         aria-label="Progression de l'exercice"
-         [attr.aria-valuenow]="progress"
-         aria-valuemin="0"
-         aria-valuemax="100">
+        <!-- ===================================================== -->
+        <!-- SYNTHÈSE DES COMPÉTENCES — VUE RÉFÉRENT -->
+        <!-- ===================================================== -->
 
-        <div class="progress-bar"
-             [style.width.%]="progress">
+        <div *ngIf="isReferentView && aggregateState" class="mt-4 p-3 bg-light border rounded-0 nouvelle-page">
+
+            <h5 class="mb-3 text-primary">
+                📊 Synthèse des compétences (Vue Référent)
+            </h5>
+
+            <ul class="list-group list-group-flush">
+
+                <ng-container *ngFor="let score of aggregateState | keyvalue">
+
+                    <li *ngIf="score.key !== 'isFinal'" class="list-group-item bg-transparent
+                d-flex justify-content-between
+                align-items-center ps-0 border-bottom py-3">
+
+                        <div>
+
+                            <h6 class="mb-0 fw-bold">
+                                {{ score.key }}
+                            </h6>
+
+                            <small *ngIf="score.value !== null &&
+                        getCategoryMaxScore(score.key) as maxScore" class="text-muted">
+
+                                Note calculée :
+                                {{ ((score.value / maxScore) * 20)
+                                | number:'1.1-1' }} / 20
+
+                            </small>
+
+                        </div>
+
+                        <button *ngIf="score.value !== null &&
+                    getCategoryMaxScore(score.key) as maxScore" [disabled]="aggregateState['isFinal']"
+                            (click)="editCategoryScore(score.key)" type="button"
+                            class="btn btn-primary btn-sm rounded-0 fs-6">
+
+                            ⭐ {{ score.value }} / {{ maxScore }} pts
+
+                        </button>
+
+                        <button *ngIf="score.value === null" [disabled]="aggregateState['isFinal']"
+                            (click)="editCategoryScore(score.key)" type="button" class="btn btn-secondary btn-sm rounded-0
+                    fs-6 text-uppercase text-white">
+
+                            ✍️ Non scoré / À évaluer
+
+                        </button>
+
+                    </li>
+
+                </ng-container>
+
+            </ul>
+
+            <!-- NOTE GLOBALE -->
+
+            <div *ngIf="getGlobalScore() as global" class="mt-4 pt-3 d-flex justify-content-between
+         align-items-center">
+
+                <div>
+
+                    <h4 class="mb-0 text-dark fw-bold">
+                        Note Globale Finale
+                    </h4>
+
+                    <small class="text-muted">
+                        Basée sur un cumul de
+                        {{ global.obtenu }} / {{ global.max }} points
+                    </small>
+
+                </div>
+
+                <div class="text-end">
+
+                    <span class="fs-2 fw-black text-primary
+                border border-primary p-2 px-3 bg-white">
+
+                        {{ getGlobalNoteOn20() }} / 20
+
+                    </span>
+
+                </div>
+
+            </div>
+
         </div>
-
-    </div>
-
-    <!-- SOUMISSION -->
-    <button *ngIf="!isReferentView"
-            type="submit"
-            class="btn btn-primary mt-4">
-        Suivant
-    </button>
-
-</form>
-
-<hr *ngIf="isReferentView">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    </div>

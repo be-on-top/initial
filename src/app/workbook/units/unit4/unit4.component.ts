@@ -40,7 +40,7 @@ export class Unit4Component implements OnInit, OnDestroy {
   isReferentView: boolean = false;
 
 
-  currentStep = 11;
+  currentStep = 19;
 
   categories: string[] = [
     'Opérations de base',
@@ -110,7 +110,7 @@ export class Unit4Component implements OnInit, OnDestroy {
     { id: 'ex10', category: this.categories[1], duration: 150, maxScore: 3 },
 
 
-     // ASSIFEP — Test 5 REFACTO: 4 conversions de masse
+    // ASSIFEP — Test 5 REFACTO: 4 conversions de masse
     { id: 'ex11', category: this.categories[1], duration: 200, maxScore: 4 },
 
     // ASSIFEP — Test 5 : 500 kg en tonnes plus d'actualité fusionné avec ex11
@@ -152,25 +152,27 @@ export class Unit4Component implements OnInit, OnDestroy {
 
     { id: 'ex19', category: this.categories[3], duration: 150, maxScore: 1 },
 
-    // ASSIFEP — Test 8 : affirmation 1
-
-    { id: 'ex20', category: this.categories[3], duration: 100, maxScore: 1 },
+    // ASSIFEP — Test 8 : intégration en un seul QCM de 21 22 23 24
+    // { id: 'ex20', category: this.categories[3], duration: 100, maxScore: 1 },
+    // ASSIFEP — Test 8 : QCM regroupé
+    // 5 affirmations — 5 points maximum
+    { id: 'ex20', category: this.categories[3], duration: 500, maxScore: 5 }
 
     // ASSIFEP — Test 8 : affirmation 2
 
-    { id: 'ex21', category: this.categories[3], duration: 100, maxScore: 1 },
+    // { id: 'ex21', category: this.categories[3], duration: 100, maxScore: 1 },
 
     // ASSIFEP — Test 8 : affirmation 3
 
-    { id: 'ex22', category: this.categories[3], duration: 100, maxScore: 1 },
+    // { id: 'ex22', category: this.categories[3], duration: 100, maxScore: 1 },
 
     // ASSIFEP — Test 8 : affirmation 4
 
-    { id: 'ex23', category: this.categories[3], duration: 100, maxScore: 1 },
+    // { id: 'ex23', category: this.categories[3], duration: 100, maxScore: 1 },
 
     // ASSIFEP — Test 8 : affirmation 5
 
-    { id: 'ex24', category: this.categories[3], duration: 100, maxScore: 1 }
+    // { id: 'ex24', category: this.categories[3], duration: 100, maxScore: 1 }
 
   ];
 
@@ -192,7 +194,7 @@ export class Unit4Component implements OnInit, OnDestroy {
   formEx9!: FormGroup;
   formEx10!: FormGroup;
   formEx11!: FormGroup;
-  
+
   formEx12!: FormGroup;
   formEx13!: FormGroup;
   formEx14!: FormGroup;
@@ -521,7 +523,7 @@ export class Unit4Component implements OnInit, OnDestroy {
 
   };
 
-  
+
   // ======================================================
   // EX12 — PRO-FORMATION (ancien EX15)
   // Associer un objet à une forme géométrique
@@ -668,8 +670,15 @@ export class Unit4Component implements OnInit, OnDestroy {
   // Pas de champ justification.
   // ======================================================
 
-  // EX20 — Affirmation 1 (ancien EX24)
-  correctAnswerEx20 = false; // 4/200 = 2 %, objectif strictement < 2 %
+  // EX20 — Affirmation 1 (ancien EX24) REFACTO pour intégrer en un seul QCM 2021 22 2324
+  // correctAnswerEx20 = false; // 4/200 = 2 %, objectif strictement < 2 %
+  correctAnswersEx20 = {
+    answer1: false,
+    answer2: false,
+    answer3: false,
+    answer4: true,
+    answer5: false
+  };
 
   // EX21 — Affirmation 2 (ancien EX25)
   correctAnswerEx21 = false; // 250/300 < 85 %, minimum 255
@@ -884,7 +893,7 @@ export class Unit4Component implements OnInit, OnDestroy {
     });
 
 
-  
+
     // ======================================================
     // GÉOMÉTRIE / SURFACES / VOLUMES
     // ======================================================
@@ -945,11 +954,18 @@ export class Unit4Component implements OnInit, OnDestroy {
       answer: ['']
     });
 
-    // EX20 — ASSIFEP Test 8 (ancien EX24)
+    // EX20 — ASSIFEP Test 8 (ancien EX24) REFACTO pour intégrer en un seul QCM 21 22 23 24
     // Affirmation 1 — Vrai/Faux
     // null = non répondu ; true = Vrai ; false = Faux.
+    // this.formEx20 = this.fb.group({
+    //   answer: [null]
+    // });
     this.formEx20 = this.fb.group({
-      answer: [null]
+      answer1: [false],
+      answer2: [false],
+      answer3: [false],
+      answer4: [false],
+      answer5: [false]
     });
 
     // EX21 — ASSIFEP Test 8 (ancien EX25)
@@ -1186,7 +1202,7 @@ export class Unit4Component implements OnInit, OnDestroy {
   //   this.saveExercise('ex11', this.formEx11, score);
   // }
 
-  
+
   // ------------------------------------------------------
   // EX11 — ASSIFEP Test 5 REFACTO : quatre conversions de masse
   // Regroupement des anciens EX11 à EX14
@@ -1208,7 +1224,7 @@ export class Unit4Component implements OnInit, OnDestroy {
   }
 
 
-  
+
   // ------------------------------------------------------
   // EX12 — PRO-FORMATION (ancien EX15)
   // Cinq associations image / forme géométrique
@@ -1331,22 +1347,43 @@ export class Unit4Component implements OnInit, OnDestroy {
   }
 
   // ------------------------------------------------------
-  // EX20 — ASSIFEP Test 8 (ancienne affirmation EX24)
+  // EX20 — ASSIFEP Test 8 (ancienne affirmation EX24) REFACTO pour intégrer en un seul QCM 21 22 23 24
   // Affirmation 1 : choix Vrai / Faux
+  // ------------------------------------------------------
+  // submitEx20(): void {
+  //   if (this.alreadySubmitted) return;
+
+  //   // Une réponse non sélectionnée (null) ne rapporte aucun point.
+  //   // Accepte les booléens ou les chaînes transmises par des radios HTML.
+  //   const raw = this.formEx20.value.answer;
+  //   const answer: boolean | null = (raw === true || raw === 'true')
+  //     ? true
+  //     : (raw === false || raw === 'false')
+  //       ? false
+  //       : null;
+
+  //   const score = answer !== null && answer === this.correctAnswerEx20 ? 1 : 0;
+
+  //   this.alreadySubmitted = true;
+  //   this.saveExercise('ex20', this.formEx20, score);
+  // }
+  // ------------------------------------------------------
+  // EX20 — ASSIFEP Test 8 : QCM de cinq affirmations NOUVELLE VERSION
+  // Tout ou rien : exactement la quatrième case cochée
   // ------------------------------------------------------
   submitEx20(): void {
     if (this.alreadySubmitted) return;
 
-    // Une réponse non sélectionnée (null) ne rapporte aucun point.
-    // Accepte les booléens ou les chaînes transmises par des radios HTML.
-    const raw = this.formEx20.value.answer;
-    const answer: boolean | null = (raw === true || raw === 'true')
-      ? true
-      : (raw === false || raw === 'false')
-        ? false
-        : null;
+    const answers = this.formEx20.value;
 
-    const score = answer !== null && answer === this.correctAnswerEx20 ? 1 : 0;
+    const isCorrect =
+      answers.answer1 === this.correctAnswersEx20.answer1 &&
+      answers.answer2 === this.correctAnswersEx20.answer2 &&
+      answers.answer3 === this.correctAnswersEx20.answer3 &&
+      answers.answer4 === this.correctAnswersEx20.answer4 &&
+      answers.answer5 === this.correctAnswersEx20.answer5;
+
+    const score = isCorrect ? 5 : 0;
 
     this.alreadySubmitted = true;
     this.saveExercise('ex20', this.formEx20, score);
@@ -1356,92 +1393,89 @@ export class Unit4Component implements OnInit, OnDestroy {
   // EX21 — ASSIFEP Test 8 (ancienne affirmation EX25)
   // Affirmation 2 : choix Vrai / Faux
   // ------------------------------------------------------
-  submitEx21(): void {
-    if (this.alreadySubmitted) return;
+  // submitEx21(): void {
+  //   if (this.alreadySubmitted) return;
 
-    // Une réponse non sélectionnée (null) ne rapporte aucun point.
-    // Accepte les booléens ou les chaînes transmises par des radios HTML.
-    const raw = this.formEx21.value.answer;
-    const answer: boolean | null = (raw === true || raw === 'true')
-      ? true
-      : (raw === false || raw === 'false')
-        ? false
-        : null;
+  //   // Une réponse non sélectionnée (null) ne rapporte aucun point.
+  //   // Accepte les booléens ou les chaînes transmises par des radios HTML.
+  //   const raw = this.formEx21.value.answer;
+  //   const answer: boolean | null = (raw === true || raw === 'true')
+  //     ? true
+  //     : (raw === false || raw === 'false')
+  //       ? false
+  //       : null;
 
-    const score = answer !== null && answer === this.correctAnswerEx21 ? 1 : 0;
+  //   const score = answer !== null && answer === this.correctAnswerEx21 ? 1 : 0;
 
-    this.alreadySubmitted = true;
-    this.saveExercise('ex21', this.formEx21, score);
-  }
+  //   this.alreadySubmitted = true;
+  //   this.saveExercise('ex21', this.formEx21, score);
+  // }
 
   // ------------------------------------------------------
   // EX22 — ASSIFEP Test 8 (ancienne affirmation EX26)
   // Affirmation 3 : choix Vrai / Faux
   // ------------------------------------------------------
-  submitEx22(): void {
-    if (this.alreadySubmitted) return;
+  // submitEx22(): void {
+  //   if (this.alreadySubmitted) return;
 
-    // Une réponse non sélectionnée (null) ne rapporte aucun point.
-    // Accepte les booléens ou les chaînes transmises par des radios HTML.
-    const raw = this.formEx22.value.answer;
-    const answer: boolean | null = (raw === true || raw === 'true')
-      ? true
-      : (raw === false || raw === 'false')
-        ? false
-        : null;
+  //   // Une réponse non sélectionnée (null) ne rapporte aucun point.
+  //   // Accepte les booléens ou les chaînes transmises par des radios HTML.
+  //   const raw = this.formEx22.value.answer;
+  //   const answer: boolean | null = (raw === true || raw === 'true')
+  //     ? true
+  //     : (raw === false || raw === 'false')
+  //       ? false
+  //       : null;
 
-    const score = answer !== null && answer === this.correctAnswerEx22 ? 1 : 0;
+  //   const score = answer !== null && answer === this.correctAnswerEx22 ? 1 : 0;
 
-    this.alreadySubmitted = true;
-    this.saveExercise('ex22', this.formEx22, score);
-  }
+  //   this.alreadySubmitted = true;
+  //   this.saveExercise('ex22', this.formEx22, score);
+  // }
 
   // ------------------------------------------------------
   // EX23 — ASSIFEP Test 8 (ancienne affirmation EX27)
   // Affirmation 4 : choix Vrai / Faux
   // ------------------------------------------------------
-  submitEx23(): void {
-    if (this.alreadySubmitted) return;
+  // submitEx23(): void {
+  //   if (this.alreadySubmitted) return;
 
-    // Une réponse non sélectionnée (null) ne rapporte aucun point.
-    // Accepte les booléens ou les chaînes transmises par des radios HTML.
-    const raw = this.formEx23.value.answer;
-    const answer: boolean | null = (raw === true || raw === 'true')
-      ? true
-      : (raw === false || raw === 'false')
-        ? false
-        : null;
+  //   // Une réponse non sélectionnée (null) ne rapporte aucun point.
+  //   // Accepte les booléens ou les chaînes transmises par des radios HTML.
+  //   const raw = this.formEx23.value.answer;
+  //   const answer: boolean | null = (raw === true || raw === 'true')
+  //     ? true
+  //     : (raw === false || raw === 'false')
+  //       ? false
+  //       : null;
 
-    const score = answer !== null && answer === this.correctAnswerEx23 ? 1 : 0;
+  //   const score = answer !== null && answer === this.correctAnswerEx23 ? 1 : 0;
 
-    this.alreadySubmitted = true;
-    this.saveExercise('ex23', this.formEx23, score);
-  }
+  //   this.alreadySubmitted = true;
+  //   this.saveExercise('ex23', this.formEx23, score);
+  // }
 
   // ------------------------------------------------------
   // EX24 — ASSIFEP Test 8 (ancienne affirmation EX28)
   // Affirmation 5 : choix Vrai / Faux
   // ------------------------------------------------------
-  submitEx24(): void {
-    if (this.alreadySubmitted) return;
+  // submitEx24(): void {
+  //   if (this.alreadySubmitted) return;
 
-    // Une réponse non sélectionnée (null) ne rapporte aucun point.
-    // Accepte les booléens ou les chaînes transmises par des radios HTML.
-    const raw = this.formEx24.value.answer;
-    const answer: boolean | null = (raw === true || raw === 'true')
-      ? true
-      : (raw === false || raw === 'false')
-        ? false
-        : null;
+  //   // Une réponse non sélectionnée (null) ne rapporte aucun point.
+  //   // Accepte les booléens ou les chaînes transmises par des radios HTML.
+  //   const raw = this.formEx24.value.answer;
+  //   const answer: boolean | null = (raw === true || raw === 'true')
+  //     ? true
+  //     : (raw === false || raw === 'false')
+  //       ? false
+  //       : null;
 
-    const score = answer !== null && answer === this.correctAnswerEx24 ? 1 : 0;
+  //   const score = answer !== null && answer === this.correctAnswerEx24 ? 1 : 0;
 
-    this.alreadySubmitted = true;
-    this.saveExercise('ex24', this.formEx24, score);
-  }
-
-
-
+  //   this.alreadySubmitted = true;
+  //   this.saveExercise('ex24', this.formEx24, score);
+  // }
 
 
 
@@ -1616,9 +1650,9 @@ export class Unit4Component implements OnInit, OnDestroy {
       case 'ex18': this.submitEx18(); break;
       case 'ex19': this.submitEx19(); break;
       case 'ex20': this.submitEx20(); break;
-      case 'ex21': this.submitEx21(); break;
-      case 'ex23': this.submitEx23(); break;
-      case 'ex24': this.submitEx24(); break;
+      // case 'ex21': this.submitEx21(); break;
+      // case 'ex23': this.submitEx23(); break;
+      // case 'ex24': this.submitEx24(); break;
 
       default:
         console.warn(`Aucune soumission associée à l'étape : ${exId ?? 'inconnue'}`);
@@ -1994,13 +2028,13 @@ export class Unit4Component implements OnInit, OnDestroy {
       case 'ex18': return this.formEx18;
       case 'ex19': return this.formEx19;
       case 'ex20': return this.formEx20;
-      case 'ex21': return this.formEx21;
-      case 'ex23': return this.formEx23;
-      case 'ex24': return this.formEx24;
-      case 'ex25': return this.formEx25;
-      case 'ex26': return this.formEx26;
-      case 'ex27': return this.formEx27;
-      case 'ex28': return this.formEx28;
+      // case 'ex21': return this.formEx21;
+      // case 'ex23': return this.formEx23;
+      // case 'ex24': return this.formEx24;
+      // case 'ex25': return this.formEx25;
+      // case 'ex26': return this.formEx26;
+      // case 'ex27': return this.formEx27;
+      // case 'ex28': return this.formEx28;
       default: return null;
     }
   }
