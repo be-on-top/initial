@@ -1867,6 +1867,452 @@
         <hr *ngIf="isReferentView">
 
 
+        <!-- ===================================================== -->
+        <!-- EXERCICE 16 — ASSIFEP TEST 6 : SURFACE D'UNE PALETTE -->
+        <!-- currentStep = 15 — 1 réponse — 1 point maximum -->
+        <!-- ===================================================== -->
+
+        <form *ngIf="isReferentView || currentStep === 15" [formGroup]="formEx16" (ngSubmit)="submitEx16()">
+
+            <!-- HEADER -->
+            <div class="title mb-4 d-flex flex-column flex-md-row
+                align-items-start align-items-md-center gap-2">
+
+                <span class="badge text-bg-dark text-white">
+                    <i class="bi bi-tag-fill me-2"></i>
+                    Catégorie : {{ steps[15].category }}
+                </span>
+
+                <div class="d-flex gap-2 ms-md-auto">
+
+                    <span class="badge text-bg-warning">
+                        Exercice 16
+                    </span>
+
+                    <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+                        Max {{ steps[15].maxScore }} PNTS
+                    </span>
+
+                    <!-- Score informatif, sans édition manuelle -->
+                    <span class="badge text-bg-dark">
+                        {{ getCurrentScore(15) }} PNTS
+                    </span>
+
+                </div>
+            </div>
+
+            <!-- ÉNONCÉ -->
+            <div class="alert bg-info">
+                <h5 class="fw-bold">SURFACE D'UNE PALETTE</h5>
+
+                <p class="mb-0">
+                    Une palette rectangulaire possède les dimensions
+                    indiquées ci-dessous.
+                    Calculez sa surface en mètres carrés (m²).
+                </p>
+            </div>
+
+            <!-- DIMENSIONS : CARTES RESPONSIVES -->
+            <div class="row g-3 my-4">
+
+                <!-- LONGUEUR -->
+                <div class="col-12 col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body text-center py-4">
+
+                            <span class="badge text-bg-secondary mb-3">
+                                Longueur
+                            </span>
+
+                            <div class="fw-bold fs-3">
+                                120 cm
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LARGEUR -->
+                <div class="col-12 col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body text-center py-4">
+
+                            <span class="badge text-bg-secondary mb-3">
+                                Largeur
+                            </span>
+
+                            <div class="fw-bold fs-3">
+                                80 cm
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RÉPONSE NUMÉRIQUE -->
+            <div class="row justify-content-center my-4">
+                <div class="col-12 col-md-8 col-lg-6">
+
+                    <div class="card">
+                        <div class="card-body p-4">
+
+                            <label for="answerEx16" class="form-label fw-semibold">
+                                Quelle est la surface de la palette ?
+                            </label>
+
+                            <div class="input-group">
+
+                                <input type="text" inputmode="decimal" class="form-control" id="answerEx16"
+                                    formControlName="answer" placeholder="Votre résultat">
+
+                                <span class="input-group-text">
+                                    m²
+                                </span>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- TIMELINE -->
+            <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+                Temps donné : {{ steps[currentStep].duration }} secondes
+            </div>
+
+            <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4"
+                role="progressbar" aria-label="Progression de l'exercice" [attr.aria-valuenow]="progress"
+                aria-valuemin="0" aria-valuemax="100">
+
+                <div class="progress-bar" [style.width.%]="progress">
+                </div>
+
+            </div>
+
+            <!-- SOUMISSION -->
+            <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
+                Suivant
+            </button>
+
+        </form>
+
+        <hr *ngIf="isReferentView">
+
+
+        <!-- ===================================================== -->
+        <!-- EXERCICE 17 — ASSIFEP TEST 6 : SURFACE D'UNE REMORQUE -->
+        <!-- currentStep = 16 — 1 réponse — 1 point maximum -->
+        <!-- ===================================================== -->
+
+        <form *ngIf="isReferentView || currentStep === 16" [formGroup]="formEx17" (ngSubmit)="submitEx17()">
+
+            <!-- HEADER -->
+            <div class="title mb-4 d-flex flex-column flex-md-row
+                align-items-start align-items-md-center gap-2">
+
+                <span class="badge text-bg-dark text-white">
+                    <i class="bi bi-tag-fill me-2"></i>
+                    Catégorie : {{ steps[16].category }}
+                </span>
+
+                <div class="d-flex gap-2 ms-md-auto">
+
+                    <span class="badge text-bg-warning">
+                        Exercice 17
+                    </span>
+
+                    <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
+                        Max {{ steps[16].maxScore }} PNTS
+                    </span>
+
+                    <!-- Score informatif, sans édition manuelle -->
+                    <span class="badge text-bg-dark">
+                        {{ getCurrentScore(16) }} PNTS
+                    </span>
+
+                </div>
+            </div>
+
+            <!-- ÉNONCÉ -->
+            <div class="alert bg-info">
+                <h5 class="fw-bold">SURFACE D'UNE REMORQUE</h5>
+
+                <p class="mb-0">
+                    Une remorque rectangulaire possède les dimensions
+                    indiquées ci-dessous.
+                    Calculez la surface de son plancher en mètres carrés (m²).
+                </p>
+            </div>
+
+            <!-- DIMENSIONS : CARTES RESPONSIVES -->
+            <div class="row g-3 my-4">
+
+                <!-- LONGUEUR -->
+                <div class="col-12 col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body text-center py-4">
+
+                            <span class="badge text-bg-secondary mb-3">
+                                Longueur
+                            </span>
+
+                            <div class="fw-bold fs-3">
+                                13,50 m
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LARGEUR -->
+                <div class="col-12 col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body text-center py-4">
+
+                            <span class="badge text-bg-secondary mb-3">
+                                Largeur
+                            </span>
+
+                            <div class="fw-bold fs-3">
+                                2,44 m
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RÉPONSE NUMÉRIQUE -->
+            <div class="row justify-content-center my-4">
+                <div class="col-12 col-md-8 col-lg-6">
+
+                    <div class="card">
+                        <div class="card-body p-4">
+
+                            <label for="answerEx17" class="form-label fw-semibold">
+                                Quelle est la surface du plancher
+                                de la remorque ?
+                            </label>
+
+                            <div class="input-group">
+
+                                <input type="text" inputmode="decimal" class="form-control" id="answerEx17"
+                                    formControlName="answer" placeholder="Votre résultat">
+
+                                <span class="input-group-text">
+                                    m²
+                                </span>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- TIMELINE -->
+            <div *ngIf="steps && steps[currentStep]?.duration" class="text-muted small mt-4 d-print-none">
+                Temps donné : {{ steps[currentStep].duration }} secondes
+            </div>
+
+            <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView" class="progress mb-4"
+                role="progressbar" aria-label="Progression de l'exercice" [attr.aria-valuenow]="progress"
+                aria-valuemin="0" aria-valuemax="100">
+
+                <div class="progress-bar" [style.width.%]="progress">
+                </div>
+
+            </div>
+
+            <!-- SOUMISSION -->
+            <button *ngIf="!isReferentView" type="submit" class="btn btn-primary mt-4">
+                Suivant
+            </button>
+
+        </form>
+
+        <hr *ngIf="isReferentView">
+
+        
+<!-- ===================================================== -->
+<!-- EXERCICE 18 — ASSIFEP TEST 6 : VOLUME D'UNE REMORQUE -->
+<!-- currentStep = 17 — 1 réponse — 1 point maximum -->
+<!-- ===================================================== -->
+
+<form *ngIf="isReferentView || currentStep === 17"
+      [formGroup]="formEx18"
+      (ngSubmit)="submitEx18()">
+
+    <!-- HEADER -->
+    <div class="title mb-4 d-flex flex-column flex-md-row
+                align-items-start align-items-md-center gap-2">
+
+        <span class="badge text-bg-dark text-white">
+            <i class="bi bi-tag-fill me-2"></i>
+            Catégorie : {{ steps[17].category }}
+        </span>
+
+        <div class="d-flex gap-2 ms-md-auto">
+
+            <span class="badge text-bg-warning">
+                Exercice 18
+            </span>
+
+            <span *ngIf="isReferentView"
+                  class="badge border border-secondary text-secondary">
+                Max {{ steps[17].maxScore }} PNTS
+            </span>
+
+            <!-- Score informatif, sans édition manuelle -->
+            <span class="badge text-bg-dark">
+                {{ getCurrentScore(17) }} PNTS
+            </span>
+
+        </div>
+    </div>
+
+    <!-- ÉNONCÉ -->
+    <div class="alert bg-info">
+        <h5 class="fw-bold">VOLUME D'UNE REMORQUE</h5>
+
+        <p class="mb-0">
+            Une remorque possède les dimensions intérieures
+            indiquées ci-dessous.
+            Calculez son volume en mètres cubes (m³).
+        </p>
+    </div>
+
+    <!-- TROIS DIMENSIONS : CARTES RESPONSIVES -->
+    <div class="row g-3 my-4">
+
+        <!-- LONGUEUR -->
+        <div class="col-12 col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center py-4">
+
+                    <span class="badge text-bg-secondary mb-3">
+                        Longueur
+                    </span>
+
+                    <div class="fw-bold fs-3">
+                        13,50 m
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- LARGEUR -->
+        <div class="col-12 col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center py-4">
+
+                    <span class="badge text-bg-secondary mb-3">
+                        Largeur
+                    </span>
+
+                    <div class="fw-bold fs-3">
+                        2,44 m
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- HAUTEUR -->
+        <div class="col-12 col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center py-4">
+
+                    <span class="badge text-bg-secondary mb-3">
+                        Hauteur
+                    </span>
+
+                    <div class="fw-bold fs-3">
+                        4 m
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- RÉPONSE NUMÉRIQUE -->
+    <div class="row justify-content-center my-4">
+        <div class="col-12 col-md-8 col-lg-6">
+
+            <div class="card">
+                <div class="card-body p-4">
+
+                    <label for="answerEx18"
+                           class="form-label fw-semibold">
+                        Quel est le volume de la remorque ?
+                    </label>
+
+                    <div class="input-group">
+
+                        <input
+                            type="text"
+                            inputmode="decimal"
+                            class="form-control"
+                            id="answerEx18"
+                            formControlName="answer"
+                            placeholder="Votre résultat">
+
+                        <span class="input-group-text">
+                            m³
+                        </span>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- TIMELINE -->
+    <div *ngIf="steps && steps[currentStep]?.duration"
+         class="text-muted small mt-4 d-print-none">
+        Temps donné : {{ steps[currentStep].duration }} secondes
+    </div>
+
+    <div *ngIf="steps && steps[currentStep]?.duration && !isReferentView"
+         class="progress mb-4"
+         role="progressbar"
+         aria-label="Progression de l'exercice"
+         [attr.aria-valuenow]="progress"
+         aria-valuemin="0"
+         aria-valuemax="100">
+
+        <div class="progress-bar"
+             [style.width.%]="progress">
+        </div>
+
+    </div>
+
+    <!-- SOUMISSION -->
+    <button *ngIf="!isReferentView"
+            type="submit"
+            class="btn btn-primary mt-4">
+        Suivant
+    </button>
+
+</form>
+
+<hr *ngIf="isReferentView">
+
+
+
+
+
 
 
 
