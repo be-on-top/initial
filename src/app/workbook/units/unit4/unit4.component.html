@@ -85,12 +85,15 @@
 
                     </span>
 
-                    <span class="badge text-bg-dark"
+                    <!-- <span class="badge text-bg-dark"
                         [class.clickable-step-badge]="isReferentView && !aggregateState['isFinal']"
                         (click)="isReferentView && !aggregateState['isFinal'] && editStepScore(0)">
 
                         {{ getCurrentScore(0) }} PNTS
 
+                    </span> -->
+                    <span class="badge text-bg-dark">
+                        {{ getCurrentScore(0) }} PNTS
                     </span>
 
                 </div>
@@ -192,12 +195,15 @@
 
                     </span>
 
-                    <span class="badge text-bg-dark"
+                    <!-- <span class="badge text-bg-dark"
                         [class.clickable-step-badge]="isReferentView && !aggregateState['isFinal']"
                         (click)="isReferentView && !aggregateState['isFinal'] && editStepScore(1)">
 
                         {{ getCurrentScore(1) }} PNTS
 
+                    </span> -->
+                    <span class="badge text-bg-dark">
+                        {{ getCurrentScore(1) }} PNTS
                     </span>
 
                 </div>
@@ -266,7 +272,7 @@
         <!-- EXERCICE 3 - MULTIPLICATION -->
         <!-- ===================================================== -->
 
-        <form *ngIf="isReferentView || currentStep === 2" [formGroup]="formEx3" (ngSubmit)="submitEx3()">
+        <form class="nouvelle-page" *ngIf="isReferentView || currentStep === 2" [formGroup]="formEx3" (ngSubmit)="submitEx3()">
 
             <div class="title mb-4 d-flex flex-column flex-md-row
                   align-items-start align-items-md-center gap-2">
@@ -288,12 +294,8 @@
 
                     </span>
 
-                    <span class="badge text-bg-dark"
-                        [class.clickable-step-badge]="isReferentView && !aggregateState['isFinal']"
-                        (click)="isReferentView && !aggregateState['isFinal'] && editStepScore(2)">
-
+                    <span class="badge text-bg-dark">
                         {{ getCurrentScore(2) }} PNTS
-
                     </span>
 
                 </div>
@@ -379,9 +381,12 @@
                         Max {{ steps[3].maxScore }} PNTS
                     </span>
 
-                    <span class="badge text-bg-dark"
+                    <!-- <span class="badge text-bg-dark"
                         [class.clickable-step-badge]="isReferentView && !aggregateState['isFinal']"
                         (click)="isReferentView && !aggregateState['isFinal'] && editStepScore(3)">
+                        {{ getCurrentScore(3) }} PNTS
+                    </span> -->
+                    <span class="badge text-bg-dark">
                         {{ getCurrentScore(3) }} PNTS
                     </span>
 
@@ -502,7 +507,7 @@
         <!-- À INSÉRER APRÈS LE FORMULAIRE DE L'EXERCICE 4 -->
         <!-- ===================================================== -->
 
-        <form *ngIf="isReferentView || currentStep === 4" [formGroup]="formEx5" (ngSubmit)="submitEx5()">
+        <form class="nouvelle-page" *ngIf="isReferentView || currentStep === 4" [formGroup]="formEx5" (ngSubmit)="submitEx5()">
 
             <!-- HEADER -->
             <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
@@ -517,10 +522,13 @@
                     <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">
                         Max {{ steps[4].maxScore }} PNTS
                     </span>
-
+                    <!-- 
                     <span class="badge text-bg-dark"
                         [class.clickable-step-badge]="isReferentView && !aggregateState['isFinal']"
                         (click)="isReferentView && !aggregateState['isFinal'] && editStepScore(4)">
+                        {{ getCurrentScore(4) }} PNTS
+                    </span> -->
+                    <span class="badge text-bg-dark">
                         {{ getCurrentScore(4) }} PNTS
                     </span>
                 </div>
@@ -575,7 +583,7 @@
         <!-- currentStep = 5 — 4 réponses — 4 points maximum -->
         <!-- ===================================================== -->
 
-        <form *ngIf="isReferentView || currentStep === 5" [formGroup]="formEx6" (ngSubmit)="submitEx6()">
+        <form class="nouvelle-page" *ngIf="isReferentView || currentStep === 5" [formGroup]="formEx6" (ngSubmit)="submitEx6()">
 
             <!-- HEADER -->
             <div class="title mb-4 d-flex flex-column flex-md-row
@@ -686,7 +694,7 @@
         <!-- currentStep = 6 — 5 points maximum -->
         <!-- ===================================================== -->
 
-        <form *ngIf="isReferentView || currentStep === 6" [formGroup]="formEx7" (ngSubmit)="submitEx7()">
+        <form class="nouvelle-page" *ngIf="isReferentView || currentStep === 6" [formGroup]="formEx7" (ngSubmit)="submitEx7()">
 
             <!-- HEADER -->
             <div class="title mb-4 d-flex flex-column flex-md-row
@@ -775,7 +783,7 @@
         <!-- currentStep = 7 — 6 réponses — 6 points maximum -->
         <!-- ===================================================== -->
 
-        <form *ngIf="isReferentView || currentStep === 7" [formGroup]="formEx8" (ngSubmit)="submitEx8()">
+        <form class="nouvelle-page" *ngIf="isReferentView || currentStep === 7" [formGroup]="formEx8" (ngSubmit)="submitEx8()">
 
             <!-- HEADER -->
             <div class="title mb-4 d-flex flex-column flex-md-row
@@ -890,7 +898,7 @@
         <!-- currentStep = 8 — 3 réponses — 3 points maximum -->
         <!-- ===================================================== -->
 
-        <form *ngIf="isReferentView || currentStep === 8" [formGroup]="formEx9" (ngSubmit)="submitEx9()">
+        <form class="nouvelle-page" *ngIf="isReferentView || currentStep === 8" [formGroup]="formEx9" (ngSubmit)="submitEx9()">
 
             <!-- HEADER -->
             <div class="title mb-4 d-flex flex-column flex-md-row
@@ -1018,7 +1026,7 @@
         <!-- currentStep = 9 — 3 réponses — 3 points maximum -->
         <!-- ===================================================== -->
 
-        <form *ngIf="isReferentView || currentStep === 9" [formGroup]="formEx10" (ngSubmit)="submitEx10()">
+        <form class="nouvelle-page" *ngIf="isReferentView || currentStep === 9" [formGroup]="formEx10" (ngSubmit)="submitEx10()">
 
             <!-- HEADER -->
             <div class="title mb-4 d-flex flex-column flex-md-row
@@ -1185,7 +1193,7 @@
         <!-- Regroupement des anciens EX11 à EX14 -->
         <!-- ===================================================== -->
 
-        <form *ngIf="isReferentView || currentStep === 10" [formGroup]="formEx11" (ngSubmit)="submitEx11()">
+        <form class="nouvelle-page" *ngIf="isReferentView || currentStep === 10" [formGroup]="formEx11" (ngSubmit)="submitEx11()">
 
             <!-- HEADER -->
             <div class="title mb-4 d-flex flex-column flex-md-row
@@ -1388,7 +1396,7 @@
         <!-- currentStep = 11 — 5 réponses — 5 points maximum -->
         <!-- ===================================================== -->
 
-        <form *ngIf="isReferentView || currentStep === 11" [formGroup]="formEx12" (ngSubmit)="submitEx12()">
+        <form class="nouvelle-page ex12" *ngIf="isReferentView || currentStep === 11" [formGroup]="formEx12" (ngSubmit)="submitEx12()">
 
             <!-- HEADER -->
             <div class="title mb-4 d-flex flex-column flex-md-row
@@ -1431,13 +1439,14 @@
             <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3
                 row-cols-xxl-5 g-3 my-4">
 
+                
+
                 <div *ngFor="let item of ex12Items" class="col">
 
                     <div class="card h-100">
 
                         <!-- Illustration de l'objet -->
-                        <img [src]="item.image" [alt]="item.label" class="card-img-top"
-                            style="height: 160px; object-fit: contain;">
+                        <img [src]="item.image" [alt]="item.label" class="card-img-top">
 
                         <div class="card-body d-flex flex-column">
 
@@ -1610,7 +1619,7 @@
         <!-- currentStep = 13 — 1 réponse — 1 point maximum -->
         <!-- ===================================================== -->
 
-        <form *ngIf="isReferentView || currentStep === 13" [formGroup]="formEx14" (ngSubmit)="submitEx14()">
+        <form class="nouvelle-page" *ngIf="isReferentView || currentStep === 13" [formGroup]="formEx14" (ngSubmit)="submitEx14()">
 
             <!-- HEADER -->
             <div class="title mb-4 d-flex flex-column flex-md-row
@@ -1872,7 +1881,7 @@
         <!-- currentStep = 15 — 1 réponse — 1 point maximum -->
         <!-- ===================================================== -->
 
-        <form *ngIf="isReferentView || currentStep === 15" [formGroup]="formEx16" (ngSubmit)="submitEx16()">
+        <form class="nouvelle-page" *ngIf="isReferentView || currentStep === 15" [formGroup]="formEx16" (ngSubmit)="submitEx16()">
 
             <!-- HEADER -->
             <div class="title mb-4 d-flex flex-column flex-md-row
@@ -2008,7 +2017,7 @@
         <!-- currentStep = 16 — 1 réponse — 1 point maximum -->
         <!-- ===================================================== -->
 
-        <form *ngIf="isReferentView || currentStep === 16" [formGroup]="formEx17" (ngSubmit)="submitEx17()">
+        <form class="nouvelle-page" *ngIf="isReferentView || currentStep === 16" [formGroup]="formEx17" (ngSubmit)="submitEx17()">
 
             <!-- HEADER -->
             <div class="title mb-4 d-flex flex-column flex-md-row
@@ -2145,7 +2154,7 @@
         <!-- currentStep = 17 — 1 réponse — 1 point maximum -->
         <!-- ===================================================== -->
 
-        <form *ngIf="isReferentView || currentStep === 17" [formGroup]="formEx18" (ngSubmit)="submitEx18()">
+        <form  *ngIf="isReferentView || currentStep === 17" [formGroup]="formEx18" (ngSubmit)="submitEx18()">
 
             <!-- HEADER -->
             <div class="title mb-4 d-flex flex-column flex-md-row
@@ -2299,7 +2308,7 @@
         <!-- currentStep = 18 — 1 réponse — 1 point maximum -->
         <!-- ===================================================== -->
 
-        <form *ngIf="isReferentView || currentStep === 18" [formGroup]="formEx19" (ngSubmit)="submitEx19()">
+        <form class="nouvelle-page" *ngIf="isReferentView || currentStep === 18" [formGroup]="formEx19" (ngSubmit)="submitEx19()">
 
             <!-- HEADER -->
             <div class="title mb-4 d-flex flex-column flex-md-row
@@ -2441,17 +2450,13 @@
         <hr *ngIf="isReferentView">
 
 
-
-
-
-
         <!-- ===================================================== -->
         <!-- EXERCICE 20 — ASSIFEP TEST 8 : QCM POURCENTAGES -->
         <!-- currentStep = 19 — 5 affirmations — 5 points maximum -->
         <!-- Correction tout ou rien -->
         <!-- ===================================================== -->
 
-        <form *ngIf="isReferentView || (currentStep === 19 && !showFinalMessage)" [formGroup]="formEx20"
+        <form class="nouvelle-page" *ngIf="isReferentView || (currentStep === 19 && !showFinalMessage)" [formGroup]="formEx20"
             (ngSubmit)="submitEx20()">
 
             <!-- HEADER -->
@@ -2733,4 +2738,44 @@
 
             </div>
 
+
+
+
         </div>
+
+
+
+        <div *ngIf="isReferentView" class="mb-4 mt-3">
+            <label for="commentaireReferent" class="form-label text-secondary">
+                <i class="bi bi-chat-left-text-fill me-2"></i>Commentaire et observations :
+            </label>
+
+            <textarea id="commentaireReferent" class="form-control rounded-0" rows="3"
+                placeholder="Saisissez vos observations sur le candidat ici..." [formControl]="commentCtrl"
+                [attr.disabled]="aggregateState['isFinal'] ? true : null" (blur)="saveCommentReferent()">
+  </textarea>
+        </div>
+
+        <!-- pour afficher le bouton ou le badge de confirmation proprement selon l'état de la base : -->
+        <button *ngIf="isReferentView && !aggregateState['isFinal']" type="button" class="btn btn-danger my-3"
+            (click)="cloturerEvaluation()">
+            <i class="bi bi-lock-fill me-2"></i>Clôturer l'évaluation
+        </button>
+
+        <ng-container *ngIf="aggregateState['isFinal']">
+            <div class="alert alert-success my-3 p-2 text-center">
+                <i class="bi bi-check-circle-fill me-2"></i> Évaluation clôturée définitivement. Les notes sont figées.
+            </div>
+
+            <!-- pour afficher le bouton impression PDF : -->
+            <div *ngIf="isReferentView" class="text-center my-4 d-print-none">
+                <button type="button" class="btn btn-primary" (click)="printPage()">
+                    <i class="bi bi-printer-fill me-2"></i>
+                    Imprimer / Enregistrer en PDF
+                </button>
+                <p class="text-muted small mt-2">
+                    💡 Dans la fenêtre qui s'ouvre, choisissez <b>"Enregistrer au format PDF"</b> pour l'envoyer par
+                    mail.
+                </p>
+            </div>
+        </ng-container>

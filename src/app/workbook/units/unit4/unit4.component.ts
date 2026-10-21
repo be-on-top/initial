@@ -1371,6 +1371,12 @@ export class Unit4Component implements OnInit, OnDestroy {
   // EX20 — ASSIFEP Test 8 : QCM de cinq affirmations NOUVELLE VERSION
   // Tout ou rien : exactement la quatrième case cochée
   // ------------------------------------------------------
+
+  // ------------------------------------------------------
+  // EX20 — ASSIFEP Test 8 : QCM de cinq affirmations
+  // Tout ou rien : exactement la quatrième case cochée
+  // DERNIER EXERCICE DE L'UNITÉ 4
+  // ------------------------------------------------------
   submitEx20(): void {
     if (this.alreadySubmitted) return;
 
@@ -1386,8 +1392,32 @@ export class Unit4Component implements OnInit, OnDestroy {
     const score = isCorrect ? 5 : 0;
 
     this.alreadySubmitted = true;
-    this.saveExercise('ex20', this.formEx20, score);
+
+    const category = this.getCurrentCategory();
+
+    // Enregistrement du dernier exercice
+    this.service.saveUnitFlat(
+      this.uid,
+      'unit4',
+      'ex20',
+      this.formEx20,
+      score,
+      category
+    );
+
+    // Ajout des points de EX20 à la catégorie Pourcentages
+    this.aggregate(category, score);
+
+    // Enregistrement de la synthèse de l'unité 4
+    this.service.saveUnitResult(
+      this.uid,
+      'unit4',
+      this.aggregateState
+    ).then(() => {
+      this.showFinalMessage = true;
+    });
   }
+
 
   // ------------------------------------------------------
   // EX21 — ASSIFEP Test 8 (ancienne affirmation EX25)
