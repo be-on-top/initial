@@ -25,9 +25,9 @@ export const WORKBOOK_UNITS = [
   },
   {
     id: 'unit4',
-    label: 'Mathématiques niveau élémentaire',
+    label: 'Mathématiques - Niveau fondamental',
     profile: 'Utilisateur élémentaire',
-    description: 'Comprendre et utiliser les éléments mathématiques de base en calcul et en géométrie dans des situations simples.',
+    description: 'Évaluer la maîtrise des compétences mathématiques de base à travers des situations concrètes de la vie quotidienne et professionnelle : opérations et calculs, unités de mesure et conversions, géométrie (formes, périmètres, surfaces et volumes), ainsi que calculs de pourcentages et interprétation de données chiffrées.',
     candidateRoute: '/workbook/unit4',
     sourceDocumentUrl: ''
   },
