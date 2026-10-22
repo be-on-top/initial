@@ -19,7 +19,7 @@ export const WORKBOOK_UNITS = [
     id: 'unit3',
     label: 'FLE niveaux B1-B2',
     profile: 'Utilisateur indépendant',
-    description: 'Comprendre les points essentiels d\'un langage clair et standard ainsi que des contenus plus complexes. Produire un discours cohérent et détaillé, expliquer un projet ou une idée, exprimer un avis et communiquer avec davantage de spontanéité et d’aisance.',
+    description: 'Comprendre les points essentiels d\'un langage clair et standard ainsi que des contenus plus complexes. Produire un discours cohérent et détaillé, expliquer un projet ou une idée, exprimer un avis et communiquer avec davantage de spontanéité et d\'aisance.',
     candidateRoute: '/workbook/unit3',
     sourceDocumentUrl: 'https://firebasestorage.googleapis.com/v0/b/be-on-top-beta.appspot.com/o/admin-docs%2Fworkbook%2Fsupport-source-unit3.docx?alt=media&token=85d40e21-1132-4ad9-b031-23dacc9dd231'
   },
@@ -27,16 +27,16 @@ export const WORKBOOK_UNITS = [
     id: 'unit4',
     label: 'Mathématiques - Niveau fondamental',
     profile: 'Utilisateur élémentaire',
-    description: 'Évaluer la maîtrise des compétences mathématiques de base à travers des situations concrètes de la vie quotidienne et professionnelle : opérations et calculs, unités de mesure et conversions, géométrie (formes, périmètres, surfaces et volumes), ainsi que calculs de pourcentages et interprétation de données chiffrées.',
+    description : 'Effectuer des calculs courants dans la vie quotidienne et professionnelle. Choisir les unités adaptées et convertir des longueurs, masses et capacités. Identifier les formes géométriques et déterminer périmètres, aires et volumes. Calculer des pourcentages et interpréter des données chiffrées.',
     candidateRoute: '/workbook/unit4',
-    sourceDocumentUrl: ''
+    sourceDocumentUrl: 'https://console.firebase.google.com/project/be-on-top-beta/storage/be-on-top-beta.appspot.com/files/~2Fadmin-docs~2Fworkbook'
   },
-  {
-    id: 'unit5',
-    label: 'Connaissances numériques fondamentales',
-    profile: 'Utilisateur élémentaire',
-    description: 'Utiliser les fonctions numériques essentielles dans des situations courantes de formation et de vie professionnelle : se repérer dans un environnement numérique, gérer des fichiers et des documents, rechercher une information, communiquer à distance et adopter les bonnes pratiques de sécurité.',
-    candidateRoute: '/workbook/unit5',
-    sourceDocumentUrl: ''
-  }
+  // {
+  //   id: 'unit5',
+  //   label: 'Connaissances numériques fondamentales',
+  //   profile: 'Utilisateur élémentaire',
+  //   description: 'Utiliser les fonctions numériques essentielles dans des situations courantes de formation et de vie professionnelle : se repérer dans un environnement numérique, gérer des fichiers et des documents, rechercher une information, communiquer à distance et adopter les bonnes pratiques de sécurité.',
+  //   candidateRoute: '/workbook/unit5',
+  //   sourceDocumentUrl: ''
+  // }
 ];
