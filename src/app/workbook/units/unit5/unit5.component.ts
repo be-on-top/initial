@@ -141,14 +141,20 @@ export class Unit5Component implements OnInit, OnDestroy {
   }
   private normalized(value: unknown): string { return String(value ?? '').trim().toLowerCase(); }
 
-  submitEx1(): void { this.saveExercise(0, this.countMatches(this.formEx1.value,
-    { letter: 'texte', site: 'web', email: 'mail', meeting: 'visio' })); }
-  submitEx2(): void { this.saveExercise(1, this.countMatches(this.formEx2.value,
-    { globe: 'browser', folder: 'folder', trash: 'trash', wifi: 'wifi' })); }
+  submitEx1(): void {
+    this.saveExercise(0, this.countMatches(this.formEx1.value,
+      { letter: 'texte', site: 'web', email: 'mail', meeting: 'visio' }));
+  }
+  submitEx2(): void {
+    this.saveExercise(1, this.countMatches(this.formEx2.value,
+      { globe: 'browser', folder: 'folder', trash: 'trash', wifi: 'wifi' }));
+  }
   submitEx3(): void { this.saveExercise(2, this.countOrder(this.formEx3.value.order, this.correctEx3)); }
   submitEx4(): void { this.saveExercise(3, this.formEx4.value.selected === 'convocations' ? 3 : 0); }
-  submitEx5(): void { this.saveExercise(4, this.countMatches(this.formEx5.value,
-    { cv: 'pdf', photo: 'image', letter: 'text', sheet: 'sheet' })); }
+  submitEx5(): void {
+    this.saveExercise(4, this.countMatches(this.formEx5.value,
+      { cv: 'pdf', photo: 'image', letter: 'text', sheet: 'sheet' }));
+  }
   submitEx6(): void { this.saveExercise(5, this.countOrder(this.formEx6.value.order, this.correctEx6)); }
   submitEx7(): void { this.saveExercise(6, this.formEx7.value.answer === 'precise' ? 3 : 0); }
   submitEx8(): void {
@@ -170,8 +176,8 @@ export class Unit5Component implements OnInit, OnDestroy {
   submitCurrent(): void {
     if (this.alreadySubmitted || this.showFinalMessage || !this.isStudent) return;
     const handlers = [this.submitEx1, this.submitEx2, this.submitEx3, this.submitEx4,
-      this.submitEx5, this.submitEx6, this.submitEx7, this.submitEx8, this.submitEx9,
-      this.submitEx10, this.submitEx11, this.submitEx12];
+    this.submitEx5, this.submitEx6, this.submitEx7, this.submitEx8, this.submitEx9,
+    this.submitEx10, this.submitEx11, this.submitEx12];
     handlers[this.currentStep]?.call(this);
   }
   private saveExercise(index: number, score: number): void {
@@ -203,15 +209,46 @@ export class Unit5Component implements OnInit, OnDestroy {
     if (this.timerId !== null) clearTimeout(this.timerId);
     this.intervalId = null; this.timerId = null;
   }
+  // syncStep(): void {
+  //   this.currentStep = 0;
+  //   while (this.currentStep < this.steps.length && this.isSubmitted(this.steps[this.currentStep].id)) this.currentStep++;
+  //   if (this.currentStep === this.steps.length) {
+  //     this.currentStep = this.steps.length - 1;
+  //     this.showFinalMessage = true; this.clearTimers(); return;
+  //   }
+  //   this.showFinalMessage = false; this.startTimer();
+  // }
+
   syncStep(): void {
-    this.currentStep = 0;
-    while (this.currentStep < this.steps.length && this.isSubmitted(this.steps[this.currentStep].id)) this.currentStep++;
-    if (this.currentStep === this.steps.length) {
-      this.currentStep = this.steps.length - 1;
-      this.showFinalMessage = true; this.clearTimers(); return;
+    let nextStep = 0;
+
+    while (
+      nextStep < this.steps.length &&
+      this.isSubmitted(this.steps[nextStep].id)
+    ) {
+      nextStep++;
     }
-    this.showFinalMessage = false; this.startTimer();
+
+    if (nextStep === this.steps.length) {
+      this.currentStep = this.steps.length - 1;
+      this.showFinalMessage = true;
+      this.clearTimers();
+      return;
+    }
+
+    const sameStep = this.currentStep === nextStep;
+    const timerAlreadyRunning = this.timerId !== null;
+
+    this.currentStep = nextStep;
+    this.showFinalMessage = false;
+
+    if (!sameStep || !timerAlreadyRunning) {
+      this.startTimer();
+    }
+
   }
+
+
   private aggregate(category: string, score: number): void {
     this.aggregateState[category] = (Number(this.aggregateState[category]) || 0) + score;
   }
@@ -252,8 +289,10 @@ export class Unit5Component implements OnInit, OnDestroy {
   getGlobalScore(): { obtenu: number; max: number } | null {
     const active = this.categories.filter(c => this.aggregateState[c] !== undefined && this.aggregateState[c] !== null);
     if (!active.length) return null;
-    return { obtenu: active.reduce((s, c) => s + Number(this.aggregateState[c] || 0), 0),
-      max: active.reduce((s, c) => s + this.getCategoryMaxScore(c), 0) };
+    return {
+      obtenu: active.reduce((s, c) => s + Number(this.aggregateState[c] || 0), 0),
+      max: active.reduce((s, c) => s + this.getCategoryMaxScore(c), 0)
+    };
   }
   getGlobalNoteOn20(): number | null {
     const global = this.getGlobalScore();
@@ -270,7 +309,16 @@ export class Unit5Component implements OnInit, OnDestroy {
     this.unitData[key] = { ...(this.unitData[key] || {}), score, submitted: true };
     this.aggregateState[step.category] = this.steps.filter(s => s.category === step.category)
       .reduce((sum, s) => sum + (Number(this.unitData[`units.unit5.${s.id}`]?.score) || 0), 0);
-    this.service.saveUnitFlat(this.uid, 'unit5', step.id, this.forms[index], score, step.category);
+    // this.service.saveUnitFlat(this.uid, 'unit5', step.id, this.forms[index], score, step.category);
+    // si Firestore rejette l'écriture, l'erreur ne passe plus inaperçue.
+    this.service.saveUnitFlat(
+      this.uid, 'unit5', step.id,
+      this.forms[index], score, step.category
+    ).catch(err => {
+      console.error(`Erreur d'enregistrement de ${step.id}`, err);
+      alert("Une erreur est survenue lors de l'enregistrement de votre réponse.");
+    });
+    
     this.service.saveUnitResultUpdate(this.uid, 'unit5', this.aggregateState)
       .catch(err => { console.error(err); alert("Erreur d'enregistrement."); });
   }
