@@ -172,7 +172,27 @@ export class Unit5Component implements OnInit, OnDestroy {
     const errors = ['logo', 'signature'].filter(k => a[k]).length;
     this.saveExercise(10, Math.max(0, correct - errors));
   }
-  submitEx12(): void { this.saveExercise(11, this.formEx12.value.answer === 'verify' ? 3 : 0); }
+  // submitEx12(): void { this.saveExercise(11, this.formEx12.value.answer === 'verify' ? 3 : 0); }
+  // Si c'est bien le dernier exercice de l'unité 5 :
+  submitEx12(): void {
+    if (this.alreadySubmitted || this.showFinalMessage || !this.isStudent) return;
+
+    const score = this.formEx12.value.answer === 'verify' ? 3 : 0;
+
+    // Enregistrement de l'exercice 12 et agrégation locale
+    this.saveExercise(11, score);
+
+    // Enregistrement de la synthèse de l'unité 5
+    this.service.saveUnitResult(
+      this.uid,
+      'unit5',
+      this.aggregateState
+    ).catch(err => {
+      console.error("Erreur d'enregistrement de la synthèse :", err);
+      alert("Erreur lors de l'enregistrement des résultats.");
+    });
+  }
+
   submitCurrent(): void {
     if (this.alreadySubmitted || this.showFinalMessage || !this.isStudent) return;
     const handlers = [this.submitEx1, this.submitEx2, this.submitEx3, this.submitEx4,
@@ -318,7 +338,7 @@ export class Unit5Component implements OnInit, OnDestroy {
       console.error(`Erreur d'enregistrement de ${step.id}`, err);
       alert("Une erreur est survenue lors de l'enregistrement de votre réponse.");
     });
-    
+
     this.service.saveUnitResultUpdate(this.uid, 'unit5', this.aggregateState)
       .catch(err => { console.error(err); alert("Erreur d'enregistrement."); });
   }
