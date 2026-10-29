@@ -22,12 +22,12 @@
   </div>
 
   <!-- Contexte de l'unité pour le référent -->
-<div class="alert alert-light" *ngIf="!isNotAuthenticated && isReferentView">
-  <span class="fw-bold text-nowrap">Candidat :</span> {{ lastName }} {{ firstName }}.
-  <span class="fw-bold text-nowrap">Unité 3 ({{ label }})</span>.
-  <span class="fw-bold text-nowrap">Profil ciblé :</span> {{ profile }}.
-  <span class="fw-bold text-nowrap">Capacités évaluées :</span> {{ description }}.
-</div>
+  <div class="alert alert-light" *ngIf="!isNotAuthenticated && isReferentView">
+    <span class="fw-bold text-nowrap">Candidat :</span> {{ lastName }} {{ firstName }}.
+    <span class="fw-bold text-nowrap">Unité 3 ({{ label }})</span>.
+    <span class="fw-bold text-nowrap">Profil ciblé :</span> {{ profile }}.
+    <span class="fw-bold text-nowrap">Capacités évaluées :</span> {{ description }}.
+  </div>
 
   <div>
 
@@ -183,7 +183,8 @@
     <!-- EXERCICE 3 - QUESTION 3 -->
     <!-- ===================================================== -->
 
-    <form *ngIf="isReferentView || currentStep === 2" [formGroup]="formEx3" (ngSubmit)="submitEx3()" class="nouvelle-page">
+    <form *ngIf="isReferentView || currentStep === 2" [formGroup]="formEx3" (ngSubmit)="submitEx3()"
+      class="nouvelle-page">
 
       <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
 
@@ -440,8 +441,7 @@
 
     <form *ngIf="isReferentView || currentStep === 6" [formGroup]="formEx7" (ngSubmit)="submitEx7()">
 
-      <div
-        class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+      <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
 
         <span class="badge text-bg-dark text-white">
           <i class="bi bi-tag-fill me-2"></i>
@@ -1417,7 +1417,8 @@
             Exprimez votre déception par rapport à ce que vous attendiez
             d'un hôtel quatre étoiles.
           </li>
-          <li>Écrivez entre 120 et 130 mots.</li>
+          <!-- <li>Écrivez entre 120 et 130 mots.</li> -->
+          <li>Écrivez au moins 120 mots.</li>
         </ol>
 
       </div>
@@ -1429,24 +1430,30 @@
 
       <!-- COMPTEUR -->
 
-      <div class="text-muted mt-2">
+      <!-- <div class="text-muted mt-2">
         {{ countWords(formEx20.value.answer) }} / 120-130 mots
+      </div> -->
+      <div class="text-muted mt-2">
+        {{ countWords(formEx20.value.answer) }} mots (minimum 120)
       </div>
 
       <div *ngIf="countWords(formEx20.value.answer) < 120 && !alreadySubmitted" class="text-danger">
         Minimum 120 mots requis.
       </div>
-
-      <div *ngIf="countWords(formEx20.value.answer) > 130 && !alreadySubmitted" class="text-danger">
+      <!-- <div *ngIf="countWords(formEx20.value.answer) > 130 && !alreadySubmitted" class="text-danger">
         Maximum 130 mots.
-      </div>
+      </div> -->
 
       <!-- SOUMISSION -->
 
-      <button *ngIf="!isReferentView" type="submit" class="btn btn-success mt-5" [disabled]="
+      <!-- <button *ngIf="!isReferentView" type="submit" class="btn btn-success mt-5" [disabled]="
       countWords(formEx20.value.answer) < 120 ||
       countWords(formEx20.value.answer) > 130
     ">
+        Suivant
+      </button> -->
+      <button *ngIf="!isReferentView" type="submit" class="btn btn-success mt-5"
+        [disabled]="countWords(formEx20.value.answer) < 120">
         Suivant
       </button>
 
