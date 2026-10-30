@@ -348,17 +348,24 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
 
     ).subscribe(filteredStudents => {
 
+      //  this.isLoading = true;
+
       this.initialStudents = filteredStudents; // Stocker la liste initiale
       this.allStudents = [...this.initialStudents]; // Initialiser allStudents
 
       // Vérifie le rôle utilisateur
       if (this.userRouterLinks.user === 'admin' || this.userRouterLinks.user === 'editor' || this.userRouterLinks.user === 'data-analyst') {
         this.applyFilters();
+        // 🛑 C'est ici qu'il doit être : tout est prêt, on coupe le chargement !
+            this.isLoading = false;
       }
 
       // rajouté pour l'external créé par l'admin (j'aime  pas...)
       else if (this.userRouterLinks.user === 'external') {
         this.allStudents = this.initialStudents.filter(student => student.evaluations);
+
+        // 🛑 C'est ici qu'il doit être : tout est prêt, on coupe le chargement !
+            this.isLoading = false;
       }
 
       else if (this.userRouterLinks.user === 'referent') {
@@ -382,11 +389,14 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
               returnedPriors.includes(student.id)
             );
             // console.log('Filtered Prior Students :', this.filteredStudents);
-            this.applyFilters(); // Appliquer les filtres actuels                       
+            this.applyFilters(); // Appliquer les filtres actuels  
+            
+            // 🛑 C'est ici qu'il doit être : tout est prêt, on coupe le chargement !
+            this.isLoading = false;
 
           });
 
-        this.isLoading = false
+        // this.isLoading = false
       }
       // pour les contacts ajoutés par referent
       else if (this.userRouterLinks.user === 'referentsContacts') {
@@ -403,6 +413,9 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
         console.log('filteredStudents result:', filteredStudents);
 
         this.allStudents = [...filteredStudents];
+
+        // 🛑 Pour les autres cas !
+        this.isLoading = false;
       }
     });
   }

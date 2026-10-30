@@ -352,10 +352,19 @@
             <!-- <div class="alert alert-info mx-0 fw-regular fs-auto">Prospects inscrits et actifs<span
                     class="badge bg-dark ms-2">{{allStudents.length}}</span> </div> -->
             <!-- parce que isTradeFilter initialement était réservé aux formations métiers -->
-            <div class="alert alert-info mx-0 fw-bold fs-auto">
+            <!-- <div class="alert alert-info mx-0 fw-bold fs-auto">
                 {{isSubscriptionFilter || isTradeFilter ? "Inscriptions formation finalisées":isTradeQCMStarted ||
                 isTradeFullQCM ? "Prospects concernés":"Comptes actifs"}}
                 <span class="badge bg-dark ms-2">{{allStudents.length}}</span>
+            </div> -->
+            <div *ngIf="!isLoading">
+                <!-- Votre bloc de compte / tableau qui s'affiche enfin avec le bon chiffre final (ex: 92) -->
+                <div class="alert alert-info mx-0 fw-bold fs-auto">
+                    {{isSubscriptionFilter || isTradeFilter ? "Inscriptions formation finalisées":isTradeQCMStarted ||
+                    isTradeFullQCM ? "Prospects concernés":"Comptes actifs"}}
+                    <span class="badge bg-dark ms-2">{{allStudents.length}}</span>
+                </div>
+                <!-- ... le reste de votre tableau ... -->
             </div>
         </div>
 
@@ -463,7 +472,8 @@
             <!-- <button type="button" class="btn btn-primary mt-5 col-10 col-md-5" (click)="exportCollectionAsCSV()"><i
                     class="bi bi-box-arrow-down me-3"></i>Export au format csv de la collection</button> -->
             <button type="button" class="btn btn-primary mt-5 col-10 col-md-5"
-                (click)="exportFilteredStudentsAsCSV()"><i class="bi bi-box-arrow-down me-3"></i>Export au format csv</button>
+                (click)="exportFilteredStudentsAsCSV()"><i class="bi bi-box-arrow-down me-3"></i>Export au format
+                csv</button>
         </div>
         <!-- </ng-container> -->
 
