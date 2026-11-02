@@ -39,4 +39,10 @@
 .bi-pin-angle-fill::before{content:"\f4ea"}
 .bi-exposure::before{content:"\f8ec"}
 
+.bi-folder-fill::before { content: "\f3d1"; }
+.bi-trash3-fill::before { content: "\f78a"; }
+.bi-wifi::before { content: "\f61c"; }
+.bi-tag-fill::before { content: "\f5af"; }
+
+
 

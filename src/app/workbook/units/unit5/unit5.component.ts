@@ -7,7 +7,12 @@ import { WORKBOOK_UNITS } from '../../workbookUnits';
 
 interface Step { id: string; category: string; duration: number; maxScore: number; }
 
-@Component({ selector: 'app-unit5', templateUrl: './unit5.component.html' })
+@Component({
+  selector: 'app-unit5',
+  templateUrl: './unit5.component.html',
+  styleUrls: ['./unit5.component.css']
+})
+
 export class Unit5Component implements OnInit, OnDestroy {
   private readonly config = WORKBOOK_UNITS.find(unit => unit.id === 'unit5');
   label = this.config?.label || 'Connaissances numériques fondamentales';
@@ -22,8 +27,8 @@ export class Unit5Component implements OnInit, OnDestroy {
     { id: 'ex5', category: this.categories[1], duration: 120, maxScore: 4 },
     { id: 'ex6', category: this.categories[1], duration: 150, maxScore: 5 },
     { id: 'ex7', category: this.categories[2], duration: 120, maxScore: 3 },
-    { id: 'ex8', category: this.categories[2], duration: 180, maxScore: 4 },
-    { id: 'ex9', category: this.categories[2], duration: 150, maxScore: 4 },
+    { id: 'ex8', category: this.categories[2], duration: 180, maxScore: 3 },
+    { id: 'ex9', category: this.categories[2], duration: 150, maxScore: 3 },
     { id: 'ex10', category: this.categories[3], duration: 90, maxScore: 2 },
     { id: 'ex11', category: this.categories[3], duration: 150, maxScore: 4 },
     { id: 'ex12', category: this.categories[3], duration: 120, maxScore: 3 }
@@ -45,7 +50,7 @@ export class Unit5Component implements OnInit, OnDestroy {
     connect: 'Cliquer sur « Se connecter »', identifier: 'Saisir son identifiant'
   };
   readonly ex6Labels: Record<string, string> = {
-    reply: 'Répondre au message', openFile: 'Ouvrir et vérifier le document',
+    reply: 'Rédiger votre réponse', openFile: 'Ouvrir et vérifier le document',
     send: 'Joindre le document et envoyer', receive: 'Ouvrir le message reçu',
     download: 'Télécharger la pièce jointe'
   };
@@ -161,10 +166,10 @@ export class Unit5Component implements OnInit, OnDestroy {
     const a = this.formEx8.value;
     const score = (this.normalized(a.recipient) === 'formation@exemple.fr' ? 1 : 0)
       + (this.normalized(a.subject) === 'cv - candidature' ? 1 : 0)
-      + (a.attachment === 'cv' ? 2 : 0);
+      + (a.attachment === 'cv' ? 1 : 0);
     this.saveExercise(7, score);
   }
-  submitEx9(): void { this.saveExercise(8, this.formEx9.value.answer === 'join' ? 4 : 0); }
+  submitEx9(): void { this.saveExercise(8, this.formEx9.value.answer === 'join' ? 3 : 0); }
   submitEx10(): void { this.saveExercise(9, this.formEx10.value.answer === 'strong' ? 2 : 0); }
   submitEx11(): void {
     const a = this.formEx11.value;
