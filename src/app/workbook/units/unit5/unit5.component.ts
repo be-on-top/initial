@@ -54,6 +54,101 @@ export class Unit5Component implements OnInit, OnDestroy {
     send: 'Joindre le document et envoyer', receive: 'Ouvrir le message reçu',
     download: 'Télécharger la pièce jointe'
   };
+  // REFACTO
+  
+  // EXERCICE 1 — Situations numériques
+  readonly ex1Situations = [
+    { key: 'letter', label: 'Écrire un courrier' },
+    { key: 'site', label: 'Consulter un site Internet' },
+    { key: 'email', label: 'Envoyer un message électronique' },
+    { key: 'meeting', label: 'Participer à une visioconférence' }
+  ];
+
+  // EXERCICE 2 — Icônes d'interface
+  readonly ex2Icons = [
+    { key: 'globe', icon: 'bi-globe2' },
+    { key: 'folder', icon: 'bi-folder-fill' },
+    { key: 'trash', icon: 'bi-trash3-fill' },
+    { key: 'wifi', icon: 'bi-wifi' }
+  ];
+
+  // EXERCICE 4 — Dossiers
+  readonly ex4Options = [
+    { value: 'documents', label: 'Documents' },
+    { value: 'formation', label: 'Formation' },
+    { value: 'convocations', label: 'Convocations' },
+    { value: 'other', label: 'Aucun de ces dossiers' }
+  ];
+
+  // EXERCICE 5 — Noms de fichiers
+  readonly ex5Files = [
+    { key: 'cv', label: 'CV.pdf' },
+    { key: 'photo', label: 'photo.jpg' },
+    { key: 'letter', label: 'lettre.docx' },
+    { key: 'sheet', label: 'tableau.xlsx' }
+  ];
+
+  // EXERCICE 7 — Recherche Internet
+  readonly ex7Options = [
+    { value: 'internet', label: 'Internet' },
+    { value: 'precise', label: 'Horaires médiathèque + nom de ma ville' },
+    { value: 'books', label: 'Adressse de la médiathèque' },
+    { value: 'all', label: 'Toutes les médiathèques du monde' }
+  ];
+
+  // EXERCICE 8 — Pièces jointes
+  readonly ex8Attachments = [
+    { value: 'photo', label: 'photo.jpg' },
+    { value: 'cv', label: 'CV.pdf' },
+    { value: 'notes', label: 'notes.txt' }
+  ];
+
+  // EXERCICE 9 — Visioconférence
+  readonly ex9Options = [
+    { value: 'reply', label: 'Répondre au mail en écrivant « Je suis connecté »' },
+    { value: 'join', label: 'Ouvrir le lien de visioconférence à l’heure indiquée' },
+    { value: 'delete', label: 'Supprimer le message' },
+    { value: 'tomorrow', label: 'Attendre le lendemain pour ouvrir le lien' }
+  ];
+
+  // EXERCICE 10 — Mots de passe
+  readonly ex10Options = [
+    { value: 'simple', label: '12345678' },
+    { value: 'name', label: 'prenom2026' },
+    { value: 'medium', label: 'Formation!' },
+    { value: 'strong', label: 'M7#vQ2!pL9' }
+  ];
+
+  // EXERCICE 11 — Indices de fraude
+  readonly ex11Options = [
+    { key: 'sender', label: 'L’adresse de l’expéditeur est inhabituelle' },
+    { key: 'urgency', label: 'Le message impose un délai très court' },
+    { key: 'password', label: 'Le message demande le mot de passe' },
+    { key: 'link', label: 'Le lien proposé paraît douteux' },
+    { key: 'logo', label: 'La simple présence d’un logo' },
+    { key: 'signature', label: 'La simple présence d’une signature' }
+  ];
+
+  // EXERCICE 12 — Protection des identifiants
+  readonly ex12Options = [
+    {
+      value: 'send',
+      label: 'Je transmets immédiatement mon identifiant et mon mot de passe'
+    },
+    {
+      value: 'click',
+      label: 'Je clique sur le lien et je saisis mes identifiants'
+    },
+    {
+      value: 'ignore',
+      label: 'Je ne fais rien, même si je dois vérifier mon accès'
+    },
+    {
+      value: 'verify',
+      label: 'Je ne communique pas mes identifiants et je contacte directement mon centre de formation pour vérifier la demande'
+    }
+  ];
+
   readonly correctEx3 = ['open', 'identifier', 'password', 'connect'];
   readonly correctEx6 = ['receive', 'download', 'openFile', 'reply', 'send'];
   readonly forms: FormGroup[] = [];

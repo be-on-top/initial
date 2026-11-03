@@ -39,7 +39,7 @@
       <div class="mb-3">
         <p>Associez chaque situation à l'outil numérique le plus adapté.</p>
         <div class="row g-3"
-          *ngFor="let item of [{key:'letter',label:'Écrire un courrier'},{key:'site',label:'Consulter un site Internet'},{key:'email',label:'Envoyer un message électronique'},{key:'meeting',label:'Participer à une visioconférence'}]">
+          *ngFor="let item of ex1Situations">
           <div class="col-12 col-md-6"><label class="form-label">{{ item.label }}</label></div>
           <div class="col-12 col-md-6"><select class="form-select" [formControlName]="item.key">
               <option value="">Choisissez un outil</option>
@@ -74,13 +74,13 @@
         </div>
       </div>
       <div class="alert bg-info instructions">
-        <h5 class="fw-bold mb-0">Reconnaître les éléments d’une interface</h5>
+        <h5 class="fw-bold mb-0">Reconnaître les éléments d'une interface</h5>
       </div>
       <div class="mb-3">
         <p>Sur ces quatre tuiles d'une interface simplifiée, reconnaissez la fonction de chaque icône.</p>
         <div class="row g-3">
           <div class="col-12 col-sm-6"
-            *ngFor="let item of [{key:'globe',icon:'bi-globe2'},{key:'folder',icon:'bi-folder-fill'},{key:'trash',icon:'bi-trash3-fill'},{key:'wifi',icon:'bi-wifi'}]">
+            *ngFor="let item of ex2Icons">
             <div class="card h-100">
               <div class="card-body text-center">
                 <div class="fs-1 mb-3"><i class="bi" [ngClass]="item.icon" aria-hidden="true"></i></div>
@@ -175,7 +175,7 @@
           <div class="ms-4 ps-3"><i class="bi bi-file-earmark-pdf me-2"></i>convocation.pdf</div>
         </div>
         <div class="mt-3"
-          *ngFor="let item of [{value:'documents',label:'Documents'},{value:'formation',label:'Formation'},{value:'convocations',label:'Convocations'},{value:'other',label:'Aucun de ces dossiers'}]">
+          *ngFor="let item of ex4Options">
           <label class="d-flex gap-2 align-items-center py-2"><input type="radio" formControlName="selected"
               [value]="item.value"> {{ item.label }}</label>
         </div>
@@ -212,7 +212,8 @@
       <div class="mb-3">
         <p>Associez chaque nom de fichier à sa nature.</p>
         <div class="row g-3"
-          *ngFor="let item of [{key:'cv',label:'CV.pdf'},{key:'photo',label:'photo.jpg'},{key:'letter',label:'lettre.docx'},{key:'sheet',label:'tableau.xlsx'}]">
+        
+          *ngFor="let item of ex5Files">
           <div class="col-12 col-sm-5"><label class="form-label">{{ item.label }}</label></div>
           <div class="col-12 col-sm-7"><select class="form-select" [formControlName]="item.key">
               <option value="">Choisissez un type</option>
@@ -301,7 +302,7 @@
         <p>Vous cherchez les horaires d'ouverture de la médiathèque de votre ville. Quelle recherche est la plus utile ?
         </p>
         <div
-          *ngFor="let option of [{value:'internet',label:'Internet'},{value:'precise',label:'Horaires médiathèque + nom de ma ville'},{value:'books',label:'Adressse de la médiathèque'},{value:'all',label:'Toutes les médiathèques du monde'}]"
+          *ngFor="let option of ex7Options"
           class="py-2">
           <label class="d-flex gap-2"><input type="radio" formControlName="answer" [value]="option.value"> {{
             option.label }}</label>
@@ -397,7 +398,7 @@
         </div>
         <p>Que devez-vous faire pour participer ?</p>
         <div class="py-2"
-          *ngFor="let option of [{value:'reply',label:'Répondre au mail en écrivant « Je suis connecté »'},{value:'join',label:'Ouvrir le lien de visioconférence à l’heure indiquée'},{value:'delete',label:'Supprimer le message'},{value:'tomorrow',label:'Attendre le lendemain pour ouvrir le lien'}]">
+          *ngFor="let option of ex9Options">
           <label class="d-flex gap-2"><input type="radio" formControlName="answer" [value]="option.value"> {{
             option.label }}</label>
         </div>
@@ -434,7 +435,7 @@
       <div class="mb-3">
         <p>Quel mot de passe est le plus difficile à deviner parmi ces propositions ?</p>
         <div class="py-2"
-          *ngFor="let option of [{value:'simple',label:'12345678'},{value:'name',label:'prenom2026'},{value:'medium',label:'Formation!'},{value:'strong',label:'M7#vQ2!pL9'}]">
+          *ngFor="let option of ex10Options">
           <label class="d-flex gap-2"><input type="radio" formControlName="answer" [value]="option.value">
             <code>{{ option.label }}</code></label>
         </div>
@@ -478,7 +479,7 @@
           <div class="small text-muted">Logo du centre de formation — L'équipe support</div>
         </div>
         <div class="form-check mb-2"
-          *ngFor="let item of [{key:'sender',label:'L’adresse de l’expéditeur est inhabituelle'},{key:'urgency',label:'Le message impose un délai très court'},{key:'password',label:'Le message demande le mot de passe'},{key:'link',label:'Le lien proposé paraît douteux'},{key:'logo',label:'La simple présence d’un logo'},{key:'signature',label:'La simple présence d’une signature'}]">
+          *ngFor="let item of ex11Options">
           <input class="form-check-input" type="checkbox" [id]="'ex11-' + item.key" [formControlName]="item.key">
           <label class="form-check-label" [for]="'ex11-' + item.key">{{ item.label }}</label>
         </div>
@@ -515,7 +516,7 @@
       <div class="mb-3">
         <p>Vous recevez un message inattendu vous demandant de saisir vos identifiants pour conserver l'accès à votre espace de formation. Que faites-vous ?</p>
         <div class="py-2"
-          *ngFor="let option of [{value:'send',label:'Je transmets immédiatement mon identifiant et mon mot de passe'},{value:'click',label:'Je clique sur le lien et je saisis mes identifiants'},{value:'ignore',label:'Je ne fais rien, même si je dois vérifier mon accès'},{value:'verify',label:'Je ne communique pas mes identifiants et je contacte directement mon centre de formation pour vérifier la demande'}]">
+          *ngFor="let option of ex12Options">
           <label class="d-flex gap-2"><input type="radio" formControlName="answer" [value]="option.value"> {{
             option.label }}</label>
         </div>
