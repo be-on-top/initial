@@ -22,14 +22,14 @@ export class Unit5Component implements OnInit, OnDestroy {
   readonly steps: Step[] = [
     { id: 'ex1', category: this.categories[0], duration: 120, maxScore: 4 },
     { id: 'ex2', category: this.categories[0], duration: 120, maxScore: 4 },
-    { id: 'ex3', category: this.categories[0], duration: 120, maxScore: 4 },
+    { id: 'ex3', category: this.categories[0], duration: 160, maxScore: 4 },
     { id: 'ex4', category: this.categories[1], duration: 120, maxScore: 3 },
     { id: 'ex5', category: this.categories[1], duration: 120, maxScore: 4 },
-    { id: 'ex6', category: this.categories[1], duration: 150, maxScore: 5 },
+    { id: 'ex6', category: this.categories[1], duration: 160, maxScore: 5 },
     { id: 'ex7', category: this.categories[2], duration: 120, maxScore: 3 },
     { id: 'ex8', category: this.categories[2], duration: 180, maxScore: 3 },
     { id: 'ex9', category: this.categories[2], duration: 150, maxScore: 3 },
-    { id: 'ex10', category: this.categories[3], duration: 90, maxScore: 2 },
+    { id: 'ex10', category: this.categories[3], duration: 50, maxScore: 2 },
     { id: 'ex11', category: this.categories[3], duration: 150, maxScore: 4 },
     { id: 'ex12', category: this.categories[3], duration: 120, maxScore: 3 }
   ];

@@ -288,10 +288,10 @@
           <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">Max {{ steps[6].maxScore }}
             PNTS</span>
           <span class="badge text-bg-dark text-white">
-            {{ getCurrentScore(7) }} PNTS
+            {{ getCurrentScore(6) }} PNTS
           </span>
-          <button *ngIf="isReferentView" type="button" class="badge text-bg-dark text-white border-0"
-            [disabled]="aggregateState['isFinal']" (click)="editStepScore(6)">{{ getCurrentScore(6) }} PNTS</button>
+          <!-- <button *ngIf="isReferentView" type="button" class="badge text-bg-dark text-white border-0"
+            [disabled]="aggregateState['isFinal']" (click)="editStepScore(6)">{{ getCurrentScore(6) }} PNTS</button> -->
         </div>
       </div>
       <div class="alert bg-info instructions">
@@ -326,8 +326,11 @@
           <span class="badge text-bg-warning">Exercice 8</span>
           <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">Max {{ steps[7].maxScore }}
             PNTS</span>
-          <button *ngIf="isReferentView" type="button" class="badge text-bg-dark text-white border-0"
-            [disabled]="aggregateState['isFinal']" (click)="editStepScore(7)">{{ getCurrentScore(7) }} PNTS</button>
+          <span class="badge text-bg-dark text-white">
+            {{ getCurrentScore(7) }} PNTS
+          </span>
+          <!-- <button *ngIf="isReferentView" type="button" class="badge text-bg-dark text-white border-0"
+            [disabled]="aggregateState['isFinal']" (click)="editStepScore(7)">{{ getCurrentScore(7) }} PNTS</button> -->
         </div>
       </div>
       <div class="alert bg-info instructions">
@@ -373,8 +376,11 @@
           <span class="badge text-bg-warning">Exercice 9</span>
           <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">Max {{ steps[8].maxScore }}
             PNTS</span>
-          <button *ngIf="isReferentView" type="button" class="badge text-bg-dark text-white border-0"
-            [disabled]="aggregateState['isFinal']" (click)="editStepScore(8)">{{ getCurrentScore(8) }} PNTS</button>
+          <span class="badge text-bg-dark text-white">
+            {{ getCurrentScore(8) }} PNTS
+          </span>
+          <!-- <button *ngIf="isReferentView" type="button" class="badge text-bg-dark text-white border-0"
+            [disabled]="aggregateState['isFinal']" (click)="editStepScore(8)">{{ getCurrentScore(8) }} PNTS</button> -->
         </div>
       </div>
       <div class="alert bg-info instructions">
@@ -415,8 +421,11 @@
           <span class="badge text-bg-warning">Exercice 10</span>
           <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">Max {{ steps[9].maxScore }}
             PNTS</span>
-          <button *ngIf="isReferentView" type="button" class="badge text-bg-dark text-white border-0"
-            [disabled]="aggregateState['isFinal']" (click)="editStepScore(9)">{{ getCurrentScore(9) }} PNTS</button>
+          <span class="badge text-bg-dark text-white">
+            {{ getCurrentScore(9) }} PNTS
+          </span>
+          <!-- <button *ngIf="isReferentView" type="button" class="badge text-bg-dark text-white border-0"
+            [disabled]="aggregateState['isFinal']" (click)="editStepScore(9)">{{ getCurrentScore(9) }} PNTS</button> -->
         </div>
       </div>
       <div class="alert bg-info instructions">
@@ -449,8 +458,11 @@
           <span class="badge text-bg-warning">Exercice 11</span>
           <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">Max {{ steps[10].maxScore }}
             PNTS</span>
-          <button *ngIf="isReferentView" type="button" class="badge text-bg-dark text-white border-0"
-            [disabled]="aggregateState['isFinal']" (click)="editStepScore(10)">{{ getCurrentScore(10) }} PNTS</button>
+          <span class="badge text-bg-dark text-white">
+            {{ getCurrentScore(10) }} PNTS
+          </span>
+          <!-- <button *ngIf="isReferentView" type="button" class="badge text-bg-dark text-white border-0"
+            [disabled]="aggregateState['isFinal']" (click)="editStepScore(10)">{{ getCurrentScore(10) }} PNTS</button> -->
         </div>
       </div>
       <div class="alert bg-info instructions">
@@ -490,18 +502,20 @@
           <span class="badge text-bg-warning">Exercice 12</span>
           <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">Max {{ steps[11].maxScore }}
             PNTS</span>
-          <button *ngIf="isReferentView" type="button" class="badge text-bg-dark text-white border-0"
-            [disabled]="aggregateState['isFinal']" (click)="editStepScore(11)">{{ getCurrentScore(11) }} PNTS</button>
+          <span class="badge text-bg-dark text-white">
+            {{ getCurrentScore(11) }} PNTS
+          </span>
+          <!-- <button *ngIf="isReferentView" type="button" class="badge text-bg-dark text-white border-0"
+            [disabled]="aggregateState['isFinal']" (click)="editStepScore(11)">{{ getCurrentScore(11) }} PNTS</button> -->
         </div>
       </div>
       <div class="alert bg-info instructions">
         <h5 class="fw-bold mb-0">Que faut-il faire ?</h5>
       </div>
       <div class="mb-3">
-        <p>Vous recevez un message vous demandant vos identifiants pour conserver l'accès à votre espace de formation.
-          Que faites-vous ?</p>
+        <p>Vous recevez un message inattendu vous demandant de saisir vos identifiants pour conserver l'accès à votre espace de formation. Que faites-vous ?</p>
         <div class="py-2"
-          *ngFor="let option of [{value:'send',label:'Je transmets immédiatement mon identifiant et mon mot de passe'},{value:'click',label:'Je clique sur le lien et je saisis mes identifiants'},{value:'ignore',label:'Je ne fais rien, même si je dois vérifier mon accès'},{value:'verify',label:'Je ne communique pas mes identifiants et je contacte le centre par son canal habituel pour vérifier'}]">
+          *ngFor="let option of [{value:'send',label:'Je transmets immédiatement mon identifiant et mon mot de passe'},{value:'click',label:'Je clique sur le lien et je saisis mes identifiants'},{value:'ignore',label:'Je ne fais rien, même si je dois vérifier mon accès'},{value:'verify',label:'Je ne communique pas mes identifiants et je contacte directement mon centre de formation pour vérifier la demande'}]">
           <label class="d-flex gap-2"><input type="radio" formControlName="answer" [value]="option.value"> {{
             option.label }}</label>
         </div>
