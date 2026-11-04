@@ -55,7 +55,7 @@ export class Unit5Component implements OnInit, OnDestroy {
     download: 'Télécharger la pièce jointe'
   };
   // REFACTO
-  
+
   // EXERCICE 1 — Situations numériques
   readonly ex1Situations = [
     { key: 'letter', label: 'Écrire un courrier' },
@@ -241,48 +241,136 @@ export class Unit5Component implements OnInit, OnDestroy {
   }
   private normalized(value: unknown): string { return String(value ?? '').trim().toLowerCase(); }
 
+  // submitEx1(): void {
+  //   this.saveExercise(0, this.countMatches(this.formEx1.value,
+  //     { letter: 'texte', site: 'web', email: 'mail', meeting: 'visio' }));
+  // }
+  // submitEx2(): void {
+  //   this.saveExercise(1, this.countMatches(this.formEx2.value,
+  //     { globe: 'browser', folder: 'folder', trash: 'trash', wifi: 'wifi' }));
+  // }
+  // submitEx3(): void { this.saveExercise(2, this.countOrder(this.formEx3.value.order, this.correctEx3)); }
+  // submitEx4(): void { this.saveExercise(3, this.formEx4.value.selected === 'convocations' ? 3 : 0); }
+  // submitEx5(): void {
+  //   this.saveExercise(4, this.countMatches(this.formEx5.value,
+  //     { cv: 'pdf', photo: 'image', letter: 'text', sheet: 'sheet' }));
+  // }
+  // submitEx6(): void { this.saveExercise(5, this.countOrder(this.formEx6.value.order, this.correctEx6)); }
+  // submitEx7(): void { this.saveExercise(6, this.formEx7.value.answer === 'precise' ? 3 : 0); }
+  // submitEx8(): void {
+  //   const a = this.formEx8.value;
+  //   const score = (this.normalized(a.recipient) === 'formation@exemple.fr' ? 1 : 0)
+  //     + (this.normalized(a.subject) === 'cv - candidature' ? 1 : 0)
+  //     + (a.attachment === 'cv' ? 1 : 0);
+  //   this.saveExercise(7, score);
+  // }
+  // submitEx9(): void { this.saveExercise(8, this.formEx9.value.answer === 'join' ? 3 : 0); }
+  // submitEx10(): void { this.saveExercise(9, this.formEx10.value.answer === 'strong' ? 2 : 0); }
+  // submitEx11(): void {
+  //   const a = this.formEx11.value;
+  //   const correct = ['sender', 'urgency', 'password', 'link'].filter(k => a[k]).length;
+  //   const errors = ['logo', 'signature'].filter(k => a[k]).length;
+  //   this.saveExercise(10, Math.max(0, correct - errors));
+  // }
+  // // submitEx12(): void { this.saveExercise(11, this.formEx12.value.answer === 'verify' ? 3 : 0); }
+  // // Si c'est bien le dernier exercice de l'unité 5 :
+  // submitEx12(): void {
+  //   if (this.alreadySubmitted || this.showFinalMessage || !this.isStudent) return;
+
+  //   const score = this.formEx12.value.answer === 'verify' ? 3 : 0;
+
+  //   // Enregistrement de l'exercice 12 et agrégation locale
+  //   this.saveExercise(11, score);
+
+  //   // Enregistrement de la synthèse de l'unité 5
+  //   this.service.saveUnitResult(
+  //     this.uid,
+  //     'unit5',
+  //     this.aggregateState
+  //   ).catch(err => {
+  //     console.error("Erreur d'enregistrement de la synthèse :", err);
+  //     alert("Erreur lors de l'enregistrement des résultats.");
+  //   });
+  // }
+
   submitEx1(): void {
-    this.saveExercise(0, this.countMatches(this.formEx1.value,
-      { letter: 'texte', site: 'web', email: 'mail', meeting: 'visio' }));
+    const correct = this.countMatches(this.formEx1.value,
+      { letter: 'texte', site: 'web', email: 'mail', meeting: 'visio' });
+    this.saveExercise(0, correct / 4 * this.steps[0].maxScore);
   }
+
   submitEx2(): void {
-    this.saveExercise(1, this.countMatches(this.formEx2.value,
-      { globe: 'browser', folder: 'folder', trash: 'trash', wifi: 'wifi' }));
+    const correct = this.countMatches(this.formEx2.value,
+      { globe: 'browser', folder: 'folder', trash: 'trash', wifi: 'wifi' });
+    this.saveExercise(1, correct / 4 * this.steps[1].maxScore);
   }
-  submitEx3(): void { this.saveExercise(2, this.countOrder(this.formEx3.value.order, this.correctEx3)); }
-  submitEx4(): void { this.saveExercise(3, this.formEx4.value.selected === 'convocations' ? 3 : 0); }
+
+  submitEx3(): void {
+    const correct = this.countOrder(this.formEx3.value.order, this.correctEx3);
+    this.saveExercise(2, correct / this.correctEx3.length * this.steps[2].maxScore);
+  }
+
+  submitEx4(): void {
+    this.saveExercise(3,
+      this.formEx4.value.selected === 'convocations'
+        ? this.steps[3].maxScore : 0);
+  }
+
   submitEx5(): void {
-    this.saveExercise(4, this.countMatches(this.formEx5.value,
-      { cv: 'pdf', photo: 'image', letter: 'text', sheet: 'sheet' }));
+    const correct = this.countMatches(this.formEx5.value,
+      { cv: 'pdf', photo: 'image', letter: 'text', sheet: 'sheet' });
+    this.saveExercise(4, correct / 4 * this.steps[4].maxScore);
   }
-  submitEx6(): void { this.saveExercise(5, this.countOrder(this.formEx6.value.order, this.correctEx6)); }
-  submitEx7(): void { this.saveExercise(6, this.formEx7.value.answer === 'precise' ? 3 : 0); }
+
+  submitEx6(): void {
+    const correct = this.countOrder(this.formEx6.value.order, this.correctEx6);
+    this.saveExercise(5, correct / this.correctEx6.length * this.steps[5].maxScore);
+  }
+
+  submitEx7(): void {
+    this.saveExercise(6,
+      this.formEx7.value.answer === 'precise'
+        ? this.steps[6].maxScore : 0);
+  }
+
   submitEx8(): void {
     const a = this.formEx8.value;
-    const score = (this.normalized(a.recipient) === 'formation@exemple.fr' ? 1 : 0)
+    const correct = (this.normalized(a.recipient) === 'formation@exemple.fr' ? 1 : 0)
       + (this.normalized(a.subject) === 'cv - candidature' ? 1 : 0)
       + (a.attachment === 'cv' ? 1 : 0);
-    this.saveExercise(7, score);
+
+    this.saveExercise(7, correct / 3 * this.steps[7].maxScore);
   }
-  submitEx9(): void { this.saveExercise(8, this.formEx9.value.answer === 'join' ? 3 : 0); }
-  submitEx10(): void { this.saveExercise(9, this.formEx10.value.answer === 'strong' ? 2 : 0); }
+
+  submitEx9(): void {
+    this.saveExercise(8,
+      this.formEx9.value.answer === 'join'
+        ? this.steps[8].maxScore : 0);
+  }
+
+  submitEx10(): void {
+    this.saveExercise(9,
+      this.formEx10.value.answer === 'strong'
+        ? this.steps[9].maxScore : 0);
+  }
+
   submitEx11(): void {
     const a = this.formEx11.value;
     const correct = ['sender', 'urgency', 'password', 'link'].filter(k => a[k]).length;
     const errors = ['logo', 'signature'].filter(k => a[k]).length;
-    this.saveExercise(10, Math.max(0, correct - errors));
+
+    this.saveExercise(10,
+      Math.max(0, correct - errors) / 4 * this.steps[10].maxScore);
   }
-  // submitEx12(): void { this.saveExercise(11, this.formEx12.value.answer === 'verify' ? 3 : 0); }
-  // Si c'est bien le dernier exercice de l'unité 5 :
+
   submitEx12(): void {
     if (this.alreadySubmitted || this.showFinalMessage || !this.isStudent) return;
 
-    const score = this.formEx12.value.answer === 'verify' ? 3 : 0;
+    const score = this.formEx12.value.answer === 'verify'
+      ? this.steps[11].maxScore : 0;
 
-    // Enregistrement de l'exercice 12 et agrégation locale
     this.saveExercise(11, score);
 
-    // Enregistrement de la synthèse de l'unité 5
     this.service.saveUnitResult(
       this.uid,
       'unit5',
