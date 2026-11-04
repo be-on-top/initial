@@ -87,6 +87,8 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
 
   hasWorkbookUnit1: boolean = false
 
+  availableTrades: string[] = []; // Liste des métiers adaptée au rôle
+
   constructor(
     private service: StudentsService,
     private activatedRoute: ActivatedRoute,
@@ -112,50 +114,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
       this.getCentersAndSocialFormByUserId(this.userUid)
       this.userService.getUser(this.userUid).subscribe(data => this.cpArray = data.cp)
 
-      // Une méthode qui s'en inspière mais va me retourner
-      // la liste des formateurs et ceux qui ont le même tableau de cp
-      // ou ceux dont un des cp du tableau est contenu dans le tableau des cp du compte authentifié
-      // this.getTrainersWithSameCp(this.userUid)
 
-      // pour lister le ou les centres associés 
-      // this.regionalService.getCenters().pipe(
-      //   map(centers =>
-      //     centers
-      //       .filter(center => this.cpArray.includes(center.cp) && center.status)
-      //       .map(center => center.id)
-      //   )
-      // ).subscribe(centerIds => console.log(centerIds));
-
-
-
-      // this.regionalService.getCenters().pipe(
-      //   map(centers =>
-      //     centers
-      //       .filter(center => this.cpArray.includes(center.cp) && center.status)
-      //       .map(center => ({
-      //         name: center.name,
-      //         cp: center.cp,
-      //         link: ['/center', center.id]
-      //       }))
-      //   )
-      // ).subscribe(centersUrl => {
-      //   this.centersUrl = centersUrl;
-      // });
-
-      // si les liens doivent pointer  vers une url externe : finalement  déporté vers my-centers
-      // this.regionalService.getCenters().pipe(
-      //   map(centers =>
-      //     centers
-      //       .filter(center => this.cpArray.includes(center.cp) && center.status)
-      //       .map(center => ({
-      //         name: center.name,
-      //         cp: center.cp,
-      //         url: `/center/${center.id}` // ou baseUrl + id si domaine complet
-      //       }))
-      //   )
-      // ).subscribe(centersUrl => {
-      //   this.centersUrl = centersUrl;
-      // });
 
     }
 
@@ -211,103 +170,34 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
 
   }
 
-  ngAfterViewInit() {
-    this.tradeService.getTrades().subscribe(data => {
-      data.forEach(element => {
-        this.trades.push(element.sigle)
-      });
-    })
-
-
-
-  }
-
-  // getStudents() {
-  //   this.service.getStudents().subscribe(students => {
-  //     this.allStudents = students
-  //     console.log('this.allStudents', this.allStudents)
+  // ngAfterViewInit() {
+  //   this.tradeService.getTrades().subscribe(data => {
+  //     data.forEach(element => {
+  //       this.trades.push(element.sigle)
+  //     });
   //   })
 
-  // }
 
 
-  // getStudents() {
-  //   this.service.getStudents().pipe(
-  //     map(students => students.filter(student => this.hasFullResults(student)))
-  //   ).subscribe(filteredStudents => {
-  //     this.allStudents = filteredStudents;
-  //     console.log('this.allStudents', this.allStudents);
-  //   });
   // }
+  ngAfterViewInit() {
+  this.tradeService.getTrades().subscribe(data => {
+    data.forEach(element => {
+      this.trades.push(element.sigle);
+    });
 
-  // getStudents() {
-  //   this.service.getStudents().pipe(
-  //     map(students => students.filter(student => this.hasFullResults(student)))
-  //   ).subscribe(filteredStudents => {
-  //     this.initialStudents = filteredStudents; // Stocker la liste initiale
-  //     this.allStudents = [...this.initialStudents]; // Initialiser allStudents
-  //     this.applyFilters();
-  //   });
-  // }
+    // Si admin, analyst ou editor, on donne accès à TOUS les métiers tout de suite
+    if (this.userRouterLinks.user === 'admin' || this.userRouterLinks.user === 'editor' || this.userRouterLinks.user === 'data-analyst'|| this.userRouterLinks.user === 'external') {
+      this.availableTrades = [...this.trades];
+    }
+    // Pour le référent, la liste dynamique sera calculée dans getStudents()
+    // une fois que this.initialStudents sera chargé.
+  });
+}
 
   ascending = false; // Variable pour gérer l'ordre de tri
 
-  // pour intégrer l'état de ascending, et collecter les données brutes pour les totaux OK
-  // getStudents() {
-  //   const order = this.ascending ? 'asc' : 'desc';
-  //   this.service.getStudents(order).pipe(
-  //     tap(students => {
-  //       // Stocker les données brutes avant toute transformation
-  //       this.collectionStudents = students;
-  //       console.log('Données brutes (collectionStudents) :', this.collectionStudents);
-  //     }),
-  //     map(students => students.filter(student => this.hasFullResults(student)))
-  //   ).subscribe(filteredStudents => {
-  //     this.initialStudents = filteredStudents; // Stocker la liste initiale
-  //     this.allStudents = [...this.initialStudents]; // Initialiser allStudents
-  //     this.applyFilters();
-  //   });
-  // }
-
-  //  pour faire toutes les requêtes nécessaires illico si c'est le referent qui est connecté
-  // fonctionne bien sans faire de distinguo selon l'utilisateur
-  // getStudents() {
-  //   const order = this.ascending ? 'asc' : 'desc';
-  //   const referentUid = this.authService.getCurrentUserUid(); // UID du référent.
-
-  //   if (!referentUid) {
-  //     console.error('Impossible de récupérer UID du référent.');
-  //     return;
-  //   }
-
-  //   // Étape 1 : Charger tous les étudiants
-  //   this.service.getStudents(order).subscribe(allStudents => {
-  //     console.log('Tous les étudiants chargés :', allStudents);
-
-  //     // Étape 2 : Récupérer les étudiants prior (via service)
-  //     this.service.getCentersAndSocialFormByUserId(referentUid)
-  //       .subscribe(returnedPriors => {
-  //         console.log('IDs prior récupérés :', returnedPriors);
-
-  //         // Filtrer les étudiants en fonction de deux critères (référent + prior)
-  //         const filteredStudents = allStudents.filter(student => 
-  //           student.referent === referentUid || returnedPriors.includes(student.id)
-  //         );
-  //         console.log('Étudiants filtrés (référent + prior) :', filteredStudents);
-
-  //         // Initialisation de la base de données
-  //         this.initialStudents = [...filteredStudents]; // Base par défaut
-  //         this.allStudents = [...this.initialStudents]; // Pré-remplissage pour affichage
-
-  //         // Mise à jour des filtres dynamiques
-  //         this.filteredStudents = filteredStudents.filter(student => returnedPriors.includes(student.id)); // Garde uniquement les prior pour filtres dynamiques
-  //         console.log('Filtered Prior Students :', this.filteredStudents);
-
-  //         this.applyFilters(); // Appliquer les filtres actuels
-  //       });
-  //   });
-  // }
-
+  
   // en cours... pour ajouter la détection des roles 
   getStudents() {
     const order = this.ascending ? 'asc' : 'desc';
@@ -384,6 +274,18 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
             this.initialStudents = [...filteredStudents];
             this.allStudents = [...this.initialStudents];
 
+            // -----> AJOUTEZ CES LIGNES ICI <-----
+            // Construire dynamiquement la liste des métiers en cours pour le référent
+            const referentTrades = new Set<string>();
+            this.initialStudents.forEach(student => {
+              if (Array.isArray(student.subscriptions)) {
+                student.subscriptions.forEach((trade:any) => referentTrades.add(trade));
+              }
+            });
+            // Assigner le Set converti en tableau à availableTrades
+            this.availableTrades = Array.from(referentTrades).sort();
+            // ------------------------------------
+
             // Mise à jour des filtres dynamiques pour prior uniquement
             this.filteredStudents = filteredStudents.filter(student =>
               returnedPriors.includes(student.id)
@@ -420,21 +322,7 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // puisqu'il faut compliquer et théoriquement relancer... 
-  // getStudentsWithNoInterest() {
-  //   const order = this.ascending ? 'asc' : 'desc';
-  //   this.service.getStudents(order).subscribe(data => {
-  //     // Soustraction : trouver les étudiants qui ne sont pas dans `initialStudents`
-  //     this.studentsWithNoInterest = data.filter(student =>
-  //       !this.initialStudents.some(interestedStudent => interestedStudent.id === student.id)
-  //     );
 
-  //     console.log('Étudiants sans intérêt :', this.studentsWithNoInterest);
-
-  //     // Mettre à jour l'affichage en fonction du bouton
-  //     this.showNoInterestStudents = true;
-  //   });
-  // }
 
   getStudentsWithNoInterest() {
     if (this.showNoInterestStudents) {
@@ -503,11 +391,6 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     this.service.exportCollectionAsCSV("students")
   }
 
-  // exportInactifsCSV() {
-  //   this.service.exportCollectionAsCSV("studentsWithNoInterest")
-  // }
-
-  // pour tester la méthode directement dans le composant
 
   exportInactifsCSV() {
     if (this.studentsWithNoInterest.length === 0) {
@@ -544,32 +427,6 @@ export class StudentsListComponent implements OnInit, AfterViewInit {
     URL.revokeObjectURL(url);
   }
 
-
-
-
-  // isSocialFormSentFilter: boolean = false;
-  // isSubscriptionFilter: boolean = false
-  // initialStudents: any[] = []; // Copie initiale des étudiants
-  // isTradeFilter: boolean = false
-  // tradesActivated: boolean = false
-  // isQualifiedFilter: boolean = false
-  // isPriorFilter:boolean = false
-
-  // applyFilters() {
-  //   // Restaurer l'état initial avant de filtrer
-  //   this.allStudents = this.initialStudents.filter(student => {
-  //     const matchesSearchText = this.searchText === '' || student.lastName.includes(this.searchText) || student.lastName.toLowerCase().includes(this.searchText) || student.firstName.includes(this.searchText) || student.firstName.toLowerCase().includes(this.searchText);
-  //     if (this.isSocialFormSentFilter) {
-  //       return student.isSocialFormSent && matchesSearchText;
-  //     }
-  //     return matchesSearchText;
-  //   });
-  // }
-
-  // onCheckboxChange(event: any) {
-  //   this.isSocialFormSentFilter = event.target.checked;
-  //   this.applyFilters();
-  // }
 
 
   applyFilters(trade?: string) {

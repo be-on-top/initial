@@ -150,17 +150,9 @@
 
                 <!-- puisqu'il faut compliquer -->
                 <!-- ici, pour restreindre la liste des filtres additionnels au seul admin -->
+                <!-- 1. Le bloc principal actuel (Admin, Analyst, Editor, External) -->
                 <ng-container
                     *ngIf="userRouterLinks.user==='admin'|| userRouterLinks.user==='editor'|| userRouterLinks.user=='data-analyst' || userRouterLinks.user==='external'">
-                    <!-- 
-                    <div *ngFor="let trade of trades">
-                        <div class="form-check">
-                            <label class="form-check-label" for="tradeCheckbox">Questionnaire en cours {{trade}}</label>
-                            <input type="checkbox" (change)="onCheckboxChangeTradesForStartedQCM($event, trade)"
-                                class="form-check-input">
-                        </div>
-                    </div> -->
-                    <!-- pour tenter la même chose avec un select (test OK) -->
 
                     <ng-container
                         *ngIf="userRouterLinks.user!=='external' && userRouterLinks.user!=='referentsContacts'">
@@ -172,43 +164,15 @@
                             <option *ngFor="let trade of trades" [ngValue]="trade">{{ trade }}</option>
                         </select>
 
-
-                        <!-- <div *ngFor="let trade of trades">
-                        <div class="form-check">
-                            <label class="form-check-label" for="tradeCheckbox">Questionnaire terminé {{trade}}</label>
-                            <input type="checkbox" (change)="onCheckboxChangeTradesForFullQCM($event, trade)"
-                                class="form-check-input">
-                        </div>
-                    </div> -->
-                        <!-- pour tenter de le transformer en select (test OK) -->
-                        <label for="tradeSelect">Questionnaire terminé pour :</label>
-                        <select id="tradeSelect" class="form-control" [(ngModel)]="selectedTradeForFullQCM"
+                        <label for="tradeSelectQCM">Questionnaire terminé pour :</label>
+                        <select id="tradeSelectQCM" class="form-control" [(ngModel)]="selectedTradeForFullQCM"
                             (ngModelChange)="onTradeFullQCMSelect($event)">
                             <option [ngValue]="null">-- Sélectionner un questionnaire --</option>
                             <option *ngFor="let trade of trades" [ngValue]="trade">{{ trade }}</option>
                         </select>
-
                     </ng-container>
 
-
-                    <!-- <ng-container *ngIf="tradesActivated"> -->
-                    <!-- <div *ngFor="let trade of trades">
-                        <div class="form-check">
-                            <label class="form-check-label" for="tradeCheckbox">Formation {{trade}}</label>
-                            <input type="checkbox" (change)="onCheckboxChangeTrades($event, trade)"
-                                class="form-check-input">
-                        </div>
-                    </div> -->
-                    <label for="tradeSelect">Formation en cours pour :</label>
-                    <select id="tradeSelect" class="form-control" [(ngModel)]="selectedTradeOnTraining"
-                        (ngModelChange)="onTradeTrainingSelect($event)">
-                        <option [ngValue]="null">-- Sélectionner un métier --</option>
-                        <option *ngFor="let trade of trades" [ngValue]="trade">{{ trade }}</option>
-                    </select>
-
-
-                    <!-- feat : pour tester un filtre régional sur la base de postalCode OK marche bien -->
-
+                    <!-- Les Régions / Départements restent réservés à l'admin/analyst -->
                     <ng-container *ngIf="userRouterLinks.user!=='referentsContacts'">
                         <label for="regionSelect">Séléctionner les candidats par région :</label>
                         <select id="regionSelect" class="form-control" [(ngModel)]="selectedRegion"
@@ -217,7 +181,6 @@
                             <option *ngFor="let region of regions" [ngValue]="region">{{ region }}</option>
                         </select>
 
-                        <!-- feat : filtre départemental basé sur les CP -->
                         <label for="departmentSelect">Sélectionner les candidats par département :</label>
                         <select id="departmentSelect" class="form-control" [(ngModel)]="selectedDepartment"
                             (ngModelChange)="onSelectDepartment($event)">
@@ -226,6 +189,24 @@
                             </option>
                         </select>
                     </ng-container>
+
+                </ng-container>
+
+
+                <!-- 2. LE BLOC DÉDIÉ A "FORMATION EN COURS" (Ajout de 'referent') -->
+                <ng-container
+                    *ngIf="userRouterLinks.user==='admin'|| userRouterLinks.user==='editor'|| userRouterLinks.user=='data-analyst' || userRouterLinks.user==='external' || userRouterLinks.user==='referent'">
+
+                    <hr  *ngIf="userRouterLinks.user==='referent'" class="border-secondary"> <!-- Séparateur visuel ici quand il s'affiche  seul  pour le référent -->
+
+                    <label for="tradeSelect">Formation en cours pour :</label>
+                    <select id="tradeSelect" class="form-control" [(ngModel)]="selectedTradeOnTraining"
+                        (ngModelChange)="onTradeTrainingSelect($event)">
+                        <option [ngValue]="null">-- Sélectionner un métier --</option>
+
+                        <!-- ICI : on boucle sur la liste dynamique au lieu de 'trades' -->
+                        <option *ngFor="let trade of availableTrades" [ngValue]="trade">{{ trade }}</option>
+                    </select>
 
                 </ng-container>
 
