@@ -138,4 +138,36 @@ export class NewsListComponent implements OnInit, AfterViewInit {
     return truncated.slice(0, lastSpace) + '...';
   }
 
+  /**
+ * Exporte l'ensemble des articles (bruts, nettoyés du HTML) 
+ * pour relecture rapide ou analyse par un LLM.
+ */
+exportArticlesForReview(): void {
+  this.newsService.getAll().subscribe(articles => {
+    const fullText = articles.map(article => {
+      // Adaptez 'article.title' et 'article.content' selon les propriétés exactes de votre interface News
+      const title = article.title || 'Sans titre';
+      const rawContent = (article as any).content || (article as any).description || '';
+      const cleanContent = this.stripHtml(rawContent);
+      
+      return `========================================\n` +
+             `TITRE : ${title}\n` +
+             `========================================\n\n` +
+             `${cleanContent}\n\n`;
+    }).join('\n');
+
+    // Option 1 : Affichage direct dans la console du navigateur
+    console.log(fullText);
+
+    // Option 2 : Téléchargement direct d'un fichier .txt en un clic
+    const blob = new Blob([fullText], { type: 'text/plain;charset=utf-8' });
+    const url = window.URL.createObjectURL(blob);
+    const link = this.document.createElement('a');
+    link.href = url;
+    link.download = `articles-export-${new Date().toISOString().slice(0, 10)}.txt`;
+    link.click();
+    this.document.defaultView?.URL.revokeObjectURL(url);
+  });
+}
+
 }

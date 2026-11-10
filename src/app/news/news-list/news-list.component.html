@@ -11,7 +11,7 @@
             regards croisés autour de la formation et de l'application.
         </p>
     </div>
-<!-- Utilisation de *ngIf / else pour basculer du Skeleton aux cartes réelles -->
+    <!-- Utilisation de *ngIf / else pour basculer du Skeleton aux cartes réelles -->
     <div *ngIf="news$ | async as news; else loading" class="row g-3 mt-2">
 
         <div *ngFor="let n of news" class="col-12 col-md-6">
@@ -31,7 +31,7 @@
 
                     <p class="card-text text-muted mb-0">
                         <!-- {{ stripHtml(n.content) | slice:0:200 }}... -->
-                              {{ truncate(n.content) }}
+                        {{ truncate(n.content) }}
                     </p>
 
                 </div>
@@ -41,7 +41,7 @@
 
     </div>
 
-<!-- ⚡ SKELETON LOADER OPTIMISÉ CLS -->
+    <!-- ⚡ SKELETON LOADER OPTIMISÉ CLS -->
     <ng-template #loading>
         <div class="row g-3 mt-2" aria-hidden="true">
             <div *ngFor="let item of [1,2,3,4]" class="col-12 col-md-6">
@@ -109,6 +109,10 @@
             <span class="visually-hidden">Suivant</span>
         </button>
     </div>
+
+    <button *ngIf="userRole === 'admin'" (click)="exportArticlesForReview()" class="btn btn-sm btn-outline-secondary">
+        Exporter les articles pour analyse
+    </button>
 
 
 </div>

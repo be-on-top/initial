@@ -242,7 +242,7 @@
 
                     <!-- Pour EVALUATIONS TRANSVERSES WORKBOOK -->
                     <div class="mt-5 border-top pt-5"
-                        *ngIf="hasCompletedUnit1 || hasCompletedUnit2 || hasCompletedUnit3  || hasCompletedUnit4">
+                        *ngIf="hasCompletedUnit1 || hasCompletedUnit2 || hasCompletedUnit3  || hasCompletedUnit4 || hasCompletedUnit5">
                         <h4 class="fw-bold mb-3">🎯 Évaluations transverses (Exercices en ligne)</h4>
 
                         <!-- ==================== BLOC UNITÉ 1 ==================== -->
@@ -374,6 +374,40 @@
                             <div *ngIf="!hasCompletedUnit4" class="py-1">
                                 <span class="badge bg-secondary rounded-0 me-2">Unité 4 (Mathématiques
                                     Fondamentaux)</span>
+                                <span class="text-muted small">Aucune évaluation soumise pour le moment.</span>
+                            </div>
+                        </div>
+                        <!-- ==================== BLOC UNITÉ 5 ==================== -->
+                        <div class="mb-3 p-3 border rounded bg-light">
+                            <!-- Cas A : Unité 3 complétée -->
+                            <div *ngIf="hasCompletedUnit5"
+                                class="d-flex align-items-center justify-content-between py-1">
+                                <div>
+                                    <span class="badge bg-success rounded-0 me-2">Unité 5 (Connaissances du
+                                        numérique)</span>
+                                    <span class="fw-semibold text-success">Terminée !</span>
+                                    <!-- pour afficher la note globale -->
+                                    <span class="ms-2" *ngIf="student?.['units']?.['unit5']?.['finalGrade'] != null">
+                                        Note finale :
+                                        <span class="fw-bold">
+                                            {{ student['units']['unit5']['finalGrade'] }} / 20
+                                        </span>
+                                    </span>
+                                </div>
+                                <a *ngIf="studentId 
+                                && userRouterLinks.user !== 'editor'
+                                && userRouterLinks.user !== 'data-analyst' 
+                                && userRouterLinks.user !== 'trainer' 
+                                && userRouterLinks.user !== 'tutor'" [routerLink]="['/workbook/unit5', studentId]"
+                                    target="_blank" class="btn btn-primary btn-sm rounded-0">
+                                    📊 Consulter les résultats
+                                </a>
+                            </div>
+
+                            <!-- Cas B : Unité 2 non réalisée -->
+                            <div *ngIf="!hasCompletedUnit5" class="py-1">
+                                <span class="badge bg-secondary rounded-0 me-2">Unité 5 (Connaissances du
+                                    numérique)</span>
                                 <span class="text-muted small">Aucune évaluation soumise pour le moment.</span>
                             </div>
                         </div>

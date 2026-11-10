@@ -17,14 +17,14 @@
   </div>
   <div *ngIf="(isStudent && !showFinalMessage) || isReferentView">
     <!-- EXERCICE 1 -->
-    <form class="nouvelle-page mb-5" *ngIf="isReferentView || currentStep === 0" [formGroup]="formEx1"
+    <form class="mb-5" *ngIf="isReferentView || currentStep === 0" [formGroup]="formEx1"
       (ngSubmit)="submitEx1()">
       <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
         <span class="badge text-bg-dark text-white"><i class="bi bi-tag-fill me-2"></i>Catégorie : {{ steps[0].category
           }}</span>
         <div class="d-flex gap-2 ms-md-auto">
           <span class="badge text-bg-warning">Exercice 1</span>
-          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">Max {{ steps[0].maxScore }}
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary d-print-none">Max {{ steps[0].maxScore }}
             PNTS</span>
           <span class="badge text-bg-dark text-white">
             {{ getCurrentScore(0) }} PNTS
@@ -41,7 +41,7 @@
         <div class="row g-3"
           *ngFor="let item of ex1Situations">
           <div class="col-12 col-md-6"><label class="form-label">{{ item.label }}</label></div>
-          <div class="col-12 col-md-6"><select class="form-select" [formControlName]="item.key">
+          <div class="col-12 col-md-6"><select [ngClass]="{'opacity-50': isReferentView, 'pe-none': isReferentView}"   [ngClass]="{'opacity-50': isReferentView, 'pe-none': isReferentView}" class="form-select" [formControlName]="item.key">
               <option value="">Choisissez un outil</option>
               <option *ngFor="let option of toolOptions" [value]="option.value">{{ option.label }}</option>
             </select></div>
@@ -57,14 +57,14 @@
     </form>
     <hr *ngIf="isReferentView">
     <!-- EXERCICE 2 -->
-    <form class="nouvelle-page mb-5" *ngIf="isReferentView || currentStep === 1" [formGroup]="formEx2"
+    <form class="mb-5" *ngIf="isReferentView || currentStep === 1" [formGroup]="formEx2"
       (ngSubmit)="submitEx2()">
       <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
         <span class="badge text-bg-dark text-white"><i class="bi bi-tag-fill me-2"></i>Catégorie : {{ steps[1].category
           }}</span>
         <div class="d-flex gap-2 ms-md-auto">
           <span class="badge text-bg-warning">Exercice 2</span>
-          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">Max {{ steps[1].maxScore }}
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary d-print-none">Max {{ steps[1].maxScore }}
             PNTS</span>
           <span class="badge text-bg-dark text-white">
             {{ getCurrentScore(1) }} PNTS
@@ -84,8 +84,8 @@
             <div class="card h-100">
               <div class="card-body text-center">
                 <div class="fs-1 mb-3"><i class="bi" [ngClass]="item.icon" aria-hidden="true"></i></div>
-                <label class="form-label" [attr.for]="'icon-' + item.key">À quoi correspond cette icône ?</label>
-                <select class="form-select" [id]="'icon-' + item.key" [formControlName]="item.key">
+                <label class="form-label d-print-none" [attr.for]="'icon-' + item.key">À quoi correspond cette icône ?</label>
+                <select [ngClass]="{'opacity-50': isReferentView, 'pe-none': isReferentView}" class="form-select" [id]="'icon-' + item.key" [formControlName]="item.key">
                   <option value="">Choisissez</option>
                   <option *ngFor="let option of iconOptions" [value]="option.value">{{ option.label }}</option>
                 </select>
@@ -104,14 +104,14 @@
     </form>
     <hr *ngIf="isReferentView">
     <!-- EXERCICE 3 -->
-    <form class="nouvelle-page mb-5" *ngIf="isReferentView || currentStep === 2" [formGroup]="formEx3"
+    <form class="mb-5" *ngIf="isReferentView || currentStep === 2" [formGroup]="formEx3"
       (ngSubmit)="submitEx3()">
       <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
         <span class="badge text-bg-dark text-white"><i class="bi bi-tag-fill me-2"></i>Catégorie : {{ steps[2].category
           }}</span>
         <div class="d-flex gap-2 ms-md-auto">
           <span class="badge text-bg-warning">Exercice 3</span>
-          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">Max {{ steps[2].maxScore }}
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary d-print-none">Max {{ steps[2].maxScore }}
             PNTS</span>
           <span class="badge text-bg-dark text-white">
             {{ getCurrentScore(2) }} PNTS
@@ -147,14 +147,14 @@
     </form>
     <hr *ngIf="isReferentView">
     <!-- EXERCICE 4 -->
-    <form class="nouvelle-page mb-5" *ngIf="isReferentView || currentStep === 3" [formGroup]="formEx4"
+    <form class="mb-5" *ngIf="isReferentView || currentStep === 3" [formGroup]="formEx4"
       (ngSubmit)="submitEx4()">
       <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
         <span class="badge text-bg-dark text-white"><i class="bi bi-tag-fill me-2"></i>Catégorie : {{ steps[3].category
           }}</span>
         <div class="d-flex gap-2 ms-md-auto">
           <span class="badge text-bg-warning">Exercice 4</span>
-          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">Max {{ steps[3].maxScore }}
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary d-print-none">Max {{ steps[3].maxScore }}
             PNTS</span>
           <span class="badge text-bg-dark text-white">
             {{ getCurrentScore(3) }} PNTS
@@ -197,7 +197,7 @@
           }}</span>
         <div class="d-flex gap-2 ms-md-auto">
           <span class="badge text-bg-warning">Exercice 5</span>
-          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">Max {{ steps[4].maxScore }}
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary d-print-none">Max {{ steps[4].maxScore }}
             PNTS</span>
           <span class="badge text-bg-dark text-white">
             {{ getCurrentScore(4) }} PNTS
@@ -215,7 +215,7 @@
         
           *ngFor="let item of ex5Files">
           <div class="col-12 col-sm-5"><label class="form-label">{{ item.label }}</label></div>
-          <div class="col-12 col-sm-7"><select class="form-select" [formControlName]="item.key">
+          <div class="col-12 col-sm-7"><select [ngClass]="{'opacity-50': isReferentView, 'pe-none': isReferentView}" class="form-select" [formControlName]="item.key">
               <option value="">Choisissez un type</option>
               <option *ngFor="let option of fileOptions" [value]="option.value">{{ option.label }}</option>
             </select></div>
@@ -231,14 +231,14 @@
     </form>
     <hr *ngIf="isReferentView">
     <!-- EXERCICE 6 -->
-    <form class="nouvelle-page mb-5" *ngIf="isReferentView || currentStep === 5" [formGroup]="formEx6"
+    <form class="mb-5" *ngIf="isReferentView || currentStep === 5" [formGroup]="formEx6"
       (ngSubmit)="submitEx6()">
       <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
         <span class="badge text-bg-dark text-white"><i class="bi bi-tag-fill me-2"></i>Catégorie : {{ steps[5].category
           }}</span>
         <div class="d-flex gap-2 ms-md-auto">
           <span class="badge text-bg-warning">Exercice 6</span>
-          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">Max {{ steps[5].maxScore }}
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary d-print-none">Max {{ steps[5].maxScore }}
             PNTS</span>
           <span class="badge text-bg-dark text-white">
             {{ getCurrentScore(5) }} PNTS
@@ -286,7 +286,7 @@
           }}</span>
         <div class="d-flex gap-2 ms-md-auto">
           <span class="badge text-bg-warning">Exercice 7</span>
-          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">Max {{ steps[6].maxScore }}
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary d-print-none">Max {{ steps[6].maxScore }}
             PNTS</span>
           <span class="badge text-bg-dark text-white">
             {{ getCurrentScore(6) }} PNTS
@@ -318,14 +318,14 @@
     </form>
     <hr *ngIf="isReferentView">
     <!-- EXERCICE 8 -->
-    <form class="nouvelle-page mb-5" *ngIf="isReferentView || currentStep === 7" [formGroup]="formEx8"
+    <form class="mb-5" *ngIf="isReferentView || currentStep === 7" [formGroup]="formEx8"
       (ngSubmit)="submitEx8()">
       <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
         <span class="badge text-bg-dark text-white"><i class="bi bi-tag-fill me-2"></i>Catégorie : {{ steps[7].category
           }}</span>
         <div class="d-flex gap-2 ms-md-auto">
           <span class="badge text-bg-warning">Exercice 8</span>
-          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">Max {{ steps[7].maxScore }}
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary d-print-none">Max {{ steps[7].maxScore }}
             PNTS</span>
           <span class="badge text-bg-dark text-white">
             {{ getCurrentScore(7) }} PNTS
@@ -345,12 +345,12 @@
           <h6><i class="bi bi-envelope me-2"></i>Nouveau message</h6>
           <label for="ex8-to" class="form-label">À (destinataire)</label>
           <input id="ex8-to" class="form-control mb-3" type="email" formControlName="recipient"
-            placeholder="Adresse e-mail">
+            placeholder="Adresse e-mail" [ngClass]="{'opacity-50': isReferentView, 'pe-none': isReferentView}">
           <label for="ex8-subject" class="form-label">Objet</label>
           <input id="ex8-subject" class="form-control mb-3" type="text" formControlName="subject"
-            placeholder="Objet du message">
+            placeholder="Objet du message" [ngClass]="{'opacity-50': isReferentView, 'pe-none': isReferentView}">
           <label for="ex8-file" class="form-label"><i class="bi bi-paperclip me-2"></i>Pièce jointe</label>
-          <select id="ex8-file" class="form-select" formControlName="attachment">
+          <select [ngClass]="{'opacity-50': isReferentView, 'pe-none': isReferentView}" id="ex8-file" class="form-select" formControlName="attachment">
             <option value="">Choisir le fichier à joindre</option>
             <option value="photo">photo.jpg</option>
             <option value="cv">CV.pdf</option>
@@ -375,7 +375,7 @@
           }}</span>
         <div class="d-flex gap-2 ms-md-auto">
           <span class="badge text-bg-warning">Exercice 9</span>
-          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">Max {{ steps[8].maxScore }}
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary d-print-none">Max {{ steps[8].maxScore }}
             PNTS</span>
           <span class="badge text-bg-dark text-white">
             {{ getCurrentScore(8) }} PNTS
@@ -413,14 +413,14 @@
     </form>
     <hr *ngIf="isReferentView">
     <!-- EXERCICE 10 -->
-    <form class="nouvelle-page mb-5" *ngIf="isReferentView || currentStep === 9" [formGroup]="formEx10"
+    <form class="mb-5" *ngIf="isReferentView || currentStep === 9" [formGroup]="formEx10"
       (ngSubmit)="submitEx10()">
       <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
         <span class="badge text-bg-dark text-white"><i class="bi bi-tag-fill me-2"></i>Catégorie : {{ steps[9].category
           }}</span>
         <div class="d-flex gap-2 ms-md-auto">
           <span class="badge text-bg-warning">Exercice 10</span>
-          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">Max {{ steps[9].maxScore }}
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary d-print-none">Max {{ steps[9].maxScore }}
             PNTS</span>
           <span class="badge text-bg-dark text-white">
             {{ getCurrentScore(9) }} PNTS
@@ -457,7 +457,7 @@
           }}</span>
         <div class="d-flex gap-2 ms-md-auto">
           <span class="badge text-bg-warning">Exercice 11</span>
-          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">Max {{ steps[10].maxScore }}
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary d-print-none">Max {{ steps[10].maxScore }}
             PNTS</span>
           <span class="badge text-bg-dark text-white">
             {{ getCurrentScore(10) }} PNTS
@@ -494,14 +494,14 @@
     </form>
     <hr *ngIf="isReferentView">
     <!-- EXERCICE 12 -->
-    <form class="nouvelle-page mb-5" *ngIf="isReferentView || currentStep === 11" [formGroup]="formEx12"
+    <form class="mb-5" *ngIf="isReferentView || currentStep === 11" [formGroup]="formEx12"
       (ngSubmit)="submitEx12()">
       <div class="title mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
         <span class="badge text-bg-dark text-white"><i class="bi bi-tag-fill me-2"></i>Catégorie : {{ steps[11].category
           }}</span>
         <div class="d-flex gap-2 ms-md-auto">
           <span class="badge text-bg-warning">Exercice 12</span>
-          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary">Max {{ steps[11].maxScore }}
+          <span *ngIf="isReferentView" class="badge border border-secondary text-secondary d-print-none">Max {{ steps[11].maxScore }}
             PNTS</span>
           <span class="badge text-bg-dark text-white">
             {{ getCurrentScore(11) }} PNTS

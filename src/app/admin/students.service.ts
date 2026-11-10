@@ -2054,6 +2054,18 @@ export class StudentsService {
     );
   }
 
+  checkUserUnit5Status(studentId: string): Observable<boolean> {
+    const workbookRef = doc(this.firestore, 'workbook', studentId);
+
+    return docData(workbookRef).pipe(
+      map((docData: any) => {
+        // 🕵️‍♂️ On va chercher directement la clé textuelle "units.unit2.result"
+        // Si elle existe dans le document, cela signifie que les scores ont été calculés !
+        return !!(docData && docData['units.unit5.result']);
+      })
+    );
+  }
+
 
   /**
     * Rattachement d'exception d'un candidat autonome au Conseiller Projet connecté
