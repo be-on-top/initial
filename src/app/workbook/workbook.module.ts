@@ -13,6 +13,7 @@ import { DocumentEolienComponent } from './units/unit3/document-eolien/document-
 import { UnitsListComponent } from './units-list/units-list.component';
 import { Unit4Component } from './units/unit4/unit4.component';
 import { Unit5Component } from './units/unit5/unit5.component';
+import { Unit6Component } from './units/unit6/unit6.component';
 
 
 
@@ -27,7 +28,8 @@ import { Unit5Component } from './units/unit5/unit5.component';
     DocumentEolienComponent,
     UnitsListComponent,
     Unit4Component,
-    Unit5Component
+    Unit5Component,
+    Unit6Component
   ],
   imports: [
     CommonModule,

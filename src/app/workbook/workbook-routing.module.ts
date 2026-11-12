@@ -6,7 +6,7 @@ import { Unit3Component } from './units/unit3/unit3.component';
 import { UnitsListComponent } from './units-list/units-list.component';
 import { Unit4Component } from './units/unit4/unit4.component';
 import { Unit5Component } from './units/unit5/unit5.component';
-
+import { Unit6Component } from './units/unit6/unit6.component';
 
 const routes: Routes = [
   { path: 'unit1', component: Unit1Component },
@@ -24,6 +24,9 @@ const routes: Routes = [
   { path: 'unit5', component: Unit5Component },
   // pour pouvoir accéder  à  : http://localhost:4200/workbook/unit5/GEzJgCWOeTa7O7xKCDzXeDVHNc23
   { path: 'unit5/:uid', component: Unit5Component },
+    { path: 'unit6', component: Unit6Component },
+  // pour pouvoir accéder  à  : http://localhost:4200/workbook/unit5/GEzJgCWOeTa7O7xKCDzXeDVHNc23
+  { path: 'unit6/:uid', component: Unit6Component },
   {
     path: 'units',
     component: UnitsListComponent

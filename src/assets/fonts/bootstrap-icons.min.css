@@ -44,5 +44,12 @@
 .bi-wifi::before { content: "\f61c"; }
 .bi-tag-fill::before { content: "\f5af"; }
 
+.bi-triangle-fill::before { content: "\f5e3"; }
+.bi-square-fill::before { content: "\f582"; }
+.bi-circle-fill::before { content: "\f287"; }
+.bi-star-fill::before { content: "\f586"; }
+
+
+
 
 
