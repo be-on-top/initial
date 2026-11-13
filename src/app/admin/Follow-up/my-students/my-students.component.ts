@@ -183,4 +183,42 @@ export class MyStudentsComponent implements OnInit {
 
   }
 
+  /**
+   * Vérifie si le candidat a terminé TOUTES les formations encadrées par ce formateur.
+   * Retourne true si le stagiaire n'a plus aucune inscription active correspondant 
+   * aux spécialités du formateur.
+   */
+/**
+   * Vérifie si le candidat a terminé TOUTES les formations encadrées par ce formateur.
+   */
+  isTrainingFinishedForTrainer(student: Student): boolean {
+    // 1. Si le formateur n'a pas de spécialités (sécurité) -> on ne grise pas
+    if (!this.userTrades || !Array.isArray(this.userTrades) || this.userTrades.length === 0) {
+      return false;
+    }
+
+    // 2. Si le stagiaire n'a aucune inscription globale -> on grise
+    if (!student.subscriptions || !Array.isArray(student.subscriptions) || student.subscriptions.length === 0) {
+      return true; 
+    }
+
+    // 3. Extraction simple des spécialités terminées par le candidat
+    const endedSigles = student.endedSubscriptions && Array.isArray(student.endedSubscriptions)
+      ? student.endedSubscriptions.map(es => es.sigle)
+      : [];
+
+    // 4. LA RÈGLE : reste-t-il au moins une formation qui :
+    // - Fait partie des compétences du formateur (userTrades.includes)
+    // - ET n'est pas dans la liste des formations terminées (!endedSigles.includes)
+    const hasActiveMatch = student.subscriptions.some((sigle: string) => {
+      const isTrainerCompetent = this.userTrades.includes(sigle);
+      const isTrainingStillActive = !endedSigles.includes(sigle);
+      
+      return isTrainerCompetent && isTrainingStillActive;
+    });
+
+    // Si aucune formation active correspondante n'est trouvée -> on grise (true)
+    return !hasActiveMatch;
+  }
+
 }

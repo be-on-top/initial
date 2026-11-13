@@ -48,9 +48,15 @@
             <div class="col-sm-3 h5">Nouvelle évaluation</div>
         </div>
 
-        <div *ngFor="let student of myStudents">
-            <!-- <div class="row mt-4 ps-5 ps-sm-0" *ngIf="searchText==='' || student.lastName.toLowerCase().includes(searchText) || student.firstName.toLowerCase().includes(searchText) "> -->
-            <div class="row mt-4 ps-5 ps-sm-0">
+        <!-- <div *ngFor="let student of myStudents">
+            <div class="row mt-4 ps-5 ps-sm-0"> -->
+                <div *ngFor="let student of myStudents">
+    <!-- On gère tout via ngClass avec les classes Bootstrap -->
+<div class="row mt-4 ps-5 ps-sm-0" 
+     [style.opacity]="isTrainingFinishedForTrainer(student) ? '0.5' : '1'" 
+     [ngClass]="{'bg-light': isTrainingFinishedForTrainer(student)}">
+
+        <!-- suite de votre code... -->
                 <div class="col-sm-3 col-6">{{student.lastName}}</div>
                 <div class="col-sm-3 col-6 order-perso2">{{student.firstName}}</div>
                 <div class="col-sm-3 col-6 order-perso4">
