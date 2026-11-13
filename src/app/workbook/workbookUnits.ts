@@ -31,12 +31,12 @@ export const WORKBOOK_UNITS = [
     candidateRoute: '/workbook/unit4',
     sourceDocumentUrl: 'https://firebasestorage.googleapis.com/v0/b/be-on-top-beta.appspot.com/o/admin-docs%2Fworkbook%2Fsupport-source-unit4.docx?alt=media&token=1afa96ca-e57a-40b1-a681-4b510fb2b389'
   },
-  // {
-  //   id: 'unit5',
-  //   label: 'Connaissances numériques fondamentales',
-  //   profile: 'Utilisateur élémentaire',
-  //   description: 'Utiliser les outils numériques essentiels en formation et dans la vie professionnelle : se repérer dans un environnement numérique, gérer des fichiers, rechercher des informations, communiquer à distance et adopter les bonnes pratiques de sécurité.',
-  //   candidateRoute: '/workbook/unit5',
-  //   sourceDocumentUrl: 'https://firebasestorage.googleapis.com/v0/b/be-on-top-beta.appspot.com/o/admin-docs%2Fworkbook%2Fsupport-source-unit5.docx?alt=media&token=70120924-bb09-4d2b-8841-2949f843f3c4'
-  // }
+  {
+    id: 'unit5',
+    label: 'Connaissances numériques fondamentales',
+    profile: 'Utilisateur élémentaire',
+    description: 'Utiliser les outils numériques essentiels en formation et dans la vie professionnelle : se repérer dans un environnement numérique, gérer des fichiers, rechercher des informations, communiquer à distance et adopter les bonnes pratiques de sécurité.',
+    candidateRoute: '/workbook/unit5',
+    sourceDocumentUrl: 'https://firebasestorage.googleapis.com/v0/b/be-on-top-beta.appspot.com/o/admin-docs%2Fworkbook%2Fsupport-source-unit5.docx?alt=media&token=70120924-bb09-4d2b-8841-2949f843f3c4'
+  }
 ];
