@@ -689,5 +689,17 @@ export class StudentDetailsComponent implements OnInit, AfterViewInit {
     return this.tradesEvaluated?.some(trade => this.getTradeDetails(trade));
   }
 
+  /**
+   * Vérifie si une formation spécifique est formellement terminée par le candidat.
+   * Permet de verrouiller les actions (lecture seule) sur l'historique.
+   */
+  isSubscriptionEnded(sigle: string): boolean {
+    if (!this.student || !this.student.endedSubscriptions || !Array.isArray(this.student.endedSubscriptions)) {
+      return false;
+    }
+    // On cherche si le sigle passé correspond à une fin de formation
+    return this.student.endedSubscriptions.some((ended: any) => ended.sigle === sigle);
+  }
+
 
 }

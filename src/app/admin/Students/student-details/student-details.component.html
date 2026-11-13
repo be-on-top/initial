@@ -598,7 +598,8 @@
                                             <!-- fin de la sous partie censée être cachée -->
 
                                             <button class="btn btn-danger mt-3" *ngIf="userRouterLinks.user=='trainer'"
-                                                [routerLink]="['/admin/updateEvaluation', studentId, evaluation.key]">Modifier
+                                                [routerLink]="['/admin/updateEvaluation', studentId, evaluation.key]"
+                                                [disabled]="isSubscriptionEnded(subscription)">Modifier
                                                 l'évaluation</button>
 
                                             <button class="btn btn-danger mt-3" *ngIf="userRouterLinks.user=='admin'"
