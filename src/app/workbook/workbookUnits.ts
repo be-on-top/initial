@@ -33,7 +33,7 @@ export const WORKBOOK_UNITS = [
   },
   {
     id: 'unit5',
-    label: 'Connaissances numériques fondamentales',
+    label: 'Numérique- Niveau fondamental',
     profile: 'Utilisateur élémentaire',
     description: 'Utiliser les outils numériques essentiels en formation et dans la vie professionnelle : se repérer dans un environnement numérique, gérer des fichiers, rechercher des informations, communiquer à distance et adopter les bonnes pratiques de sécurité.',
     candidateRoute: '/workbook/unit5',
