@@ -2,6 +2,11 @@
 
     <h3 class="text-capitalize">Partenaires</h3>
 
+    <div class="alert bg-dark text-white" role="alert">
+        Projet financé dans le cadre de l'appel à projets DEFFINUM, piloté par le ministère du Travail et le
+            Secrétariat général pour l'investissement, et opéré par la Caisse des Dépôts (Banque des Territoires).
+    </div>
+
     <div *ngIf="partners" class="rounded row column-gap-2">
         <ng-container *ngFor="let partner of partners">
 
@@ -11,9 +16,10 @@
                     <!-- <img src="..." class="card-img-top" alt="..."> -->
 
                     <div class="card-img-wrapper text-start">
-                        <img *ngIf="partner.logoUrl" [src]="partner.logoUrl" alt="{{partner.name}}" class="partner-logo p-2">
-                      </div>
-                      
+                        <img *ngIf="partner.logoUrl" [src]="partner.logoUrl" alt="{{partner.name}}"
+                            class="partner-logo p-2">
+                    </div>
+
                     <div class="card-body">
                         <!-- <h5 class="card-title">{{partner.name}}</h5> -->
                         <p class="card-text">{{partner.description}}</p>
