@@ -75,11 +75,11 @@ export class Unit6Component implements OnInit, OnDestroy {
   { value: 'star', label: 'Étoile', icon: 'bi-star-fill' }
 ];
 
-  readonly ex3Options = [
-    { value: 'true', label: 'Oui, c’est tout à fait exact' },
-    { value: 'false', label: 'Non, on ne peut pas l’affirmer' },
-    { value: 'maybe', label: 'C’est possible mais rare' }
-  ];
+readonly ex3Options = [
+  { value: 'true', label: "Oui, c'est tout à fait exact" },
+  { value: 'false', label: "Non, on ne peut pas l'affirmer" },
+  { value: 'maybe', label: "C'est possible mais rare" }
+];
 
   readonly ex4Options = [
     { value: 'north', label: 'Nord' },
@@ -111,12 +111,11 @@ export class Unit6Component implements OnInit, OnDestroy {
 
 
 
-
   readonly ex8Options = [
-    { value: 'stop', label: 'Je m’arrête immédiatement et j’alerte le responsable' },
-    { value: 'ignore', label: 'Je continue, ce n’est qu’un faux contact' },
-    { value: 'finish', label: 'Je termine ma course puis je regarde' },
-    { value: 'call', label: 'J’appelle un collègue le soir' }
+    { value: 'stop', label: "Je m'arrête immédiatement et j'alerte le responsable" },
+    { value: 'ignore', label: "Je continue, ce n'est qu'un faux contact" },
+    { value: 'finish', label: "Je termine ma course puis je regarde" },
+    { value: 'call', label: "J'appelle un collègue le soir" }
   ];
 
   readonly forms: FormGroup[] = [];
