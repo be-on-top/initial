@@ -21,7 +21,7 @@ export class Unit5Component implements OnInit, OnDestroy {
   readonly categories = ['Environnement numérique', 'Fichiers et documents', 'Internet et communication', 'Sécurité et bonnes pratiques'];
   readonly steps: Step[] = [
     { id: 'ex1', category: this.categories[0], duration: 120, maxScore: 4 },
-    { id: 'ex2', category: this.categories[0], duration: 120, maxScore: 4 },
+    { id: 'ex2', category: this.categories[0], duration: 100, maxScore: 4 },
     { id: 'ex3', category: this.categories[0], duration: 160, maxScore: 4 },
     { id: 'ex4', category: this.categories[1], duration: 120, maxScore: 3 },
     { id: 'ex5', category: this.categories[1], duration: 120, maxScore: 4 },
