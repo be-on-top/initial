@@ -40,7 +40,7 @@ export class Unit4Component implements OnInit, OnDestroy {
   isReferentView: boolean = false;
 
 
-  currentStep = 19;
+  currentStep = 0;
 
   categories: string[] = [
     'Opérations de base',

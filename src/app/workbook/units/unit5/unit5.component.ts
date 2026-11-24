@@ -428,7 +428,8 @@ export class Unit5Component implements OnInit, OnDestroy {
   // }
 
   syncStep(): void {
-    let nextStep = 0;
+    // let nextStep = 0;
+    let nextStep = this.currentStep;
 
     while (
       nextStep < this.steps.length &&

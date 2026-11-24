@@ -472,11 +472,16 @@
       <div class="mb-3">
         <p>Vous recevez ce message. Sélectionnez les éléments qui doivent vous alerter.</p>
         <div class="border rounded bg-white p-3 mb-3">
-          <div class="mb-2"><strong>De :</strong> support-formation@securite-compte.xyz</div>
-          <div class="mb-2"><strong>Objet :</strong> URGENT : compte bloqué dans 30 minutes</div>
+          <div class="mb-2"><span class="fw-bold">De :</span> support-formation@securite-compte.xyz</div>
+          <div class="mb-2"><span class="fw-bold">Objet :</span> URGENT : compte bloqué dans 30 minutes</div>
           <p>Pour garder votre accès, saisissez immédiatement votre mot de passe sur ce lien :</p>
           <p class="text-primary text-break">http://verification-compte-exemple.xyz</p>
-          <div class="small text-muted">Logo du centre de formation — L'équipe support</div>
+          <!-- <div class="small text-muted">Logo du centre de formation — L'équipe support</div> -->
+          <div class="fw-bold d-flex align-items-end"><img
+            src="assets/img/unit5/secure-doc-logo-unit5.png"
+            alt="Logo du centre de formation"
+            style="width: 120px; height: auto;"
+          > <span> - L'équipe support</span> </div>
         </div>
         <div class="form-check mb-2"
           *ngFor="let item of ex11Options">
